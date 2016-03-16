@@ -15,6 +15,7 @@ namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+#pragma warning disable 0618
         // This file contains Sync Functions, which are used to sync individual slides (not the agenda as a whole).
         // The methods defined in this file are helper methods for the sync functions.
 
@@ -292,7 +293,7 @@ namespace PowerPointLabs.AgendaLab
                     shape.Copy();
                     candidate.Shapes.Paste();
                 }
-                catch (COMException e)
+                catch (COMException)
                 {
                     // A COMException occurs if you try to copy paste an empty placeholder shape. So I catch it here.
                     // I can't figure out any other way to detect that it's an empty placeholder shape.
@@ -325,7 +326,7 @@ namespace PowerPointLabs.AgendaLab
                 var shape = entry.Value;
                 if (lastShape != null)
                 {
-                    Graphics.MoveZUntilInFront(shape, lastShape);
+                    Graphics.MoveZUntilBehind(shape, lastShape);
                 }
                 lastShape = shape;
             }

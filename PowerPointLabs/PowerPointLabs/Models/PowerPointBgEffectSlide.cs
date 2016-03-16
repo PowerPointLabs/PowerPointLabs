@@ -12,6 +12,7 @@ namespace PowerPointLabs.Models
 {
     class PowerPointBgEffectSlide : PowerPointSlide
     {
+#pragma warning disable 0618
         private static readonly string AnimatedBackgroundPath = Path.Combine(Path.GetTempPath(), "animatedSlide.png");
 
         # region Constructor

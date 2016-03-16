@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Net;
-using System.Threading;
+using System.Threading.Tasks;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AutoUpdate.Interface;
 
 namespace PowerPointLabs.AutoUpdate
 {
-    class Downloader
+    public class Downloader : IDownloader
     {
         private readonly WebClient _client = new WebClient();
 
         public delegate void AfterDownloadEventDelegate();
-        public event AfterDownloadEventDelegate AfterDownload;
+        private event AfterDownloadEventDelegate AfterDownload;
 
-        private String _downloadAddress = "";
-        private String _destAddress = "";
+        public delegate void ErrorEventDelegate(Exception e);
+        private event ErrorEventDelegate WhenError;
+
+        private string _downloadAddress = "";
+        private string _destAddress = "";
 
         public Downloader()
         {
@@ -20,35 +25,47 @@ namespace PowerPointLabs.AutoUpdate
             _client.Proxy = null;
         }
 
-        private void OnAfterDownload()
+        private void CallAfterDownloadDelegate()
         {
             var handler = AfterDownload;
             if (handler != null) handler();
         }
 
-        public Downloader Get(String webAddress, String destinationPath)
+        private void CallWhenErrorDelegate(Exception e)
+        {
+            var handler = WhenError;
+            if (handler != null) handler(e);
+        }
+
+        public IDownloader Get(string webAddress, string destinationPath)
         {
             _downloadAddress = webAddress;
             _destAddress = destinationPath;
             return this;
         }
 
-        public Downloader After(AfterDownloadEventDelegate action)
+        public IDownloader After(AfterDownloadEventDelegate action)
         {
             AfterDownload = action;
             return this;
         }
 
+        public IDownloader OnError(ErrorEventDelegate action)
+        {
+            WhenError = action;
+            return this;
+        }
+
         public void Start()
         {
-            var th = new Thread(StartDownload);
             try
             {
+                var th = new Task(StartDownload);
                 th.Start();
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "Failed to start thread of Downloader.StartDownload");
+                Logger.LogException(e, "Failed to start thread of Downloader.StartDownload");
             }
         }
 
@@ -60,11 +77,12 @@ namespace PowerPointLabs.AutoUpdate
             try
             {
                 _client.DownloadFile(_downloadAddress, _destAddress);
-                OnAfterDownload();
+                CallAfterDownloadDelegate();
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "Failed to execute Downloader.StartDownload");
+                CallWhenErrorDelegate(e);
+                Logger.LogException(e, "Failed to execute Downloader.StartDownload");
             }
         }
     }

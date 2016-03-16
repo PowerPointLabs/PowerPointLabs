@@ -9,6 +9,7 @@ namespace PowerPointLabs.AgendaLab
 {
     internal static partial class AgendaLabMain
     {
+#pragma warning disable 0618
         #region Main Synchronisation Function
         /// <summary>
         /// Call the function like this for example:
@@ -20,6 +21,8 @@ namespace PowerPointLabs.AgendaLab
             var sections = Sections;
 
             var deletedShapeNames = RetrieveTrackedDeletions(refSlide);
+
+            refSlide.DeleteSlideNumberShapes();
             refSlide.MakeShapeNamesNonDefault();
             refSlide.MakeShapeNamesUnique(shape => !AgendaShape.IsAnyAgendaShape(shape) &&
                                                    !PowerPointSlide.IsTemplateSlideMarker(shape));

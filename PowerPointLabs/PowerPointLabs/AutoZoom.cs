@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -10,6 +12,7 @@ namespace PowerPointLabs
 {
     class AutoZoom
     {
+#pragma warning disable 0618
         public static bool backgroundZoomChecked = true;
 
         public static void AddDrillDownAnimation()
@@ -102,7 +105,8 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddDrillDownAnimation");
+                Logger.LogException(e, "AddDrillDownAnimation");
+                ErrorDialogWrapper.ShowDialog("Error when adding drill down animation", "An error occurred when adding drill down animation.", e);
                 throw;
             }
         }
@@ -182,7 +186,8 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddStepBackAnimation");
+                Logger.LogException(e, "AddStepBackAnimation");
+                ErrorDialogWrapper.ShowDialog("Error when adding step back animation", "An error occurred when adding step back animation.", e);
                 throw;
             }
         }
@@ -250,7 +255,7 @@ namespace PowerPointLabs
             {
                 sh.Copy();
                 var shapeCopy = nextSlide.Shapes.Paste()[1];
-                PowerPointLabsGlobals.CopyShapeAttributes(sh, ref shapeCopy);
+                LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
                 copiedShapes.Add(shapeCopy);
             }
 
@@ -264,7 +269,7 @@ namespace PowerPointLabs
 
             shapeGroup.Copy();
             pictureOnNextSlide = nextSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            PowerPointLabsGlobals.CopyShapePosition(shapeGroup, ref pictureOnNextSlide);
+            LegacyShapeUtil.CopyShapePosition(shapeGroup, ref pictureOnNextSlide);
             shapeGroup.Delete();
 
             pictureOnNextSlide.Copy();
@@ -311,7 +316,7 @@ namespace PowerPointLabs
             else
                 nextSlidePicture.Width = selectedShape.Width;
 
-            PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref nextSlidePicture);
+            LegacyShapeUtil.CopyShapePosition(selectedShape, ref nextSlidePicture);
  
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             nextSlidePicture.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -329,7 +334,7 @@ namespace PowerPointLabs
             else
                 previousSlidePicture.Width = selectedShape.Width;
 
-            PowerPointLabsGlobals.CopyShapePosition(selectedShape, ref previousSlidePicture);
+            LegacyShapeUtil.CopyShapePosition(selectedShape, ref previousSlidePicture);
 
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -383,7 +388,7 @@ namespace PowerPointLabs
                 {
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];
-                    PowerPointLabsGlobals.CopyShapeAttributes(sh, ref shapeCopy);
+                    LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
                     copiedShapes.Add(shapeCopy);
                 } 
             }
@@ -398,7 +403,7 @@ namespace PowerPointLabs
 
             shapeGroup.Copy();
             PowerPoint.Shape previousSlidePicture = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            PowerPointLabsGlobals.CopyShapePosition(shapeGroup, ref previousSlidePicture);
+            LegacyShapeUtil.CopyShapePosition(shapeGroup, ref previousSlidePicture);
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             shapeGroup.Delete();
 

@@ -19,7 +19,7 @@ namespace PowerPointLabs.Views
             newName = oldName;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             this.newName = this.textBox1.Text;
             ribbon.ShapeNameEdited(this.newName);
@@ -31,7 +31,7 @@ namespace PowerPointLabs.Views
             this.textBox1.Text = newName;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }

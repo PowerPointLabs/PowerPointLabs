@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PowerPointLabs.Utils
 {
-    class CultureUtil
+    public class CultureUtil
     {
         private static CultureInfo _originalCultureInfo = Thread.CurrentThread.CurrentCulture;
 

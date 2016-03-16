@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -10,6 +12,7 @@ namespace PowerPointLabs
 {
     class ZoomToArea
     {
+#pragma warning disable 0618
         public static bool backgroundZoomChecked = true;
         public static bool multiSlideZoomChecked = true;
 
@@ -43,7 +46,8 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "AddZoomToArea");
+                Logger.LogException(e, "AddZoomToArea");
+                ErrorDialogWrapper.ShowDialog("Error when adding zoom to area", "An error occurred when adding zoom to area.", e);
                 throw;
             }
         }
@@ -163,7 +167,7 @@ namespace PowerPointLabs
                 zoomShapeCopy.Height = zoomShape.Height;
                 zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth * zoomShapeCopy.Height / PowerPointPresentation.Current.SlideHeight;
             }
-            PowerPointLabsGlobals.CopyShapePosition(zoomShape, ref zoomShapeCopy);
+            LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomShapeCopy);
 
             if (zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
                 zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth;

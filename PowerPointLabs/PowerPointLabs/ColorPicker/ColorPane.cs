@@ -21,6 +21,7 @@ namespace PowerPointLabs
 
     public partial class ColorPane : UserControl
     {
+#pragma warning disable 0618
         // To set eyedropper mode
         private enum MODE
         {
@@ -33,9 +34,6 @@ namespace PowerPointLabs
         // Keeps track of mouse on mouse down on a matching panel.
         // Needed to determine drag-drop v/s click
         private System.Drawing.Point _mouseDownLocation;
-        
-        // Listener for Mouse Up Events (for EyeDropping)
-        LMouseUpListener _native;
 
         // Shapes to Update
         PowerPoint.ShapeRange _selectedShapes;
@@ -77,26 +75,26 @@ namespace PowerPointLabs
 
         private void SetDefaultColor(Color color)
         {
-            dataSource.selectedColor = color;
+            dataSource.SelectedColor = color;
             UpdateUIForNewColor();
         }
 
         private void SetMode(MODE mode)
         {
-            dataSource.isFillColorSelected = false;
-            dataSource.isFontColorSelected = false;
-            dataSource.isLineColorSelected = false;
+            dataSource.IsFillColorSelected = false;
+            dataSource.IsFontColorSelected = false;
+            dataSource.IsLineColorSelected = false;
             
             switch (mode)
             {
                 case MODE.LINE:
-                    dataSource.isLineColorSelected = true;
+                    dataSource.IsLineColorSelected = true;
                     break;
                 case MODE.FONT:
-                    dataSource.isFontColorSelected = true;
+                    dataSource.IsFontColorSelected = true;
                     break;
                 case MODE.FILL:
-                    dataSource.isFillColorSelected = true;
+                    dataSource.IsFillColorSelected = true;
                     break;
                 default:
                     currMode = MODE.NONE;
@@ -107,56 +105,56 @@ namespace PowerPointLabs
 
         private void ResetEyeDropperSelectionInDataSource()
         {
-            dataSource.isFillColorSelected = false;
-            dataSource.isFontColorSelected = false;
-            dataSource.isLineColorSelected = false;
+            dataSource.IsFillColorSelected = false;
+            dataSource.IsFontColorSelected = false;
+            dataSource.IsLineColorSelected = false;
         }
 
         #region ToolTip
         private void InitToolTipControl()
         {
             toolTip1.SetToolTip(panel1, TextCollection.ColorsLabText.MainColorBoxTooltips);
-            toolTip1.SetToolTip(this.FontButton, TextCollection.ColorsLabText.FontColorButtonTooltips);
-            toolTip1.SetToolTip(this.LineButton, TextCollection.ColorsLabText.LineColorButtonTooltips);
-            toolTip1.SetToolTip(this.FillButton, TextCollection.ColorsLabText.FillColorButtonTooltips);
+            toolTip1.SetToolTip(this.fontButton, TextCollection.ColorsLabText.FontColorButtonTooltips);
+            toolTip1.SetToolTip(this.lineButton, TextCollection.ColorsLabText.LineColorButtonTooltips);
+            toolTip1.SetToolTip(this.fillButton, TextCollection.ColorsLabText.FillColorButtonTooltips);
             toolTip1.SetToolTip(panel2, TextCollection.ColorsLabText.BrightnessSliderTooltips);
             toolTip1.SetToolTip(panel3, TextCollection.ColorsLabText.SaturationSliderTooltips);
-            toolTip1.SetToolTip(this.SaveThemeButton, TextCollection.ColorsLabText.SaveFavoriteColorsButtonTooltips);
-            toolTip1.SetToolTip(this.LoadButton, TextCollection.ColorsLabText.LoadFavoriteColorsButtonTooltips);
-            toolTip1.SetToolTip(this.ResetThemeButton, TextCollection.ColorsLabText.ResetFavoriteColorsButtonTooltips);
-            toolTip1.SetToolTip(this.EmptyPanelButton, TextCollection.ColorsLabText.EmptyFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.saveThemeButton, TextCollection.ColorsLabText.SaveFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.loadButton, TextCollection.ColorsLabText.LoadFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.resetThemeButton, TextCollection.ColorsLabText.ResetFavoriteColorsButtonTooltips);
+            toolTip1.SetToolTip(this.emptyPanelButton, TextCollection.ColorsLabText.EmptyFavoriteColorsButtonTooltips);
             const string colorRectangleToolTip = TextCollection.ColorsLabText.ColorRectangleTooltips;
             const string themeColorRectangleToolTip = TextCollection.ColorsLabText.ThemeColorRectangleTooltips;
-            toolTip1.SetToolTip(this.ThemePanel1, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel2, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel3, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel4, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel5, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel6, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel7, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel8, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel9, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.ThemePanel10, themeColorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel1, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel2, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel3, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel4, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel5, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel6, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.MonoPanel7, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.AnalogousLighter, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.AnalogousSelected, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.AnalogousDarker, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.ComplementaryLighter, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.ComplementarySelected, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.ComplementaryDarker, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.TriadicLower, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.TriadicSelected, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.TriadicHigher, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.Tetradic1, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.Tetradic2, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.Tetradic3, colorRectangleToolTip);
-            toolTip1.SetToolTip(this.TetradicSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel1, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel2, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel3, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel4, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel5, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel6, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel7, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel8, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel9, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.themePanel10, themeColorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel1, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel2, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel3, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel4, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel5, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel6, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.monoPanel7, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.analogousLighter, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.analogousSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.analogousDarker, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.complementaryLighter, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.complementarySelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.complementaryDarker, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.triadicLower, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.triadicSelected, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.triadicHigher, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.tetradic1, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.tetradic2, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.tetradic3, colorRectangleToolTip);
+            toolTip1.SetToolTip(this.tetradicSelected, colorRectangleToolTip);
         }
         #endregion
 
@@ -169,211 +167,211 @@ namespace PowerPointLabs
                 "selectedColor",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel1.DataBindings.Add(new CustomBinding(
+            this.themePanel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorOne",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel2.DataBindings.Add(new CustomBinding(
+            this.themePanel2.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTwo",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel3.DataBindings.Add(new CustomBinding(
+            this.themePanel3.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorThree",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel4.DataBindings.Add(new CustomBinding(
+            this.themePanel4.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFour",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel5.DataBindings.Add(new CustomBinding(
+            this.themePanel5.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFive",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel6.DataBindings.Add(new CustomBinding(
+            this.themePanel6.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSix",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel7.DataBindings.Add(new CustomBinding(
+            this.themePanel7.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSeven",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel8.DataBindings.Add(new CustomBinding(
+            this.themePanel8.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorEight",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel9.DataBindings.Add(new CustomBinding(
+            this.themePanel9.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorNine",
                 new Converters.HSLColorToRGBColor()));
 
-            this.ThemePanel10.DataBindings.Add(new CustomBinding(
+            this.themePanel10.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTen",
                 new Converters.HSLColorToRGBColor()));
 
-            this.AnalogousSelected.DataBindings.Add(new CustomBinding(
+            this.analogousSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
                 new Converters.HSLColorToRGBColor()));
 
-            this.AnalogousLighter.DataBindings.Add(new CustomBinding(
+            this.analogousLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.selectedColorToAnalogousLower()));
+                new Converters.SelectedColorToAnalogousLower()));
 
-            this.AnalogousDarker.DataBindings.Add(new CustomBinding(
+            this.analogousDarker.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.selectedColorToAnalogousHigher()));
+                new Converters.SelectedColorToAnalogousHigher()));
 
-            this.ComplementarySelected.DataBindings.Add(new CustomBinding(
+            this.complementarySelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.selectedColorToComplementaryColor()));
+                new Converters.SelectedColorToComplementaryColor()));
 
-            this.ComplementaryLighter.DataBindings.Add(new CustomBinding(
+            this.complementaryLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.selectedColorToSplitComplementaryLower()));
+                new Converters.SelectedColorToSplitComplementaryLower()));
 
-            this.ComplementaryDarker.DataBindings.Add(new CustomBinding(
+            this.complementaryDarker.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.selectedColorToSplitComplementaryHigher()));
+                new Converters.SelectedColorToSplitComplementaryHigher()));
 
-            this.TriadicSelected.DataBindings.Add(new CustomBinding(
-                "BackColor",
-                dataSource,
-                "selectedColor",
-                new Converters.HSLColorToRGBColor()));
-
-            this.TriadicLower.DataBindings.Add(new CustomBinding(
-                "BackColor",
-                dataSource,
-                "selectedColor",
-                new Converters.selectedColorToTriadicLower()));
-
-            this.TriadicHigher.DataBindings.Add(new CustomBinding(
-                "BackColor",
-                dataSource,
-                "selectedColor",
-                new Converters.selectedColorToTriadicHigher()));
-
-            this.TetradicSelected.DataBindings.Add(new CustomBinding(
+            this.triadicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
                 new Converters.HSLColorToRGBColor()));
 
-            this.Tetradic1.DataBindings.Add(new CustomBinding(
+            this.triadicLower.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.selectedColorToTetradicOne()));
+                new Converters.SelectedColorToTriadicLower()));
 
-            this.Tetradic2.DataBindings.Add(new CustomBinding(
+            this.triadicHigher.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.SelectedColorToTriadicHigher()));
+
+            this.tetradicSelected.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.HSLColorToRGBColor()));
+
+            this.tetradic1.DataBindings.Add(new CustomBinding(
+                "BackColor",
+                dataSource,
+                "selectedColor",
+                new Converters.SelectedColorToTetradicOne()));
+
+            this.tetradic2.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToTetradicTwo()));
+                            new Converters.SelectedColorToTetradicTwo()));
 
-            this.Tetradic3.DataBindings.Add(new CustomBinding(
+            this.tetradic3.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToTetradicThree()));
+                            new Converters.SelectedColorToTetradicThree()));
 
-            this.MonoPanel1.DataBindings.Add(new CustomBinding(
+            this.monoPanel1.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticOne()));
+                            new Converters.SelectedColorToMonochromaticOne()));
 
-            this.MonoPanel2.DataBindings.Add(new CustomBinding(
+            this.monoPanel2.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticTwo()));
+                            new Converters.SelectedColorToMonochromaticTwo()));
 
-            this.MonoPanel3.DataBindings.Add(new CustomBinding(
+            this.monoPanel3.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticThree()));
+                            new Converters.SelectedColorToMonochromaticThree()));
 
-            this.MonoPanel4.DataBindings.Add(new CustomBinding(
+            this.monoPanel4.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticFour()));
+                            new Converters.SelectedColorToMonochromaticFour()));
 
-            this.MonoPanel5.DataBindings.Add(new CustomBinding(
+            this.monoPanel5.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticFive()));
+                            new Converters.SelectedColorToMonochromaticFive()));
 
-            this.MonoPanel6.DataBindings.Add(new CustomBinding(
+            this.monoPanel6.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticSix()));
+                            new Converters.SelectedColorToMonochromaticSix()));
 
-            this.MonoPanel7.DataBindings.Add(new CustomBinding(
+            this.monoPanel7.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToMonochromaticSeven()));
+                            new Converters.SelectedColorToMonochromaticSeven()));
 
             brightnessBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToBrightnessValue()));
+                            new Converters.SelectedColorToBrightnessValue()));
 
             saturationBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
-                            new Converters.selectedColorToSaturationValue()));
+                            new Converters.SelectedColorToSaturationValue()));
 
-            FillButton.DataBindings.Add(new CustomBinding(
+            fillButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isFillColorSelected",
                         new Converters.IsActiveBoolToButtonBackColorConverter()));
             
-            LineButton.DataBindings.Add(new CustomBinding(
+            lineButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isLineColorSelected",
                         new Converters.IsActiveBoolToButtonBackColorConverter()));
             
-            FontButton.DataBindings.Add(new CustomBinding(
+            fontButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isFontColorSelected",
@@ -392,12 +390,10 @@ namespace PowerPointLabs
 
             _timerCounter = 0;
             timer1.Start();
-            _native = new LMouseUpListener();
-            _native.LButtonUpClicked +=
-                new EventHandler<SysMouseEventInfo>(_native_LButtonClicked);
+            PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             //this is to ensure that EyeDropper tool feature doesn't
             //affect Color Dialog tool feature
@@ -413,7 +409,7 @@ namespace PowerPointLabs
             IntPtr deviceContext = Native.GetDC(IntPtr.Zero);
             if (currMode == MODE.NONE)
             {
-                dataSource.selectedColor = ColorTranslator.FromWin32(Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+                dataSource.SelectedColor = ColorTranslator.FromWin32(Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
                 ColorSelectedShapesWithColor(panel1.BackColor);
             }
             else
@@ -439,7 +435,8 @@ namespace PowerPointLabs
                 else if (selection.Type == PpSelectionType.ppSelectionShapes)
                 {
                     _selectedShapes = selection.ShapeRange;
-                } else if (selection.Type == PpSelectionType.ppSelectionText)
+                }
+                else if (selection.Type == PpSelectionType.ppSelectionText)
                 {
                     _selectedText = selection.TextRange;
                 }
@@ -490,7 +487,7 @@ namespace PowerPointLabs
                     var rgb = (b << 16) | (g << 8) | (r);
                     ColorShapeWithColor(_selectedText, rgb, currMode);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }  
             }
@@ -568,9 +565,9 @@ namespace PowerPointLabs
             }
         }
 
-        void _native_LButtonClicked(object sender, SysMouseEventInfo e)
+        void LeftMouseButtonUpEventHandler()
         {
-            _native.Close();
+            PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
             timer1.Stop();
             //this is to ensure that EyeDropper tool feature doesn't
             //affect Color Dialog tool feature
@@ -595,15 +592,15 @@ namespace PowerPointLabs
                 prevMode = currMode;
             }
 
-            if (dataSource.isFillColorSelected)
+            if (dataSource.IsFillColorSelected)
             {
                 currMode = MODE.FILL;
             }
-            else if (dataSource.isFontColorSelected)
+            else if (dataSource.IsFontColorSelected)
             {
                 currMode = MODE.FONT;
             }
-            else if (dataSource.isLineColorSelected)
+            else if (dataSource.IsLineColorSelected)
             {
                 currMode = MODE.LINE;
             }
@@ -611,8 +608,8 @@ namespace PowerPointLabs
 
         private void UpdateUIForNewColor()
         {
-            UpdateBrightnessBar(dataSource.selectedColor);
-            UpdateSaturationBar(dataSource.selectedColor);
+            UpdateBrightnessBar(dataSource.SelectedColor);
+            UpdateSaturationBar(dataSource.SelectedColor);
         }
 
         #region Brightness and Saturation
@@ -621,7 +618,7 @@ namespace PowerPointLabs
             DrawBrightnessGradient(color);
         }
 
-        private void brightnessBar_ValueChanged(object sender, EventArgs e)
+        private void BrightnessBar_ValueChanged(object sender, EventArgs e)
         {
             if (!timer1.Enabled)
             {
@@ -629,19 +626,19 @@ namespace PowerPointLabs
                 var newColor = new HSLColor();
                 try
                 {
-                    newColor.Hue = dataSource.selectedColor.Hue;
-                    newColor.Saturation = dataSource.selectedColor.Saturation;
+                    newColor.Hue = dataSource.SelectedColor.Hue;
+                    newColor.Saturation = dataSource.SelectedColor.Saturation;
                     newColor.Luminosity = newBrightness;
 
-                    brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                    saturationBar.ValueChanged -= saturationBar_ValueChanged;
+                    brightnessBar.ValueChanged -= BrightnessBar_ValueChanged;
+                    saturationBar.ValueChanged -= SaturationBar_ValueChanged;
 
-                    dataSource.selectedColor = newColor;
+                    dataSource.SelectedColor = newColor;
                     UpdateSaturationBar(newColor);
                     UpdateBrightnessBar(newColor);
 
-                    brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                    saturationBar.ValueChanged += saturationBar_ValueChanged;
+                    brightnessBar.ValueChanged += BrightnessBar_ValueChanged;
+                    saturationBar.ValueChanged += SaturationBar_ValueChanged;
                 }
                 catch (Exception)
                 {
@@ -649,25 +646,25 @@ namespace PowerPointLabs
             }
         }
 
-        private void saturationBar_ValueChanged(object sender, EventArgs e)
+        private void SaturationBar_ValueChanged(object sender, EventArgs e)
         {
             float newSaturation = saturationBar.Value;
             var newColor = new HSLColor();
             try
             {
-                newColor.Hue = dataSource.selectedColor.Hue;
+                newColor.Hue = dataSource.SelectedColor.Hue;
                 newColor.Saturation = newSaturation;
-                newColor.Luminosity = dataSource.selectedColor.Luminosity;
+                newColor.Luminosity = dataSource.SelectedColor.Luminosity;
 
-                brightnessBar.ValueChanged -= brightnessBar_ValueChanged;
-                saturationBar.ValueChanged -= saturationBar_ValueChanged;
+                brightnessBar.ValueChanged -= BrightnessBar_ValueChanged;
+                saturationBar.ValueChanged -= SaturationBar_ValueChanged;
 
-                dataSource.selectedColor = newColor;
+                dataSource.SelectedColor = newColor;
                 UpdateBrightnessBar(newColor);
                 UpdateSaturationBar(newColor);
                 
-                brightnessBar.ValueChanged += brightnessBar_ValueChanged;
-                saturationBar.ValueChanged += saturationBar_ValueChanged;
+                brightnessBar.ValueChanged += BrightnessBar_ValueChanged;
+                saturationBar.ValueChanged += SaturationBar_ValueChanged;
             }
             catch (Exception)
             {
@@ -690,7 +687,8 @@ namespace PowerPointLabs
                 Color.Transparent,
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
-            Color[] blendColors = {
+            Color[] blendColors = 
+            {
                 new HSLColor(
                 color.Hue,
                 color.Saturation,
@@ -702,7 +700,8 @@ namespace PowerPointLabs
                 new HSLColor(
                 color.Hue,
                 color.Saturation,
-                240)};
+                240)
+            };
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
             blend.Positions = positions;
@@ -727,7 +726,8 @@ namespace PowerPointLabs
                 Color.Transparent,
                 LinearGradientMode.Horizontal);
             ColorBlend blend = new ColorBlend();
-            Color[] blendColors = {
+            Color[] blendColors = 
+            {
                 new HSLColor(
                 color.Hue,
                 0,
@@ -739,7 +739,8 @@ namespace PowerPointLabs
                 new HSLColor(
                 color.Hue,
                 240,
-                color.Luminosity)};
+                color.Luminosity)
+            };
             float[] positions = { 0.0f, 0.5f, 1.0f };
             blend.Colors = blendColors;
             blend.Positions = positions;
@@ -754,8 +755,8 @@ namespace PowerPointLabs
 
         protected override void OnPaint(PaintEventArgs paintEvnt)
         {
-            DrawBrightnessGradient(dataSource.selectedColor);
-            DrawSaturationGradient(dataSource.selectedColor);
+            DrawBrightnessGradient(dataSource.SelectedColor);
+            DrawSaturationGradient(dataSource.SelectedColor);
         }
 
         #endregion
@@ -770,7 +771,8 @@ namespace PowerPointLabs
             {
                 Button button = sender as Button;
                 button.Cursor = openHandCursor;
-            } else if (sender is Panel)
+            }
+            else if (sender is Panel)
             {
                 Panel panel = sender as Panel;
                 panel.Cursor = openHandCursor;
@@ -804,58 +806,58 @@ namespace PowerPointLabs
             DoDragDrop(colorObject, DragDropEffects.All);
         }
 
-        private void panel_DragDrop(object sender, DragEventArgs e)
+        private void Panel_DragDrop(object sender, DragEventArgs e)
         {
             Panel panel = (Panel)sender;
             panel.BackColor = (Color)e.Data.GetData(panel.BackColor.GetType());
             if (panel.Equals(panel1))
             {
-                dataSource.selectedColor = panel.BackColor;
+                dataSource.SelectedColor = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel1))
+            if (panel.Equals(themePanel1))
             {
-                dataSource.themeColorOne = panel.BackColor;
+                dataSource.ThemeColorOne = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel2))
+            if (panel.Equals(themePanel2))
             {
-                dataSource.themeColorTwo = panel.BackColor;
+                dataSource.ThemeColorTwo = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel3))
+            if (panel.Equals(themePanel3))
             {
-                dataSource.themeColorThree = panel.BackColor;
+                dataSource.ThemeColorThree = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel4))
+            if (panel.Equals(themePanel4))
             {
-                dataSource.themeColorFour = panel.BackColor;
+                dataSource.ThemeColorFour = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel5))
+            if (panel.Equals(themePanel5))
             {
-                dataSource.themeColorFive = panel.BackColor;
+                dataSource.ThemeColorFive = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel6))
+            if (panel.Equals(themePanel6))
             {
-                dataSource.themeColorSix = panel.BackColor;
+                dataSource.ThemeColorSix = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel7))
+            if (panel.Equals(themePanel7))
             {
-                dataSource.themeColorSeven = panel.BackColor;
+                dataSource.ThemeColorSeven = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel8))
+            if (panel.Equals(themePanel8))
             {
-                dataSource.themeColorEight = panel.BackColor;
+                dataSource.ThemeColorEight = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel9))
+            if (panel.Equals(themePanel9))
             {
-                dataSource.themeColorNine = panel.BackColor;
+                dataSource.ThemeColorNine = panel.BackColor;
             }
-            if (panel.Equals(ThemePanel10))
+            if (panel.Equals(themePanel10))
             {
-                dataSource.themeColorTen = panel.BackColor;
+                dataSource.ThemeColorTen = panel.BackColor;
             }
             UpdateUIForNewColor();
         }
 
-        private void panel_DragEnter(object sender, DragEventArgs e)
+        private void Panel_DragEnter(object sender, DragEventArgs e)
         {
             String colorTypeName = Color.Red.GetType().ToString();
             if (e.Data.GetDataPresent(colorTypeName))
@@ -914,7 +916,7 @@ namespace PowerPointLabs
         private void MatchingPanel_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)sender).BackColor;
-            dataSource.selectedColor = clickedColor;
+            dataSource.SelectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
         }
 
@@ -941,16 +943,16 @@ namespace PowerPointLabs
             {
                 if (PowerPointPresentation.Current.SlideCount > 0)
                 {
-                    dataSource.themeColorOne = Color.White;
-                    dataSource.themeColorTwo = Color.White;
-                    dataSource.themeColorThree = Color.White;
-                    dataSource.themeColorFour = Color.White;
-                    dataSource.themeColorFive = Color.White;
-                    dataSource.themeColorSix = Color.White;
-                    dataSource.themeColorSeven = Color.White;
-                    dataSource.themeColorEight = Color.White;
-                    dataSource.themeColorNine = Color.White;
-                    dataSource.themeColorTen = Color.White;
+                    dataSource.ThemeColorOne = Color.White;
+                    dataSource.ThemeColorTwo = Color.White;
+                    dataSource.ThemeColorThree = Color.White;
+                    dataSource.ThemeColorFour = Color.White;
+                    dataSource.ThemeColorFive = Color.White;
+                    dataSource.ThemeColorSix = Color.White;
+                    dataSource.ThemeColorSeven = Color.White;
+                    dataSource.ThemeColorEight = Color.White;
+                    dataSource.ThemeColorNine = Color.White;
+                    dataSource.ThemeColorTen = Color.White;
                 }
             }
             catch (Exception e)
@@ -967,7 +969,7 @@ namespace PowerPointLabs
         #endregion
 
         #region Context Menu Clicks
-        private void showMoreInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowMoreInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)(contextMenuStrip1.SourceControl)).BackColor;
             ColorInformationDialog dialog = new ColorInformationDialog(clickedColor);
@@ -975,29 +977,29 @@ namespace PowerPointLabs
             dialog.Show();
         }
 
-        private void selectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SelectAsMainColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
 
-            dataSource.selectedColor = clickedColor;
+            dataSource.SelectedColor = clickedColor;
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             UpdateUIForNewColor();
         }
 
-        private void addToFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddToFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Color clickedColor = ((Panel)contextMenuStrip1.SourceControl).BackColor;
 
-            dataSource.themeColorTen = dataSource.themeColorNine;
-            dataSource.themeColorNine = dataSource.themeColorEight;
-            dataSource.themeColorEight = dataSource.themeColorSeven;
-            dataSource.themeColorSeven = dataSource.themeColorSix;
-            dataSource.themeColorSix = dataSource.themeColorFive;
-            dataSource.themeColorFive = dataSource.themeColorFour;
-            dataSource.themeColorFour = dataSource.themeColorThree;
-            dataSource.themeColorThree = dataSource.themeColorTwo;
-            dataSource.themeColorTwo = dataSource.themeColorOne;
-            dataSource.themeColorOne = clickedColor;
+            dataSource.ThemeColorTen = dataSource.ThemeColorNine;
+            dataSource.ThemeColorNine = dataSource.ThemeColorEight;
+            dataSource.ThemeColorEight = dataSource.ThemeColorSeven;
+            dataSource.ThemeColorSeven = dataSource.ThemeColorSix;
+            dataSource.ThemeColorSix = dataSource.ThemeColorFive;
+            dataSource.ThemeColorFive = dataSource.ThemeColorFour;
+            dataSource.ThemeColorFour = dataSource.ThemeColorThree;
+            dataSource.ThemeColorThree = dataSource.ThemeColorTwo;
+            dataSource.ThemeColorTwo = dataSource.ThemeColorOne;
+            dataSource.ThemeColorOne = clickedColor;
         }
         #endregion
 
@@ -1041,7 +1043,7 @@ namespace PowerPointLabs
         {
             SelectShapes();
             if (_selectedShapes == null && _selectedText == null)
-                return dataSource.selectedColor;
+                return dataSource.SelectedColor;
 
             if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
@@ -1054,7 +1056,7 @@ namespace PowerPointLabs
                 return GetSelectedShapeColor(selectedShape);
             }
 
-            return dataSource.selectedColor;
+            return dataSource.SelectedColor;
         }
 
         private Color GetSelectedShapeColor(PowerPoint.ShapeRange selectedShapes)
@@ -1067,7 +1069,7 @@ namespace PowerPointLabs
                 {
                     colorToReturn = color;
                 }
-                else if(!colorToReturn.Equals(color))
+                else if (!colorToReturn.Equals(color))
                 {
                     return Color.Black;
                 }
@@ -1081,10 +1083,8 @@ namespace PowerPointLabs
             {
                 case MODE.FILL:
                     return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Fill.ForeColor.RGB));
-                    break;
                 case MODE.LINE:
                     return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Line.ForeColor.RGB));
-                    break;
                 case MODE.FONT:
                     if (selectedShape.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue
                         && Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
@@ -1114,20 +1114,20 @@ namespace PowerPointLabs
                     }
                     break;
             }
-            return dataSource.selectedColor;
+            return dataSource.SelectedColor;
         }
 
         private void SetModeForSenderName(string buttonName)
         {
             switch (buttonName)
             {
-                case "FillButton":
+                case "fillButton":
                     SetMode(MODE.FILL);
                     break;
-                case "FontButton":
+                case "fontButton":
                     SetMode(MODE.FONT);
                     break;
-                case "LineButton":
+                case "lineButton":
                     SetMode(MODE.LINE);
                     break;
                 default:
@@ -1173,5 +1173,62 @@ namespace PowerPointLabs
                 return createParams;
             }
         }
+
+        # region Functional Test APIs
+
+        public Panel GetDropletPanel()
+        {
+            return panel1;
+        }
+
+        public Button GetFontColorButton()
+        {
+            return fontButton;
+        }
+
+        public Button GetLineColorButton()
+        {
+            return lineButton;
+        }
+
+        public Button GetFillCollorButton()
+        {
+            return fillButton;
+        }
+
+        public Panel GetMonoPanel1()
+        {
+            return monoPanel1;
+        }
+
+        public Panel GetMonoPanel7()
+        {
+            return monoPanel7;
+        }
+
+        public Panel GetFavColorPanel1()
+        {
+            return themePanel1;
+        }
+
+        public Button GetResetFavColorsButton()
+        {
+            return resetThemeButton;
+        }
+
+        public Button GetEmptyFavColorsButton()
+        {
+            return emptyPanelButton;
+        }
+
+        public ColorInformationDialog ShowMoreColorInfo(Color color)
+        {
+            ColorInformationDialog dialog = new ColorInformationDialog(color);
+            dialog.StartPosition = FormStartPosition.CenterScreen;
+            dialog.Show();
+            return dialog;
+        }
+
+        # endregion
     }
 }

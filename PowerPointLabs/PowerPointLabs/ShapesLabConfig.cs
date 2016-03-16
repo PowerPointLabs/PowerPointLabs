@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PowerPointLabs.FunctionalTestInterface.Impl;
+using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs
 {
     internal class ShapesLabConfig
     {
+#pragma warning disable 0618
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
         private const string DefaultShapeCategoryName = "My Shapes";
         private const string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
@@ -25,10 +29,22 @@ namespace PowerPointLabs
         # region Constructor
         public ShapesLabConfig(string appDataFolder)
         {
-            ShapeRootFolder = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
-            DefaultCategory = DefaultShapeCategoryName;
+            if (!PowerPointLabsFT.IsFunctionalTestOn)
+            {
+                ShapeRootFolder = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
+                DefaultCategory = DefaultShapeCategoryName;
 
-            ReadShapeLabConfig(appDataFolder);
+                ReadShapeLabConfig(appDataFolder);
+            }
+            else
+            {
+                // if it's in FT, use new temp shape root folder every time
+                var tmpPath = TempPath.GetTempTestFolder();
+                var hash = DateTime.Now.GetHashCode();
+                ShapeRootFolder = tmpPath + DefaultShapeMasterFolderName + hash;
+                DefaultCategory = DefaultShapeCategoryName + hash;
+                _configFilePath = tmpPath + "ShapeRootFolder" + hash;
+            }
         }
         # endregion
 

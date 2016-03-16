@@ -22,7 +22,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToAnalogousLower : IValueConverter
+    class SelectedColorToAnalogousLower : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -36,7 +36,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToAnalogousHigher : IValueConverter
+    class SelectedColorToAnalogousHigher : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -50,7 +50,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToComplementaryColor : IValueConverter
+    class SelectedColorToComplementaryColor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -64,7 +64,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToSplitComplementaryLower : IValueConverter
+    class SelectedColorToSplitComplementaryLower : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -78,7 +78,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToSplitComplementaryHigher : IValueConverter
+    class SelectedColorToSplitComplementaryHigher : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -92,7 +92,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToTriadicLower : IValueConverter
+    class SelectedColorToTriadicLower : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -106,7 +106,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToTriadicHigher : IValueConverter
+    class SelectedColorToTriadicHigher : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -120,7 +120,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToTetradicOne : IValueConverter
+    class SelectedColorToTetradicOne : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -134,7 +134,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToTetradicTwo : IValueConverter
+    class SelectedColorToTetradicTwo : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -147,7 +147,7 @@ namespace PowerPointLabs.Converters
             throw new NotImplementedException();
         }
     }
-    class selectedColorToTetradicThree : IValueConverter
+    class SelectedColorToTetradicThree : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -161,7 +161,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticOne : IValueConverter
+    class SelectedColorToMonochromaticOne : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -179,7 +179,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticTwo : IValueConverter
+    class SelectedColorToMonochromaticTwo : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -197,7 +197,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticThree : IValueConverter
+    class SelectedColorToMonochromaticThree : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -215,7 +215,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticFour : IValueConverter
+    class SelectedColorToMonochromaticFour : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -233,7 +233,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticFive : IValueConverter
+    class SelectedColorToMonochromaticFive : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -251,7 +251,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticSix : IValueConverter
+    class SelectedColorToMonochromaticSix : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -269,7 +269,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToMonochromaticSeven : IValueConverter
+    class SelectedColorToMonochromaticSeven : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -287,7 +287,7 @@ namespace PowerPointLabs.Converters
         }
     }
 
-    class selectedColorToBrightnessValue : IValueConverter
+    class SelectedColorToBrightnessValue : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -300,7 +300,7 @@ namespace PowerPointLabs.Converters
             throw new NotImplementedException();
         }
     }
-    class selectedColorToSaturationValue : IValueConverter
+    class SelectedColorToSaturationValue : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

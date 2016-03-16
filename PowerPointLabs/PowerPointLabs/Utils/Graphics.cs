@@ -17,7 +17,8 @@ namespace PowerPointLabs.Utils
 {
     public static class Graphics
     {
-        # region Const
+#pragma warning disable 0618
+        #region Const
         public const float PictureExportingRatio = 96.0f / 72.0f;
         # endregion
 
@@ -155,15 +156,15 @@ namespace PowerPointLabs.Utils
             {
                 SyncShape(refShape, candidateShape);
             }
-            catch (UnauthorizedAccessException e)
+            catch (UnauthorizedAccessException)
             {
                 succeeded = false;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 succeeded = false;
             }
-            catch (COMException e)
+            catch (COMException)
             {
                 succeeded = false;
             }
@@ -286,10 +287,10 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape backward until it is behind destinationShape.
-        /// (does nothing if already behind)
+        /// Moves shiftShape forward until it is in front of destinationShape.
+        /// (does nothing if already in front)
         /// </summary>
-        public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
+        public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
         {
             while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
             {
@@ -304,10 +305,10 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Moves shiftShape backward until it is in front destinationShape.
-        /// (does nothing if already in front)
+        /// Moves shiftShape backward until it is behind destinationShape.
+        /// (does nothing if already behind)
         /// </summary>
-        public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
+        public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
         {
             while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
             {
@@ -327,10 +328,10 @@ namespace PowerPointLabs.Utils
         public static void MoveZToJustBehind(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift forward until it overshoots destination.
-            MoveZUntilBehind(shiftShape, destinationShape);
+            MoveZUntilInFront(shiftShape, destinationShape);
 
             // Step 2: Shift backward until it overshoots destination.
-            MoveZUntilInFront(shiftShape, destinationShape);
+            MoveZUntilBehind(shiftShape, destinationShape);
         }
 
         /// <summary>
@@ -339,13 +340,13 @@ namespace PowerPointLabs.Utils
         public static void MoveZToJustInFront(Shape shiftShape, Shape destinationShape)
         {
             // Step 1: Shift backward until it overshoots destination.
-            MoveZUntilInFront(shiftShape, destinationShape);
+            MoveZUntilBehind(shiftShape, destinationShape);
 
             // Step 2: Shift forward until it overshoots destination.
-            MoveZUntilBehind(shiftShape, destinationShape);
+            MoveZUntilInFront(shiftShape, destinationShape);
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         public static bool HasDefaultName(Shape shape)
         {
             var copy = shape.Duplicate()[1];
@@ -354,20 +355,135 @@ namespace PowerPointLabs.Utils
             return hasDefaultName;
         }
 
+        // TODO: This could be an extension method of shape.
+        public static float GetMidpointX(Shape shape)
+        {
+            return shape.Left + shape.Width / 2;
+        }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
+        public static void SetMidpointX(Shape shape, float value)
+        {
+            shape.Left = value - shape.Width / 2;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static float GetMidpointY(Shape shape)
+        {
+            return shape.Top + shape.Height / 2;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static void SetMidpointY(Shape shape, float value)
+        {
+            shape.Top = value - shape.Height / 2;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static float GetRight(Shape shape)
+        {
+            return shape.Left + shape.Width;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static void SetRight(Shape shape, float value)
+        {
+            shape.Left = value - shape.Width;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static float GetBottom(Shape shape)
+        {
+            return shape.Top + shape.Height;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static void SetBottom(Shape shape, float value)
+        {
+            shape.Top = value - shape.Height;
+        }
+
+        public static float GetScaleWidth(Shape shape)
+        {
+            float oldWidth = shape.Width;
+            shape.ScaleWidth(1, MsoTriState.msoCTrue);
+            float scaleFactorWidth = oldWidth / shape.Width;
+
+            shape.ScaleWidth(scaleFactorWidth, MsoTriState.msoCTrue);
+
+            return scaleFactorWidth;
+        }
+
+        public static float GetScaleHeight(Shape shape)
+        {
+            float oldHeight = shape.Height;
+            shape.ScaleHeight(1, MsoTriState.msoCTrue);
+            float scaleFactorHeight = oldHeight / shape.Height;
+
+            shape.ScaleHeight(scaleFactorHeight, MsoTriState.msoCTrue);
+
+            return scaleFactorHeight;
+        }
+
+        // TODO: This could be an extension method of shape.
+        /// <summary>
+        /// anchorFraction = 0 means left side, anchorFraction = 1 means right side.
+        /// </summary>
+        public static void SetShapeX(Shape shape, float value, float anchorFraction)
+        {
+            shape.Left = value - shape.Width * anchorFraction;
+        }
+
+        /// <summary>
+        /// anchorFraction = 0 means top side, anchorFraction = 1 means bottom side.
+        /// </summary>
+        public static void SetShapeY(Shape shape, float value, float anchorFraction)
+        {
+            shape.Top = value - shape.Height * anchorFraction;
+        }
+
+        /// <summary>
+        /// anchorX and anchorY are between 0 and 1. They represent the pivot to rotate the shape about.
+        /// The shape rotates by angle difference angle from its current angle. angle is in degrees.
+        /// </summary>
+        public static void RotateShapeAboutPivot(Shape shape, float angle, float anchorX, float anchorY)
+        {
+            double pivotX = shape.Left + anchorX*shape.Width;
+            double pivotY = shape.Top + anchorY*shape.Height;
+            double midpointX = GetMidpointX(shape);
+            double midpointY = GetMidpointY(shape);
+
+            double dx = midpointX - pivotX;
+            double dy = midpointY - pivotY;
+
+            double radAngle = angle * Math.PI / 180;
+            double newdx = Math.Cos(radAngle) * dx - Math.Sin(radAngle) * dy;
+            double newdy = Math.Sin(radAngle) * dx + Math.Cos(radAngle) * dy;
+
+            SetMidpointX(shape, (float)(pivotX + newdx));
+            SetMidpointY(shape, (float)(pivotY + newdy));
+            shape.Rotation += angle;
+        }
+
+        // TODO: This could be an extension method of shape.
+        public static string GetText(Shape shape)
+        {
+            return shape.TextFrame2.TextRange.Text;
+        }
+
+        // TODO: This could be an extension method of shape.
         public static void SetText(Shape shape, params string[] lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         public static void SetText(Shape shape, IEnumerable<string> lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         /// <summary>
         /// Get the paragraphs of the shape as a list.
         /// The paragraphs formats can be modified to change the format of the paragraphs in shape.
@@ -378,10 +494,37 @@ namespace PowerPointLabs.Utils
             return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
-        // TODO: Make this an extension method of shape.
+        // TODO: This could be an extension method of shape.
         public static bool IsHidden(Shape shape)
         {
             return shape.Visible == MsoTriState.msoFalse;
+        }
+
+        public static bool IsAGroup(Shape shape)
+        {
+            try
+            {
+                var groupItems = shape.GroupItems;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool CanAddArrows(Shape shape)
+        {
+            try
+            {
+                if (shape.Line.Visible != MsoTriState.msoTrue) return false;
+                shape.Line.BeginArrowheadStyle = shape.Line.BeginArrowheadStyle;
+                return true;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
         }
 
         # endregion
@@ -427,19 +570,19 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private struct EffectTransition
         {
-            private readonly MsoAnimTriggerType SlideTransition;
-            private readonly float TransitionTime;
+            private readonly MsoAnimTriggerType slideTransition;
+            private readonly float transitionTime;
 
-            public EffectTransition(MsoAnimTriggerType slideTransition , float transitionTime)
+            public EffectTransition(MsoAnimTriggerType slideTransition, float transitionTime)
             {
-                SlideTransition = slideTransition;
-                TransitionTime = transitionTime;
+                this.slideTransition = slideTransition;
+                this.transitionTime = transitionTime;
             }
 
             public void ApplyTransition(Effect effect)
             {
-                effect.Timing.TriggerType = SlideTransition;
-                effect.Timing.TriggerDelayTime = TransitionTime;
+                effect.Timing.TriggerType = slideTransition;
+                effect.Timing.TriggerDelayTime = transitionTime;
             }
         }
 
@@ -573,9 +716,21 @@ namespace PowerPointLabs.Utils
             return (argb.B << 16) | (argb.G << 8) | argb.R;
         }
 
+        public static int PackRgbInt(byte r, int g, int b)
+        {
+            return (b << 16) | (g << 8) | r;
+        }
+
         public static Color ConvertRgbToColor(int rgb)
         {
             return Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
+        }
+
+        public static void UnpackRgbInt(int rgb, out byte r, out byte g, out byte b)
+        {
+            r = (byte)(rgb & 255);
+            g = (byte)((rgb >> 8) & 255);
+            b = (byte)((rgb >> 16) & 255);
         }
         # endregion
         # endregion

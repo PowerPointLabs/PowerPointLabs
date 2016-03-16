@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
+using PowerPointLabs.ActionFramework.Common.Log;
 using Path = System.IO.Path;
 
 namespace PowerPointLabs.AutoUpdate
@@ -113,7 +114,7 @@ namespace PowerPointLabs.AutoUpdate
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetVstoVersion");
+                Logger.LogException(e, "GetVstoVersion");
             }
             var vstoNode = currentVsto.GetElementsByTagName("assemblyIdentity")[0];
 

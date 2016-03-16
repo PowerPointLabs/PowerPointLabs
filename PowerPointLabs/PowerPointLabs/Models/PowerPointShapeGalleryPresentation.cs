@@ -325,7 +325,7 @@ namespace PowerPointLabs.Models
         # region Helper Function
         private void ActionProtection()
         {
-            for (var i = 0; i < MaxUndoAmount; i ++)
+            for (var i = 0; i < MaxUndoAmount; i++)
             {
                 Presentation.Slides[1].Background.Fill.BackColor = Presentation.Slides[1].Background.Fill.BackColor;
             }

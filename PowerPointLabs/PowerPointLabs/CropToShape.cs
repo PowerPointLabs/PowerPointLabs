@@ -7,14 +7,16 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
-    class CropToShape
+    public class CropToShape
     {
+#pragma warning disable 0618
         private const int ErrorCodeForSelectionCountZero = 0;
         private const int ErrorCodeForSelectionNonShape = 1;
         private const int ErrorCodeForExceedSlideBound = 2;
@@ -182,7 +184,7 @@ namespace PowerPointLabs
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        private static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
+        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
                                     double magnifyRatio = 1.0)
         {
             if (original == null) return null;
@@ -244,7 +246,7 @@ namespace PowerPointLabs
         /// </summary>
         /// <param name="rangeReference"></param>
         /// <param name="rangeCopy"></param>
-        private static void AdjustSamePositionForShapeRange(IEnumerable rangeReference, IEnumerable rangeCopy)
+        private static void AdjustSamePositionForShapeRange(PowerPoint.ShapeRange rangeReference, PowerPoint.ShapeRange rangeCopy)
         {
             var nameMap = (from PowerPoint.Shape shape in rangeReference select shape)
                 .ToDictionary(shape => shape.Name, shape => new Tuple<float, float>(shape.Left, shape.Top));
@@ -255,7 +257,7 @@ namespace PowerPointLabs
             }
         }
 
-        private static void ModifyNameForShapeRange(IEnumerable range, string appendString)
+        private static void ModifyNameForShapeRange(PowerPoint.ShapeRange range, string appendString)
         {
             foreach (var sh in range)
             {
@@ -273,7 +275,7 @@ namespace PowerPointLabs
             return cond1 && cond2 && cond3 && cond4;
         }
 
-        public static PowerPoint.ShapeRange UngroupAllForShapeRange(IEnumerable range, bool remove = true)
+        public static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range, bool remove = true)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -402,7 +404,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                PowerPointLabsGlobals.LogException(e, "GetCutOutShapeMenuImage");
+                Logger.LogException(e, "GetCutOutShapeMenuImage");
                 throw;
             }
         }

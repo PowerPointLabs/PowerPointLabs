@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs
 {
-    internal class TextCollection
+    public class TextCollection
     {
         # region Common Error
         public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
@@ -114,6 +114,11 @@
         public const string AgendaLabAgendaSettingsSupertip = "Configure agenda settings.";
         public const string AgendaLabBulletAgendaSettingsSupertip = "Set color scheme for Bullet Agenda.";
         # endregion
+
+        # region Drawing Lab
+        public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
+        # endregion
+
         # endregion
 
         # region Help
@@ -208,6 +213,10 @@
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
         # endregion
+
+        # region Drawing Lab
+        public const string DrawingsLabButtonLabel = "Drawing Lab";
+        # endregion
         # endregion
 
         # region Help
@@ -219,6 +228,8 @@
         # endregion
 
         # region Context Menu Labels
+
+        public const string PowerPointLabsMenuLabel = "PowerPointLabs";
         public const string NameEditShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
@@ -229,6 +240,7 @@
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
         public const string ConvertToPictureShapeLabel = "Convert to Picture";
         public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
+        public const string HideSelectedShapeLabel = "Hide the Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
         public const string FitToWidthShapeLabel = "Fit To Width";
         public const string FitToHeightShapeLabel = "Fit To Height";
@@ -263,8 +275,8 @@
             "the .ppt format. To use them, please resave the " +
             "presentation with the .pptx format.";
         public const string OnlinePresentationNotCompatibleErrorMsg =
-        	"Some features of PowerPointLabs do not work with online presentations. " +
-        	"To use them, please save the file locally.";
+            "Some features of PowerPointLabs do not work with online presentations. " +
+            "To use them, please save the file locally.";
         public const string ShapeGalleryInitErrorMsg =
             "Could not connect to shape database from your default location.\n\n" +
             "To check your default location, right click on the Shapes Lab's panel and select 'Settings' option.";
@@ -275,6 +287,7 @@
             "ton to save.";
         public const string ShapesLabTaskPanelTitle = "Shapes Lab";
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
+        public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
         # endregion 
 
@@ -301,6 +314,93 @@
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
+
+        public class PictureSlidesLabText
+        {
+            public const string PictureSlidesLabSupertip = "Open Picture Slides Lab window.";
+
+            /// <summary>
+            /// Styles Variation Category Name
+            /// 
+            /// Leave OptionName to be ColorNoEffect to hide color panel & picker
+            /// 
+            /// Color category's name (without spaces) should be equal to corresponding style option's 
+            /// property name, so that the color picker can work properly
+            /// </summary>
+            public const string NoEffect = "No Effect";
+            public const string ColorHasEffect = "Color";
+            public const string VariantCategoryOverlayColor = "Overlay Color";
+            public const string VariantCategoryFontColor = "Font Color";
+            public const string VariantCategoryTextGlowColor = "Text Glow Color";
+            public const string VariantCategoryBannerColor = "Banner Color";
+            public const string VariantCategoryTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrostedGlassTextBoxColor = "Frosted Glass TextBox Color";
+            public const string VariantCategoryFrostedGlassBannerColor = "Frosted Glass Banner Color";
+            public const string VariantCategoryFrameColor = "Frame Color";
+            public const string VariantCategoryCircleColor = "Circle Color";
+            public const string VariantCategoryTriangleColor = "Triangle Color";
+            public const string VariantCategoryOutlineColor = "Outline Color";
+            public const string VariantCategoryTextPosition = "Text Position";
+            public const string VariantCategoryFontFamily = "Font";
+            public const string VariantCategorySpecialEffects = "Special Effects";
+            public const string VariantCategoryBlurriness = "Blurriness";
+            public const string VariantCategoryBrightness = "Brightness";
+            public const string VariantCategoryFrostedGlassTextBoxTransparency = "TextBox Transparency";
+            public const string VariantCategoryFrostedGlassBannerTransparency = "Banner Transparency";
+            public const string VariantCategoryFontSizeIncrease = "Font Size";
+            public const string VariantCategoryPicture = "Picture";
+            public const string VariantCategoryImageReference = "Picture Citation";
+            public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
+            public const string VariantCategoryBannerTransparency = "Banner Transparency";
+            public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
+            public const string VariantCategoryFrameTransparency = "Frame Transparency";
+            public const string VariantCategoryCircleTransparency = "Circle Transparency";
+            public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
+
+            /// <summary>
+            /// Styles Preview Name
+            /// </summary>
+            public const string StyleNameDirectText = "Direct Text Style";
+            public const string StyleNameBlur = "Blur Style";
+            public const string StyleNameTextBox = "TextBox Style";
+            public const string StyleNameBanner = "Banner Style";
+            public const string StyleNameSpecialEffect = "Special Effect Style";
+            public const string StyleNameOverlay = "Overlay Style";
+            public const string StyleNameOutline = "Outline Style";
+            public const string StyleNameFrame = "Frame Style";
+            public const string StyleNameCircle = "Circle Style";
+            public const string StyleNameTriangle = "Triangle Style";
+            public const string StyleNameFrostedGlassTextBox = "Frosted Glass TextBox Style";
+            public const string StyleNameFrostedGlassBanner = "Frosted Glass Banner Style";
+
+            /// <summary>
+            /// Messages
+            /// </summary>
+            public const string ErrorImageCorrupted =
+                "Failed to load image. The image file is corrupted.";
+            public const string ErrorImageDownloadCorrupted =
+                "Failed to load image. Please try again.";
+            public const string ErrorFailedToLoad =
+                "Failed to load image. ";
+            public const string ErrorUrlLinkIncorrect =
+                "The download link is not in the correct format. Did the link miss out 'http://'?";
+            public const string ErrorNoSelectedSlide =
+                "Cannot apply styles. Please select a slide first.";
+            public const string ErrorFailToInitTempFolder =
+                "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
+            public const string ErrorNoEmbeddedStyleInfo =
+                "No Picture Slides Lab styles are detected for the current slide.";
+            public const string ErrorWhenInitialize =
+                "Failed to initialize Picture Slides Lab. Some functions may not work.";
+
+            public const string DragAndDropInstruction =
+                "Drag and Drop here to get image.";
+
+            public const string InfoPasteNothing = "No picture to paste.";
+            public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
+            public const string InfoAddPictureCitationSlide = "Added successfully!";
+            public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
+        }
 
         # region Agenda Lab
         // Errors
@@ -338,6 +438,26 @@
         public const string AgendaLabTemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
+        # endregion
+
+
+        # region Drawing Lab
+
+        public const string DrawingsLabSelectExactlyOneShape = "Please select a single shape.";
+        public const string DrawingsLabSelectAtLeastOneShape = "Please select at least one shape.";
+        public const string DrawingsLabSelectExactlyTwoShapes = "Please select two shapes.";
+        public const string DrawingsLabSelectAtLeastTwoShapes = "Please select at least two shapes.";
+        public const string DrawingsLabSelectTwoSetsOfShapes = "Please select two sets of shapes.";
+        public const string DrawingsLabSelectStartAndEndShape = "Please select a start shape and an end shape";
+
+        public const string DrawingsLabErrorCannotGroup = "These shapes cannot be grouped.";
+        public const string DrawingsLabErrorNothingUngrouped = "Please select shapes that have been grouped.";
+
+        public const string DrawingsLabMultiCloneDialogText = "Number of Extra Copies";
+        public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
+
+        public const string DrawingsLabSetTextDialogHeader = "Set Text";
+
         # endregion
 
         # region Task Pane - Recorder

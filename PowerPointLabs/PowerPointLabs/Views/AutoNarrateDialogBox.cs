@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -39,12 +38,12 @@ namespace PowerPointLabs.Views
                 "If checked, the current slide's audio and animations will play after the Add Audio button is clicked.");
         }
 
-        private void cancel_Click(object sender, EventArgs e)
+        private void Cancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void ok_Click(object sender, EventArgs e)
+        private void Ok_Click(object sender, EventArgs e)
         {
             SettingsHandler(defaultVoice.Text, preview.Checked);
 

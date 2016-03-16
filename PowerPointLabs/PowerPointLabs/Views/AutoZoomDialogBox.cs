@@ -28,12 +28,12 @@ namespace PowerPointLabs.Views
             ttCheckBox2.SetToolTip(checkBox2, "Use separate slides for individual animation effects of Zoom to Area.");
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             SettingsHandler(this.checkBox1.Checked, this.checkBox2.Checked);
             this.Close();
