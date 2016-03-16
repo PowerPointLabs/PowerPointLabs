@@ -27,6 +27,7 @@ namespace PowerPointLabs.ResizeLab
 
         // Dialog windows
         private StretchSettingsDialog stretchSettingsDialog;
+        private SameDimensionSettingsDialog sameDimensionSettingsDialog;
 
         public ResizeLabPaneWPF()
         {
@@ -135,7 +136,15 @@ namespace PowerPointLabs.ResizeLab
 
         private void SameDimensionSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sameDimensionSettingsDialog == null || !sameDimensionSettingsDialog.IsOpen)
+            {
+                sameDimensionSettingsDialog = new SameDimensionSettingsDialog(_resizeLab);
+                sameDimensionSettingsDialog.Show();
+            }
+            else
+            {
+                sameDimensionSettingsDialog.Activate();
+            }
         }
 
         #endregion

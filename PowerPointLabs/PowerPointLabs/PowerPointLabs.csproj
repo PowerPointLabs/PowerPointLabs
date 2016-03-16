@@ -577,6 +577,9 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml.cs">
+      <DependentUpon>ResizeSameDimensionSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResizeLab\ShapeProperties.cs" />
     <Compile Include="ResizeLab\ResizeStretchSettingsDialog.xaml.cs">
       <DependentUpon>ResizeStretchSettingsDialog.xaml</DependentUpon>
@@ -1095,6 +1098,10 @@
     <Page Include="ResizeLab\ResizeLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ResizeLab\ResizeStretchSettingsDialog.xaml">
       <SubType>Designer</SubType>

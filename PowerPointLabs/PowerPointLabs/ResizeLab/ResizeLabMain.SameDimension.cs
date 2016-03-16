@@ -12,6 +12,14 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+        public enum SameDimensionAnchor
+        {
+            TopLeft, Top, TopRight,
+            Left, Middle, Right,
+            BottomLeft, Bottom, BottomRight
+        }
+
+        public SameDimensionAnchor SameDimensionAnchorType { get; set; }
         /// <summary>
         /// Resize the selected shapes to the same height with the reference to
         /// first selected shape.
