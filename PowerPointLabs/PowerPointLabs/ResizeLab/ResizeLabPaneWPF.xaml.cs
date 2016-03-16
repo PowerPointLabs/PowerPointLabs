@@ -25,6 +25,9 @@ namespace PowerPointLabs.ResizeLab
         private readonly Bitmap _lockedImage;
         private readonly Dictionary<string, ShapeProperties> _originalShapeProperties = new Dictionary<string, ShapeProperties>(); 
 
+        // Dialog windows
+        private StretchSettingsDialog stretchSettingsDialog;
+
         public ResizeLabPaneWPF()
         {
             InitializeComponent();
@@ -85,6 +88,20 @@ namespace PowerPointLabs.ResizeLab
             ExecuteResizeAction(selectedShapes, resizeAction);
         }
 
+        private void StretchSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (stretchSettingsDialog == null || !stretchSettingsDialog.IsOpen)
+            {
+                stretchSettingsDialog = new StretchSettingsDialog(_resizeLab);
+                stretchSettingsDialog.Show();
+            }
+            else
+            {
+                stretchSettingsDialog.Activate();
+            }
+            
+        }
+
         #endregion
 
         #region Event Handler: Same Dimension
@@ -114,6 +131,11 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             ExecuteResizeAction(selectedShapes, resizeAction);
+        }
+
+        private void SameDimensionSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         #endregion
@@ -401,5 +423,6 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
+
     }
 }
