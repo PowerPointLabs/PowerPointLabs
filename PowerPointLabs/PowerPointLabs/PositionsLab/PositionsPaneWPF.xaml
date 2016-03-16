@@ -91,7 +91,9 @@
             <WPF:ImageButton ToolTip="Snaps objects away from a reference object" x:Name="snapAwayButton" HorizontalAlignment="Left" Margin="222,425,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click" MouseEnter="SnapAwayButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
-            <CheckBox x:Name="LockAxisCheckBox" Content="Lock Axis" ToolTip="Locks the axis such that when shape is moved, it can only move either horizontally or vertically" HorizontalAlignment="Left" Height="33" Margin="40,482,0,0" VerticalAlignment="Top" Checked="LockAxis_Checked" Unchecked="LockAxis_UnChecked"/>
+            <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="18,472,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
+            </WPF:ImageButton>
         </Grid>
     </ScrollViewer>
 </UserControl>

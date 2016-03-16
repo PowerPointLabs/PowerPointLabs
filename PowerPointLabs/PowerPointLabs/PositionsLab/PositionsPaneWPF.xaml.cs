@@ -9,6 +9,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
+using Media = System.Windows.Media;
 using System.Diagnostics;
 
 namespace PowerPointLabs.PositionsLab
@@ -37,15 +38,12 @@ namespace PowerPointLabs.PositionsLab
         //Variables for lock axis
         private const int Left = 0;
         private const int Top = 1;
-        private static bool _isLockAxisMode;
-        private static PowerPoint.ShapeRange _shapesToBeMoved;
+        private static List<Shape> _shapesToBeMoved;
         private static System.Drawing.Point _initialMousePos;
         private float[,] _initialPos;
-        private static int _timeCounter;
 
         //Variables for rotation
         private const float RefpointRadius = 10;
-        private static bool _isRotationMode;
         private static Shape _refPoint;
         private static List<Shape> _shapesToBeRotated = new List<Shape>();
         private static List<Shape> _allShapesInSlide = new List<Shape>();
@@ -459,12 +457,7 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
-            if (_isLockAxisMode)
-            {
-                DisableLockAxisMode();
-            }
-
-            _isRotationMode = true;
+            ClearAllEventHandlers();
 
             var currentSlide = this.GetCurrentSlide();
 
@@ -479,7 +472,6 @@ namespace PowerPointLabs.PositionsLab
 
             _leftMouseDownListener = new LMouseDownListener();
             _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
-
         }
 
         private void RotationHandler(object sender, EventArgs e)
@@ -521,11 +513,6 @@ namespace PowerPointLabs.PositionsLab
                 if (selectedShape == null)
                 {
                     DisableRotationMode();
-
-                    if (_isLockAxisMode)
-                    {
-                        StartLockAxisMode();
-                    }
                     return;
                 }
 
@@ -535,11 +522,6 @@ namespace PowerPointLabs.PositionsLab
                 if (!isShapeToBeRotated && !isRefPoint)
                 {
                     DisableRotationMode();
-
-                    if (_isLockAxisMode)
-                    {
-                        StartLockAxisMode();
-                    }
                     return;
                 }
 
@@ -560,52 +542,30 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void LockAxis_UnChecked(object sender, RoutedEventArgs e)
+        private void LockAxisButton_Click(object sender, RoutedEventArgs e)
         {
-            DisableLockAxisMode();
-            _isLockAxisMode = false;
-        }
+            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
 
-        private void LockAxis_Checked(object sender, RoutedEventArgs e)
-        {
-            if (_isRotationMode)
+            if (noShapesSelected)
             {
-                DisableRotationMode();
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
             }
 
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+            ClearAllEventHandlers();
+
+            var currentSlide = this.GetCurrentSlide();
+
+            _shapesToBeMoved = ConvertShapeRangeToList_Legacy(selectedShapes, 1);
+            _allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
+
             StartLockAxisMode();
-            _isLockAxisMode = true;
         }
 
         private void LockAxisHandler(object sender, EventArgs e)
         {
-            //Allow mouseclick to register so that shape is selected
-            //Solves bug where old selection replaces new selection due to _leftMouseUpListener_LockAxis
-            if (_timeCounter < 1)
-            {
-                _timeCounter++;
-                return;
-            }
-
-            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
-
-            if (_shapesToBeMoved == null && noShapesSelected)
-            {
-                return;
-            }
-
-            if (_shapesToBeMoved == null)
-            {
-                _shapesToBeMoved = this.GetCurrentSelection().ShapeRange;
-                _initialPos = new float[_shapesToBeMoved.Count, 2];
-                for (var i = 0; i < _shapesToBeMoved.Count; i++)
-                {
-                    var s = _shapesToBeMoved[i + 1];
-                    _initialPos[i, Left] = s.Left;
-                    _initialPos[i, Top] = s.Top;
-                }
-            }
-
             //Remove dragging control of user
             this.GetCurrentSelection().Unselect();
 
@@ -616,7 +576,7 @@ namespace PowerPointLabs.PositionsLab
 
             for (var i = 0; i < _shapesToBeMoved.Count; i++)
             {
-                var s = _shapesToBeMoved[i + 1];
+                var s = _shapesToBeMoved[i];
                 if (Math.Abs(diffX) > Math.Abs(diffY))
                 {
                     s.Left = _initialPos[i, Left] + diffX;
@@ -633,12 +593,6 @@ namespace PowerPointLabs.PositionsLab
         void _leftMouseUpListener_LockAxis(object sender, SysMouseEventInfo e)
         {
             _dispatcherTimer.Stop();
-            _timeCounter = 0;
-            if (_shapesToBeMoved != null)
-            {
-                _shapesToBeMoved.Select();
-                _shapesToBeMoved = null;
-            }
         }
 
         void _leftMouseDownListener_LockAxis(object sender, SysMouseEventInfo e)
@@ -647,15 +601,31 @@ namespace PowerPointLabs.PositionsLab
             {
                 var p = System.Windows.Forms.Control.MousePosition;
                 var currentSlide = this.GetCurrentSlide();
-                _allShapesInSlide = ConvertShapesToList(currentSlide.Shapes);
                 var selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
 
-                if (selectedShape == null || PPKeyboard.IsCtrlPressed() || PPKeyboard.IsShiftPressed())
+                if (selectedShape == null)
                 {
+                    DisableLockAxisMode();
+                    return;
+                }
+
+                var isShapeToBeMoved = _shapesToBeMoved.Contains(selectedShape);
+
+                if (!isShapeToBeMoved)
+                {
+                    DisableLockAxisMode();
                     return;
                 }
 
                 this.StartNewUndoEntry();
+
+                _initialPos = new float[_shapesToBeMoved.Count, 2];
+                for (var i = 0; i < _shapesToBeMoved.Count; i++)
+                {
+                    var s = _shapesToBeMoved[i];
+                    _initialPos[i, Left] = s.Left;
+                    _initialPos[i, Top] = s.Top;
+                }
 
                 _initialMousePos = p;
                 _dispatcherTimer.Start();
@@ -1229,16 +1199,10 @@ namespace PowerPointLabs.PositionsLab
             _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         }
 
-        private static void DisableRotationMode()
+        private void DisableRotationMode()
         {
             ClearAllEventHandlers();
-            _isRotationMode = false;
-
-            if (_refPoint != null)
-            {
-                _refPoint = null;
-            }
-
+            _refPoint = null;
             _shapesToBeRotated = new List<Shape>();
             _allShapesInSlide = new List<Shape>();
             _prevMousePos = new System.Drawing.Point();
@@ -1255,12 +1219,14 @@ namespace PowerPointLabs.PositionsLab
             _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_LockAxis;
         }
 
-        private static void DisableLockAxisMode()
+        private void DisableLockAxisMode()
         {
             ClearAllEventHandlers();
             _shapesToBeMoved = null;
             _initialMousePos = new System.Drawing.Point();
-            _timeCounter = 0;
+
+            lockAxisButton.Background = null;
+            lockAxisButton.BorderBrush = null;
         }
 
         #region Error Handling
