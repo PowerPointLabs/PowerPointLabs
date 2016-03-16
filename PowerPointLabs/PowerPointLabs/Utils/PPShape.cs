@@ -14,10 +14,12 @@ namespace PowerPointLabs.Utils
         private float _absoluteHeight;
         private float _rotatedLeft;
         private float _rotatedTop;
+        private readonly float _originalRotation;
 
         public PPShape(PowerPoint.Shape shape)
         {
             _shape = shape;
+            _originalRotation = _shape.Rotation;
 
             ConvertToFreeform();
 
@@ -26,14 +28,6 @@ namespace PowerPointLabs.Utils
 
             UpdateTop();
             UpdateLeft();
-        }
-
-        /// <summary>
-        /// Return specified shape.
-        /// </summary>
-        public PowerPoint.Shape Shape
-        {
-            get { return _shape; }
         }
 
         /// <summary>
@@ -116,7 +110,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns or sets the shape type for the specified Shape object,
+        /// Return or set the shape type for the specified Shape object,
         /// which must represent an AutoShape other than a line, freeform drawing, or connector.
         /// Read/write.
         /// </summary>
@@ -127,7 +121,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the center of the shape.
+        /// Return a point that represents the center of the shape.
         /// </summary>
         public PointF Center
         {
@@ -143,7 +137,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the top left of the shape's bounding box after rotation.
+        /// Return a point that represents the top left of the shape's bounding box after rotation.
         /// </summary>
         public PointF TopLeft
         {
@@ -159,7 +153,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the top center of the shape's bounding box after rotation.
+        /// Return a point that represents the top center of the shape's bounding box after rotation.
         /// </summary>
         public PointF TopCenter
         {
@@ -175,7 +169,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the top right of the shape's bounding box after rotation.
+        /// Return a point that represents the top right of the shape's bounding box after rotation.
         /// </summary>
         public PointF TopRight
         {
@@ -191,7 +185,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the middle left of the shape's bounding box after rotation.
+        /// Return a point that represents the middle left of the shape's bounding box after rotation.
         /// </summary>
         public PointF MiddleLeft
         {
@@ -207,7 +201,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the middle right of the shape's bounding box after rotation.
+        /// Return a point that represents the middle right of the shape's bounding box after rotation.
         /// </summary>
         public PointF MiddleRight
         {
@@ -223,7 +217,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the bottom left of the shape's bounding box after rotation.
+        /// Return a point that represents the bottom left of the shape's bounding box after rotation.
         /// </summary>
         public PointF BottomLeft
         {
@@ -239,7 +233,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the bottom center of the shape's bounding box after rotation.
+        /// Return a point that represents the bottom center of the shape's bounding box after rotation.
         /// </summary>
         public PointF BottomCenter
         {
@@ -255,7 +249,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a point that represents the bottom right of the shape's bounding box after rotation.
+        /// Return a point that represents the bottom right of the shape's bounding box after rotation.
         /// </summary>
         public PointF BottomRight
         {
@@ -271,12 +265,9 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns a 64-bit signed integer that identifies the PPshape. Read-only.
+        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
         /// </summary>
-        public int Id
-        {
-            get { return _shape.Id; }
-        }
+        public int Id => _shape.Id;
 
         /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
@@ -326,10 +317,7 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// Returns the position of the specified shape in the z-order. Read-only.
         /// </summary>
-        public int ZOrderPosition
-        {
-            get { return _shape.ZOrderPosition; }
-        }
+        public int ZOrderPosition => _shape.ZOrderPosition;
 
         /// <summary>
         /// Delete the specified Shape object.
@@ -385,6 +373,38 @@ namespace PowerPointLabs.Utils
         public void Select(MsoTriState replace)
         {
             _shape.Select(replace);
+        }
+
+        /// <summary>
+        /// Reset the nodes to corresponding original rotation.
+        /// </summary>
+        public void ResetNodes()
+        {
+            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1) return;
+
+            var rotation = GetStandardizedRotation(360 - _originalRotation);
+            var centerLeft = Center.X;
+            var centerTop = Center.Y;
+
+            for (int i = 1; i <= _shape.Nodes.Count; i++)
+            {
+                var node = _shape.Nodes[i];
+                var point = node.Points;
+                var oldX = point[1, 1];
+                var oldY = point[1, 2];
+                var newX = oldY*Math.Sin(rotation) + oldX*Math.Cos(rotation);
+                var newY = oldY*Math.Cos(rotation) - oldX*Math.Sin(rotation);
+
+                _shape.Nodes.SetPosition(i, newX, newY);
+            }
+
+            _shape.Rotation = _originalRotation;
+
+            UpdateAbsoluteWidth();
+            UpdateAbsoluteHeight();
+
+            Left = centerLeft - _absoluteWidth/2;
+            Top = centerTop - _absoluteHeight/2;
         }
 
         /// <summary>
