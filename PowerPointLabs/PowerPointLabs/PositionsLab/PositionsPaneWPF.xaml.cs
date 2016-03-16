@@ -35,6 +35,10 @@ namespace PowerPointLabs.PositionsLab
         //Variable for preview
         bool _previewIsExecuted = false;
 
+        //Brushes for highlighting buttons
+        private Media.SolidColorBrush lightBlueBrush;
+        private Media.SolidColorBrush darkBlueBrush;
+
         //Variables for lock axis
         private const int Left = 0;
         private const int Top = 1;
@@ -57,6 +61,22 @@ namespace PowerPointLabs.PositionsLab
         public PositionsPaneWpf()
         {
             PositionsLabMain.InitPositionsLab();
+            lightBlueBrush = new System.Windows.Media.SolidColorBrush();
+            var lightBlue = new System.Windows.Media.Color();
+            lightBlue.R = 190;
+            lightBlue.G = 230;
+            lightBlue.B = 253;
+            lightBlue.A = 255;
+            lightBlueBrush.Color = lightBlue;
+
+            darkBlueBrush = new System.Windows.Media.SolidColorBrush();
+            var darkBlue = new System.Windows.Media.Color();
+            darkBlue.R = 60;
+            darkBlue.G = 127;
+            darkBlue.B = 177;
+            darkBlue.A = 255;
+            darkBlueBrush.Color = darkBlue;
+
             InitializeComponent();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
         }
@@ -472,6 +492,8 @@ namespace PowerPointLabs.PositionsLab
 
             _leftMouseDownListener = new LMouseDownListener();
             _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
+
+            HighlightButton(rotationButton, lightBlueBrush, darkBlueBrush);
         }
 
         private void RotationHandler(object sender, EventArgs e)
@@ -1206,6 +1228,8 @@ namespace PowerPointLabs.PositionsLab
             _shapesToBeRotated = new List<Shape>();
             _allShapesInSlide = new List<Shape>();
             _prevMousePos = new System.Drawing.Point();
+
+            RemoveHighlightOnButton(rotationButton);
         }
 
         private void StartLockAxisMode()
@@ -1217,6 +1241,8 @@ namespace PowerPointLabs.PositionsLab
 
             _leftMouseDownListener = new LMouseDownListener();
             _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_LockAxis;
+
+            HighlightButton(lockAxisButton, lightBlueBrush, darkBlueBrush);
         }
 
         private void DisableLockAxisMode()
@@ -1227,6 +1253,8 @@ namespace PowerPointLabs.PositionsLab
 
             lockAxisButton.Background = null;
             lockAxisButton.BorderBrush = null;
+
+            RemoveHighlightOnButton(lockAxisButton);
         }
 
         #region Error Handling
@@ -1268,6 +1296,18 @@ namespace PowerPointLabs.PositionsLab
         private void IgnoreExceptionThrown() { }
 
         #endregion
+
+        private void HighlightButton(WPF.ImageButton button, Media.SolidColorBrush highlightBrush, Media.SolidColorBrush borderBrush)
+        {
+            button.Background = highlightBrush;
+            button.BorderBrush = borderBrush;
+        }
+
+        private void RemoveHighlightOnButton(WPF.ImageButton button)
+        {
+            button.Background = null;
+            button.BorderBrush = null;
+        }
 
         private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
         {
