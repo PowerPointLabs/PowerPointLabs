@@ -18,7 +18,7 @@ namespace Test.UnitTest.ResizeLab
         protected void InitOriginalShapes(int slideNumber, List<string> shapeNames,
             Dictionary<string, ShapeProperties> shapeProperties)
         {
-            var shapes = GetOriginalShapes(slideNumber, shapeNames);
+            var shapes = GetShapes(slideNumber, shapeNames);
             foreach (PowerPoint.Shape shape in shapes)
             {
                 var originalPpShape = new PPShape(shape);
@@ -28,7 +28,7 @@ namespace Test.UnitTest.ResizeLab
             }
         }
 
-        protected PowerPoint.ShapeRange GetOriginalShapes(int slideNumber, IEnumerable<string> shapeNames)
+        protected PowerPoint.ShapeRange GetShapes(int slideNumber, IEnumerable<string> shapeNames)
         {
             PpOperations.SelectSlide(slideNumber);
             return PpOperations.SelectShapes(shapeNames);

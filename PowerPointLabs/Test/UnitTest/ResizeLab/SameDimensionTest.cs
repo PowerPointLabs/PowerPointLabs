@@ -37,7 +37,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCleanup]
         public void TestCleanUp()
         {
-            var shapes = GetOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var shapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             RestoreShapes(shapes, _originalShapesProperties);
         }
 
@@ -45,7 +45,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSameWidthWithoutAspectRatio()
         {
-            var actualShapes = GetOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.ResizeToSameWidth(actualShapes);
 
@@ -59,7 +59,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSameWidthWithAspectRatio()
         {
-            var actualShapes = GetOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
             _resizeLab.ResizeToSameWidth(actualShapes);
 
@@ -73,7 +73,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSameHeightWithoutAspectRatio()
         {
-            var actualShapes = GetOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.ResizeToSameHeight(actualShapes);
 
@@ -87,7 +87,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSameHeightWithAspectRatio()
         {
-            var actualShapes = GetOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
             _resizeLab.ResizeToSameHeight(actualShapes);
 
@@ -101,7 +101,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSameWidthAndHeight()
         {
-            var actualShapes = GetOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.ResizeToSameHeightAndWidth(actualShapes);
 
