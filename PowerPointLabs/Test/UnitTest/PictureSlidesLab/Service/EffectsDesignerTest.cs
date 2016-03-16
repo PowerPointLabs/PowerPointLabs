@@ -106,9 +106,9 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 Pres.PageSetup.SlideHeight)
                 .GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(25f, tbInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(159.559921f, tbInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(177.52f, tbInfo.Top));
             Assert.IsTrue(SlideUtil.IsRoughlySame(640.76f, tbInfo.Width));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(220.880081f, tbInfo.Height));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(184.96f, tbInfo.Height));
 
             _designer.ApplyTextWrapping();
             tbInfo = new TextBoxes(
@@ -117,9 +117,9 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 Pres.PageSetup.SlideHeight)
                 .GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(25f, tbInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(101.239922f, tbInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(119.2f, tbInfo.Top));
             Assert.IsTrue(SlideUtil.IsRoughlySame(418.505035f, tbInfo.Width));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(279.200073f, tbInfo.Height));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(243.279984f, tbInfo.Height));
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
             var shapeRange = PpOperations.SelectShapesByPrefix(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.TextBox);
 
-            Assert.AreEqual(2, shapeRange.Count);
+            Assert.AreEqual(1, shapeRange.Count);
             Assert.AreEqual(MsoShapeType.msoAutoShape, shapeRange[1].Type);
         }
 
