@@ -578,8 +578,8 @@
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
     <Compile Include="ResizeLab\ShapeProperties.cs" />
-    <Compile Include="ResizeLab\StretchSettingsDialog.xaml.cs">
-      <DependentUpon>StretchSettingsDialog.xaml</DependentUpon>
+    <Compile Include="ResizeLab\ResizeStretchSettingsDialog.xaml.cs">
+      <DependentUpon>ResizeStretchSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
@@ -1096,7 +1096,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResizeLab\StretchSettingsDialog.xaml">
+    <Page Include="ResizeLab\ResizeStretchSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
