@@ -578,7 +578,13 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml.cs">
+      <DependentUpon>ResizeSameDimensionSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResizeLab\ShapeProperties.cs" />
+    <Compile Include="ResizeLab\ResizeStretchSettingsDialog.xaml.cs">
+      <DependentUpon>ResizeStretchSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -1094,6 +1100,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResizeLab\ResizeStretchSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestInterface\TestInterface.csproj">
@@ -1229,12 +1243,6 @@
     <Resource Include="Resources\PositionsLab\SnapHorizontalIcon.png" />
     <Resource Include="Resources\PositionsLab\SnapAwayIcon.png" />
     <Resource Include="Resources\PositionsLab\RotateIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignMiddleIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
-    <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
     <Resource Include="Resources\PositionsLab\DistributeCenterIcon.png" />
     <Resource Include="Resources\PositionsLab\DistributeGridIcon.png" />
     <Resource Include="Resources\PositionsLab\DistributeHorizontalIcon.png" />
@@ -1242,6 +1250,14 @@
     <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
     <Resource Include="Resources\PositionsLab\AdjoinHorizontalIcon.png" />
     <Resource Include="Resources\PositionsLab\AdjoinVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopDefaultIcon.png" />
     <None Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
@@ -1259,6 +1275,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSync1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignHorizontalCenterDefaultIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignHorizontalCenterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignVerticalCenterDefaultIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignVerticalCenterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\LockAxisIcon.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

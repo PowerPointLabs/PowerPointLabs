@@ -9,7 +9,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
         private const int ErrorCodeNoSelection = 0;
         private const int ErrorCodeFewerThanTwoSelection = 1;
@@ -23,9 +23,10 @@ namespace PowerPointLabs.ResizeLab
 
         private IResizeLabPane View { get; }
 
-        public ResizeLabMain(IResizeLabPane view)
+        public ResizeLabMain(IResizeLabPane view = null)
         {
             View = view;
+            SameDimensionAnchorType = SameDimensionAnchor.TopLeft;
         }
 
         private enum Dimension
@@ -131,6 +132,11 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="e"></param>
         private void ProcessErrorMessage(Exception e)
         {
+            if (View == null)
+            {
+                return;
+            }
+
             var errorMessage = GetErrorMessage(e.Message);
             if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
             {

@@ -18,7 +18,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignToSlideButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.AlignUseSlideAsReference)
+            if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.Slide)
             {
                 alignToSlideButton.IsChecked = true;
             }
@@ -26,21 +26,33 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignToShapeButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.AlignUseSlideAsReference)
+            if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.SelectedShape)
             {
-                alignToShapeButton.IsChecked = false;
+                alignToShapeButton.IsChecked = true;
+            }
+        }
+
+        private void PowerpointAlignButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+            {
+                alignPowerpointDefaultsButton.IsChecked = true;
             }
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            if (alignToShapeButton.IsChecked == true)
+            if (alignToShapeButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.AlignReferToShape();
             }
-            else
+            else if (alignToSlideButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.AlignReferToSlide();
+            }
+            else
+            {
+                PositionsLabMain.AlignReferToPowerpointDefaults();
             }
 
             IsOpen = false;

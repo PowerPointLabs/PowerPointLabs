@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -10,8 +12,17 @@ namespace PowerPointLabs.ResizeLab
     /// It handles the resizing of the shapes to the same dimension 
     /// (e.g. height, width and both).
     /// </summary>
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
+        public enum SameDimensionAnchor
+        {
+            TopLeft, TopCenter, TopRight,
+            MiddleLeft, Center, MiddleRight,
+            BottomLeft, BottomCenter, BottomRight
+        }
+
+        public SameDimensionAnchor SameDimensionAnchorType { get; set; }
+
         /// <summary>
         /// Resize the selected shapes to the same height with the reference to
         /// first selected shape.
@@ -39,7 +50,11 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
+            var isAspectRatio = selectedShapes.LockAspectRatio;
+
+            selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
             ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
+            selectedShapes.LockAspectRatio = isAspectRatio;
         }
 
         /// <summary>
@@ -62,10 +77,10 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
+                    var anchorPoint = GetAnchorPoint(shape);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
-
                         shape.AbsoluteHeight = referenceHeight;
                     }
 
@@ -73,11 +88,93 @@ namespace PowerPointLabs.ResizeLab
                     {
                         shape.AbsoluteWidth = referenceWidth;
                     }
+
+                    AlignShape(shape, anchorPoint);
                 }
             }
             catch (Exception e)
             {
                 Logger.LogException(e, "ResizeShapes");
+            }
+        }
+
+        /// <summary>
+        /// Get the coordinate of anchor point.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
+        private PointF GetAnchorPoint(PPShape shape)
+        {
+            switch (SameDimensionAnchorType)
+            {
+                case SameDimensionAnchor.TopLeft:
+                    return shape.TopLeft;
+                case SameDimensionAnchor.TopCenter:
+                    return shape.TopCenter;
+                case SameDimensionAnchor.TopRight:
+                    return shape.TopRight;
+                case SameDimensionAnchor.MiddleLeft:
+                    return shape.MiddleLeft;
+                case SameDimensionAnchor.Center:
+                    return shape.Center;
+                case SameDimensionAnchor.MiddleRight:
+                    return shape.MiddleRight;
+                case SameDimensionAnchor.BottomLeft:
+                    return shape.BottomLeft;
+                case SameDimensionAnchor.BottomCenter:
+                    return shape.BottomCenter;
+                case SameDimensionAnchor.BottomRight:
+                    return shape.BottomRight;
+            }
+
+            return shape.Center;
+        }
+
+        /// <summary>
+        /// Align the shape according to the anchor point given.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="anchorPoint"></param>
+        private void AlignShape(PPShape shape, PointF anchorPoint)
+        {
+            switch (SameDimensionAnchorType)
+            {
+                case SameDimensionAnchor.TopLeft:
+                    shape.Left = anchorPoint.X;
+                    shape.Top = anchorPoint.Y;
+                    break;
+                case SameDimensionAnchor.TopCenter:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth/2;
+                    shape.Top = anchorPoint.Y;
+                    break;
+                case SameDimensionAnchor.TopRight:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.Top = anchorPoint.Y;
+                    break;
+                case SameDimensionAnchor.MiddleLeft:
+                    shape.Left = anchorPoint.X;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight/2;
+                    break;
+                case SameDimensionAnchor.Center:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth/2;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight/2;
+                    break;
+                case SameDimensionAnchor.MiddleRight:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight/2;
+                    break;
+                case SameDimensionAnchor.BottomLeft:
+                    shape.Left = anchorPoint.X;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    break;
+                case SameDimensionAnchor.BottomCenter:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth/2;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    break;
+                case SameDimensionAnchor.BottomRight:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    break;
             }
         }
 
