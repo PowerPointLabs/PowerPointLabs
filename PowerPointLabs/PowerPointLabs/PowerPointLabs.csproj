@@ -1276,6 +1276,9 @@
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\AlignVerticalCenterIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\LockAxisIcon.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

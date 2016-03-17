@@ -92,7 +92,7 @@
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
             <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="18,472,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
+                <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </WPF:ImageButton>
         </Grid>
     </ScrollViewer>
