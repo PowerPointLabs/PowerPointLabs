@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -24,8 +21,8 @@ namespace PowerPointLabs.ResizeLab
         private readonly Dictionary<string, ShapeProperties> _originalShapeProperties = new Dictionary<string, ShapeProperties>(); 
 
         // Dialog windows
-        private StretchSettingsDialog stretchSettingsDialog;
-        private SameDimensionSettingsDialog sameDimensionSettingsDialog;
+        private StretchSettingsDialog _stretchSettingsDialog;
+        private SameDimensionSettingsDialog _sameDimensionSettingsDialog;
 
         public ResizeLabPaneWPF()
         {
@@ -87,14 +84,14 @@ namespace PowerPointLabs.ResizeLab
 
         private void StretchSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (stretchSettingsDialog == null || !stretchSettingsDialog.IsOpen)
+            if (_stretchSettingsDialog == null || !_stretchSettingsDialog.IsOpen)
             {
-                stretchSettingsDialog = new StretchSettingsDialog(_resizeLab);
-                stretchSettingsDialog.Show();
+                _stretchSettingsDialog = new StretchSettingsDialog(_resizeLab);
+                _stretchSettingsDialog.Show();
             }
             else
             {
-                stretchSettingsDialog.Activate();
+                _stretchSettingsDialog.Activate();
             }
             
         }
@@ -132,14 +129,14 @@ namespace PowerPointLabs.ResizeLab
 
         private void SameDimensionSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (sameDimensionSettingsDialog == null || !sameDimensionSettingsDialog.IsOpen)
+            if (_sameDimensionSettingsDialog == null || !_sameDimensionSettingsDialog.IsOpen)
             {
-                sameDimensionSettingsDialog = new SameDimensionSettingsDialog(_resizeLab);
-                sameDimensionSettingsDialog.Show();
+                _sameDimensionSettingsDialog = new SameDimensionSettingsDialog(_resizeLab);
+                _sameDimensionSettingsDialog.Show();
             }
             else
             {
-                sameDimensionSettingsDialog.Activate();
+                _sameDimensionSettingsDialog.Activate();
             }
         }
 
