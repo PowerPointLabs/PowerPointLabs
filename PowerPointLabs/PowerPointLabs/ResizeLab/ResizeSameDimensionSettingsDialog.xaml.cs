@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -29,13 +28,13 @@ namespace PowerPointLabs.ResizeLab
             _anchorButtonLookUp = new Dictionary<ResizeLabMain.SameDimensionAnchor, RadioButton>()
             {
                 { ResizeLabMain.SameDimensionAnchor.TopLeft, AnchorTopLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.TopMiddle, AnchorTopMidBtn},
+                { ResizeLabMain.SameDimensionAnchor.TopCenter, AnchorTopMidBtn},
                 { ResizeLabMain.SameDimensionAnchor.TopRight, AnchorTopRightBtn},
                 { ResizeLabMain.SameDimensionAnchor.MiddleLeft, AnchorMidLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.Middle, AnchorMidBtn},
+                { ResizeLabMain.SameDimensionAnchor.Center, AnchorMidBtn},
                 { ResizeLabMain.SameDimensionAnchor.MiddleRight, AnchorMidRightBtn},
                 { ResizeLabMain.SameDimensionAnchor.BottomLeft, AnchorBottomLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.BottomMiddle, AnchorBottomMidBtn},
+                { ResizeLabMain.SameDimensionAnchor.BottomCenter, AnchorBottomMidBtn},
                 { ResizeLabMain.SameDimensionAnchor.BottomRight, AnchorBottomRightBtn}
             };
         }
@@ -56,15 +55,14 @@ namespace PowerPointLabs.ResizeLab
 
         private void OkBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _resizeLab.SameDimensionAnchorType = CheckedAnchorBtnToAnchorType();
+            _resizeLab.SameDimensionAnchorType = AnchorTypeToCheckedAnchorBtn();
 
-            IsOpen = false;
             Close();
         }
 
         #region Helper Functions
 
-        private ResizeLabMain.SameDimensionAnchor CheckedAnchorBtnToAnchorType()
+        private ResizeLabMain.SameDimensionAnchor AnchorTypeToCheckedAnchorBtn()
         {
             foreach (var anAnchorButton in _anchorButtonLookUp)
             {
@@ -74,7 +72,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                     
             }
-            return ResizeLabMain.SameDimensionAnchor.Middle; // Should not execute
+            return ResizeLabMain.SameDimensionAnchor.Center; // Should not execute
         }
 
         #endregion
