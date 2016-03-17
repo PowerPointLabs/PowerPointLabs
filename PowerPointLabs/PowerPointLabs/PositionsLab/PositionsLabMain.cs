@@ -10,7 +10,7 @@ using Drawing = System.Drawing;
 
 namespace PowerPointLabs.PositionsLab
 {
-    class PositionsLabMain
+    public class PositionsLabMain
     {
         private const float Epsilon = 0.00001f;
         private const float RotateLeft = 90f;
