@@ -9,12 +9,11 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
-        private const int ModShapesIndex = 2;
 
-        public enum RefType
+        public enum StretchRefType
         {
-            FirstSelected = 1,
-            Outermost = 2
+            FirstSelected,
+            Outermost
         }
 
         private enum StretchType
@@ -188,7 +187,7 @@ namespace PowerPointLabs.ResizeLab
         {
             var refShapeIndex = 1;
 
-            if (ReferenceType == RefType.Outermost)
+            if (ReferenceType == StretchRefType.Outermost)
             {
                 var refPpShape = new PPShape(shapes[1]);
                 for (var i = 2; i <= shapes.Count; i++)
@@ -223,7 +222,7 @@ namespace PowerPointLabs.ResizeLab
 
         #region Settings
 
-        public RefType ReferenceType { get; set; }
+        public StretchRefType ReferenceType { get; set; }
 
         #endregion
 

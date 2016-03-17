@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -8,29 +10,42 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class StretchSettingsDialog
     {
-        //Flag to trigger
         public bool IsOpen { get; set; }
 
-        private ResizeLabMain _resizeLab;
+        private readonly ResizeLabMain _resizeLab;
+        private Dictionary<ResizeLabMain.StretchRefType, RadioButton> _refTypeButtonLookUp;
 
         public StretchSettingsDialog(ResizeLabMain resizeLab)
         {
             IsOpen = true;
             _resizeLab = resizeLab;
             InitializeComponent();
+            InitRefTypeButtonDictionary();
+            LoadRefTypeCheckedButton();
+        }
+
+        private void InitRefTypeButtonDictionary()
+        {
+            _refTypeButtonLookUp = new Dictionary<ResizeLabMain.StretchRefType, RadioButton>()
+            {
+                { ResizeLabMain.StretchRefType.FirstSelected, FirstSelectedBtn },
+                { ResizeLabMain.StretchRefType.Outermost, OuterMostShapeBtn }
+            };
+        }
+
+        private void LoadRefTypeCheckedButton()
+        {
+            RadioButton toCheckButton;
+            if (_refTypeButtonLookUp.TryGetValue(_resizeLab.ReferenceType, out toCheckButton))
+            {
+                toCheckButton.IsChecked = true;
+            }
         }
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (FirstSelectedBtn.IsChecked.HasValue && FirstSelectedBtn.IsChecked.Value)
-            {
-                _resizeLab.ReferenceType = ResizeLabMain.RefType.FirstSelected;
-            }
-            else if (OuterMostShapeBtn.IsChecked.HasValue && OuterMostShapeBtn.IsChecked.Value)
-            {
-                _resizeLab.ReferenceType = ResizeLabMain.RefType.Outermost;
-            }
-            IsOpen = false;
+            _resizeLab.ReferenceType = RefTypeToCheckedRefTypeBtn();
+            
             Close();
         }
 
@@ -39,20 +54,20 @@ namespace PowerPointLabs.ResizeLab
             IsOpen = false;
         }
 
-        private void FirstSelectedBtn_Load(object sender, RoutedEventArgs e)
+        #region Helper functions
+        private ResizeLabMain.StretchRefType RefTypeToCheckedRefTypeBtn()
         {
-            if (_resizeLab != null && _resizeLab.ReferenceType == ResizeLabMain.RefType.FirstSelected)
+            foreach (var aRefTypeButton in _refTypeButtonLookUp)
             {
-                FirstSelectedBtn.IsChecked = true;
+                if (aRefTypeButton.Value.IsChecked.GetValueOrDefault())
+                {
+                    return aRefTypeButton.Key;
+                }
             }
+            return ResizeLabMain.StretchRefType.FirstSelected; // Should not execute
         }
 
-        private void OuterMostShapeBtn_Load(object sender, RoutedEventArgs e)
-        {
-            if (_resizeLab != null && _resizeLab.ReferenceType == ResizeLabMain.RefType.Outermost)
-            {
-                OuterMostShapeBtn.IsChecked = true;
-            }
-        }
+        #endregion
+
     }
 }

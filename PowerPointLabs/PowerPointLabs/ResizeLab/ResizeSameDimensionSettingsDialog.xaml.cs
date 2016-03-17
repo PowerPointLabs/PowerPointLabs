@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using MahApps.Metro.Controls;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -56,15 +55,14 @@ namespace PowerPointLabs.ResizeLab
 
         private void OkBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _resizeLab.SameDimensionAnchorType = CheckedAnchorBtnToAnchorType();
+            _resizeLab.SameDimensionAnchorType = AnchorTypeToCheckedAnchorBtn();
 
-            IsOpen = false;
             Close();
         }
 
         #region Helper Functions
 
-        private ResizeLabMain.SameDimensionAnchor CheckedAnchorBtnToAnchorType()
+        private ResizeLabMain.SameDimensionAnchor AnchorTypeToCheckedAnchorBtn()
         {
             foreach (var anAnchorButton in _anchorButtonLookUp)
             {
