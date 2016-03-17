@@ -98,6 +98,11 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        /// <summary>
+        /// Get the coordinate of anchor point.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
         private PointF GetAnchorPoint(PPShape shape)
         {
             switch (SameDimensionAnchorType)
@@ -125,6 +130,11 @@ namespace PowerPointLabs.ResizeLab
             return shape.Center;
         }
 
+        /// <summary>
+        /// Align the shape according to the anchor point given.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="anchorPoint"></param>
         private void AlignShape(PPShape shape, PointF anchorPoint)
         {
             switch (SameDimensionAnchorType)
