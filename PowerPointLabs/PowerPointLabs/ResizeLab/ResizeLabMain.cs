@@ -26,7 +26,7 @@ namespace PowerPointLabs.ResizeLab
         public ResizeLabMain(IResizeLabPane view = null)
         {
             View = view;
-            SameDimensionAnchorType = SameDimensionAnchor.Center;
+            SameDimensionAnchorType = SameDimensionAnchor.TopLeft;
         }
 
         private enum Dimension

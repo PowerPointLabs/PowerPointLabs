@@ -105,7 +105,6 @@ namespace PowerPointLabs.Utils
                 {
                     SetToAbsoluteDimension();
                 }
-                
             }
         }
 
@@ -529,6 +528,9 @@ namespace PowerPointLabs.Utils
 
             _shape.Top = originalTop;
             _shape.Left = originalLeft;
+
+            UpdateAbsoluteWidth();
+            UpdateAbsoluteHeight();
         }
 
         private void SetToAbsoluteWidthAspectRatio()
@@ -543,6 +545,9 @@ namespace PowerPointLabs.Utils
 
             _shape.Top = originalTop;
             _shape.Left = originalLeft;
+
+            UpdateAbsoluteWidth();
+            UpdateAbsoluteHeight();
         }
 
         /// <summary>
