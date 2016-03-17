@@ -309,11 +309,6 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, previewAction, 2);
         }
 
-        private void SameSizeBtn_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Reset();
-        }
-
         private void FitWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
