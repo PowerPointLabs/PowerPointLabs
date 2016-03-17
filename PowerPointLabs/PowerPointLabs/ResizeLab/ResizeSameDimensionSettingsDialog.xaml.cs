@@ -29,13 +29,13 @@ namespace PowerPointLabs.ResizeLab
             _anchorButtonLookUp = new Dictionary<ResizeLabMain.SameDimensionAnchor, RadioButton>()
             {
                 { ResizeLabMain.SameDimensionAnchor.TopLeft, AnchorTopLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.TopMiddle, AnchorTopMidBtn},
+                { ResizeLabMain.SameDimensionAnchor.TopCenter, AnchorTopMidBtn},
                 { ResizeLabMain.SameDimensionAnchor.TopRight, AnchorTopRightBtn},
                 { ResizeLabMain.SameDimensionAnchor.MiddleLeft, AnchorMidLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.Middle, AnchorMidBtn},
+                { ResizeLabMain.SameDimensionAnchor.Center, AnchorMidBtn},
                 { ResizeLabMain.SameDimensionAnchor.MiddleRight, AnchorMidRightBtn},
                 { ResizeLabMain.SameDimensionAnchor.BottomLeft, AnchorBottomLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.BottomMiddle, AnchorBottomMidBtn},
+                { ResizeLabMain.SameDimensionAnchor.BottomCenter, AnchorBottomMidBtn},
                 { ResizeLabMain.SameDimensionAnchor.BottomRight, AnchorBottomRightBtn}
             };
         }
@@ -74,7 +74,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                     
             }
-            return ResizeLabMain.SameDimensionAnchor.Middle; // Should not execute
+            return ResizeLabMain.SameDimensionAnchor.Center; // Should not execute
         }
 
         #endregion
