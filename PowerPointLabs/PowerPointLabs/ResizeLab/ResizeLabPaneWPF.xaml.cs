@@ -17,12 +17,10 @@ namespace PowerPointLabs.ResizeLab
     {
         private ResizeLabMain _resizeLab;
         public static bool IsAspectRatioLocked { get; set; }
-        private const string UnlockText = "Unlocked";
-        private const string LockText = "Locked";
+        
         private const string UnlockAspectRatioToolTip = "Unlocks the aspect ratio of objects when performing resizing of objects";
         private const string LockAspectRatioToolTip = "Locks the aspect ratio of objects when performing resizing of objects";
-        private readonly Bitmap _unlockedImage;
-        private readonly Bitmap _lockedImage;
+        
         private readonly Dictionary<string, ShapeProperties> _originalShapeProperties = new Dictionary<string, ShapeProperties>(); 
 
         // Dialog windows
@@ -199,16 +197,14 @@ namespace PowerPointLabs.ResizeLab
 
         #region Event Handler: Aspect Ratio
 
-        private void LockAspectRatioBtn_Click(object sender, RoutedEventArgs e)
+        private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
         {
-            if (IsAspectRatioLocked)
-            {
-                UnlockAspectRatio();
-            }
-            else
-            {
-                LockAspectRatio();
-            }
+            UnlockAspectRatio();
+        }
+
+        private void LockAspectRatio_Checked(object sender, RoutedEventArgs e)
+        {
+            LockAspectRatio();
         }
 
         private void RestoreAspectRatioBtn_Click(object sender, RoutedEventArgs e)
@@ -226,9 +222,7 @@ namespace PowerPointLabs.ResizeLab
         private void UnlockAspectRatio()
         {
             IsAspectRatioLocked = false;
-            LockAspectRatioBtn.Text = UnlockText;
-            LockAspectRatioBtn.ToolTip = LockAspectRatioToolTip;
-            LockAspectRatioBtn.Image = Utils.Graphics.CreateBitmapSourceFromGdiBitmap(_unlockedImage);
+            LockAspectRatioCheckBox.ToolTip = LockAspectRatioToolTip;
 
             ModifySelectionAspectRatio();
         }
@@ -236,9 +230,7 @@ namespace PowerPointLabs.ResizeLab
         private void LockAspectRatio()
         {
             IsAspectRatioLocked = true;
-            LockAspectRatioBtn.Text = LockText;
-            LockAspectRatioBtn.ToolTip = UnlockAspectRatioToolTip;
-            LockAspectRatioBtn.Image = Utils.Graphics.CreateBitmapSourceFromGdiBitmap(_lockedImage);
+            LockAspectRatioCheckBox.ToolTip = UnlockAspectRatioToolTip;
 
             ModifySelectionAspectRatio();
         }
@@ -432,6 +424,5 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
-
     }
 }
