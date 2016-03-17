@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -10,8 +11,17 @@ namespace PowerPointLabs.ResizeLab
     /// It handles the resizing of the shapes to the same dimension 
     /// (e.g. height, width and both).
     /// </summary>
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
+        public enum SameDimensionAnchor
+        {
+            TopLeft, TopMiddle, TopRight,
+            MiddleLeft, Middle, MiddleRight,
+            BottomLeft, BottomMiddle, BottomRight
+        }
+
+        public SameDimensionAnchor SameDimensionAnchorType { get; set; }
+
         /// <summary>
         /// Resize the selected shapes to the same height with the reference to
         /// first selected shape.
@@ -39,7 +49,11 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
+            var isAspectRatio = selectedShapes.LockAspectRatio;
+
+            selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
             ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
+            selectedShapes.LockAspectRatio = isAspectRatio;
         }
 
         /// <summary>

@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.6.4</ApplicationVersion>
+    <ApplicationVersion>2.8.6.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -577,7 +577,13 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml.cs">
+      <DependentUpon>ResizeSameDimensionSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResizeLab\ShapeProperties.cs" />
+    <Compile Include="ResizeLab\ResizeStretchSettingsDialog.xaml.cs">
+      <DependentUpon>ResizeStretchSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -1092,6 +1098,14 @@
     <Page Include="ResizeLab\ResizeLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResizeLab\ResizeStretchSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ namespace PowerPointLabs.ResizeLab
     /// It controls the related actions of aspect ratio according to
     /// the selection.
     /// </summary>
-    internal partial class ResizeLabMain
+    public partial class ResizeLabMain
     {
         private const float FloatDiffTolerance = (float) 0.0001;
 

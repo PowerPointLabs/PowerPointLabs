@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PowerPointLabs.ResizeLab
 {
-    internal class ShapeProperties
+    public class ShapeProperties
     {
         public string Name { get; }
         public float Top { get; }
