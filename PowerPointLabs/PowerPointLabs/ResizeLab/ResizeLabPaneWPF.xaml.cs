@@ -31,8 +31,6 @@ namespace PowerPointLabs.ResizeLab
         {
             InitializeComponent();
             InitialiseLogicInstance();
-            _unlockedImage = new Bitmap(Properties.Resources.ResizeUnlock);
-            _lockedImage = new Bitmap(Properties.Resources.ResizeLock);
             UnlockAspectRatio();
         }
 
