@@ -36,13 +36,13 @@
         <Separator Grid.Row="1" HorizontalAlignment="Left" Height="2" VerticalAlignment="Top" Width="335"/>
         <WrapPanel x:Name="AnchorPanel" Grid.Row="2" HorizontalAlignment="Center" Height="78" Margin="0,0,0,0" VerticalAlignment="Center" Width="105">
             <RadioButton x:Name="AnchorTopLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
-            <RadioButton x:Name="AnchorTopBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0"  VerticalAlignment="Top"/>
+            <RadioButton x:Name="AnchorTopMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0"  VerticalAlignment="Top"/>
             <RadioButton x:Name="AnchorTopRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
-            <RadioButton x:Name="AnchorLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
+            <RadioButton x:Name="AnchorMidLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
             <RadioButton x:Name="AnchorMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" IsChecked="True" VerticalAlignment="Top"/>
-            <RadioButton x:Name="AnchorRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
+            <RadioButton x:Name="AnchorMidRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
             <RadioButton x:Name="AnchorBottomLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
-            <RadioButton x:Name="AnchorBottomBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
+            <RadioButton x:Name="AnchorBottomMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
             <RadioButton x:Name="AnchorBottomRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"/>
         </WrapPanel>
         <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" IsDefault="True" Click="OkBtn_Click"/>

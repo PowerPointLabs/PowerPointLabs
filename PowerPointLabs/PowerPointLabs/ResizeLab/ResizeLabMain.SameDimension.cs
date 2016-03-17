@@ -14,9 +14,9 @@ namespace PowerPointLabs.ResizeLab
     {
         public enum SameDimensionAnchor
         {
-            TopLeft, Top, TopRight,
-            Left, Middle, Right,
-            BottomLeft, Bottom, BottomRight
+            TopLeft, TopMiddle, TopRight,
+            MiddleLeft, Middle, MiddleRight,
+            BottomLeft, BottomMiddle, BottomRight
         }
 
         public SameDimensionAnchor SameDimensionAnchorType { get; set; }
