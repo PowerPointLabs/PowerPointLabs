@@ -41,7 +41,7 @@ namespace PowerPointLabs.ResizeLab
             UnlockAspectRatio();
         }
 
-        #region Event Handler: Strech and Shrink
+        #region Execute Stretch and Shrink
 
         private void StretchLeftBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -95,7 +95,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Event Handler: Same Dimension
+        #region Execute Same Dimension
 
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -139,7 +139,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Event Handler: Fit
+        #region Execute Fit
         private void FitWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             var selectedShapes = GetSelectedShapes();
@@ -187,7 +187,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Event Handler: Aspect Ratio
+        #region Execute Aspect Ratio
 
         private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
         {
@@ -237,7 +237,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Event Handler: Preview
+        #region Preview Stretch and Shrink
 
         private void StretchLeftBtn_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -275,6 +275,10 @@ namespace PowerPointLabs.ResizeLab
             Preview(selectedShapes, previewAction, 2);
         }
 
+        #endregion
+
+        #region Preview Same Dimension
+
         private void SameWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             var selectedShapes = GetSelectedShapes(false);
@@ -300,6 +304,10 @@ namespace PowerPointLabs.ResizeLab
 
             Preview(selectedShapes, previewAction, 2);
         }
+
+        #endregion
+
+        #region Preview Fit
 
         private void FitWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -344,42 +352,6 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             Preview(selectedShapes, slideWidth, slideHeight, previewAction);
-        }
-
-        private void SymmetricLeftBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes(false);
-            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeLeft(shapes);
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, previewAction, 1);
-        }
-
-        private void SymmetricRightBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes(false);
-            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeRight(shapes);
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, previewAction, 1);
-        }
-
-        private void SymmetricTopBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes(false);
-            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeTop(shapes);
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, previewAction, 1);
-        }
-
-        private void SymmetricBottomBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var selectedShapes = GetSelectedShapes(false);
-            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.SymmetrizeBottom(shapes);
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, previewAction, 1);
         }
 
         #endregion
