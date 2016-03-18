@@ -12,6 +12,7 @@ namespace PowerPointLabs.ResizeLab
         public float Left { get; }
         public float AbsoluteWidth { get; }
         public float AbsoluteHeight { get; }
+        public float ShapeRotation { get; }
 
         public ShapeProperties(string name, float top, float left, float absoluteWidth, float absoluteHeight)
         {
@@ -20,6 +21,12 @@ namespace PowerPointLabs.ResizeLab
             Left = left;
             AbsoluteWidth = absoluteWidth;
             AbsoluteHeight = absoluteHeight;
+        }
+
+        public ShapeProperties(string name, float top, float left, float absoluteWidth, float absoluteHeight,
+            float shapeRotation) : this(name, top, left, absoluteWidth, absoluteHeight)
+        {
+            ShapeRotation = shapeRotation;
         }
     }
 }

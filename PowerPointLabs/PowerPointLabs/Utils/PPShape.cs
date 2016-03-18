@@ -2,7 +2,6 @@ using System;
 using Microsoft.Office.Core;
 using System.Collections;
 using System.Drawing;
-using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
@@ -14,7 +13,7 @@ namespace PowerPointLabs.Utils
         private float _absoluteHeight;
         private float _rotatedLeft;
         private float _rotatedTop;
-        private readonly float _originalRotation;
+        private float _originalRotation;
 
         public PPShape(PowerPoint.Shape shape)
         {
@@ -297,9 +296,20 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns or sets the number of degrees the specified shape is rotated around the z-axis. Read/write.
+        /// Return or set the degrees of specified shape is rotated around the z-axis. 
+        /// Read/write.
         /// </summary>
-        public float Rotation
+        public float ShapeRotation
+        {
+            get { return _originalRotation; }
+            set { _originalRotation = value; }
+        }
+
+        /// <summary>
+        /// Return or set the degrees of specified shape's bounding box is rotated around the z-axis. 
+        /// Read/write.
+        /// </summary>
+        public float BoxRotation
         {
             get { return _shape.Rotation; }
             set
@@ -427,7 +437,7 @@ namespace PowerPointLabs.Utils
             {
                 var node = _shape.Nodes[i];
                 var point = node.Points;
-                var newPoint = new float[2] { point[1, 1], point[1, 2] };
+                var newPoint = new float[] { point[1, 1], point[1, 2] };
 
                 pointList.Add(newPoint);
             }

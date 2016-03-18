@@ -60,6 +60,9 @@ namespace PowerPointLabs.ResizeLab
                 shape.AbsoluteHeight = originalProperties.AbsoluteHeight;
                 shape.Top = originalProperties.Top;
                 shape.Left = originalProperties.Left;
+                shape.ShapeRotation = originalProperties.ShapeRotation;
+
+                shape.ResetNodes();
             }
 
             selectedShapes.LockAspectRatio = isAspectRatio;
