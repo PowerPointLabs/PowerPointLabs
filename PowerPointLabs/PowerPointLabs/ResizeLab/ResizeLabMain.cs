@@ -45,7 +45,9 @@ namespace PowerPointLabs.ResizeLab
             Dictionary<string, ShapeProperties> originalShapeProperties)
         {
             if (originalShapeProperties.Count == 0) return;
+            var isAspectRatio = selectedShapes.LockAspectRatio;
 
+            selectedShapes.LockAspectRatio = Office.MsoTriState.msoFalse;
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 var shape = new PPShape(selectedShapes[i]);
@@ -59,6 +61,8 @@ namespace PowerPointLabs.ResizeLab
                 shape.Top = originalProperties.Top;
                 shape.Left = originalProperties.Left;
             }
+
+            selectedShapes.LockAspectRatio = isAspectRatio;
         }
 
         /// <summary>
