@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -7,6 +9,8 @@ namespace PowerPointLabs.ResizeLab
 {
     public partial class ResizeLabPaneWPF
     {
+        private readonly Dictionary<string, ShapeProperties> _originalShapeProperties = new Dictionary<string, ShapeProperties>();
+
         public void ShowErrorMessageBox(string content, Exception exception = null)
         {
             if (exception != null)
@@ -43,6 +47,7 @@ namespace PowerPointLabs.ResizeLab
             if (selectedShapes != null)
             {
                 _resizeLab.ResetShapes(selectedShapes, _originalShapeProperties);
+                this.ExecuteOfficeCommand("Undo");
             }
         }
 
@@ -74,6 +79,11 @@ namespace PowerPointLabs.ResizeLab
                 var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.AbsoluteWidth, shape.AbsoluteHeight, shape.ShapeRotation);
                 _originalShapeProperties.Add(shape.Name, properties);
             }
+        }
+
+        private void CleanOriginalShapes()
+        {
+            _originalShapeProperties.Clear();
         }
     }
 }

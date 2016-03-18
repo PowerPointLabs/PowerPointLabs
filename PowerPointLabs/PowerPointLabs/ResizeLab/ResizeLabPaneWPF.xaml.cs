@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -17,8 +16,6 @@ namespace PowerPointLabs.ResizeLab
         
         private const string UnlockAspectRatioToolTip = "Unlocks the aspect ratio of objects when performing resizing of objects";
         private const string LockAspectRatioToolTip = "Locks the aspect ratio of objects when performing resizing of objects";
-        
-        private readonly Dictionary<string, ShapeProperties> _originalShapeProperties = new Dictionary<string, ShapeProperties>(); 
 
         // Dialog windows
         private StretchSettingsDialog _stretchSettingsDialog;
@@ -399,11 +396,6 @@ namespace PowerPointLabs.ResizeLab
         private PowerPoint.Selection GetSelection()
         {
             return this.GetCurrentSelection();
-        }
-
-        private void CleanOriginalShapes()
-        {
-            _originalShapeProperties.Clear();
         }
 
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
