@@ -622,7 +622,8 @@
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
-    <Compile Include="Utils\PPShape.cs" />
+    <Compile Include="Utils\PPShape.API.cs" />
+    <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
