@@ -43,8 +43,8 @@
             <ComboBoxItem>Picture Aspect</ComboBoxItem>
         </ComboBox>
 
-        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Picture Citation" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
-        <Label Name="IsInsertCitationLabel" Content="Insert Citation" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
+        <Label BorderBrush="#565656" BorderThickness="0,0,0,1" Content="Picture Sources" Foreground="#AAAAAA" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <Label Name="IsInsertCitationLabel" Content="Insert to Slide" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
         <controls:ToggleSwitch IsCheckedChanged="InsertCitationToggleSwitch_OnIsCheckedChanged" Name="InsertCitationToggleSwitch" IsChecked="{Binding Path=IsInsertCitation, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="3" />
 
         <Label Height="35" Name="CitationFontColorLabel" Content="Font Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
@@ -66,7 +66,7 @@
         <Label Height="35" Name="CitationTextBoxColorLabel" Content="TextBox Color" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8"/>
         <Border IsEnabled="{Binding Path=IsUseCitationTextBox}" Name="CitationTextBoxColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=CitationTextBoxColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#464646" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="8" />
 
-        <Label Name="IsInsertCitationToNoteLabel" Content="Insert Citation to Slide Note" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
+        <Label Name="IsInsertCitationToNoteLabel" Content="Insert to Slide Note" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9"/>
         <controls:ToggleSwitch IsChecked="{Binding Path=IsInsertCitationToNote, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" OnLabel="" OffLabel="" Grid.Column="1" Grid.Row="9" />
 
     </Grid>
