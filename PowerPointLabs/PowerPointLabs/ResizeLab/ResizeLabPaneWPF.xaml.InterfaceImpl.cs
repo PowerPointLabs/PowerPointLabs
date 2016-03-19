@@ -47,7 +47,6 @@ namespace PowerPointLabs.ResizeLab
             if (selectedShapes != null)
             {
                 _resizeLab.ResetShapes(selectedShapes, _originalShapeProperties);
-                this.ExecuteOfficeCommand("Undo");
             }
         }
 
