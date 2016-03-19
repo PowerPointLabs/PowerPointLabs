@@ -3,6 +3,7 @@ using Microsoft.Office.Core;
 using System.Collections;
 using System.Drawing;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Diagnostics;
 
 namespace PowerPointLabs.Utils
 {
@@ -442,9 +443,21 @@ namespace PowerPointLabs.Utils
                 pointList.Add(newPoint);
             }
 
-            // Rotate bounding box back to 0 degree, and
-            // apply the original coordinates to the nodes
+            // Rotate bounding box back to 0 degree, 
+            // flip the shape to original orientation 
+            // and apply the original coordinates to the nodes
             _shape.Rotation = 0;
+
+            if (_shape.VerticalFlip == MsoTriState.msoTrue)
+            {
+                _shape.Flip(MsoFlipCmd.msoFlipVertical);
+            }
+
+            if (_shape.HorizontalFlip == MsoTriState.msoTrue)
+            {
+                _shape.Flip(MsoFlipCmd.msoFlipHorizontal);
+            }
+
             for (int i = 0; i < pointList.Count; i++)
             {
                 var point = (float[]) pointList[i];

@@ -51,7 +51,7 @@
             <WPF:ImageButton ToolTip="Adjoin object vertically to the reference object" x:Name="adjoinVerticalButton" HorizontalAlignment="Left" Margin="86,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalButton_Click" MouseEnter="AdjoinVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AdjoinVerticalIcon.png"/>
             </WPF:ImageButton>
-            <CheckBox x:Name="AlignAdjoinCheckBox" ToolTip="Aligns the objects to the reference object after adjoining" Content="Align after adjoining" HorizontalAlignment="Left" Height="33" Margin="154,177,0,0" VerticalAlignment="Top" Checked="AlignAdjoinCheckBox_Checked" Unchecked="AlignAdjoinCheckBox_Unchecked"/>
+            <CheckBox x:Name="AlignAdjoinCheckBox" ToolTip="Aligns the objects to the reference object after adjoining" Content="Align" HorizontalAlignment="Left" Height="33" Margin="154,177,0,0" VerticalAlignment="Top" Checked="AlignAdjoinCheckBox_Checked" Unchecked="AlignAdjoinCheckBox_Unchecked"/>
             <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="distributeSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="DistributeSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
@@ -70,7 +70,7 @@
                 <Image Source="..\Resources\PositionsLab\DistributeGridIcon.png"/>
             </WPF:ImageButton>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="18,255,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="80" Width="280">
+            <GroupBox x:Name="reorderGroupBox" Header="Swap" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="80" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Reorder functions" x:Name="reorderSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorderSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
                 </WPF:ImageButton>
@@ -78,7 +78,7 @@
             <WPF:ImageButton ToolTip="Swaps the positions of objects in a cyclical order" x:Name="swapPositionsButton" HorizontalAlignment="Left" Margin="18,340,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SwapPositionsButton_Click" MouseEnter="SwapPositionsButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
-            <GroupBox x:Name="orientationGroupBox" Header="Orientation" HorizontalAlignment="Left" Margin="10,395,0,0" VerticalAlignment="Top" Height="130" Width="280"/>
+            <GroupBox x:Name="orientationGroupBox" Header="Reorientate" HorizontalAlignment="Left" Margin="10,395,0,0" VerticalAlignment="Top" Height="130" Width="280"/>
             <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,425,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
@@ -91,7 +91,9 @@
             <WPF:ImageButton ToolTip="Snaps objects away from a reference object" x:Name="snapAwayButton" HorizontalAlignment="Left" Margin="222,425,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click" MouseEnter="SnapAwayButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
-            <CheckBox x:Name="LockAxisCheckBox" Content="Lock Axis" ToolTip="Locks the axis such that when shape is moved, it can only move either horizontally or vertically" HorizontalAlignment="Left" Height="33" Margin="40,482,0,0" VerticalAlignment="Top" Checked="LockAxis_Checked" Unchecked="LockAxis_UnChecked"/>
+            <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="18,472,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
+            </WPF:ImageButton>
         </Grid>
     </ScrollViewer>
 </UserControl>
