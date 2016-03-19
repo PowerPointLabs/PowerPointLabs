@@ -35,6 +35,7 @@
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
             <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                 <Grid>
@@ -87,7 +88,22 @@
                     <cc:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Margin="3,3,3,3" Click="FillBtn_Click" Width="{Binding ElementName=FillBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide" MouseEnter="FillBtn_MouseEnter" MouseLeave="Btn_MouseLeave" Background="{x:Null}" BorderBrush="{x:Null}"/>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="AspectRatioGroupBox" Header="Aspect Ratio" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <GroupBox x:Name="SlightAdjustGroupBox" Header="Adjust Slightly" Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <cc:ImageButton x:Name="IncreaseHeightBtn" Text="Width" Grid.Column="0" Margin="3,3,3,3" Click="IncreaseHeightBtn_Click" Width="{Binding ElementName=IncreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseHeight.png" ToolTip="Slightly increases the height of selected objects" MouseEnter="IncreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                    <cc:ImageButton x:Name="DecreaseHeightBtn" Text="Height" Grid.Column="1" Margin="3,3,3,3" Click="DecreaseHeightBtn_Click" Width="{Binding ElementName=DecreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseHeight.png" ToolTip="Slightly decreases the height of selected objects" MouseEnter="DecreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                    <cc:ImageButton x:Name="IncreaseWidthBtn" Text="Fill" Grid.Column="2" Margin="3,3,3,3" Click="IncreaseWidthBtn_Click" Width="{Binding ElementName=IncreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseWidth.png" ToolTip="Slightly increases the width of selected objects" MouseEnter="IncreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                    <cc:ImageButton x:Name="DecreaseWidthBtn" Text="Fill" Grid.Column="3" Margin="3,3,3,3" Click="DecreaseWidthBtn_Click" Width="{Binding ElementName=DecreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseWidth.png" ToolTip="Slightly decreases the width of selected objects" MouseEnter="DecreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="AspectRatioGroupBox" Header="Aspect Ratio" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
 
                     <Grid.ColumnDefinitions>

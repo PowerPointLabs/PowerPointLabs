@@ -187,6 +187,45 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
+        #region Execute Slight Adjust
+        private void IncreaseHeightBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShape = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.IncreaseHeight(shapes);
+
+            ModifySelectionAspectRatio();
+            ExecuteResizeAction(selectedShape, resizeAction);
+        }
+
+        private void DecreaseHeightBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShape = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.DecreaseHeight(shapes);
+
+            ModifySelectionAspectRatio();
+            ExecuteResizeAction(selectedShape, resizeAction);
+        }
+
+        private void IncreaseWidthBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShape = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.IncreaseWidth(shapes);
+
+            ModifySelectionAspectRatio();
+            ExecuteResizeAction(selectedShape, resizeAction);
+        }
+
+        private void DecreaseWidthBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedShape = GetSelectedShapes();
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.DecreaseWidth(shapes);
+
+            ModifySelectionAspectRatio();
+            ExecuteResizeAction(selectedShape, resizeAction);
+        }
+
+        #endregion
+
         #region Execute Aspect Ratio
 
         private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
@@ -352,6 +391,45 @@ namespace PowerPointLabs.ResizeLab
 
             ModifySelectionAspectRatio();
             Preview(selectedShapes, slideWidth, slideHeight, previewAction);
+        }
+
+        #endregion
+
+        #region Preview Slight Adjust
+        private void IncreaseHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.IncreaseHeight(shapes);
+
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
+        }
+
+        private void DecreaseHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.DecreaseHeight(shapes);
+
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
+        }
+
+        private void IncreaseWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.IncreaseWidth(shapes);
+
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
+        }
+
+        private void DecreaseWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var selectedShapes = GetSelectedShapes(false);
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.DecreaseWidth(shapes);
+
+            ModifySelectionAspectRatio();
+            Preview(selectedShapes, previewAction, 1);
         }
 
         #endregion

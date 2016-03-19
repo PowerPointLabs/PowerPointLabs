@@ -561,6 +561,7 @@
       <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
@@ -1294,6 +1295,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\LockAxisIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseWidth.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
