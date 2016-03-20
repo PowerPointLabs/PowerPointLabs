@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using PowerPointLabs.ActionFramework.Common.Extension;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -15,11 +17,11 @@ namespace PowerPointLabs.PositionsLab
 
         //Private variables
         private int _numShapesSelected;
-        private List<PPShape> _selectedShapes;
+        private ShapeRange _selectedShapes;
         private int _rowLength;
         private int _colLength;
 
-        internal PositionsDistributeGridDialog(List<PPShape> selectedShapes, int rowLength, int colLength)
+        internal PositionsDistributeGridDialog(ShapeRange selectedShapes, int rowLength, int colLength)
         {
             IsOpen = true;
             _selectedShapes = selectedShapes;
@@ -89,8 +91,17 @@ namespace PowerPointLabs.PositionsLab
             {
                 return;
             }
-            
-            PositionsLabMain.DistributeGrid(_selectedShapes, (int)colValue, (int)rowValue);
+
+            this.StartNewUndoEntry();
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+            var simulatedShapes = DuplicateShapes(selectedShapes);
+            var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+
+            PositionsLabMain.DistributeGrid(simulatedPPShapes, (int)colValue, (int)rowValue);
+
+            SyncShapes(selectedShapes, simulatedShapes);
+            simulatedShapes.Delete();
+            GC.Collect();
 
             Close();
         }
@@ -98,6 +109,49 @@ namespace PowerPointLabs.PositionsLab
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void SyncShapes(ShapeRange selected, ShapeRange simulatedShapes)
+        {
+            for (int i = 1; i <= selected.Count; i++)
+            {
+                var selectedShape = selected[i];
+                var simulatedShape = simulatedShapes[i];
+                var selectedCenter = Graphics.GetCenterPoint(selectedShape);
+                var simulatedCenter = Graphics.GetCenterPoint(simulatedShape);
+
+                selectedShape.IncrementLeft(simulatedCenter.X - selectedCenter.X);
+                selectedShape.IncrementTop(simulatedCenter.Y - selectedCenter.Y);
+            }
+        }
+
+        private ShapeRange DuplicateShapes(ShapeRange range)
+        {
+            String[] duplicatedShapeNames = new String[range.Count];
+
+            for (int i = 0; i < range.Count; i++)
+            {
+                var shape = range[i + 1];
+                var duplicated = shape.Duplicate()[1];
+                duplicated.Name = shape.Name + "_Copy";
+                duplicated.Left = shape.Left;
+                duplicated.Top = shape.Top;
+                duplicatedShapeNames[i] = duplicated.Name;
+            }
+
+            return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
+        }
+
+        private List<PPShape> ConvertShapeRangeToPPShapeList(ShapeRange range, int index)
+        {
+            var shapes = new List<PPShape>();
+
+            for (var i = index; i <= range.Count; i++)
+            {
+                shapes.Add(new PPShape(range[i]));
+            }
+
+            return shapes;
         }
     }
 }
