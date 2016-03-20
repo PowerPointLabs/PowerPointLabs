@@ -818,10 +818,12 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var simulatedShapes = DuplicateShapes(selectedShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedShapes);
 
-                SyncShapes(selectedShapes, simulatedShapes);
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
                 simulatedShapes.Delete();
                 GC.Collect();
 
@@ -861,10 +863,12 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var simulatedShapes = DuplicateShapes(selectedShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedShapes, dimension);
 
-                SyncShapes(selectedShapes, simulatedShapes);
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
                 simulatedShapes.Delete();
                 GC.Collect();
 
@@ -904,10 +908,12 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var simulatedShapes = DuplicateShapes(selectedShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedShapes, dimension1, dimension2);
 
-                SyncShapes(selectedShapes, simulatedShapes);
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
                 simulatedShapes.Delete();
                 GC.Collect();
 
@@ -947,10 +953,11 @@ namespace PowerPointLabs.PositionsLab
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes);
 
-                SyncShapes(selectedShapes, simulatedShapes);
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
                 simulatedShapes.Delete();
                 GC.Collect();
 
@@ -990,10 +997,11 @@ namespace PowerPointLabs.PositionsLab
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, dimension);
 
-                SyncShapes(selectedShapes, simulatedShapes);
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
                 simulatedShapes.Delete();
                 GC.Collect();
 
@@ -1033,10 +1041,11 @@ namespace PowerPointLabs.PositionsLab
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, dimension1, dimension2);
 
-                SyncShapes(selectedShapes, simulatedShapes);
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
                 simulatedShapes.Delete();
                 GC.Collect();
 
@@ -1120,17 +1129,15 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes)
+        private void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes, float[,] originalPositions)
         {
             for (int i = 1; i <= selected.Count; i++)
             {
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
-                var selectedCenter = Graphics.GetCenterPoint(selectedShape);
-                var simulatedCenter = Graphics.GetCenterPoint(simulatedShape);
 
-                selectedShape.IncrementLeft(simulatedCenter.X - selectedCenter.X);
-                selectedShape.IncrementTop(simulatedCenter.Y - selectedCenter.Y);
+                selectedShape.IncrementLeft(simulatedShape.Left- originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(simulatedShape.Top - originalPositions[i - 1, Top]);
             }
         }
 
@@ -1149,6 +1156,19 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
+        }
+
+        private float[,] SaveOriginalPositions(List<PPShape> shapes)
+        {
+            var initialPositions = new float[shapes.Count, 2];
+            for (var i = 0; i < shapes.Count; i++)
+            {
+                var s = shapes[i];
+                initialPositions[i, Left] = s.Left;
+                initialPositions[i, Top] = s.Top;
+            }
+
+            return initialPositions;
         }
     }
     #endregion
