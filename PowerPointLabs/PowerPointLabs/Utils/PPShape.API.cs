@@ -40,6 +40,11 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
+        /// </summary>
+        public int Id => _shape.Id;
+
+        /// <summary>
         /// Return or set the width of the specified shape.
         /// </summary>
         public float ShapeWidth
@@ -261,11 +266,6 @@ namespace PowerPointLabs.Utils
                 return bottomRightPoint;
             }
         }
-
-        /// <summary>
-        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
-        /// </summary>
-        public int Id => _shape.Id;
 
         /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
