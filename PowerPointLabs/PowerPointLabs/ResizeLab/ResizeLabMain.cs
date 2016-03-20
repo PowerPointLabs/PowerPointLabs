@@ -33,7 +33,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         /// <param name="originalShapeProperties"></param>
         public void ResetShapes(PowerPoint.ShapeRange selectedShapes,
-            Dictionary<string, ShapeProperties> originalShapeProperties)
+            Dictionary<int, ShapeProperties> originalShapeProperties)
         {
             if (originalShapeProperties.Count == 0) return;
             var isAspectRatio = selectedShapes.LockAspectRatio;
@@ -42,11 +42,11 @@ namespace PowerPointLabs.ResizeLab
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 var shape = new PPShape(selectedShapes[i]);
-                var shapeName = shape.Name;
+                var shapeId = shape.Id;
 
-                if (!originalShapeProperties.ContainsKey(shapeName)) continue;
+                if (!originalShapeProperties.ContainsKey(shapeId)) continue;
 
-                var originalProperties = originalShapeProperties[shapeName];
+                var originalProperties = originalShapeProperties[shapeId];
                 shape.AbsoluteWidth = originalProperties.AbsoluteWidth;
                 shape.AbsoluteHeight = originalProperties.AbsoluteHeight;
                 shape.Top = originalProperties.Top;

@@ -137,11 +137,17 @@ namespace PowerPointLabs.ResizeLab
 
                     if (dimension == Dimension.Height)
                     {
+                        var originalLeft = shape.Left;
+
                         FitToSlide.FitToHeight(shape, slideWidth, slideHeight);
+                        shape.Left = originalLeft;
                     }
                     else if (dimension == Dimension.Width)
                     {
+                        var originalTop = shape.Top;
+
                         FitToSlide.FitToWidth(shape, slideWidth, slideHeight);
+                        shape.Top = originalTop;
                     }
                     else if (dimension == Dimension.HeightAndWidth)
                     {
