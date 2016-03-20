@@ -37,6 +37,10 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="optionalParameters"></param>
         public void ProcessErrorCode(int errorType, params string[] optionalParameters)
         {
+            if (View == null) // Nothing to display on
+            {
+                return;
+            }
             var errorMsg = string.Format(GetErrorMessage(errorType), optionalParameters);
             View.ShowErrorMessageBox(errorMsg);
         }
