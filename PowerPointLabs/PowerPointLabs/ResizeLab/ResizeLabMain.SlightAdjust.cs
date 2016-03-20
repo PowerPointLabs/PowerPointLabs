@@ -9,6 +9,17 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+        // To be used for error handling
+        internal const int SlightAdjust_MinNoOfShapesRequired = 1;
+        internal const string SlightAdjust_FeatureName = "Slight Adjustment";
+        internal const string SlightAdjust_ShapeSupport = "object";
+        internal static readonly string[] SlightAdjust_ErrorParameters = new string[]
+        {
+            SlightAdjust_FeatureName,
+            SlightAdjust_MinNoOfShapesRequired.ToString(),
+            SlightAdjust_ShapeSupport
+        };
+
         public const float ResizeFactor = 1;
 
         #region API

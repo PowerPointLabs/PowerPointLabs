@@ -11,6 +11,17 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+        // To be used for error handling
+        internal const int Fit_MinNoOfShapesRequired = 1;
+        internal const string Fit_FeatureName = "Fit To Slide";
+        internal const string Fit_ShapeSupport = "object";
+        internal static readonly string[] Fit_ErrorParameters = new string[]
+        {
+            Fit_FeatureName,
+            Fit_MinNoOfShapesRequired.ToString(),
+            Fit_ShapeSupport
+        };
+
         /// <summary>
         /// Fit selected shapes to the height of the slide.
         /// </summary>
