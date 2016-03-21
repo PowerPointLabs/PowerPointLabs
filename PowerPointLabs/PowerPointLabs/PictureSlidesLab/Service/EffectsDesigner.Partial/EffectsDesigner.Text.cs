@@ -3,6 +3,7 @@ using System.Globalization;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
+using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -13,67 +14,56 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         // apply text formats to textbox & placeholer
         public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease)
         {
-            foreach (PowerPoint.Shape shape in Shapes)
+            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            if (shape == null)
+                return;
+
+            shape.Fill.Visible = MsoTriState.msoFalse;
+            shape.Line.Visible = MsoTriState.msoFalse;
+
+            var font = shape.TextFrame2.TextRange.TrimText().Font;
+
+            if (!string.IsNullOrEmpty(fontColor))
             {
-                if ((shape.Type != MsoShapeType.msoPlaceholder
-                        && shape.Type != MsoShapeType.msoTextBox)
-                        || shape.TextFrame.HasText == MsoTriState.msoFalse)
-                {
-                    continue;
-                }
-                shape.Fill.Visible = MsoTriState.msoFalse;
-                shape.Line.Visible = MsoTriState.msoFalse;
+                font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(fontColor));
+            }
 
-                var font = shape.TextFrame2.TextRange.TrimText().Font;
+            if (!StringUtil.IsEmpty(fontFamily))
+            {
+                shape.TextEffect.FontName = fontFamily;
+            }
 
-                if (!string.IsNullOrEmpty(fontColor))
-                {
-                    font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(fontColor));
-                }
+            if (StringUtil.IsEmpty(shape.Tags[Tag.OriginalFontSize]))
+            {
+                shape.Tags.Add(Tag.OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
+            }
 
-                if (!StringUtil.IsEmpty(fontFamily))
-                {
-                    shape.TextEffect.FontName = fontFamily;
-                }
-
-                if (StringUtil.IsEmpty(shape.Tags[Tag.OriginalFontSize]))
-                {
-                    shape.Tags.Add(Tag.OriginalFontSize, shape.TextEffect.FontSize.ToString(CultureInfo.InvariantCulture));
-                }
-
-                if (fontSizeToIncrease != -1)
-                {
-                    shape.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeNone;
-                    shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]) + fontSizeToIncrease;
-                }
+            if (fontSizeToIncrease != -1)
+            {
+                shape.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeNone;
+                shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]) + fontSizeToIncrease;
             }
         }
 
         public void ApplyTextGlowEffect(bool isUseTextGlow, string textGlowColor)
         {
-            foreach (PowerPoint.Shape shape in Shapes)
-            {
-                if ((shape.Type != MsoShapeType.msoPlaceholder
-                     && shape.Type != MsoShapeType.msoTextBox)
-                    || shape.TextFrame.HasText == MsoTriState.msoFalse)
-                {
-                    continue;
-                }
+            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            if (shape == null)
+                return;
 
-                if (isUseTextGlow)
-                {
-                    shape.TextFrame2.TextRange.Font.Glow.Radius = 8;
-                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
-                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
-                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.6f;
-                }
-                else
-                {
-                    shape.TextFrame2.TextRange.Font.Glow.Radius = 0;
-                    shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
-                        Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
-                    shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.0f;
-                }
+            if (isUseTextGlow)
+            {
+                shape.TextFrame2.TextRange.Font.Glow.Radius = 8;
+                shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                    Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.6f;
+            }
+            else
+            {
+                shape.TextFrame2.TextRange.Font.Glow.Radius = 0;
+                shape.TextFrame2.TextRange.Font.Glow.Color.RGB =
+                    Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(textGlowColor));
+                shape.TextFrame2.TextRange.Font.Glow.Transparency = 0.0f;
             }
         }
 
@@ -95,6 +85,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
             try
             {
+                if (_slide.Layout == PowerPoint.PpSlideLayout.ppLayoutBlank)
+                {
+                    _slide.Layout = PowerPoint.PpSlideLayout.ppLayoutTitleOnly;
+                }
                 Shapes.AddTitle().TextFrame2.TextRange.Text = "Picture Slides Lab";
             }
             catch

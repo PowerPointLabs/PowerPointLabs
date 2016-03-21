@@ -1033,6 +1033,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ResizeDecreaseHeight {
+            get {
+                object obj = ResourceManager.GetObject("ResizeDecreaseHeight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeDecreaseWidth {
+            get {
+                object obj = ResourceManager.GetObject("ResizeDecreaseWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeFitToFill {
             get {
                 object obj = ResourceManager.GetObject("ResizeFitToFill", resourceCulture);
@@ -1056,6 +1076,26 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap ResizeFitToWidth {
             get {
                 object obj = ResourceManager.GetObject("ResizeFitToWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeIncreaseHeight {
+            get {
+                object obj = ResourceManager.GetObject("ResizeIncreaseHeight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeIncreaseWidth {
+            get {
+                object obj = ResourceManager.GetObject("ResizeIncreaseWidth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -14,6 +14,17 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+        // To be used for error handling
+        internal const int SameDimension_MinNoOfShapesRequired = 2;
+        internal const string SameDimension_FeatureName = "Same Dimension";
+        internal const string SameDimension_ShapeSupport = "objects";
+        internal static readonly string[] SameDimension_ErrorParameters = new string[]
+        {
+            SameDimension_FeatureName,
+            SameDimension_MinNoOfShapesRequired.ToString(),
+            SameDimension_ShapeSupport
+        };
+
         public enum SameDimensionAnchor
         {
             TopLeft, TopCenter, TopRight,
@@ -69,7 +80,8 @@ namespace PowerPointLabs.ResizeLab
                 var referenceHeight = GetReferenceHeight(selectedShapes);
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (!IsMoreThanOneShape(selectedShapes) || (referenceHeight < 0) || (referenceWidth < 0))
+                if (!IsMoreThanOneShape(selectedShapes, SameDimension_MinNoOfShapesRequired, true, SameDimension_ErrorParameters) 
+                    || (referenceHeight < 0) || (referenceWidth < 0))
                 {
                     return;
                 }

@@ -33,16 +33,16 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight);
             var textBoxInfo = textBoxes.GetTextBoxesInfo();
 
-            Assert.IsTrue(SlideUtil.IsRoughlySame(348.4239f, textBoxInfo.Height));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(57.5200043f, textBoxInfo.Height));
             Assert.IsTrue(SlideUtil.IsRoughlySame(68.2f, textBoxInfo.Left));
             Assert.IsTrue(SlideUtil.IsRoughlySame(52.17752f, textBoxInfo.Top));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(741.0565f, textBoxInfo.Width));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(710.945068f, textBoxInfo.Width));
 
             TextBoxes.AddMargin(textBoxInfo, 25);
-            Assert.IsTrue(SlideUtil.IsRoughlySame(398.4239f, textBoxInfo.Height));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(107.520004f, textBoxInfo.Height));
             Assert.IsTrue(SlideUtil.IsRoughlySame(43.1999969f, textBoxInfo.Left));
             Assert.IsTrue(SlideUtil.IsRoughlySame(27.17752f, textBoxInfo.Top));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(791.0565f, textBoxInfo.Width));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(760.945068f, textBoxInfo.Width));
         }
 
         [TestMethod]
@@ -59,9 +59,9 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .SetPosition(Position.Left)
                 .StartBoxing();
             var textBoxInfo = textBoxes.GetTextBoxesInfo();
-            Assert.IsTrue(SlideUtil.IsRoughlySame(241.439987f, textBoxInfo.Height));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(57.5200043f, textBoxInfo.Height));
             Assert.IsTrue(SlideUtil.IsRoughlySame(25f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(149.279953f, textBoxInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(241.240036f, textBoxInfo.Top));
             Assert.IsTrue(SlideUtil.IsRoughlySame(710.945068f, textBoxInfo.Width));
 
             textBoxes
@@ -70,7 +70,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .StartBoxing();
             textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(124.527481f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(149.279953f, textBoxInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(241.240036f, textBoxInfo.Top));
 
             textBoxes
                 .SetAlignment(Alignment.Centre)
@@ -78,7 +78,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .StartBoxing();
             textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(25f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(273.559875f, textBoxInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(457.480042f, textBoxInfo.Top));
 
             textBoxes
                 .SetAlignment(Alignment.Centre)
@@ -86,7 +86,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .StartBoxing();
             textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(124.527481f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(273.560028f, textBoxInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(457.480042f, textBoxInfo.Top));
 
             textBoxes
                 .SetAlignment(Alignment.Centre)
@@ -94,7 +94,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .StartBoxing();
             textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(224.054962f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(149.279953f, textBoxInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(241.23996f, textBoxInfo.Top));
         }
 
         [TestMethod]
@@ -114,11 +114,11 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .StartBoxing();
 
             var textBoxInfo = textBoxes.GetTextBoxesInfo();
-            Assert.IsTrue(SlideUtil.IsRoughlySame(349.440033f, textBoxInfo.Height));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(25f, textBoxInfo.Left));
-            Assert.IsTrue(SlideUtil.IsRoughlySame(95.27996f, textBoxInfo.Top));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(105.040009f, textBoxInfo.Height));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(25.00004f, textBoxInfo.Left));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(217.480042f, textBoxInfo.Top));
             // aft text wrapping, width is smaller (originally should be 710)
-            Assert.IsTrue(SlideUtil.IsRoughlySame(448.355042f, textBoxInfo.Width));
+            Assert.IsTrue(SlideUtil.IsRoughlySame(365.47f, textBoxInfo.Width));
         }
     }
 }

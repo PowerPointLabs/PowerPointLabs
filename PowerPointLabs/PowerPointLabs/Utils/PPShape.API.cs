@@ -40,6 +40,11 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
+        /// </summary>
+        public int Id => _shape.Id;
+
+        /// <summary>
         /// Return or set the width of the specified shape.
         /// </summary>
         public float ShapeWidth
@@ -263,11 +268,6 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
-        /// </summary>
-        public int Id => _shape.Id;
-
-        /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
         /// distance from the left most point of the shape to the left edge of the slide.
         /// </summary>
@@ -395,7 +395,10 @@ namespace PowerPointLabs.Utils
         {
             if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1) return;
 
-            var rotation = GetStandardizedRotation(360 - _originalRotation);
+            var isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
+                                         (_originalRotation >= 270 && _originalRotation < 360);
+
+            var rotation = GetStandardizedRotation(_originalRotation%90);
             var centerLeft = Center.X;
             var centerTop = Center.Y;
 
@@ -407,6 +410,12 @@ namespace PowerPointLabs.Utils
                 var oldY = point[1, 2];
                 var newX = oldY*Math.Sin(rotation) + oldX*Math.Cos(rotation);
                 var newY = oldY*Math.Cos(rotation) - oldX*Math.Sin(rotation);
+
+                if (isSecondOrFourthQuadrant)
+                {
+                    newX = oldY * Math.Cos(rotation) - oldX * Math.Sin(rotation);
+                    newY = oldY * Math.Sin(rotation) + oldX * Math.Cos(rotation);
+                }
 
                 _shape.Nodes.SetPosition(i, newX, newY);
             }

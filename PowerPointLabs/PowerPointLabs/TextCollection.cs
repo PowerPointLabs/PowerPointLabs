@@ -594,11 +594,8 @@
 
         public class ResizeLabText
         {
-            public const string ErrorNoSelection = "'Resize Lab' requires shape to be selected.";
-            public const string ErrorFewerThanTwoSelection = "'Resize Lab' requires at least two shapes.";
+            public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying {0}";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
-            public const string WarningShapesNotStretchText =
-                "One or more shapes cannot be resized as it will cause the shape to be small";
         }
 
         #endregion
