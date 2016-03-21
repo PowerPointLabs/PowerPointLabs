@@ -55,6 +55,7 @@ namespace PowerPointLabs.ResizeLab
             if (selectedShapes == null) return;
 
             Reset();
+            this.StartNewUndoEntry();
             resizeAction.Invoke(selectedShapes);
             CleanOriginalShapes();
         }
@@ -64,6 +65,7 @@ namespace PowerPointLabs.ResizeLab
             if (selectedShapes == null) return;
 
             Reset();
+            this.StartNewUndoEntry();
             resizeAction.Invoke(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             CleanOriginalShapes();
         }
