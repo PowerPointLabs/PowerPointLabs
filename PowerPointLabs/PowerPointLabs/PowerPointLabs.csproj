@@ -1309,6 +1309,12 @@
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeIncreaseWidth.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalWithAlignIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalWithAlignIcon.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -163,9 +163,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AdjoinHorizontalWithAlignIcon {
+            get {
+                object obj = ResourceManager.GetObject("AdjoinHorizontalWithAlignIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap AdjoinVerticalIcon {
             get {
                 object obj = ResourceManager.GetObject("AdjoinVerticalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AdjoinVerticalWithAlignIcon {
+            get {
+                object obj = ResourceManager.GetObject("AdjoinVerticalWithAlignIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

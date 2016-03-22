@@ -45,13 +45,18 @@
                 <Image Source="..\Resources\PositionsLab\AlignCenterIcon.png"/>
             </WPF:ImageButton>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Height="80" Width="280"/>
-            <WPF:ImageButton ToolTip="Adjoin object horizontally to the reference object" x:Name="adjoinHorizontalButton" HorizontalAlignment="Left" Margin="18,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinHorizontalButton_Click" MouseEnter="AdjoinHorizontalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Adjoin objects horizontally to the reference object" x:Name="adjoinHorizontalButton" HorizontalAlignment="Left" Margin="18,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinHorizontalButton_Click" MouseEnter="AdjoinHorizontalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AdjoinHorizontalIcon.png"/>
             </WPF:ImageButton>
-            <WPF:ImageButton ToolTip="Adjoin object vertically to the reference object" x:Name="adjoinVerticalButton" HorizontalAlignment="Left" Margin="86,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalButton_Click" MouseEnter="AdjoinVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Adjoin objects horizontally to the reference object and aligns them horizontal" x:Name="adjoinHorizontalWithAlignButton" HorizontalAlignment="Left" Margin="86,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinHorizontalWithAlignButton_Click" MouseEnter="AdjoinHorizontalWithAlignButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\AdjoinHorizontalWithAlignIcon.png"/>
+            </WPF:ImageButton>
+            <WPF:ImageButton ToolTip="Adjoin objects vertically to the reference object" x:Name="adjoinVerticalButton" HorizontalAlignment="Left" Margin="154,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalButton_Click" MouseEnter="AdjoinVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AdjoinVerticalIcon.png"/>
             </WPF:ImageButton>
-            <CheckBox x:Name="AlignAdjoinCheckBox" ToolTip="Aligns the objects to the reference object after adjoining" Content="Align Too" HorizontalAlignment="Left" Height="33" Margin="154,177,0,0" VerticalAlignment="Top" Checked="AlignAdjoinCheckBox_Checked" Unchecked="AlignAdjoinCheckBox_Unchecked" Loaded="AlignAdjoinCheckBox_OnLoaded"/>
+            <WPF:ImageButton ToolTip="Adjoin objects vertically to the reference object and aligns them vertically" x:Name="adjoinVerticalWithAlignButton" HorizontalAlignment="Left" Margin="222,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalWithAlignButton_Click" MouseEnter="AdjoinVerticalWithAlignButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\AdjoinVerticalWithAlignIcon.png"/>
+            </WPF:ImageButton>
             <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="distributeSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="DistributeSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>

@@ -11,6 +11,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Media = System.Windows.Media;
 using System.Diagnostics;
+using System.Windows.Input;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -135,24 +136,29 @@ namespace PowerPointLabs.PositionsLab
         #region Adjoin
         private void AdjoinHorizontalButton_Click(object sender, RoutedEventArgs e)
         {
+            PositionsLabMain.AdjoinWithoutAligning();
+            Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinHorizontal(shapes);
+            ExecutePositionsAction(positionsAction, false);
+        }
+        private void AdjoinHorizontalWithAlignButton_Click(object sender, RoutedEventArgs e)
+        {
+            PositionsLabMain.AdjoinWithAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinHorizontal(shapes);
             ExecutePositionsAction(positionsAction, false);
         }
 
         private void AdjoinVerticalButton_Click(object sender, RoutedEventArgs e)
         {
+            PositionsLabMain.AdjoinWithoutAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinVertical(shapes);
             ExecutePositionsAction(positionsAction, false);
         }
 
-        private void AlignAdjoinCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void AdjoinVerticalWithAlignButton_Click(object sender, RoutedEventArgs e)
         {
             PositionsLabMain.AdjoinWithAligning();
-        }
-
-        private void AlignAdjoinCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            PositionsLabMain.AdjoinWithoutAligning();
+            Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinVertical(shapes);
+            ExecutePositionsAction(positionsAction, false);
         }
         #endregion
 
@@ -493,12 +499,28 @@ namespace PowerPointLabs.PositionsLab
 
         private void AdjoinHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            PositionsLabMain.AdjoinWithoutAligning();
+            Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinHorizontal(shapes);
+            ExecutePositionsAction(positionsAction, true);
+        }
+
+        private void AdjoinHorizontalWithAlignButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            PositionsLabMain.AdjoinWithAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinHorizontal(shapes);
             ExecutePositionsAction(positionsAction, true);
         }
 
         private void AdjoinVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            PositionsLabMain.AdjoinWithoutAligning();
+            Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinVertical(shapes);
+            ExecutePositionsAction(positionsAction, true);
+        }
+
+        private void AdjoinVerticalWithAlignButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            PositionsLabMain.AdjoinWithAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinVertical(shapes);
             ExecutePositionsAction(positionsAction, true);
         }
@@ -701,11 +723,6 @@ namespace PowerPointLabs.PositionsLab
             {
                 _reorderSettingsDialog.Activate();
             }
-        }
-
-        private void AlignAdjoinCheckBox_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            AlignAdjoinCheckBox.IsChecked = PositionsLabMain.AlignShapesToBeAdjoined;
         }
         #endregion
 
