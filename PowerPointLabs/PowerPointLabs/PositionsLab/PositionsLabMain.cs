@@ -34,7 +34,8 @@ namespace PowerPointLabs.PositionsLab
         {
             Slide,
             FirstShape,
-            FirstTwoShapes
+            FirstTwoShapes,
+            ExtremeShapes
         }
 
         public enum DistributeSpaceReferenceObject
@@ -158,9 +159,17 @@ namespace PowerPointLabs.PositionsLab
         /// <summary>
         /// Tells the Positions Lab to use the first two selected shapes as reference points for Distribute methods
         /// </summary>
-        public static void DistributeRefertoFirstTwoShapes()
+        public static void DistributeReferToFirstTwoShapes()
         {
             DistributeReference = DistributeReferenceObject.FirstTwoShapes;
+        }
+
+        /// <summary>
+        /// Tells the Positions Lab to use detect the corner most shapes and use those as reference points for Distribute methods
+        /// </summary>
+        public static void DistributeReferToExtremeShapes()
+        {
+            DistributeReference = DistributeReferenceObject.ExtremeShapes;
         }
 
         /// <summary>
@@ -622,6 +631,8 @@ namespace PowerPointLabs.PositionsLab
         {
             List<PPShape> sortedShapes;
             var toSortList = new List<PPShape>(selectedShapes);
+            PPShape leftRefShape, rightRefShape;
+            float startingPoint, width;
             switch (DistributeReference)
             {
                 case DistributeReferenceObject.Slide:
@@ -645,8 +656,8 @@ namespace PowerPointLabs.PositionsLab
                         throw new Exception(ErrorMessageFewerThanThreeSelection);
                     }
 
-                    var leftRefShape = selectedShapes[0];
-                    var rightRefShape = selectedShapes[1];
+                    leftRefShape = selectedShapes[0];
+                    rightRefShape = selectedShapes[1];
                     if (leftRefShape.Left > rightRefShape.Left)
                     {
                         var temp = leftRefShape;
@@ -656,8 +667,23 @@ namespace PowerPointLabs.PositionsLab
                     toSortList.RemoveAt(0);
                     toSortList.RemoveAt(0);
                     sortedShapes = Graphics.SortShapesByLeft(toSortList);
-                    var startingPoint = leftRefShape.Left + leftRefShape.AbsoluteWidth;
-                    var width = rightRefShape.Left - startingPoint;
+                    startingPoint = leftRefShape.Left + leftRefShape.AbsoluteWidth;
+                    width = rightRefShape.Left - startingPoint;
+                    DistributeHorizontal(sortedShapes, width, startingPoint);
+                    break;
+                case DistributeReferenceObject.ExtremeShapes:
+                    if (selectedShapes.Count < 3)
+                    {
+                        throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    }
+
+                    sortedShapes = Graphics.SortShapesByLeft(toSortList);
+                    leftRefShape = sortedShapes[0];
+                    rightRefShape = sortedShapes[sortedShapes.Count-1];
+                    sortedShapes.RemoveAt(sortedShapes.Count - 1);
+                    sortedShapes.RemoveAt(0);
+                    startingPoint = leftRefShape.Left + leftRefShape.AbsoluteWidth;
+                    width = rightRefShape.Left - startingPoint;
                     DistributeHorizontal(sortedShapes, width, startingPoint);
                     break;
                 default:

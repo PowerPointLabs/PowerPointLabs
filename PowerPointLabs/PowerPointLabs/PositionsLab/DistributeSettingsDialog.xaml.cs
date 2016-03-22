@@ -85,6 +85,14 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void DistributeExtremeShapesButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.ExtremeShapes)
+            {
+                distributeToExtremeShapesButton.IsChecked = true;
+            }
+        }
+
         private void DistributeByBoundariesButton_Load(object sender, RoutedEventArgs e)
         {
             if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectBoundary)
@@ -110,6 +118,7 @@ namespace PowerPointLabs.PositionsLab
             var marginLeftValue = marginLeftInput.Value;
             var marginRightValue = marginRightInput.Value;
 
+            // Checks for boundary reference
             if (distributeToSlideButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeReferToSlide();
@@ -122,9 +131,15 @@ namespace PowerPointLabs.PositionsLab
 
             if (distributeToFirstTwoShapesButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeRefertoFirstTwoShapes();
+                PositionsLabMain.DistributeReferToFirstTwoShapes();
             }
 
+            if (distributeToExtremeShapesButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferToExtremeShapes();
+            }
+
+            // Checks for space calculation reference
             if (distributeByBoundariesButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeSpaceByBoundaries();
@@ -135,7 +150,7 @@ namespace PowerPointLabs.PositionsLab
                 PositionsLabMain.DistributeSpaceByCenter();
             }
 
-
+            // Checks for margin values
             if (!marginTopValue.HasValue || marginTopValue.GetValueOrDefault() < 0 ||
                 !marginBottomValue.HasValue || marginBottomValue.GetValueOrDefault() < 0 ||
                 !marginLeftValue.HasValue || marginLeftValue.GetValueOrDefault() < 0 ||
@@ -150,6 +165,7 @@ namespace PowerPointLabs.PositionsLab
             PositionsLabMain.SetDistributeMarginLeft((float)marginLeftValue);
             PositionsLabMain.SetDistributeMarginRight((float)marginRightValue);
 
+            // Checks for distribute grid align reference
             if (alignLeftButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignLeft);
