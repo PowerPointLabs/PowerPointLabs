@@ -70,7 +70,7 @@
                 <Image Source="..\Resources\PositionsLab\DistributeGridIcon.png"/>
             </WPF:ImageButton>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="18,255,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
-            <GroupBox x:Name="reorderGroupBox" Header="Swap" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="80" Width="280">
+            <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,310,0,0" VerticalAlignment="Top" Height="80" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Reorder functions" x:Name="reorderSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorderSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
                 </WPF:ImageButton>
