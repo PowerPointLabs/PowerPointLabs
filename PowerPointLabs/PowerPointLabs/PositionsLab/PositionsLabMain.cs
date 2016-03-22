@@ -749,6 +749,8 @@ namespace PowerPointLabs.PositionsLab
         {
             List<PPShape> sortedShapes;
             var toSortList = new List<PPShape>(selectedShapes);
+            PPShape topRefShape, bottomRefShape;
+            float startingPoint, height;
             switch (DistributeReference)
             {
                 case DistributeReferenceObject.Slide:
@@ -772,8 +774,8 @@ namespace PowerPointLabs.PositionsLab
                         throw new Exception(ErrorMessageFewerThanThreeSelection);
                     }
 
-                    var topRefShape = selectedShapes[0];
-                    var bottomRefShape = selectedShapes[1];
+                    topRefShape = selectedShapes[0];
+                    bottomRefShape = selectedShapes[1];
                     if (topRefShape.Top > bottomRefShape.Top)
                     {
                         var temp = topRefShape;
@@ -783,8 +785,23 @@ namespace PowerPointLabs.PositionsLab
                     toSortList.RemoveAt(0);
                     toSortList.RemoveAt(0);
                     sortedShapes = Graphics.SortShapesByTop(toSortList);
-                    var startingPoint = topRefShape.Top + topRefShape.AbsoluteHeight;
-                    var height = bottomRefShape.Top - startingPoint;
+                    startingPoint = topRefShape.Top + topRefShape.AbsoluteHeight;
+                    height = bottomRefShape.Top - startingPoint;
+                    DistributeVertical(sortedShapes, height, startingPoint);
+                    break;
+                case DistributeReferenceObject.ExtremeShapes:
+                    if (selectedShapes.Count < 3)
+                    {
+                        throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    }
+
+                    sortedShapes = Graphics.SortShapesByTop(selectedShapes);
+                    topRefShape = sortedShapes[0];
+                    bottomRefShape = sortedShapes[sortedShapes.Count-1];
+                    sortedShapes.RemoveAt(sortedShapes.Count - 1);
+                    sortedShapes.RemoveAt(0);
+                    startingPoint = topRefShape.Top + topRefShape.AbsoluteHeight;
+                    height = bottomRefShape.Top - startingPoint;
                     DistributeVertical(sortedShapes, height, startingPoint);
                     break;
                 default:
