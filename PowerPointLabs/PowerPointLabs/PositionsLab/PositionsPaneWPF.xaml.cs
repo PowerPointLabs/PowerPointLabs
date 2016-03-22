@@ -808,6 +808,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            PowerPoint.ShapeRange simulatedShapes = null;
+
             try
             {
                 if (_previewIsExecuted && !isPreview)
@@ -817,15 +819,13 @@ namespace PowerPointLabs.PositionsLab
 
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedShapes);
 
                 SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-                simulatedShapes.Delete();
-                GC.Collect();
 
                 if (isPreview)
                 {
@@ -838,7 +838,14 @@ namespace PowerPointLabs.PositionsLab
                 {
                     ShowErrorMessageBox(ex.Message, ex);
                 }
-                return;
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
             }
         }
 
@@ -853,6 +860,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            PowerPoint.ShapeRange simulatedShapes = null;
+
             try
             {
                 if (_previewIsExecuted && !isPreview)
@@ -862,15 +871,13 @@ namespace PowerPointLabs.PositionsLab
 
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedShapes, dimension);
 
                 SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-                simulatedShapes.Delete();
-                GC.Collect();
 
                 if (isPreview)
                 {
@@ -883,7 +890,14 @@ namespace PowerPointLabs.PositionsLab
                 {
                     ShowErrorMessageBox(ex.Message, ex);
                 }
-                return;
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
             }
         }
 
@@ -898,6 +912,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            PowerPoint.ShapeRange simulatedShapes = null;
+
             try
             {
                 if (_previewIsExecuted && !isPreview)
@@ -907,15 +923,13 @@ namespace PowerPointLabs.PositionsLab
 
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedShapes, dimension1, dimension2);
 
                 SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-                simulatedShapes.Delete();
-                GC.Collect();
 
                 if (isPreview)
                 {
@@ -927,6 +941,14 @@ namespace PowerPointLabs.PositionsLab
                 if (!isPreview)
                 {
                     ShowErrorMessageBox(ex.Message, ex);
+                }
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
                 }
             }
         }
@@ -942,6 +964,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            PowerPoint.ShapeRange simulatedShapes = null;
+
             try
             {
                 if (_previewIsExecuted && !isPreview)
@@ -951,15 +975,13 @@ namespace PowerPointLabs.PositionsLab
 
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes);
 
                 SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-                simulatedShapes.Delete();
-                GC.Collect();
 
                 if (isPreview)
                 {
@@ -971,6 +993,14 @@ namespace PowerPointLabs.PositionsLab
                 if (!isPreview)
                 {
                     ShowErrorMessageBox(ex.Message, ex);
+                }
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
                 }
             }
         }
@@ -986,6 +1016,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            PowerPoint.ShapeRange simulatedShapes = null;
+
             try
             {
                 if (_previewIsExecuted && !isPreview)
@@ -995,7 +1027,7 @@ namespace PowerPointLabs.PositionsLab
 
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1017,6 +1049,14 @@ namespace PowerPointLabs.PositionsLab
                     ShowErrorMessageBox(ex.Message, ex);
                 }
             }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
+            }
         }
 
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
@@ -1030,6 +1070,8 @@ namespace PowerPointLabs.PositionsLab
                 return;
             }
 
+            PowerPoint.ShapeRange simulatedShapes = null;
+
             try
             {
                 if (_previewIsExecuted && !isPreview)
@@ -1039,15 +1081,13 @@ namespace PowerPointLabs.PositionsLab
 
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                var simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes);
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, dimension1, dimension2);
 
                 SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-                simulatedShapes.Delete();
-                GC.Collect();
 
                 if (isPreview)
                 {
@@ -1059,6 +1099,14 @@ namespace PowerPointLabs.PositionsLab
                 if (!isPreview)
                 {
                     ShowErrorMessageBox(ex.Message, ex);
+                }
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
                 }
             }
         }
