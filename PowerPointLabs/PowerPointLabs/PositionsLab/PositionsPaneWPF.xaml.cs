@@ -1034,8 +1034,6 @@ namespace PowerPointLabs.PositionsLab
                 positionsAction.Invoke(simulatedPPShapes, dimension);
 
                 SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-                simulatedShapes.Delete();
-                GC.Collect();
 
                 if (isPreview)
                 {
@@ -1191,19 +1189,19 @@ namespace PowerPointLabs.PositionsLab
 
         private PowerPoint.ShapeRange DuplicateShapes(PowerPoint.ShapeRange range)
         {
-            String[] duplicatedShapeNames = new String[range.Count];
+            int totalShapes = this.GetCurrentSlide().Shapes.Count;
+            int[] duplicatedShapeIndices = new int[range.Count];
 
-            for (int i = 0; i < range.Count; i++)
+            for (int i = 1; i <= range.Count; i++)
             {
-                var shape = range[i + 1];
+                var shape = range[i];
                 var duplicated = shape.Duplicate()[1];
-                duplicated.Name = shape.Name + "_Copy";
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
-                duplicatedShapeNames[i] = duplicated.Name;
+                duplicatedShapeIndices[i - 1] = totalShapes + i;
             }
 
-            return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
+            return this.GetCurrentSlide().Shapes.Range(duplicatedShapeIndices);
         }
 
         private float[,] SaveOriginalPositions(List<PPShape> shapes)
