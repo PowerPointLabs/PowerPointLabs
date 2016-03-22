@@ -51,7 +51,7 @@
             <WPF:ImageButton ToolTip="Adjoin object vertically to the reference object" x:Name="adjoinVerticalButton" HorizontalAlignment="Left" Margin="86,170,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalButton_Click" MouseEnter="AdjoinVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AdjoinVerticalIcon.png"/>
             </WPF:ImageButton>
-            <CheckBox x:Name="AlignAdjoinCheckBox" ToolTip="Aligns the objects to the reference object after adjoining" Content="Align Too" HorizontalAlignment="Left" Height="33" Margin="154,177,0,0" VerticalAlignment="Top" Checked="AlignAdjoinCheckBox_Checked" Unchecked="AlignAdjoinCheckBox_Unchecked"/>
+            <CheckBox x:Name="AlignAdjoinCheckBox" ToolTip="Aligns the objects to the reference object after adjoining" Content="Align Too" HorizontalAlignment="Left" Height="33" Margin="154,177,0,0" VerticalAlignment="Top" Checked="AlignAdjoinCheckBox_Checked" Unchecked="AlignAdjoinCheckBox_Unchecked" Loaded="AlignAdjoinCheckBox_OnLoaded"/>
             <GroupBox x:Name="distributeGroupBox" Header="Distribute" HorizontalAlignment="Left" Margin="10,225,0,0" VerticalAlignment="Top" Height="80" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="distributeSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="DistributeSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>

@@ -89,7 +89,6 @@ namespace PowerPointLabs.PositionsLab
             PowerpointDefaults
         }
         public static AlignReferenceObject AlignReference { get; private set; }
-        public static bool AlignUseSlideAsReference { get; private set; }
 
         // Adjoin Variables
         public static bool AlignShapesToBeAdjoined { get; private set; }
@@ -1776,7 +1775,7 @@ namespace PowerPointLabs.PositionsLab
             MarginLeft = 5;
             MarginRight = 5;
             DistributeGridAlignment = GridAlignment.AlignLeft;
-            DistributeReferToFirstShape();
+            DistributeReferToFirstTwoShapes();
             DistributeSpaceByBoundaries();
         }
 
@@ -1815,7 +1814,12 @@ namespace PowerPointLabs.PositionsLab
 
         private static void InitDefaultAlignSettings()
         {
-            AlignUseSlideAsReference = false;
+            AlignReferToShape();
+        }
+
+        private static void InitDefaultAdjoinSettings()
+        {
+            AdjoinWithAligning();
         }
 
         public static void InitPositionsLab()
@@ -1824,6 +1828,7 @@ namespace PowerPointLabs.PositionsLab
             InitDefaultDistributeSettings();
             InitDefaultAlignSettings();
             InitDefaultSwapSettings();
+            InitDefaultAdjoinSettings();
         }
 
         #endregion

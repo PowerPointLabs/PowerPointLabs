@@ -702,6 +702,11 @@ namespace PowerPointLabs.PositionsLab
                 _reorderSettingsDialog.Activate();
             }
         }
+
+        private void AlignAdjoinCheckBox_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            AlignAdjoinCheckBox.IsChecked = PositionsLabMain.AlignShapesToBeAdjoined;
+        }
         #endregion
 
         public static void ClearAllEventHandlers()
