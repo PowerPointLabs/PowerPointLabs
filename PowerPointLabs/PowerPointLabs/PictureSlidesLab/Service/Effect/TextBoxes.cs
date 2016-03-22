@@ -36,16 +36,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
             _slideWidth = slideWidth;
             _slideHeight = slideHeight;
             TextShapes = new List<Shape>();
-            foreach (Shape shape in shapes)
+            var shape = ShapeUtil.GetTextShapeToProcess(shapes);
+            if (shape != null)
             {
-                if ((shape.Type != MsoShapeType.msoPlaceholder
-                        && shape.Type != MsoShapeType.msoTextBox)
-                        || shape.TextFrame.HasText == MsoTriState.msoFalse
-                        || StringUtil.IsEmpty(shape.TextFrame2.TextRange.Paragraphs.TrimText().Text)
-                        || StringUtil.IsNotEmpty(shape.Tags[Tag.ImageReference]))
-                {
-                    continue;
-                }
                 TextShapes.Add(shape);
             }
         }

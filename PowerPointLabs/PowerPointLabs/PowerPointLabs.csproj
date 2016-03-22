@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.6.5</ApplicationVersion>
+    <ApplicationVersion>2.8.6.6</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -474,6 +474,7 @@
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TextBox.cs" />
     <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TriangleBanner.cs" />
     <Compile Include="PictureSlidesLab\Service\Effect\Aspect.cs" />
+    <Compile Include="PictureSlidesLab\Service\EveryDayPhraseService.cs" />
     <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
     <Compile Include="PictureSlidesLab\Service\PictureCitationSlide.cs" />
     <Compile Include="PictureSlidesLab\Service\StylesWorker\BannerStyleWorker.cs" />
@@ -560,6 +561,8 @@
       <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
@@ -1293,6 +1296,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\LockAxisIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseWidth.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

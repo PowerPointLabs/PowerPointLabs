@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Office.Core;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -18,6 +19,43 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 shape.Tags.Add(tagName, value);
             }
+        }
+
+        public static PowerPoint.Shape GetTextShapeToProcess(PowerPoint.ShapeRange shapes)
+        {
+            foreach (PowerPoint.Shape shape in shapes)
+            {
+                if (shape.Type != MsoShapeType.msoPlaceholder
+                    || shape.TextFrame.HasText == MsoTriState.msoFalse)
+                    continue;
+
+                switch (shape.PlaceholderFormat.Type)
+                {
+                    case PowerPoint.PpPlaceholderType.ppPlaceholderTitle:
+                    case PowerPoint.PpPlaceholderType.ppPlaceholderCenterTitle:
+                    case PowerPoint.PpPlaceholderType.ppPlaceholderVerticalTitle:
+                        return shape;
+                }
+            }
+
+            foreach (PowerPoint.Shape shape in shapes)
+            {
+                if ((shape.Type != MsoShapeType.msoPlaceholder
+                        && shape.Type != MsoShapeType.msoTextBox)
+                        || shape.TextFrame.HasText == MsoTriState.msoFalse
+                        || StringUtil.IsNotEmpty(shape.Tags[Tag.ImageReference]))
+                {
+                    continue;
+                }
+
+                return shape;
+            }
+            return null;
+        }
+
+        public static PowerPoint.Shape GetTextShapeToProcess(PowerPoint.Shapes shapes)
+        {
+            return GetTextShapeToProcess(shapes.Range());
         }
     }
 }

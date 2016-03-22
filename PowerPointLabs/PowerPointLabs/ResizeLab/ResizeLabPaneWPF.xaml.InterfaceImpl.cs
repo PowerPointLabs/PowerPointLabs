@@ -9,7 +9,7 @@ namespace PowerPointLabs.ResizeLab
 {
     public partial class ResizeLabPaneWPF
     {
-        private readonly Dictionary<string, ShapeProperties> _originalShapeProperties = new Dictionary<string, ShapeProperties>();
+        private readonly Dictionary<int, ShapeProperties> _originalShapeProperties = new Dictionary<int, ShapeProperties>();
 
         public void ShowErrorMessageBox(string content, Exception exception = null)
         {
@@ -55,6 +55,7 @@ namespace PowerPointLabs.ResizeLab
             if (selectedShapes == null) return;
 
             Reset();
+            this.StartNewUndoEntry();
             resizeAction.Invoke(selectedShapes);
             CleanOriginalShapes();
         }
@@ -64,6 +65,7 @@ namespace PowerPointLabs.ResizeLab
             if (selectedShapes == null) return;
 
             Reset();
+            this.StartNewUndoEntry();
             resizeAction.Invoke(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
             CleanOriginalShapes();
         }
@@ -75,8 +77,8 @@ namespace PowerPointLabs.ResizeLab
             for (int i = 1; i <= selectedShapes.Count; i++)
             {
                 var shape = new PPShape(selectedShapes[i]);
-                var properties = new ShapeProperties(shape.Name, shape.Top, shape.Left, shape.AbsoluteWidth, shape.AbsoluteHeight, shape.ShapeRotation);
-                _originalShapeProperties.Add(shape.Name, properties);
+                var properties = new ShapeProperties(shape.Id, shape.Top, shape.Left, shape.AbsoluteWidth, shape.AbsoluteHeight, shape.ShapeRotation);
+                _originalShapeProperties.Add(shape.Id, properties);
             }
         }
 
