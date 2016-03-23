@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
-using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.ResizeLab;
 
@@ -41,13 +39,11 @@ namespace Test.UnitTest.ResizeLab
         public void TestFitToWidthWithoutAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(FitToWidthSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
+
             _resizeLab.FitToWidth(actualShapes, slideWidth, slideHeight, false);
-
-            PpOperations.SelectSlide(FitToWidthSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -56,13 +52,11 @@ namespace Test.UnitTest.ResizeLab
         public void TestFitToWidthWithAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(FitToWidthAspectRatioSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
+
             _resizeLab.FitToWidth(actualShapes, slideWidth, slideHeight, true);
-
-            PpOperations.SelectSlide(FitToWidthAspectRatioSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -71,13 +65,11 @@ namespace Test.UnitTest.ResizeLab
         public void TestFitToHeightWithoutAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(FitToHeightSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
+
             _resizeLab.FitToHeight(actualShapes, slideWidth, slideHeight, false);
-
-            PpOperations.SelectSlide(FitToHeightSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -86,13 +78,11 @@ namespace Test.UnitTest.ResizeLab
         public void TestFitToHeightWithAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(FitToHeightAspectRatioSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
+
             _resizeLab.FitToHeight(actualShapes, slideWidth, slideHeight, true);
-
-            PpOperations.SelectSlide(FitToHeightAspectRatioSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -101,13 +91,11 @@ namespace Test.UnitTest.ResizeLab
         public void TestFitToFillWithoutAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(FitToFillSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
+
             _resizeLab.FitToFill(actualShapes, slideWidth, slideHeight, false);
-
-            PpOperations.SelectSlide(FitToFillSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -116,13 +104,11 @@ namespace Test.UnitTest.ResizeLab
         public void TestFitToFillWithAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(FitToFillAspectRatioSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
+
             _resizeLab.FitToFill(actualShapes, slideWidth, slideHeight, true);
-
-            PpOperations.SelectSlide(FitToFillAspectRatioSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
     }
