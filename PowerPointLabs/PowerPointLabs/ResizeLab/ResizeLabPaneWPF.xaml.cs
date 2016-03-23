@@ -239,6 +239,23 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
+        #region Execute Adjust Aspect Ratio
+        private void MatchWidthBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.MatchWidth(shapes);
+            ClickHandler(resizeAction, ResizeLabMain.Match_MinNoOfShapesRequired,
+                ResizeLabMain.Match_ErrorParameters);
+        }
+
+        private void MatchHeightBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.MatchHeight(shapes);
+            ClickHandler(resizeAction, ResizeLabMain.Match_MinNoOfShapesRequired,
+                ResizeLabMain.Match_ErrorParameters);
+        }
+
+        #endregion
+
         #region Preview Stretch and Shrink
 
         private void StretchLeftBtn_MouseEnter(object sender, MouseEventArgs e)
@@ -349,6 +366,21 @@ namespace PowerPointLabs.ResizeLab
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.DecreaseWidth(shapes);
             PreviewHandler(previewAction, ResizeLabMain.SlightAdjust_MinNoOfShapesRequired);
+        }
+
+        #endregion
+
+        #region Preview Adjust Aspect Ratio
+        private void MatchWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.MatchWidth(shapes);
+            PreviewHandler(previewAction, ResizeLabMain.Match_MinNoOfShapesRequired);
+        }
+
+        private void MatchHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.MatchHeight(shapes);
+            PreviewHandler(previewAction, ResizeLabMain.Match_MinNoOfShapesRequired);
         }
 
         #endregion
