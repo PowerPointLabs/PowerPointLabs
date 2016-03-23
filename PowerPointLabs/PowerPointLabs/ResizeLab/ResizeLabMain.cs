@@ -27,38 +27,6 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
-        /// <summary>
-        /// Reset the shapes to their original properties.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <param name="originalShapeProperties"></param>
-        public void ResetShapes(PowerPoint.ShapeRange selectedShapes,
-            Dictionary<int, ShapeProperties> originalShapeProperties)
-        {
-            if (originalShapeProperties.Count == 0) return;
-            var isAspectRatio = selectedShapes.LockAspectRatio;
-
-            selectedShapes.LockAspectRatio = Office.MsoTriState.msoFalse;
-            for (int i = 1; i <= selectedShapes.Count; i++)
-            {
-                var shape = new PPShape(selectedShapes[i]);
-                var shapeId = shape.Id;
-
-                if (!originalShapeProperties.ContainsKey(shapeId)) continue;
-
-                var originalProperties = originalShapeProperties[shapeId];
-                shape.AbsoluteWidth = originalProperties.AbsoluteWidth;
-                shape.AbsoluteHeight = originalProperties.AbsoluteHeight;
-                shape.Top = originalProperties.Top;
-                shape.Left = originalProperties.Left;
-                shape.ShapeRotation = originalProperties.ShapeRotation;
-
-                shape.ResetNodes();
-            }
-
-            selectedShapes.LockAspectRatio = isAspectRatio;
-        }
-
         #region Validation
 
         /// <summary>
