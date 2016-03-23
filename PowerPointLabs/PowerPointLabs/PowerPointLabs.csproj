@@ -569,7 +569,7 @@
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.SameDimension.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Equalize.cs" />
     <Compile Include="ResizeLab\ResizeLabPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
