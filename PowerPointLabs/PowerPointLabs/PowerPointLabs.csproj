@@ -567,7 +567,7 @@
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.FitSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SameDimension.cs" />
     <Compile Include="ResizeLab\ResizeLabPane.cs">
