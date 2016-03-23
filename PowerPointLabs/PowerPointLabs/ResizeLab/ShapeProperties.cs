@@ -25,13 +25,14 @@ namespace PowerPointLabs.ResizeLab
             ShapeRotation = rotation;
         }
 
-        public ShapeProperties(string name, float top, float left, float absoluteWidth, float absoluteHeight)
+        public ShapeProperties(string name, float top, float left, float absoluteWidth, float absoluteHeight, float rotation)
         {
             Name = name;
             Top = top;
             Left = left;
             AbsoluteWidth = absoluteWidth;
             AbsoluteHeight = absoluteHeight;
+            ShapeRotation = rotation;
         }
     }
 }

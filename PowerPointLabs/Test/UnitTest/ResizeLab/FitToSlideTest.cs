@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.ResizeLab;
@@ -9,8 +10,6 @@ namespace Test.UnitTest.ResizeLab
     public class FitToSlideTest : BaseResizeLabTest
     {
         private readonly ResizeLabMain _resizeLab = new ResizeLabMain();
-        private readonly Dictionary<string, ShapeProperties> _originalShapesProperties =
-            new Dictionary<string, ShapeProperties>();
         private List<string> _shapeNames;
 
         private const string UnrotatedShapeName = "rectangle";
@@ -27,18 +26,14 @@ namespace Test.UnitTest.ResizeLab
         [TestInitialize]
         public void TestInitialize()
         {
-            PpOperations.SelectSlide(OriginalShapesSlideNo);
-            _originalShapesProperties.Clear();
             _shapeNames = new List<string> { UnrotatedShapeName, RotatedShapeName };
-
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames, _originalShapesProperties);
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            var shapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            RestoreShapes(shapes, _originalShapesProperties);
+            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]
