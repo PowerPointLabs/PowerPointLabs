@@ -563,7 +563,7 @@
     <Compile Include="PPMouseLegacy.cs" />
     <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Symmetric.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />

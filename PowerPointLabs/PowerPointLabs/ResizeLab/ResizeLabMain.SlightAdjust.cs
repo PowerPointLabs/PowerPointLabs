@@ -13,8 +13,7 @@ namespace PowerPointLabs.ResizeLab
         internal const int SlightAdjust_MinNoOfShapesRequired = 1;
         internal const string SlightAdjust_FeatureName = "Slight Adjustment";
         internal const string SlightAdjust_ShapeSupport = "object";
-        internal static readonly string[] SlightAdjust_ErrorParameters = new string[]
-        {
+        internal static readonly string[] SlightAdjust_ErrorParameters = {
             SlightAdjust_FeatureName,
             SlightAdjust_MinNoOfShapesRequired.ToString(),
             SlightAdjust_ShapeSupport

@@ -12,7 +12,7 @@ namespace PowerPointLabs.ResizeLab
     public partial class ResizeLabMain
     {
 
-        private ResizeLabErrorHandler _errorHandler;
+        private readonly ResizeLabErrorHandler _errorHandler;
 
         public ResizeLabMain()
         {
