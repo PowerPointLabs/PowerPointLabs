@@ -40,12 +40,10 @@ namespace Test.UnitTest.ResizeLab
         public void TestSameWidthWithoutAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(SameWidthSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
             _resizeLab.ResizeToSameWidth(actualShapes);
-
-            PpOperations.SelectSlide(SameWidthSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -54,12 +52,10 @@ namespace Test.UnitTest.ResizeLab
         public void TestSameWidthWithAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(SameWidthAspectRatioSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
+
             _resizeLab.ResizeToSameWidth(actualShapes);
-
-            PpOperations.SelectSlide(SameWidthAspectRatioSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -68,12 +64,10 @@ namespace Test.UnitTest.ResizeLab
         public void TestSameHeightWithoutAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(SameHeightSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
             _resizeLab.ResizeToSameHeight(actualShapes);
-
-            PpOperations.SelectSlide(SameHeightSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -82,12 +76,10 @@ namespace Test.UnitTest.ResizeLab
         public void TestSameHeightWithAspectRatio()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(SameHeightAspectRatioSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
+
             _resizeLab.ResizeToSameHeight(actualShapes);
-
-            PpOperations.SelectSlide(SameHeightAspectRatioSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -96,12 +88,10 @@ namespace Test.UnitTest.ResizeLab
         public void TestSameWidthAndHeight()
         {
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(SameWidthAndHeightSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
             _resizeLab.ResizeToSameHeightAndWidth(actualShapes);
-
-            PpOperations.SelectSlide(SameWidthAndHeightSlideNo);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
             CheckShapes(expectedShapes, actualShapes);
         }
     }
