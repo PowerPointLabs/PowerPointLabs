@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
     public partial class ResizeLabPaneWPF
     {
-        private readonly Dictionary<int, ShapeProperties> _originalShapeProperties = new Dictionary<int, ShapeProperties>();
+        private bool _isPreview;
 
         public void ShowErrorMessageBox(string content, Exception exception = null)
         {
@@ -28,7 +26,8 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes == null || selectedShapes.Count < minNumberofSelectedShapes) return;
 
-            StoreOriginalShapesProperties(selectedShapes);
+            _isPreview = true;
+            this.StartNewUndoEntry();
             previewAction.Invoke(selectedShapes);
         }
 
@@ -36,7 +35,8 @@ namespace PowerPointLabs.ResizeLab
         {
             if (selectedShapes == null) return;
 
-            StoreOriginalShapesProperties(selectedShapes);
+            _isPreview = true;
+            this.StartNewUndoEntry();
             previewAction.Invoke(selectedShapes, referenceWidth, referenceHeight, IsAspectRatioLocked);
         }
 
@@ -44,9 +44,11 @@ namespace PowerPointLabs.ResizeLab
         {
             var selectedShapes = GetSelectedShapes(false);
 
-            if (selectedShapes != null)
+            if (selectedShapes != null && _isPreview)
             {
-                _resizeLab.ResetShapes(selectedShapes, _originalShapeProperties);
+                this.ExecuteOfficeCommand("Undo");
+                GC.Collect();
+                _isPreview = false;
             }
         }
 
@@ -57,7 +59,7 @@ namespace PowerPointLabs.ResizeLab
             Reset();
             this.StartNewUndoEntry();
             resizeAction.Invoke(selectedShapes);
-            CleanOriginalShapes();
+            _isPreview = false;
         }
 
         public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, Action<PowerPoint.ShapeRange, float, float, bool> resizeAction)
@@ -67,24 +69,7 @@ namespace PowerPointLabs.ResizeLab
             Reset();
             this.StartNewUndoEntry();
             resizeAction.Invoke(selectedShapes, slideWidth, slideHeight, IsAspectRatioLocked);
-            CleanOriginalShapes();
-        }
-
-        private void StoreOriginalShapesProperties(PowerPoint.ShapeRange selectedShapes)
-        {
-            _originalShapeProperties.Clear();
-
-            for (int i = 1; i <= selectedShapes.Count; i++)
-            {
-                var shape = new PPShape(selectedShapes[i]);
-                var properties = new ShapeProperties(shape.Id, shape.Top, shape.Left, shape.AbsoluteWidth, shape.AbsoluteHeight, shape.ShapeRotation);
-                _originalShapeProperties.Add(shape.Id, properties);
-            }
-        }
-
-        private void CleanOriginalShapes()
-        {
-            _originalShapeProperties.Clear();
+            _isPreview = false;
         }
     }
 }

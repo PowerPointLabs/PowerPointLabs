@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ResizeLab;
 
 namespace Test.UnitTest.ResizeLab
 {

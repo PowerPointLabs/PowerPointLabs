@@ -1,19 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Test.Util;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ResizeLab;
-using PowerPointLabs.Utils;
 
 namespace Test.UnitTest.ResizeLab
 {
     [TestClass]
-    public class StretchShrinkTest : BaseUnitTest
+    public class StretchShrinkTest : BaseResizeLabTest
     {
-        private List<String> _originalShapeNames;
-        private ResizeLabMain _resizeLab;
-        private Dictionary<string, ShapeProperties> _originalShapesProperties;
+        private readonly ResizeLabMain _resizeLab = new ResizeLabMain();
+        private List<string> _shapeNames;
 
         private const string RefShapeName= "ref";
         private const string LeftShapeName = "leftOfRef";
@@ -26,141 +21,61 @@ namespace Test.UnitTest.ResizeLab
         private const int TestStretchTopSlideNo = 6;
         private const int TestStretchBottomSlideNo = 7;
 
-        protected override string GetTestingSlideName()
-        {
-            return "ResizeLab.pptm";
-        }
-
         [TestInitialize]
         public void TestInitialize()
         {
-            PpOperations.SelectSlide(OriginalShapesSlideNo);
-            _originalShapeNames = new List<String> {RefShapeName, LeftShapeName,
-                RightShapeName, OverShapeName};
-            InitOriginalShapes();
-            _resizeLab = new ResizeLabMain();
+            _shapeNames = new List<string> {RefShapeName, LeftShapeName, RightShapeName, OverShapeName};
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
-        private void InitOriginalShapes()
+        [TestCleanup]
+        public void TestCleanUp()
         {
-            _originalShapesProperties = new Dictionary<string, ShapeProperties>();
-            var shapes = GetOriginalShapes();
-            foreach (PowerPoint.Shape s in shapes)
-            {
-                PPShape originalPpShape = new PPShape(s);
-                _originalShapesProperties.Add(s.Name, new ShapeProperties(s.Name, originalPpShape.Top, originalPpShape.Left, 
-                    originalPpShape.AbsoluteWidth, originalPpShape.AbsoluteHeight, originalPpShape.ShapeRotation));
-            }
-        }
-
-        private PowerPoint.ShapeRange GetOriginalShapes()
-        {
-            PpOperations.SelectSlide(OriginalShapesSlideNo);
-            return PpOperations.SelectShapes(_originalShapeNames);
-        }
-
-        private void ResetOriginalShapes()
-        {
-            var originalShapes = GetOriginalShapes();
-            foreach (PowerPoint.Shape originalShape in originalShapes)
-            {
-                var originalPpShape = new PPShape(originalShape);
-                if (!_originalShapesProperties.ContainsKey(originalPpShape.Name))
-                {
-                    continue;
-                }
-
-                var originalProperty = _originalShapesProperties[originalPpShape.Name];
-                originalPpShape.ShapeRotation = originalProperty.ShapeRotation;
-                originalPpShape.AbsoluteWidth = originalProperty.AbsoluteWidth;
-                originalPpShape.AbsoluteHeight = originalProperty.AbsoluteHeight;
-                originalPpShape.Top = originalProperty.Top;
-                originalPpShape.Left = originalProperty.Left;
-
-                originalPpShape.ResetNodes();
-            }
-        }
-
-        private void CheckShapes(PowerPoint.ShapeRange expectedShapes, PowerPoint.ShapeRange actualShapes)
-        {
-            foreach (PowerPoint.Shape expectedShape in expectedShapes)
-            {
-                PowerPoint.Shape compareWith = null;
-
-                // Look for the corresponding actual shape
-                foreach (PowerPoint.Shape actualShape in actualShapes)
-                {
-                    if (expectedShape.Name.Equals(actualShape.Name))
-                    {
-                        compareWith = actualShape;
-                        break;
-                    }
-                    
-                }
-
-                if (compareWith == null)
-                {
-                    Assert.Fail("Unable to find corresponding actual shape");
-                }
-
-                SlideUtil.IsSameShape(expectedShape, compareWith);
-            }
+            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestStretchLeft()
         {
-            var actualShapes = GetOriginalShapes();
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(TestStretchLeftSlideNo, _shapeNames);
+
             _resizeLab.StretchLeft(actualShapes);
-
-            PpOperations.SelectSlide(TestStretchLeftSlideNo);
-            var expectedResultForStretchLeft = PpOperations.SelectShapes(_originalShapeNames);
-
-            CheckShapes(expectedResultForStretchLeft, actualShapes);
-            ResetOriginalShapes();
+            CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestStretchRight()
         {
-            var actualShapes = GetOriginalShapes();
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(TestStretchRightSlideNo, _shapeNames);
+
             _resizeLab.StretchRight(actualShapes);
-
-            PpOperations.SelectSlide(TestStretchRightSlideNo);
-            var expectedResultForStretchRight = PpOperations.SelectShapes(_originalShapeNames);
-
-            CheckShapes(expectedResultForStretchRight, actualShapes);
-            ResetOriginalShapes();
+            CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestStretchTop()
         {
-            var actualShapes = GetOriginalShapes();
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(TestStretchTopSlideNo, _shapeNames);
+
             _resizeLab.StretchTop(actualShapes);
-
-            PpOperations.SelectSlide(TestStretchTopSlideNo);
-            var expectedResultForStretchTop = PpOperations.SelectShapes(_originalShapeNames);
-
-            CheckShapes(expectedResultForStretchTop, actualShapes);
-            ResetOriginalShapes();
+            CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestStretchBottom()
         {
-            var actualShapes = GetOriginalShapes();
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var expectedShapes = GetShapes(TestStretchBottomSlideNo, _shapeNames);
+
             _resizeLab.StretchBottom(actualShapes);
-
-            PpOperations.SelectSlide(TestStretchBottomSlideNo);
-            var expectedResultForStretchBottom = PpOperations.SelectShapes(_originalShapeNames);
-
-            CheckShapes(expectedResultForStretchBottom, actualShapes);
-            ResetOriginalShapes();
+            CheckShapes(expectedShapes, actualShapes);
         }
     }
 }
