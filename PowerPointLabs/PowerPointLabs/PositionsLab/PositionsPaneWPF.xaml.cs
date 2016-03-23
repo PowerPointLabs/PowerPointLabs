@@ -819,6 +819,7 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Helper
+        // align left and top
         public void ExecutePositionsAction(Action<PowerPoint.ShapeRange> positionsAction, bool isPreview)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
@@ -842,13 +843,20 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
-                positionsAction.Invoke(simulatedShapes);
+                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                {
+                    positionsAction.Invoke(selectedShapes);
+                }
+                else
+                {
+                    var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
-                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                    positionsAction.Invoke(simulatedShapes);
 
+                    SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                }
                 if (isPreview)
                 {
                     _previewIsExecuted = true;
@@ -871,6 +879,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        // Align right, bottom, vertical center, horizontal center
         public void ExecutePositionsAction(Action<PowerPoint.ShapeRange, float> positionsAction, float dimension, bool isPreview)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
@@ -894,13 +903,19 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                {
+                    positionsAction.Invoke(selectedShapes, dimension);
+                }
+                else
+                {
+                    var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
-                positionsAction.Invoke(simulatedShapes, dimension);
+                    positionsAction.Invoke(simulatedShapes, dimension);
 
-                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
-
+                    SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                }
                 if (isPreview)
                 {
                     _previewIsExecuted = true;
@@ -923,6 +938,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        // Align center
         public void ExecutePositionsAction(Action<PowerPoint.ShapeRange, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
@@ -946,12 +962,19 @@ namespace PowerPointLabs.PositionsLab
                 this.StartNewUndoEntry();
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                {
+                    positionsAction.Invoke(selectedShapes, dimension1, dimension2);
+                }
+                else
+                {
+                    var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
-                positionsAction.Invoke(simulatedShapes, dimension1, dimension2);
+                    positionsAction.Invoke(simulatedShapes, dimension1, dimension2);
 
-                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                    SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                }
 
                 if (isPreview)
                 {

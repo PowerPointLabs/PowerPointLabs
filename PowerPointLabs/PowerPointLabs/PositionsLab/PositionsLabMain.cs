@@ -218,25 +218,23 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignLeft(ShapeRange toAlign)
         {
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
-                case AlignReferenceObject.Slide: 
+                case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementLeft(-s.Left);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
 
                     for (var i = 1; i < selectedShapes.Count; i++)
@@ -246,7 +244,8 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignLefts, MsoTriState.msoTrue);
                     }
@@ -264,25 +263,23 @@ namespace PowerPointLabs.PositionsLab
         {
 
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
                 case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementLeft(slideWidth - s.Left - s.AbsoluteWidth);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
                     var rightMostRefPoint = refShape.Left + refShape.AbsoluteWidth;
 
@@ -294,7 +291,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignRights, MsoTriState.msoTrue);
                     }
@@ -311,25 +308,23 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignTop(ShapeRange toAlign)
         {
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
                 case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementTop(-s.Top);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
 
                     for (var i = 1; i < selectedShapes.Count; i++)
@@ -339,7 +334,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignTops, MsoTriState.msoTrue);
                     }
@@ -356,25 +351,23 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignBottom(ShapeRange toAlign, float slideHeight)
         {
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
                 case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementTop(slideHeight - s.Top - s.AbsoluteHeight);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
                     var lowestRefPoint = refShape.Top + refShape.AbsoluteHeight;
 
@@ -386,7 +379,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignBottoms, MsoTriState.msoTrue);
                     }
@@ -403,25 +396,23 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignHorizontalCenter(ShapeRange toAlign, float slideHeight)
         {
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
                 case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementTop(slideHeight / 2 - s.Top - s.AbsoluteHeight / 2);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
 
                     for (var i = 1; i < selectedShapes.Count; i++)
@@ -431,7 +422,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
                     }
@@ -448,25 +439,23 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignVerticalCenter(ShapeRange toAlign, float slideWidth)
         {
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
                 case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementLeft(slideWidth / 2 - s.Left - s.AbsoluteWidth / 2);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
 
                     for (var i = 1; i < selectedShapes.Count; i++)
@@ -476,7 +465,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
                     }
@@ -493,14 +482,11 @@ namespace PowerPointLabs.PositionsLab
         public static void AlignCenter(ShapeRange toAlign, float slideHeight, float slideWidth)
         {
             var selectedShapes = new List<PPShape>();
-            for (var i = 1; i <= toAlign.Count; i++)
-            {
-                selectedShapes.Add(new PPShape(toAlign[i]));
-            }
 
             switch (AlignReference)
             {
                 case AlignReferenceObject.Slide:
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
                         s.IncrementTop(slideHeight / 2 - s.Top - s.AbsoluteHeight / 2);
@@ -508,11 +494,12 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
-                    if (selectedShapes.Count < 2)
+                    if (toAlign.Count < 2)
                     {
                         throw new Exception(ErrorMessageFewerThanTwoSelection);
                     }
 
+                    selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
 
                     for (var i = 1; i < selectedShapes.Count; i++)
@@ -523,7 +510,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
-                    if (selectedShapes.Count == 1)
+                    if (toAlign.Count == 1)
                     {
                         toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
                         toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
@@ -1734,6 +1721,16 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private static List<PPShape> ConvertShapeRangeToPPShapeList(ShapeRange toAlign)
+        {
+            var selectedShapes = new List<PPShape>();
+            for (var i = 1; i <= toAlign.Count; i++)
+            {
+                selectedShapes.Add(new PPShape(toAlign[i]));
+            }
+            return selectedShapes;
+        }
+
         private static void InitDefaultShapesAngles()
         {
             shapeDefaultUpAngle = new Dictionary<MsoAutoShapeType, float>();
@@ -1768,17 +1765,6 @@ namespace PowerPointLabs.PositionsLab
             shapeDefaultUpAngle.Add(AutoShape.msoShapeCircularArrow, RotateDown);
         }
 
-        private static void InitDefaultDistributeSettings()
-        {
-            MarginTop = 5;
-            MarginBottom = 5;
-            MarginLeft = 5;
-            MarginRight = 5;
-            DistributeGridAlignment = GridAlignment.AlignLeft;
-            DistributeReferToFirstTwoShapes();
-            DistributeSpaceByBoundaries();
-        }
-
         private static Drawing.PointF GetSwapReferencePoint(PPShape shape, SwapReference r)
         {
             switch (r)
@@ -1806,29 +1792,39 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private static void InitDefaultSwapSettings()
-        {
-            IsSwapByClickOrder = false;
-            SwapReferencePoint = SwapReference.MiddleCenter;
-        }
-
         private static void InitDefaultAlignSettings()
         {
             AlignReferToShape();
         }
-
         private static void InitDefaultAdjoinSettings()
         {
             AdjoinWithAligning();
         }
 
+        private static void InitDefaultDistributeSettings()
+        {
+            MarginTop = 5;
+            MarginBottom = 5;
+            MarginLeft = 5;
+            MarginRight = 5;
+            DistributeGridAlignment = GridAlignment.AlignLeft;
+            DistributeReferToFirstTwoShapes();
+            DistributeSpaceByBoundaries();
+        }
+
+        private static void InitDefaultSwapSettings()
+        {
+            IsSwapByClickOrder = false;
+            SwapReferencePoint = SwapReference.MiddleCenter;
+        }   
+
         public static void InitPositionsLab()
         {
-            InitDefaultShapesAngles();
-            InitDefaultDistributeSettings();
             InitDefaultAlignSettings();
-            InitDefaultSwapSettings();
             InitDefaultAdjoinSettings();
+            InitDefaultDistributeSettings();
+            InitDefaultSwapSettings();
+            InitDefaultShapesAngles();
         }
 
         #endregion
