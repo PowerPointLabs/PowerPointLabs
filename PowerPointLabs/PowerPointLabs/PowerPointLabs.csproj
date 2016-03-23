@@ -562,6 +562,7 @@
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
     <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Symmetric.cs" />

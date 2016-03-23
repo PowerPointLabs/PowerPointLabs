@@ -1,4 +1,7 @@
-﻿using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.Utils;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -21,9 +24,17 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void MatchWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            foreach (PowerPoint.Shape shape in selectedShapes)
+            try
             {
-                shape.Height = shape.Width;
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    var shape = new PPShape(selectedShapes[i]);
+                    shape.AbsoluteHeight = shape.AbsoluteWidth;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "MatchWidth");
             }
         }
 
@@ -33,9 +44,17 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void MatchHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            foreach (PowerPoint.Shape shape in selectedShapes)
+            try
             {
-                shape.Width = shape.Height;
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    var shape = new PPShape(selectedShapes[i]);
+                    shape.AbsoluteWidth = shape.AbsoluteHeight;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "MatchHeight");
             }
         }
     }
