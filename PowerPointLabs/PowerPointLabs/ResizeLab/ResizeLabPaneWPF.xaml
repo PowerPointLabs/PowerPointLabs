@@ -7,7 +7,7 @@
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:cc="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizeLabPaneWPF"
              mc:Ignorable="d" 
-             d:DesignHeight="530" d:DesignWidth="300">
+             d:DesignHeight="1030" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -155,7 +155,7 @@
                     <TextBlock Grid.Column="1" FontSize="11">Width to Match Height</TextBlock>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="AspectRatioGroupBox" Header="Aspect Ratio" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -164,8 +164,7 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.Column="1" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Center" Height="33" Margin="3,3,3,3" VerticalAlignment="Center" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
-                    <cc:ImageButton x:Name="RestoreAspectRatioBtn" Text="Restore" Grid.Column="0" Click="RestoreAspectRatioBtn_Click" Image="../Resources/ResizeLab/ResizeStore.png" ToolTip="Restore the aspect ratio of selected objects"/>
+                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="33" Margin="3,3,3,3" VerticalAlignment="Top" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
                 </Grid>
             </GroupBox>
             
