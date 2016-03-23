@@ -27,6 +27,34 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
+        /// <summary>
+        /// Get the height of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count > 0)
+            {
+                return new PPShape(selectedShapes[1]).AbsoluteHeight;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Get the width of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count > 0)
+            {
+                return new PPShape(selectedShapes[1]).AbsoluteWidth;
+            }
+            return -1;
+        }
+
         #region Validation
 
         /// <summary>
