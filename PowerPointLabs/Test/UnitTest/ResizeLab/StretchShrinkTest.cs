@@ -49,7 +49,7 @@ namespace Test.UnitTest.ResizeLab
             {
                 PPShape originalPpShape = new PPShape(s);
                 _originalShapesProperties.Add(s.Name, new ShapeProperties(s.Name, originalPpShape.Top, originalPpShape.Left, 
-                    originalPpShape.AbsoluteWidth, originalPpShape.AbsoluteHeight));
+                    originalPpShape.AbsoluteWidth, originalPpShape.AbsoluteHeight, originalPpShape.ShapeRotation));
             }
         }
 
@@ -71,10 +71,13 @@ namespace Test.UnitTest.ResizeLab
                 }
 
                 var originalProperty = _originalShapesProperties[originalPpShape.Name];
-                originalPpShape.Top = originalProperty.Top;
-                originalPpShape.Left = originalProperty.Left;
+                originalPpShape.ShapeRotation = originalProperty.ShapeRotation;
                 originalPpShape.AbsoluteWidth = originalProperty.AbsoluteWidth;
                 originalPpShape.AbsoluteHeight = originalProperty.AbsoluteHeight;
+                originalPpShape.Top = originalProperty.Top;
+                originalPpShape.Left = originalProperty.Left;
+
+                originalPpShape.ResetNodes();
             }
         }
 

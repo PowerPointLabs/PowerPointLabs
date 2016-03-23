@@ -9,8 +9,6 @@ namespace Test.UnitTest.ResizeLab
     public class SameDimensionTest : BaseResizeLabTest
     {
         private readonly ResizeLabMain _resizeLab = new ResizeLabMain();
-        private readonly Dictionary<string, ShapeProperties> _originalShapesProperties =
-            new Dictionary<string, ShapeProperties>();
         private List<string> _shapeNames;
 
         private const string RefShapeName = "reference";
@@ -27,18 +25,14 @@ namespace Test.UnitTest.ResizeLab
         [TestInitialize]
         public void TestInitialize()
         {
-            PpOperations.SelectSlide(OriginalShapesSlideNo);
-            _originalShapesProperties.Clear();
             _shapeNames = new List<string> {RefShapeName, OvalShapeName, ArrowShapeName};
-
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames, _originalShapesProperties);
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            var shapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            RestoreShapes(shapes, _originalShapesProperties);
+            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]

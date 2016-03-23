@@ -9,8 +9,6 @@ namespace Test.UnitTest.PositionsLab
     [TestClass]
     public class PositionsLabAlignTest : BasePositionsLabTest
     {
-        private readonly Dictionary<string, ShapeProperties> _originalShapesProperties =
-            new Dictionary<string, ShapeProperties>();
         private List<string> _shapeNames;
 
         private const int OriginalShapesSlideNo = 4;
@@ -64,17 +62,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabMain.InitPositionsLab();
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PpOperations.SelectSlide(OriginalShapesSlideNo);
-            _originalShapesProperties.Clear();
-
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames, _originalShapesProperties);
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            var shapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            RestoreShapes(shapes, _originalShapesProperties);
+            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]
