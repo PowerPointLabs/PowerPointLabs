@@ -50,7 +50,6 @@ namespace Test.UnitTest.PositionsLab
         private const int AlignShapesVerticalDefaultNo = 33;
         private const int AlignShapesCenterDefaultNo = 34;
 
-        [TestMethod]
         protected override string GetTestingSlideName()
         {
             return "PositionsLab\\PositionsLabAlign.pptx";
