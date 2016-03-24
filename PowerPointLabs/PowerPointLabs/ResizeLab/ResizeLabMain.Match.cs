@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -26,11 +27,16 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
+                var isAspectRatio = selectedShapes.LockAspectRatio;
+                selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
+
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
                     shape.AbsoluteHeight = shape.AbsoluteWidth;
                 }
+
+                selectedShapes.LockAspectRatio = isAspectRatio;
             }
             catch (Exception e)
             {
@@ -46,11 +52,16 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
+                var isAspectRatio = selectedShapes.LockAspectRatio;
+                selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
+
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
                     shape.AbsoluteWidth = shape.AbsoluteHeight;
                 }
+
+                selectedShapes.LockAspectRatio = isAspectRatio;
             }
             catch (Exception e)
             {
