@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using Microsoft.Office.Interop.PowerPoint;
+using System.Diagnostics;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -12,6 +13,13 @@ namespace PowerPointLabs.PositionsLab
     /// </summary>
     public partial class PositionsDistributeGridDialog
     {
+        //Error Messages
+        private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
+        private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
+        private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+        private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
+
         //Flag to trigger
         public bool IsOpen { get; set; }
 
@@ -83,25 +91,38 @@ namespace PowerPointLabs.PositionsLab
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            var rowValue = rowInput.Value;
-            var colValue = colInput.Value;
-
-            if (!rowValue.HasValue || rowValue.GetValueOrDefault() == 0 || 
-                !colValue.HasValue || colValue.GetValueOrDefault() == 0)
+            ShapeRange simulatedShapes = null;
+            try
             {
-                return;
+                var rowValue = rowInput.Value;
+                var colValue = colInput.Value;
+
+                if (!rowValue.HasValue || rowValue.GetValueOrDefault() == 0 ||
+                    !colValue.HasValue || colValue.GetValueOrDefault() == 0)
+                {
+                    return;
+                }
+
+                this.StartNewUndoEntry();
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                simulatedShapes = DuplicateShapes(selectedShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+
+                PositionsLabMain.DistributeGrid(simulatedPPShapes, (int)colValue, (int)rowValue);
+
+                SyncShapes(selectedShapes, simulatedShapes);
             }
-
-            this.StartNewUndoEntry();
-            var selectedShapes = this.GetCurrentSelection().ShapeRange;
-            var simulatedShapes = DuplicateShapes(selectedShapes);
-            var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-
-            PositionsLabMain.DistributeGrid(simulatedPPShapes, (int)colValue, (int)rowValue);
-
-            SyncShapes(selectedShapes, simulatedShapes);
-            simulatedShapes.Delete();
-            GC.Collect();
+            catch (Exception ex)
+            {
+                Close();
+                Debug.WriteLine(ex.Message);
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+            finally
+            {
+                simulatedShapes.Delete();
+                GC.Collect();
+            }
 
             Close();
         }
@@ -153,5 +174,45 @@ namespace PowerPointLabs.PositionsLab
 
             return shapes;
         }
+        #region Error Handling
+        public void ShowErrorMessageBox(string content, Exception exception = null)
+        {
+
+            if (exception == null)
+            {
+                MessageBox.Show(content, "Error");
+                return;
+            }
+
+            var errorMessage = GetErrorMessage(exception.Message);
+            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
+            {
+                MessageBox.Show(content, "Error");
+            }
+            else
+            {
+                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+            }
+        }
+
+        private string GetErrorMessage(string errorMsg)
+        {
+            switch (errorMsg)
+            {
+                case ErrorMessageNoSelection:
+                    return ErrorMessageNoSelection;
+                case ErrorMessageFewerThanTwoSelection:
+                    return ErrorMessageFewerThanTwoSelection;
+                case ErrorMessageFewerThanThreeSelection:
+                    return ErrorMessageFewerThanThreeSelection;
+                default:
+                    return ErrorMessageUndefined;
+            }
+        }
+
+        private void IgnoreExceptionThrown() { }
+
+        #endregion
+
     }
 }

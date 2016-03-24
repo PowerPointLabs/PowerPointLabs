@@ -28,6 +28,7 @@ namespace PowerPointLabs.PositionsLab
         //Error Messages
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         public enum DistributeReferenceObject
@@ -47,9 +48,10 @@ namespace PowerPointLabs.PositionsLab
         //Distribute Grid Variables
         public enum GridAlignment
         {
+            None,
             AlignLeft,
             AlignCenter,
-            AlignRight
+            AlignRight,
         }
 
         public static DistributeReferenceObject DistributeReference { get; private set; }
@@ -870,27 +872,68 @@ namespace PowerPointLabs.PositionsLab
 
         public static void DistributeGrid(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
+            if (DistributeReference == DistributeReferenceObject.ExtremeShapes)
+            {
+                throw new Exception(ErrorMessageFunctionNotSupportedForExtremeShapes);
+            }
+            var isFirstTwoShapes = DistributeReference == DistributeReferenceObject.FirstTwoShapes;
+            var isFirstShape = DistributeReference == DistributeReferenceObject.FirstShape;
+            var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
+            var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
+
             var colLengthGivenFullRows = (int) Math.Ceiling((double) selectedShapes.Count/rowLength);
             if (colLength <= colLengthGivenFullRows)
             {
-                if (DistributeReference == DistributeReferenceObject.FirstTwoShapes)
+                if (isFirstTwoShapes && isObjectCenter)
                 {
-                    DistributeGridByRowWithAnchors(selectedShapes, rowLength, colLength);
+                    var startAnchorCenter = selectedShapes[0].Center;
+                    var endAnchorCenter = selectedShapes[1].Center;
+                    var rowWidth = endAnchorCenter.X - startAnchorCenter.X;
+                    var colHeight = endAnchorCenter.Y - startAnchorCenter.Y;
+                    DistributeGridByRowWithAnchors(selectedShapes, rowLength, colLength, rowWidth, colHeight);
                 }
-                else
+                else if (isFirstTwoShapes && isObjectBoundary)
+                {
+                    var startAnchor = selectedShapes[0];
+                    var endAnchor = selectedShapes[1];
+                    var rowWidth = endAnchor.Left + endAnchor.AbsoluteWidth - startAnchor.Left;
+                    var colHeight = endAnchor.Top + endAnchor.AbsoluteHeight - startAnchor.Top;
+                    DistributeGridByRowWithAnchorsByEdge(selectedShapes, rowLength, colLength, rowWidth, colHeight);
+                }
+                else if (isFirstShape && isObjectCenter)
                 {
                     DistributeGridByRow(selectedShapes, rowLength, colLength);
+                }
+                else if (isFirstShape && isObjectBoundary)
+                {
+                    DistributeGridByRowByEdge(selectedShapes, rowLength, colLength);
                 }
             }
             else
             {
-                if (DistributeReference == DistributeReferenceObject.FirstTwoShapes)
+                if (isFirstTwoShapes && isObjectCenter)
                 {
-                    DistributeGridByColWithAnchors(selectedShapes, rowLength, colLength);
+                    var startAnchorCenter = selectedShapes[0].Center;
+                    var endAnchorCenter = selectedShapes[1].Center;
+                    var rowWidth = endAnchorCenter.X - startAnchorCenter.X;
+                    var colHeight = endAnchorCenter.Y - startAnchorCenter.Y;
+                    DistributeGridByColWithAnchors(selectedShapes, rowLength, colLength, rowWidth, colHeight);
                 }
-                else
+                else if (isFirstTwoShapes && isObjectBoundary)
+                {
+                    var startAnchor = selectedShapes[0];
+                    var endAnchor = selectedShapes[1];
+                    var rowWidth = endAnchor.Left + endAnchor.AbsoluteWidth - startAnchor.Left;
+                    var colHeight = endAnchor.Top + endAnchor.AbsoluteHeight - startAnchor.Top;
+                    DistributeGridByColWithAnchorsByEdge(selectedShapes, rowLength, colLength, rowWidth, colHeight);
+                }
+                else if (isFirstShape && isObjectCenter)
                 {
                     DistributeGridByCol(selectedShapes, rowLength, colLength);
+                }
+                else if (isFirstShape && isObjectBoundary)
+                {
+                    DistributeGridByColByEdge(selectedShapes, rowLength, colLength);
                 }
             }
         }
@@ -991,7 +1034,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void DistributeGridByRowWithAnchors(List<PPShape> selectedShapes, int rowLength, int colLength)
+        public static void DistributeGridByRowWithAnchors(List<PPShape> selectedShapes, int rowLength, int colLength, float rowWidth, float colHeight)
         {
             if (selectedShapes.Count < 2)
             {
@@ -1001,44 +1044,181 @@ namespace PowerPointLabs.PositionsLab
             var startingAnchor = selectedShapes[0].Center;
             var endingAnchor = selectedShapes[1].Center;
 
-            var rowDifference = (endingAnchor.X - startingAnchor.X)/(rowLength - 1);
-            var colDifference = (endingAnchor.Y - startingAnchor.Y)/(colLength - 1);
-
-            var numShapes = selectedShapes.Count;
-            var numIndicesToSkip = IndicesToSkip(numShapes, rowLength, DistributeGridAlignment);
-
-            var posX = startingAnchor.X;
-            var posY = startingAnchor.Y;
-            var remainder = numShapes%rowLength;
-
             var endAnchor = selectedShapes[1];
             selectedShapes.RemoveAt(1);
             selectedShapes.Add(endAnchor);
 
-            for (var i = 0; i < numShapes - 1; i++)
+            var rowDifference = rowWidth / (rowLength - 1);
+            var colDifference = colHeight / (colLength - 1);
+
+            var gridSpaces = new float[selectedShapes.Count, 2];
+
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                gridSpaces[i, 0] = rowDifference;
+                gridSpaces[i, 1] = colDifference;
+            }
+
+            DistributeGridByRow(selectedShapes, rowLength, colLength, gridSpaces, 0, selectedShapes.Count - 1);
+        }
+
+        public static void DistributeGridByRow(List<PPShape> selectedShapes, int rowLength, int colLength, float[,] gridSpaces, int start, int end)
+        {
+            var numShapes = selectedShapes.Count;
+            var numIndicesToSkip = IndicesToSkip(numShapes, rowLength, DistributeGridAlignment);
+
+            var startingAnchor = selectedShapes[0].Center;
+
+            var rowDifferences = GetLongestWidthsOfRowsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
+            var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
+
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+            var remainder = numShapes % rowLength;
+
+            for (var i = start; i < end; i++)
             {
                 //Start of new row
-                if (i%rowLength == 0 && i != 0)
+                if (i % rowLength == 0 && i != 0)
                 {
                     posX = startingAnchor.X;
-                    posY += colDifference;
+                    posY += gridSpaces[i, 1];
                 }
 
                 //If last row, offset by num of indices to skip
                 if (numShapes - i == remainder)
                 {
-                    posX += numIndicesToSkip*rowDifference;
+                    posX += numIndicesToSkip * gridSpaces[i, 0];
                 }
 
                 var currentShape = selectedShapes[i];
                 currentShape.IncrementLeft(posX - currentShape.Center.X);
                 currentShape.IncrementTop(posY - currentShape.Center.Y);
 
-                posX += rowDifference;
+                posX += gridSpaces[i, 0];
             }
         }
 
-        public static void DistributeGridByColWithAnchors(List<PPShape> selectedShapes, int rowLength, int colLength)
+        public static void DistributeGridByRowWithAnchorsByEdge(List<PPShape> selectedShapes, int rowLength, int colLength, float rowWidth, float colHeight)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var numShapes = selectedShapes.Count;
+
+            var startAnchor = selectedShapes[0];
+            var endAnchor = selectedShapes[1];
+            selectedShapes.RemoveAt(1);
+            selectedShapes.Add(endAnchor);
+
+            var startingAnchor = selectedShapes[0].Center;
+
+            var longestRow = rowWidth;
+            var longestCol = colHeight;
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+
+            var colDifferences = GetLongestHeightsOfColsByRow(selectedShapes, rowLength, colLength);
+
+            for (int i = 0; i < colDifferences.Length; i++)
+            {
+                longestCol -= colDifferences[i];
+            }
+
+            var rowDifference = longestRow;
+            var colDifference = longestCol / (colDifferences.Length - 1);
+
+            for (var i = 0; i < numShapes - 1; i++)
+            {
+                //Start of new row
+                if (i % rowLength == 0)
+                {
+                    rowDifference = longestRow;
+                    int j = 0;
+                    for (j = 0; j < rowLength; j++)
+                    {
+                        if (i + j >= numShapes - 1)
+                        {
+                            break;
+                        }
+                        rowDifference -= selectedShapes[i + j].AbsoluteWidth;
+                    }
+                    if (j > 1)
+                    {
+                        rowDifference /= (j - 1);
+                    }
+                    if (i != 0)
+                    {   
+                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posY += (colDifferences[i / rowLength - 1] / 2 + colDifferences[i / rowLength] / 2 + colDifference);
+                    }
+                }
+
+                var currentShape = selectedShapes[i];
+                currentShape.IncrementLeft(posX - currentShape.Center.X);
+                currentShape.IncrementTop(posY - currentShape.Center.Y);
+
+                if (i + 1 < numShapes)
+                {
+                    posX += (selectedShapes[i].AbsoluteWidth / 2 + selectedShapes[i + 1].AbsoluteWidth / 2 + rowDifference);
+                }
+            }
+        }
+
+        public static void DistributeGridByRowByEdge(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            var numShapes = selectedShapes.Count;
+
+            var startingAnchor = selectedShapes[0].Center;
+
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+
+            var longestRow = GetLongestRowWidthByRow(selectedShapes, rowLength);
+            var colDifferences = GetLongestHeightsOfColsByRow(selectedShapes, rowLength, colLength);
+
+            var rowDifference = longestRow;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //Start of new row
+                if (i % rowLength == 0)
+                {
+                    rowDifference = longestRow;
+                    int j = 0;
+                    for (j = 0; j < rowLength; j++)
+                    {
+                        if (i + j >= numShapes)
+                        {
+                            break;
+                        }
+                        rowDifference -= selectedShapes[i + j].AbsoluteWidth;
+                    }
+                    if (j > 1)
+                    {
+                        rowDifference /= (j - 1);
+                    }
+                    if (i != 0)
+                    {   
+                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posY += GetSpaceBetweenShapes(i / rowLength - 1, i / rowLength, colDifferences, MarginTop, MarginBottom);
+                    }
+                }
+
+                var currentShape = selectedShapes[i];
+                currentShape.IncrementLeft(posX - currentShape.Center.X);
+                currentShape.IncrementTop(posY - currentShape.Center.Y);
+
+                if (i + 1 < numShapes)
+                {
+                    posX += (selectedShapes[i].AbsoluteWidth / 2 + selectedShapes[i + 1].AbsoluteWidth / 2 + rowDifference);
+                }
+            }
+        }
+
+        public static void DistributeGridByColWithAnchors(List<PPShape> selectedShapes, int rowLength, int colLength, float rowWidth, float colHeight)
         {
             if (selectedShapes.Count < 2)
             {
@@ -1048,23 +1228,38 @@ namespace PowerPointLabs.PositionsLab
             var startingAnchor = selectedShapes[0].Center;
             var endingAnchor = selectedShapes[1].Center;
 
-            var rowDifference = (endingAnchor.X - startingAnchor.X)/(rowLength - 1);
-            var colDifference = (endingAnchor.Y - startingAnchor.Y)/(colLength - 1);
-
-            var numShapes = selectedShapes.Count;
-
-            var numIndicesToSkip = IndicesToSkip(numShapes, colLength, DistributeGridAlignment);
-
-            var posX = startingAnchor.X;
-            var posY = startingAnchor.Y;
-            var remainder = colLength - (rowLength*colLength - numShapes);
-            var augmentedShapeIndex = 0;
+            var rowDifference = rowWidth / (rowLength - 1);
+            var colDifference = colHeight / (colLength - 1);
 
             var endAnchor = selectedShapes[1];
             selectedShapes.RemoveAt(1);
             selectedShapes.Add(endAnchor);
 
-            for (var i = 0; i < numShapes - 1; i++)
+            var gridSpaces = new float[selectedShapes.Count, 2];
+
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                gridSpaces[i, 0] = rowDifference;
+                gridSpaces[i, 1] = colDifference;
+            }
+
+            DistributeGridByCol(selectedShapes, rowLength, colLength, gridSpaces, 0, selectedShapes.Count - 1);
+        }
+
+        public static void DistributeGridByCol(List<PPShape> selectedShapes, int rowLength, int colLength, float[,] gridSpaces, int start, int end)
+        {
+            var numShapes = selectedShapes.Count;
+
+            var numIndicesToSkip = IndicesToSkip(numShapes, colLength, DistributeGridAlignment);
+
+            var startingAnchor = selectedShapes[0].Center;
+
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+            var augmentedShapeIndex = 0;
+
+            for (var i = start; i < end; i++)
             {
                 //If last index and need to skip, skip index 
                 if (numIndicesToSkip > 0 && IsLastIndexOfRow(augmentedShapeIndex, rowLength))
@@ -1089,7 +1284,7 @@ namespace PowerPointLabs.PositionsLab
                 if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength) && augmentedShapeIndex != 0)
                 {
                     posX = startingAnchor.X;
-                    posY += colDifference;
+                    posY += gridSpaces[i, 1];
                 }
 
                 var currentShape = selectedShapes[i];
@@ -1097,7 +1292,173 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
-                posX += rowDifference;
+                posX += gridSpaces[i, 0];
+                augmentedShapeIndex++;
+            }
+        }
+
+        public static void DistributeGridByColByEdge(List<PPShape> selectedShapes, int rowLength, int colLength)
+        {
+            var numShapes = selectedShapes.Count;
+            var startingAnchor = selectedShapes[0].Center;
+
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+            var augmentedShapeIndex = 0;
+
+            var longestRow = GetLongestRowWidthByCol(selectedShapes, rowLength, colLength);
+            var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, 0);
+            Debug.WriteLine(longestRow);
+            var rowDifference = longestRow;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                    }
+                }
+
+                if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    rowDifference = longestRow;
+                    int j = 0;
+                    int end = rowLength;
+
+                    if (remainder <= 0)
+                    {
+                        end--;
+                    }
+
+                    for (j = 0; j < end; j++)
+                    {
+                        if (i + j >= numShapes)
+                        {
+                            break;
+                        }
+                        rowDifference -= selectedShapes[i + j].AbsoluteWidth;
+                    }
+                    if (j > 1)
+                    {
+                        rowDifference /= (j - 1);
+                    }
+
+                    if (augmentedShapeIndex != 0)
+                    {
+                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posY += GetSpaceBetweenShapes(augmentedShapeIndex / rowLength - 1, augmentedShapeIndex / rowLength, colDifferences, MarginTop, MarginBottom);
+                    }
+                }
+
+                var currentShape = selectedShapes[i];
+                var center = currentShape.Center;
+                currentShape.IncrementLeft(posX - center.X);
+                currentShape.IncrementTop(posY - center.Y);
+
+                if (i + 1 < numShapes)
+                {
+                    posX += (selectedShapes[i].AbsoluteWidth / 2 + selectedShapes[i + 1].AbsoluteWidth / 2 + rowDifference);
+                }
+                augmentedShapeIndex++;
+            }
+        }
+
+        public static void DistributeGridByColWithAnchorsByEdge(List<PPShape> selectedShapes, int rowLength, int colLength, float rowWidth, float colHeight)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var numShapes = selectedShapes.Count;
+
+            var startAnchor = selectedShapes[0];
+            var endAnchor = selectedShapes[1];
+            selectedShapes.RemoveAt(1);
+            selectedShapes.Add(endAnchor);
+
+            var startingAnchor = selectedShapes[0].Center;
+
+            var longestRow = rowWidth;
+            var longestCol = colHeight;
+            var posX = startingAnchor.X;
+            var posY = startingAnchor.Y;
+
+            var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, 0);
+
+            for (int i = 0; i < colDifferences.Length; i++)
+            {
+                longestCol -= colDifferences[i];
+            }
+
+            var rowDifference = longestRow;
+            var colDifference = longestCol / (colDifferences.Length - 1);
+            var remainder = colLength - (rowLength * colLength - numShapes);
+            var augmentedShapeIndex = 0;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                    }
+                }
+
+                if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    rowDifference = longestRow;
+                    int j = 0;
+                    int end = rowLength;
+
+                    if (remainder <= 0)
+                    {
+                        end--;
+                    }
+
+                    for (j = 0; j < end; j++)
+                    {
+                        if (i + j >= numShapes)
+                        {
+                            break;
+                        }
+                        rowDifference -= selectedShapes[i + j].AbsoluteWidth;
+                    }
+                    if (j > 1)
+                    {
+                        rowDifference /= (j - 1);
+                    }
+
+                    if (augmentedShapeIndex != 0)
+                    {
+                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posY += (colDifferences[augmentedShapeIndex / rowLength - 1] / 2 + colDifferences[augmentedShapeIndex / rowLength] / 2 + colDifference);
+                    }
+                }
+
+                var currentShape = selectedShapes[i];
+                var center = currentShape.Center;
+                currentShape.IncrementLeft(posX - center.X);
+                currentShape.IncrementTop(posY - center.Y);
+
+                if (i + 1 < numShapes)
+                {
+                    posX += (selectedShapes[i].AbsoluteWidth / 2 + selectedShapes[i + 1].AbsoluteWidth / 2 + rowDifference);
+                }
                 augmentedShapeIndex++;
             }
         }
@@ -1523,6 +1884,36 @@ namespace PowerPointLabs.PositionsLab
             return longestWidths;
         }
 
+        public static float GetLongestRowWidthByRow(List<PPShape> shapes, int rowLength)
+        {
+            var longestRow = 0.0f;
+            var longestRowSoFar = 0.0f;
+            var numShapes = shapes.Count;
+            var remainder = numShapes % rowLength;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                var rowIndex = i % rowLength;
+
+                if (rowIndex == 0)
+                {
+                    if (longestRowSoFar > longestRow)
+                    {
+                        longestRow = longestRowSoFar;
+                    }
+                    longestRowSoFar = -(MarginLeft + MarginRight);
+                }
+                longestRowSoFar += (shapes[i].AbsoluteWidth + MarginLeft + MarginRight);
+            }
+
+            if (longestRowSoFar > longestRow)
+            {
+                longestRow = longestRowSoFar;
+            }
+
+            return longestRow;
+        }
+
         public static float[] GetLongestHeightsOfColsByRow(List<PPShape> shapes, int rowLength, int colLength)
         {
             var longestHeights = new float[colLength];
@@ -1581,6 +1972,54 @@ namespace PowerPointLabs.PositionsLab
             return longestWidths;
         }
 
+        public static float GetLongestRowWidthByCol(List<PPShape> shapes, int rowLength, int colLength)
+        {
+            float longestWidth = 0;
+            var numShapes = shapes.Count;
+            
+            var augmentedShapeIndex = 0;
+            var remainder = colLength - (rowLength * colLength - numShapes);
+            float rowSoFar = 0;
+
+            for (var i = 0; i < numShapes; i++)
+            {
+                //If last index and no more remainder, skip the rest
+                if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
+                {
+                    if (remainder <= 0)
+                    {
+                        augmentedShapeIndex++;
+                    }
+                    else
+                    {
+                        remainder--;
+                        rowSoFar += (shapes[i].AbsoluteWidth + MarginLeft + MarginRight);
+                        augmentedShapeIndex++;
+                        i++;
+                    }
+
+                    if (rowSoFar > longestWidth)
+                    {
+                        longestWidth = rowSoFar;
+                    }
+                    rowSoFar = -(MarginLeft + MarginRight);
+                }
+
+                if (i < numShapes)
+                {
+                    rowSoFar += (shapes[i].AbsoluteWidth + MarginLeft + MarginRight);
+                }                
+                augmentedShapeIndex++;
+            }
+
+            if (rowSoFar > longestWidth)
+            {
+                longestWidth = rowSoFar;
+            }
+
+            return longestWidth;
+        }
+
         public static float[] GetLongestHeightsOfColsByCol(List<PPShape> shapes, int rowLength, int colLength, int numIndicesToSkip)
         {
             var longestHeights = new float[colLength];
@@ -1637,7 +2076,7 @@ namespace PowerPointLabs.PositionsLab
         {
             var numOfShapesInLastRow = totalSelectedShapes%rowLength;
 
-            if (alignment == GridAlignment.AlignLeft || numOfShapesInLastRow == 0)
+            if (alignment == GridAlignment.AlignLeft || alignment == GridAlignment.None || numOfShapesInLastRow == 0)
             {
                 return 0;
             }

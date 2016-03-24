@@ -31,6 +31,8 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection =
             TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = 
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Variable for preview
