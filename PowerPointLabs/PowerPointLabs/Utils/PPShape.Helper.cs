@@ -122,10 +122,19 @@ namespace PowerPointLabs.Utils
             var rotation = GetStandardizedRotation(_shape.Rotation);
             var sinAngle = Math.Sin(rotation);
             var cosAngle = Math.Cos(rotation);
-            var ratio = sinAngle / cosAngle;
 
-            _shape.Height = (float)((_absoluteWidth * ratio - _absoluteHeight) / (sinAngle * ratio - cosAngle));
-            _shape.Width = (float)((_absoluteWidth - _shape.Height * sinAngle) / cosAngle);
+            if ((int) cosAngle != 0)
+            {
+                var ratio = sinAngle/cosAngle;
+
+                _shape.Height = (float) ((_absoluteWidth*ratio - _absoluteHeight)/(sinAngle*ratio - cosAngle));
+                _shape.Width = (float) ((_absoluteWidth - _shape.Height*sinAngle)/cosAngle);
+            }
+            else
+            {
+                _shape.Height = _absoluteWidth;
+                _shape.Width = _absoluteHeight;
+            }
         }
 
         private void SetToAbsoluteHeightAspectRatio()
