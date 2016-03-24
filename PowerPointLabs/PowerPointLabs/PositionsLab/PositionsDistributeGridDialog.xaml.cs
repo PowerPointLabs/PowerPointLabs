@@ -18,6 +18,7 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+        private const string ErrorMessageFunctionNotSupportedForSlide = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Flag to trigger
@@ -205,6 +206,10 @@ namespace PowerPointLabs.PositionsLab
                     return ErrorMessageFewerThanTwoSelection;
                 case ErrorMessageFewerThanThreeSelection:
                     return ErrorMessageFewerThanThreeSelection;
+                case ErrorMessageFunctionNotSupportedForExtremeShapes:
+                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
+                case ErrorMessageFunctionNotSupportedForSlide:
+                    return ErrorMessageFunctionNotSupportedForSlide;
                 default:
                     return ErrorMessageUndefined;
             }

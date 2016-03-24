@@ -33,6 +33,8 @@ namespace PowerPointLabs.PositionsLab
             TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = 
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+        private const string ErrorMessageFunctionNotSupportedForSlide =
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Variable for preview
@@ -811,6 +813,10 @@ namespace PowerPointLabs.PositionsLab
                     return ErrorMessageFewerThanTwoSelection;
                 case ErrorMessageFewerThanThreeSelection:
                     return ErrorMessageFewerThanThreeSelection;
+                case ErrorMessageFunctionNotSupportedForExtremeShapes:
+                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
+                case ErrorMessageFunctionNotSupportedForSlide:
+                    return ErrorMessageFunctionNotSupportedForSlide;
                 default:
                     return ErrorMessageUndefined;
             }

@@ -29,6 +29,8 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+        private const string ErrorMessageFunctionNotSupportedForSlide =
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         public enum DistributeReferenceObject
@@ -863,6 +865,12 @@ namespace PowerPointLabs.PositionsLab
             {
                 throw new Exception(ErrorMessageFunctionNotSupportedForExtremeShapes);
             }
+
+            if (DistributeReference == DistributeReferenceObject.Slide)
+            {
+                throw new Exception(ErrorMessageFunctionNotSupportedForSlide);
+            }
+
             var isFirstTwoShapes = DistributeReference == DistributeReferenceObject.FirstTwoShapes;
             var isFirstShape = DistributeReference == DistributeReferenceObject.FirstShape;
             var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
