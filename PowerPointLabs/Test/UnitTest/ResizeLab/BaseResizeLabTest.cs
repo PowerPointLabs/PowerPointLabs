@@ -1,30 +1,32 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ResizeLab;
-using PowerPointLabs.Utils;
 
 namespace Test.UnitTest.ResizeLab
 {
     [TestClass]
     public class BaseResizeLabTest : BaseUnitTest
     {
+        private readonly Dictionary<string, string> _originalShapeName = new Dictionary<string, string>();
+
         protected override string GetTestingSlideName()
         {
             return "ResizeLab.pptm";
         }
 
-        protected void InitOriginalShapes(int slideNumber, List<string> shapeNames,
-            Dictionary<string, ShapeProperties> shapeProperties)
+        protected void InitOriginalShapes(int slideNumber, List<string> shapeNames)
         {
             var shapes = GetShapes(slideNumber, shapeNames);
-            foreach (PowerPoint.Shape shape in shapes)
+
+            _originalShapeName.Clear();
+            foreach(PowerPoint.Shape shape in shapes)
             {
-                var originalPpShape = new PPShape(shape);
-                shapeProperties.Add(shape.Name,
-                    new ShapeProperties(shape.Name, originalPpShape.Top, originalPpShape.Left,
-                        originalPpShape.AbsoluteWidth, originalPpShape.AbsoluteHeight));
+                var duplicateShape = shape.Duplicate()[1];
+                duplicateShape.Top = shape.Top;
+                duplicateShape.Left = shape.Left;
+                _originalShapeName.Add(duplicateShape.Name, duplicateShape.Name);
             }
         }
 
@@ -34,21 +36,23 @@ namespace Test.UnitTest.ResizeLab
             return PpOperations.SelectShapes(shapeNames);
         }
 
-        protected void RestoreShapes(PowerPoint.ShapeRange shapes, IDictionary<string, ShapeProperties> shapeProperties)
+        protected void RestoreShapes(int slideNumber, IEnumerable<string> shapeNames)
         {
-            foreach (PowerPoint.Shape shape in shapes)
+            try
             {
-                var ppShape = new PPShape(shape);
-                if (!shapeProperties.ContainsKey(ppShape.Name))
-                {
-                    continue;
-                }
+                var duplicatedShapeNames = new List<string>(_originalShapeName.Keys);
+                var executedShapes = GetShapes(slideNumber, shapeNames);
+                var shapes = GetShapes(slideNumber, duplicatedShapeNames);
+                executedShapes.Delete();
 
-                var originalProperty = shapeProperties[ppShape.Name];
-                ppShape.Top = originalProperty.Top;
-                ppShape.Left = originalProperty.Left;
-                ppShape.AbsoluteWidth = originalProperty.AbsoluteWidth;
-                ppShape.AbsoluteHeight = originalProperty.AbsoluteHeight;
+                foreach (PowerPoint.Shape shape in shapes)
+                {
+                    shape.Name = _originalShapeName[shape.Name];
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
             }
         }
 

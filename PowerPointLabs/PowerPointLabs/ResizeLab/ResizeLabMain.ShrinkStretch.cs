@@ -9,6 +9,16 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+        // To be used for error handling
+        internal const int Stretch_MinNoOfShapesRequired = 2;
+        internal const string Stretch_FeatureName = "Stretch/Shrink";
+        internal const string Stretch_ShapeSupport = "objects";
+        internal static readonly string[] Stretch_ErrorParameters =
+        {
+            Stretch_FeatureName,
+            Stretch_MinNoOfShapesRequired.ToString(),
+            Stretch_ShapeSupport
+        };
 
         public enum StretchRefType
         {
@@ -179,7 +189,7 @@ namespace PowerPointLabs.ResizeLab
 
         private bool ValidateSelection(PowerPoint.ShapeRange shapes)
         {
-            return IsMoreThanOneShape(shapes);
+            return IsMoreThanOneShape(shapes, Stretch_MinNoOfShapesRequired, true, Stretch_ErrorParameters);
         }
 
         private PowerPoint.Shape GetReferenceShape(PowerPoint.ShapeRange shapes, GetDefaultReferenceEdge getReferenceEdge,

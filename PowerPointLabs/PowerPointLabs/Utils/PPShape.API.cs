@@ -1,20 +1,18 @@
 using System;
 using Microsoft.Office.Core;
-using System.Collections;
 using System.Drawing;
-using System.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
-    public class PPShape
+    public partial class PPShape
     {
         private readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedLeft;
         private float _rotatedTop;
-        private readonly float _originalRotation;
+        private float _originalRotation;
 
         public PPShape(PowerPoint.Shape shape)
         {
@@ -30,6 +28,8 @@ namespace PowerPointLabs.Utils
             UpdateLeft();
         }
 
+        #region Properties
+
         /// <summary>
         /// Return or set the name of the specified shape.
         /// </summary>
@@ -38,6 +38,11 @@ namespace PowerPointLabs.Utils
             get { return _shape.Name; }
             set { _shape.Name = value; }
         }
+
+        /// <summary>
+        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
+        /// </summary>
+        public int Id => _shape.Id;
 
         /// <summary>
         /// Return or set the width of the specified shape.
@@ -82,8 +87,7 @@ namespace PowerPointLabs.Utils
                 else
                 {
                     SetToAbsoluteDimension();
-                }
-                
+                }     
             }
         }
 
@@ -264,11 +268,6 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Return a 64-bit signed integer that identifies the PPshape. Read-only.
-        /// </summary>
-        public int Id => _shape.Id;
-
-        /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
         /// distance from the left most point of the shape to the left edge of the slide.
         /// </summary>
@@ -297,9 +296,20 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Returns or sets the number of degrees the specified shape is rotated around the z-axis. Read/write.
+        /// Return or set the degrees of specified shape is rotated around the z-axis. 
+        /// Read/write.
         /// </summary>
-        public float Rotation
+        public float ShapeRotation
+        {
+            get { return _originalRotation; }
+            set { _originalRotation = value; }
+        }
+
+        /// <summary>
+        /// Return or set the degrees of specified shape's bounding box is rotated around the z-axis. 
+        /// Read/write.
+        /// </summary>
+        public float BoxRotation
         {
             get { return _shape.Rotation; }
             set
@@ -317,6 +327,10 @@ namespace PowerPointLabs.Utils
         /// Returns the position of the specified shape in the z-order. Read-only.
         /// </summary>
         public int ZOrderPosition => _shape.ZOrderPosition;
+
+        #endregion
+
+        #region Functions
 
         /// <summary>
         /// Delete the specified Shape object.
@@ -381,7 +395,10 @@ namespace PowerPointLabs.Utils
         {
             if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1) return;
 
-            var rotation = GetStandardizedRotation(360 - _originalRotation);
+            var isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
+                                         (_originalRotation >= 270 && _originalRotation < 360);
+
+            var rotation = GetStandardizedRotation(_originalRotation%90);
             var centerLeft = Center.X;
             var centerTop = Center.Y;
 
@@ -393,6 +410,12 @@ namespace PowerPointLabs.Utils
                 var oldY = point[1, 2];
                 var newX = oldY*Math.Sin(rotation) + oldX*Math.Cos(rotation);
                 var newY = oldY*Math.Cos(rotation) - oldX*Math.Sin(rotation);
+
+                if (isSecondOrFourthQuadrant)
+                {
+                    newX = oldY * Math.Cos(rotation) - oldX * Math.Sin(rotation);
+                    newY = oldY * Math.Sin(rotation) + oldX * Math.Cos(rotation);
+                }
 
                 _shape.Nodes.SetPosition(i, newX, newY);
             }
@@ -406,210 +429,6 @@ namespace PowerPointLabs.Utils
             Top = centerTop - _absoluteHeight/2;
         }
 
-        /// <summary>
-        /// Convert Autoshape to freeform
-        /// </summary>
-        private void ConvertToFreeform()
-        {
-            if ((int)_shape.Rotation == 0) return;
-            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) || _shape.Nodes.Count < 1) return;
-
-            // Convert AutoShape to Freeform shape
-            if (_shape.Type == MsoShapeType.msoAutoShape)
-            {
-                _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
-                _shape.Nodes.Delete(2);
-            }
-
-            // Save the coordinates of nodes
-            var pointList = new ArrayList();
-            for (int i = 1; i <= _shape.Nodes.Count; i++)
-            {
-                var node = _shape.Nodes[i];
-                var point = node.Points;
-                var newPoint = new float[2] { point[1, 1], point[1, 2] };
-
-                pointList.Add(newPoint);
-            }
-
-            // Rotate bounding box back to 0 degree, and
-            // apply the original coordinates to the nodes
-            _shape.Rotation = 0;
-            for (int i = 0; i < pointList.Count; i++)
-            {
-                var point = (float[]) pointList[i];
-                var nodeIndex = i + 1;
-
-                _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
-            }
-        }
-
-        /// <summary>
-        /// Update the absolute width according to the actual shape width and height.
-        /// </summary>
-        private void UpdateAbsoluteWidth()
-        {
-            var rotation = GetStandardizedRotation(_shape.Rotation);
-
-            if (IsInQuadrant(_shape.Rotation))
-            {
-                _absoluteWidth = (float) (_shape.Height*Math.Sin(rotation) + _shape.Width*Math.Cos(rotation));
-            }
-            else if ((int) _shape.Rotation == 90 || (int) _shape.Rotation == 270)
-            {
-                _absoluteWidth = _shape.Height;
-            }
-            else
-            {
-                _absoluteWidth = _shape.Width;
-            }
-        }
-
-        /// <summary>
-        /// Update the absolute height according to the actual shape width and height.
-        /// </summary>
-        private void UpdateAbsoluteHeight()
-        {
-            var rotation = GetStandardizedRotation(_shape.Rotation);
-
-            if (IsInQuadrant(_shape.Rotation))
-            {
-                _absoluteHeight = (float) (_shape.Height*Math.Cos(rotation) + _shape.Width*Math.Sin(rotation));
-            }
-            else if ((int) _shape.Rotation == 90 || (int) _shape.Rotation == 270)
-            {
-                _absoluteHeight = _shape.Width;
-            }
-            else
-            {
-                _absoluteHeight = _shape.Height;
-            }
-        }
-
-        /// <summary>
-        /// Update the distance from top most point of the shape to top edge of the slide.
-        /// </summary>
-        private void UpdateTop()
-        {
-            _rotatedTop = _shape.Top + _shape.Height/2 - _absoluteHeight/2;
-        }
-
-        /// <summary>
-        /// Update the distance from left most point of the shape to left edge of the slide.
-        /// </summary>
-        private void UpdateLeft()
-        {
-            _rotatedLeft = _shape.Left + _shape.Width/2 - _absoluteWidth/2;
-        }
-
-        /// <summary>
-        /// Set the actual width and height according to the absolute dimension (e.g. width and height).
-        /// </summary>
-        private void SetToAbsoluteDimension()
-        {
-            var rotation = GetStandardizedRotation(_shape.Rotation);
-            var sinAngle = Math.Sin(rotation);
-            var cosAngle = Math.Cos(rotation);
-            var ratio = sinAngle/cosAngle;
-
-            _shape.Height = (float)((_absoluteWidth * ratio - _absoluteHeight) / (sinAngle * ratio - cosAngle));
-            _shape.Width = (float)((_absoluteWidth - _shape.Height * sinAngle) / cosAngle);
-        }
-
-        private void SetToAbsoluteHeightAspectRatio()
-        {
-            // Store the original position of the shape
-            var originalTop = _shape.Top;
-            var originalLeft = _shape.Left;
-
-            _shape.LockAspectRatio = MsoTriState.msoFalse;
-            FitToSlide.FitToHeight(_shape, _absoluteWidth, _absoluteHeight);
-            _shape.LockAspectRatio = MsoTriState.msoTrue;
-
-            _shape.Top = originalTop;
-            _shape.Left = originalLeft;
-
-            UpdateAbsoluteWidth();
-            UpdateAbsoluteHeight();
-        }
-
-        private void SetToAbsoluteWidthAspectRatio()
-        {
-            // Store the original position of the shape
-            var originalTop = _shape.Top;
-            var originalLeft = _shape.Left;
-
-            _shape.LockAspectRatio = MsoTriState.msoFalse;
-            FitToSlide.FitToWidth(_shape, _absoluteWidth, _absoluteHeight);
-            _shape.LockAspectRatio = MsoTriState.msoTrue;
-
-            _shape.Top = originalTop;
-            _shape.Left = originalLeft;
-
-            UpdateAbsoluteWidth();
-            UpdateAbsoluteHeight();
-        }
-
-        /// <summary>
-        /// Set the distance from the top edge of unrotated shape to the top edge of the slide.
-        /// </summary>
-        private void SetTop()
-        {
-            _shape.Top = _rotatedTop - _shape.Height/2 + _absoluteHeight/2;
-        }
-
-        /// <summary>
-        /// Set the distance from the left edge of unrotated shape to the left edge of the slide.
-        /// </summary>
-        private void SetLeft()
-        {
-            _shape.Left = _rotatedLeft - _shape.Width/2 + _absoluteWidth/2;
-        }
-
-        /// <summary>
-        /// Check if the angle is in the quadrant.
-        /// </summary>
-        /// <param name="rotation"></param>
-        /// <returns></returns>
-        private static bool IsInQuadrant(float rotation)
-        {
-            return (rotation > 0 && rotation < 90) || (rotation > 90 && rotation < 180) ||
-                   (rotation > 180 && rotation < 270) || (rotation > 270 && rotation < 360);
-        }
-
-        /// <summary>
-        /// Standardize the angle to the first quadrant.
-        /// </summary>
-        /// <param name="rotation"></param>
-        /// <returns></returns>
-        private static float GetStandardizedRotation(float rotation)
-        {
-            if ((rotation > 0 && rotation < 90) ||
-                (rotation > 180 && rotation < 270))
-            {
-                rotation = rotation%90;
-            }
-            else if ((rotation > 90 && rotation <= 180) ||
-                     (rotation > 270 && rotation <= 360))
-            {
-                rotation = (360 - rotation)%90;
-            }
-            else if ((int)rotation == 270)
-            {
-                rotation = 360 - rotation;
-            }
-
-            return ConvertDegToRad(rotation);
-        }
-
-        /// <summary>
-        /// Convert angle from degree to radian.
-        /// </summary>
-        /// <param name="rotation"></param>
-        /// <returns></returns>
-        private static float ConvertDegToRad(float rotation)
-        {
-            return (float) (rotation*Math.PI/180);
-        }
+        #endregion
     }
 }

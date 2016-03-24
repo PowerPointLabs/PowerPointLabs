@@ -163,9 +163,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AdjoinHorizontalWithAlignIcon {
+            get {
+                object obj = ResourceManager.GetObject("AdjoinHorizontalWithAlignIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap AdjoinVerticalIcon {
             get {
                 object obj = ResourceManager.GetObject("AdjoinVerticalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AdjoinVerticalWithAlignIcon {
+            get {
+                object obj = ResourceManager.GetObject("AdjoinVerticalWithAlignIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1033,6 +1053,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ResizeDecreaseHeight {
+            get {
+                object obj = ResourceManager.GetObject("ResizeDecreaseHeight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeDecreaseWidth {
+            get {
+                object obj = ResourceManager.GetObject("ResizeDecreaseWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeFitToFill {
             get {
                 object obj = ResourceManager.GetObject("ResizeFitToFill", resourceCulture);
@@ -1063,6 +1103,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ResizeIncreaseHeight {
+            get {
+                object obj = ResourceManager.GetObject("ResizeIncreaseHeight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeIncreaseWidth {
+            get {
+                object obj = ResourceManager.GetObject("ResizeIncreaseWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeLab {
             get {
                 object obj = ResourceManager.GetObject("ResizeLab", resourceCulture);
@@ -1076,6 +1136,26 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap ResizeLock {
             get {
                 object obj = ResourceManager.GetObject("ResizeLock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeMatchHeight {
+            get {
+                object obj = ResourceManager.GetObject("ResizeMatchHeight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeMatchWidth {
+            get {
+                object obj = ResourceManager.GetObject("ResizeMatchWidth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -561,13 +561,17 @@
       <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
+    <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Symmetric.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.FitSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.SameDimension.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Equalize.cs" />
     <Compile Include="ResizeLab\ResizeLabPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -623,7 +627,8 @@
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
-    <Compile Include="Utils\PPShape.cs" />
+    <Compile Include="Utils\PPShape.API.cs" />
+    <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
     <Compile Include="Views\CustomPaintTextBox.cs" />
@@ -1293,6 +1298,30 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\LockAxisIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalWithAlignIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalWithAlignIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeMatchHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeMatchWidth.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

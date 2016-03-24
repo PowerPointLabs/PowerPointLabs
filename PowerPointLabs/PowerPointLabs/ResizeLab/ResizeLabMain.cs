@@ -11,21 +11,12 @@ namespace PowerPointLabs.ResizeLab
 {
     public partial class ResizeLabMain
     {
-        private const int ErrorCodeNoSelection = 0;
-        private const int ErrorCodeFewerThanTwoSelection = 1;
-        private const int ErrorCodeShapesNotStretchText = 2;
 
-        private const string ErrorMessageNoSelection = TextCollection.ResizeLabText.ErrorNoSelection;
-        private const string ErrorMessageFewerThanTwoSelection = TextCollection.ResizeLabText.ErrorFewerThanTwoSelection;
-        private const string ErrorMessageUndefined = TextCollection.ResizeLabText.ErrorUndefined;
-        private const string ErrorMessageShapesNotStretchText =
-            TextCollection.ResizeLabText.WarningShapesNotStretchText;
+        private readonly ResizeLabErrorHandler _errorHandler;
 
-        private IResizeLabPane View { get; }
-
-        public ResizeLabMain(IResizeLabPane view = null)
+        public ResizeLabMain()
         {
-            View = view;
+            _errorHandler = ResizeLabErrorHandler.InitializErrorHandler();
             SameDimensionAnchorType = SameDimensionAnchor.TopLeft;
         }
 
@@ -37,54 +28,56 @@ namespace PowerPointLabs.ResizeLab
         }
 
         /// <summary>
-        /// Reset the shapes to their original properties.
+        /// Get the height of the reference shape.
         /// </summary>
         /// <param name="selectedShapes"></param>
-        /// <param name="originalShapeProperties"></param>
-        public void ResetShapes(PowerPoint.ShapeRange selectedShapes,
-            Dictionary<string, ShapeProperties> originalShapeProperties)
+        /// <returns></returns>
+        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            if (originalShapeProperties.Count == 0) return;
-
-            for (int i = 1; i <= selectedShapes.Count; i++)
+            if (selectedShapes.Count > 0)
             {
-                var shape = new PPShape(selectedShapes[i]);
-                var shapeName = shape.Name;
-
-                if (!originalShapeProperties.ContainsKey(shapeName)) continue;
-
-                var originalProperties = originalShapeProperties[shapeName];
-                shape.AbsoluteWidth = originalProperties.AbsoluteWidth;
-                shape.AbsoluteHeight = originalProperties.AbsoluteHeight;
-                shape.Top = originalProperties.Top;
-                shape.Left = originalProperties.Left;
+                return new PPShape(selectedShapes[1]).AbsoluteHeight;
             }
+            return -1;
         }
+
+        /// <summary>
+        /// Get the width of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count > 0)
+            {
+                return new PPShape(selectedShapes[1]).AbsoluteWidth;
+            }
+            return -1;
+        }
+
+        #region Validation
 
         /// <summary>
         /// Check if the selection is of shape type.
         /// </summary>
         /// <param name="selection"></param>
         /// <param name="handleError"></param>
+        /// <param name="optionalParameters"></param>
         /// <returns></returns>
-        internal bool IsSelecionValid(PowerPoint.Selection selection, bool handleError = true)
+        internal bool IsSelectionValid(PowerPoint.Selection selection, bool handleError = true, string[] optionalParameters = null)
         {
-            try
-            {
-                if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    ThrowErrorCode(ErrorCodeNoSelection);
-                }
-
-                return true;
-            }
-            catch (Exception e)
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 if (handleError)
                 {
-                    ProcessErrorMessage(e);
+                    _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, optionalParameters);
                 }
+                
                 return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -92,93 +85,28 @@ namespace PowerPointLabs.ResizeLab
         /// Check if the number of shape is more than one.
         /// </summary>
         /// <param name="selectedShapes"></param>
+        /// <param name="minNoOfShapes"></param>
         /// <param name="handleError"></param>
+        /// <param name="optionalParameters"></param>
         /// <returns></returns>
-        private bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes, bool handleError = true)
+        private bool IsMoreThanOneShape(PowerPoint.ShapeRange selectedShapes, int minNoOfShapes, bool handleError = true, string[] optionalParameters = null)
         {
-            try
-            {
-                if (selectedShapes.Count < 2)
-                {
-                    ThrowErrorCode(ErrorCodeFewerThanTwoSelection);
-                }
-
-                return true;
-            }
-            catch (Exception e)
+            if (selectedShapes.Count < minNoOfShapes)
             {
                 if (handleError)
                 {
-                    ProcessErrorMessage(e);
+                    _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, optionalParameters);
                 }
+
                 return false;
-            }
-        }
-
-        #region Error Message
-
-        /// <summary>
-        /// Store error code in the culture info.
-        /// </summary>
-        /// <param name="errorType"></param>
-        private void ThrowErrorCode(int errorType)
-        {
-            throw new Exception(errorType.ToString(CultureInfo.InvariantCulture));
-        }
-
-        /// <summary>
-        /// Show the error message.
-        /// </summary>
-        /// <param name="e"></param>
-        private void ProcessErrorMessage(Exception e)
-        {
-            if (View == null)
-            {
-                return;
-            }
-
-            var errorMessage = GetErrorMessage(e.Message);
-            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
-            {
-                View.ShowErrorMessageBox(errorMessage);
             }
             else
             {
-                View.ShowErrorMessageBox(e.Message, e);
+                return true;
             }
         }
-
-        /// <summary>
-        /// Get error message corresponds to the error code.
-        /// </summary>
-        /// <param name="errorCode"></param>
-        /// <returns></returns>
-        private string GetErrorMessage(string errorCode)
-        {
-            var errorCodeInteger = -1;
-            try
-            {
-                errorCodeInteger = int.Parse(errorCode);
-            }
-            catch
-            {
-                IgnoreExceptionThrown();
-            }
-            switch (errorCodeInteger)
-            {
-                case ErrorCodeNoSelection:
-                    return ErrorMessageNoSelection;
-                case ErrorCodeFewerThanTwoSelection:
-                    return ErrorMessageFewerThanTwoSelection;
-                case ErrorCodeShapesNotStretchText:
-                    return ErrorMessageShapesNotStretchText;
-                default:
-                    return ErrorMessageUndefined;
-            }
-        }
-
-        private void IgnoreExceptionThrown() { }
 
         #endregion
+
     }
 }

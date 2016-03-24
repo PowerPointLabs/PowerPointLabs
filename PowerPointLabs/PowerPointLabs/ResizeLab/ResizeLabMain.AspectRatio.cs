@@ -26,6 +26,9 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
+                if (isAspectRatio && selectedShapes.LockAspectRatio == MsoTriState.msoTrue) return;
+                if (!isAspectRatio && selectedShapes.LockAspectRatio == MsoTriState.msoFalse) return;
+
                 selectedShapes.LockAspectRatio = isAspectRatio ? MsoTriState.msoTrue : MsoTriState.msoFalse;
             }
             catch (Exception e) 

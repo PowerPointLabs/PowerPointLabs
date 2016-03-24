@@ -14,6 +14,17 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+        // To be used for error handling
+        internal const int SameDimension_MinNoOfShapesRequired = 2;
+        internal const string SameDimension_FeatureName = "Same Dimension";
+        internal const string SameDimension_ShapeSupport = "objects";
+        internal static readonly string[] SameDimension_ErrorParameters =
+        {
+            SameDimension_FeatureName,
+            SameDimension_MinNoOfShapesRequired.ToString(),
+            SameDimension_ShapeSupport
+        };
+
         public enum SameDimensionAnchor
         {
             TopLeft, TopCenter, TopRight,
@@ -69,7 +80,8 @@ namespace PowerPointLabs.ResizeLab
                 var referenceHeight = GetReferenceHeight(selectedShapes);
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (!IsMoreThanOneShape(selectedShapes) || (referenceHeight < 0) || (referenceWidth < 0))
+                if (!IsMoreThanOneShape(selectedShapes, SameDimension_MinNoOfShapesRequired, true, SameDimension_ErrorParameters) 
+                    || (referenceHeight < 0) || (referenceWidth < 0))
                 {
                     return;
                 }
@@ -176,34 +188,6 @@ namespace PowerPointLabs.ResizeLab
                     shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
                     break;
             }
-        }
-
-        /// <summary>
-        /// Get the height of the reference shape.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <returns></returns>
-        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
-        {
-            if (selectedShapes.Count > 0)
-            {
-                return new PPShape(selectedShapes[1]).AbsoluteHeight;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Get the width of the reference shape.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <returns></returns>
-        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
-        {
-            if (selectedShapes.Count > 0)
-            {
-                return new PPShape(selectedShapes[1]).AbsoluteWidth;
-            }
-            return -1;
         }
     }
 }
