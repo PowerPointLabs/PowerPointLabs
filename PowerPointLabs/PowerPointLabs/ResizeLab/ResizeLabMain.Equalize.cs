@@ -18,7 +18,7 @@ namespace PowerPointLabs.ResizeLab
         internal const int SameDimension_MinNoOfShapesRequired = 2;
         internal const string SameDimension_FeatureName = "Same Dimension";
         internal const string SameDimension_ShapeSupport = "objects";
-        internal static readonly string[] SameDimension_ErrorParameters = new string[]
+        internal static readonly string[] SameDimension_ErrorParameters =
         {
             SameDimension_FeatureName,
             SameDimension_MinNoOfShapesRequired.ToString(),
@@ -188,34 +188,6 @@ namespace PowerPointLabs.ResizeLab
                     shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
                     break;
             }
-        }
-
-        /// <summary>
-        /// Get the height of the reference shape.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <returns></returns>
-        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
-        {
-            if (selectedShapes.Count > 0)
-            {
-                return new PPShape(selectedShapes[1]).AbsoluteHeight;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Get the width of the reference shape.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <returns></returns>
-        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
-        {
-            if (selectedShapes.Count > 0)
-            {
-                return new PPShape(selectedShapes[1]).AbsoluteWidth;
-            }
-            return -1;
         }
     }
 }

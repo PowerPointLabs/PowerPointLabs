@@ -134,7 +134,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModelTest.cs" />
     <Compile Include="UnitTest\ResizeLab\FitToSlideTest.cs" />
     <Compile Include="UnitTest\ResizeLab\BaseResizeLabTest.cs" />
-    <Compile Include="UnitTest\ResizeLab\SameDimensionTest.cs" />
+    <Compile Include="UnitTest\ResizeLab\EqualizeTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />

@@ -6,7 +6,7 @@ using PowerPointLabs.ResizeLab;
 namespace Test.UnitTest.ResizeLab
 {
     [TestClass]
-    public class SameDimensionTest : BaseResizeLabTest
+    public class EqualizeTest : BaseResizeLabTest
     {
         private readonly ResizeLabMain _resizeLab = new ResizeLabMain();
         private List<string> _shapeNames;

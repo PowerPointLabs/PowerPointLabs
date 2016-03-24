@@ -1143,6 +1143,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ResizeMatchHeight {
+            get {
+                object obj = ResourceManager.GetObject("ResizeMatchHeight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ResizeMatchWidth {
+            get {
+                object obj = ResourceManager.GetObject("ResizeMatchWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeSameHeight {
             get {
                 object obj = ResourceManager.GetObject("ResizeSameHeight", resourceCulture);

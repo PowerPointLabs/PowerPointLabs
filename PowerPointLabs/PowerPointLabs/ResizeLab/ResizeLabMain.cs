@@ -12,7 +12,7 @@ namespace PowerPointLabs.ResizeLab
     public partial class ResizeLabMain
     {
 
-        private ResizeLabErrorHandler _errorHandler;
+        private readonly ResizeLabErrorHandler _errorHandler;
 
         public ResizeLabMain()
         {
@@ -28,35 +28,31 @@ namespace PowerPointLabs.ResizeLab
         }
 
         /// <summary>
-        /// Reset the shapes to their original properties.
+        /// Get the height of the reference shape.
         /// </summary>
         /// <param name="selectedShapes"></param>
-        /// <param name="originalShapeProperties"></param>
-        public void ResetShapes(PowerPoint.ShapeRange selectedShapes,
-            Dictionary<int, ShapeProperties> originalShapeProperties)
+        /// <returns></returns>
+        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            if (originalShapeProperties.Count == 0) return;
-            var isAspectRatio = selectedShapes.LockAspectRatio;
-
-            selectedShapes.LockAspectRatio = Office.MsoTriState.msoFalse;
-            for (int i = 1; i <= selectedShapes.Count; i++)
+            if (selectedShapes.Count > 0)
             {
-                var shape = new PPShape(selectedShapes[i]);
-                var shapeId = shape.Id;
-
-                if (!originalShapeProperties.ContainsKey(shapeId)) continue;
-
-                var originalProperties = originalShapeProperties[shapeId];
-                shape.AbsoluteWidth = originalProperties.AbsoluteWidth;
-                shape.AbsoluteHeight = originalProperties.AbsoluteHeight;
-                shape.Top = originalProperties.Top;
-                shape.Left = originalProperties.Left;
-                shape.ShapeRotation = originalProperties.ShapeRotation;
-
-                shape.ResetNodes();
+                return new PPShape(selectedShapes[1]).AbsoluteHeight;
             }
+            return -1;
+        }
 
-            selectedShapes.LockAspectRatio = isAspectRatio;
+        /// <summary>
+        /// Get the width of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count > 0)
+            {
+                return new PPShape(selectedShapes[1]).AbsoluteWidth;
+            }
+            return -1;
         }
 
         #region Validation

@@ -13,9 +13,9 @@ namespace PowerPointLabs.ResizeLab
         internal const int Stretch_MinNoOfShapesRequired = 2;
         internal const string Stretch_FeatureName = "Stretch/Shrink";
         internal const string Stretch_ShapeSupport = "objects";
-        internal static readonly string[] Stretch_ErrorParameters = new string[]
+        internal static readonly string[] Stretch_ErrorParameters =
         {
-            Stretch_FeatureName, 
+            Stretch_FeatureName,
             Stretch_MinNoOfShapesRequired.ToString(),
             Stretch_ShapeSupport
         };

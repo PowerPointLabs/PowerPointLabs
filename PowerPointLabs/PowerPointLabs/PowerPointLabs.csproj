@@ -562,14 +562,16 @@
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
     <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.Symmetry.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Symmetric.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.FitSize.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.SameDimension.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Equalize.cs" />
     <Compile Include="ResizeLab\ResizeLabPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1314,6 +1316,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\AdjoinVerticalWithAlignIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeMatchHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeMatchWidth.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
