@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -14,6 +16,7 @@ namespace PowerPointLabs.ResizeLab
     {
         private ResizeLabMain _resizeLab;
         private readonly ResizeLabErrorHandler _errorHandler;
+        private Dictionary<ResizeLabMain.AnchorPoint, RadioButton> _anchorButtonLookUp;
         public static bool IsAspectRatioLocked { get; set; }
         
         private const string UnlockAspectRatioToolTip = "Unlocks the aspect ratio of objects when performing resizing of objects";
@@ -21,7 +24,6 @@ namespace PowerPointLabs.ResizeLab
 
         // Dialog windows
         private StretchSettingsDialog _stretchSettingsDialog;
-        private SameDimensionSettingsDialog _sameDimensionSettingsDialog;
 
         // For preview
         private Thread thread;
@@ -31,10 +33,12 @@ namespace PowerPointLabs.ResizeLab
         {
             InitializeComponent();
             InitialiseLogicInstance();
+            InitialiseAnchorButton();
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             UnlockAspectRatio();
         }
 
+        #region Initialise
         internal void InitialiseLogicInstance()
         {
             if (_resizeLab == null)
@@ -42,6 +46,25 @@ namespace PowerPointLabs.ResizeLab
                 _resizeLab = new ResizeLabMain();
             }
         }
+
+        private void InitialiseAnchorButton()
+        {
+            _anchorButtonLookUp = new Dictionary<ResizeLabMain.AnchorPoint, RadioButton>()
+            {
+                { ResizeLabMain.AnchorPoint.TopLeft, AnchorTopLeftBtn},
+                { ResizeLabMain.AnchorPoint.TopCenter, AnchorTopMidBtn},
+                { ResizeLabMain.AnchorPoint.TopRight, AnchorTopRightBtn},
+                { ResizeLabMain.AnchorPoint.MiddleLeft, AnchorMidLeftBtn},
+                { ResizeLabMain.AnchorPoint.Center, AnchorMidBtn},
+                { ResizeLabMain.AnchorPoint.MiddleRight, AnchorMidRightBtn},
+                { ResizeLabMain.AnchorPoint.BottomLeft, AnchorBottomLeftBtn},
+                { ResizeLabMain.AnchorPoint.BottomCenter, AnchorBottomMidBtn},
+                { ResizeLabMain.AnchorPoint.BottomRight, AnchorBottomRightBtn}
+            };
+            AnchorTopLeftBtn.IsChecked = true;
+        }
+
+        #endregion
 
         #region Execute Stretch and Shrink
 
@@ -112,19 +135,6 @@ namespace PowerPointLabs.ResizeLab
                 ResizeLabMain.SameDimension_ErrorParameters);
         }
 
-        private void SameDimensionSettingsBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (_sameDimensionSettingsDialog == null || !_sameDimensionSettingsDialog.IsOpen)
-            {
-                _sameDimensionSettingsDialog = new SameDimensionSettingsDialog(_resizeLab);
-                _sameDimensionSettingsDialog.Show();
-            }
-            else
-            {
-                _sameDimensionSettingsDialog.Activate();
-            }
-        }
-
         #endregion
 
         #region Execute Fit
@@ -190,44 +200,6 @@ namespace PowerPointLabs.ResizeLab
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.DecreaseWidth(shapes);
             ClickHandler(resizeAction, ResizeLabMain.SlightAdjust_MinNoOfShapesRequired,
                 ResizeLabMain.SlightAdjust_ErrorParameters);
-        }
-
-        #endregion
-
-        #region Execute Aspect Ratio
-
-        private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
-        {
-            UnlockAspectRatio();
-        }
-
-        private void LockAspectRatio_Checked(object sender, RoutedEventArgs e)
-        {
-            LockAspectRatio();
-        }
-
-        private void UnlockAspectRatio()
-        {
-            IsAspectRatioLocked = false;
-            LockAspectRatioCheckBox.ToolTip = LockAspectRatioToolTip;
-
-            ModifySelectionAspectRatio();
-        }
-
-        private void LockAspectRatio()
-        {
-            IsAspectRatioLocked = true;
-            LockAspectRatioCheckBox.ToolTip = UnlockAspectRatioToolTip;
-
-            ModifySelectionAspectRatio();
-        }
-
-        private void ModifySelectionAspectRatio()
-        {
-            if (_resizeLab.IsSelectionValid(GetSelection(), false))
-            {
-                _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
-            }
         }
 
         #endregion
@@ -377,6 +349,61 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
+        #region Settings
+        private void GoToSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            PaneScroll.ScrollToBottom();
+        }
+
+        private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
+        {
+            UnlockAspectRatio();
+        }
+
+        private void LockAspectRatio_Checked(object sender, RoutedEventArgs e)
+        {
+            LockAspectRatio();
+        }
+
+        private void UnlockAspectRatio()
+        {
+            IsAspectRatioLocked = false;
+            LockAspectRatioCheckBox.ToolTip = LockAspectRatioToolTip;
+
+            ModifySelectionAspectRatio();
+        }
+
+        private void LockAspectRatio()
+        {
+            IsAspectRatioLocked = true;
+            LockAspectRatioCheckBox.ToolTip = UnlockAspectRatioToolTip;
+
+            ModifySelectionAspectRatio();
+        }
+
+        private void ModifySelectionAspectRatio()
+        {
+            if (_resizeLab.IsSelectionValid(GetSelection(), false))
+            {
+                _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
+            }
+        }
+
+        private void AnchorBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            var checkedButton = sender as RadioButton;
+            foreach (var anAnchorPair in _anchorButtonLookUp)
+            {
+                if (checkedButton.Equals(anAnchorPair.Value))
+                {
+                    _resizeLab.AnchorPointType = anAnchorPair.Key;
+                    return;
+                }
+            }
+        }
+
+        #endregion
+
         #region Miscellaneous events
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -472,5 +499,6 @@ namespace PowerPointLabs.ResizeLab
 
 
         #endregion
+
     }
 }

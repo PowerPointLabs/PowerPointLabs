@@ -17,7 +17,6 @@ namespace PowerPointLabs.ResizeLab
         public ResizeLabMain()
         {
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler();
-            AnchorPointType = AnchorPoint.TopLeft;
         }
 
         private enum Dimension

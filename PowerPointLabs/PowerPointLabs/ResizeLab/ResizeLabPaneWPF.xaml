@@ -19,7 +19,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ScrollViewer>
+    <ScrollViewer x:Name="PaneScroll">
         <Grid>
             <Grid.Resources>
                 <Style TargetType="{x:Type TextBlock}">
@@ -43,7 +43,7 @@
                 <RowDefinition Height="115" />
                 <RowDefinition Height="120" />
                 <RowDefinition Height="120" />
-                <RowDefinition Height="115" />
+                <RowDefinition Height="140" />
             </Grid.RowDefinitions>
             <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                 <Grid Margin="-7,-7,-7,-7">
@@ -91,7 +91,7 @@
                     <TextBlock Grid.Column="2">Both</TextBlock>
                 </Grid>
             </GroupBox>
-            <cc:ImageButton Grid.Row="1" ToolTip="Opens the settings for Same Dimension functions" x:Name="SameDimensionSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="SameDimensionSettingsBtn_Click">
+            <cc:ImageButton Grid.Row="1" ToolTip="Opens the settings for Same Dimension functions" x:Name="SameDimensionSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="GoToSettingsBtn_Click">
                 <Image Source="..\Resources\SettingsGear.png"/>
             </cc:ImageButton>
             
@@ -157,14 +157,29 @@
             </GroupBox>
             <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
-
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="33" Margin="3,3,3,3" VerticalAlignment="Top" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
+                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="33" VerticalAlignment="Center" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="13" HorizontalAlignment="Right" Margin="0,0,14,5">Anchor Point</TextBlock>
+                    <WrapPanel x:Name="AnchorPanel" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Height="78" VerticalAlignment="Center" Width="105">
+                        <RadioButton x:Name="AnchorTopLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorTopMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0"  VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorTopRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorMidLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorMidRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorBottomLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorBottomMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorBottomRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                    </WrapPanel>
                 </Grid>
             </GroupBox>
             
