@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -11,7 +13,14 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
-        private const float FloatDiffTolerance = (float) 0.0001;
+        public enum AnchorPoint
+        {
+            TopLeft, TopCenter, TopRight,
+            MiddleLeft, Center, MiddleRight,
+            BottomLeft, BottomCenter, BottomRight
+        }
+
+        public AnchorPoint AnchorPointType { get; set; }
 
         /// <summary>
         /// Unlocks and locks the aspect ratio of particular period of time.
@@ -34,94 +43,83 @@ namespace PowerPointLabs.ResizeLab
         }
 
         /// <summary>
-        /// Restores the shapes to their aspect ratio. The longer side will be used first, and checked 
-        /// to ensure that its length is within the length of the slide. If it exceeds the slide, 
-        /// the shorter side will be used.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <param name="slideHeight"></param>
-        /// <param name="slideWidth"></param>
-        public void RestoreAspectRatio(PowerPoint.ShapeRange selectedShapes, float slideHeight, float slideWidth)
-        {
-            try
-            {
-                for (int i = 1; i <= selectedShapes.Count; i++)
-                {
-                    var shape = selectedShapes[i];
-
-                    if (!IsPictureOrOLE(shape)) continue;
-
-                    var scaleHeight = GetScaleHeight(shape);
-                    var scaleWidth = GetScaleWidth(shape);
-                    var maximumScale = Math.Max(scaleHeight, scaleWidth);
-                    var minimumScale = Math.Min(scaleHeight, scaleWidth);
-
-                    if (shape.Height*scaleHeight < slideHeight && shape.Width*scaleWidth < slideWidth)
-                    {
-                        shape.ScaleHeight(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
-                        shape.ScaleWidth(maximumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
-                    }
-                    else
-                    {
-                        shape.ScaleHeight(minimumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
-                        shape.ScaleWidth(minimumScale, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "RestoreAspectRatio");
-            }
-        }
-
-        /// <summary>
-        /// Get the scale height of the shape at current state.
+        /// Get the coordinate of anchor point.
         /// </summary>
         /// <param name="shape"></param>
         /// <returns></returns>
-        private float GetScaleHeight(PowerPoint.Shape shape)
+        private PointF GetAnchorPoint(PPShape shape)
         {
-            var currentHeight = shape.Height;
-
-            shape.ScaleHeight(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
-            var originalHeight = shape.Height;
-
-            if (IsFloatTheSame(originalHeight, 0))
+            switch (AnchorPointType)
             {
-                return 1;
+                case AnchorPoint.TopLeft:
+                    return shape.TopLeft;
+                case AnchorPoint.TopCenter:
+                    return shape.TopCenter;
+                case AnchorPoint.TopRight:
+                    return shape.TopRight;
+                case AnchorPoint.MiddleLeft:
+                    return shape.MiddleLeft;
+                case AnchorPoint.Center:
+                    return shape.Center;
+                case AnchorPoint.MiddleRight:
+                    return shape.MiddleRight;
+                case AnchorPoint.BottomLeft:
+                    return shape.BottomLeft;
+                case AnchorPoint.BottomCenter:
+                    return shape.BottomCenter;
+                case AnchorPoint.BottomRight:
+                    return shape.BottomRight;
             }
-            return currentHeight/originalHeight;
+
+            return shape.Center;
         }
 
         /// <summary>
-        /// Get the scale width of the shape at current state.
+        /// Align the shape according to the anchor point given.
         /// </summary>
         /// <param name="shape"></param>
-        /// <returns></returns>
-        private float GetScaleWidth(PowerPoint.Shape shape)
+        /// <param name="anchorPoint"></param>
+        private void AlignShape(PPShape shape, PointF anchorPoint)
         {
-            var currentWidth = shape.Width;
-
-            shape.ScaleWidth(1, MsoTriState.msoTrue, MsoScaleFrom.msoScaleFromMiddle);
-            var originalWidth = shape.Width;
-
-            if (IsFloatTheSame(originalWidth, 0))
+            switch (AnchorPointType)
             {
-                return 1;
+                case AnchorPoint.TopLeft:
+                    shape.Left = anchorPoint.X;
+                    shape.Top = anchorPoint.Y;
+                    break;
+                case AnchorPoint.TopCenter:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
+                    shape.Top = anchorPoint.Y;
+                    break;
+                case AnchorPoint.TopRight:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.Top = anchorPoint.Y;
+                    break;
+                case AnchorPoint.MiddleLeft:
+                    shape.Left = anchorPoint.X;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    break;
+                case AnchorPoint.Center:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    break;
+                case AnchorPoint.MiddleRight:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    break;
+                case AnchorPoint.BottomLeft:
+                    shape.Left = anchorPoint.X;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    break;
+                case AnchorPoint.BottomCenter:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    break;
+                case AnchorPoint.BottomRight:
+                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    break;
             }
-            return currentWidth/originalWidth;
-        }
-
-        private bool IsFloatTheSame(float toCompare, float reference)
-        {
-            return Math.Abs(toCompare - reference) < FloatDiffTolerance;
-        }
-
-        private bool IsPictureOrOLE(PowerPoint.Shape shape)
-        {
-            return shape.Type == MsoShapeType.msoPicture || shape.Type == MsoShapeType.msoLinkedPicture ||
-                   shape.Type == MsoShapeType.msoEmbeddedOLEObject || shape.Type == MsoShapeType.msoLinkedOLEObject ||
-                   shape.Type == MsoShapeType.msoOLEControlObject;
         }
     }
 }

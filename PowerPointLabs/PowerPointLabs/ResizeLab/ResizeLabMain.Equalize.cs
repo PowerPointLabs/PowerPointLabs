@@ -25,15 +25,6 @@ namespace PowerPointLabs.ResizeLab
             SameDimension_ShapeSupport
         };
 
-        public enum SameDimensionAnchor
-        {
-            TopLeft, TopCenter, TopRight,
-            MiddleLeft, Center, MiddleRight,
-            BottomLeft, BottomCenter, BottomRight
-        }
-
-        public SameDimensionAnchor SameDimensionAnchorType { get; set; }
-
         /// <summary>
         /// Resize the selected shapes to the same height with the reference to
         /// first selected shape.
@@ -107,86 +98,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "ResizeShapes");
-            }
-        }
-
-        /// <summary>
-        /// Get the coordinate of anchor point.
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <returns></returns>
-        private PointF GetAnchorPoint(PPShape shape)
-        {
-            switch (SameDimensionAnchorType)
-            {
-                case SameDimensionAnchor.TopLeft:
-                    return shape.TopLeft;
-                case SameDimensionAnchor.TopCenter:
-                    return shape.TopCenter;
-                case SameDimensionAnchor.TopRight:
-                    return shape.TopRight;
-                case SameDimensionAnchor.MiddleLeft:
-                    return shape.MiddleLeft;
-                case SameDimensionAnchor.Center:
-                    return shape.Center;
-                case SameDimensionAnchor.MiddleRight:
-                    return shape.MiddleRight;
-                case SameDimensionAnchor.BottomLeft:
-                    return shape.BottomLeft;
-                case SameDimensionAnchor.BottomCenter:
-                    return shape.BottomCenter;
-                case SameDimensionAnchor.BottomRight:
-                    return shape.BottomRight;
-            }
-
-            return shape.Center;
-        }
-
-        /// <summary>
-        /// Align the shape according to the anchor point given.
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <param name="anchorPoint"></param>
-        private void AlignShape(PPShape shape, PointF anchorPoint)
-        {
-            switch (SameDimensionAnchorType)
-            {
-                case SameDimensionAnchor.TopLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y;
-                    break;
-                case SameDimensionAnchor.TopCenter:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth/2;
-                    shape.Top = anchorPoint.Y;
-                    break;
-                case SameDimensionAnchor.TopRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y;
-                    break;
-                case SameDimensionAnchor.MiddleLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight/2;
-                    break;
-                case SameDimensionAnchor.Center:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth/2;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight/2;
-                    break;
-                case SameDimensionAnchor.MiddleRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight/2;
-                    break;
-                case SameDimensionAnchor.BottomLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
-                    break;
-                case SameDimensionAnchor.BottomCenter:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth/2;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
-                    break;
-                case SameDimensionAnchor.BottomRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
-                    break;
             }
         }
     }

@@ -12,7 +12,7 @@ namespace PowerPointLabs.ResizeLab
         public bool IsOpen { get; set; }
 
         private readonly ResizeLabMain _resizeLab;
-        private Dictionary<ResizeLabMain.SameDimensionAnchor, RadioButton> _anchorButtonLookUp;
+        private Dictionary<ResizeLabMain.AnchorPoint, RadioButton> _anchorButtonLookUp;
 
         public SameDimensionSettingsDialog(ResizeLabMain resizeLab)
         {
@@ -25,24 +25,24 @@ namespace PowerPointLabs.ResizeLab
 
         private void InitAnchorButtonDictionary()
         {
-            _anchorButtonLookUp = new Dictionary<ResizeLabMain.SameDimensionAnchor, RadioButton>()
+            _anchorButtonLookUp = new Dictionary<ResizeLabMain.AnchorPoint, RadioButton>()
             {
-                { ResizeLabMain.SameDimensionAnchor.TopLeft, AnchorTopLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.TopCenter, AnchorTopMidBtn},
-                { ResizeLabMain.SameDimensionAnchor.TopRight, AnchorTopRightBtn},
-                { ResizeLabMain.SameDimensionAnchor.MiddleLeft, AnchorMidLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.Center, AnchorMidBtn},
-                { ResizeLabMain.SameDimensionAnchor.MiddleRight, AnchorMidRightBtn},
-                { ResizeLabMain.SameDimensionAnchor.BottomLeft, AnchorBottomLeftBtn},
-                { ResizeLabMain.SameDimensionAnchor.BottomCenter, AnchorBottomMidBtn},
-                { ResizeLabMain.SameDimensionAnchor.BottomRight, AnchorBottomRightBtn}
+                { ResizeLabMain.AnchorPoint.TopLeft, AnchorTopLeftBtn},
+                { ResizeLabMain.AnchorPoint.TopCenter, AnchorTopMidBtn},
+                { ResizeLabMain.AnchorPoint.TopRight, AnchorTopRightBtn},
+                { ResizeLabMain.AnchorPoint.MiddleLeft, AnchorMidLeftBtn},
+                { ResizeLabMain.AnchorPoint.Center, AnchorMidBtn},
+                { ResizeLabMain.AnchorPoint.MiddleRight, AnchorMidRightBtn},
+                { ResizeLabMain.AnchorPoint.BottomLeft, AnchorBottomLeftBtn},
+                { ResizeLabMain.AnchorPoint.BottomCenter, AnchorBottomMidBtn},
+                { ResizeLabMain.AnchorPoint.BottomRight, AnchorBottomRightBtn}
             };
         }
 
         private void LoadAnchorCheckedButton()
         {
             RadioButton toCheckButton;
-            if (_anchorButtonLookUp.TryGetValue(_resizeLab.SameDimensionAnchorType, out toCheckButton))
+            if (_anchorButtonLookUp.TryGetValue(_resizeLab.AnchorPointType, out toCheckButton))
             {
                 toCheckButton.IsChecked = true;
             }
@@ -55,14 +55,14 @@ namespace PowerPointLabs.ResizeLab
 
         private void OkBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _resizeLab.SameDimensionAnchorType = AnchorTypeToCheckedAnchorBtn();
+            _resizeLab.AnchorPointType = AnchorTypeToCheckedAnchorBtn();
 
             Close();
         }
 
         #region Helper Functions
 
-        private ResizeLabMain.SameDimensionAnchor AnchorTypeToCheckedAnchorBtn()
+        private ResizeLabMain.AnchorPoint AnchorTypeToCheckedAnchorBtn()
         {
             foreach (var anAnchorButton in _anchorButtonLookUp)
             {
@@ -72,7 +72,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                     
             }
-            return ResizeLabMain.SameDimensionAnchor.Center; // Should not execute
+            return ResizeLabMain.AnchorPoint.Center; // Should not execute
         }
 
         #endregion
