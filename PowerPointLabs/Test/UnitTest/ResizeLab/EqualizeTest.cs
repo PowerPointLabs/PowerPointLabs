@@ -15,12 +15,12 @@ namespace Test.UnitTest.ResizeLab
         private const string OvalShapeName = "oval";
         private const string ArrowShapeName = "arrow";
 
-        private const int OriginalShapesSlideNo = 10;
-        private const int SameWidthSlideNo = 11;
-        private const int SameWidthAspectRatioSlideNo = 12;
-        private const int SameHeightSlideNo = 13;
-        private const int SameHeightAspectRatioSlideNo = 14;
-        private const int SameWidthAndHeightSlideNo = 15;
+        private const int OriginalShapesSlideNo = 17;
+        private const int SameWidthSlideNo = 18;
+        private const int SameWidthAspectRatioSlideNo = 19;
+        private const int SameHeightSlideNo = 20;
+        private const int SameHeightAspectRatioSlideNo = 21;
+        private const int SameWidthAndHeightSlideNo = 22;
 
         [TestInitialize]
         public void TestInitialize()

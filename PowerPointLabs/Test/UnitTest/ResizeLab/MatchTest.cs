@@ -13,9 +13,9 @@ namespace Test.UnitTest.ResizeLab
         private const string ShapeName = "shape";
         private const string ImageName = "image";
 
-        private const int OriginalShapesSlideNo = 25;
-        private const int MatchWidthSlideNo = 26;
-        private const int MatchHeightSlideNo = 27;
+        private const int OriginalShapesSlideNo = 32;
+        private const int MatchWidthSlideNo = 33;
+        private const int MatchHeightSlideNo = 34;
 
         [TestInitialize]
         public void TestInitialize()
