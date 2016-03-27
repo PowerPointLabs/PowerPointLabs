@@ -16,7 +16,7 @@ namespace PowerPointLabs.ResizeLab
     {
         // To be used for error handling
         internal const int SameDimension_MinNoOfShapesRequired = 2;
-        internal const string SameDimension_FeatureName = "Same Dimension";
+        internal const string SameDimension_FeatureName = "Equalize";
         internal const string SameDimension_ShapeSupport = "objects";
         internal static readonly string[] SameDimension_ErrorParameters =
         {
