@@ -12,7 +12,7 @@ namespace Test.UnitTest.PositionsLab
     {
         private List<string> _shapeNames;
 
-        private const int OriginalShapesSlideNo = 4;
+        private const int OriginalShapesSlideNo = 3;
         private const string UnrotatedRectangle = "Rectangle 3";
         private const string Oval = "Oval 4";
         private const string RotatedArrow = "Right Arrow 5";
