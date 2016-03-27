@@ -6,7 +6,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
-    public partial class ResizeLabMain
+    public class Symmetric
     {
         /// <summary>
         /// Symmetrize new shape at the left of original shape.
