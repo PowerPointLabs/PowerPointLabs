@@ -99,10 +99,7 @@ namespace PowerPointLabs.ResizeLab
 
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         #endregion
