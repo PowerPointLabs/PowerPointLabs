@@ -67,7 +67,6 @@ namespace PowerPointLabs.ResizeLab
         {
             Action<PPShape> adjustHeight = shape =>
             {
-                shape.Top -= resizeFactor;
                 shape.AbsoluteHeight += resizeFactor;
             };
             AdjustShape(shapes, adjustHeight);
@@ -84,7 +83,10 @@ namespace PowerPointLabs.ResizeLab
             foreach (PowerPoint.Shape shape in shapes)
             {
                 var ppShape = new PPShape(shape);
+                var anchorPoint = GetAnchorPoint(ppShape);
+
                 resizeAction(ppShape);
+                AlignShape(ppShape, anchorPoint);
             }
         }
 

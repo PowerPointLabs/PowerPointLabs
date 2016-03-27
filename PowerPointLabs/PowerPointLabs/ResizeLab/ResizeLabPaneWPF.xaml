@@ -137,7 +137,11 @@
                     <TextBlock Grid.Column="3">Decrease Width</TextBlock>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="AdjustAspectRatioGroupBox" Header="Adjust Aspect Ratio" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <cc:ImageButton Grid.Row="3" ToolTip="Opens the settings for Slight Adjust functions" x:Name="SlightAdjustSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="GoToSettingsBtn_Click">
+                <Image Source="..\Resources\SettingsGear.png"/>
+            </cc:ImageButton>
+            
+            <GroupBox x:Name="MatchGroupBox" Header="Match" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*" />
@@ -155,6 +159,10 @@
                     <TextBlock Grid.Column="1">Width to Match Height</TextBlock>
                 </Grid>
             </GroupBox>
+            <cc:ImageButton Grid.Row="4" ToolTip="Opens the settings for Match functions" x:Name="MatchSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="GoToSettingsBtn_Click">
+                <Image Source="..\Resources\SettingsGear.png"/>
+            </cc:ImageButton>
+            
             <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.RowDefinitions>
