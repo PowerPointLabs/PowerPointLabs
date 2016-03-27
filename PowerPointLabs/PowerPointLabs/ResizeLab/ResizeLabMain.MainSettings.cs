@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -9,9 +6,8 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// ResizeLabAspectRatio is the parital class of ResizeLabMain.
-    /// It controls the related actions of aspect ratio according to
-    /// the selection.
+    /// MainSettings is the parital class of ResizeLabMain.
+    /// It controls the settings of related actions in Resize Lab.
     /// </summary>
     public partial class ResizeLabMain
     {
