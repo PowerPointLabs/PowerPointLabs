@@ -173,6 +173,9 @@
                     <TextBlock Grid.Column="1">Height</TextBlock>
                 </Grid>
             </GroupBox>
+            <cc:ImageButton Grid.Row="5" ToolTip="Opens the settings for Adjust Proportionally functions" x:Name="ProportionalSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="ProportionalSettingsBtn_Click">
+                <Image Source="..\Resources\SettingsGear.png"/>
+            </cc:ImageButton>
 
             <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>

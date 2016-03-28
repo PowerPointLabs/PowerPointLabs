@@ -24,6 +24,7 @@ namespace PowerPointLabs.ResizeLab
 
         // Dialog windows
         private StretchSettingsDialog _stretchSettingsDialog;
+        private AdjustProportionallySettingsDialog _adjustProportionallySettingsDialog;
 
         // For preview
         private const int PreviewDelay = 500;
@@ -244,6 +245,20 @@ namespace PowerPointLabs.ResizeLab
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
             ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
                 ResizeLabMain.AdjustProportionally_ErrorParameters);
+        }
+
+        private void ProportionalSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
+            {
+                _adjustProportionallySettingsDialog = new AdjustProportionallySettingsDialog(_resizeLab);
+                _adjustProportionallySettingsDialog.Show();
+            }
+            else
+            {
+                _adjustProportionallySettingsDialog.Activate();
+            }
+
         }
 
         #endregion
@@ -481,34 +496,6 @@ namespace PowerPointLabs.ResizeLab
         private PowerPoint.Selection GetSelection()
         {
             return this.GetCurrentSelection();
-        }
-
-        private float? ConvertToFloat(string input)
-        {
-            try
-            {
-                return float.Parse(input);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        private bool IsValidFactor(float? factor)
-        {
-            try
-            {
-                if (factor > 0)
-                {
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return false;
         }
 
         private void ClickHandler(Action<PowerPoint.ShapeRange> resizeAction, int minNoOfSelectedShapes, string[] errorParameters)

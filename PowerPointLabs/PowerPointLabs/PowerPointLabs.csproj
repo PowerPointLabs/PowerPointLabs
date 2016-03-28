@@ -561,10 +561,14 @@
       <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
+      <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
+    <Compile Include="ResizeLab\ResizeLabUtil.cs" />
     <Compile Include="ResizeLab\Symmetric.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
@@ -1094,6 +1098,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PositionsLab\ReorderSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResizeLab\AdjustProportionallySettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
