@@ -214,7 +214,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Execute Adjust Aspect Ratio
+        #region Execute Match
         private void MatchWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.MatchWidth(shapes);
@@ -344,7 +344,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Preview Adjust Aspect Ratio
+        #region Preview Match
         private void MatchWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.MatchWidth(shapes);
