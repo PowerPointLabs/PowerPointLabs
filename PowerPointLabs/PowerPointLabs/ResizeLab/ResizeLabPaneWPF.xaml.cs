@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -26,14 +26,17 @@ namespace PowerPointLabs.ResizeLab
         private StretchSettingsDialog _stretchSettingsDialog;
 
         // For preview
-        private Thread thread;
-        private const int PreviewDelay = 400;
+        private const int PreviewDelay = 500;
+        private DispatcherTimer _previewTimer;
+        private delegate void PreviewCallBack();
+        private PreviewCallBack _previewCallBack;
 
         public ResizeLabPaneWPF()
         {
             InitializeComponent();
             InitialiseLogicInstance();
             InitialiseAnchorButton();
+            InitialiseTimer();
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             UnlockAspectRatio();
         }
@@ -62,6 +65,13 @@ namespace PowerPointLabs.ResizeLab
                 { ResizeLabMain.AnchorPoint.BottomRight, AnchorBottomRightBtn}
             };
             AnchorTopLeftBtn.IsChecked = true;
+        }
+
+        private void InitialiseTimer()
+        {
+            _previewTimer = new DispatcherTimer();
+            _previewTimer.Tick += Timer_Tick;
+            _previewTimer.Interval = new TimeSpan(0, 0, 0, 0, PreviewDelay);
         }
 
         #endregion
@@ -403,15 +413,26 @@ namespace PowerPointLabs.ResizeLab
         #region Miscellaneous events
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (thread != null && thread.IsAlive) // Actual preview did not execute
+            if (_previewTimer.IsEnabled) // Actual preview did not execute
             {
-                thread.Abort();
+                StopTimer();
+                _previewCallBack = null;
             }
             else // Preview was executed
             {
                 Reset();
             }
-            thread = null;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            StopTimer();
+            if (_previewCallBack != null)
+            {
+                _previewCallBack.Invoke();
+                _previewCallBack = null;
+            }
+
         }
 
         #endregion
@@ -463,36 +484,41 @@ namespace PowerPointLabs.ResizeLab
 
         private void PreviewHandler(Action<PowerPoint.ShapeRange> previewAction, int minNoOfSelectedShapes)
         {
-            thread = new Thread(() => PreviewHandlerAction(previewAction, minNoOfSelectedShapes));
-            thread.Start(); 
+            _previewCallBack = delegate
+            {
+                var selectedShapes = GetSelectedShapes();
+
+                ModifySelectionAspectRatio();
+                Preview(selectedShapes, previewAction, minNoOfSelectedShapes);
+            };
+            StartTimer();
         }
 
         private void PreviewHandler(Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
         {
-            thread = new Thread(() => PreviewHandlerAction(previewAction));
-            thread.Start();
+            _previewCallBack = delegate
+            {
+                var selectedShapes = GetSelectedShapes();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+
+                ModifySelectionAspectRatio();
+                Preview(selectedShapes, slideWidth, slideHeight, previewAction);
+            };
+            StartTimer();
         }
 
-        private void PreviewHandlerAction(Action<PowerPoint.ShapeRange> previewAction, int minNoOfSelectedShapes)
+        private void StopTimer()
         {
-            Thread.Sleep(PreviewDelay);
-            var selectedShapes = GetSelectedShapes();
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, previewAction, minNoOfSelectedShapes);
+            _previewTimer.Stop();
+            _previewTimer.IsEnabled = false;
         }
 
-        private void PreviewHandlerAction(Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
+        private void StartTimer()
         {
-            Thread.Sleep(PreviewDelay);
-            var selectedShapes = GetSelectedShapes();
-            var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            var slideHeight = this.GetCurrentPresentation().SlideHeight;
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, slideWidth, slideHeight, previewAction);
+            _previewTimer.IsEnabled = true;
+            _previewTimer.Start();
         }
-
 
         #endregion
 
