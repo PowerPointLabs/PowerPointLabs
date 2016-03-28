@@ -350,10 +350,6 @@ namespace PowerPointLabs.ResizeLab
         #endregion
 
         #region Settings
-        private void GoToSettingsBtn_Click(object sender, RoutedEventArgs e)
-        {
-            PaneScroll.ScrollToBottom();
-        }
 
         private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
         {

@@ -70,7 +70,7 @@
             <cc:ImageButton Grid.Row="0" ToolTip="Opens the settings for Stretch / Shrink functions" x:Name="StretchSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="StretchSettingsBtn_Click">
                 <Image Source="..\Resources\SettingsGear.png"/>
             </cc:ImageButton>
-            
+
             <GroupBox x:Name="SameSizeGroupBox" Header="Equalize" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
@@ -91,10 +91,7 @@
                     <TextBlock Grid.Column="2">Both</TextBlock>
                 </Grid>
             </GroupBox>
-            <cc:ImageButton Grid.Row="1" ToolTip="Opens the settings for Same Dimension functions" x:Name="SameDimensionSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="GoToSettingsBtn_Click">
-                <Image Source="..\Resources\SettingsGear.png"/>
-            </cc:ImageButton>
-            
+
             <GroupBox x:Name="FitGroupBox" Header="Fit To Slide" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
@@ -137,10 +134,7 @@
                     <TextBlock Grid.Column="3">Decrease Width</TextBlock>
                 </Grid>
             </GroupBox>
-            <cc:ImageButton Grid.Row="3" ToolTip="Opens the settings for Slight Adjust functions" x:Name="SlightAdjustSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="GoToSettingsBtn_Click">
-                <Image Source="..\Resources\SettingsGear.png"/>
-            </cc:ImageButton>
-            
+
             <GroupBox x:Name="MatchGroupBox" Header="Match" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
@@ -159,10 +153,7 @@
                     <TextBlock Grid.Column="1">Width to Match Height</TextBlock>
                 </Grid>
             </GroupBox>
-            <cc:ImageButton Grid.Row="4" ToolTip="Opens the settings for Match functions" x:Name="MatchSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="GoToSettingsBtn_Click">
-                <Image Source="..\Resources\SettingsGear.png"/>
-            </cc:ImageButton>
-            
+
             <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.RowDefinitions>
