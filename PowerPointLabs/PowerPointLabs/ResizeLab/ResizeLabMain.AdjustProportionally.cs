@@ -18,21 +18,22 @@ namespace PowerPointLabs.ResizeLab
             AdjustProportionally_ShapeSupport
         };
 
+        public float AdjustProportionally_ResizeFactor = 1.5f;
+
         /// <summary>
         /// Adjust the width of the specified shapes to the resize factor of first
         /// selected shape's width.
         /// </summary>
         /// <param name="selectedShapes"></param>
-        /// <param name="resizeFactor"></param>
-        public void AdjustWidthProportionally(PowerPoint.ShapeRange selectedShapes, float resizeFactor)
+        public void AdjustWidthProportionally(PowerPoint.ShapeRange selectedShapes)
         {
             try
             {
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (referenceWidth <= 0 || resizeFactor <= 0) return;
+                if (referenceWidth <= 0 || AdjustProportionally_ResizeFactor <= 0) return;
 
-                var newWidth = referenceWidth*resizeFactor;
+                var newWidth = referenceWidth*AdjustProportionally_ResizeFactor;
                 for (int i = 2; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
@@ -53,16 +54,15 @@ namespace PowerPointLabs.ResizeLab
         /// selected shape's height.
         /// </summary>
         /// <param name="selectedShapes"></param>
-        /// <param name="resizeFactor"></param>
-        public void AdjustHeightProportionally(PowerPoint.ShapeRange selectedShapes, float resizeFactor)
+        public void AdjustHeightProportionally(PowerPoint.ShapeRange selectedShapes)
         {
             try
             {
                 var referenceHeight = GetReferenceHeight(selectedShapes);
 
-                if (referenceHeight <= 0 || resizeFactor <= 0) return;
+                if (referenceHeight <= 0 || AdjustProportionally_ResizeFactor <= 0) return;
 
-                var newHeight = referenceHeight*resizeFactor;
+                var newHeight = referenceHeight*AdjustProportionally_ResizeFactor;
                 for (int i = 2; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);

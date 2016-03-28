@@ -553,4 +553,10 @@
   <data name="ResizeMatchWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ResizeLab\ResizeMatchWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ResizeProportionHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeProportionHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeProportionWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeProportionWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

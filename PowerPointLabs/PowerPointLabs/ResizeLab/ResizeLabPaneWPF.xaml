@@ -43,6 +43,7 @@
                 <RowDefinition Height="115" />
                 <RowDefinition Height="120" />
                 <RowDefinition Height="120" />
+                <RowDefinition Height="115" />
                 <RowDefinition Height="140" />
             </Grid.RowDefinitions>
             <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
@@ -154,7 +155,26 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <GroupBox x:Name="ProportionGroupBox" Header="Adjust Proportionally" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid Margin="-7,-7,-7,-7">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <cc:ImageButton x:Name="ProportionalWidthBtn" Text="Width" Grid.Column="0" Width="{Binding ElementName=ProportionalWidthBtn, Path=ActualHeight}" Click="ProportionalWidthBtn_Click" Image="../Resources/ResizeLab/ResizeProportionWidth.png" ToolTip="Resizes selected object's width proportionally to the width of the first object selected" MouseEnter="ProportionalWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="0">Width</TextBlock>
+                    <cc:ImageButton x:Name="ProportionalHeightBtn" Text="Height" Grid.Column="1" Width="{Binding ElementName=ProportionalHeightBtn, Path=ActualHeight}" Click="ProportionalHeightBtn_Click" Image="../Resources/ResizeLab/ResizeProportionHeight.png" ToolTip="Resizes selected object's width proportionally to the width of the first object selected" MouseEnter="ProportionalHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="1">Height</TextBlock>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />

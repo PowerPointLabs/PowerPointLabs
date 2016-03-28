@@ -231,6 +231,23 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
+        #region Execute Adjust Proportionally
+        private void ProportionalWidthBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
+            ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                ResizeLabMain.AdjustProportionally_ErrorParameters);
+        }
+
+        private void ProportionalHeightBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
+            ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                ResizeLabMain.AdjustProportionally_ErrorParameters);
+        }
+
+        #endregion
+
         #region Preview Stretch and Shrink
 
         private void StretchLeftBtn_MouseEnter(object sender, MouseEventArgs e)
@@ -355,6 +372,21 @@ namespace PowerPointLabs.ResizeLab
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.MatchHeight(shapes);
             PreviewHandler(previewAction, ResizeLabMain.Match_MinNoOfShapesRequired);
+        }
+
+        #endregion
+
+        #region Preview Adjust Proportionally
+        private void ProportionalWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
+            PreviewHandler(previewAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired);
+        }
+
+        private void ProportionalHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
+            PreviewHandler(previewAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired);
         }
 
         #endregion
