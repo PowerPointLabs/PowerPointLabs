@@ -88,7 +88,7 @@
                     <TextBlock Grid.Column="0">Width</TextBlock>
                     <cc:ImageButton x:Name="SameHeightBtn" Text="Height" Grid.Column="1" Image="../Resources/ResizeLab/ResizeSameHeight.png" Click="SameHeightBtn_Click" ToolTip="Resize selected objects to match the height of the first object selected" MouseEnter="SameHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="1">Height</TextBlock>
-                    <cc:ImageButton x:Name="SameSizeBtn" Text="Size" Grid.Column="2" Click="SameSizeBtn_Click" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected" MouseEnter="SameSizeBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="SameSizeBtn" Text="Both" Grid.Column="2" Click="SameSizeBtn_Click" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected" MouseEnter="SameSizeBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="2">Both</TextBlock>
                 </Grid>
             </GroupBox>
@@ -109,7 +109,7 @@
                     <TextBlock Grid.Column="0">Width</TextBlock>
                     <cc:ImageButton x:Name="FitHeightBtn" Text="Height" Grid.Column="1" Click="FitHeightBtn_Click" Image="../Resources/ResizeLab/ResizeFitToHeight.png" ToolTip="Expand selected objects vertically to fit the height of the slide" MouseEnter="FitHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="1">Height</TextBlock>
-                    <cc:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Click="FillBtn_Click" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide" MouseEnter="FillBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="FillBtn" Text="Both" Grid.Column="2" Click="FillBtn_Click" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide" MouseEnter="FillBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="2">Both</TextBlock>
                 </Grid>
             </GroupBox>
@@ -125,14 +125,14 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="IncreaseHeightBtn" Text="Width" Grid.Column="0" Click="IncreaseHeightBtn_Click" Width="{Binding ElementName=IncreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseHeight.png" ToolTip="Slightly increases the height of selected objects" MouseEnter="IncreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="0">Increase Height</TextBlock>
-                    <cc:ImageButton x:Name="DecreaseHeightBtn" Text="Height" Grid.Column="1" Click="DecreaseHeightBtn_Click" Width="{Binding ElementName=DecreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseHeight.png" ToolTip="Slightly decreases the height of selected objects" MouseEnter="DecreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="1">Decrease Height</TextBlock>
-                    <cc:ImageButton x:Name="IncreaseWidthBtn" Text="Fill" Grid.Column="2" Click="IncreaseWidthBtn_Click" Width="{Binding ElementName=IncreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseWidth.png" ToolTip="Slightly increases the width of selected objects" MouseEnter="IncreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="2">Increase Width</TextBlock>
-                    <cc:ImageButton x:Name="DecreaseWidthBtn" Text="Fill" Grid.Column="3" Click="DecreaseWidthBtn_Click" Width="{Binding ElementName=DecreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseWidth.png" ToolTip="Slightly decreases the width of selected objects" MouseEnter="DecreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="3">Decrease Width</TextBlock>
+                    <cc:ImageButton x:Name="IncreaseWidthBtn" Text="Increase Width" Grid.Column="0" Click="IncreaseWidthBtn_Click" Width="{Binding ElementName=IncreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseWidth.png" ToolTip="Slightly increases the width of selected objects" MouseEnter="IncreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="0">Increase Width</TextBlock>
+                    <cc:ImageButton x:Name="DecreaseWidthBtn" Text="Decrease Width" Grid.Column="1" Click="DecreaseWidthBtn_Click" Width="{Binding ElementName=DecreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseWidth.png" ToolTip="Slightly decreases the width of selected objects" MouseEnter="DecreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="1">Decrease Width</TextBlock>
+                    <cc:ImageButton x:Name="IncreaseHeightBtn" Text="Increase Height" Grid.Column="2" Click="IncreaseHeightBtn_Click" Width="{Binding ElementName=IncreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseHeight.png" ToolTip="Slightly increases the height of selected objects" MouseEnter="IncreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="2">Increase Height</TextBlock>
+                    <cc:ImageButton x:Name="DecreaseHeightBtn" Text="Decrease Height" Grid.Column="3" Click="DecreaseHeightBtn_Click" Width="{Binding ElementName=DecreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseHeight.png" ToolTip="Slightly decreases the height of selected objects" MouseEnter="DecreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="3">Decrease Height</TextBlock>
                 </Grid>
             </GroupBox>
 
@@ -148,9 +148,9 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="MatchWidthBtn" Text="Width" Grid.Column="0" Width="{Binding ElementName=MatchWidthBtn, Path=ActualHeight}" Click="MatchWidthBtn_Click" Image="../Resources/ResizeLab/ResizeMatchWidth.png" ToolTip="Resizes selected object's height to match their width" MouseEnter="MatchWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="MatchWidthBtn" Text=" Height to Match Width" Grid.Column="0" Width="{Binding ElementName=MatchWidthBtn, Path=ActualHeight}" Click="MatchWidthBtn_Click" Image="../Resources/ResizeLab/ResizeMatchWidth.png" ToolTip="Resizes selected object's height to match their width" MouseEnter="MatchWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="0">Height to Match Width</TextBlock>
-                    <cc:ImageButton x:Name="MatchHeightBtn" Text="Height" Grid.Column="1" Width="{Binding ElementName=MatchHeightBtn, Path=ActualHeight}" Click="MatchHeightBtn_Click" Image="../Resources/ResizeLab/ResizeMatchHeight.png" ToolTip="Resizes selected object's width to match their height" MouseEnter="MatchHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="MatchHeightBtn" Text="Width to Match Height" Grid.Column="1" Width="{Binding ElementName=MatchHeightBtn, Path=ActualHeight}" Click="MatchHeightBtn_Click" Image="../Resources/ResizeLab/ResizeMatchHeight.png" ToolTip="Resizes selected object's width to match their height" MouseEnter="MatchHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="1">Width to Match Height</TextBlock>
                 </Grid>
             </GroupBox>
