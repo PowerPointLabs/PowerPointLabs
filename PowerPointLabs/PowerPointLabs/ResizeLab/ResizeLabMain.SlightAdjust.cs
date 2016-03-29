@@ -21,7 +21,7 @@ namespace PowerPointLabs.ResizeLab
             SlightAdjust_ShapeSupport
         };
 
-        public const float SlightAdjustResizeFactor = 1f;
+        public float SlightAdjustResizeFactor = 1f;
 
         #region API
 

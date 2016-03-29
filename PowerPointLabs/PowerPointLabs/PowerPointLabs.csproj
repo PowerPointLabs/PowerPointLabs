@@ -589,6 +589,9 @@
     <Compile Include="ResizeLab\StretchSettingsDialog.xaml.cs">
       <DependentUpon>StretchSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
+      <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -1110,6 +1113,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ResizeLab\StretchSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SlightAdjustSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

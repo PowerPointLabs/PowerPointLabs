@@ -135,6 +135,9 @@
                     <TextBlock Grid.Column="3">Decrease Height</TextBlock>
                 </Grid>
             </GroupBox>
+            <cc:ImageButton Grid.Row="3" ToolTip="Opens the settings for Adjust Slightly functions" x:Name="SlightAdjustSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="SlightAdjustSettingsBtn_Click">
+                <Image Source="..\Resources\SettingsGear.png"/>
+            </cc:ImageButton>
 
             <GroupBox x:Name="MatchGroupBox" Header="Match" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">

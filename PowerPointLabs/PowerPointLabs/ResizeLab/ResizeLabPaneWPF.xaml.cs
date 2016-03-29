@@ -25,6 +25,7 @@ namespace PowerPointLabs.ResizeLab
         // Dialog windows
         private StretchSettingsDialog _stretchSettingsDialog;
         private AdjustProportionallySettingsDialog _adjustProportionallySettingsDialog;
+        private SlightAdjustSettingsDialog _slightAdjustSettingsDialog;
 
         // For preview
         private const int PreviewDelay = 500;
@@ -211,6 +212,19 @@ namespace PowerPointLabs.ResizeLab
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.DecreaseWidth(shapes);
             ClickHandler(resizeAction, ResizeLabMain.SlightAdjust_MinNoOfShapesRequired,
                 ResizeLabMain.SlightAdjust_ErrorParameters);
+        }
+
+        private void SlightAdjustSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (_slightAdjustSettingsDialog == null || !_slightAdjustSettingsDialog.IsOpen)
+            {
+                _slightAdjustSettingsDialog = new SlightAdjustSettingsDialog(_resizeLab);
+                _slightAdjustSettingsDialog.Show();
+            }
+            else
+            {
+                _slightAdjustSettingsDialog.Activate();
+            }
         }
 
         #endregion
@@ -406,7 +420,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Settings
+        #region Main Settings
 
         private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
         {
@@ -568,6 +582,5 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
-
     }
 }
