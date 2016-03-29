@@ -8,21 +8,21 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// ResizeLabSameSize is the parital class of ResizeLabMain.
+    /// Equalize is the partial class of ResizeLabMain.
     /// It handles the resizing of the shapes to the same dimension 
     /// (e.g. height, width and both).
     /// </summary>
     public partial class ResizeLabMain
     {
         // To be used for error handling
-        internal const int SameDimension_MinNoOfShapesRequired = 2;
-        internal const string SameDimension_FeatureName = "Equalize";
-        internal const string SameDimension_ShapeSupport = "objects";
-        internal static readonly string[] SameDimension_ErrorParameters =
+        internal const int Equalize_MinNoOfShapesRequired = 2;
+        internal const string Equalize_FeatureName = "Equalize";
+        internal const string Equalize_ShapeSupport = "objects";
+        internal static readonly string[] Equalize_ErrorParameters =
         {
-            SameDimension_FeatureName,
-            SameDimension_MinNoOfShapesRequired.ToString(),
-            SameDimension_ShapeSupport
+            Equalize_FeatureName,
+            Equalize_MinNoOfShapesRequired.ToString(),
+            Equalize_ShapeSupport
         };
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace PowerPointLabs.ResizeLab
                 var referenceHeight = GetReferenceHeight(selectedShapes);
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (!IsMoreThanOneShape(selectedShapes, SameDimension_MinNoOfShapesRequired, true, SameDimension_ErrorParameters) 
+                if (!IsMoreThanOneShape(selectedShapes, Equalize_MinNoOfShapesRequired, true, Equalize_ErrorParameters) 
                     || (referenceHeight < 0) || (referenceWidth < 0))
                 {
                     return;

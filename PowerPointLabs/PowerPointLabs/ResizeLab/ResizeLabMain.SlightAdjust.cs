@@ -5,7 +5,8 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// Implements the Adjust Slightly feature in ResizeLab
+    /// SlightAdjust is the partial class of ResizeLabMain.
+    /// It handles slight adjustment of the shape's dimensions.
     /// </summary>
     public partial class ResizeLabMain
     {
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ResizeLab
             SlightAdjust_ShapeSupport
         };
 
-        public const float ResizeFactor = 1;
+        public const float SlightAdjustResizeFactor = 1f;
 
         #region API
 
@@ -30,7 +31,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void IncreaseHeight(PowerPoint.ShapeRange shapes)
         {
-            AdjustHeight(shapes, ResizeFactor);
+            AdjustHeight(shapes, SlightAdjustResizeFactor);
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void DecreaseHeight(PowerPoint.ShapeRange shapes)
         {
-            AdjustHeight(shapes, -ResizeFactor);
+            AdjustHeight(shapes, -SlightAdjustResizeFactor);
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void IncreaseWidth(PowerPoint.ShapeRange shapes)
         {
-            AdjustWidth(shapes, ResizeFactor);
+            AdjustWidth(shapes, SlightAdjustResizeFactor);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void DecreaseWidth(PowerPoint.ShapeRange shapes)
         {
-            AdjustWidth(shapes, -ResizeFactor);
+            AdjustWidth(shapes, -SlightAdjustResizeFactor);
         }
 
         #endregion

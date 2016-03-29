@@ -5,6 +5,11 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
+    /// <summary>
+    /// AdjustProportionally is the partial class of ResizeLabMain.
+    /// It handles the resizing of the shapes to the dimension of given
+    /// factor of reference shape.
+    /// </summary>
     partial class ResizeLabMain
     {
         // To be used for error handling
@@ -18,7 +23,7 @@ namespace PowerPointLabs.ResizeLab
             AdjustProportionally_ShapeSupport
         };
 
-        public float AdjustProportionally_ResizeFactor = 1.5f;
+        public float AdjustProportionallyResizeFactor = 1.5f;
 
         /// <summary>
         /// Adjust the width of the specified shapes to the resize factor of first
@@ -31,9 +36,9 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (referenceWidth <= 0 || AdjustProportionally_ResizeFactor <= 0) return;
+                if (referenceWidth <= 0 || AdjustProportionallyResizeFactor <= 0) return;
 
-                var newWidth = referenceWidth*AdjustProportionally_ResizeFactor;
+                var newWidth = referenceWidth*AdjustProportionallyResizeFactor;
                 for (int i = 2; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
@@ -60,9 +65,9 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceHeight = GetReferenceHeight(selectedShapes);
 
-                if (referenceHeight <= 0 || AdjustProportionally_ResizeFactor <= 0) return;
+                if (referenceHeight <= 0 || AdjustProportionallyResizeFactor <= 0) return;
 
-                var newHeight = referenceHeight*AdjustProportionally_ResizeFactor;
+                var newHeight = referenceHeight*AdjustProportionallyResizeFactor;
                 for (int i = 2; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);

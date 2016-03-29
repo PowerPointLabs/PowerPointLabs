@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using PowerPointLabs.Utils;
-using Office = Microsoft.Office.Core;
+﻿using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -74,10 +68,7 @@ namespace PowerPointLabs.ResizeLab
                 
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// MainSettings is the parital class of ResizeLabMain.
+    /// MainSettings is the partial class of ResizeLabMain.
     /// It controls the settings of related actions in Resize Lab.
     /// </summary>
     public partial class ResizeLabMain

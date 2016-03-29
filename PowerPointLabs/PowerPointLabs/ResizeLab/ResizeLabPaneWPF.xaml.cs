@@ -128,22 +128,22 @@ namespace PowerPointLabs.ResizeLab
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameWidth(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired,
-                ResizeLabMain.SameDimension_ErrorParameters);
+            ClickHandler(resizeAction, ResizeLabMain.Equalize_MinNoOfShapesRequired,
+                ResizeLabMain.Equalize_ErrorParameters);
         }
 
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameHeight(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired,
-                            ResizeLabMain.SameDimension_ErrorParameters);
+            ClickHandler(resizeAction, ResizeLabMain.Equalize_MinNoOfShapesRequired,
+                            ResizeLabMain.Equalize_ErrorParameters);
         }
 
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameHeightAndWidth(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired,
-                ResizeLabMain.SameDimension_ErrorParameters);
+            ClickHandler(resizeAction, ResizeLabMain.Equalize_MinNoOfShapesRequired,
+                ResizeLabMain.Equalize_ErrorParameters);
         }
 
         #endregion
@@ -296,20 +296,20 @@ namespace PowerPointLabs.ResizeLab
         private void SameWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.ResizeToSameWidth(shapes);
-            PreviewHandler(previewAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired);
+            PreviewHandler(previewAction, ResizeLabMain.Equalize_MinNoOfShapesRequired);
         }
         
         private void SameHeightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.ResizeToSameHeight(shapes);
-            PreviewHandler(previewAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired);
+            PreviewHandler(previewAction, ResizeLabMain.Equalize_MinNoOfShapesRequired);
         }
 
         private void SameSizeBtn_MouseEnter(object sender, MouseEventArgs e)
         { 
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.ResizeToSameHeightAndWidth(shapes);
 
-            PreviewHandler(previewAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired);
+            PreviewHandler(previewAction, ResizeLabMain.Equalize_MinNoOfShapesRequired);
         }
 
         #endregion

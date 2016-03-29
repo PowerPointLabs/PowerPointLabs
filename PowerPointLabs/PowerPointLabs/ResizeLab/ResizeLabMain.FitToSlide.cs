@@ -6,7 +6,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// ResizeLabFitSize is the parital class of ResizeLabMain.
+    /// FitToSlide is the partial class of ResizeLabMain.
     /// It handles fit to height, width and fill to the size of the slide.
     /// </summary>
     public partial class ResizeLabMain

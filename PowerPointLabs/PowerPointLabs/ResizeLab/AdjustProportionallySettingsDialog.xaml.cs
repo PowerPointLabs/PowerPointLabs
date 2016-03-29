@@ -15,7 +15,7 @@ namespace PowerPointLabs.ResizeLab
         {
             _resizeLab = resizeLab;
             InitializeComponent();
-            ResizeFactorTextBox.Text = _resizeLab.AdjustProportionally_ResizeFactor.ToString("N2");
+            ResizeFactorTextBox.Text = _resizeLab.AdjustProportionallyResizeFactor.ToString("N2");
         }
 
         private void AdjustProportionallySettingsDialog_Closed(object sender, EventArgs e)
@@ -28,7 +28,7 @@ namespace PowerPointLabs.ResizeLab
             var resizeFactor = ResizeLabUtil.ConvertToFloat(ResizeFactorTextBox.Text);
             if (ResizeLabUtil.IsValidFactor(resizeFactor))
             {
-                _resizeLab.AdjustProportionally_ResizeFactor = (float) resizeFactor;
+                _resizeLab.AdjustProportionallyResizeFactor = (float) resizeFactor;
                 Close();
             }
             else

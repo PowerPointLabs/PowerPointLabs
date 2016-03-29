@@ -42,7 +42,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustWidthProportionallySlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
-            _resizeLab.AdjustProportionally_ResizeFactor = (float) 1.5;
+            _resizeLab.AdjustProportionallyResizeFactor = (float) 1.5;
             _resizeLab.AdjustWidthProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -55,7 +55,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustWidthProportionallyAspectRatioSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
-            _resizeLab.AdjustProportionally_ResizeFactor = (float)1.5;
+            _resizeLab.AdjustProportionallyResizeFactor = (float)1.5;
             _resizeLab.AdjustWidthProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -68,7 +68,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustHeightProportionallySlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
-            _resizeLab.AdjustProportionally_ResizeFactor = (float)1.5;
+            _resizeLab.AdjustProportionallyResizeFactor = (float)1.5;
             _resizeLab.AdjustHeightProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -81,7 +81,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustHeightProportionallyAspectRatioSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
-            _resizeLab.AdjustProportionally_ResizeFactor = (float)1.5;
+            _resizeLab.AdjustProportionallyResizeFactor = (float)1.5;
             _resizeLab.AdjustHeightProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }

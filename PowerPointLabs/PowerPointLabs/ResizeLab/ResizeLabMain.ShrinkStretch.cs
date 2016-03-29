@@ -5,7 +5,8 @@ using PowerPointLabs.Utils;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// Handles the stretching and shrinking of shapes in resize lab
+    /// ShrinkStretch is the partial class of ResizeLabMain.
+    /// It handles the stretching and shrinking of shapes.
     /// </summary>
     public partial class ResizeLabMain
     {
