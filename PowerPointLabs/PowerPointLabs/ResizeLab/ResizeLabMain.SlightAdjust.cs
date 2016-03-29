@@ -31,7 +31,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void IncreaseHeight(PowerPoint.ShapeRange shapes)
         {
-            AdjustHeight(shapes, SlightAdjustResizeFactor);
+            SlighAdjustHeight(shapes, SlightAdjustResizeFactor);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void DecreaseHeight(PowerPoint.ShapeRange shapes)
         {
-            AdjustHeight(shapes, -SlightAdjustResizeFactor);
+            SlighAdjustHeight(shapes, -SlightAdjustResizeFactor);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void IncreaseWidth(PowerPoint.ShapeRange shapes)
         {
-            AdjustWidth(shapes, SlightAdjustResizeFactor);
+            SlightAdjustWidth(shapes, SlightAdjustResizeFactor);
         }
 
         /// <summary>
@@ -58,28 +58,28 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void DecreaseWidth(PowerPoint.ShapeRange shapes)
         {
-            AdjustWidth(shapes, -SlightAdjustResizeFactor);
+            SlightAdjustWidth(shapes, -SlightAdjustResizeFactor);
         }
 
         #endregion
 
         #region Helper functions
-        private void AdjustHeight(PowerPoint.ShapeRange shapes, float resizeFactor)
+        private void SlighAdjustHeight(PowerPoint.ShapeRange shapes, float resizeFactor)
         {
             Action<PPShape> adjustHeight = shape =>
             {
                 shape.AbsoluteHeight += resizeFactor;
             };
-            AdjustShape(shapes, adjustHeight);
+            SlightAdjustShape(shapes, adjustHeight);
         }
 
-        private void AdjustWidth(PowerPoint.ShapeRange shapes, float resizeFactor)
+        private void SlightAdjustWidth(PowerPoint.ShapeRange shapes, float resizeFactor)
         {
             Action<PPShape> adjustWidth = shape => shape.AbsoluteWidth += resizeFactor;
-            AdjustShape(shapes, adjustWidth);
+            SlightAdjustShape(shapes, adjustWidth);
         }
 
-        private void AdjustShape(PowerPoint.ShapeRange shapes, Action<PPShape> resizeAction)
+        private void SlightAdjustShape(PowerPoint.ShapeRange shapes, Action<PPShape> resizeAction)
         {
             foreach (PowerPoint.Shape shape in shapes)
             {
