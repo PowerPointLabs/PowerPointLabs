@@ -123,17 +123,16 @@ namespace PowerPointLabs.Utils
             var sinAngle = Math.Sin(rotation);
             var cosAngle = Math.Cos(rotation);
 
-            if ((int) cosAngle != 0)
-            {
-                var ratio = sinAngle/cosAngle;
-
-                _shape.Height = (float) ((_absoluteWidth*ratio - _absoluteHeight)/(sinAngle*ratio - cosAngle));
-                _shape.Width = (float) ((_absoluteWidth - _shape.Height*sinAngle)/cosAngle);
-            }
-            else
+            if ((int) _shape.Rotation == 90 || (int) _shape.Rotation == 270)
             {
                 _shape.Height = _absoluteWidth;
                 _shape.Width = _absoluteHeight;
+            }
+            else
+            {
+                var ratio = sinAngle / cosAngle;
+                _shape.Height = (float)((_absoluteWidth * ratio - _absoluteHeight) / (sinAngle * ratio - cosAngle));
+                _shape.Width = (float)((_absoluteWidth - _shape.Height * sinAngle) / cosAngle);
             }
         }
 
