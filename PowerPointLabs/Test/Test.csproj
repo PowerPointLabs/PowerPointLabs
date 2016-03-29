@@ -138,6 +138,7 @@
     <Compile Include="UnitTest\ResizeLab\EqualizeTest.cs" />
     <Compile Include="UnitTest\ResizeLab\MainSettingsTest.cs" />
     <Compile Include="UnitTest\ResizeLab\MatchTest.cs" />
+    <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />

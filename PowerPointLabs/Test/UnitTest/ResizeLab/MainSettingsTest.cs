@@ -15,7 +15,7 @@ namespace Test.UnitTest.ResizeLab
         private const string WithAspectRatioShapeNames = "withAspectRatio";
         private const string WithoutAspectRatioShapeNames = "withoutAspectRatio";
 
-        private const int AspectRatioSlideNo = 42;
+        private const int AspectRatioSlideNo = 52;
 
         [TestInitialize]
         public void TestInitialize()
