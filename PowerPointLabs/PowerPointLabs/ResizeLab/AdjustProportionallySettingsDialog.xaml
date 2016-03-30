@@ -9,7 +9,7 @@
              Title="Adjust Proportionally Settings" 
              WindowStartupLocation="CenterScreen"
              Width="300"
-             Height="150" 
+             Height="155" 
              Closed="AdjustProportionallySettingsDialog_Closed"
              BorderThickness="1"
              BorderBrush="#0070C0"
@@ -27,13 +27,13 @@
     </controls:MetroWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="10" />
             <RowDefinition Height="40" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <TextBlock x:Name="ResizeProportionLabel" Grid.Row="0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"><Run Text="Proportion"/></TextBlock>
-        <Separator HorizontalAlignment="Left" Grid.Row="1" Height="2" VerticalAlignment="Top" Width="285" />
+        <TextBlock x:Name="ResizeProportionLabel" Grid.Row="0" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,7,0,3"><Run Text="Proportion"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Grid.Row="1" Height="2" Margin="5,0,0,0" VerticalAlignment="Top" Width="285" />
         <TextBlock Grid.Row="2" Text="Resize Factor" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-90,0,0,0" ToolTip="Defines the amount to scale objects' dimensions by in proportion to the first selected object's dimension"/>
         <TextBox x:Name="ResizeFactorTextBox" Grid.Row="2" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="50,0,0,0" ToolTip="Enter a decimal value greater than 0"/>
         <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="OkBtn_Click"/>
