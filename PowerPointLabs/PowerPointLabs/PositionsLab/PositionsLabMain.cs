@@ -1304,7 +1304,6 @@ namespace PowerPointLabs.PositionsLab
 
             var longestRow = GetLongestRowWidthByCol(selectedShapes, rowLength, colLength);
             var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, 0);
-            Debug.WriteLine(longestRow);
             var rowDifference = longestRow;
 
             for (var i = 0; i < numShapes; i++)

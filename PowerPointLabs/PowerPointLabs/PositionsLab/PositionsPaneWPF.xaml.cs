@@ -854,7 +854,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -920,7 +919,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -985,7 +983,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -1050,7 +1047,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -1108,7 +1104,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -1166,7 +1161,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -1224,7 +1218,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
@@ -1280,7 +1273,6 @@ namespace PowerPointLabs.PositionsLab
                 {
                     UndoPreview();
                     this.StartNewUndoEntry();
-                    Debug.WriteLine("Undo entry");
                 }
 
                 positionsAction.Invoke(ConvertShapeRangeToShapeList(selectedShapes, 1));
