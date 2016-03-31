@@ -2283,7 +2283,9 @@ namespace PowerPointLabs.PositionsLab
         {
             IsSwapByClickOrder = false;
             SwapReferencePoint = SwapReference.MiddleCenter;
-        }   
+            prevSelectedShapes = new Dictionary<string, Drawing.PointF>();
+            prevSortedShapeNames = new List<string>();
+    }   
 
         public static void InitPositionsLab()
         {

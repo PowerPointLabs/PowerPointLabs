@@ -243,6 +243,39 @@ namespace Test.UnitTest.PositionsLab
             }
         }
 
+        protected void ExecutePositionsAction(Action<List<PPShape>, bool> positionsAction, PowerPoint.ShapeRange selectedShapes, bool booleanVal)
+        {
+            if (selectedShapes == null || selectedShapes.Count == 0)
+            {
+                throw new Exception(ErrorInvalidShapesSelected);
+            }
+
+            PowerPoint.ShapeRange simulatedShapes = null;
+
+            try
+            {
+                simulatedShapes = DuplicateShapes(selectedShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
+
+                positionsAction.Invoke(simulatedPPShapes, booleanVal);
+
+                SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
+            }
+        }
+
         protected void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, PowerPoint.ShapeRange selectedShapes, float dimension)
         {
             if (selectedShapes == null || selectedShapes.Count == 0)
