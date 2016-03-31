@@ -5,13 +5,14 @@ using PowerPointLabs.Utils;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// Handles the stretching and shrinking of shapes in resize lab
+    /// ShrinkStretch is the partial class of ResizeLabMain.
+    /// It handles the stretching and shrinking of shapes.
     /// </summary>
     public partial class ResizeLabMain
     {
         // To be used for error handling
         internal const int Stretch_MinNoOfShapesRequired = 2;
-        internal const string Stretch_FeatureName = "Stretch/Shrink";
+        internal const string Stretch_FeatureName = "Stretch / Shrink";
         internal const string Stretch_ShapeSupport = "objects";
         internal static readonly string[] Stretch_ErrorParameters =
         {

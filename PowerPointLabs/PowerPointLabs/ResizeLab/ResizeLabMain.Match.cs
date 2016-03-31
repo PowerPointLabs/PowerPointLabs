@@ -6,6 +6,11 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
+    /// <summary>
+    /// Match is the partial class of ResizeLabMain.
+    /// It handles the resizing of shape's dimension to its respective
+    /// width or height
+    /// </summary>
     partial class ResizeLabMain
     {
         // To be used for error handling
@@ -33,7 +38,10 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
+                    var anchorPoint = GetAnchorPoint(shape);
+
                     shape.AbsoluteHeight = shape.AbsoluteWidth;
+                    AlignShape(shape, anchorPoint);
                 }
 
                 selectedShapes.LockAspectRatio = isAspectRatio;
@@ -58,7 +66,10 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
+                    var anchorPoint = GetAnchorPoint(shape);
+
                     shape.AbsoluteWidth = shape.AbsoluteHeight;
+                    AlignShape(shape, anchorPoint);
                 }
 
                 selectedShapes.LockAspectRatio = isAspectRatio;

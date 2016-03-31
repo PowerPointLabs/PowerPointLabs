@@ -19,7 +19,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ScrollViewer>
+    <ScrollViewer x:Name="PaneScroll">
         <Grid>
             <Grid.Resources>
                 <Style TargetType="{x:Type TextBlock}">
@@ -44,6 +44,7 @@
                 <RowDefinition Height="120" />
                 <RowDefinition Height="120" />
                 <RowDefinition Height="115" />
+                <RowDefinition Height="140" />
             </Grid.RowDefinitions>
             <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                 <Grid Margin="-7,-7,-7,-7">
@@ -70,7 +71,7 @@
             <cc:ImageButton Grid.Row="0" ToolTip="Opens the settings for Stretch / Shrink functions" x:Name="StretchSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="StretchSettingsBtn_Click">
                 <Image Source="..\Resources\SettingsGear.png"/>
             </cc:ImageButton>
-            
+
             <GroupBox x:Name="SameSizeGroupBox" Header="Equalize" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
@@ -87,14 +88,11 @@
                     <TextBlock Grid.Column="0">Width</TextBlock>
                     <cc:ImageButton x:Name="SameHeightBtn" Text="Height" Grid.Column="1" Image="../Resources/ResizeLab/ResizeSameHeight.png" Click="SameHeightBtn_Click" ToolTip="Resize selected objects to match the height of the first object selected" MouseEnter="SameHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="1">Height</TextBlock>
-                    <cc:ImageButton x:Name="SameSizeBtn" Text="Size" Grid.Column="2" Click="SameSizeBtn_Click" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected" MouseEnter="SameSizeBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="SameSizeBtn" Text="Both" Grid.Column="2" Click="SameSizeBtn_Click" Image="../Resources/ResizeLab/ResizeSameSize.png" ToolTip="Resize selected objects to match the size of the first object selected" MouseEnter="SameSizeBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="2">Both</TextBlock>
                 </Grid>
             </GroupBox>
-            <cc:ImageButton Grid.Row="1" ToolTip="Opens the settings for Same Dimension functions" x:Name="SameDimensionSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="SameDimensionSettingsBtn_Click">
-                <Image Source="..\Resources\SettingsGear.png"/>
-            </cc:ImageButton>
-            
+
             <GroupBox x:Name="FitGroupBox" Header="Fit To Slide" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
@@ -111,7 +109,7 @@
                     <TextBlock Grid.Column="0">Width</TextBlock>
                     <cc:ImageButton x:Name="FitHeightBtn" Text="Height" Grid.Column="1" Click="FitHeightBtn_Click" Image="../Resources/ResizeLab/ResizeFitToHeight.png" ToolTip="Expand selected objects vertically to fit the height of the slide" MouseEnter="FitHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="1">Height</TextBlock>
-                    <cc:ImageButton x:Name="FillBtn" Text="Fill" Grid.Column="2" Click="FillBtn_Click" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide" MouseEnter="FillBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="FillBtn" Text="Both" Grid.Column="2" Click="FillBtn_Click" Image="../Resources/ResizeLab/ResizeFitToFill.png" ToolTip="Expand selected objects to fit the entire slide" MouseEnter="FillBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="2">Both</TextBlock>
                 </Grid>
             </GroupBox>
@@ -127,17 +125,21 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="IncreaseHeightBtn" Text="Width" Grid.Column="0" Click="IncreaseHeightBtn_Click" Width="{Binding ElementName=IncreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseHeight.png" ToolTip="Slightly increases the height of selected objects" MouseEnter="IncreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="0">Increase Height</TextBlock>
-                    <cc:ImageButton x:Name="DecreaseHeightBtn" Text="Height" Grid.Column="1" Click="DecreaseHeightBtn_Click" Width="{Binding ElementName=DecreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseHeight.png" ToolTip="Slightly decreases the height of selected objects" MouseEnter="DecreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="1">Decrease Height</TextBlock>
-                    <cc:ImageButton x:Name="IncreaseWidthBtn" Text="Fill" Grid.Column="2" Click="IncreaseWidthBtn_Click" Width="{Binding ElementName=IncreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseWidth.png" ToolTip="Slightly increases the width of selected objects" MouseEnter="IncreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="2">Increase Width</TextBlock>
-                    <cc:ImageButton x:Name="DecreaseWidthBtn" Text="Fill" Grid.Column="3" Click="DecreaseWidthBtn_Click" Width="{Binding ElementName=DecreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseWidth.png" ToolTip="Slightly decreases the width of selected objects" MouseEnter="DecreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
-                    <TextBlock Grid.Column="3">Decrease Width</TextBlock>
+                    <cc:ImageButton x:Name="IncreaseWidthBtn" Text="Increase Width" Grid.Column="0" Click="IncreaseWidthBtn_Click" Width="{Binding ElementName=IncreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseWidth.png" ToolTip="Slightly increases the width of selected objects" MouseEnter="IncreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="0">Increase Width</TextBlock>
+                    <cc:ImageButton x:Name="DecreaseWidthBtn" Text="Decrease Width" Grid.Column="1" Click="DecreaseWidthBtn_Click" Width="{Binding ElementName=DecreaseWidthBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseWidth.png" ToolTip="Slightly decreases the width of selected objects" MouseEnter="DecreaseWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="1">Decrease Width</TextBlock>
+                    <cc:ImageButton x:Name="IncreaseHeightBtn" Text="Increase Height" Grid.Column="2" Click="IncreaseHeightBtn_Click" Width="{Binding ElementName=IncreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeIncreaseHeight.png" ToolTip="Slightly increases the height of selected objects" MouseEnter="IncreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="2">Increase Height</TextBlock>
+                    <cc:ImageButton x:Name="DecreaseHeightBtn" Text="Decrease Height" Grid.Column="3" Click="DecreaseHeightBtn_Click" Width="{Binding ElementName=DecreaseHeightBtn, Path=ActualHeight}" Image="../Resources/ResizeLab/ResizeDecreaseHeight.png" ToolTip="Slightly decreases the height of selected objects" MouseEnter="DecreaseHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="3">Decrease Height</TextBlock>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="AdjustAspectRatioGroupBox" Header="Adjust Aspect Ratio" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <cc:ImageButton Grid.Row="3" ToolTip="Opens the settings for Adjust Slightly functions" x:Name="SlightAdjustSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="SlightAdjustSettingsBtn_Click">
+                <Image Source="..\Resources\SettingsGear.png"/>
+            </cc:ImageButton>
+
+            <GroupBox x:Name="MatchGroupBox" Header="Match" Grid.Row="4" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*" />
@@ -149,22 +151,60 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="MatchWidthBtn" Text="Width" Grid.Column="0" Width="{Binding ElementName=MatchWidthBtn, Path=ActualHeight}" Click="MatchWidthBtn_Click" Image="../Resources/ResizeLab/ResizeMatchWidth.png" ToolTip="Resizes selected object's height to match their width" MouseEnter="MatchWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="MatchWidthBtn" Text=" Height to Match Width" Grid.Column="0" Width="{Binding ElementName=MatchWidthBtn, Path=ActualHeight}" Click="MatchWidthBtn_Click" Image="../Resources/ResizeLab/ResizeMatchWidth.png" ToolTip="Resizes selected object's height to match their width" MouseEnter="MatchWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="0">Height to Match Width</TextBlock>
-                    <cc:ImageButton x:Name="MatchHeightBtn" Text="Height" Grid.Column="1" Width="{Binding ElementName=MatchHeightBtn, Path=ActualHeight}" Click="MatchHeightBtn_Click" Image="../Resources/ResizeLab/ResizeMatchHeight.png" ToolTip="Resizes selected object's width to match their height" MouseEnter="MatchHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="MatchHeightBtn" Text="Width to Match Height" Grid.Column="1" Width="{Binding ElementName=MatchHeightBtn, Path=ActualHeight}" Click="MatchHeightBtn_Click" Image="../Resources/ResizeLab/ResizeMatchHeight.png" ToolTip="Resizes selected object's width to match their height" MouseEnter="MatchHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
                     <TextBlock Grid.Column="1">Width to Match Height</TextBlock>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <Grid>
 
+            <GroupBox x:Name="ProportionGroupBox" Header="Adjust Proportionally" Grid.Row="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid Margin="-7,-7,-7,-7">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="33" Margin="3,3,3,3" VerticalAlignment="Top" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
+                    <cc:ImageButton x:Name="ProportionalWidthBtn" Text="Width" Grid.Column="0" Width="{Binding ElementName=ProportionalWidthBtn, Path=ActualHeight}" Click="ProportionalWidthBtn_Click" Image="../Resources/ResizeLab/ResizeProportionWidth.png" ToolTip="Resizes selected object's width proportionally to the width of the first object selected" MouseEnter="ProportionalWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="0">Width</TextBlock>
+                    <cc:ImageButton x:Name="ProportionalHeightBtn" Text="Height" Grid.Column="1" Width="{Binding ElementName=ProportionalHeightBtn, Path=ActualHeight}" Click="ProportionalHeightBtn_Click" Image="../Resources/ResizeLab/ResizeProportionHeight.png" ToolTip="Resizes selected object's width proportionally to the width of the first object selected" MouseEnter="ProportionalHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <TextBlock Grid.Column="1">Height</TextBlock>
+                </Grid>
+            </GroupBox>
+            <cc:ImageButton Grid.Row="5" ToolTip="Opens the settings for Adjust Proportionally functions" x:Name="ProportionalSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="ProportionalSettingsBtn_Click">
+                <Image Source="..\Resources\SettingsGear.png"/>
+            </cc:ImageButton>
+
+            <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="33" VerticalAlignment="Center" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="13" HorizontalAlignment="Right" Margin="0,0,14,5">Anchor Point</TextBlock>
+                    <WrapPanel x:Name="AnchorPanel" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Height="78" VerticalAlignment="Center" Width="105">
+                        <RadioButton x:Name="AnchorTopLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorTopMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0"  VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorTopRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorMidLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorMidRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorBottomLeftBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorBottomMidBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                        <RadioButton x:Name="AnchorBottomRightBtn" GroupName="Anchor" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Checked="AnchorBtn_Checked"/>
+                    </WrapPanel>
                 </Grid>
             </GroupBox>
             

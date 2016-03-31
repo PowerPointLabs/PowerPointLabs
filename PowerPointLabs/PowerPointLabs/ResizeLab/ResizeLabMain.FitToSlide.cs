@@ -6,7 +6,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ResizeLab
 {
     /// <summary>
-    /// ResizeLabFitSize is the parital class of ResizeLabMain.
+    /// FitToSlide is the partial class of ResizeLabMain.
     /// It handles fit to height, width and fill to the size of the slide.
     /// </summary>
     public partial class ResizeLabMain
@@ -130,24 +130,26 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PowerPoint.Shape shape = selectedShapes[i];
+                    var shape = selectedShapes[i];
+                    var anchorPoint = GetAnchorPoint(new PPShape(shape, false));
 
                     if (dimension == Dimension.Height)
                     {
-                        var originalLeft = shape.Left;
-
                         FitToSlide.FitToHeight(shape, slideWidth, slideHeight);
-                        shape.Left = originalLeft;
+
+                        var ppShape = new PPShape(shape, false);
+                        AlignShape(ppShape, anchorPoint);
+                        ppShape.Top = 0;
                     }
                     else if (dimension == Dimension.Width)
                     {
-                        var originalTop = shape.Top;
-
                         FitToSlide.FitToWidth(shape, slideWidth, slideHeight);
-                        shape.Top = originalTop;
+
+                        var ppShape = new PPShape(shape, false);
+                        AlignShape(ppShape, anchorPoint);
+                        ppShape.Left = 0;
                     }
                     else if (dimension == Dimension.HeightAndWidth)
                     {

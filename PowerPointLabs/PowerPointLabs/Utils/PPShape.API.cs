@@ -14,12 +14,15 @@ namespace PowerPointLabs.Utils
         private float _rotatedTop;
         private float _originalRotation;
 
-        public PPShape(PowerPoint.Shape shape)
+        public PPShape(PowerPoint.Shape shape, bool redefineBoundingBox = true)
         {
             _shape = shape;
             _originalRotation = _shape.Rotation;
 
-            ConvertToFreeform();
+            if (redefineBoundingBox)
+            {
+                ConvertToFreeform();
+            }
 
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();

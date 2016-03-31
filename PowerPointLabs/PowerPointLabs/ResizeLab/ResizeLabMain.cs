@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using PowerPointLabs.Utils;
-using Office = Microsoft.Office.Core;
+﻿using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -17,7 +11,6 @@ namespace PowerPointLabs.ResizeLab
         public ResizeLabMain()
         {
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler();
-            SameDimensionAnchorType = SameDimensionAnchor.TopLeft;
         }
 
         private enum Dimension
@@ -75,10 +68,7 @@ namespace PowerPointLabs.ResizeLab
                 
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         /// <summary>
@@ -100,10 +90,7 @@ namespace PowerPointLabs.ResizeLab
 
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         #endregion

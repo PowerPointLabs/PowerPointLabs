@@ -82,8 +82,8 @@ namespace PowerPointLabs.PositionsLab
 
         public static bool IsSwapByClickOrder { get; set; }
 
-        private static Dictionary<int, Drawing.PointF> prevSelectedShapes = new Dictionary<int, Drawing.PointF>();
-        private static List<PPShape> prevSortedShapes;
+        private static Dictionary<string, Drawing.PointF> prevSelectedShapes = new Dictionary<string, Drawing.PointF>();
+        private static List<string> prevSortedShapeNames;
 
         //Align Variables
         public enum AlignReferenceObject
@@ -1304,7 +1304,6 @@ namespace PowerPointLabs.PositionsLab
 
             var longestRow = GetLongestRowWidthByCol(selectedShapes, rowLength, colLength);
             var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, 0);
-            Debug.WriteLine(longestRow);
             var rowDifference = longestRow;
 
             for (var i = 0; i < numShapes; i++)
@@ -1522,7 +1521,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Swap
 
-        public static void Swap(List<PPShape> selectedShapes)
+        public static void Swap(List<PPShape> selectedShapes, bool isPreview)
         {
             if (selectedShapes.Count < 2)
             {
@@ -1535,7 +1534,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (ListIsPreviouslySelected(selectedShapes, prevSelectedShapes))
                 {
-                    sortedShapes = prevSortedShapes;
+                    sortedShapes = SortPPShapesByName(selectedShapes, prevSortedShapeNames);
                 }
                 else
                 {
@@ -1549,7 +1548,7 @@ namespace PowerPointLabs.PositionsLab
 
             var firstPos = GetSwapReferencePoint(sortedShapes[0], SwapReferencePoint);
 
-            prevSortedShapes = new List<PPShape>();
+            var shapeNames = new List<string>();
 
             for (var i = 0; i < sortedShapes.Count; i++)
             {
@@ -1569,16 +1568,17 @@ namespace PowerPointLabs.PositionsLab
                     currentShape.IncrementTop(firstPos.Y - currentPos.Y);
                 }
 
-                if (i != 0 && !IsSwapByClickOrder)
+                if (i != 0 && !IsSwapByClickOrder && !isPreview)
                 {
-                    prevSortedShapes.Add(currentShape);
+                    shapeNames.Add(currentShape.Name);
                 }
             }
 
-            if (!IsSwapByClickOrder)
+            if (!IsSwapByClickOrder && !isPreview)
             {
-                prevSortedShapes.Add(sortedShapes[0]);
-                SaveSelectedList(prevSortedShapes, prevSelectedShapes);
+                shapeNames.Insert(0, sortedShapes[0].Name);
+                prevSortedShapeNames = shapeNames;
+                SaveSelectedList(selectedShapes, prevSelectedShapes);
             }
         }
 
@@ -2121,7 +2121,7 @@ namespace PowerPointLabs.PositionsLab
             return difference;
         }
 
-        private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<int, Drawing.PointF> prevSelectedShapes)
+        private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<string, Drawing.PointF> prevSelectedShapes)
         {
             try
             {
@@ -2134,7 +2134,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     var shapePos = selectedShapes[i].Center;
                     Drawing.PointF prevShapePos = new Drawing.PointF();
-                    if (!prevSelectedShapes.TryGetValue(selectedShapes[i].Id, out prevShapePos))
+                    if (!prevSelectedShapes.TryGetValue(selectedShapes[i].Name, out prevShapePos))
                     {
                         return false;
                     }
@@ -2153,7 +2153,7 @@ namespace PowerPointLabs.PositionsLab
             return true;
         }
 
-        private static void SaveSelectedList(List<PPShape> selectedShapes, Dictionary<int, Drawing.PointF> prevSelectedShapes)
+        private static void SaveSelectedList(List<PPShape> selectedShapes, Dictionary<string, Drawing.PointF> prevSelectedShapes)
         {
             if (selectedShapes == null || selectedShapes.Count <= 0)
             {
@@ -2164,8 +2164,28 @@ namespace PowerPointLabs.PositionsLab
             for (int i = 0; i < selectedShapes.Count; i++)
             {
                 var shapePos = selectedShapes[i].Center;
-                prevSelectedShapes.Add(selectedShapes[i].Id, shapePos);
+                prevSelectedShapes.Add(selectedShapes[i].Name, shapePos);
             }
+        }
+
+        private static List<PPShape> SortPPShapesByName(List<PPShape> selectedShapes, List<string> shapeNames)
+        {
+            List<PPShape> sortedShapes = new List<PPShape>();
+            for (int i = 0; i < shapeNames.Count; i++)
+            {
+                string name = shapeNames[i];
+                for (int j = 0; j < selectedShapes.Count; j++)
+                {
+                    PPShape shape = selectedShapes[j];
+                    if (shape.Name.Equals(name))
+                    {
+                        sortedShapes.Add(shape);
+                        break;
+                    }
+                }
+            }
+
+            return sortedShapes;
         }
 
         private static List<PPShape> ConvertShapeRangeToPPShapeList(ShapeRange toAlign)
@@ -2263,7 +2283,9 @@ namespace PowerPointLabs.PositionsLab
         {
             IsSwapByClickOrder = false;
             SwapReferencePoint = SwapReference.MiddleCenter;
-        }   
+            prevSelectedShapes = new Dictionary<string, Drawing.PointF>();
+            prevSortedShapeNames = new List<string>();
+    }   
 
         public static void InitPositionsLab()
         {

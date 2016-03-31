@@ -13,13 +13,13 @@ namespace Test.UnitTest.ResizeLab
         private const string UnrotatedShapeName = "rectangle";
         private const string RotatedShapeName = "rotatedRectangle";
 
-        private const int OriginalShapesSlideNo = 17;
-        private const int FitToWidthSlideNo = 18;
-        private const int FitToWidthAspectRatioSlideNo = 19;
-        private const int FitToHeightSlideNo = 20;
-        private const int FitToHeightAspectRatioSlideNo = 21;
-        private const int FitToFillSlideNo = 22;
-        private const int FitToFillAspectRatioSlideNo = 23;
+        private const int OriginalShapesSlideNo = 24;
+        private const int FitToWidthSlideNo = 25;
+        private const int FitToWidthAspectRatioSlideNo = 26;
+        private const int FitToHeightSlideNo = 27;
+        private const int FitToHeightAspectRatioSlideNo = 28;
+        private const int FitToFillSlideNo = 29;
+        private const int FitToFillAspectRatioSlideNo = 30;
 
         [TestInitialize]
         public void TestInitialize()

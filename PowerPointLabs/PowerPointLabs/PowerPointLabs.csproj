@@ -561,14 +561,18 @@
       <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
+      <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.Symmetric.cs" />
+    <Compile Include="ResizeLab\ResizeLabUtil.cs" />
+    <Compile Include="ResizeLab\Symmetric.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
     <Compile Include="ResizeLab\IResizeLabPane.cs" />
-    <Compile Include="ResizeLab\ResizeLabMain.AspectRatio.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.MainSettings.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Equalize.cs" />
@@ -582,12 +586,11 @@
       <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
-    <Compile Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml.cs">
-      <DependentUpon>ResizeSameDimensionSettingsDialog.xaml</DependentUpon>
+    <Compile Include="ResizeLab\StretchSettingsDialog.xaml.cs">
+      <DependentUpon>StretchSettingsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ResizeLab\ShapeProperties.cs" />
-    <Compile Include="ResizeLab\ResizeStretchSettingsDialog.xaml.cs">
-      <DependentUpon>ResizeStretchSettingsDialog.xaml</DependentUpon>
+    <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
+      <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
@@ -1101,15 +1104,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResizeLab\AdjustProportionallySettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResizeLab\ResizeLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ResizeLab\ResizeSameDimensionSettingsDialog.xaml">
+    <Page Include="ResizeLab\StretchSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResizeLab\ResizeStretchSettingsDialog.xaml">
+    <Page Include="SlightAdjustSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1322,6 +1329,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeMatchWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

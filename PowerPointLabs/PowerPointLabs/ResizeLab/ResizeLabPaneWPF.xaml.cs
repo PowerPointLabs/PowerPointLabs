@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Threading;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -14,6 +16,7 @@ namespace PowerPointLabs.ResizeLab
     {
         private ResizeLabMain _resizeLab;
         private readonly ResizeLabErrorHandler _errorHandler;
+        private Dictionary<ResizeLabMain.AnchorPoint, RadioButton> _anchorButtonLookUp;
         public static bool IsAspectRatioLocked { get; set; }
         
         private const string UnlockAspectRatioToolTip = "Unlocks the aspect ratio of objects when performing resizing of objects";
@@ -21,20 +24,26 @@ namespace PowerPointLabs.ResizeLab
 
         // Dialog windows
         private StretchSettingsDialog _stretchSettingsDialog;
-        private SameDimensionSettingsDialog _sameDimensionSettingsDialog;
+        private AdjustProportionallySettingsDialog _adjustProportionallySettingsDialog;
+        private SlightAdjustSettingsDialog _slightAdjustSettingsDialog;
 
         // For preview
-        private Thread thread;
-        private const int PreviewDelay = 400;
+        private const int PreviewDelay = 500;
+        private DispatcherTimer _previewTimer;
+        private delegate void PreviewCallBack();
+        private PreviewCallBack _previewCallBack;
 
         public ResizeLabPaneWPF()
         {
             InitializeComponent();
             InitialiseLogicInstance();
+            InitialiseAnchorButton();
+            InitialiseTimer();
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             UnlockAspectRatio();
         }
 
+        #region Initialise
         internal void InitialiseLogicInstance()
         {
             if (_resizeLab == null)
@@ -42,6 +51,32 @@ namespace PowerPointLabs.ResizeLab
                 _resizeLab = new ResizeLabMain();
             }
         }
+
+        private void InitialiseAnchorButton()
+        {
+            _anchorButtonLookUp = new Dictionary<ResizeLabMain.AnchorPoint, RadioButton>()
+            {
+                { ResizeLabMain.AnchorPoint.TopLeft, AnchorTopLeftBtn},
+                { ResizeLabMain.AnchorPoint.TopCenter, AnchorTopMidBtn},
+                { ResizeLabMain.AnchorPoint.TopRight, AnchorTopRightBtn},
+                { ResizeLabMain.AnchorPoint.MiddleLeft, AnchorMidLeftBtn},
+                { ResizeLabMain.AnchorPoint.Center, AnchorMidBtn},
+                { ResizeLabMain.AnchorPoint.MiddleRight, AnchorMidRightBtn},
+                { ResizeLabMain.AnchorPoint.BottomLeft, AnchorBottomLeftBtn},
+                { ResizeLabMain.AnchorPoint.BottomCenter, AnchorBottomMidBtn},
+                { ResizeLabMain.AnchorPoint.BottomRight, AnchorBottomRightBtn}
+            };
+            AnchorTopLeftBtn.IsChecked = true;
+        }
+
+        private void InitialiseTimer()
+        {
+            _previewTimer = new DispatcherTimer();
+            _previewTimer.Tick += Timer_Tick;
+            _previewTimer.Interval = new TimeSpan(0, 0, 0, 0, PreviewDelay);
+        }
+
+        #endregion
 
         #region Execute Stretch and Shrink
 
@@ -94,35 +129,22 @@ namespace PowerPointLabs.ResizeLab
         private void SameWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameWidth(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired,
-                ResizeLabMain.SameDimension_ErrorParameters);
+            ClickHandler(resizeAction, ResizeLabMain.Equalize_MinNoOfShapesRequired,
+                ResizeLabMain.Equalize_ErrorParameters);
         }
 
         private void SameHeightBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameHeight(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired,
-                            ResizeLabMain.SameDimension_ErrorParameters);
+            ClickHandler(resizeAction, ResizeLabMain.Equalize_MinNoOfShapesRequired,
+                            ResizeLabMain.Equalize_ErrorParameters);
         }
 
         private void SameSizeBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.ResizeToSameHeightAndWidth(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired,
-                ResizeLabMain.SameDimension_ErrorParameters);
-        }
-
-        private void SameDimensionSettingsBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (_sameDimensionSettingsDialog == null || !_sameDimensionSettingsDialog.IsOpen)
-            {
-                _sameDimensionSettingsDialog = new SameDimensionSettingsDialog(_resizeLab);
-                _sameDimensionSettingsDialog.Show();
-            }
-            else
-            {
-                _sameDimensionSettingsDialog.Activate();
-            }
+            ClickHandler(resizeAction, ResizeLabMain.Equalize_MinNoOfShapesRequired,
+                ResizeLabMain.Equalize_ErrorParameters);
         }
 
         #endregion
@@ -192,47 +214,22 @@ namespace PowerPointLabs.ResizeLab
                 ResizeLabMain.SlightAdjust_ErrorParameters);
         }
 
-        #endregion
-
-        #region Execute Aspect Ratio
-
-        private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
+        private void SlightAdjustSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
-            UnlockAspectRatio();
-        }
-
-        private void LockAspectRatio_Checked(object sender, RoutedEventArgs e)
-        {
-            LockAspectRatio();
-        }
-
-        private void UnlockAspectRatio()
-        {
-            IsAspectRatioLocked = false;
-            LockAspectRatioCheckBox.ToolTip = LockAspectRatioToolTip;
-
-            ModifySelectionAspectRatio();
-        }
-
-        private void LockAspectRatio()
-        {
-            IsAspectRatioLocked = true;
-            LockAspectRatioCheckBox.ToolTip = UnlockAspectRatioToolTip;
-
-            ModifySelectionAspectRatio();
-        }
-
-        private void ModifySelectionAspectRatio()
-        {
-            if (_resizeLab.IsSelectionValid(GetSelection(), false))
+            if (_slightAdjustSettingsDialog == null || !_slightAdjustSettingsDialog.IsOpen)
             {
-                _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
+                _slightAdjustSettingsDialog = new SlightAdjustSettingsDialog(_resizeLab);
+                _slightAdjustSettingsDialog.Show();
+            }
+            else
+            {
+                _slightAdjustSettingsDialog.Activate();
             }
         }
 
         #endregion
 
-        #region Execute Adjust Aspect Ratio
+        #region Execute Match
         private void MatchWidthBtn_Click(object sender, RoutedEventArgs e)
         {
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.MatchWidth(shapes);
@@ -245,6 +242,37 @@ namespace PowerPointLabs.ResizeLab
             Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.MatchHeight(shapes);
             ClickHandler(resizeAction, ResizeLabMain.Match_MinNoOfShapesRequired,
                 ResizeLabMain.Match_ErrorParameters);
+        }
+
+        #endregion
+
+        #region Execute Adjust Proportionally
+        private void ProportionalWidthBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
+            ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                ResizeLabMain.AdjustProportionally_ErrorParameters);
+        }
+
+        private void ProportionalHeightBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
+            ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                ResizeLabMain.AdjustProportionally_ErrorParameters);
+        }
+
+        private void ProportionalSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
+            {
+                _adjustProportionallySettingsDialog = new AdjustProportionallySettingsDialog(_resizeLab);
+                _adjustProportionallySettingsDialog.Show();
+            }
+            else
+            {
+                _adjustProportionallySettingsDialog.Activate();
+            }
+
         }
 
         #endregion
@@ -282,20 +310,20 @@ namespace PowerPointLabs.ResizeLab
         private void SameWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.ResizeToSameWidth(shapes);
-            PreviewHandler(previewAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired);
+            PreviewHandler(previewAction, ResizeLabMain.Equalize_MinNoOfShapesRequired);
         }
         
         private void SameHeightBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.ResizeToSameHeight(shapes);
-            PreviewHandler(previewAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired);
+            PreviewHandler(previewAction, ResizeLabMain.Equalize_MinNoOfShapesRequired);
         }
 
         private void SameSizeBtn_MouseEnter(object sender, MouseEventArgs e)
         { 
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.ResizeToSameHeightAndWidth(shapes);
 
-            PreviewHandler(previewAction, ResizeLabMain.SameDimension_MinNoOfShapesRequired);
+            PreviewHandler(previewAction, ResizeLabMain.Equalize_MinNoOfShapesRequired);
         }
 
         #endregion
@@ -362,7 +390,7 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
-        #region Preview Adjust Aspect Ratio
+        #region Preview Match
         private void MatchWidthBtn_MouseEnter(object sender, MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.MatchWidth(shapes);
@@ -377,18 +405,95 @@ namespace PowerPointLabs.ResizeLab
 
         #endregion
 
+        #region Preview Adjust Proportionally
+        private void ProportionalWidthBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
+            PreviewHandler(previewAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired);
+        }
+
+        private void ProportionalHeightBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
+            PreviewHandler(previewAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired);
+        }
+
+        #endregion
+
+        #region Main Settings
+
+        private void LockAspectRatio_UnChecked(object sender, RoutedEventArgs e)
+        {
+            UnlockAspectRatio();
+        }
+
+        private void LockAspectRatio_Checked(object sender, RoutedEventArgs e)
+        {
+            LockAspectRatio();
+        }
+
+        private void UnlockAspectRatio()
+        {
+            IsAspectRatioLocked = false;
+            LockAspectRatioCheckBox.ToolTip = LockAspectRatioToolTip;
+
+            ModifySelectionAspectRatio();
+        }
+
+        private void LockAspectRatio()
+        {
+            IsAspectRatioLocked = true;
+            LockAspectRatioCheckBox.ToolTip = UnlockAspectRatioToolTip;
+
+            ModifySelectionAspectRatio();
+        }
+
+        private void ModifySelectionAspectRatio()
+        {
+            if (_resizeLab.IsSelectionValid(GetSelection(), false))
+            {
+                _resizeLab.ChangeShapesAspectRatio(GetSelectedShapes(), IsAspectRatioLocked);
+            }
+        }
+
+        private void AnchorBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            var checkedButton = sender as RadioButton;
+            foreach (var anAnchorPair in _anchorButtonLookUp)
+            {
+                if (checkedButton.Equals(anAnchorPair.Value))
+                {
+                    _resizeLab.AnchorPointType = anAnchorPair.Key;
+                    return;
+                }
+            }
+        }
+
+        #endregion
+
         #region Miscellaneous events
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (thread != null && thread.IsAlive) // Actual preview did not execute
+            if (_previewTimer.IsEnabled) // Actual preview did not execute
             {
-                thread.Abort();
+                StopTimer();
+                _previewCallBack = null;
             }
             else // Preview was executed
             {
                 Reset();
             }
-            thread = null;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            StopTimer();
+            if (_previewCallBack != null)
+            {
+                _previewCallBack.Invoke();
+                _previewCallBack = null;
+            }
+
         }
 
         #endregion
@@ -440,36 +545,41 @@ namespace PowerPointLabs.ResizeLab
 
         private void PreviewHandler(Action<PowerPoint.ShapeRange> previewAction, int minNoOfSelectedShapes)
         {
-            thread = new Thread(() => PreviewHandlerAction(previewAction, minNoOfSelectedShapes));
-            thread.Start(); 
+            _previewCallBack = delegate
+            {
+                var selectedShapes = GetSelectedShapes();
+
+                ModifySelectionAspectRatio();
+                Preview(selectedShapes, previewAction, minNoOfSelectedShapes);
+            };
+            StartTimer();
         }
 
         private void PreviewHandler(Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
         {
-            thread = new Thread(() => PreviewHandlerAction(previewAction));
-            thread.Start();
+            _previewCallBack = delegate
+            {
+                var selectedShapes = GetSelectedShapes();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
+
+                ModifySelectionAspectRatio();
+                Preview(selectedShapes, slideWidth, slideHeight, previewAction);
+            };
+            StartTimer();
         }
 
-        private void PreviewHandlerAction(Action<PowerPoint.ShapeRange> previewAction, int minNoOfSelectedShapes)
+        private void StopTimer()
         {
-            Thread.Sleep(PreviewDelay);
-            var selectedShapes = GetSelectedShapes();
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, previewAction, minNoOfSelectedShapes);
+            _previewTimer.Stop();
+            _previewTimer.IsEnabled = false;
         }
 
-        private void PreviewHandlerAction(Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
+        private void StartTimer()
         {
-            Thread.Sleep(PreviewDelay);
-            var selectedShapes = GetSelectedShapes();
-            var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            var slideHeight = this.GetCurrentPresentation().SlideHeight;
-
-            ModifySelectionAspectRatio();
-            Preview(selectedShapes, slideWidth, slideHeight, previewAction);
+            _previewTimer.IsEnabled = true;
+            _previewTimer.Start();
         }
-
 
         #endregion
     }
