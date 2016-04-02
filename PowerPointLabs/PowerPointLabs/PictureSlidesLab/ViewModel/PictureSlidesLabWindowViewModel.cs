@@ -925,6 +925,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         Tooltip = stylesPreviewOption.StyleName
                     });
                 }
+                GC.Collect();
             }
             catch (Exception e)
             {
@@ -1057,6 +1058,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                         Tooltip = styleOption.OptionName
                     });
                 }
+                GC.Collect();
             }
             catch (Exception e)
             {
