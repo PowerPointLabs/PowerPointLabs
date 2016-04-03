@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cc="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.ResizeLab.ResizeLabPaneWPF"
              mc:Ignorable="d" 
-             d:DesignHeight="1030" d:DesignWidth="300">
+             d:DesignHeight="1030" d:DesignWidth="300" 
+             KeyDown="ResizePane_KeyDown" KeyUp="ResizePane_KeyUp" FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,6 +18,10 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Key="LeftCtrl"/>
+    </UserControl.InputBindings>
+    
     <ScrollViewer x:Name="PaneScroll">
         <Grid>
             <Grid.Resources>

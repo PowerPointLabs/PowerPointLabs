@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -28,8 +27,7 @@ namespace PowerPointLabs.ResizeLab
         private SlightAdjustSettingsDialog _slightAdjustSettingsDialog;
 
         // For preview
-        private const int PreviewDelay = 500;
-        private DispatcherTimer _previewTimer;
+        private bool _isPreviewed;
         private delegate void PreviewCallBack();
         private PreviewCallBack _previewCallBack;
 
@@ -38,9 +36,9 @@ namespace PowerPointLabs.ResizeLab
             InitializeComponent();
             InitialiseLogicInstance();
             InitialiseAnchorButton();
-            InitialiseTimer();
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             UnlockAspectRatio();
+            Focusable = true;
         }
 
         #region Initialise
@@ -67,13 +65,6 @@ namespace PowerPointLabs.ResizeLab
                 { ResizeLabMain.AnchorPoint.BottomRight, AnchorBottomRightBtn}
             };
             AnchorTopLeftBtn.IsChecked = true;
-        }
-
-        private void InitialiseTimer()
-        {
-            _previewTimer = new DispatcherTimer();
-            _previewTimer.Tick += Timer_Tick;
-            _previewTimer.Interval = new TimeSpan(0, 0, 0, 0, PreviewDelay);
         }
 
         #endregion
@@ -474,26 +465,20 @@ namespace PowerPointLabs.ResizeLab
         #region Miscellaneous events
         private void Btn_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (_previewTimer.IsEnabled) // Actual preview did not execute
-            {
-                StopTimer();
-                _previewCallBack = null;
-            }
-            else // Preview was executed
-            {
-                Reset();
-            }
+            TryReset();
+            _previewCallBack = null;
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void ResizePane_KeyDown(object sender, KeyEventArgs e)
         {
-            StopTimer();
-            if (_previewCallBack != null)
+            if (IsPreviewKeyPressed())
             {
-                _previewCallBack.Invoke();
-                _previewCallBack = null;
+                _previewCallBack?.Invoke();
             }
-
+        }
+        private void ResizePane_KeyUp(object sender, KeyEventArgs e)
+        {
+            TryReset();
         }
 
         #endregion
@@ -545,18 +530,24 @@ namespace PowerPointLabs.ResizeLab
 
         private void PreviewHandler(Action<PowerPoint.ShapeRange> previewAction, int minNoOfSelectedShapes)
         {
+            Focus();
             _previewCallBack = delegate
             {
                 var selectedShapes = GetSelectedShapes();
 
                 ModifySelectionAspectRatio();
                 Preview(selectedShapes, previewAction, minNoOfSelectedShapes);
+                _isPreviewed = true;
             };
-            StartTimer();
+            if (IsPreviewKeyPressed())
+            {
+                _previewCallBack.Invoke();
+            }
         }
 
         private void PreviewHandler(Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
         {
+            Focus();
             _previewCallBack = delegate
             {
                 var selectedShapes = GetSelectedShapes();
@@ -565,20 +556,33 @@ namespace PowerPointLabs.ResizeLab
 
                 ModifySelectionAspectRatio();
                 Preview(selectedShapes, slideWidth, slideHeight, previewAction);
+                _isPreviewed = true;
             };
-            StartTimer();
+            if (IsPreviewKeyPressed())
+            {
+                _previewCallBack.Invoke();
+            }
         }
 
-        private void StopTimer()
+        private bool IsPreviewKeyPressed()
         {
-            _previewTimer.Stop();
-            _previewTimer.IsEnabled = false;
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        private void StartTimer()
+        private void TryReset()
         {
-            _previewTimer.IsEnabled = true;
-            _previewTimer.Start();
+            if (_isPreviewed) // Preview was executed
+            {
+                Reset();
+                _isPreviewed = false;
+            }
         }
 
         #endregion
