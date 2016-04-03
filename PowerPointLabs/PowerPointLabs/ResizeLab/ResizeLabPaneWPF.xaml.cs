@@ -104,7 +104,7 @@ namespace PowerPointLabs.ResizeLab
             if (_stretchSettingsDialog == null || !_stretchSettingsDialog.IsOpen)
             {
                 _stretchSettingsDialog = new StretchSettingsDialog(_resizeLab);
-                _stretchSettingsDialog.Show();
+                _stretchSettingsDialog.ShowDialog();
             }
             else
             {
@@ -210,7 +210,7 @@ namespace PowerPointLabs.ResizeLab
             if (_slightAdjustSettingsDialog == null || !_slightAdjustSettingsDialog.IsOpen)
             {
                 _slightAdjustSettingsDialog = new SlightAdjustSettingsDialog(_resizeLab);
-                _slightAdjustSettingsDialog.Show();
+                _slightAdjustSettingsDialog.ShowDialog();
             }
             else
             {
@@ -257,7 +257,7 @@ namespace PowerPointLabs.ResizeLab
             if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
             {
                 _adjustProportionallySettingsDialog = new AdjustProportionallySettingsDialog(_resizeLab);
-                _adjustProportionallySettingsDialog.Show();
+                _adjustProportionallySettingsDialog.ShowDialog();
             }
             else
             {
