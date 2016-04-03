@@ -547,6 +547,7 @@
     </Compile>
     <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
     </Compile>
+    <Compile Include="PositionsLab\PositionShapeProperties.cs" />
     <Compile Include="PositionsLab\PositionsLabMain.cs" />
     <Compile Include="PositionsLab\PositionsPane.cs">
       <SubType>UserControl</SubType>
