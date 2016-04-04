@@ -28,9 +28,9 @@
     <Grid>
         <TextBlock x:Name="alignToLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Align to"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
-        <RadioButton x:Name="alignToShapeButton" Content="First Selected Object" ToolTip="Align functions will take the first selected shape as a reference and align the rest of the selected objects to the first shape" HorizontalAlignment="Left" Margin="12,38,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="AlignToShapeButton_Load"/>
-        <RadioButton x:Name="alignToSlideButton" Content="Slide Edge" ToolTip="Align functions will take the slide as a reference and align the selected objects to the slide" HorizontalAlignment="Left" Margin="157,38,0,0" VerticalAlignment="Top" Loaded="AlignToSlideButton_Load"/>
-        <RadioButton x:Name="alignPowerpointDefaultsButton" Content="Auto-Detect" ToolTip="Align functions will behave similarly to powerpoint defaults" HorizontalAlignment="Left" Margin="249,38,0,0" VerticalAlignment="Top" Loaded="PowerpointAlignButton_Load"/>
+        <RadioButton x:Name="alignToShapeButton" Content="First Selected Object" ToolTip="Align functions will take the first selected shape as a reference and align the rest of the selected objects to the first shape" HorizontalAlignment="Left" Margin="20,38,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="AlignToShapeButton_Load"/>
+        <RadioButton x:Name="alignToSlideButton" Content="Slide" ToolTip="Align functions will take the slide as a reference and align the selected objects to the slide" HorizontalAlignment="Left" Margin="172,38,0,0" VerticalAlignment="Top" Loaded="AlignToSlideButton_Load"/>
+        <RadioButton x:Name="alignPowerpointDefaultsButton" Content="Auto-Detect" ToolTip="Align functions will behave similarly to powerpoint defaults" HorizontalAlignment="Left" Margin="242,38,0,0" VerticalAlignment="Top" Loaded="PowerpointAlignButton_Load"/>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
         <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
     </Grid>
