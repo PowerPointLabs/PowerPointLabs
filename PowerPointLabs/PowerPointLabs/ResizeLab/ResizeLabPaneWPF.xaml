@@ -193,7 +193,7 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <CheckBox x:Name="LockAspectRatioCheckBox" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="25" VerticalAlignment="Center" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked" Margin="0,1,0,53" Grid.RowSpan="2"/>
-                    <RadioButton x:Name="VisualHeightRadioBtn" GroupName="ResizeType" Grid.Row="1" Grid.Column="0" Height="22" ToolTip="Resize objects using the visual height and width of objects" Margin="0,24,0,19" Checked="ResizeTypeVisualBtn_Checked">
+                    <!--<RadioButton x:Name="VisualHeightRadioBtn" GroupName="ResizeType" Grid.Row="1" Grid.Column="0" Height="22" ToolTip="Resize objects using the visual height and width of objects" Margin="0,24,0,19" Checked="ResizeTypeVisualBtn_Checked">
                         <RadioButton.RenderTransform>
                             <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                         </RadioButton.RenderTransform>
@@ -205,7 +205,7 @@
                         </RadioButton.RenderTransform>
                     </RadioButton>
                     <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,45,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the actual height and width of objects">Use Actual Height / Width</TextBlock>
-                    
+                    -->
                     <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12" Margin="0,0,15.5,5">Anchor Point</TextBlock>
                     <Grid x:Name="AnchorPanel" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Height="70" VerticalAlignment="Center" Width="85">
                         <Grid.RowDefinitions>
