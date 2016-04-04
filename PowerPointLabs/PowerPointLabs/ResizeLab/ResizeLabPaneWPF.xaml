@@ -201,13 +201,13 @@
                             <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                         </RadioButton.RenderTransform>
                     </RadioButton>
-                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,25,0,0" HorizontalAlignment="Left" Grid.Row="1">Use Visual Height / Width</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,25,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the visual height and width of objects">Use Visual Height / Width</TextBlock>
                     <RadioButton x:Name="ActualHeightRadioBtn" GroupName="ResizeType" Grid.Column="0" ToolTip="Resize objects using the actual height and width of objects" Margin="0,44,0,-1" Checked="ResizeTypeActualBtn_Checked" Grid.Row="1">
                         <RadioButton.RenderTransform>
                             <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                         </RadioButton.RenderTransform>
                     </RadioButton>
-                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,45,0,0" HorizontalAlignment="Left" Grid.Row="1">Use Actual Height / Width</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,45,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the actual height and width of objects">Use Actual Height / Width</TextBlock>
                     
                     <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12" Margin="0,0,15.5,5">Anchor Point</TextBlock>
                     <Grid x:Name="AnchorPanel" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Height="70" VerticalAlignment="Center" Width="85">
