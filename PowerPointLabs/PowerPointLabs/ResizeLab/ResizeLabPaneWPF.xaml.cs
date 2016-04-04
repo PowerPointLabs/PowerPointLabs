@@ -460,6 +460,16 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        private void ResizeTypeVisualBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
+        }
+
+        private void ResizeTypeActualBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
+        }
+
         #endregion
 
         #region Miscellaneous events
