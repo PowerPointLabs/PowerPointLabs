@@ -244,23 +244,35 @@ namespace PowerPointLabs.ResizeLab
         #region Execute Adjust Proportionally
         private void ProportionalWidthBtn_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
-                ResizeLabMain.AdjustProportionally_ErrorParameters);
+            if (ProportionalPromptProportion())
+            {
+                Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
+                ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                    ResizeLabMain.AdjustProportionally_ErrorParameters);
+            }
         }
 
         private void ProportionalHeightBtn_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
-            ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
-                ResizeLabMain.AdjustProportionally_ErrorParameters);
+            if (ProportionalPromptProportion())
+            {
+                Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
+                ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                    ResizeLabMain.AdjustProportionally_ErrorParameters);
+            }
         }
 
-        private void ProportionalSettingsBtn_Click(object sender, RoutedEventArgs e)
+        private bool ProportionalPromptProportion()
         {
+            var noOfShapes = GetSelectedShapes()?.Count;
+            if (!noOfShapes.HasValue || noOfShapes < 2)
+            {
+                _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, ResizeLabMain.AdjustProportionally_ErrorParameters);
+                return false;
+            }
             if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
             {
-                _adjustProportionallySettingsDialog = new AdjustProportionallySettingsDialog(_resizeLab);
+                _adjustProportionallySettingsDialog = new AdjustProportionallySettingsDialog(_resizeLab, noOfShapes.GetValueOrDefault());
                 _adjustProportionallySettingsDialog.ShowDialog();
             }
             else
@@ -268,6 +280,11 @@ namespace PowerPointLabs.ResizeLab
                 _adjustProportionallySettingsDialog.Activate();
             }
 
+            if (_resizeLab.AdjustProportionallyProportionList?.Count != noOfShapes.Value) // User probably closed the dialog
+            {
+                return false;
+            }
+            return true;
         }
 
         #endregion
@@ -396,21 +413,6 @@ namespace PowerPointLabs.ResizeLab
         {
             Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.MatchHeight(shapes);
             PreviewHandler(previewAction, ResizeLabMain.Match_MinNoOfShapesRequired);
-        }
-
-        #endregion
-
-        #region Preview Adjust Proportionally
-        private void ProportionalWidthBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.AdjustWidthProportionally(shapes);
-            PreviewHandler(previewAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired);
-        }
-
-        private void ProportionalHeightBtn_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Action<PowerPoint.ShapeRange> previewAction = shapes => _resizeLab.AdjustHeightProportionally(shapes);
-            PreviewHandler(previewAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired);
         }
 
         #endregion

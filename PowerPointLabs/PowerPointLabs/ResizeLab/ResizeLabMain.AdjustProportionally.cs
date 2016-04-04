@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -23,7 +24,7 @@ namespace PowerPointLabs.ResizeLab
             AdjustProportionally_ShapeSupport
         };
 
-        public float AdjustProportionallyResizeFactor = 1.5f;
+        public List<float> AdjustProportionallyProportionList;
 
         /// <summary>
         /// Adjust the width of the specified shapes to the resize factor of first
@@ -36,17 +37,18 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (referenceWidth <= 0 || AdjustProportionallyResizeFactor <= 0) return;
+                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
 
-                var newWidth = referenceWidth*AdjustProportionallyResizeFactor;
-                for (int i = 2; i <= selectedShapes.Count; i++)
+                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    var shape = new PPShape(selectedShapes[i]);
+                    var newWidth = referenceWidth * (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+                    var shape = new PPShape(selectedShapes[i + 1]);
                     var anchorPoint = GetAnchorPoint(shape);
 
                     shape.AbsoluteWidth = newWidth;
                     AlignShape(shape, anchorPoint);
                 }
+                AdjustProportionallyProportionList = null;
             }
             catch (Exception e)
             {
@@ -65,17 +67,18 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceHeight = GetReferenceHeight(selectedShapes);
 
-                if (referenceHeight <= 0 || AdjustProportionallyResizeFactor <= 0) return;
+                if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
 
-                var newHeight = referenceHeight*AdjustProportionallyResizeFactor;
-                for (int i = 2; i <= selectedShapes.Count; i++)
+                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    var shape = new PPShape(selectedShapes[i]);
+                    var newHeight = referenceHeight * (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+                    var shape = new PPShape(selectedShapes[i + 1]);
                     var anchorPoint = GetAnchorPoint(shape);
 
                     shape.AbsoluteHeight = newHeight;
                     AlignShape(shape, anchorPoint);
                 }
+                AdjustProportionallyProportionList = null;
             }
             catch (Exception e)
             {
