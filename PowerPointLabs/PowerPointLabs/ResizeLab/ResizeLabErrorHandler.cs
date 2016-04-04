@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PowerPointLabs.ResizeLab
+﻿namespace PowerPointLabs.ResizeLab
 {
     internal class ResizeLabErrorHandler
     {

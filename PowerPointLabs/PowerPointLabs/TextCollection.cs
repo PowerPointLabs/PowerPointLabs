@@ -596,7 +596,7 @@
 
         public class ResizeLabText
         {
-            public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying {0}";
+            public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
 
