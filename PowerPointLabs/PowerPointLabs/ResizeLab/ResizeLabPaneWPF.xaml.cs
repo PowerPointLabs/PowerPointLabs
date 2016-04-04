@@ -471,7 +471,7 @@ namespace PowerPointLabs.ResizeLab
 
         private void ResizePane_KeyDown(object sender, KeyEventArgs e)
         {
-            if (IsPreviewKeyPressed())
+            if (IsPreviewKeyPressed() && !_isPreviewed)
             {
                 _previewCallBack?.Invoke();
             }
