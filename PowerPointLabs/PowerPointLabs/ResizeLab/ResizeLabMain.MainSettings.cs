@@ -13,6 +13,8 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     public partial class ResizeLabMain
     {
+
+        #region Anchor Point
         public enum AnchorPoint
         {
             TopLeft, TopCenter, TopRight,
@@ -21,26 +23,6 @@ namespace PowerPointLabs.ResizeLab
         }
 
         public AnchorPoint AnchorPointType { get; set; }
-
-        /// <summary>
-        /// Unlocks and locks the aspect ratio of particular period of time.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <param name="isAspectRatio"></param>
-        public void ChangeShapesAspectRatio(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio)
-        {
-            try
-            {
-                if (isAspectRatio && selectedShapes.LockAspectRatio == MsoTriState.msoTrue) return;
-                if (!isAspectRatio && selectedShapes.LockAspectRatio == MsoTriState.msoFalse) return;
-
-                selectedShapes.LockAspectRatio = isAspectRatio ? MsoTriState.msoTrue : MsoTriState.msoFalse;
-            }
-            catch (Exception e) 
-            {
-                Logger.LogException(e, "ChangeShapesAspectRatio");
-            }
-        }
 
         /// <summary>
         /// Get the coordinate of anchor point.
@@ -121,5 +103,42 @@ namespace PowerPointLabs.ResizeLab
                     break;
             }
         }
+
+        #endregion
+
+        #region Aspect Ratio
+
+        /// <summary>
+        /// Unlocks and locks the aspect ratio of particular period of time.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="isAspectRatio"></param>
+        public void ChangeShapesAspectRatio(PowerPoint.ShapeRange selectedShapes, bool isAspectRatio)
+        {
+            try
+            {
+                if (isAspectRatio && selectedShapes.LockAspectRatio == MsoTriState.msoTrue) return;
+                if (!isAspectRatio && selectedShapes.LockAspectRatio == MsoTriState.msoFalse) return;
+
+                selectedShapes.LockAspectRatio = isAspectRatio ? MsoTriState.msoTrue : MsoTriState.msoFalse;
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "ChangeShapesAspectRatio");
+            }
+        }
+
+        #endregion
+
+        #region Resize Type
+        public enum ResizeBy
+        {
+            Visual, Actual
+        }
+
+        public ResizeBy ResizeType;
+
+        #endregion
+
     }
 }

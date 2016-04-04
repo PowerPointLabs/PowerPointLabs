@@ -21,6 +21,13 @@ namespace Test.UnitTest.ResizeLab
         private const int AdjustHeightProportionallySlideNo = 39;
         private const int AdjustHeightProportionallyAspectRatioSlideNo = 40;
 
+        private readonly List<float> _proportionList = new List<float>()
+        {
+            1,
+            2,
+            3
+        };
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -42,7 +49,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustWidthProportionallySlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
-            _resizeLab.AdjustProportionallyResizeFactor = (float) 1.5;
+            _resizeLab.AdjustProportionallyProportionList = _proportionList;
             _resizeLab.AdjustWidthProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -55,7 +62,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustWidthProportionallyAspectRatioSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
-            _resizeLab.AdjustProportionallyResizeFactor = (float)1.5;
+            _resizeLab.AdjustProportionallyProportionList = _proportionList;
             _resizeLab.AdjustWidthProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -68,7 +75,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustHeightProportionallySlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
-            _resizeLab.AdjustProportionallyResizeFactor = (float)1.5;
+            _resizeLab.AdjustProportionallyProportionList = _proportionList;
             _resizeLab.AdjustHeightProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -81,7 +88,7 @@ namespace Test.UnitTest.ResizeLab
             var expectedShapes = GetShapes(AdjustHeightProportionallyAspectRatioSlideNo, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
-            _resizeLab.AdjustProportionallyResizeFactor = (float)1.5;
+            _resizeLab.AdjustProportionallyProportionList = _proportionList;
             _resizeLab.AdjustHeightProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
