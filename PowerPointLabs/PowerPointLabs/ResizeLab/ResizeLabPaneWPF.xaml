@@ -21,7 +21,7 @@
     <UserControl.InputBindings>
         <KeyBinding Key="LeftCtrl"/>
     </UserControl.InputBindings>
-    
+
     <ScrollViewer x:Name="PaneScroll">
         <Grid>
             <Grid.Resources>
@@ -173,15 +173,12 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <cc:ImageButton x:Name="ProportionalWidthBtn" Text="Width" Grid.Column="0" Click="ProportionalWidthBtn_Click" Image="../Resources/ResizeLab/ResizeProportionWidth.png" ToolTip="Resizes selected object's width proportionally to the width of the first object selected" MouseEnter="ProportionalWidthBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="ProportionalWidthBtn" Text="Width" Grid.Column="0" Click="ProportionalWidthBtn_Click" Image="../Resources/ResizeLab/ResizeProportionWidth.png" ToolTip="Resizes selected object's width proportionally to the width of the first object selected" />
                     <TextBlock Grid.Column="0">Width</TextBlock>
-                    <cc:ImageButton x:Name="ProportionalHeightBtn" Text="Height" Grid.Column="1" Click="ProportionalHeightBtn_Click" Image="../Resources/ResizeLab/ResizeProportionHeight.png" ToolTip="Resizes selected object's height proportionally to the height of the first object selected" MouseEnter="ProportionalHeightBtn_MouseEnter" MouseLeave="Btn_MouseLeave"/>
+                    <cc:ImageButton x:Name="ProportionalHeightBtn" Text="Height" Grid.Column="1" Click="ProportionalHeightBtn_Click" Image="../Resources/ResizeLab/ResizeProportionHeight.png" ToolTip="Resizes selected object's height proportionally to the height of the first object selected" />
                     <TextBlock Grid.Column="1">Height</TextBlock>
                 </Grid>
             </GroupBox>
-            <cc:ImageButton Grid.Row="5" ToolTip="Opens the settings for Adjust Proportionally functions" x:Name="ProportionalSettingsBtn" HorizontalAlignment="Right" Margin="0,8,10,0" VerticalAlignment="Top" Width="20" Height="20" Click="ProportionalSettingsBtn_Click">
-                <Image Source="..\Resources\SettingsGear.png"/>
-            </cc:ImageButton>
 
             <GroupBox x:Name="MainSettingsGroupBox" Header="Main Settings" Grid.Row="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
@@ -195,7 +192,20 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" FontSize="12" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="33" VerticalAlignment="Center" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked"/>
+                    <CheckBox x:Name="LockAspectRatioCheckBox" Grid.Column="0" Grid.ColumnSpan="3" Content="Maintain Aspect Ratio" ToolTip="Maintains the aspect ratio of objects when performing resizing of objects in this lab" HorizontalAlignment="Left" Height="25" VerticalAlignment="Center" Checked="LockAspectRatio_Checked" Unchecked="LockAspectRatio_UnChecked" Margin="0,1,0,53" Grid.RowSpan="2"/>
+                    <!--<RadioButton x:Name="VisualHeightRadioBtn" GroupName="ResizeType" Grid.Row="1" Grid.Column="0" Height="22" ToolTip="Resize objects using the visual height and width of objects" Margin="0,24,0,19" Checked="ResizeTypeVisualBtn_Checked">
+                        <RadioButton.RenderTransform>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                        </RadioButton.RenderTransform>
+                    </RadioButton>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,25,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the visual height and width of objects">Use Visual Height / Width</TextBlock>
+                    <RadioButton x:Name="ActualHeightRadioBtn" GroupName="ResizeType" Grid.Column="0" ToolTip="Resize objects using the actual height and width of objects" Margin="0,44,0,-1" Checked="ResizeTypeActualBtn_Checked" Grid.Row="1">
+                        <RadioButton.RenderTransform>
+                            <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                        </RadioButton.RenderTransform>
+                    </RadioButton>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,45,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the actual height and width of objects">Use Actual Height / Width</TextBlock>
+                    -->
                     <TextBlock Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="12" Margin="0,0,15.5,5">Anchor Point</TextBlock>
                     <Grid x:Name="AnchorPanel" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Height="70" VerticalAlignment="Center" Width="85">
                         <Grid.RowDefinitions>
@@ -256,7 +266,7 @@
                     </Grid>
                 </Grid>
             </GroupBox>
-            
+
         </Grid>
     </ScrollViewer>
 </UserControl>
