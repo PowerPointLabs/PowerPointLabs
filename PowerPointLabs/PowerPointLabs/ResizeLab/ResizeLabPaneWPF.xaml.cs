@@ -35,9 +35,13 @@ namespace PowerPointLabs.ResizeLab
         {
             InitializeComponent();
             InitialiseLogicInstance();
+            // Initialise settings
             InitialiseAnchorButton();
-            _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             UnlockAspectRatio();
+            VisualHeightRadioBtn.IsChecked = true;
+
+            _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
+            
             Focusable = true;
         }
 
