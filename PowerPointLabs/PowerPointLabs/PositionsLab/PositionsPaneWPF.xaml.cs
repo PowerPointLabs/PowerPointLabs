@@ -38,7 +38,9 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Variable for preview
-        bool _previewIsExecuted = false;
+        private bool _previewIsExecuted = false;
+        private delegate void PreviewCallBack();
+        private PreviewCallBack _previewCallBack;
         private static Dictionary<int, PositionShapeProperties> allShapePos = new Dictionary<int, PositionShapeProperties>();
 
         //Brushes for highlighting buttons
@@ -85,6 +87,7 @@ namespace PowerPointLabs.PositionsLab
 
             InitializeComponent();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
+            Focusable = true;
         }
 
         #region Click Behaviour
@@ -457,41 +460,65 @@ namespace PowerPointLabs.PositionsLab
         private void AlignLeftButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void AlignRightButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignRight(shapes, width);
-            ExecutePositionsAction(positionsAction, slideWidth, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideWidth, true);
+            };
+            PreviewHandler();
         }
 
         private void AlignTopButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<PowerPoint.ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void AlignBottomButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignBottom(shapes, height);
-            ExecutePositionsAction(positionsAction, slideHeight, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideHeight, true);
+            };
+            PreviewHandler();
         }
 
         private void AlignHorizontalCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignHorizontalCenter(shapes, height);
-            ExecutePositionsAction(positionsAction, slideHeight, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideHeight, true);
+            };
+            PreviewHandler();
         }
 
         private void AlignVerticalCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignVerticalCenter(shapes, width);
-            ExecutePositionsAction(positionsAction, slideWidth, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideWidth, true);
+            };
+            PreviewHandler();
         }
 
         private void AlignCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -499,49 +526,77 @@ namespace PowerPointLabs.PositionsLab
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             Action<PowerPoint.ShapeRange, float, float> positionsAction = (shapes, height, width) => PositionsLabMain.AlignCenter(shapes, height, width);
-            ExecutePositionsAction(positionsAction, slideHeight, slideWidth, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideHeight, slideWidth, true);
+            };
+            PreviewHandler();
         }
 
         private void AdjoinHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             PositionsLabMain.AdjoinWithoutAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void AdjoinHorizontalWithAlignButton_MouseEnter(object sender, MouseEventArgs e)
         {
             PositionsLabMain.AdjoinWithAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void AdjoinVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             PositionsLabMain.AdjoinWithoutAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinVertical(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void AdjoinVerticalWithAlignButton_MouseEnter(object sender, MouseEventArgs e)
         {
             PositionsLabMain.AdjoinWithAligning();
             Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.AdjoinVertical(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void DistributeHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
-            ExecutePositionsAction(positionsAction, slideWidth, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideWidth, true);
+            };
+            PreviewHandler();
         }
 
         private void DistributeVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
-            ExecutePositionsAction(positionsAction, slideHeight, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideHeight, true);
+            };
+            PreviewHandler();
         }
 
         private void DistributeCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -549,31 +604,51 @@ namespace PowerPointLabs.PositionsLab
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
-            ExecutePositionsAction(positionsAction, slideWidth, slideHeight, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, slideWidth, slideHeight, true);
+            };
+            PreviewHandler();
         }
 
         private void SwapPositionsButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
-            ExecutePositionsAction(positionsAction, true, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true, true);
+            };
+            PreviewHandler();
         }
 
         private void SnapHorizontalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<List<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void SnapVerticalButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<List<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapVertical(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
 
         private void SnapAwayButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<List<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapAway(shapes);
-            ExecutePositionsAction(positionsAction, true);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true);
+            };
+            PreviewHandler();
         }
         #endregion
 
@@ -853,6 +928,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -918,6 +994,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -982,6 +1059,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -1046,6 +1124,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -1103,6 +1182,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -1160,6 +1240,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -1217,6 +1298,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -1272,6 +1354,7 @@ namespace PowerPointLabs.PositionsLab
                 else
                 {
                     UndoPreview();
+                    _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
 
@@ -1305,9 +1388,32 @@ namespace PowerPointLabs.PositionsLab
             button.BorderBrush = null;
         }
 
+        private void PreviewHandler()
+        {
+            Focus();
+            if (IsPreviewKeyPressed())
+            {
+                _previewCallBack.Invoke();
+            }
+        }
+
+        private void PositionsPane_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (IsPreviewKeyPressed() && !_previewIsExecuted)
+            {
+                _previewCallBack?.Invoke();
+            }
+        }
+
+        private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
+        {
+            UndoPreview();
+        }
+
         private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
         {
             UndoPreview();
+            _previewCallBack = null;
         }
 
         private void UndoPreview()
@@ -1328,8 +1434,21 @@ namespace PowerPointLabs.PositionsLab
                         s.Rotation = properties.Rotation;
                     }
                 }
+
                 _previewIsExecuted = false;
                 GC.Collect();
+            }
+        }
+
+        private bool IsPreviewKeyPressed()
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -1384,6 +1503,6 @@ namespace PowerPointLabs.PositionsLab
                 dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation));
             }
         }
+        #endregion
     }
-    #endregion
 }
