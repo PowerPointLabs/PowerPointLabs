@@ -1398,7 +1398,7 @@ namespace PowerPointLabs.PositionsLab
             var remainder = colLength - (rowLength * colLength - numShapes);
             var augmentedShapeIndex = 0;
 
-            for (var i = 0; i < numShapes; i++)
+            for (var i = 0; i < numShapes - 1; i++)
             {
                 //If last index and no more remainder, skip the rest
                 if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))

@@ -211,7 +211,7 @@ namespace PowerPointLabs.PositionsLab
                 if (_positionsDistributeGridDialog == null || !_positionsDistributeGridDialog.IsOpen)
                 {
                     _positionsDistributeGridDialog = new PositionsDistributeGridDialog(selectedShapes, rowLength, colLength);
-                    _positionsDistributeGridDialog.Show();
+                    _positionsDistributeGridDialog.ShowDialog();
                 }
                 else
                 {
@@ -771,7 +771,7 @@ namespace PowerPointLabs.PositionsLab
             if (_alignSettingsDialog == null || !_alignSettingsDialog.IsOpen)
             {
                 _alignSettingsDialog = new AlignSettingsDialog();
-                _alignSettingsDialog.Show();
+                _alignSettingsDialog.ShowDialog();
             }
             else
             {
@@ -784,7 +784,7 @@ namespace PowerPointLabs.PositionsLab
             if (_distributeSettingsDialog == null || !_distributeSettingsDialog.IsOpen)
             {
                 _distributeSettingsDialog = new DistributeSettingsDialog();
-                _distributeSettingsDialog.Show();
+                _distributeSettingsDialog.ShowDialog();
             }
             else
             {
@@ -797,7 +797,7 @@ namespace PowerPointLabs.PositionsLab
             if (_reorderSettingsDialog == null || !_reorderSettingsDialog.IsOpen)
             {
                 _reorderSettingsDialog = new ReorderSettingsDialog();
-                _reorderSettingsDialog.Show();
+                _reorderSettingsDialog.ShowDialog();
             }
             else
             {
