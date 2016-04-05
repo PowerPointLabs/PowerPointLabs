@@ -235,18 +235,47 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Get the point after rotation.
+        /// Get the point after rotation with the reference to center.
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="origin"></param>
+        /// <param name="widthDiff"></param>
+        /// <param name="heightDiff"></param>
         /// <returns></returns>
-        private PointF GetRotatedPoint(PointF point, PointF origin)
+        private PointF GetRotatedPoint(float widthDiff, float heightDiff)
         {
             var rotation = ConvertDegToRad(_shape.Rotation);
-            var x = Math.Cos(rotation) * (point.X - origin.X) - Math.Sin(rotation) * (point.Y - origin.Y) + origin.X;
-            var y = Math.Sin(rotation) * (point.X - origin.X) + Math.Cos(rotation) * (point.Y - origin.Y) + origin.Y;
+            var centerX = _shape.Left + _shape.Width/2;
+            var centerY = _shape.Top + _shape.Height/2;
+            var x = Math.Cos(rotation)*widthDiff - Math.Sin(rotation)*heightDiff + centerX;
+            var y = Math.Sin(rotation)*widthDiff + Math.Cos(rotation)*heightDiff + centerY;
 
-            return new PointF() {X = (float) x, Y = (float) y};
+            return new PointF((float) x, (float) y);
+        }
+        
+
+        /// <summary>
+        /// Get the center of the shape.
+        /// </summary>
+        /// <param name="rotated"></param>
+        /// <param name="widthDiff"></param>
+        /// <param name="heightDiff"></param>
+        /// <returns></returns>
+        private PointF GetCenterPoint(PointF rotated, float widthDiff, float heightDiff)
+        {
+            var rotation = ConvertDegToRad(_shape.Rotation);
+            var x = rotated.X - Math.Cos(rotation)*widthDiff + Math.Sin(rotation)*heightDiff;
+            var y = rotated.Y - Math.Sin(rotation)*widthDiff - Math.Cos(rotation)*heightDiff;
+            
+            return new PointF((float) x, (float) y);
+        }
+
+        /// <summary>
+        /// Align the shape to position with regards to the center.
+        /// </summary>
+        /// <param name="center"></param>
+        private void AlignToCenter(PointF center)
+        {
+            _shape.Left = center.X - _shape.Width/2;
+            _shape.Top = center.Y - _shape.Height/2;
         }
     }
 }
