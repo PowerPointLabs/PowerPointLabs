@@ -63,7 +63,7 @@ namespace PowerPointLabs.ResizeLab
             textBox.Width = 50;
             textBox.VerticalAlignment = VerticalAlignment.Center;
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
-            textBox.ToolTip = "Enter a decimal value greater than 0";
+            textBox.ToolTip = ResizeLabTooltip.AdjustProportionallySettingsTextBox;
 
             // Append the element
             var rowIndex = ShapesGrid.RowDefinitions.Count - 1;
