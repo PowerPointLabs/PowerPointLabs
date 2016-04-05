@@ -51,7 +51,7 @@
                 <RowDefinition Height="120" />
                 <RowDefinition Height="135" />
             </Grid.RowDefinitions>
-            <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <GroupBox x:Name="StretchShrinkBox" Header="Stretch / Shrink To Align" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                 <Grid Margin="-7,-7,-7,-7">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="65" />
