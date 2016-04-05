@@ -1134,7 +1134,7 @@ namespace PowerPointLabs.PositionsLab
                     int j = 0;
                     for (j = 0; j < rowLength; j++)
                     {
-                        if (i + j >= numShapes - 1)
+                        if (i + j >= numShapes)
                         {
                             break;
                         }
