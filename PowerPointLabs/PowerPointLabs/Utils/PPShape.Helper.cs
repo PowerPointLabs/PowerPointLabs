@@ -103,7 +103,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void UpdateTop()
         {
-            _rotatedTop = _shape.Top + _shape.Height / 2 - _absoluteHeight / 2;
+            _rotatedVisualTop = _shape.Top + _shape.Height / 2 - _absoluteHeight / 2;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void UpdateLeft()
         {
-            _rotatedLeft = _shape.Left + _shape.Width / 2 - _absoluteWidth / 2;
+            _rotatedVisualLeft = _shape.Left + _shape.Width / 2 - _absoluteWidth / 2;
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void SetTop()
         {
-            _shape.Top = _rotatedTop - _shape.Height / 2 + _absoluteHeight / 2;
+            _shape.Top = _rotatedVisualTop - _shape.Height / 2 + _absoluteHeight / 2;
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void SetLeft()
         {
-            _shape.Left = _rotatedLeft - _shape.Width / 2 + _absoluteWidth / 2;
+            _shape.Left = _rotatedVisualLeft - _shape.Width / 2 + _absoluteWidth / 2;
         }
 
         /// <summary>

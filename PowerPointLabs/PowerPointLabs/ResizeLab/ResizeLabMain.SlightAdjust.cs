@@ -84,10 +84,10 @@ namespace PowerPointLabs.ResizeLab
             foreach (PowerPoint.Shape shape in shapes)
             {
                 var ppShape = new PPShape(shape);
-                var anchorPoint = GetAnchorPoint(ppShape);
+                var anchorPoint = GetVisualAnchorPoint(ppShape);
 
                 resizeAction(ppShape);
-                AlignShape(ppShape, anchorPoint);
+                AlignVisualShape(ppShape, anchorPoint);
             }
         }
 

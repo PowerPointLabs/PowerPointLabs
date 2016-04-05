@@ -36,7 +36,7 @@ namespace PowerPointLabs.ResizeLab
             // Initialise settings
             InitialiseAnchorButton();
             UnlockAspectRatio();
-            //VisualHeightRadioBtn.IsChecked = true;
+            VisualHeightRadioBtn.IsChecked = true;
 
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             

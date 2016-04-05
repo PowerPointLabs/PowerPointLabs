@@ -43,10 +43,10 @@ namespace PowerPointLabs.ResizeLab
                 {
                     var newWidth = referenceWidth * (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteWidth = newWidth;
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
                 AdjustProportionallyProportionList = null;
             }
@@ -73,10 +73,10 @@ namespace PowerPointLabs.ResizeLab
                 {
                     var newHeight = referenceHeight * (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteHeight = newHeight;
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
                 AdjustProportionallyProportionList = null;
             }

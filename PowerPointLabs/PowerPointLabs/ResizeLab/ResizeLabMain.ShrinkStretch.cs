@@ -71,7 +71,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchLeftAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Left);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualLeft);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Left);
         }
 
@@ -84,13 +84,13 @@ namespace PowerPointLabs.ResizeLab
             var appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
             {
                 // Opposite stretch
-                if (checkShape.Left > referenceEdge)
+                if (checkShape.VisualLeft > referenceEdge)
                 {
                     return StretchLeftAction;
                 }
                 return StretchRightAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Left + referenceShape.AbsoluteWidth);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualLeft + referenceShape.AbsoluteWidth);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Right);
         }
 
@@ -109,7 +109,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchTopAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Top);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualTop);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Top);
         }
 
@@ -122,20 +122,20 @@ namespace PowerPointLabs.ResizeLab
             var appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
             {
                 // Opposite stretch
-                if (checkShape.Top > referenceEdge)
+                if (checkShape.VisualTop > referenceEdge)
                 {
                     return StretchTopAction;
                 }
                 return StretchBottomAction;
             });
-            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.Top + referenceShape.AbsoluteHeight);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualTop + referenceShape.AbsoluteHeight);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Bottom);
         }
 
         private static void StretchLeftAction(float referenceEdge, PPShape stretchShape)
         {
-            stretchShape.AbsoluteWidth += stretchShape.Left - referenceEdge;
-            stretchShape.Left = referenceEdge;
+            stretchShape.AbsoluteWidth += stretchShape.VisualLeft - referenceEdge;
+            stretchShape.VisualLeft = referenceEdge;
         }
 
         private static void StretchRightAction(float referenceEdge, PPShape stretchShape)
@@ -145,8 +145,8 @@ namespace PowerPointLabs.ResizeLab
 
         private static void StretchTopAction(float referenceEdge, PPShape stretchShape)
         {
-            stretchShape.AbsoluteHeight += stretchShape.Top - referenceEdge;
-            stretchShape.Top = referenceEdge;
+            stretchShape.AbsoluteHeight += stretchShape.VisualTop - referenceEdge;
+            stretchShape.VisualTop = referenceEdge;
         }
 
         private static void StretchBottomAction(float referenceEdge, PPShape stretchShape)
@@ -221,12 +221,12 @@ namespace PowerPointLabs.ResizeLab
 
         private static float GetRight(PPShape aShape)
         {
-            return aShape.Left + aShape.AbsoluteWidth;
+            return aShape.VisualLeft + aShape.AbsoluteWidth;
         }
 
         private static float GetBottom(PPShape aShape)
         {
-            return aShape.Top + aShape.AbsoluteHeight;
+            return aShape.VisualTop + aShape.AbsoluteHeight;
         }
 
         #endregion

@@ -38,10 +38,10 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteHeight = shape.AbsoluteWidth;
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
 
                 selectedShapes.LockAspectRatio = isAspectRatio;
@@ -66,10 +66,10 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteWidth = shape.AbsoluteHeight;
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
 
                 selectedShapes.LockAspectRatio = isAspectRatio;

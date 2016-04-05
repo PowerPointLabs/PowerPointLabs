@@ -29,31 +29,31 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="shape"></param>
         /// <returns></returns>
-        private PointF GetAnchorPoint(PPShape shape)
+        private PointF GetVisualAnchorPoint(PPShape shape)
         {
             switch (AnchorPointType)
             {
                 case AnchorPoint.TopLeft:
-                    return shape.TopLeft;
+                    return shape.VisualTopLeft;
                 case AnchorPoint.TopCenter:
-                    return shape.TopCenter;
+                    return shape.VisualTopCenter;
                 case AnchorPoint.TopRight:
-                    return shape.TopRight;
+                    return shape.VisualTopRight;
                 case AnchorPoint.MiddleLeft:
-                    return shape.MiddleLeft;
+                    return shape.VisualMiddleLeft;
                 case AnchorPoint.Center:
-                    return shape.Center;
+                    return shape.VisualCenter;
                 case AnchorPoint.MiddleRight:
-                    return shape.MiddleRight;
+                    return shape.VisualMiddleRight;
                 case AnchorPoint.BottomLeft:
-                    return shape.BottomLeft;
+                    return shape.VisualBottomLeft;
                 case AnchorPoint.BottomCenter:
-                    return shape.BottomCenter;
+                    return shape.VisualBottomCenter;
                 case AnchorPoint.BottomRight:
-                    return shape.BottomRight;
+                    return shape.VisualBottomRight;
             }
 
-            return shape.Center;
+            return shape.VisualCenter;
         }
 
         /// <summary>
@@ -61,45 +61,45 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="shape"></param>
         /// <param name="anchorPoint"></param>
-        private void AlignShape(PPShape shape, PointF anchorPoint)
+        private void AlignVisualShape(PPShape shape, PointF anchorPoint)
         {
             switch (AnchorPointType)
             {
                 case AnchorPoint.TopLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y;
+                    shape.VisualLeft = anchorPoint.X;
+                    shape.VisualTop = anchorPoint.Y;
                     break;
                 case AnchorPoint.TopCenter:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
-                    shape.Top = anchorPoint.Y;
+                    shape.VisualLeft = anchorPoint.X - shape.AbsoluteWidth / 2;
+                    shape.VisualTop = anchorPoint.Y;
                     break;
                 case AnchorPoint.TopRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y;
+                    shape.VisualLeft = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.VisualTop = anchorPoint.Y;
                     break;
                 case AnchorPoint.MiddleLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    shape.VisualLeft = anchorPoint.X;
+                    shape.VisualTop = anchorPoint.Y - shape.AbsoluteHeight / 2;
                     break;
                 case AnchorPoint.Center:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    shape.VisualLeft = anchorPoint.X - shape.AbsoluteWidth / 2;
+                    shape.VisualTop = anchorPoint.Y - shape.AbsoluteHeight / 2;
                     break;
                 case AnchorPoint.MiddleRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    shape.VisualLeft = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.VisualTop = anchorPoint.Y - shape.AbsoluteHeight / 2;
                     break;
                 case AnchorPoint.BottomLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    shape.VisualLeft = anchorPoint.X;
+                    shape.VisualTop = anchorPoint.Y - shape.AbsoluteHeight;
                     break;
                 case AnchorPoint.BottomCenter:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    shape.VisualLeft = anchorPoint.X - shape.AbsoluteWidth / 2;
+                    shape.VisualTop = anchorPoint.Y - shape.AbsoluteHeight;
                     break;
                 case AnchorPoint.BottomRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    shape.VisualLeft = anchorPoint.X - shape.AbsoluteWidth;
+                    shape.VisualTop = anchorPoint.Y - shape.AbsoluteHeight;
                     break;
             }
         }

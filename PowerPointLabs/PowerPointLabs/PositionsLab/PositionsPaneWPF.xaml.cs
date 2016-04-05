@@ -1488,8 +1488,8 @@ namespace PowerPointLabs.PositionsLab
             for (var i = 0; i < shapes.Count; i++)
             {
                 var s = shapes[i];
-                initialPositions[i, Left] = s.Left;
-                initialPositions[i, Top] = s.Top;
+                initialPositions[i, Left] = s.VisualLeft;
+                initialPositions[i, Top] = s.VisualTop;
             }
 
             return initialPositions;

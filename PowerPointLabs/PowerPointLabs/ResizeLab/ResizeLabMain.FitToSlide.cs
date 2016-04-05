@@ -97,19 +97,19 @@ namespace PowerPointLabs.ResizeLab
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
                         shape.AbsoluteHeight = slideHeight;
-                        shape.Top = 0;
+                        shape.VisualTop = 0;
                     }
 
                     if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
                     {
                         shape.AbsoluteWidth = slideWidth;
-                        shape.Left = 0;
+                        shape.VisualLeft = 0;
                     }
 
                     if (dimension == Dimension.HeightAndWidth)
                     {
-                        shape.Top = 0;
-                        shape.Left = 0;
+                        shape.VisualTop = 0;
+                        shape.VisualLeft = 0;
                     }
                 }
             }
@@ -133,23 +133,23 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = selectedShapes[i];
-                    var anchorPoint = GetAnchorPoint(new PPShape(shape, false));
+                    var anchorPoint = GetVisualAnchorPoint(new PPShape(shape, false));
 
                     if (dimension == Dimension.Height)
                     {
                         FitToSlide.FitToHeight(shape, slideWidth, slideHeight);
 
                         var ppShape = new PPShape(shape, false);
-                        AlignShape(ppShape, anchorPoint);
-                        ppShape.Top = 0;
+                        AlignVisualShape(ppShape, anchorPoint);
+                        ppShape.VisualTop = 0;
                     }
                     else if (dimension == Dimension.Width)
                     {
                         FitToSlide.FitToWidth(shape, slideWidth, slideHeight);
 
                         var ppShape = new PPShape(shape, false);
-                        AlignShape(ppShape, anchorPoint);
-                        ppShape.Left = 0;
+                        AlignVisualShape(ppShape, anchorPoint);
+                        ppShape.VisualLeft = 0;
                     }
                     else if (dimension == Dimension.HeightAndWidth)
                     {

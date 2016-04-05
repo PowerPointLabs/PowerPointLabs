@@ -80,7 +80,7 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
@@ -92,7 +92,7 @@ namespace PowerPointLabs.ResizeLab
                         shape.AbsoluteWidth = referenceWidth;
                     }
 
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
             }
             catch (Exception e)
