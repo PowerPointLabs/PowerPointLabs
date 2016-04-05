@@ -8,8 +8,8 @@
              WindowStartupLocation="CenterScreen"
              Name="Window"
              Title="Distribute by Grid"
-             Width="335"
-             Height="150"
+             Width="350"
+             Height="290"
              WindowTitleBrush="#0070C0"
              BorderThickness="1"
              BorderBrush="#0070C0"
@@ -29,33 +29,31 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="35*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="70*"/>
-            <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="80*"/>
-            <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Name="dimensionsLabel" FontSize="12" FontWeight="Bold" Grid.Column="1" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Left">Dimensions</TextBlock>
-        <Separator Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="8"/>
-        <Label x:Name="rowLengthLabel" Grid.Column="1" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Rows:" ToolTip="Specify the number of rows in the Grid"/>
-        <Label x:Name="colLengthLabel" Grid.Column="5" Grid.Row="2" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Right" Content="Columns:" ToolTip="Specify the number of columns in the Grid"/>
-        <controls:NumericUpDown Name="rowInput" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="RowInput_Load" ValueChanged="RowInput_ValueChanged" ToolTip="Specify the number of rows in the Grid"/>
-        <controls:NumericUpDown Name="colInput" Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="ColInput_Load" ValueChanged="ColInput_ValueChanged" ToolTip="Specify the number of columns in the Grid"/>
-        <Button Name="okButton" Grid.Row="3" Width="80" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="OKButton_Click" Margin="0,0,10,10" Grid.ColumnSpan="3" Grid.Column="3" Grid.RowSpan="2" IsDefault="True">OK</Button>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"  Grid.ColumnSpan="2" Grid.Column="6" Grid.Row="3"/>
+        <TextBlock x:Name="distributeDimensionsLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Dimensions"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
+        <Label x:Name="rowLengthLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Rows:" ToolTip="Specify the number of rows in the Grid" Margin="34,36,0,0"/>
+        <Label x:Name="colLengthLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Columns:" ToolTip="Specify the number of columns in the Grid" Margin="195,36,0,0"/>
+        <controls:NumericUpDown x:Name="rowInput" ToolTip="Specify the number of rows in the Grid" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="RowInput_Load" ValueChanged="RowInput_ValueChanged" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="73,35,0,0"/>
+        <controls:NumericUpDown Name="colInput" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="1" Loaded="ColInput_Load" ValueChanged="ColInput_ValueChanged" ToolTip="Specify the number of columns in the Grid" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="251,35,0,0"/>
+        <TextBlock x:Name="gridMarginsLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="4,65,0,0"><Run Text="Grid Margins"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="4,85,0,0" VerticalAlignment="Top" Width="335"/>
+        <Label x:Name="marginTopLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Top:" ToolTip="Set the amount of pixels for the top margin" Margin="41,91,0,0" RenderTransformOrigin="0.56,-0.319"/>
+        <controls:NumericUpDown x:Name="marginTopInput" ToolTip="Set the amount of pixels for the top margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginTopInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="73,91,0,0"/>
+        <Label x:Name="marginBottomLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Bottom:" ToolTip="Set the amount of pixels for the bottom margin" Margin="0,91,96.4,0"/>
+        <controls:NumericUpDown x:Name="marginBottomInput" ToolTip="Set the amount of pixels for the bottom margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginLeftInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="251,91,0,0"/>
+        <Label x:Name="marginLeftLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Left" Content="Left:" ToolTip="Set the amount of pixels for the left margin" Margin="41,122,0,0"/>
+        <controls:NumericUpDown x:Name="marginLeftInput" ToolTip="Set the amount of pixels for the left margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginBottomInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="73,122,0,0"/>
+        <Label x:Name="marginRightLabel" FontSize="10" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Right:" ToolTip="Set the amount of pixels for the right margin" Margin="0,122,96.4,0"/>
+        <controls:NumericUpDown x:Name="marginRightInput" ToolTip="Set the amount of pixels for the right margin" Height="20" Width="80" TextAlignment="Left" HideUpDownButtons="True" Minimum="0" Value="5" Loaded="MarginRightInput_Load" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="251,122,0,0"/>
+        <TextBlock x:Name="gridAlignmentLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,158,0,0"><Run Text="Grid Alignment"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="5,178,0,0" VerticalAlignment="Top" Width="335"/>
+        <WrapPanel HorizontalAlignment="Left" Height="25" Margin="0,178,0,0" VerticalAlignment="Top" Width="342">
+            <RadioButton x:Name="alignLeftButton" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="True" Loaded="AlignLeftButton_Load" Content="Left / Top" ToolTip="Grid takes alignment from the top left and fills out to the bottom right" Margin="27,6,0,0"/>
+            <RadioButton x:Name="alignCenterButton" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="AlignCenterButton_Load" Content="Center" ToolTip="Grid takes alignment from the center and fills out left right" Margin="28,6,0,0"/>
+            <RadioButton x:Name="alignRightButton" HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="AlignRightButton_Load" Content="Right / Bottom" ToolTip="Grid takes alignment from the bottom right and fills out to the top left" Margin="28,6,0,0"/>
+        </WrapPanel>
+        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
     </Grid>
 
 </controls:MetroWindow>
