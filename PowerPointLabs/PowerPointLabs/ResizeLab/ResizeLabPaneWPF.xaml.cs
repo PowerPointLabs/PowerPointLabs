@@ -582,7 +582,7 @@ namespace PowerPointLabs.ResizeLab
 
         private bool IsPreviewKeyPressed()
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 return true;
             }
