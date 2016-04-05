@@ -78,7 +78,7 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
                     var newWidth = referenceWidth*
-                                   (AdjustProportionallyProportionList[i]/AdjustProportionallyProportionList[0]);
+                                   (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1]);
                     var anchorPoint = GetVisualAnchorPoint(shape);
 
@@ -109,7 +109,7 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
                     var newHeight = referenceHeight*
-                                    (AdjustProportionallyProportionList[i]/AdjustProportionallyProportionList[0]);
+                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1]);
                     var anchorPoint = GetVisualAnchorPoint(shape);
 
@@ -140,7 +140,7 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
                     var newWidth = referenceWidth*
-                                   (AdjustProportionallyProportionList[i]/AdjustProportionallyProportionList[0]);
+                                   (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1], false);
                     var anchorPoint = GetActualAnchorPoint(shape);
 
@@ -171,7 +171,7 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
                     var newHeight = referenceHeight*
-                                    (AdjustProportionallyProportionList[i]/AdjustProportionallyProportionList[0]);
+                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1], false);
                     var anchorPoint = GetActualAnchorPoint(shape);
 
