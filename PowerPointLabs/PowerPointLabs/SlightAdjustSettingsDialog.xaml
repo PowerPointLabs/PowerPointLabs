@@ -13,6 +13,7 @@
              Closed="SlightAdjustSettingsDialog_Closed"
              BorderThickness="1"
              BorderBrush="#0070C0"
+             KeyDown="Dialog_KeyDown"
              WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -36,6 +37,6 @@
         <Separator Grid.Row="1" HorizontalAlignment="Left" Height="2" Margin="5,0,0,0" VerticalAlignment="Top" Width="285"/>
         <TextBlock Grid.Row="2" Text="Resize Increment (points)" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-70,0,0,0" ToolTip="Defines the amount to increase or decrease the height or width by"/>
         <TextBox x:Name="ResizeFactorTextBox" Grid.Row="2" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="140,0,0,0" ToolTip="Enter a decimal value greater than 0"/>
-        <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="OkBtn_Click"/>
+        <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" IsDefault="True" Click="OkBtn_Click"/>
     </Grid>
 </controls:MetroWindow>

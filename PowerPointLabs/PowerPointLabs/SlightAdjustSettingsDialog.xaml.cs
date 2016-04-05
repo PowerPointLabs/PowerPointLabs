@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -34,6 +35,14 @@ namespace PowerPointLabs.ResizeLab
             else
             {
                 MessageBox.Show("Please enter a value greater than 0", "Error");
+            }
+        }
+
+        private void Dialog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
             }
         }
     }

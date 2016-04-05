@@ -14,6 +14,7 @@
              Closed="AdjustProportionallySettingsDialog_Closed"
              BorderThickness="1"
              BorderBrush="#0070C0"
+             KeyDown="Dialog_KeyDown"
              WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -52,6 +53,6 @@
             </Grid>
         </ScrollViewer>
 
-        <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="OkBtn_Click"/>
+        <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" IsDefault="True" Click="OkBtn_Click"/>
     </Grid>
 </controls:MetroWindow>
