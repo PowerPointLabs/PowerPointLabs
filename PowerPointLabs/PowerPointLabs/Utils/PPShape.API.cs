@@ -27,8 +27,8 @@ namespace PowerPointLabs.Utils
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
 
-            UpdateTop();
-            UpdateLeft();
+            UpdateVisualTop();
+            UpdateVisualLeft();
         }
 
         #region Properties
@@ -129,18 +129,20 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// Return a point that represents the visual center of the shape.
         /// </summary>
-        public PointF VisualCenter
+        public PointF VisualCenter => new PointF
         {
-            get
-            {
-                var centerPoint = new PointF
-                {
-                    X = _rotatedVisualLeft + _absoluteWidth/2,
-                    Y = _rotatedVisualTop + _absoluteHeight/2
-                };
-                return centerPoint;
-            }
-        }
+            X = _rotatedVisualLeft + _absoluteWidth/2,
+            Y = _rotatedVisualTop + _absoluteHeight/2
+        };
+
+        /// <summary>
+        /// Return a point that represents the actual center of the shape.
+        /// </summary>
+        public PointF ActualCenter => new PointF()
+        {
+            X = _shape.Left + _shape.Width/2,
+            Y = _shape.Top + _shape.Height/2
+        };
 
         /// <summary>
         /// Return a point that represents the visual top left of the shape's bounding box after rotation.
@@ -152,6 +154,18 @@ namespace PowerPointLabs.Utils
         };
 
         /// <summary>
+        /// Return a point that represents the actual top left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualTopLeft
+        {
+            get
+            {
+                var topLeft = new PointF(_shape.Left, _shape.Top);
+                return GetRotatedPoint(topLeft, ActualCenter);
+            }
+        }
+
+        /// <summary>
         /// Return a point that represents the visual top center of the shape's bounding box after rotation.
         /// </summary>
         public PointF VisualTopCenter => new PointF
@@ -159,6 +173,18 @@ namespace PowerPointLabs.Utils
             X = _rotatedVisualLeft + _absoluteWidth / 2,
             Y = _rotatedVisualTop
         };
+
+        /// <summary>
+        /// Return a point that represents the actual top center of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualTopCenter
+        {
+            get
+            {
+                var topCenter = new PointF(_shape.Left + _shape.Width/2, _shape.Top);
+                return GetRotatedPoint(topCenter, ActualCenter);
+            }
+        }
 
         /// <summary>
         /// Return a point that represents the visual top right of the shape's bounding box after rotation.
@@ -170,13 +196,37 @@ namespace PowerPointLabs.Utils
         };
 
         /// <summary>
+        /// Return a point that represents the actual top right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualTopRight
+        {
+            get
+            {
+                var topRight = new PointF(_shape.Left + _shape.Width, _shape.Top);
+                return GetRotatedPoint(topRight, ActualCenter);
+            }
+        }
+
+        /// <summary>
         /// Return a point that represents the visual middle left of the shape's bounding box after rotation.
         /// </summary>
         public PointF VisualMiddleLeft => new PointF
         {
             X = _rotatedVisualLeft,
-            Y = _rotatedVisualTop + _absoluteHeight / 2
+            Y = _rotatedVisualTop + _absoluteHeight/2
         };
+
+        /// <summary>
+        /// Return a point that represents the actual middle left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualMiddleLeft
+        {
+            get
+            {
+                var middleLeft = new PointF(_shape.Left, _shape.Top + _shape.Height/2);
+                return GetRotatedPoint(middleLeft, ActualCenter);
+            }
+        }
 
         /// <summary>
         /// Return a point that represents the visual middle right of the shape's bounding box after rotation.
@@ -184,8 +234,20 @@ namespace PowerPointLabs.Utils
         public PointF VisualMiddleRight => new PointF
         {
             X = _rotatedVisualLeft + _absoluteWidth,
-            Y = _rotatedVisualTop + _absoluteHeight / 2
+            Y = _rotatedVisualTop + _absoluteHeight/2
         };
+
+        /// <summary>
+        /// Return a point that represents the actual middle right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualMiddleRight
+        {
+            get
+            {
+                var middleRight = new PointF(_shape.Left + _shape.Width, _shape.Top + _shape.Height/2);
+                return GetRotatedPoint(middleRight, ActualCenter);
+            }
+        }
 
         /// <summary>
         /// Return a point that represents the visual bottom left of the shape's bounding box after rotation.
@@ -197,13 +259,37 @@ namespace PowerPointLabs.Utils
         };
 
         /// <summary>
+        /// Return a point that represents the actual bottom left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualBottomLeft
+        {
+            get
+            {
+                var bottomLeft = new PointF(_shape.Left, _shape.Top + _shape.Height);
+                return GetRotatedPoint(bottomLeft, ActualCenter);
+            }
+        }
+
+        /// <summary>
         /// Return a point that represents the visual bottom center of the shape's bounding box after rotation.
         /// </summary>
         public PointF VisualBottomCenter => new PointF
         {
-            X = _rotatedVisualLeft + _absoluteWidth / 2,
+            X = _rotatedVisualLeft + _absoluteWidth/2,
             Y = _rotatedVisualTop + _absoluteHeight
         };
+
+        /// <summary>
+        /// Return a point that represents the actual bottom center of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualBottomCenter
+        {
+            get
+            {
+                var bottomCenter = new PointF(_shape.Left + _shape.Width/2, _shape.Top + _shape.Height);
+                return GetRotatedPoint(bottomCenter, ActualCenter);
+            }
+        }
 
         /// <summary>
         /// Return a point that represents the visual bottom right of the shape's bounding box after rotation.
@@ -213,6 +299,18 @@ namespace PowerPointLabs.Utils
             X = _rotatedVisualLeft + _absoluteWidth,
             Y = _rotatedVisualTop + _absoluteHeight
         };
+
+        /// <summary>
+        /// Return a point that represents the actual bottom right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualBottomRight
+        {
+            get
+            {
+                var bottomRight = new PointF(_shape.Left + _shape.Width, _shape.Top + _shape.Height);
+                return GetRotatedPoint(bottomRight, ActualCenter);
+            }
+        }
 
         /// <summary>
         /// Return or set a single-precision floating-point number that represents the 
@@ -265,8 +363,8 @@ namespace PowerPointLabs.Utils
                 ConvertToFreeform();
                 UpdateAbsoluteHeight();
                 UpdateAbsoluteWidth();
-                UpdateLeft();
-                UpdateTop();
+                UpdateVisualLeft();
+                UpdateVisualTop();
             }
         }
 
@@ -304,7 +402,7 @@ namespace PowerPointLabs.Utils
         public void IncrementLeft(float value)
         {
             _shape.IncrementLeft(value);
-            UpdateLeft();
+            UpdateVisualLeft();
         }
 
         /// <summary>
@@ -314,7 +412,7 @@ namespace PowerPointLabs.Utils
         public void IncrementTop(float value)
         {
             _shape.IncrementTop(value);
-            UpdateTop();
+            UpdateVisualTop();
         }
 
         /// <summary>

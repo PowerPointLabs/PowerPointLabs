@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
@@ -101,7 +103,7 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// Update the distance from top most point of the shape to top edge of the slide.
         /// </summary>
-        private void UpdateTop()
+        private void UpdateVisualTop()
         {
             _rotatedVisualTop = _shape.Top + _shape.Height / 2 - _absoluteHeight / 2;
         }
@@ -109,7 +111,7 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// Update the distance from left most point of the shape to left edge of the slide.
         /// </summary>
-        private void UpdateLeft()
+        private void UpdateVisualLeft()
         {
             _rotatedVisualLeft = _shape.Left + _shape.Width / 2 - _absoluteWidth / 2;
         }
@@ -230,6 +232,21 @@ namespace PowerPointLabs.Utils
         private static float ConvertDegToRad(float rotation)
         {
             return (float)(rotation * Math.PI / 180);
+        }
+
+        /// <summary>
+        /// Get the point after rotation.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="origin"></param>
+        /// <returns></returns>
+        private PointF GetRotatedPoint(PointF point, PointF origin)
+        {
+            var rotation = ConvertDegToRad(_shape.Rotation);
+            var x = Math.Cos(rotation) * (point.X - origin.X) - Math.Sin(rotation) * (point.Y - origin.Y) + origin.X;
+            var y = Math.Sin(rotation) * (point.X - origin.X) + Math.Cos(rotation) * (point.Y - origin.Y) + origin.Y;
+
+            return new PointF() {X = (float) x, Y = (float) y};
         }
     }
 }
