@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -27,6 +28,7 @@ namespace PowerPointLabs.ResizeLab
             AddShapeRows(noOfShapes);
         }
 
+        #region Initialise
         private void AddShapeRows(int noOfShapes)
         {
             if (noOfShapes >= 3)
@@ -61,7 +63,7 @@ namespace PowerPointLabs.ResizeLab
             textBox.Width = 50;
             textBox.VerticalAlignment = VerticalAlignment.Center;
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
-            textBox.ToolTip = "Enter a decimal value greater than 0";
+            textBox.ToolTip = ResizeLabTooltip.AdjustProportionallySettingsTextBox;
 
             // Append the element
             var rowIndex = ShapesGrid.RowDefinitions.Count - 1;
@@ -74,6 +76,9 @@ namespace PowerPointLabs.ResizeLab
             Grid.SetRow(textBox, rowIndex);
         }
 
+        #endregion
+
+        #region Event Handler
         private void AdjustProportionallySettingsDialog_Closed(object sender, EventArgs e)
         {
             IsOpen = false;
@@ -100,6 +105,16 @@ namespace PowerPointLabs.ResizeLab
             _resizeLab.AdjustProportionallyProportionList = proportionList;
             Close();
         }
+
+        private void Dialog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
+
+        #endregion
     }
 
 }

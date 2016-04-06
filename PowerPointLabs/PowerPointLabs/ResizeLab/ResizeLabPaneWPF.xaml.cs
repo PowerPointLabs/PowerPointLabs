@@ -16,11 +16,9 @@ namespace PowerPointLabs.ResizeLab
         private ResizeLabMain _resizeLab;
         private readonly ResizeLabErrorHandler _errorHandler;
         private Dictionary<ResizeLabMain.AnchorPoint, RadioButton> _anchorButtonLookUp;
+
         public static bool IsAspectRatioLocked { get; set; }
         
-        private const string UnlockAspectRatioToolTip = "Unlocks the aspect ratio of objects when performing resizing of objects";
-        private const string LockAspectRatioToolTip = "Locks the aspect ratio of objects when performing resizing of objects";
-
         // Dialog windows
         private StretchSettingsDialog _stretchSettingsDialog;
         private AdjustProportionallySettingsDialog _adjustProportionallySettingsDialog;
@@ -38,7 +36,7 @@ namespace PowerPointLabs.ResizeLab
             // Initialise settings
             InitialiseAnchorButton();
             UnlockAspectRatio();
-            //VisualHeightRadioBtn.IsChecked = true;
+            VisualHeightRadioBtn.IsChecked = true;
 
             _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
             
@@ -114,7 +112,25 @@ namespace PowerPointLabs.ResizeLab
             {
                 _stretchSettingsDialog.Activate();
             }
-            
+            StretchUpdateToolTip();
+        }
+
+        private void StretchUpdateToolTip()
+        {
+            if (_resizeLab.ReferenceType == ResizeLabMain.StretchRefType.FirstSelected)
+            {
+                StretchLeftBtn.ToolTip = ResizeLabTooltip.StretchLeftFirstRef;
+                StretchRightBtn.ToolTip = ResizeLabTooltip.StretchRightFirstRef;
+                StretchTopBtn.ToolTip = ResizeLabTooltip.StretchTopFirstRef;
+                StretchBottomBtn.ToolTip = ResizeLabTooltip.StretchBottomFirstRef;
+            }
+            if (_resizeLab.ReferenceType == ResizeLabMain.StretchRefType.Outermost)
+            {
+                StretchLeftBtn.ToolTip = ResizeLabTooltip.StretchLeftOuterRef;
+                StretchRightBtn.ToolTip = ResizeLabTooltip.StretchRightOuterRef;
+                StretchTopBtn.ToolTip = ResizeLabTooltip.StretchTopOuterRef;
+                StretchBottomBtn.ToolTip = ResizeLabTooltip.StretchBottomOuterRef;
+            }
         }
 
         #endregion
@@ -432,7 +448,6 @@ namespace PowerPointLabs.ResizeLab
         private void UnlockAspectRatio()
         {
             IsAspectRatioLocked = false;
-            LockAspectRatioCheckBox.ToolTip = LockAspectRatioToolTip;
 
             ModifySelectionAspectRatio();
         }
@@ -440,7 +455,6 @@ namespace PowerPointLabs.ResizeLab
         private void LockAspectRatio()
         {
             IsAspectRatioLocked = true;
-            LockAspectRatioCheckBox.ToolTip = UnlockAspectRatioToolTip;
 
             ModifySelectionAspectRatio();
         }
@@ -582,7 +596,7 @@ namespace PowerPointLabs.ResizeLab
 
         private bool IsPreviewKeyPressed()
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 return true;
             }

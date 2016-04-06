@@ -5,6 +5,7 @@ using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using Office = Microsoft.Office.Core;
 using System.Diagnostics;
 using Drawing = System.Drawing;
 
@@ -229,7 +230,7 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementLeft(-s.Left);
+                        s.IncrementLeft(-s.VisualLeft);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -244,7 +245,7 @@ namespace PowerPointLabs.PositionsLab
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        s.IncrementLeft(refShape.Left - s.Left);
+                        s.IncrementLeft(refShape.VisualLeft - s.VisualLeft);
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
@@ -274,7 +275,7 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementLeft(slideWidth - s.Left - s.AbsoluteWidth);
+                        s.IncrementLeft(slideWidth - s.VisualLeft - s.AbsoluteWidth);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -285,12 +286,12 @@ namespace PowerPointLabs.PositionsLab
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
-                    var rightMostRefPoint = refShape.Left + refShape.AbsoluteWidth;
+                    var rightMostRefPoint = refShape.VisualLeft + refShape.AbsoluteWidth;
 
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        var rightMostPoint = s.Left + s.AbsoluteWidth;
+                        var rightMostPoint = s.VisualLeft + s.AbsoluteWidth;
                         s.IncrementLeft(rightMostRefPoint - rightMostPoint);
                     }
                     break;
@@ -319,7 +320,7 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementTop(-s.Top);
+                        s.IncrementTop(-s.VisualTop);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -334,7 +335,7 @@ namespace PowerPointLabs.PositionsLab
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        s.IncrementTop(refShape.Top - s.Top);
+                        s.IncrementTop(refShape.VisualTop - s.VisualTop);
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
@@ -362,7 +363,7 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementTop(slideHeight - s.Top - s.AbsoluteHeight);
+                        s.IncrementTop(slideHeight - s.VisualTop - s.AbsoluteHeight);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -373,12 +374,12 @@ namespace PowerPointLabs.PositionsLab
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
-                    var lowestRefPoint = refShape.Top + refShape.AbsoluteHeight;
+                    var lowestRefPoint = refShape.VisualTop + refShape.AbsoluteHeight;
 
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        var lowestPoint = s.Top + s.AbsoluteHeight;
+                        var lowestPoint = s.VisualTop + s.AbsoluteHeight;
                         s.IncrementTop(lowestRefPoint - lowestPoint);
                     }
                     break;
@@ -407,7 +408,7 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementTop(slideHeight / 2 - s.Top - s.AbsoluteHeight / 2);
+                        s.IncrementTop(slideHeight / 2 - s.VisualTop - s.AbsoluteHeight / 2);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -422,7 +423,7 @@ namespace PowerPointLabs.PositionsLab
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        s.IncrementTop(refShape.Center.Y - s.Center.Y);
+                        s.IncrementTop(refShape.VisualCenter.Y - s.VisualCenter.Y);
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
@@ -450,7 +451,7 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementLeft(slideWidth / 2 - s.Left - s.AbsoluteWidth / 2);
+                        s.IncrementLeft(slideWidth / 2 - s.VisualLeft - s.AbsoluteWidth / 2);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -465,7 +466,7 @@ namespace PowerPointLabs.PositionsLab
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        s.IncrementLeft(refShape.Center.X - s.Center.X);
+                        s.IncrementLeft(refShape.VisualCenter.X - s.VisualCenter.X);
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
@@ -493,8 +494,8 @@ namespace PowerPointLabs.PositionsLab
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     foreach (var s in selectedShapes)
                     {
-                        s.IncrementTop(slideHeight / 2 - s.Top - s.AbsoluteHeight / 2);
-                        s.IncrementLeft(slideWidth / 2 - s.Left - s.AbsoluteWidth / 2);
+                        s.IncrementTop(slideHeight / 2 - s.VisualTop - s.AbsoluteHeight / 2);
+                        s.IncrementLeft(slideWidth / 2 - s.VisualLeft - s.AbsoluteWidth / 2);
                     }
                     break;
                 case AlignReferenceObject.SelectedShape:
@@ -509,8 +510,8 @@ namespace PowerPointLabs.PositionsLab
                     for (var i = 1; i < selectedShapes.Count; i++)
                     {
                         var s = selectedShapes[i];
-                        s.IncrementTop(refShape.Center.Y - s.Center.Y);
-                        s.IncrementLeft(refShape.Center.X - s.Center.X);
+                        s.IncrementTop(refShape.VisualCenter.Y - s.VisualCenter.Y);
+                        s.IncrementLeft(refShape.VisualCenter.X - s.VisualCenter.X);
                     }
                     break;
                 case AlignReferenceObject.PowerpointDefaults:
@@ -544,30 +545,30 @@ namespace PowerPointLabs.PositionsLab
             var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
             var refShapeIndex = sortedShapes.IndexOf(refShape);
 
-            var mostLeft = refShape.Left;
+            var mostLeft = refShape.VisualLeft;
             //For all shapes left of refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex - 1; i >= 0; i--)
             {
                 var neighbour = sortedShapes[i];
-                var rightOfNeighbour = neighbour.Left + neighbour.AbsoluteWidth;
+                var rightOfNeighbour = neighbour.VisualLeft + neighbour.AbsoluteWidth;
                 neighbour.IncrementLeft(mostLeft - rightOfNeighbour);
                 if (AlignShapesToBeAdjoined)
                 {
-                    neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+                    neighbour.IncrementTop(refShape.VisualCenter.Y - neighbour.VisualCenter.Y);
                 }
 
                 mostLeft = mostLeft - neighbour.AbsoluteWidth;
             }
 
-            var mostRight = refShape.Left + refShape.AbsoluteWidth;
+            var mostRight = refShape.VisualLeft + refShape.AbsoluteWidth;
             //For all shapes right of refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
             {
                 var neighbour = sortedShapes[i];
-                neighbour.IncrementLeft(mostRight - neighbour.Left);
+                neighbour.IncrementLeft(mostRight - neighbour.VisualLeft);
                 if (AlignShapesToBeAdjoined)
                 {
-                    neighbour.IncrementTop(refShape.Center.Y - neighbour.Center.Y);
+                    neighbour.IncrementTop(refShape.VisualCenter.Y - neighbour.VisualCenter.Y);
                 }
 
                 mostRight = mostRight + neighbour.AbsoluteWidth;
@@ -585,31 +586,31 @@ namespace PowerPointLabs.PositionsLab
             var sortedShapes = Graphics.SortShapesByTop(selectedShapes);
             var refShapeIndex = sortedShapes.IndexOf(refShape);
 
-            var mostTop = refShape.Top;
+            var mostTop = refShape.VisualTop;
             //For all shapes above refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex - 1; i >= 0; i--)
             {
                 var neighbour = sortedShapes[i];
-                var bottomOfNeighbour = neighbour.Top + neighbour.AbsoluteHeight;
+                var bottomOfNeighbour = neighbour.VisualTop + neighbour.AbsoluteHeight;
                 if (AlignShapesToBeAdjoined)
                 {
-                    neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                    neighbour.IncrementLeft(refShape.VisualCenter.X - neighbour.VisualCenter.X);
                 }
                 neighbour.IncrementTop(mostTop - bottomOfNeighbour);
 
                 mostTop = mostTop - neighbour.AbsoluteHeight;
             }
 
-            var lowest = refShape.Top + refShape.AbsoluteHeight;
+            var lowest = refShape.VisualTop + refShape.AbsoluteHeight;
             //For all shapes right of refShape, adjoin them from closest to refShape
             for (var i = refShapeIndex + 1; i < sortedShapes.Count; i++)
             {
                 var neighbour = sortedShapes[i];
                 if (AlignShapesToBeAdjoined)
                 {
-                    neighbour.IncrementLeft(refShape.Center.X - neighbour.Center.X);
+                    neighbour.IncrementLeft(refShape.VisualCenter.X - neighbour.VisualCenter.X);
                 }
-                neighbour.IncrementTop(lowest - neighbour.Top);
+                neighbour.IncrementTop(lowest - neighbour.VisualTop);
 
                 lowest = lowest + neighbour.AbsoluteHeight;
             }
@@ -638,7 +639,7 @@ namespace PowerPointLabs.PositionsLab
                     var refShape = selectedShapes[0];
                     toSortList.RemoveAt(0);
                     sortedShapes = Graphics.SortShapesByLeft(toSortList);
-                    DistributeHorizontal(sortedShapes, refShape.AbsoluteWidth, refShape.Left);
+                    DistributeHorizontal(sortedShapes, refShape.AbsoluteWidth, refShape.VisualLeft);
                     break;
                 case DistributeReferenceObject.FirstTwoShapes:
                     if (selectedShapes.Count < 3)
@@ -648,7 +649,7 @@ namespace PowerPointLabs.PositionsLab
 
                     leftRefShape = selectedShapes[0];
                     rightRefShape = selectedShapes[1];
-                    if (leftRefShape.Left > rightRefShape.Left)
+                    if (leftRefShape.VisualLeft > rightRefShape.VisualLeft)
                     {
                         var temp = leftRefShape;
                         leftRefShape = rightRefShape;
@@ -657,8 +658,8 @@ namespace PowerPointLabs.PositionsLab
                     toSortList.RemoveAt(0);
                     toSortList.RemoveAt(0);
                     sortedShapes = Graphics.SortShapesByLeft(toSortList);
-                    startingPoint = leftRefShape.Left + leftRefShape.AbsoluteWidth;
-                    width = rightRefShape.Left - startingPoint;
+                    startingPoint = leftRefShape.VisualLeft + leftRefShape.AbsoluteWidth;
+                    width = rightRefShape.VisualLeft - startingPoint;
                     DistributeHorizontal(sortedShapes, width, startingPoint);
                     break;
                 case DistributeReferenceObject.ExtremeShapes:
@@ -672,8 +673,8 @@ namespace PowerPointLabs.PositionsLab
                     rightRefShape = sortedShapes[sortedShapes.Count-1];
                     sortedShapes.RemoveAt(sortedShapes.Count - 1);
                     sortedShapes.RemoveAt(0);
-                    startingPoint = leftRefShape.Left + leftRefShape.AbsoluteWidth;
-                    width = rightRefShape.Left - startingPoint;
+                    startingPoint = leftRefShape.VisualLeft + leftRefShape.AbsoluteWidth;
+                    width = rightRefShape.VisualLeft - startingPoint;
                     DistributeHorizontal(sortedShapes, width, startingPoint);
                     break;
                 default:
@@ -699,18 +700,18 @@ namespace PowerPointLabs.PositionsLab
                             // Check if should have leading space
                             if (spaceBetweenShapes < 0)
                             {
-                                currShape.IncrementLeft(startingPoint - currShape.Left);
+                                currShape.IncrementLeft(startingPoint - currShape.VisualLeft);
                             }
                             else
                             {
-                                currShape.IncrementLeft(startingPoint - currShape.Left + spaceBetweenShapes);
+                                currShape.IncrementLeft(startingPoint - currShape.VisualLeft + spaceBetweenShapes);
                             }
                         }
                         else
                         {
                             refShape = sortedShapes[i - 1];
-                            rightMostRef = refShape.Left + refShape.AbsoluteWidth;
-                            currShape.IncrementLeft(rightMostRef - currShape.Left + spaceBetweenShapes);
+                            rightMostRef = refShape.VisualLeft + refShape.AbsoluteWidth;
+                            currShape.IncrementLeft(rightMostRef - currShape.VisualLeft + spaceBetweenShapes);
                         }
                     }
                     break;
@@ -720,13 +721,13 @@ namespace PowerPointLabs.PositionsLab
                         var currShape = sortedShapes[i];
                         if (i==0)
                         {
-                            currShape.IncrementLeft(startingPoint - currShape.Center.X + spaceBetweenShapes);
+                            currShape.IncrementLeft(startingPoint - currShape.VisualCenter.X + spaceBetweenShapes);
                         }
                         else
                         {
                             refShape = sortedShapes[i - 1];
-                            rightMostRef = refShape.Center.X;
-                            currShape.IncrementLeft(rightMostRef - currShape.Center.X + spaceBetweenShapes);
+                            rightMostRef = refShape.VisualCenter.X;
+                            currShape.IncrementLeft(rightMostRef - currShape.VisualCenter.X + spaceBetweenShapes);
                         }
                     }
                     break;
@@ -756,7 +757,7 @@ namespace PowerPointLabs.PositionsLab
                     var refShape = selectedShapes[0];
                     toSortList.RemoveAt(0);
                     sortedShapes = Graphics.SortShapesByTop(toSortList);
-                    DistributeVertical(sortedShapes, refShape.AbsoluteHeight, refShape.Top);
+                    DistributeVertical(sortedShapes, refShape.AbsoluteHeight, refShape.VisualTop);
                     break;
                 case DistributeReferenceObject.FirstTwoShapes:
                     if (selectedShapes.Count < 3)
@@ -766,7 +767,7 @@ namespace PowerPointLabs.PositionsLab
 
                     topRefShape = selectedShapes[0];
                     bottomRefShape = selectedShapes[1];
-                    if (topRefShape.Top > bottomRefShape.Top)
+                    if (topRefShape.VisualTop > bottomRefShape.VisualTop)
                     {
                         var temp = topRefShape;
                         topRefShape = bottomRefShape;
@@ -775,8 +776,8 @@ namespace PowerPointLabs.PositionsLab
                     toSortList.RemoveAt(0);
                     toSortList.RemoveAt(0);
                     sortedShapes = Graphics.SortShapesByTop(toSortList);
-                    startingPoint = topRefShape.Top + topRefShape.AbsoluteHeight;
-                    height = bottomRefShape.Top - startingPoint;
+                    startingPoint = topRefShape.VisualTop + topRefShape.AbsoluteHeight;
+                    height = bottomRefShape.VisualTop - startingPoint;
                     DistributeVertical(sortedShapes, height, startingPoint);
                     break;
                 case DistributeReferenceObject.ExtremeShapes:
@@ -790,8 +791,8 @@ namespace PowerPointLabs.PositionsLab
                     bottomRefShape = sortedShapes[sortedShapes.Count-1];
                     sortedShapes.RemoveAt(sortedShapes.Count - 1);
                     sortedShapes.RemoveAt(0);
-                    startingPoint = topRefShape.Top + topRefShape.AbsoluteHeight;
-                    height = bottomRefShape.Top - startingPoint;
+                    startingPoint = topRefShape.VisualTop + topRefShape.AbsoluteHeight;
+                    height = bottomRefShape.VisualTop - startingPoint;
                     DistributeVertical(sortedShapes, height, startingPoint);
                     break;
                 default:
@@ -817,18 +818,18 @@ namespace PowerPointLabs.PositionsLab
                             // Check if should have leading space
                             if (spaceBetweenShapes < 0)
                             {
-                                currShape.IncrementTop(startingPoint - currShape.Top);
+                                currShape.IncrementTop(startingPoint - currShape.VisualTop);
                             }
                             else
                             {
-                                currShape.IncrementTop(startingPoint - currShape.Top + spaceBetweenShapes);
+                                currShape.IncrementTop(startingPoint - currShape.VisualTop + spaceBetweenShapes);
                             }
                         }
                         else
                         {
                             refShape = sortedShapes[i - 1];
-                            bottomMostRef = refShape.Top + refShape.AbsoluteHeight;
-                            currShape.IncrementTop(bottomMostRef - currShape.Top + spaceBetweenShapes);
+                            bottomMostRef = refShape.VisualTop + refShape.AbsoluteHeight;
+                            currShape.IncrementTop(bottomMostRef - currShape.VisualTop + spaceBetweenShapes);
                         }
                     }
                     break;
@@ -838,13 +839,13 @@ namespace PowerPointLabs.PositionsLab
                         var currShape = sortedShapes[i];
                         if (i == 0)
                         {
-                            currShape.IncrementTop(startingPoint - currShape.Center.Y + spaceBetweenShapes);
+                            currShape.IncrementTop(startingPoint - currShape.VisualCenter.Y + spaceBetweenShapes);
                         }
                         else
                         {
                             refShape = sortedShapes[i - 1];
-                            bottomMostRef = refShape.Center.Y;
-                            currShape.IncrementTop(bottomMostRef - currShape.Center.Y + spaceBetweenShapes);
+                            bottomMostRef = refShape.VisualCenter.Y;
+                            currShape.IncrementTop(bottomMostRef - currShape.VisualCenter.Y + spaceBetweenShapes);
                         }
                     }
                     break;
@@ -881,8 +882,8 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (isFirstTwoShapes && isObjectCenter)
                 {
-                    var startAnchorCenter = selectedShapes[0].Center;
-                    var endAnchorCenter = selectedShapes[1].Center;
+                    var startAnchorCenter = selectedShapes[0].VisualCenter;
+                    var endAnchorCenter = selectedShapes[1].VisualCenter;
                     var rowWidth = endAnchorCenter.X - startAnchorCenter.X;
                     var colHeight = endAnchorCenter.Y - startAnchorCenter.Y;
                     DistributeGridByRowWithAnchors(selectedShapes, rowLength, colLength, rowWidth, colHeight);
@@ -891,8 +892,8 @@ namespace PowerPointLabs.PositionsLab
                 {
                     var startAnchor = selectedShapes[0];
                     var endAnchor = selectedShapes[1];
-                    var rowWidth = endAnchor.Left + endAnchor.AbsoluteWidth - startAnchor.Left;
-                    var colHeight = endAnchor.Top + endAnchor.AbsoluteHeight - startAnchor.Top;
+                    var rowWidth = endAnchor.VisualLeft + endAnchor.AbsoluteWidth - startAnchor.VisualLeft;
+                    var colHeight = endAnchor.VisualTop + endAnchor.AbsoluteHeight - startAnchor.VisualTop;
                     DistributeGridByRowWithAnchorsByEdge(selectedShapes, rowLength, colLength, rowWidth, colHeight);
                 }
                 else if (isFirstShape && isObjectCenter)
@@ -908,8 +909,8 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (isFirstTwoShapes && isObjectCenter)
                 {
-                    var startAnchorCenter = selectedShapes[0].Center;
-                    var endAnchorCenter = selectedShapes[1].Center;
+                    var startAnchorCenter = selectedShapes[0].VisualCenter;
+                    var endAnchorCenter = selectedShapes[1].VisualCenter;
                     var rowWidth = endAnchorCenter.X - startAnchorCenter.X;
                     var colHeight = endAnchorCenter.Y - startAnchorCenter.Y;
                     DistributeGridByColWithAnchors(selectedShapes, rowLength, colLength, rowWidth, colHeight);
@@ -918,8 +919,8 @@ namespace PowerPointLabs.PositionsLab
                 {
                     var startAnchor = selectedShapes[0];
                     var endAnchor = selectedShapes[1];
-                    var rowWidth = endAnchor.Left + endAnchor.AbsoluteWidth - startAnchor.Left;
-                    var colHeight = endAnchor.Top + endAnchor.AbsoluteHeight - startAnchor.Top;
+                    var rowWidth = endAnchor.VisualLeft + endAnchor.AbsoluteWidth - startAnchor.VisualLeft;
+                    var colHeight = endAnchor.VisualTop + endAnchor.AbsoluteHeight - startAnchor.VisualTop;
                     DistributeGridByColWithAnchorsByEdge(selectedShapes, rowLength, colLength, rowWidth, colHeight);
                 }
                 else if (isFirstShape && isObjectCenter)
@@ -935,7 +936,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void DistributeGridByRow(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
-            var refPoint = selectedShapes[0].Center;
+            var refPoint = selectedShapes[0].VisualCenter;
 
             var numShapes = selectedShapes.Count;
 
@@ -967,8 +968,8 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var currentShape = selectedShapes[i];
-                currentShape.IncrementLeft(posX - currentShape.Center.X);
-                currentShape.IncrementTop(posY - currentShape.Center.Y);
+                currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
+                currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
 
                 posX += GetSpaceBetweenShapes(differenceIndex, differenceIndex + 1, rowDifferences, MarginLeft, MarginRight);
                 differenceIndex++;
@@ -977,7 +978,7 @@ namespace PowerPointLabs.PositionsLab
 
         public static void DistributeGridByCol(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
-            var refPoint = selectedShapes[0].Center;
+            var refPoint = selectedShapes[0].VisualCenter;
 
             var numShapes = selectedShapes.Count;
 
@@ -1020,7 +1021,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var currentShape = selectedShapes[i];
-                var center = currentShape.Center;
+                var center = currentShape.VisualCenter;
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
@@ -1036,8 +1037,8 @@ namespace PowerPointLabs.PositionsLab
                 throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
-            var startingAnchor = selectedShapes[0].Center;
-            var endingAnchor = selectedShapes[1].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
+            var endingAnchor = selectedShapes[1].VisualCenter;
 
             var endAnchor = selectedShapes[1];
             selectedShapes.RemoveAt(1);
@@ -1062,7 +1063,7 @@ namespace PowerPointLabs.PositionsLab
             var numShapes = selectedShapes.Count;
             var numIndicesToSkip = IndicesToSkip(numShapes, rowLength, DistributeGridAlignment);
 
-            var startingAnchor = selectedShapes[0].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
 
             var rowDifferences = GetLongestWidthsOfRowsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
             var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, numIndicesToSkip);
@@ -1087,8 +1088,8 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var currentShape = selectedShapes[i];
-                currentShape.IncrementLeft(posX - currentShape.Center.X);
-                currentShape.IncrementTop(posY - currentShape.Center.Y);
+                currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
+                currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
 
                 posX += gridSpaces[i, 0];
             }
@@ -1108,7 +1109,7 @@ namespace PowerPointLabs.PositionsLab
             selectedShapes.RemoveAt(1);
             selectedShapes.Add(endAnchor);
 
-            var startingAnchor = selectedShapes[0].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
 
             var longestRow = rowWidth;
             var longestCol = colHeight;
@@ -1134,7 +1135,7 @@ namespace PowerPointLabs.PositionsLab
                     int j = 0;
                     for (j = 0; j < rowLength; j++)
                     {
-                        if (i + j >= numShapes - 1)
+                        if (i + j >= numShapes)
                         {
                             break;
                         }
@@ -1146,14 +1147,14 @@ namespace PowerPointLabs.PositionsLab
                     }
                     if (i != 0)
                     {   
-                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posX = selectedShapes[0].VisualLeft + selectedShapes[i].AbsoluteWidth / 2;
                         posY += (colDifferences[i / rowLength - 1] / 2 + colDifferences[i / rowLength] / 2 + colDifference);
                     }
                 }
 
                 var currentShape = selectedShapes[i];
-                currentShape.IncrementLeft(posX - currentShape.Center.X);
-                currentShape.IncrementTop(posY - currentShape.Center.Y);
+                currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
+                currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
 
                 if (i + 1 < numShapes)
                 {
@@ -1166,7 +1167,7 @@ namespace PowerPointLabs.PositionsLab
         {
             var numShapes = selectedShapes.Count;
 
-            var startingAnchor = selectedShapes[0].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
 
             var posX = startingAnchor.X;
             var posY = startingAnchor.Y;
@@ -1197,14 +1198,14 @@ namespace PowerPointLabs.PositionsLab
                     }
                     if (i != 0)
                     {   
-                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posX = selectedShapes[0].VisualLeft + selectedShapes[i].AbsoluteWidth / 2;
                         posY += GetSpaceBetweenShapes(i / rowLength - 1, i / rowLength, colDifferences, MarginTop, MarginBottom);
                     }
                 }
 
                 var currentShape = selectedShapes[i];
-                currentShape.IncrementLeft(posX - currentShape.Center.X);
-                currentShape.IncrementTop(posY - currentShape.Center.Y);
+                currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
+                currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
 
                 if (i + 1 < numShapes)
                 {
@@ -1220,8 +1221,8 @@ namespace PowerPointLabs.PositionsLab
                 throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
-            var startingAnchor = selectedShapes[0].Center;
-            var endingAnchor = selectedShapes[1].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
+            var endingAnchor = selectedShapes[1].VisualCenter;
 
             var rowDifference = rowWidth / (rowLength - 1);
             var colDifference = colHeight / (colLength - 1);
@@ -1247,7 +1248,7 @@ namespace PowerPointLabs.PositionsLab
 
             var numIndicesToSkip = IndicesToSkip(numShapes, colLength, DistributeGridAlignment);
 
-            var startingAnchor = selectedShapes[0].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
 
             var posX = startingAnchor.X;
             var posY = startingAnchor.Y;
@@ -1283,7 +1284,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var currentShape = selectedShapes[i];
-                var center = currentShape.Center;
+                var center = currentShape.VisualCenter;
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
@@ -1295,7 +1296,7 @@ namespace PowerPointLabs.PositionsLab
         public static void DistributeGridByColByEdge(List<PPShape> selectedShapes, int rowLength, int colLength)
         {
             var numShapes = selectedShapes.Count;
-            var startingAnchor = selectedShapes[0].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
 
             var posX = startingAnchor.X;
             var posY = startingAnchor.Y;
@@ -1347,13 +1348,13 @@ namespace PowerPointLabs.PositionsLab
 
                     if (augmentedShapeIndex != 0)
                     {
-                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posX = selectedShapes[0].VisualLeft + selectedShapes[i].AbsoluteWidth / 2;
                         posY += GetSpaceBetweenShapes(augmentedShapeIndex / rowLength - 1, augmentedShapeIndex / rowLength, colDifferences, MarginTop, MarginBottom);
                     }
                 }
 
                 var currentShape = selectedShapes[i];
-                var center = currentShape.Center;
+                var center = currentShape.VisualCenter;
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
@@ -1379,7 +1380,7 @@ namespace PowerPointLabs.PositionsLab
             selectedShapes.RemoveAt(1);
             selectedShapes.Add(endAnchor);
 
-            var startingAnchor = selectedShapes[0].Center;
+            var startingAnchor = selectedShapes[0].VisualCenter;
 
             var longestRow = rowWidth;
             var longestCol = colHeight;
@@ -1398,7 +1399,7 @@ namespace PowerPointLabs.PositionsLab
             var remainder = colLength - (rowLength * colLength - numShapes);
             var augmentedShapeIndex = 0;
 
-            for (var i = 0; i < numShapes; i++)
+            for (var i = 0; i < numShapes - 1; i++)
             {
                 //If last index and no more remainder, skip the rest
                 if (IsLastIndexOfRow(augmentedShapeIndex, rowLength))
@@ -1439,13 +1440,13 @@ namespace PowerPointLabs.PositionsLab
 
                     if (augmentedShapeIndex != 0)
                     {
-                        posX = selectedShapes[0].Left + selectedShapes[i].AbsoluteWidth / 2;
+                        posX = selectedShapes[0].VisualLeft + selectedShapes[i].AbsoluteWidth / 2;
                         posY += (colDifferences[augmentedShapeIndex / rowLength - 1] / 2 + colDifferences[augmentedShapeIndex / rowLength] / 2 + colDifference);
                     }
                 }
 
                 var currentShape = selectedShapes[i];
-                var center = currentShape.Center;
+                var center = currentShape.VisualCenter;
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
@@ -1631,15 +1632,9 @@ namespace PowerPointLabs.PositionsLab
                     isAllSameDir = false;
                     break;
                 }
-
-                //only maintain in one direction instead of dual direction
-                if (dir < Leftorright)
-                {
-                    lastDir = dir;
-                }
             }
 
-            if (!isAllSameDir || lastDir == None)
+            if (!isAllSameDir || lastDir == None || lastDir == Up)
             {
                 lastDir = 0;
             }
@@ -1657,21 +1652,19 @@ namespace PowerPointLabs.PositionsLab
                 float defaultUpAngle = 0;
                 var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
-                if (hasDefaultDirection)
-                {
-                    shape.Rotation = (defaultUpAngle + angle) + lastDir*90;
-                }
-                else
+                if (!hasDefaultDirection)
                 {
                     if (IsVertical(shape))
                     {
-                        shape.Rotation = angle + lastDir*90;
+                        defaultUpAngle = 0;
                     }
                     else
                     {
-                        shape.Rotation = (angle - 90) + lastDir*90;
+                        defaultUpAngle = 90;
                     }
                 }
+
+                shape.Rotation = (defaultUpAngle + angle) + lastDir * 90;
             }
         }
 
@@ -1780,12 +1773,6 @@ namespace PowerPointLabs.PositionsLab
             float defaultUpAngle;
             var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
-            if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
-            {
-                Debug.WriteLine("defaultDir: " + hasDefaultDirection);
-                Debug.WriteLine("defaultAngle: " + defaultUpAngle);
-            }
-
             if (!hasDefaultDirection)
             {
                 if (IsVertical(shape))
@@ -1802,30 +1789,12 @@ namespace PowerPointLabs.PositionsLab
             var diff = SubtractAngles(shape.Rotation, angle);
             var phaseInFloat = diff/90;
 
-            if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
-            {
-                Debug.WriteLine("angle: " + angle);
-                Debug.WriteLine("diff: " + diff);
-                Debug.WriteLine("phaseInFloat: " + defaultUpAngle);
-                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float) Math.Round(phaseInFloat), Epsilon));
-            }
-
             if (!NearlyEqual(phaseInFloat, (float) Math.Round(phaseInFloat), Epsilon))
             {
                 return None;
             }
 
             var phase = (int) Math.Round(phaseInFloat);
-
-            if (!hasDefaultDirection)
-            {
-                if (phase == Left || phase == Right)
-                {
-                    return Leftorright;
-                }
-
-                return Upordown;
-            }
 
             return phase;
         }
@@ -2132,7 +2101,7 @@ namespace PowerPointLabs.PositionsLab
 
                 for (int i = 0; i < selectedShapes.Count; i++)
                 {
-                    var shapePos = selectedShapes[i].Center;
+                    var shapePos = selectedShapes[i].VisualCenter;
                     Drawing.PointF prevShapePos = new Drawing.PointF();
                     if (!prevSelectedShapes.TryGetValue(selectedShapes[i].Name, out prevShapePos))
                     {
@@ -2163,7 +2132,7 @@ namespace PowerPointLabs.PositionsLab
             prevSelectedShapes.Clear();
             for (int i = 0; i < selectedShapes.Count; i++)
             {
-                var shapePos = selectedShapes[i].Center;
+                var shapePos = selectedShapes[i].VisualCenter;
                 prevSelectedShapes.Add(selectedShapes[i].Name, shapePos);
             }
         }
@@ -2193,7 +2162,15 @@ namespace PowerPointLabs.PositionsLab
             var selectedShapes = new List<PPShape>();
             for (var i = 1; i <= toAlign.Count; i++)
             {
-                selectedShapes.Add(new PPShape(toAlign[i]));
+                var s = toAlign[i];
+                if (s.Type.Equals(Office.MsoShapeType.msoPicture))
+                {
+                    selectedShapes.Add(new PPShape(toAlign[i], false));
+                }
+                else
+                {
+                    selectedShapes.Add(new PPShape(toAlign[i]));
+                }
             }
             return selectedShapes;
         }
@@ -2237,25 +2214,25 @@ namespace PowerPointLabs.PositionsLab
             switch (r)
             {
                 case SwapReference.TopLeft:
-                    return shape.TopLeft;
+                    return shape.VisualTopLeft;
                 case SwapReference.TopCenter:
-                    return shape.TopCenter;
+                    return shape.VisualTopCenter;
                 case SwapReference.TopRight:
-                    return shape.TopRight;
+                    return shape.VisualTopRight;
                 case SwapReference.MiddleLeft:
-                    return shape.MiddleLeft;
+                    return shape.VisualMiddleLeft;
                 case SwapReference.MiddleCenter:
-                    return shape.Center;
+                    return shape.VisualCenter;
                 case SwapReference.MiddleRight:
-                    return shape.MiddleRight;
+                    return shape.VisualMiddleRight;
                 case SwapReference.BottomLeft:
-                    return shape.BottomLeft;
+                    return shape.VisualBottomLeft;
                 case SwapReference.BottomCenter:
-                    return shape.BottomCenter;
+                    return shape.VisualBottomCenter;
                 case SwapReference.BottomRight:
-                    return shape.BottomRight;
+                    return shape.VisualBottomRight;
                 default:
-                    return shape.Center;
+                    return shape.VisualCenter;
             }
         }
 

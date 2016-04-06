@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
@@ -101,17 +103,17 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// Update the distance from top most point of the shape to top edge of the slide.
         /// </summary>
-        private void UpdateTop()
+        private void UpdateVisualTop()
         {
-            _rotatedTop = _shape.Top + _shape.Height / 2 - _absoluteHeight / 2;
+            _rotatedVisualTop = _shape.Top + _shape.Height / 2 - _absoluteHeight / 2;
         }
 
         /// <summary>
         /// Update the distance from left most point of the shape to left edge of the slide.
         /// </summary>
-        private void UpdateLeft()
+        private void UpdateVisualLeft()
         {
-            _rotatedLeft = _shape.Left + _shape.Width / 2 - _absoluteWidth / 2;
+            _rotatedVisualLeft = _shape.Left + _shape.Width / 2 - _absoluteWidth / 2;
         }
 
         /// <summary>
@@ -175,7 +177,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void SetTop()
         {
-            _shape.Top = _rotatedTop - _shape.Height / 2 + _absoluteHeight / 2;
+            _shape.Top = _rotatedVisualTop - _shape.Height / 2 + _absoluteHeight / 2;
         }
 
         /// <summary>
@@ -183,7 +185,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void SetLeft()
         {
-            _shape.Left = _rotatedLeft - _shape.Width / 2 + _absoluteWidth / 2;
+            _shape.Left = _rotatedVisualLeft - _shape.Width / 2 + _absoluteWidth / 2;
         }
 
         /// <summary>
@@ -230,6 +232,50 @@ namespace PowerPointLabs.Utils
         private static float ConvertDegToRad(float rotation)
         {
             return (float)(rotation * Math.PI / 180);
+        }
+
+        /// <summary>
+        /// Get the point after rotation with the reference to center.
+        /// </summary>
+        /// <param name="widthDiff"></param>
+        /// <param name="heightDiff"></param>
+        /// <returns></returns>
+        private PointF GetRotatedPoint(float widthDiff, float heightDiff)
+        {
+            var rotation = ConvertDegToRad(_shape.Rotation);
+            var centerX = _shape.Left + _shape.Width/2;
+            var centerY = _shape.Top + _shape.Height/2;
+            var x = Math.Cos(rotation)*widthDiff - Math.Sin(rotation)*heightDiff + centerX;
+            var y = Math.Sin(rotation)*widthDiff + Math.Cos(rotation)*heightDiff + centerY;
+
+            return new PointF((float) x, (float) y);
+        }
+        
+
+        /// <summary>
+        /// Get the center of the shape.
+        /// </summary>
+        /// <param name="rotated"></param>
+        /// <param name="widthDiff"></param>
+        /// <param name="heightDiff"></param>
+        /// <returns></returns>
+        private PointF GetCenterPoint(PointF rotated, float widthDiff, float heightDiff)
+        {
+            var rotation = ConvertDegToRad(_shape.Rotation);
+            var x = rotated.X - Math.Cos(rotation)*widthDiff + Math.Sin(rotation)*heightDiff;
+            var y = rotated.Y - Math.Sin(rotation)*widthDiff - Math.Cos(rotation)*heightDiff;
+            
+            return new PointF((float) x, (float) y);
+        }
+
+        /// <summary>
+        /// Align the shape to position with regards to the center.
+        /// </summary>
+        /// <param name="center"></param>
+        private void AlignToCenter(PointF center)
+        {
+            _shape.Left = center.X - _shape.Width/2;
+            _shape.Top = center.Y - _shape.Height/2;
         }
     }
 }

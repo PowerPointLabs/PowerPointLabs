@@ -580,12 +580,12 @@ namespace PowerPointLabs.Utils
 
         private static int LeftComparator(PPShape s1, PPShape s2)
         {
-            return s1.Left.CompareTo(s2.Left);
+            return s1.VisualLeft.CompareTo(s2.VisualLeft);
         }
 
         private static int TopComparator(PPShape s1, PPShape s2)
         {
-            return s1.Top.CompareTo(s2.Top);
+            return s1.VisualTop.CompareTo(s2.VisualTop);
         }
 
         # endregion

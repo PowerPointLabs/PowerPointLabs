@@ -211,7 +211,7 @@ namespace PowerPointLabs.PositionsLab
                 if (_positionsDistributeGridDialog == null || !_positionsDistributeGridDialog.IsOpen)
                 {
                     _positionsDistributeGridDialog = new PositionsDistributeGridDialog(selectedShapes, rowLength, colLength);
-                    _positionsDistributeGridDialog.Show();
+                    _positionsDistributeGridDialog.ShowDialog();
                 }
                 else
                 {
@@ -717,7 +717,15 @@ namespace PowerPointLabs.PositionsLab
 
             for (var i = index; i <= range.Count; i++)
             {
-                shapes.Add(new PPShape(range[i]));
+                var s = range[i];
+                if (s.Type.Equals(Office.MsoShapeType.msoPicture))
+                {
+                    shapes.Add(new PPShape(range[i], false));
+                }
+                else
+                {
+                    shapes.Add(new PPShape(range[i]));
+                }
             }
 
             return shapes;
@@ -771,7 +779,7 @@ namespace PowerPointLabs.PositionsLab
             if (_alignSettingsDialog == null || !_alignSettingsDialog.IsOpen)
             {
                 _alignSettingsDialog = new AlignSettingsDialog();
-                _alignSettingsDialog.Show();
+                _alignSettingsDialog.ShowDialog();
             }
             else
             {
@@ -784,7 +792,7 @@ namespace PowerPointLabs.PositionsLab
             if (_distributeSettingsDialog == null || !_distributeSettingsDialog.IsOpen)
             {
                 _distributeSettingsDialog = new DistributeSettingsDialog();
-                _distributeSettingsDialog.Show();
+                _distributeSettingsDialog.ShowDialog();
             }
             else
             {
@@ -797,7 +805,7 @@ namespace PowerPointLabs.PositionsLab
             if (_reorderSettingsDialog == null || !_reorderSettingsDialog.IsOpen)
             {
                 _reorderSettingsDialog = new ReorderSettingsDialog();
-                _reorderSettingsDialog.Show();
+                _reorderSettingsDialog.ShowDialog();
             }
             else
             {
@@ -1442,7 +1450,7 @@ namespace PowerPointLabs.PositionsLab
 
         private bool IsPreviewKeyPressed()
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 return true;
             }
@@ -1459,8 +1467,8 @@ namespace PowerPointLabs.PositionsLab
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(simulatedShape.Left- originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(simulatedShape.Top - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
             }
         }
 
@@ -1488,8 +1496,9 @@ namespace PowerPointLabs.PositionsLab
             for (var i = 0; i < shapes.Count; i++)
             {
                 var s = shapes[i];
-                initialPositions[i, Left] = s.Left;
-                initialPositions[i, Top] = s.Top;
+                var pt = s.VisualCenter;
+                initialPositions[i, Left] = pt.X;
+                initialPositions[i, Top] = pt.Y;
             }
 
             return initialPositions;

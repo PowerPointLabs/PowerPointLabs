@@ -1,4 +1,5 @@
 ﻿using System;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -31,7 +32,15 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void IncreaseHeight(PowerPoint.ShapeRange shapes)
         {
-            SlighAdjustHeight(shapes, SlightAdjustResizeFactor);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    SlightAdjustVisualHeight(shapes, SlightAdjustResizeFactor);
+                    break;
+                case ResizeBy.Actual:
+                    SlightAdjustActualHeight(shapes, SlightAdjustResizeFactor);
+                    break;
+            }
         }
 
         /// <summary>
@@ -40,7 +49,15 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void DecreaseHeight(PowerPoint.ShapeRange shapes)
         {
-            SlighAdjustHeight(shapes, -SlightAdjustResizeFactor);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    SlightAdjustVisualHeight(shapes, -SlightAdjustResizeFactor);
+                    break;
+                case ResizeBy.Actual:
+                    SlightAdjustActualHeight(shapes, -SlightAdjustResizeFactor);
+                    break;
+            }
         }
 
         /// <summary>
@@ -49,7 +66,15 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void IncreaseWidth(PowerPoint.ShapeRange shapes)
         {
-            SlightAdjustWidth(shapes, SlightAdjustResizeFactor);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    SlightAdjustVisualWidth(shapes, SlightAdjustResizeFactor);
+                    break;
+                case ResizeBy.Actual:
+                    SlightAdjustActualWidth(shapes, SlightAdjustResizeFactor);
+                    break;
+            }
         }
 
         /// <summary>
@@ -58,36 +83,80 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="shapes">The shapes to resize</param>
         public void DecreaseWidth(PowerPoint.ShapeRange shapes)
         {
-            SlightAdjustWidth(shapes, -SlightAdjustResizeFactor);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    SlightAdjustVisualWidth(shapes, -SlightAdjustResizeFactor);
+                    break;
+                case ResizeBy.Actual:
+                    SlightAdjustActualWidth(shapes, -SlightAdjustResizeFactor);
+                    break;
+            }
         }
 
         #endregion
 
         #region Helper functions
-        private void SlighAdjustHeight(PowerPoint.ShapeRange shapes, float resizeFactor)
+
+        private void SlightAdjustVisualHeight(PowerPoint.ShapeRange shapes, float resizeFactor)
         {
-            Action<PPShape> adjustHeight = shape =>
-            {
-                shape.AbsoluteHeight += resizeFactor;
-            };
-            SlightAdjustShape(shapes, adjustHeight);
+            Action<PPShape> adjustHeight = shape => shape.AbsoluteHeight += resizeFactor;
+            SlightAdjustVisualShape(shapes, adjustHeight);
         }
 
-        private void SlightAdjustWidth(PowerPoint.ShapeRange shapes, float resizeFactor)
+        private void SlightAdjustVisualWidth(PowerPoint.ShapeRange shapes, float resizeFactor)
         {
             Action<PPShape> adjustWidth = shape => shape.AbsoluteWidth += resizeFactor;
-            SlightAdjustShape(shapes, adjustWidth);
+            SlightAdjustVisualShape(shapes, adjustWidth);
         }
 
-        private void SlightAdjustShape(PowerPoint.ShapeRange shapes, Action<PPShape> resizeAction)
+        private void SlightAdjustVisualShape(PowerPoint.ShapeRange shapes, Action<PPShape> resizeAction)
         {
-            foreach (PowerPoint.Shape shape in shapes)
+            try
             {
-                var ppShape = new PPShape(shape);
-                var anchorPoint = GetAnchorPoint(ppShape);
+                foreach (PowerPoint.Shape shape in shapes)
+                {
+                    var ppShape = new PPShape(shape);
+                    var anchorPoint = GetVisualAnchorPoint(ppShape);
 
-                resizeAction(ppShape);
-                AlignShape(ppShape, anchorPoint);
+                    resizeAction(ppShape);
+                    AlignVisualShape(ppShape, anchorPoint);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "SlightAdjustVisualShape");
+            }
+        }
+
+        private void SlightAdjustActualHeight(PowerPoint.ShapeRange shapes, float resizeFactor)
+        {
+            Action<PPShape> adjustHeight = shape => shape.ShapeHeight += resizeFactor;
+            SlightAdjustActualShape(shapes, adjustHeight);
+        }
+
+        private void SlightAdjustActualWidth(PowerPoint.ShapeRange shapes, float resizeFactor)
+        {
+            Action<PPShape> adjustWidth = shape => shape.ShapeWidth += resizeFactor;
+            SlightAdjustActualShape(shapes, adjustWidth);
+        }
+
+        private void SlightAdjustActualShape(PowerPoint.ShapeRange shapes, Action<PPShape> resizeAction)
+        {
+            try
+            {
+                foreach (PowerPoint.Shape shape in shapes)
+                {
+                    var ppShape = new PPShape(shape, false);
+                    var anchorPoint = GetActualAnchorPoint(ppShape);
+
+                    resizeAction(ppShape);
+                    AlignActualShape(ppShape, anchorPoint);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "SlightAdjustActualShape");
             }
         }
 

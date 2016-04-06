@@ -1,4 +1,6 @@
-﻿using PowerPointLabs.Utils;
+﻿using System;
+using System.Runtime.Remoting.Channels;
+using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -27,9 +29,13 @@ namespace PowerPointLabs.ResizeLab
         /// <returns></returns>
         private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            if (selectedShapes.Count > 0)
+            if (selectedShapes.Count <= 0) return -1;
+            switch (ResizeType)
             {
-                return new PPShape(selectedShapes[1]).AbsoluteHeight;
+                case ResizeBy.Visual:
+                    return new PPShape(selectedShapes[1]).AbsoluteHeight;
+                case ResizeBy.Actual:
+                    return new PPShape(selectedShapes[1], false).ShapeHeight;
             }
             return -1;
         }
@@ -41,9 +47,13 @@ namespace PowerPointLabs.ResizeLab
         /// <returns></returns>
         private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            if (selectedShapes.Count > 0)
+            if (selectedShapes.Count <= 0) return -1;
+            switch (ResizeType)
             {
-                return new PPShape(selectedShapes[1]).AbsoluteWidth;
+                case ResizeBy.Visual:
+                    return new PPShape(selectedShapes[1]).AbsoluteWidth;
+                case ResizeBy.Actual:
+                    return new PPShape(selectedShapes[1], false).ShapeWidth;
             }
             return -1;
         }
@@ -65,7 +75,7 @@ namespace PowerPointLabs.ResizeLab
                 {
                     _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, optionalParameters);
                 }
-                
+
                 return false;
             }
             return true;
@@ -94,6 +104,5 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
-
     }
 }
