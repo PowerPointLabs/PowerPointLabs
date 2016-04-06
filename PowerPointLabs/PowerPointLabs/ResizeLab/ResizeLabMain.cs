@@ -35,7 +35,7 @@ namespace PowerPointLabs.ResizeLab
                 case ResizeBy.Visual:
                     return new PPShape(selectedShapes[1]).AbsoluteHeight;
                 case ResizeBy.Actual:
-                    return new PPShape(selectedShapes[1], false).AbsoluteHeight;
+                    return new PPShape(selectedShapes[1], false).ShapeHeight;
             }
             return -1;
         }
@@ -53,7 +53,7 @@ namespace PowerPointLabs.ResizeLab
                 case ResizeBy.Visual:
                     return new PPShape(selectedShapes[1]).AbsoluteWidth;
                 case ResizeBy.Actual:
-                    return new PPShape(selectedShapes[1], false).AbsoluteWidth;
+                    return new PPShape(selectedShapes[1], false).ShapeWidth;
             }
             return -1;
         }
