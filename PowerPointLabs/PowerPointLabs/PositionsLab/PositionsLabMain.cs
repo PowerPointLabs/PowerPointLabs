@@ -5,6 +5,7 @@ using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using Office = Microsoft.Office.Core;
 using System.Diagnostics;
 using Drawing = System.Drawing;
 
@@ -2193,7 +2194,15 @@ namespace PowerPointLabs.PositionsLab
             var selectedShapes = new List<PPShape>();
             for (var i = 1; i <= toAlign.Count; i++)
             {
-                selectedShapes.Add(new PPShape(toAlign[i]));
+                var s = toAlign[i];
+                if (s.Type.Equals(Office.MsoShapeType.msoPicture))
+                {
+                    selectedShapes.Add(new PPShape(toAlign[i], false));
+                }
+                else
+                {
+                    selectedShapes.Add(new PPShape(toAlign[i]));
+                }
             }
             return selectedShapes;
         }

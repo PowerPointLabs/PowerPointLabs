@@ -717,7 +717,15 @@ namespace PowerPointLabs.PositionsLab
 
             for (var i = index; i <= range.Count; i++)
             {
-                shapes.Add(new PPShape(range[i]));
+                var s = range[i];
+                if (s.Type.Equals(Office.MsoShapeType.msoPicture))
+                {
+                    shapes.Add(new PPShape(range[i], false));
+                }
+                else
+                {
+                    shapes.Add(new PPShape(range[i]));
+                }
             }
 
             return shapes;
@@ -1442,7 +1450,7 @@ namespace PowerPointLabs.PositionsLab
 
         private bool IsPreviewKeyPressed()
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
             {
                 return true;
             }
@@ -1459,8 +1467,8 @@ namespace PowerPointLabs.PositionsLab
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(simulatedShape.Left- originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(simulatedShape.Top - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
             }
         }
 
@@ -1488,8 +1496,9 @@ namespace PowerPointLabs.PositionsLab
             for (var i = 0; i < shapes.Count; i++)
             {
                 var s = shapes[i];
-                initialPositions[i, Left] = s.VisualLeft;
-                initialPositions[i, Top] = s.VisualTop;
+                var pt = s.VisualCenter;
+                initialPositions[i, Left] = pt.X;
+                initialPositions[i, Top] = pt.Y;
             }
 
             return initialPositions;
