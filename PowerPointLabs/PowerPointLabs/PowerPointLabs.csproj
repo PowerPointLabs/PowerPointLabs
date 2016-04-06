@@ -569,6 +569,7 @@
     <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
     <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
+    <Compile Include="ResizeLab\ResizeLabTooltip.cs" />
     <Compile Include="ResizeLab\ResizeLabUtil.cs" />
     <Compile Include="ResizeLab\Symmetric.cs" />
     <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />

@@ -10,8 +10,8 @@ namespace PowerPointLabs.Utils
         private readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
-        private float _rotatedLeft;
-        private float _rotatedTop;
+        private float _rotatedVisualLeft;
+        private float _rotatedVisualTop;
         private float _originalRotation;
 
         public PPShape(PowerPoint.Shape shape, bool redefineBoundingBox = true)
@@ -27,8 +27,8 @@ namespace PowerPointLabs.Utils
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
 
-            UpdateTop();
-            UpdateLeft();
+            UpdateVisualTop();
+            UpdateVisualLeft();
         }
 
         #region Properties
@@ -127,146 +127,235 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Return a point that represents the center of the shape.
+        /// Return or set a point that represents the visual center of the shape.
         /// </summary>
-        public PointF Center
+        public PointF VisualCenter
         {
-            get
+            get { return new PointF(_rotatedVisualLeft + _absoluteWidth/2, _rotatedVisualTop + _absoluteHeight/2); }
+            set
             {
-                var centerPoint = new PointF
-                {
-                    X = _rotatedLeft + _absoluteWidth/2,
-                    Y = _rotatedTop + _absoluteHeight/2
-                };
-                return centerPoint;
+                VisualLeft = value.X - AbsoluteWidth/2;
+                VisualTop = value.Y - AbsoluteHeight/2;
             }
         }
 
         /// <summary>
-        /// Return a point that represents the top left of the shape's bounding box after rotation.
+        /// Return or set a point that represents the actual center of the shape.
         /// </summary>
-        public PointF TopLeft
+        public PointF ActualCenter
         {
-            get
+            get { return GetRotatedPoint(0, 0); }
+            set { AlignToCenter(value); }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the visual top left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF VisualTopLeft
+        {
+            get { return new PointF(_rotatedVisualLeft, _rotatedVisualTop); }
+            set
             {
-                var topLeft = new PointF
-                {
-                    X = _rotatedLeft,
-                    Y = _rotatedTop
-                };
-                return topLeft;
+                VisualLeft = value.X;
+                VisualTop = value.Y;
             }
         }
 
         /// <summary>
-        /// Return a point that represents the top center of the shape's bounding box after rotation.
+        /// Return or set a point that represents the actual top left of the shape's bounding box after rotation.
         /// </summary>
-        public PointF TopCenter
+        public PointF ActualTopLeft
         {
-            get
+            get { return GetRotatedPoint(-_shape.Width/2, -_shape.Height/2); }
+            set
             {
-                var topCenterPoint = new PointF
-                {
-                    X = _rotatedLeft + _absoluteWidth / 2,
-                    Y = _rotatedTop
-                };
-                return topCenterPoint;
+                var center = GetCenterPoint(value, -_shape.Width/2, -_shape.Height/2);
+                AlignToCenter(center);
             }
         }
 
         /// <summary>
-        /// Return a point that represents the top right of the shape's bounding box after rotation.
+        /// Return or set a point that represents the visual top center of the shape's bounding box after rotation.
         /// </summary>
-        public PointF TopRight
+        public PointF VisualTopCenter
         {
-            get
+            get { return new PointF(_rotatedVisualLeft + _absoluteWidth/2, _rotatedVisualTop); }
+            set
             {
-                var topRightPoint = new PointF
-                {
-                    X = _rotatedLeft + _absoluteWidth,
-                    Y = _rotatedTop
-                };
-                return topRightPoint;
+                VisualLeft = value.X - AbsoluteWidth/2;
+                VisualTop = value.Y;
             }
         }
 
         /// <summary>
-        /// Return a point that represents the middle left of the shape's bounding box after rotation.
+        /// Return or set a point that represents the actual top center of the shape's bounding box after rotation.
         /// </summary>
-        public PointF MiddleLeft
+        public PointF ActualTopCenter
         {
-            get
+            get { return GetRotatedPoint(0, -_shape.Height/2); }
+            set
             {
-                var middleLeftPoint = new PointF
-                {
-                    X = _rotatedLeft,
-                    Y = _rotatedTop + _absoluteHeight / 2
-                };
-                return middleLeftPoint;
+                var center = GetCenterPoint(value, 0, -_shape.Height/2);
+                AlignToCenter(center);
             }
         }
 
         /// <summary>
-        /// Return a point that represents the middle right of the shape's bounding box after rotation.
+        /// Return or set a point that represents the visual top right of the shape's bounding box after rotation.
         /// </summary>
-        public PointF MiddleRight
+        public PointF VisualTopRight
         {
-            get
+            get { return new PointF(_rotatedVisualLeft + _absoluteWidth, _rotatedVisualTop); }
+            set
             {
-                var middleRightPoint = new PointF
-                {
-                    X = _rotatedLeft + _absoluteWidth,
-                    Y = _rotatedTop + _absoluteHeight / 2
-                };
-                return middleRightPoint;
+                VisualLeft = value.X - AbsoluteWidth;
+                VisualTop = value.Y;
             }
         }
 
         /// <summary>
-        /// Return a point that represents the bottom left of the shape's bounding box after rotation.
+        /// Return or set a point that represents the actual top right of the shape's bounding box after rotation.
         /// </summary>
-        public PointF BottomLeft
+        public PointF ActualTopRight
         {
             get
             {
-                var bottomLeftPoint = new PointF
-                {
-                    X = _rotatedLeft,
-                    Y = _rotatedTop + _absoluteHeight
-                };
-                return bottomLeftPoint;
+                return GetRotatedPoint(_shape.Width/2, -_shape.Height/2);
+            }
+            set
+            {
+                var center = GetCenterPoint(value, _shape.Width/2, -_shape.Height/2);
+                AlignToCenter(center);
             }
         }
 
         /// <summary>
-        /// Return a point that represents the bottom center of the shape's bounding box after rotation.
+        /// Return or set a point that represents the visual middle left of the shape's bounding box after rotation.
         /// </summary>
-        public PointF BottomCenter
+        public PointF VisualMiddleLeft
         {
-            get
+            get { return new PointF(_rotatedVisualLeft, _rotatedVisualTop + _absoluteHeight / 2); }
+            set
             {
-                var bottomCenterPoint = new PointF
-                {
-                    X = _rotatedLeft + _absoluteWidth / 2,
-                    Y = _rotatedTop + _absoluteHeight
-                };
-                return bottomCenterPoint;
+                VisualLeft = value.X;
+                VisualTop = value.Y - AbsoluteHeight/2;
             }
         }
 
         /// <summary>
-        /// Return a point that represents the bottom right of the shape's bounding box after rotation.
+        /// Retur or setn a point that represents the actual middle left of the shape's bounding box after rotation.
         /// </summary>
-        public PointF BottomRight
+        public PointF ActualMiddleLeft
         {
-            get
+            get { return GetRotatedPoint(-_shape.Width/2, 0); }
+            set
             {
-                var bottomRightPoint = new PointF
-                {
-                    X = _rotatedLeft + _absoluteWidth,
-                    Y = _rotatedTop + _absoluteHeight
-                };
-                return bottomRightPoint;
+                var center = GetCenterPoint(value, -_shape.Width/2, 0); 
+                AlignToCenter(center);
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the visual middle right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF VisualMiddleRight
+        {
+            get { return new PointF(_rotatedVisualLeft + _absoluteWidth, _rotatedVisualTop + _absoluteHeight/2); }
+            set
+            {
+                VisualLeft = value.X - AbsoluteWidth;
+                VisualTop = value.Y - AbsoluteHeight/2;
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the actual middle right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualMiddleRight
+        {
+            get { return GetRotatedPoint(_shape.Width/2, 0); }
+            set
+            {
+                var center = GetCenterPoint(value, _shape.Width/2, 0);
+                AlignToCenter(center);
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the visual bottom left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF VisualBottomLeft
+        {
+            get { return new PointF(_rotatedVisualLeft, _rotatedVisualTop + _absoluteHeight); }
+            set
+            {
+                VisualLeft = value.X;
+                VisualTop = value.Y - AbsoluteHeight;
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the actual bottom left of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualBottomLeft
+        {
+            get { return GetRotatedPoint(-_shape.Width/2, _shape.Height/2); }
+            set
+            {
+                var center = GetCenterPoint(value, -_shape.Width/2, _shape.Height/2);
+                AlignToCenter(center);
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the visual bottom center of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF VisualBottomCenter
+        {
+            get { return new PointF(_rotatedVisualLeft + _absoluteWidth/2, _rotatedVisualTop + _absoluteHeight); }
+            set
+            {
+                VisualLeft = value.X - AbsoluteWidth/2;
+                VisualTop = value.Y - AbsoluteHeight;
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the actual bottom center of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualBottomCenter
+        {
+            get { return GetRotatedPoint(0, _shape.Height/2); }
+            set
+            {
+                var center = GetCenterPoint(value, 0, _shape.Height/2);
+                AlignToCenter(center);
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the visual bottom right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF VisualBottomRight
+        {
+            get { return new PointF(_rotatedVisualLeft + _absoluteWidth, _rotatedVisualTop + _absoluteHeight); }
+            set
+            {
+                VisualLeft = value.X - AbsoluteWidth;
+                VisualTop = value.Y - AbsoluteHeight;
+            }
+        }
+
+        /// <summary>
+        /// Return or set a point that represents the actual bottom right of the shape's bounding box after rotation.
+        /// </summary>
+        public PointF ActualBottomRight
+        {
+            get { return GetRotatedPoint(_shape.Width/2, _shape.Height/2); }
+            set
+            {
+                var center = GetCenterPoint(value, _shape.Width/2, _shape.Height/2);
+                AlignToCenter(center);
             }
         }
 
@@ -274,12 +363,12 @@ namespace PowerPointLabs.Utils
         /// Return or set a single-precision floating-point number that represents the 
         /// distance from the left most point of the shape to the left edge of the slide.
         /// </summary>
-        public float Left
+        public float VisualLeft
         {
-            get { return _rotatedLeft; }
+            get { return _rotatedVisualLeft; }
             set
             {
-                _rotatedLeft = value; 
+                _rotatedVisualLeft = value; 
                 SetLeft();
             }
         }
@@ -288,12 +377,12 @@ namespace PowerPointLabs.Utils
         /// Return or set a single-precision floating-point number that represents the 
         /// distance from the top most point of the shape to the top edge of the slide.
         /// </summary>
-        public float Top
+        public float VisualTop
         {
-            get { return _rotatedTop; }
+            get { return _rotatedVisualTop; }
             set
             {
-                _rotatedTop = value;
+                _rotatedVisualTop = value;
                 SetTop();
             }
         }
@@ -321,8 +410,8 @@ namespace PowerPointLabs.Utils
                 ConvertToFreeform();
                 UpdateAbsoluteHeight();
                 UpdateAbsoluteWidth();
-                UpdateLeft();
-                UpdateTop();
+                UpdateVisualLeft();
+                UpdateVisualTop();
             }
         }
 
@@ -360,7 +449,7 @@ namespace PowerPointLabs.Utils
         public void IncrementLeft(float value)
         {
             _shape.IncrementLeft(value);
-            UpdateLeft();
+            UpdateVisualLeft();
         }
 
         /// <summary>
@@ -370,7 +459,7 @@ namespace PowerPointLabs.Utils
         public void IncrementTop(float value)
         {
             _shape.IncrementTop(value);
-            UpdateTop();
+            UpdateVisualTop();
         }
 
         /// <summary>
@@ -402,8 +491,8 @@ namespace PowerPointLabs.Utils
                                          (_originalRotation >= 270 && _originalRotation < 360);
 
             var rotation = GetStandardizedRotation(_originalRotation%90);
-            var centerLeft = Center.X;
-            var centerTop = Center.Y;
+            var centerLeft = VisualCenter.X;
+            var centerTop = VisualCenter.Y;
 
             for (int i = 1; i <= _shape.Nodes.Count; i++)
             {
@@ -428,8 +517,8 @@ namespace PowerPointLabs.Utils
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
 
-            Left = centerLeft - _absoluteWidth/2;
-            Top = centerTop - _absoluteHeight/2;
+            VisualLeft = centerLeft - _absoluteWidth/2;
+            VisualTop = centerTop - _absoluteHeight/2;
         }
 
         #endregion

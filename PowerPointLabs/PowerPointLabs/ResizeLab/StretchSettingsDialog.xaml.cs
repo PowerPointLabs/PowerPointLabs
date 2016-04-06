@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -24,6 +25,7 @@ namespace PowerPointLabs.ResizeLab
             LoadRefTypeCheckedButton();
         }
 
+        #region Initialise
         private void InitRefTypeButtonDictionary()
         {
             _refTypeButtonLookUp = new Dictionary<ResizeLabMain.StretchRefType, RadioButton>()
@@ -42,6 +44,9 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        #endregion
+
+        #region Event Handler
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
             _resizeLab.ReferenceType = RefTypeToCheckedRefTypeBtn();
@@ -53,6 +58,16 @@ namespace PowerPointLabs.ResizeLab
         {
             IsOpen = false;
         }
+
+        private void Dialog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
+
+        #endregion
 
         #region Helper functions
         private ResizeLabMain.StretchRefType RefTypeToCheckedRefTypeBtn()

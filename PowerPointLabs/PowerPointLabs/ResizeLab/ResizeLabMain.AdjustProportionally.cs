@@ -33,26 +33,14 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void AdjustWidthProportionally(PowerPoint.ShapeRange selectedShapes)
         {
-            try
+            switch (ResizeType)
             {
-                var referenceWidth = GetReferenceWidth(selectedShapes);
-
-                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
-
-                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
-                {
-                    var newWidth = referenceWidth * (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
-                    var shape = new PPShape(selectedShapes[i + 1]);
-                    var anchorPoint = GetAnchorPoint(shape);
-
-                    shape.AbsoluteWidth = newWidth;
-                    AlignShape(shape, anchorPoint);
-                }
-                AdjustProportionallyProportionList = null;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AdjustWidthProportionally");
+                case ResizeBy.Visual:
+                    AdjustVisualWidthProportionally(selectedShapes);
+                    break;
+                case ResizeBy.Actual:
+                    AdjustActualWidthProportionally(selectedShapes);
+                    break;
             }
         }
 
@@ -63,6 +51,55 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void AdjustHeightProportionally(PowerPoint.ShapeRange selectedShapes)
         {
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    AdjustVisualHeightProportionally(selectedShapes);
+                    break;
+                case ResizeBy.Actual:
+                    AdjustActualHeightProportionally(selectedShapes);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Adjust the visual width of the specified shapes to the resize factors of first
+        /// selected shape's visual width.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        public void AdjustVisualWidthProportionally(PowerPoint.ShapeRange selectedShapes)
+        {
+            try
+            {
+                var referenceWidth = GetReferenceWidth(selectedShapes);
+
+                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+
+                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
+                {
+                    var newWidth = referenceWidth*
+                                   (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+                    var shape = new PPShape(selectedShapes[i + 1]);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
+
+                    shape.AbsoluteWidth = newWidth;
+                    AlignVisualShape(shape, anchorPoint);
+                }
+                AdjustProportionallyProportionList = null;
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "AdjustVisualWidthProportionally");
+            }
+        }
+
+        /// <summary>
+        /// Adjust the visual height of the specified shapes to the resize factor of first
+        /// selected shape's visual height.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        public void AdjustVisualHeightProportionally(PowerPoint.ShapeRange selectedShapes)
+        {
             try
             {
                 var referenceHeight = GetReferenceHeight(selectedShapes);
@@ -71,18 +108,81 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    var newHeight = referenceHeight * (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+                    var newHeight = referenceHeight*
+                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
                     var shape = new PPShape(selectedShapes[i + 1]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteHeight = newHeight;
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
                 AdjustProportionallyProportionList = null;
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "AdjustHeightProportionally");
+                Logger.LogException(e, "AdjustVisualHeightProportionally");
+            }
+        }
+
+        /// <summary>
+        /// Adjust the actual width of the specified shapes to the resize factor of first
+        /// selected shape's actual width.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        public void AdjustActualWidthProportionally(PowerPoint.ShapeRange selectedShapes)
+        {
+            try
+            {
+                var referenceWidth = GetReferenceWidth(selectedShapes);
+
+                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+
+                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
+                {
+                    var newWidth = referenceWidth*
+                                   (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+                    var shape = new PPShape(selectedShapes[i + 1], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
+
+                    shape.ShapeWidth = newWidth;
+                    AlignActualShape(shape, anchorPoint);
+                }
+                AdjustProportionallyProportionList = null;
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "AdjustActualWidthProportionally");
+            }
+        }
+
+        /// <summary>
+        /// Adjust the actual height of the specified shapes to the resize factor of first
+        /// selected shape's actual height.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        public void AdjustActualHeightProportionally(PowerPoint.ShapeRange selectedShapes)
+        {
+            try
+            {
+                var referenceHeight = GetReferenceHeight(selectedShapes);
+
+                if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+
+                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
+                {
+                    var newHeight = referenceHeight*
+                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+                    var shape = new PPShape(selectedShapes[i + 1], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
+
+                    shape.ShapeHeight = newHeight;
+                    AlignActualShape(shape, anchorPoint);
+                }
+                AdjustProportionallyProportionList = null;
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "AdjustActualHeightProportionally");
             }
         }
     }

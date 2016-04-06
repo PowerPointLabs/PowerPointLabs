@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
@@ -29,31 +30,57 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="shape"></param>
         /// <returns></returns>
-        private PointF GetAnchorPoint(PPShape shape)
+        private PointF GetVisualAnchorPoint(PPShape shape)
         {
             switch (AnchorPointType)
             {
                 case AnchorPoint.TopLeft:
-                    return shape.TopLeft;
+                    return shape.VisualTopLeft;
                 case AnchorPoint.TopCenter:
-                    return shape.TopCenter;
+                    return shape.VisualTopCenter;
                 case AnchorPoint.TopRight:
-                    return shape.TopRight;
+                    return shape.VisualTopRight;
                 case AnchorPoint.MiddleLeft:
-                    return shape.MiddleLeft;
+                    return shape.VisualMiddleLeft;
                 case AnchorPoint.Center:
-                    return shape.Center;
+                    return shape.VisualCenter;
                 case AnchorPoint.MiddleRight:
-                    return shape.MiddleRight;
+                    return shape.VisualMiddleRight;
                 case AnchorPoint.BottomLeft:
-                    return shape.BottomLeft;
+                    return shape.VisualBottomLeft;
                 case AnchorPoint.BottomCenter:
-                    return shape.BottomCenter;
+                    return shape.VisualBottomCenter;
                 case AnchorPoint.BottomRight:
-                    return shape.BottomRight;
+                    return shape.VisualBottomRight;
             }
 
-            return shape.Center;
+            return shape.VisualTopLeft;
+        }
+
+        private PointF GetActualAnchorPoint(PPShape shape)
+        {
+            switch (AnchorPointType)
+            {
+                case AnchorPoint.TopLeft:
+                    return shape.ActualTopLeft;
+                case AnchorPoint.TopCenter:
+                    return shape.ActualTopCenter;
+                case AnchorPoint.TopRight:
+                    return shape.ActualTopRight;
+                case AnchorPoint.MiddleLeft:
+                    return shape.ActualMiddleLeft;
+                case AnchorPoint.Center:
+                    return shape.ActualCenter;
+                case AnchorPoint.MiddleRight:
+                    return shape.ActualMiddleRight;
+                case AnchorPoint.BottomLeft:
+                    return shape.ActualBottomLeft;
+                case AnchorPoint.BottomCenter:
+                    return shape.ActualBottomCenter;
+                case AnchorPoint.BottomRight:
+                    return shape.ActualBottomRight;
+            }
+            return shape.ActualTopLeft;
         }
 
         /// <summary>
@@ -61,45 +88,70 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="shape"></param>
         /// <param name="anchorPoint"></param>
-        private void AlignShape(PPShape shape, PointF anchorPoint)
+        private void AlignVisualShape(PPShape shape, PointF anchorPoint)
         {
             switch (AnchorPointType)
             {
                 case AnchorPoint.TopLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y;
+                    shape.VisualTopLeft = anchorPoint;
                     break;
                 case AnchorPoint.TopCenter:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
-                    shape.Top = anchorPoint.Y;
+                    shape.VisualTopCenter = anchorPoint;
                     break;
                 case AnchorPoint.TopRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y;
+                    shape.VisualTopRight = anchorPoint;
                     break;
                 case AnchorPoint.MiddleLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    shape.VisualMiddleLeft = anchorPoint;
                     break;
                 case AnchorPoint.Center:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    shape.VisualCenter = anchorPoint;
                     break;
                 case AnchorPoint.MiddleRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight / 2;
+                    shape.VisualMiddleRight = anchorPoint;
                     break;
                 case AnchorPoint.BottomLeft:
-                    shape.Left = anchorPoint.X;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    shape.VisualBottomLeft = anchorPoint;
                     break;
                 case AnchorPoint.BottomCenter:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth / 2;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    shape.VisualBottomCenter = anchorPoint;
                     break;
                 case AnchorPoint.BottomRight:
-                    shape.Left = anchorPoint.X - shape.AbsoluteWidth;
-                    shape.Top = anchorPoint.Y - shape.AbsoluteHeight;
+                    shape.VisualBottomRight = anchorPoint;
+                    break;
+            }
+        }
+
+        private void AlignActualShape(PPShape shape, PointF anchorPoint)
+        {
+            switch (AnchorPointType)
+            {
+                case AnchorPoint.TopLeft:
+                    shape.ActualTopLeft = anchorPoint;
+                    break;
+                case AnchorPoint.TopCenter:
+                    shape.ActualTopCenter = anchorPoint;
+                    break;
+                case AnchorPoint.TopRight:
+                    shape.ActualTopRight = anchorPoint;
+                    break;
+                case AnchorPoint.MiddleLeft:
+                    shape.ActualMiddleLeft = anchorPoint;
+                    break;
+                case AnchorPoint.Center:
+                    shape.ActualCenter = anchorPoint;
+                    break;
+                case AnchorPoint.MiddleRight:
+                    shape.ActualMiddleRight = anchorPoint;
+                    break;
+                case AnchorPoint.BottomLeft:
+                    shape.ActualBottomLeft = anchorPoint;
+                    break;
+                case AnchorPoint.BottomCenter:
+                    shape.ActualBottomCenter = anchorPoint;
+                    break;
+                case AnchorPoint.BottomRight:
+                    shape.ActualBottomRight = anchorPoint;
                     break;
             }
         }
@@ -131,14 +183,15 @@ namespace PowerPointLabs.ResizeLab
         #endregion
 
         #region Resize Type
+
         public enum ResizeBy
         {
-            Visual, Actual
+            Visual,
+            Actual
         }
 
         public ResizeBy ResizeType;
 
         #endregion
-
     }
 }

@@ -17,8 +17,8 @@ namespace PowerPointLabs.ResizeLab
             Action<PPShape, PPShape> adjustPosition =
                 (originalShape, newShape) =>
                 {
-                    newShape.Left = originalShape.Left - originalShape.AbsoluteWidth;
-                    newShape.Top = originalShape.Top;
+                    newShape.VisualLeft = originalShape.VisualLeft - originalShape.AbsoluteWidth;
+                    newShape.VisualTop = originalShape.VisualTop;
                 }; 
 
             Symmetrize(selectedShapes, MsoFlipCmd.msoFlipHorizontal, adjustPosition);
@@ -33,8 +33,8 @@ namespace PowerPointLabs.ResizeLab
             Action<PPShape, PPShape> adjustPosition =
                 (originalShape, newShape) =>
                 {
-                    newShape.Left = originalShape.Left + originalShape.AbsoluteWidth;
-                    newShape.Top = originalShape.Top;
+                    newShape.VisualLeft = originalShape.VisualLeft + originalShape.AbsoluteWidth;
+                    newShape.VisualTop = originalShape.VisualTop;
                 };
 
             Symmetrize(selectedShapes, MsoFlipCmd.msoFlipHorizontal, adjustPosition);
@@ -49,8 +49,8 @@ namespace PowerPointLabs.ResizeLab
             Action<PPShape, PPShape> adjustPosition =
                 (originalShape, newShape) =>
                 {
-                    newShape.Left = originalShape.Left;
-                    newShape.Top = originalShape.Top - originalShape.AbsoluteHeight;
+                    newShape.VisualLeft = originalShape.VisualLeft;
+                    newShape.VisualTop = originalShape.VisualTop - originalShape.AbsoluteHeight;
                 };
 
             Symmetrize(selectedShapes, MsoFlipCmd.msoFlipVertical, adjustPosition);
@@ -65,8 +65,8 @@ namespace PowerPointLabs.ResizeLab
             Action<PPShape, PPShape> adjustPosition =
                 (originalShape, newShape) =>
                 {
-                    newShape.Left = originalShape.Left;
-                    newShape.Top = originalShape.Top + originalShape.AbsoluteHeight;
+                    newShape.VisualLeft = originalShape.VisualLeft;
+                    newShape.VisualTop = originalShape.VisualTop + originalShape.AbsoluteHeight;
                 };
 
             Symmetrize(selectedShapes, MsoFlipCmd.msoFlipVertical, adjustPosition);

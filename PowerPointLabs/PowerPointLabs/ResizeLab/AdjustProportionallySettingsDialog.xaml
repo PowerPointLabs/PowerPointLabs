@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:resizeLab="clr-namespace:PowerPointLabs.ResizeLab"
              mc:Ignorable="d"
              ResizeMode="NoResize" 
              Title="Adjust Proportionally Settings" 
@@ -14,6 +15,7 @@
              Closed="AdjustProportionallySettingsDialog_Closed"
              BorderThickness="1"
              BorderBrush="#0070C0"
+             KeyDown="Dialog_KeyDown"
              WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -46,12 +48,12 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="1st Selected Object (Reference)" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Row="0" Grid.Column="1" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Enter a decimal value greater than 0"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{x:Static resizeLab:ResizeLabTooltip.AdjustProportionallySettingsTextBox}"/>
                 <TextBlock Text="2nd Selected Object" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Row="1" Grid.Column="1" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Enter a decimal value greater than 0"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Width="50" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="{x:Static resizeLab:ResizeLabTooltip.AdjustProportionallySettingsTextBox}"/>
             </Grid>
         </ScrollViewer>
 
-        <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="OkBtn_Click"/>
+        <Button x:Name="OkBtn" Grid.Row="3" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" IsDefault="True" Click="OkBtn_Click"/>
     </Grid>
 </controls:MetroWindow>

@@ -32,7 +32,15 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void ResizeToSameHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            ResizeShapes(selectedShapes, Dimension.Height);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    ResizeVisualShapes(selectedShapes, Dimension.Height);
+                    break;
+                case ResizeBy.Actual:
+                    ResizeActualShapes(selectedShapes, Dimension.Height);
+                    break;
+            }
         }
 
         /// <summary>
@@ -42,7 +50,15 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void ResizeToSameWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            ResizeShapes(selectedShapes, Dimension.Width);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    ResizeVisualShapes(selectedShapes, Dimension.Width);
+                    break;
+                case ResizeBy.Actual:
+                    ResizeActualShapes(selectedShapes, Dimension.Width);
+                    break;
+            }
         }
 
         /// <summary>
@@ -55,7 +71,15 @@ namespace PowerPointLabs.ResizeLab
             var isAspectRatio = selectedShapes.LockAspectRatio;
 
             selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
-            ResizeShapes(selectedShapes, Dimension.HeightAndWidth);
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    ResizeVisualShapes(selectedShapes, Dimension.HeightAndWidth);
+                    break;
+                case ResizeBy.Actual:
+                    ResizeActualShapes(selectedShapes, Dimension.HeightAndWidth);
+                    break;
+            }
             selectedShapes.LockAspectRatio = isAspectRatio;
         }
 
@@ -64,7 +88,7 @@ namespace PowerPointLabs.ResizeLab
         /// </summary>
         /// <param name="selectedShapes"></param>
         /// <param name="dimension"></param>
-        private void ResizeShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        private void ResizeVisualShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
         {
             try
             {
@@ -80,7 +104,7 @@ namespace PowerPointLabs.ResizeLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     var shape = new PPShape(selectedShapes[i]);
-                    var anchorPoint = GetAnchorPoint(shape);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
@@ -92,12 +116,49 @@ namespace PowerPointLabs.ResizeLab
                         shape.AbsoluteWidth = referenceWidth;
                     }
 
-                    AlignShape(shape, anchorPoint);
+                    AlignVisualShape(shape, anchorPoint);
                 }
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "ResizeShapes");
+                Logger.LogException(e, "ResizeVisualShapes");
+            }
+        }
+
+        private void ResizeActualShapes(PowerPoint.ShapeRange selectedShapes, Dimension dimension)
+        {
+            try
+            {
+                var referenceHeight = GetReferenceHeight(selectedShapes);
+                var referenceWidth = GetReferenceWidth(selectedShapes);
+
+                if (!IsMoreThanOneShape(selectedShapes, Equalize_MinNoOfShapesRequired, true, Equalize_ErrorParameters)
+                    || (referenceHeight < 0) || (referenceWidth < 0))
+                {
+                    return;
+                }
+
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    var shape = new PPShape(selectedShapes[i], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
+
+                    if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
+                    {
+                        shape.ShapeHeight = referenceHeight;
+                    }
+
+                    if ((dimension == Dimension.Width) || (dimension == Dimension.HeightAndWidth))
+                    {
+                        shape.ShapeWidth = referenceWidth;
+                    }
+
+                    AlignActualShape(shape, anchorPoint);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "ResizeActualShapes");
             }
         }
     }
