@@ -1632,15 +1632,9 @@ namespace PowerPointLabs.PositionsLab
                     isAllSameDir = false;
                     break;
                 }
-
-                //only maintain in one direction instead of dual direction
-                if (dir < Leftorright)
-                {
-                    lastDir = dir;
-                }
             }
 
-            if (!isAllSameDir || lastDir == None)
+            if (!isAllSameDir || lastDir == None || lastDir == Up)
             {
                 lastDir = 0;
             }
@@ -1658,21 +1652,19 @@ namespace PowerPointLabs.PositionsLab
                 float defaultUpAngle = 0;
                 var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
-                if (hasDefaultDirection)
-                {
-                    shape.Rotation = (defaultUpAngle + angle) + lastDir*90;
-                }
-                else
+                if (!hasDefaultDirection)
                 {
                     if (IsVertical(shape))
                     {
-                        shape.Rotation = angle + lastDir*90;
+                        defaultUpAngle = 0;
                     }
                     else
                     {
-                        shape.Rotation = (angle - 90) + lastDir*90;
+                        defaultUpAngle = 90;
                     }
                 }
+
+                shape.Rotation = (defaultUpAngle + angle) + lastDir * 90;
             }
         }
 
@@ -1781,12 +1773,6 @@ namespace PowerPointLabs.PositionsLab
             float defaultUpAngle;
             var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
 
-            if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
-            {
-                Debug.WriteLine("defaultDir: " + hasDefaultDirection);
-                Debug.WriteLine("defaultAngle: " + defaultUpAngle);
-            }
-
             if (!hasDefaultDirection)
             {
                 if (IsVertical(shape))
@@ -1803,30 +1789,12 @@ namespace PowerPointLabs.PositionsLab
             var diff = SubtractAngles(shape.Rotation, angle);
             var phaseInFloat = diff/90;
 
-            if (shape.AutoShapeType == AutoShape.msoShapeLightningBolt)
-            {
-                Debug.WriteLine("angle: " + angle);
-                Debug.WriteLine("diff: " + diff);
-                Debug.WriteLine("phaseInFloat: " + defaultUpAngle);
-                Debug.WriteLine("equal: " + NearlyEqual(phaseInFloat, (float) Math.Round(phaseInFloat), Epsilon));
-            }
-
             if (!NearlyEqual(phaseInFloat, (float) Math.Round(phaseInFloat), Epsilon))
             {
                 return None;
             }
 
             var phase = (int) Math.Round(phaseInFloat);
-
-            if (!hasDefaultDirection)
-            {
-                if (phase == Left || phase == Right)
-                {
-                    return Leftorright;
-                }
-
-                return Upordown;
-            }
 
             return phase;
         }
