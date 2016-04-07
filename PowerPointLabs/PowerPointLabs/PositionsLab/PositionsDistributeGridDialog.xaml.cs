@@ -197,7 +197,6 @@ namespace PowerPointLabs.PositionsLab
             catch (Exception ex)
             {
                 Close();
-                Debug.WriteLine(ex.Message);
                 ShowErrorMessageBox(ex.Message, ex);
             }
             finally
