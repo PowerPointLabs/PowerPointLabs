@@ -30,60 +30,130 @@ namespace Test.UnitTest.ResizeLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSameWidthWithoutAspectRatio()
+        public void TestEqualizeVisualWidthWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.EqualizeWidth, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeVisualWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
             _resizeLab.ResizeToSameWidth(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSameWidthWithAspectRatio()
+        public void TestEqualizeVisualWidthWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.EqualizeWidthAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeVisualWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
             _resizeLab.ResizeToSameWidth(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSameHeightWithoutAspectRatio()
+        public void TestEqualizeActualWidthWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.EqualizeHeight, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeActualWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
-            _resizeLab.ResizeToSameHeight(actualShapes);
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
+            _resizeLab.ResizeToSameWidth(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSameHeightWithAspectRatio()
+        public void TestEqualizeActualWidthWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.EqualizeHeightAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeActualWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
+            _resizeLab.ResizeToSameWidth(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestEqualizeVisualHeightWithoutAspectRatio()
+        {
+            var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeVisualHeight, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
             _resizeLab.ResizeToSameHeight(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSameWidthAndHeight()
+        public void TestEqualizeVisualHeightWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.EqualizeBoth, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeVisualHeightAspectRatio, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoTrue;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
+            _resizeLab.ResizeToSameHeight(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestEqualizeActualHeightWithoutAspectRatio()
+        {
+            var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeActualHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
+            _resizeLab.ResizeToSameHeight(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestEqualizeActualHeightWithAspectRatio()
+        {
+            var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeActualHeightAspectRatio, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoTrue;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
+            _resizeLab.ResizeToSameHeight(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestEqualizeVisualWidthAndHeight()
+        {
+            var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeVisualBoth, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
+            _resizeLab.ResizeToSameHeightAndWidth(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestEqualizeActualWidthAndHeight()
+        {
+            var actualShapes = GetShapes(SlideNo.EqualizeOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.EqualizeActualBoth, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
             _resizeLab.ResizeToSameHeightAndWidth(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }

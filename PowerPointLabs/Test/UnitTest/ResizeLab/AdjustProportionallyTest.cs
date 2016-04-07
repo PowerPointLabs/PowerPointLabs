@@ -40,7 +40,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestAdjustWidthProportionallyWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.AdjustWidthProportionally, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustVisualWidthProportionally, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;
@@ -53,7 +53,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestAdjustWidthProportionallyWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.AdjustWidthProportionallyAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustVisualWidthProportionallyAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;
@@ -66,7 +66,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestAdjustHeightProportionallyWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.AdjustHeightProportionally, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustVisualHeightProportionally, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;
@@ -79,7 +79,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestAdjustHeightProportionallyWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.AdjustHeightProportionallyAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustVisualHeightProportionallyAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;

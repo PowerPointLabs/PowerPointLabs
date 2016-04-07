@@ -17,49 +17,54 @@
         public const int StretchBottomOuterMost = 15;
 
         public const int EqualizeOrigin = 17;
-        public const int EqualizeWidth = 18;
-        public const int EqualizeWidthAspectRatio = 19 ;
-        public const int EqualizeHeight = 20;
-        public const int EqualizeHeightAspectRatio = 21;
-        public const int EqualizeBoth = 22;
+        public const int EqualizeVisualWidth = 18;
+        public const int EqualizeVisualWidthAspectRatio = 19;
+        public const int EqualizeActualWidth = 20;
+        public const int EqualizeActualWidthAspectRatio = 21;
+        public const int EqualizeVisualHeight = 22;
+        public const int EqualizeVisualHeightAspectRatio = 23;
+        public const int EqualizeActualHeight = 24;
+        public const int EqualizeActualHeightAspectRatio = 25;
+        public const int EqualizeVisualBoth = 26;
+        public const int EqualizeActualBoth = 27;
 
-        public const int FitToSlideOrigin = 24;
-        public const int FitToSlideWidth = 25;
-        public const int FitToSlideWidthAspectRatio = 26;
-        public const int FitToSlideHeight = 27;
-        public const int FitToSlideHeightAspectRatio = 28;
-        public const int FitToSlideFill = 29;
-        public const int FitToSlideFillAspectRatio = 30;
+        public const int FitToSlideOrigin = 29;
+        public const int FitToSlideWidth = 30;
+        public const int FitToSlideWidthAspectRatio = 31;
+        public const int FitToSlideHeight = 32;
+        public const int FitToSlideHeightAspectRatio = 33;
+        public const int FitToSlideFill = 34;
+        public const int FitToSlideFillAspectRatio = 35;
 
-        public const int MatchOrigin = 32;
-        public const int MatchWidth = 33;
-        public const int MatchHeight = 34;
+        public const int MatchOrigin = 37;
+        public const int MatchVisualWidth = 38;
+        public const int MatchVisualHeight = 39;
 
-        public const int AdjustProportionallyOrigin = 36;
-        public const int AdjustWidthProportionally = 37;
-        public const int AdjustWidthProportionallyAspectRatio = 38;
-        public const int AdjustHeightProportionally = 39;
-        public const int AdjustHeightProportionallyAspectRatio = 40;
+        public const int AdjustProportionallyOrigin = 41;
+        public const int AdjustVisualWidthProportionally = 42;
+        public const int AdjustVisualWidthProportionallyAspectRatio = 43;
+        public const int AdjustVisualHeightProportionally = 44;
+        public const int AdjustVisualHeightProportionallyAspectRatio = 45;
 
-        public const int SlightAdjustOrigin = 42;
-        public const int SlightIncreaseWidth = 43;
-        public const int SlightIncreaseWidthAspectRatio = 44;
-        public const int SlightDecreaseWidth = 45;
-        public const int SlightDecreaseWidthAspectRatio = 46;
-        public const int SlightIncreaseHeight = 47;
-        public const int SlightIncreaseHeightAspectRatio = 48;
-        public const int SlightDecreaseHeight = 49;
-        public const int SlightDecreaseHeightAspectRatio = 50;
+        public const int SlightAdjustOrigin = 47;
+        public const int SlightVisualIncreaseWidth = 48;
+        public const int SlightVisualIncreaseWidthAspectRatio = 49;
+        public const int SlightVisualDecreaseWidth = 50;
+        public const int SlightVisualDecreaseWidthAspectRatio = 51;
+        public const int SlightVisualIncreaseHeight = 52;
+        public const int SlightVisualIncreaseHeightAspectRatio = 53;
+        public const int SlightVisualDecreaseHeight = 54;
+        public const int SlightVisualDecreaseHeightAspectRatio = 55;
 
-        public const int AnchorOrigin = 52;
-        public const int AnchorTopLeft = 53;
-        public const int AnchorTopCenter = 54;
-        public const int AnchorTopRight = 55;
-        public const int AnchorMiddleLeft = 56;
-        public const int AnchorCenter = 57;
-        public const int AnchorMiddleRight = 58;
-        public const int AnchorBottomLeft = 59;
-        public const int AnchorBottomCenter = 60;
-        public const int AnchorBottomRight = 61;
+        public const int AnchorOrigin = 57;
+        public const int AnchorTopLeft = 58;
+        public const int AnchorTopCenter = 59;
+        public const int AnchorTopRight = 60;
+        public const int AnchorMiddleLeft = 61;
+        public const int AnchorCenter = 62;
+        public const int AnchorMiddleRight = 63;
+        public const int AnchorBottomLeft = 64;
+        public const int AnchorBottomCenter = 65;
+        public const int AnchorBottomRight = 66;
     }
 }

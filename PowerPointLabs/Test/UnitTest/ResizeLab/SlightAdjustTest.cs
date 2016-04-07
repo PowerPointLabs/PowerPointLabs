@@ -41,7 +41,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightIncreaseWidthWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightIncreaseWidth, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.IncreaseWidth(actualShapes);
@@ -53,7 +53,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightIncreaseWidthWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightIncreaseWidthAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.IncreaseWidth(actualShapes);
@@ -65,7 +65,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightDecreaseWidthWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightDecreaseWidth, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.DecreaseWidth(actualShapes);
@@ -77,7 +77,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightDecreaseWidthWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightDecreaseWidthAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.DecreaseWidth(actualShapes);
@@ -89,7 +89,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightIncreaseHeightWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightIncreaseHeight, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.IncreaseHeight(actualShapes);
@@ -101,7 +101,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightIncreaseHeightWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightIncreaseHeightAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.IncreaseHeight(actualShapes);
@@ -113,7 +113,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightDecreaseHeightWithoutAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightDecreaseHeight, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.DecreaseHeight(actualShapes);
@@ -125,7 +125,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestSlightDecreaseHeightWithAspectRatio()
         {
             var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightDecreaseHeightAspectRatio, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.DecreaseHeight(actualShapes);

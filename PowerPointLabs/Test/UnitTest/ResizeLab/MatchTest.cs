@@ -31,7 +31,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestMatchWidth()
         {
             var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.MatchWidth, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchVisualWidth, _shapeNames);
 
             _resizeLab.MatchWidth(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
@@ -42,7 +42,7 @@ namespace Test.UnitTest.ResizeLab
         public void TestMatchHeight()
         {
             var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.MatchHeight, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchVisualHeight, _shapeNames);
 
             _resizeLab.MatchHeight(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
