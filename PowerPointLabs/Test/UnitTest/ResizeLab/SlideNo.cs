@@ -71,14 +71,23 @@
         public const int SlightActualDecreaseHeightAspectRatio = 69;
 
         public const int AnchorOrigin = 71;
-        public const int AnchorTopLeft = 72;
-        public const int AnchorTopCenter = 73;
-        public const int AnchorTopRight = 74;
-        public const int AnchorMiddleLeft = 75;
-        public const int AnchorCenter = 76;
-        public const int AnchorMiddleRight = 77;
-        public const int AnchorBottomLeft = 78;
-        public const int AnchorBottomCenter = 79;
-        public const int AnchorBottomRight = 80;
+        public const int AnchorVisualTopLeft = 72;
+        public const int AnchorVisualTopCenter = 73;
+        public const int AnchorVisualTopRight = 74;
+        public const int AnchorVisualMiddleLeft = 75;
+        public const int AnchorVisualCenter = 76;
+        public const int AnchorVisualMiddleRight = 77;
+        public const int AnchorVisualBottomLeft = 78;
+        public const int AnchorVisualBottomCenter = 79;
+        public const int AnchorVisualBottomRight = 80;
+        public const int AnchorActualTopLeft = 81;
+        public const int AnchorActualTopCenter = 82;
+        public const int AnchorActualTopRight = 83;
+        public const int AnchorActualMiddleLeft = 84;
+        public const int AnchorActualCenter = 85;
+        public const int AnchorActualMiddleRight = 86;
+        public const int AnchorActualBottomLeft = 87;
+        public const int AnchorActualBottomCenter = 88;
+        public const int AnchorActualBottomRight = 89;
     }
 }
