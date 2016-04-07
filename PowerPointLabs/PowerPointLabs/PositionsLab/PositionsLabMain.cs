@@ -1597,7 +1597,6 @@ namespace PowerPointLabs.PositionsLab
 
         public static void SnapHorizontal(IList<Shape> selectedShapes)
         {
-            Debug.WriteLine("hi");
             foreach (var s in selectedShapes)
             {
                 SnapShapeHorizontal(s);
@@ -1816,18 +1815,12 @@ namespace PowerPointLabs.PositionsLab
 
             var phase = (int) Math.Round(phaseInFloat);
 
-            return phase;
+            return phase % 4;
         }
 
         private static bool IsSameDirection(int a, int b)
         {
-            if (a == b) return true;
-            if (a == Leftorright) return b == Left || b == Right;
-            if (b == Leftorright) return a == Left || a == Right;
-            if (a == Upordown) return b == Up || b == Down;
-            if (b == Upordown) return a == Up || a == Down;
-
-            return false;
+            return (a == b);
         }
 
         public static float AddAngles(float a, float b)
