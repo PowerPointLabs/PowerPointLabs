@@ -6,6 +6,8 @@ using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Utils;
 using System;
 using PowerPointLabs.PositionsLab;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using System.Diagnostics;
 
 namespace Test.UnitTest.PositionsLab
 {
@@ -14,7 +16,8 @@ namespace Test.UnitTest.PositionsLab
     {
         private const int Left = 0;
         private const int Top = 1;
-        protected const String ErrorInvalidShapesSelected = "Invalid Shapes Selected.";
+        private readonly Dictionary<string, string> _originalShapeName = new Dictionary<string, string>();
+        protected const string ErrorInvalidShapesSelected = "Invalid Shapes Selected.";
 
         protected override string GetTestingSlideName()
         {
@@ -42,6 +45,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 var shape = range[i];
                 var duplicated = shape.Duplicate()[1];
+                duplicated.Name = shape.Id + "";
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
                 duplicatedShapeIndices[i - 1] = totalShapes + i;
@@ -375,7 +379,7 @@ namespace Test.UnitTest.PositionsLab
             }
         }
 
-        protected void ExecutePositionsAction(Action<List<PowerPoint.Shape>> positionsAction, PowerPoint.ShapeRange selectedShapes)
+        protected void ExecutePositionsAction(Action<IList<Shape>> positionsAction, PowerPoint.ShapeRange selectedShapes)
         {
             if (selectedShapes == null || selectedShapes.Count == 0)
             {
@@ -384,7 +388,7 @@ namespace Test.UnitTest.PositionsLab
 
             try
             {
-                var shapes = ConvertShapeRangeToShapeList(PpOperations.GetCurrentSelection().ShapeRange, 1);
+                var shapes = ConvertShapeRangeToShapeList(selectedShapes, 1);
 
                 positionsAction.Invoke(shapes);
 

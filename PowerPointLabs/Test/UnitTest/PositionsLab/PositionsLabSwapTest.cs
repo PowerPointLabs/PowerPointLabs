@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using PowerPointLabs.PositionsLab;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
+using System.Diagnostics;
 
 namespace Test.UnitTest.PositionsLab
 {
@@ -71,6 +72,66 @@ namespace Test.UnitTest.PositionsLab
             ExecutePositionsAction(positionsAction, actualShapes, false);
 
             PpOperations.SelectSlide(SwapLeftToRight1Slide);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSwapLeftToRight2()
+        {
+            PositionsLabMain.IsSwapByClickOrder = false;
+            PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleCenter;
+            _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+
+            Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+
+            PpOperations.SelectSlide(SwapLeftToRight2Slide);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSwapLeftToRight3()
+        {
+            PositionsLabMain.IsSwapByClickOrder = false;
+            PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleCenter;
+            _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+
+            Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+
+            PpOperations.SelectSlide(SwapLeftToRight3Slide);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSwapLeftToRight4()
+        {
+            PositionsLabMain.IsSwapByClickOrder = false;
+            PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleCenter;
+            _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+
+            Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+            ExecutePositionsAction(positionsAction, actualShapes, false);
+
+            PpOperations.SelectSlide(SwapLeftToRight4Slide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
