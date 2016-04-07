@@ -27,6 +27,7 @@ namespace PowerPointLabs.PositionsLab
         private const int Upordown = 5;
 
         //Error Messages
+        private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
@@ -634,9 +635,15 @@ namespace PowerPointLabs.PositionsLab
 
             if (isSlide && isObjectBoundary)
             {
+                if (selectedShapes.Count < 1)
+                {
+                    throw new Exception(ErrorMessageNoSelection);
+                }
+
                 startingPoint = 0;
                 referenceWidth = slideWidth;
                 shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
+
                 foreach (var s in shapesToDistribute)
                 {
                     totalShapeWidth += s.AbsoluteWidth;
@@ -680,9 +687,15 @@ namespace PowerPointLabs.PositionsLab
 
             if (isSlide && isObjectCenter)
             {
+                if (selectedShapes.Count < 1)
+                {
+                    throw new Exception(ErrorMessageNoSelection);
+                }
+
                 startingPoint = 0;
                 referenceWidth = slideWidth;
                 shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
+
                 foreach (var s in shapesToDistribute)
                 {
                     totalShapeWidth += s.AbsoluteWidth;
@@ -690,13 +703,48 @@ namespace PowerPointLabs.PositionsLab
 
                 if (totalShapeWidth > referenceWidth)
                 {
-                    
+                    var leftMostShape = shapesToDistribute[0];
+                    var rightMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
+
+                    leftMostShape.IncrementLeft(startingPoint - leftMostShape.VisualLeft);
+                    rightMostShape.IncrementLeft(referenceWidth - rightMostShape.VisualLeft - rightMostShape.AbsoluteWidth);
+
+                    referenceWidth = referenceWidth - (leftMostShape.AbsoluteWidth / 2) - (rightMostShape.AbsoluteWidth / 2);
+
+                    spaceBetweenShapes = referenceWidth/(shapesToDistribute.Count - 1);
+                    startingPoint = leftMostShape.VisualCenter.X;
+                    shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                    shapesToDistribute.RemoveAt(0);
+                }
+                else
+                {
+                    spaceBetweenShapes = referenceWidth/(shapesToDistribute.Count + 1);
+                }
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementLeft(startingPoint - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.ActualCenter.X;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
                 }
                 return;
             }
 
             if (isFirstShape && isObjectBoundary)
             {
+                if (selectedShapes.Count < 2)
+                {
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                }
+
                 shapesToDistribute = new List<PPShape>(selectedShapes);
                 startingPoint = shapesToDistribute[0].VisualLeft;
                 referenceWidth = shapesToDistribute[0].AbsoluteWidth;
@@ -746,12 +794,75 @@ namespace PowerPointLabs.PositionsLab
 
             if (isFirstShape && isObjectCenter)
             {
+                if (selectedShapes.Count < 2)
+                {
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                }
+
+                shapesToDistribute = new List<PPShape>(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualLeft;
+                referenceWidth = shapesToDistribute[0].AbsoluteWidth;
+                shapesToDistribute.RemoveAt(0);
+                shapesToDistribute = Graphics.SortShapesByLeft(shapesToDistribute);
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+
+                if (totalShapeWidth > referenceWidth)
+                {
+                    var leftMostShape = shapesToDistribute[0];
+                    var rightMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
+
+                    leftMostShape.IncrementLeft(startingPoint - leftMostShape.VisualLeft);
+                    rightMostShape.IncrementLeft(startingPoint + referenceWidth - rightMostShape.VisualLeft - rightMostShape.AbsoluteWidth);
+
+                    referenceWidth = referenceWidth - (leftMostShape.AbsoluteWidth / 2) - (rightMostShape.AbsoluteWidth / 2);
+
+                    spaceBetweenShapes = referenceWidth / (shapesToDistribute.Count - 1);
+                    startingPoint = leftMostShape.VisualCenter.X;
+                    shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                    shapesToDistribute.RemoveAt(0);
+                }
+                else
+                {
+                    spaceBetweenShapes = referenceWidth / (shapesToDistribute.Count + 1);
+                }
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementLeft(startingPoint - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.ActualCenter.X;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
 
             if (isFirstTwoShapes && isObjectBoundary)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
                 shapesToDistribute = new List<PPShape>(selectedShapes);
+
+                if (shapesToDistribute[0].VisualLeft > shapesToDistribute[1].VisualLeft)
+                {
+                    var temp = shapesToDistribute[0];
+                    shapesToDistribute[0] = shapesToDistribute[1];
+                    shapesToDistribute[1] = temp;
+                }
+
                 startingPoint = shapesToDistribute[0].VisualLeft + shapesToDistribute[0].AbsoluteWidth;
                 referenceWidth = shapesToDistribute[1].VisualLeft + shapesToDistribute[1].AbsoluteWidth - shapesToDistribute[0].VisualLeft;
 
@@ -784,11 +895,58 @@ namespace PowerPointLabs.PositionsLab
 
             if (isFirstTwoShapes && isObjectCenter)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                shapesToDistribute = new List<PPShape>(selectedShapes);
+
+                if (shapesToDistribute[0].VisualLeft > shapesToDistribute[1].VisualLeft)
+                {
+                    var temp = shapesToDistribute[0];
+                    shapesToDistribute[0] = shapesToDistribute[1];
+                    shapesToDistribute[1] = temp;
+                }
+
+                startingPoint = shapesToDistribute[0].VisualCenter.X;
+                referenceWidth = shapesToDistribute[1].VisualCenter.X -shapesToDistribute[0].VisualCenter.X;
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+                
+                spaceBetweenShapes = referenceWidth / (shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(1);
+                shapesToDistribute.RemoveAt(0);
+
+                shapesToDistribute = Graphics.SortShapesByLeft(shapesToDistribute);
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementLeft(startingPoint - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.ActualCenter.X;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
 
             if (isExtremeShape && isObjectBoundary)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
                 shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
                 startingPoint = shapesToDistribute[0].VisualLeft + shapesToDistribute[0].AbsoluteWidth;
                 var rightMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
@@ -822,6 +980,38 @@ namespace PowerPointLabs.PositionsLab
 
             if (isExtremeShape && isObjectCenter)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualCenter.X;
+                referenceWidth = shapesToDistribute[shapesToDistribute.Count-1].VisualCenter.X - shapesToDistribute[0].VisualCenter.X;
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+
+                spaceBetweenShapes = referenceWidth / (shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(0);
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementLeft(startingPoint - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.ActualCenter.X;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualCenter.X + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
         }
@@ -841,6 +1031,11 @@ namespace PowerPointLabs.PositionsLab
 
             if (isSlide && isObjectBoundary)
             {
+                if (selectedShapes.Count < 1)
+                {
+                    throw new Exception(ErrorMessageNoSelection);
+                }
+
                 startingPoint = 0;
                 referenceHeight = slideHeight;
                 shapesToDistribute = Graphics.SortShapesByTop(selectedShapes);
@@ -887,12 +1082,64 @@ namespace PowerPointLabs.PositionsLab
 
             if (isSlide && isObjectCenter)
             {
-               
+                if (selectedShapes.Count < 1)
+                {
+                    throw new Exception(ErrorMessageNoSelection);
+                }
+
+                startingPoint = 0;
+                referenceHeight = slideHeight;
+                shapesToDistribute = Graphics.SortShapesByTop(selectedShapes);
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeHeight += s.AbsoluteHeight;
+                }
+
+                if (totalShapeHeight > referenceHeight)
+                {
+                    var topMostShape = shapesToDistribute[0];
+                    var bottomMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
+
+                    topMostShape.IncrementTop(startingPoint - topMostShape.VisualTop);
+                    bottomMostShape.IncrementTop(referenceHeight - bottomMostShape.VisualTop - bottomMostShape.AbsoluteHeight);
+
+                    referenceHeight = referenceHeight - (topMostShape.AbsoluteHeight / 2)- (bottomMostShape.AbsoluteHeight / 2);
+
+                    spaceBetweenShapes = referenceHeight / (shapesToDistribute.Count - 1);
+                    startingPoint = topMostShape.VisualCenter.Y;
+                    shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                    shapesToDistribute.RemoveAt(0);
+                }
+                else
+                {
+                    spaceBetweenShapes = referenceHeight / (shapesToDistribute.Count + 1);
+                }
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementTop(startingPoint - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        bottomMostRef = refShape.ActualCenter.Y;
+                        currShape.IncrementTop(bottomMostRef - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
 
             if (isFirstShape && isObjectBoundary)
             {
+                if (selectedShapes.Count < 2)
+                {
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                }
+
                 shapesToDistribute = new List<PPShape>(selectedShapes);
                 startingPoint = shapesToDistribute[0].VisualTop;
                 referenceHeight = shapesToDistribute[0].AbsoluteHeight;
@@ -942,12 +1189,75 @@ namespace PowerPointLabs.PositionsLab
 
             if (isFirstShape && isObjectCenter)
             {
+                if (selectedShapes.Count < 2)
+                {
+                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                }
+
+                shapesToDistribute = new List<PPShape>(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualTop;
+                referenceHeight = shapesToDistribute[0].AbsoluteHeight;
+                shapesToDistribute.RemoveAt(0);
+                shapesToDistribute = Graphics.SortShapesByTop(shapesToDistribute);
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeHeight += s.AbsoluteHeight;
+                }
+
+                if (totalShapeHeight > referenceHeight)
+                {
+                    var topMostShape = shapesToDistribute[0];
+                    var bottomMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
+
+                    topMostShape.IncrementTop(startingPoint - topMostShape.VisualTop);
+                    bottomMostShape.IncrementTop(startingPoint + referenceHeight - bottomMostShape.VisualTop - bottomMostShape.AbsoluteHeight);
+
+                    referenceHeight = referenceHeight - (topMostShape.AbsoluteHeight / 2) - (bottomMostShape.AbsoluteHeight / 2);
+
+                    spaceBetweenShapes = referenceHeight / (shapesToDistribute.Count - 1);
+                    startingPoint = topMostShape.VisualCenter.Y;
+                    shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                    shapesToDistribute.RemoveAt(0);
+                }
+                else
+                {
+                    spaceBetweenShapes = referenceHeight / (shapesToDistribute.Count + 1);
+                }
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementTop(startingPoint - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        bottomMostRef = refShape.ActualCenter.Y;
+                        currShape.IncrementTop(bottomMostRef - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
 
             if (isFirstTwoShapes && isObjectBoundary)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
                 shapesToDistribute = new List<PPShape>(selectedShapes);
+
+                if (shapesToDistribute[0].VisualTop > shapesToDistribute[1].VisualTop)
+                {
+                    var temp = shapesToDistribute[0];
+                    shapesToDistribute[0] = shapesToDistribute[1];
+                    shapesToDistribute[1] = temp;
+                }
+
                 startingPoint = shapesToDistribute[0].VisualTop + shapesToDistribute[0].AbsoluteHeight;
                 referenceHeight = shapesToDistribute[1].VisualTop + shapesToDistribute[1].AbsoluteHeight - shapesToDistribute[0].VisualTop;
 
@@ -980,11 +1290,58 @@ namespace PowerPointLabs.PositionsLab
 
             if (isFirstTwoShapes && isObjectCenter)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                shapesToDistribute = new List<PPShape>(selectedShapes);
+
+                if (shapesToDistribute[0].VisualTop > shapesToDistribute[1].VisualTop)
+                {
+                    var temp = shapesToDistribute[0];
+                    shapesToDistribute[0] = shapesToDistribute[1];
+                    shapesToDistribute[1] = temp;
+                }
+
+                startingPoint = shapesToDistribute[0].VisualCenter.Y;
+                referenceHeight = shapesToDistribute[1].VisualCenter.Y - shapesToDistribute[0].VisualCenter.Y;
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeHeight += s.AbsoluteHeight;
+                }
+
+                spaceBetweenShapes = referenceHeight / (shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(1);
+                shapesToDistribute.RemoveAt(0);
+
+                shapesToDistribute = Graphics.SortShapesByTop(shapesToDistribute);
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementTop(startingPoint - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        bottomMostRef = refShape.ActualCenter.Y;
+                        currShape.IncrementTop(bottomMostRef - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
 
             if (isExtremeShape && isObjectBoundary)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
                 shapesToDistribute = Graphics.SortShapesByTop(selectedShapes);
                 startingPoint = shapesToDistribute[0].VisualTop + shapesToDistribute[0].AbsoluteHeight;
                 var bottomMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
@@ -1018,6 +1375,38 @@ namespace PowerPointLabs.PositionsLab
 
             if (isExtremeShape && isObjectCenter)
             {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                shapesToDistribute = Graphics.SortShapesByTop(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualCenter.Y;
+                referenceHeight = shapesToDistribute[shapesToDistribute.Count - 1].VisualCenter.Y - shapesToDistribute[0].VisualCenter.Y;
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeHeight += s.AbsoluteHeight;
+                }
+
+                spaceBetweenShapes = referenceHeight / (shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(0);
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementTop(startingPoint - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        bottomMostRef = refShape.ActualCenter.Y;
+                        currShape.IncrementTop(bottomMostRef - currShape.VisualCenter.Y + spaceBetweenShapes);
+                    }
+                }
                 return;
             }
         }
@@ -1641,66 +2030,6 @@ namespace PowerPointLabs.PositionsLab
                 }
                 augmentedShapeIndex++;
             }
-        }
-
-        private static float GetHoritonzalSpaceBetweenShapes(List<PPShape> sortedShapes, float referenceWidth)
-        {
-            var spaceBetweenShapes = referenceWidth;
-
-            switch (DistributeSpaceReference)
-            {
-                case DistributeSpaceReferenceObject.ObjectBoundary:
-                    foreach (var s in sortedShapes)
-                    {
-                        spaceBetweenShapes -= s.AbsoluteWidth;
-                    }
-                    break;
-                case DistributeSpaceReferenceObject.ObjectCenter:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            if (spaceBetweenShapes < 0)
-            {
-                spaceBetweenShapes /= (sortedShapes.Count - 1);
-            }
-            else
-            {
-                spaceBetweenShapes /= (sortedShapes.Count + 1);
-            }
-
-            return spaceBetweenShapes;
-        }
-
-        private static float GetVerticalSpaceBetweenShapes(List<PPShape> sortedShapes, float referenceHeight)
-        {
-            var spaceBetweenShapes = referenceHeight;
-
-            switch (DistributeSpaceReference)
-            {
-                case DistributeSpaceReferenceObject.ObjectBoundary:
-                    foreach (var s in sortedShapes)
-                    {
-                        spaceBetweenShapes -= s.AbsoluteHeight;
-                    }
-                    break;
-                case DistributeSpaceReferenceObject.ObjectCenter:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            if (spaceBetweenShapes < 0)
-            {
-                spaceBetweenShapes /= (sortedShapes.Count - 1);
-            }
-            else
-            {
-                spaceBetweenShapes /= (sortedShapes.Count + 1);
-            }
-
-            return spaceBetweenShapes;
         }
 
         #endregion
