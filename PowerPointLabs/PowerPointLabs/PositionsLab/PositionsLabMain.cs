@@ -618,121 +618,211 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Distribute
+
         public static void DistributeHorizontal(List<PPShape> selectedShapes, float slideWidth)
         {
-            List<PPShape> sortedShapes;
-            var toSortList = new List<PPShape>(selectedShapes);
-            PPShape leftRefShape, rightRefShape;
-            float startingPoint, width;
-            switch (DistributeReference)
-            {
-                case DistributeReferenceObject.Slide:
-                    sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
-                    DistributeHorizontal(sortedShapes, slideWidth, 0);
-                    break;
-                case DistributeReferenceObject.FirstShape:
-                    if (selectedShapes.Count < 2)
-                    {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
-                    }
+            var isSlide = DistributeReference == DistributeReferenceObject.Slide;
+            var isFirstShape = DistributeReference == DistributeReferenceObject.FirstShape;
+            var isExtremeShape = DistributeReference == DistributeReferenceObject.ExtremeShapes;
+            var isFirstTwoShapes = DistributeReference == DistributeReferenceObject.FirstTwoShapes;
+            var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
+            var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
 
-                    var refShape = selectedShapes[0];
-                    toSortList.RemoveAt(0);
-                    sortedShapes = Graphics.SortShapesByLeft(toSortList);
-                    DistributeHorizontal(sortedShapes, refShape.AbsoluteWidth, refShape.VisualLeft);
-                    break;
-                case DistributeReferenceObject.FirstTwoShapes:
-                    if (selectedShapes.Count < 3)
-                    {
-                        throw new Exception(ErrorMessageFewerThanThreeSelection);
-                    }
-
-                    leftRefShape = selectedShapes[0];
-                    rightRefShape = selectedShapes[1];
-                    if (leftRefShape.VisualLeft > rightRefShape.VisualLeft)
-                    {
-                        var temp = leftRefShape;
-                        leftRefShape = rightRefShape;
-                        rightRefShape = temp;
-                    }
-                    toSortList.RemoveAt(0);
-                    toSortList.RemoveAt(0);
-                    sortedShapes = Graphics.SortShapesByLeft(toSortList);
-                    startingPoint = leftRefShape.VisualLeft + leftRefShape.AbsoluteWidth;
-                    width = rightRefShape.VisualLeft - startingPoint;
-                    DistributeHorizontal(sortedShapes, width, startingPoint);
-                    break;
-                case DistributeReferenceObject.ExtremeShapes:
-                    if (selectedShapes.Count < 3)
-                    {
-                        throw new Exception(ErrorMessageFewerThanThreeSelection);
-                    }
-
-                    sortedShapes = Graphics.SortShapesByLeft(toSortList);
-                    leftRefShape = sortedShapes[0];
-                    rightRefShape = sortedShapes[sortedShapes.Count-1];
-                    sortedShapes.RemoveAt(sortedShapes.Count - 1);
-                    sortedShapes.RemoveAt(0);
-                    startingPoint = leftRefShape.VisualLeft + leftRefShape.AbsoluteWidth;
-                    width = rightRefShape.VisualLeft - startingPoint;
-                    DistributeHorizontal(sortedShapes, width, startingPoint);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private static void DistributeHorizontal(List<PPShape> sortedShapes, float referenceWidth, float startingPoint)
-        {
+            List<PPShape> shapesToDistribute;
             PPShape refShape;
-            var shapeCount = sortedShapes.Count;
-            float rightMostRef;
-            var spaceBetweenShapes = GetHoritonzalSpaceBetweenShapes(sortedShapes, referenceWidth);
+            float referenceWidth, spaceBetweenShapes, startingPoint, rightMostRef, totalShapeWidth = 0;
 
-            switch (DistributeSpaceReference)
+            if (isSlide && isObjectBoundary)
             {
-                case DistributeSpaceReferenceObject.ObjectBoundary:
-                    for (var i = 0; i < shapeCount; i++)
+                startingPoint = 0;
+                referenceWidth = slideWidth;
+                shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+
+                // Check if need leading and trailing space
+                if (totalShapeWidth > referenceWidth)
+                {
+                    spaceBetweenShapes = (referenceWidth - totalShapeWidth) / (shapesToDistribute.Count - 1);
+                }
+                else
+                {
+                    spaceBetweenShapes = (referenceWidth - totalShapeWidth) / (shapesToDistribute.Count + 1);
+                }
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+
+                    // Check if need leading and trailing space
+                    if (i == 0)
                     {
-                        var currShape = sortedShapes[i];
-                        if (i == 0)
+                        if (spaceBetweenShapes < 0)
                         {
-                            // Check if should have leading space
-                            if (spaceBetweenShapes < 0)
-                            {
-                                currShape.IncrementLeft(startingPoint - currShape.VisualLeft);
-                            }
-                            else
-                            {
-                                currShape.IncrementLeft(startingPoint - currShape.VisualLeft + spaceBetweenShapes);
-                            }
+                            currShape.IncrementLeft(startingPoint - currShape.VisualLeft);
                         }
                         else
                         {
-                            refShape = sortedShapes[i - 1];
-                            rightMostRef = refShape.VisualLeft + refShape.AbsoluteWidth;
-                            currShape.IncrementLeft(rightMostRef - currShape.VisualLeft + spaceBetweenShapes);
+                            currShape.IncrementLeft(startingPoint - currShape.VisualLeft + spaceBetweenShapes);
                         }
                     }
-                    break;
-                case DistributeSpaceReferenceObject.ObjectCenter:
-                    for (var i =0; i < shapeCount; i++)
+                    else
                     {
-                        var currShape = sortedShapes[i];
-                        if (i==0)
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.VisualLeft + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualLeft + spaceBetweenShapes);
+                    }
+                }
+                return;
+            }
+
+            if (isSlide && isObjectCenter)
+            {
+                startingPoint = 0;
+                referenceWidth = slideWidth;
+                shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+
+                if (totalShapeWidth > referenceWidth)
+                {
+                    
+                }
+                return;
+            }
+
+            if (isFirstShape && isObjectBoundary)
+            {
+                shapesToDistribute = new List<PPShape>(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualLeft;
+                referenceWidth = shapesToDistribute[0].AbsoluteWidth;
+                shapesToDistribute.RemoveAt(0);
+                shapesToDistribute = Graphics.SortShapesByLeft(shapesToDistribute);
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+
+                // Check if need leading and trailing space
+                if (totalShapeWidth > referenceWidth)
+                {
+                    spaceBetweenShapes = (referenceWidth - totalShapeWidth) / (shapesToDistribute.Count - 1);
+                }
+                else
+                {
+                    spaceBetweenShapes = (referenceWidth - totalShapeWidth) / (shapesToDistribute.Count + 1);
+                } 
+
+                for (var i =0; i <shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+
+                    // Check if need leading and trailing space
+                    if (i==0)
+                    {
+                        if (spaceBetweenShapes < 0)
                         {
-                            currShape.IncrementLeft(startingPoint - currShape.VisualCenter.X + spaceBetweenShapes);
+                            currShape.IncrementLeft(startingPoint - currShape.VisualLeft);
                         }
                         else
                         {
-                            refShape = sortedShapes[i - 1];
-                            rightMostRef = refShape.VisualCenter.X;
-                            currShape.IncrementLeft(rightMostRef - currShape.VisualCenter.X + spaceBetweenShapes);
+                            currShape.IncrementLeft(startingPoint - currShape.VisualLeft + spaceBetweenShapes);
                         }
                     }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.VisualLeft + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualLeft + spaceBetweenShapes);
+                    }
+                }
+                return;
+            }
+
+            if (isFirstShape && isObjectCenter)
+            {
+                return;
+            }
+
+            if (isFirstTwoShapes && isObjectBoundary)
+            {
+                shapesToDistribute = new List<PPShape>(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualLeft + shapesToDistribute[0].AbsoluteWidth;
+                referenceWidth = shapesToDistribute[1].VisualLeft + shapesToDistribute[1].AbsoluteWidth - shapesToDistribute[0].VisualLeft;
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+                spaceBetweenShapes = (referenceWidth - totalShapeWidth) / (shapesToDistribute.Count - 1);
+
+                shapesToDistribute.RemoveAt(1);
+                shapesToDistribute.RemoveAt(0);
+                shapesToDistribute = Graphics.SortShapesByLeft(shapesToDistribute);
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i==0)
+                    {
+                        currShape.IncrementLeft(startingPoint - currShape.VisualLeft + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.VisualLeft + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualLeft + spaceBetweenShapes);
+                    }
+                }
+                return;
+            }
+
+            if (isFirstTwoShapes && isObjectCenter)
+            {
+                return;
+            }
+
+            if (isExtremeShape && isObjectBoundary)
+            {
+                shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
+                startingPoint = shapesToDistribute[0].VisualLeft + shapesToDistribute[0].AbsoluteWidth;
+                var rightMostShape = shapesToDistribute[shapesToDistribute.Count - 1];
+                referenceWidth = rightMostShape.VisualLeft + rightMostShape.AbsoluteWidth - shapesToDistribute[0].VisualLeft;
+
+                foreach (var s in shapesToDistribute)
+                {
+                    totalShapeWidth += s.AbsoluteWidth;
+                }
+                spaceBetweenShapes = (referenceWidth - totalShapeWidth) / (shapesToDistribute.Count - 1);
+
+                shapesToDistribute.RemoveAt(shapesToDistribute.Count - 1);
+                shapesToDistribute.RemoveAt(0);
+
+                for (var i = 0; i < shapesToDistribute.Count; i++)
+                {
+                    var currShape = shapesToDistribute[i];
+                    if (i == 0)
+                    {
+                        currShape.IncrementLeft(startingPoint - currShape.VisualLeft + spaceBetweenShapes);
+                    }
+                    else
+                    {
+                        refShape = shapesToDistribute[i - 1];
+                        rightMostRef = refShape.VisualLeft + refShape.AbsoluteWidth;
+                        currShape.IncrementLeft(rightMostRef - currShape.VisualLeft + spaceBetweenShapes);
+                    }
+                }
+                return;
+            }
+
+            if (isExtremeShape && isObjectCenter)
+            {
+                return;
             }
         }
 
