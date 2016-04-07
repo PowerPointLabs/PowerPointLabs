@@ -1113,8 +1113,6 @@ namespace PowerPointLabs.PositionsLab
 
             var longestRow = rowWidth;
             var longestCol = colHeight;
-            var posX = startingAnchor.X;
-            var posY = startingAnchor.Y;
 
             var colDifferences = GetLongestHeightsOfColsByRow(selectedShapes, rowLength, colLength);
 
@@ -1123,6 +1121,8 @@ namespace PowerPointLabs.PositionsLab
                 longestCol -= colDifferences[i];
             }
 
+            var posX = startingAnchor.X;
+            var posY = startAnchor.VisualTop + colDifferences[0] / 2;
             var rowDifference = longestRow;
             var colDifference = longestCol / (colDifferences.Length - 1);
 
@@ -1145,8 +1145,9 @@ namespace PowerPointLabs.PositionsLab
                     {
                         rowDifference /= (j - 1);
                     }
+                    
                     if (i != 0)
-                    {   
+                    {
                         posX = selectedShapes[0].VisualLeft + selectedShapes[i].AbsoluteWidth / 2;
                         posY += (colDifferences[i / rowLength - 1] / 2 + colDifferences[i / rowLength] / 2 + colDifference);
                     }
@@ -1154,7 +1155,15 @@ namespace PowerPointLabs.PositionsLab
 
                 var currentShape = selectedShapes[i];
                 currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
-                currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
+
+                if (i / rowLength == 0)
+                {
+                    currentShape.VisualTop = startAnchor.VisualTop;
+                }
+                else
+                {
+                    currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
+                }
 
                 if (i + 1 < numShapes)
                 {
@@ -1384,8 +1393,6 @@ namespace PowerPointLabs.PositionsLab
 
             var longestRow = rowWidth;
             var longestCol = colHeight;
-            var posX = startingAnchor.X;
-            var posY = startingAnchor.Y;
 
             var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, 0);
 
@@ -1394,6 +1401,8 @@ namespace PowerPointLabs.PositionsLab
                 longestCol -= colDifferences[i];
             }
 
+            var posX = startingAnchor.X;
+            var posY = startAnchor.VisualTop + colDifferences[0] / 2;
             var rowDifference = longestRow;
             var colDifference = longestCol / (colDifferences.Length - 1);
             var remainder = colLength - (rowLength * colLength - numShapes);
@@ -1448,7 +1457,15 @@ namespace PowerPointLabs.PositionsLab
                 var currentShape = selectedShapes[i];
                 var center = currentShape.VisualCenter;
                 currentShape.IncrementLeft(posX - center.X);
-                currentShape.IncrementTop(posY - center.Y);
+
+                if (augmentedShapeIndex / rowLength == 0)
+                {
+                    currentShape.VisualTop = startAnchor.VisualTop;
+                }
+                else
+                {
+                    currentShape.IncrementTop(posY - center.Y);
+                }
 
                 if (i + 1 < numShapes)
                 {
