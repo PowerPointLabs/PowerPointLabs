@@ -14,15 +14,6 @@ namespace Test.UnitTest.ResizeLab
         private const string ShapeName = "shape";
         private const string ImageName = "image";
 
-        private const int SlightIncreaseWidthSlideNo = 43;
-        private const int SlightIncreaseWidthAspectRatioSlideNo = 44;
-        private const int SlightDecreaseWidthSlideNo = 45;
-        private const int SlightDecreaseWidthAspectRatioSlideNo = 46;
-        private const int SlightIncreaseHeightSlideNo = 47;
-        private const int SlightIncreaseHeightAspectRatioSlideNo = 48;
-        private const int SlightDecreaseHeightSlideNo = 49;
-        private const int SlightDecreaseHeightAspectRatioSlideNo = 50;
-
         [TestInitialize]
         public void TestInitialize()
         {
