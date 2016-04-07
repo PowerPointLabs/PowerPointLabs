@@ -1587,7 +1587,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Snap
 
-        public static void SnapVertical(List<Shape> selectedShapes)
+        public static void SnapVertical(IList<Shape> selectedShapes)
         {
             foreach (var s in selectedShapes)
             {
@@ -1595,15 +1595,16 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void SnapHorizontal(List<Shape> selectedShapes)
+        public static void SnapHorizontal(IList<Shape> selectedShapes)
         {
+            Debug.WriteLine("hi");
             foreach (var s in selectedShapes)
             {
                 SnapShapeHorizontal(s);
             }
         }
 
-        public static void SnapAway(List<Shape> shapes)
+        public static void SnapAway(IList<Shape> shapes)
         {
             if (shapes.Count < 2)
             {
@@ -1722,7 +1723,26 @@ namespace PowerPointLabs.PositionsLab
 
         private static bool IsVertical(Shape shape)
         {
-            return shape.Height > shape.Width;
+            var shapeIsVertical = shape.Height > shape.Width;
+
+            if (NearlyEqual(shape.Height, shape.Width, Epsilon))
+            {
+                float defaultUpAngle = 0;
+                var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+                if (hasDefaultDirection)
+                {
+                    if (NearlyEqual(defaultUpAngle, 0.0f, Epsilon) || NearlyEqual(defaultUpAngle, 180.0f, Epsilon))
+                    {
+                        shapeIsVertical = true;
+                    }
+                    else
+                    {
+                        shapeIsVertical = false;
+                    }
+                }
+            }
+
+            return shapeIsVertical;
         }
 
         #endregion
