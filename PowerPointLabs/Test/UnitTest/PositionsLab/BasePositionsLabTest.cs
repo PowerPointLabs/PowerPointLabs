@@ -42,6 +42,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 var shape = range[i];
                 var duplicated = shape.Duplicate()[1];
+                duplicated.Name = shape.Id + "";
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
                 duplicatedShapeIndices[i - 1] = totalShapes + i;
