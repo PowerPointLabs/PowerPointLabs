@@ -13,29 +13,25 @@ namespace Test.UnitTest.ResizeLab
         private const string ShapeName = "shape";
         private const string ImageName = "image";
 
-        private const int OriginalShapesSlideNo = 32;
-        private const int MatchWidthSlideNo = 33;
-        private const int MatchHeightSlideNo = 34;
-
         [TestInitialize]
         public void TestInitialize()
         {
             _shapeNames = new List<string> { ShapeName, ImageName };
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            InitOriginalShapes(SlideNo.MatchOrigin, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
+            RestoreShapes(SlideNo.MatchOrigin, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestMatchWidth()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(MatchWidthSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchWidth, _shapeNames);
 
             _resizeLab.MatchWidth(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
@@ -45,8 +41,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestMatchHeight()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(MatchHeightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchHeight, _shapeNames);
 
             _resizeLab.MatchHeight(actualShapes);
             CheckShapes(expectedShapes, actualShapes);

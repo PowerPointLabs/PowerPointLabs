@@ -15,12 +15,6 @@ namespace Test.UnitTest.ResizeLab
         private const string OvalShapeName = "oval";
         private const string CornerRectangleName = "cornerRectangle";
 
-        private const int OriginalShapesSlideNo = 36;
-        private const int AdjustWidthProportionallySlideNo = 37;
-        private const int AdjustWidthProportionallyAspectRatioSlideNo = 38;
-        private const int AdjustHeightProportionallySlideNo = 39;
-        private const int AdjustHeightProportionallyAspectRatioSlideNo = 40;
-
         private readonly List<float> _proportionList = new List<float>()
         {
             1,
@@ -32,21 +26,21 @@ namespace Test.UnitTest.ResizeLab
         public void TestInitialize()
         {
             _shapeNames = new List<string> { RefShapeName, OvalShapeName, CornerRectangleName };
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            InitOriginalShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
+            RestoreShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestAdjustWidthProportionallyWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AdjustWidthProportionallySlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustWidthProportionally, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;
@@ -58,8 +52,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestAdjustWidthProportionallyWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AdjustWidthProportionallyAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustWidthProportionallyAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;
@@ -71,8 +65,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestAdjustHeightProportionallyWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AdjustHeightProportionallySlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustHeightProportionally, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;
@@ -84,8 +78,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestAdjustHeightProportionallyWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AdjustHeightProportionallyAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustHeightProportionallyAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.AdjustProportionallyProportionList = _proportionList;

@@ -16,7 +16,6 @@ namespace Test.UnitTest.ResizeLab
         private const string WithoutAspectRatioShapeNames = "withoutAspectRatio";
         private const string ImageName = "image";
 
-        private const int OriginalShapesSlideNo = 52;
         private const int AnchorTopLeftSlideNo = 53;
         private const int AnchorTopCenterSlideNo = 54;
         private const int AnchorTopRightSlideNo = 55;
@@ -31,21 +30,21 @@ namespace Test.UnitTest.ResizeLab
         public void TestInitialize()
         {
             _shapeNames = new List<string> {WithoutAspectRatioShapeNames, WithAspectRatioShapeNames, ImageName};
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            InitOriginalShapes(SlideNo.AnchorOrigin, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopLeft;
-            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
+            RestoreShapes(SlideNo.AnchorOrigin, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestLockAspectRatio()
         {
-            var shapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var shapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
 
             _resizeLab.ChangeShapesAspectRatio(shapes, true);
 
@@ -59,7 +58,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestUnlockAspectRatio()
         {
-            var shapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var shapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
 
             _resizeLab.ChangeShapesAspectRatio(shapes, false);
 
@@ -73,8 +72,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorTopLeft()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorTopLeftSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorTopLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopLeft;
@@ -86,8 +85,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorTopCenter()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorTopCenterSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorTopCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopCenter;
@@ -99,8 +98,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorTopRight()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorTopRightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorTopRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopRight;
@@ -112,8 +111,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorMiddleLeft()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorMiddleLeftSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorMiddleLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.MiddleLeft;
@@ -125,8 +124,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorCenter()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorCenterSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.Center;
@@ -138,8 +137,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorMiddleRight()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorMiddleRightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorMiddleRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.MiddleRight;
@@ -151,8 +150,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorBottomLeft()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorBottomLeftSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorBottomLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomLeft;
@@ -164,8 +163,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorBottomCenter()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorBottomCenterSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorBottomCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomCenter;
@@ -177,8 +176,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeAnchorBottomRight()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(AnchorBottomRightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorBottomRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomRight;

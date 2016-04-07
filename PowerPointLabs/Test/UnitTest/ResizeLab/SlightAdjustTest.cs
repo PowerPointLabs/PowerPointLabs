@@ -14,7 +14,6 @@ namespace Test.UnitTest.ResizeLab
         private const string ShapeName = "shape";
         private const string ImageName = "image";
 
-        private const int OriginalShapesSlideNo = 42;
         private const int SlightIncreaseWidthSlideNo = 43;
         private const int SlightIncreaseWidthAspectRatioSlideNo = 44;
         private const int SlightDecreaseWidthSlideNo = 45;
@@ -28,21 +27,21 @@ namespace Test.UnitTest.ResizeLab
         public void TestInitialize()
         {
             _shapeNames = new List<string> {ShapeName, ImageName};
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            InitOriginalShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
+            RestoreShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestSlightIncreaseWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightIncreaseWidthSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightIncreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.IncreaseWidth(actualShapes);
@@ -53,8 +52,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightIncreaseWidthAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightIncreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.IncreaseWidth(actualShapes);
@@ -65,8 +64,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightDecreaseWidthSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightDecreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.DecreaseWidth(actualShapes);
@@ -77,8 +76,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightDecreaseWidthAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightDecreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.DecreaseWidth(actualShapes);
@@ -89,8 +88,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightIncreaseHeightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightIncreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.IncreaseHeight(actualShapes);
@@ -101,8 +100,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightIncreaseHeightAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightIncreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.IncreaseHeight(actualShapes);
@@ -113,8 +112,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightDecreaseHeightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightDecreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.DecreaseHeight(actualShapes);
@@ -125,8 +124,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(SlightDecreaseHeightAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.SlightDecreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.DecreaseHeight(actualShapes);
