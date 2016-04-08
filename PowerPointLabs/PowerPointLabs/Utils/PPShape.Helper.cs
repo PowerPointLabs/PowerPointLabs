@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Drawing;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {

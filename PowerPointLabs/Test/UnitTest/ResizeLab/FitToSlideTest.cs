@@ -13,33 +13,25 @@ namespace Test.UnitTest.ResizeLab
         private const string UnrotatedShapeName = "rectangle";
         private const string RotatedShapeName = "rotatedRectangle";
 
-        private const int OriginalShapesSlideNo = 24;
-        private const int FitToWidthSlideNo = 25;
-        private const int FitToWidthAspectRatioSlideNo = 26;
-        private const int FitToHeightSlideNo = 27;
-        private const int FitToHeightAspectRatioSlideNo = 28;
-        private const int FitToFillSlideNo = 29;
-        private const int FitToFillAspectRatioSlideNo = 30;
-
         [TestInitialize]
         public void TestInitialize()
         {
             _shapeNames = new List<string> { UnrotatedShapeName, RotatedShapeName };
-            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            InitOriginalShapes(SlideNo.FitToSlideOrigin, _shapeNames);
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
-            RestoreShapes(OriginalShapesSlideNo, _shapeNames);
+            RestoreShapes(SlideNo.FitToSlideOrigin, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestFitToWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(FitToWidthSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.FitToSlideWidth, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
 
@@ -51,8 +43,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(FitToWidthAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.FitToSlideWidthAspectRatio, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
 
@@ -64,8 +56,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(FitToHeightSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.FitToSlideHeight, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
 
@@ -77,8 +69,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(FitToHeightAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.FitToSlideHeightAspectRatio, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
 
@@ -90,8 +82,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToFillWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(FitToFillSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.FitToSlideFill, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
 
@@ -103,8 +95,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToFillWithAspectRatio()
         {
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            var expectedShapes = GetShapes(FitToFillAspectRatioSlideNo, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.FitToSlideFillAspectRatio, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
             var slideHeight = Pres.PageSetup.SlideHeight;
 

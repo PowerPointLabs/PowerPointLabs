@@ -124,6 +124,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\Model\StyleVariantsTest.cs" />
     <Compile Include="UnitTest\PositionsLab\BasePositionsLabTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabAdjoinTest.cs" />
+    <Compile Include="UnitTest\PositionsLab\PositionsLabSnapTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabDistributeGridTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabSwapTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabDistributeTest.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="UnitTest\ResizeLab\EqualizeTest.cs" />
     <Compile Include="UnitTest\ResizeLab\MainSettingsTest.cs" />
     <Compile Include="UnitTest\ResizeLab\MatchTest.cs" />
+    <Compile Include="UnitTest\ResizeLab\SlideNo.cs" />
     <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />

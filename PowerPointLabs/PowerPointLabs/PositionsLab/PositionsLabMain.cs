@@ -1113,8 +1113,6 @@ namespace PowerPointLabs.PositionsLab
 
             var longestRow = rowWidth;
             var longestCol = colHeight;
-            var posX = startingAnchor.X;
-            var posY = startingAnchor.Y;
 
             var colDifferences = GetLongestHeightsOfColsByRow(selectedShapes, rowLength, colLength);
 
@@ -1123,6 +1121,8 @@ namespace PowerPointLabs.PositionsLab
                 longestCol -= colDifferences[i];
             }
 
+            var posX = startingAnchor.X;
+            var posY = startAnchor.VisualTop + colDifferences[0] / 2;
             var rowDifference = longestRow;
             var colDifference = longestCol / (colDifferences.Length - 1);
 
@@ -1145,8 +1145,9 @@ namespace PowerPointLabs.PositionsLab
                     {
                         rowDifference /= (j - 1);
                     }
+                    
                     if (i != 0)
-                    {   
+                    {
                         posX = selectedShapes[0].VisualLeft + selectedShapes[i].AbsoluteWidth / 2;
                         posY += (colDifferences[i / rowLength - 1] / 2 + colDifferences[i / rowLength] / 2 + colDifference);
                     }
@@ -1154,7 +1155,15 @@ namespace PowerPointLabs.PositionsLab
 
                 var currentShape = selectedShapes[i];
                 currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
-                currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
+
+                if (i / rowLength == 0)
+                {
+                    currentShape.VisualTop = startAnchor.VisualTop;
+                }
+                else
+                {
+                    currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
+                }
 
                 if (i + 1 < numShapes)
                 {
@@ -1384,8 +1393,6 @@ namespace PowerPointLabs.PositionsLab
 
             var longestRow = rowWidth;
             var longestCol = colHeight;
-            var posX = startingAnchor.X;
-            var posY = startingAnchor.Y;
 
             var colDifferences = GetLongestHeightsOfColsByCol(selectedShapes, rowLength, colLength, 0);
 
@@ -1394,6 +1401,8 @@ namespace PowerPointLabs.PositionsLab
                 longestCol -= colDifferences[i];
             }
 
+            var posX = startingAnchor.X;
+            var posY = startAnchor.VisualTop + colDifferences[0] / 2;
             var rowDifference = longestRow;
             var colDifference = longestCol / (colDifferences.Length - 1);
             var remainder = colLength - (rowLength * colLength - numShapes);
@@ -1448,7 +1457,15 @@ namespace PowerPointLabs.PositionsLab
                 var currentShape = selectedShapes[i];
                 var center = currentShape.VisualCenter;
                 currentShape.IncrementLeft(posX - center.X);
-                currentShape.IncrementTop(posY - center.Y);
+
+                if (augmentedShapeIndex / rowLength == 0)
+                {
+                    currentShape.VisualTop = startAnchor.VisualTop;
+                }
+                else
+                {
+                    currentShape.IncrementTop(posY - center.Y);
+                }
 
                 if (i + 1 < numShapes)
                 {
@@ -1587,7 +1604,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Snap
 
-        public static void SnapVertical(List<Shape> selectedShapes)
+        public static void SnapVertical(IList<Shape> selectedShapes)
         {
             foreach (var s in selectedShapes)
             {
@@ -1595,7 +1612,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void SnapHorizontal(List<Shape> selectedShapes)
+        public static void SnapHorizontal(IList<Shape> selectedShapes)
         {
             foreach (var s in selectedShapes)
             {
@@ -1603,7 +1620,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void SnapAway(List<Shape> shapes)
+        public static void SnapAway(IList<Shape> shapes)
         {
             if (shapes.Count < 2)
             {
@@ -1722,7 +1739,26 @@ namespace PowerPointLabs.PositionsLab
 
         private static bool IsVertical(Shape shape)
         {
-            return shape.Height > shape.Width;
+            var shapeIsVertical = shape.Height > shape.Width;
+
+            if (NearlyEqual(shape.Height, shape.Width, Epsilon))
+            {
+                float defaultUpAngle = 0;
+                var hasDefaultDirection = shapeDefaultUpAngle.TryGetValue(shape.AutoShapeType, out defaultUpAngle);
+                if (hasDefaultDirection)
+                {
+                    if (NearlyEqual(defaultUpAngle, 0.0f, Epsilon) || NearlyEqual(defaultUpAngle, 180.0f, Epsilon))
+                    {
+                        shapeIsVertical = true;
+                    }
+                    else
+                    {
+                        shapeIsVertical = false;
+                    }
+                }
+            }
+
+            return shapeIsVertical;
         }
 
         #endregion
@@ -1796,18 +1832,12 @@ namespace PowerPointLabs.PositionsLab
 
             var phase = (int) Math.Round(phaseInFloat);
 
-            return phase;
+            return phase % 4;
         }
 
         private static bool IsSameDirection(int a, int b)
         {
-            if (a == b) return true;
-            if (a == Leftorright) return b == Left || b == Right;
-            if (b == Leftorright) return a == Left || a == Right;
-            if (a == Upordown) return b == Up || b == Down;
-            if (b == Upordown) return a == Up || a == Down;
-
-            return false;
+            return (a == b);
         }
 
         public static float AddAngles(float a, float b)

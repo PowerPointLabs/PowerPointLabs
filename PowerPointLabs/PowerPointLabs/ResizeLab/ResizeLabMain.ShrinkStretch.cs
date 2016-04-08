@@ -140,7 +140,9 @@ namespace PowerPointLabs.ResizeLab
 
         private static void StretchRightAction(float referenceEdge, PPShape stretchShape)
         {
+            var oldLeft = stretchShape.VisualLeft;
             stretchShape.AbsoluteWidth += referenceEdge - GetRight(stretchShape);
+            stretchShape.VisualLeft = oldLeft;
         }
 
         private static void StretchTopAction(float referenceEdge, PPShape stretchShape)
@@ -151,7 +153,9 @@ namespace PowerPointLabs.ResizeLab
 
         private static void StretchBottomAction(float referenceEdge, PPShape stretchShape)
         {
+            var oldTop = stretchShape.VisualTop;
             stretchShape.AbsoluteHeight += referenceEdge - GetBottom(stretchShape);
+            stretchShape.VisualTop = oldTop;
         }
 
         /// <summary>
