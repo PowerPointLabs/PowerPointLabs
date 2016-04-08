@@ -19,7 +19,7 @@ namespace PowerPointLabs.Utils
             _shape = shape;
             _originalRotation = _shape.Rotation;
 
-            if (redefineBoundingBox)
+            if (redefineBoundingBox && (int) _shape.Rotation%90 != 0)
             {
                 ConvertToFreeform();
             }
@@ -385,16 +385,6 @@ namespace PowerPointLabs.Utils
                 _rotatedVisualTop = value;
                 SetTop();
             }
-        }
-
-        /// <summary>
-        /// Return or set the degrees of specified shape is rotated around the z-axis. 
-        /// Read/write.
-        /// </summary>
-        public float ShapeRotation
-        {
-            get { return _originalRotation; }
-            set { _originalRotation = value; }
         }
 
         /// <summary>
