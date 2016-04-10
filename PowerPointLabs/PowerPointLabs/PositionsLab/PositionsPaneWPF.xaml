@@ -63,7 +63,7 @@
             <WPF:ImageButton ToolTip="Adjoin objects horizontally to the reference object and aligns them horizontal" x:Name="adjoinHorizontalWithAlignButton" HorizontalAlignment="Left" Margin="86,200,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinHorizontalWithAlignButton_Click" MouseEnter="AdjoinHorizontalWithAlignButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AdjoinHorizontalWithAlignIcon.png"/>
             </WPF:ImageButton>
-            <TextBlock x:Name="adjoinHorizontalAlignTextBlock" HorizontalAlignment="Left" Margin="86,245,0,0" TextWrapping="Wrap" Text="Horizontal and Adjoin" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>
+            <TextBlock x:Name="adjoinHorizontalAlignTextBlock" HorizontalAlignment="Left" Margin="86,245,0,0" TextWrapping="Wrap" Text="Horizontal and Align" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>
             <WPF:ImageButton ToolTip="Adjoin objects vertically to the reference object" x:Name="adjoinVerticalButton" HorizontalAlignment="Left" Margin="154,200,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AdjoinVerticalButton_Click" MouseEnter="AdjoinVerticalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\AdjoinVerticalIcon.png"/>
             </WPF:ImageButton>
