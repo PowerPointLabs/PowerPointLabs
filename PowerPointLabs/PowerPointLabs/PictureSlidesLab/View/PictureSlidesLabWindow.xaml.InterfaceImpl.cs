@@ -28,12 +28,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
+        /// <summary>
+        /// Show msgBox for exception
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="e"></param>
         public void ShowErrorMessageBox(string content, Exception e)
         {
-            if (e == null) ShowErrorMessageBox(content);
+            if (e == null)
+            {
+                ShowErrorMessageBox(content);
+                return;
+            }
+
             try
             {
-                this.ShowMessageAsync("Error", content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"
+                ShowErrorTextDialog(content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"
                                                + e.Message + " " + e.GetType() + "\r\n"
                                                + e.StackTrace);
             }
