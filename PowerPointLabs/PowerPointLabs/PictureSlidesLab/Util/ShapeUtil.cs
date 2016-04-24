@@ -48,6 +48,14 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                     continue;
                 }
 
+                if (shape.Type == MsoShapeType.msoPlaceholder
+                    && (shape.PlaceholderFormat.Type == PowerPoint.PpPlaceholderType.ppPlaceholderSlideNumber
+                        || shape.PlaceholderFormat.Type == PowerPoint.PpPlaceholderType.ppPlaceholderFooter
+                        || shape.PlaceholderFormat.Type == PowerPoint.PpPlaceholderType.ppPlaceholderHeader))
+                {
+                    continue;
+                }
+
                 return shape;
             }
             return null;
