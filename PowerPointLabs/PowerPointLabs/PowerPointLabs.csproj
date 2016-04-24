@@ -497,6 +497,7 @@
     <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ErrorDialog.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.VariationStageControls.cs" />
     <Compile Include="PictureSlidesLab\View\Interface\IPictureSlidesLabWindowView.cs" />
     <Compile Include="PictureSlidesLab\View\ImageAdjustment\CroppingAdorner.cs" />
@@ -512,6 +513,9 @@
     <Compile Include="PictureSlidesLab\Thread\Interface\IThreadContext.cs" />
     <Compile Include="PictureSlidesLab\View\SettingsFlyout.xaml.cs">
       <DependentUpon>SettingsFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\View\TextBlockDialog.xaml.cs">
+      <DependentUpon>TextBlockDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="PictureSlidesLab\View\SlideSelectionDialog.xaml.cs">
       <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
@@ -1135,6 +1139,10 @@
     <Page Include="PictureSlidesLab\View\SettingsFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PictureSlidesLab\View\TextBlockDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PictureSlidesLab\View\SlideSelectionDialog.xaml">
       <SubType>Designer</SubType>

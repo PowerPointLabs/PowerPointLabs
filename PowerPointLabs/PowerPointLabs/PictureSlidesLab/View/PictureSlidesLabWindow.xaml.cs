@@ -92,6 +92,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 InitViewModel();
                 InitGotoSlideDialog();
                 InitLoadStylesDialog();
+                InitErrorTextDialog();
                 InitDragAndDrop();
                 // leave some time for data binding to finish
                 SetTimeout(InitStyleing, 50);
