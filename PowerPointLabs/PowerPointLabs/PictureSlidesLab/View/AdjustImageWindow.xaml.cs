@@ -261,7 +261,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             _croppingAdorner.ZoomCroppingRect(-AdjustUnit);
         }
 
-        private void FilpOrRotate(RotateFlipType roatateFlipType)
+        private void RotateFlipImg(RotateFlipType roatateFlipType)
         {
             var img = (Bitmap)Bitmap.FromFile(thumbnailImageFile.Text);
             img.RotateFlip(roatateFlipType);
@@ -275,22 +275,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LeftRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
-            FilpOrRotate(RotateFlipType.Rotate270FlipNone);
+            RotateFlipImg(RotateFlipType.Rotate270FlipNone);
         }
 
         private void RightRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
-            FilpOrRotate(RotateFlipType.Rotate90FlipNone);
+            RotateFlipImg(RotateFlipType.Rotate90FlipNone);
         }
 
         private void FlipHorizontalButton_OnClick(object sender, RoutedEventArgs e)
         {
-            FilpOrRotate(RotateFlipType.Rotate180FlipY);
+            RotateFlipImg(RotateFlipType.Rotate180FlipY);
         }
 
         private void FlipVerticalButton_OnClick(object sender, RoutedEventArgs e)
         {
-            FilpOrRotate(RotateFlipType.Rotate180FlipX);
+            RotateFlipImg(RotateFlipType.Rotate180FlipX);
         }
     }
 }
