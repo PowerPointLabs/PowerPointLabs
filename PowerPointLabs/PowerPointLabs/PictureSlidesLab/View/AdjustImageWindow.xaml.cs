@@ -263,7 +263,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void RotateFlipImg(RotateFlipType roatateFlipType)
         {
-            var img = (Bitmap)Bitmap.FromFile(thumbnailImageFile.Text);
+            var img = (Bitmap)Bitmap.FromFile(CropResult);
             img.RotateFlip(roatateFlipType);
             String rotatedImg = StoragePath.GetPath("crop-"
                                     + DateTime.Now.GetHashCode() + "-"
@@ -271,6 +271,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             img.Save(rotatedImg);
             thumbnailImageFile.Text = rotatedImg;
             CropResult = rotatedImg;
+            CropResultThumbnail = rotatedImg;
         }
 
         private void LeftRotateButton_OnClick(object sender, RoutedEventArgs e)
