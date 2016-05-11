@@ -48,7 +48,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
 
         private void ApplyTextEffect(StyleOption option, EffectsDesigner effectsDesigner)
         {
-            effectsDesigner.ApplyTextEffect(option.GetFontFamily(), option.FontColor, option.FontSizeIncrease);
+            effectsDesigner.ApplyTextEffect(option.GetFontFamily(), option.FontColor, option.FontSizeIncrease,
+                option.TextTransparency);
             effectsDesigner.ApplyTextPositionAndAlignment(option.GetTextBoxPosition(), option.GetTextAlignment());
         }
     }

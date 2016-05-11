@@ -404,6 +404,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrameStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassBannerStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassTextBoxStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IGeneralVariantWorkerOrderMetadata.cs" />

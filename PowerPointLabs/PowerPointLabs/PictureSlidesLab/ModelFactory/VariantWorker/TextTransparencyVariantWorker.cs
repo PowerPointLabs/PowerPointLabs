@@ -6,12 +6,12 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
     [Export("GeneralVariantWorker", typeof(IVariantWorker))]
-    [ExportMetadata("GeneralVariantWorkerOrder", 5)]
-    class FontSizeIncreaseVariantWorker : IVariantWorker
+    [ExportMetadata("GeneralVariantWorkerOrder", 3)]
+    class TextTransparencyVariantWorker : IVariantWorker
     {
         public string GetVariantName()
         {
-            return TextCollection.PictureSlidesLabText.VariantCategoryFontSizeIncrease;
+            return TextCollection.PictureSlidesLabText.VariantCategoryTextTransparency;
         }
 
         public List<StyleVariant> GetVariants()
@@ -20,51 +20,43 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
             {
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +0"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 0}
+                    {"OptionName", "0% Transparency"},
+                    {"TextTransparency", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +5"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 5}
+                    {"OptionName", "10% Transparency"},
+                    {"TextTransparency", 10}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +10"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 10}
+                    {"OptionName", "20% Transparency"},
+                    {"TextTransparency", 20}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +20"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 20}
+                    {"OptionName", "30% Transparency"},
+                    {"TextTransparency", 30}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +30"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 30}
+                    {"OptionName", "40% Transparency"},
+                    {"TextTransparency", 40}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +45"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 45}
+                    {"OptionName", "50% Transparency"},
+                    {"TextTransparency", 50}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Font Size +65"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", 65}
+                    {"OptionName", "60% Transparency"},
+                    {"TextTransparency", 60}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "No Effect"},
-                    {"IsUseTextFormat", true},
-                    {"FontSizeIncrease", -1}
+                    {"OptionName", "70% Transparency"},
+                    {"TextTransparency", 70}
                 })
             };
         }

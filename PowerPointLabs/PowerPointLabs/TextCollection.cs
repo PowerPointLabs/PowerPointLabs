@@ -374,6 +374,7 @@
             public const string VariantCategoryFrameTransparency = "Frame Transparency";
             public const string VariantCategoryCircleTransparency = "Circle Transparency";
             public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
+            public const string VariantCategoryTextTransparency = "Text Transparency";
 
             /// <summary>
             /// Styles Preview Name
