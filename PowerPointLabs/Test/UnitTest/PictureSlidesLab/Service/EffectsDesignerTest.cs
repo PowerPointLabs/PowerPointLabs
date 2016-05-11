@@ -86,7 +86,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestTextEffect()
         {
-            _designer.ApplyTextEffect("Tahoma", "#123456", 3);
+            _designer.ApplyTextEffect("Tahoma", "#123456", 3, 0);
             PpOperations.SelectSlide(1);
             var shape = PpOperations.SelectShapesByPrefix("Title");
             var originalTextSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
