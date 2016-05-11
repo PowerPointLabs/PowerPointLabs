@@ -30,7 +30,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private double _rectY;
         private double _rectWidth;
         private double _rectHeight;
-        private double n;
 
         public string CropResult { get; set; }
         //used for applying styles to the ppt
@@ -88,7 +87,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             _rectY = y;
             _rectWidth = width;
             _rectHeight = height;
-            n = _rectWidth / _rectHeight;
         }
 
         private void RemoveCropFromCur()
@@ -272,34 +270,40 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
          private Rect RotateAutoFit()
          {
-            double temp;
-            temp = _rectWidth;
-            _rectWidth = _rectHeight;
-            _rectHeight = temp; 
+            Rect rect;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
-             Rect rect;
-             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-             var slideHeight = this.GetCurrentPresentation().SlideHeight;
+            //var originalImg = (Bitmap)Bitmap.FromFile(CropResult);
 
-             if (_rectWidth / n < _croppingAdorner.ActualWidth)
-             {
-                 var targetHeight = _rectWidth /n / slideWidth * slideHeight;
-                 rect = new Rect(
-                     0,
-                     (_rectHeight - targetHeight) / n / 2,
-                     _rectWidth,
-                     targetHeight);
-             }
-             else
-             {
-                var targetWidth = _rectHeight / slideHeight * slideWidth;
+            double n;
+            n = (ImageHolder.Width / ImageHolder.Height);
+
+            double width, height;
+
+            width = ImageHolder.Height / n;
+            height = ImageHolder.Height;
+
+            if (width / height
+                < slideWidth / slideHeight)
+            {
+                var targetHeight = width / slideWidth * slideHeight;
                 rect = new Rect(
-                    (_rectWidth - targetWidth) / 2,
+                    0,
+                    (height - targetHeight) / 2,
+                    width,
+                    targetHeight);
+            }
+            else
+            {
+                var targetWidth = height / slideHeight * slideWidth;
+                rect = new Rect(
+                    (width - targetWidth) / 2,
                     0,
                     targetWidth,
-                    _rectHeight);
-             }
-             return rect;
+                    height);
+            }
+            return rect;
          }
 
         private void RotateFlipImg(RotateFlipType roatateFlipType)
