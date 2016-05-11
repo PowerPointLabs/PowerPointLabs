@@ -18,6 +18,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
     public partial class AdjustImageWindow
     {
         private ObservableString thumbnailImageFile = new ObservableString();
+        //used for display in the adjust dimensions window only.
 
         private const int AdjustUnit = 10;
 
@@ -29,11 +30,17 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private double _rectY;
         private double _rectWidth;
         private double _rectHeight;
+        private double n;
 
         public string CropResult { get; set; }
+        //used for applying styles to the ppt
+
         public string CropResultThumbnail { get; set; }
+        //used in generating previews.
+
         public Rect Rect { get; set; }
         public bool IsCropped { get; set; }
+        public bool IsRotated { get; set; }
         public bool IsOpen { get; set; }
 
         public AdjustImageWindow()
@@ -81,6 +88,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             _rectY = y;
             _rectWidth = width;
             _rectHeight = height;
+            n = _rectWidth / _rectHeight;
         }
 
         private void RemoveCropFromCur()
@@ -261,6 +269,39 @@ namespace PowerPointLabs.PictureSlidesLab.View
             _croppingAdorner.ZoomCroppingRect(-AdjustUnit);
         }
 
+
+         private Rect RotateAutoFit()
+         {
+            double temp;
+            temp = _rectWidth;
+            _rectWidth = _rectHeight;
+            _rectHeight = temp; 
+
+             Rect rect;
+             var slideWidth = this.GetCurrentPresentation().SlideWidth;
+             var slideHeight = this.GetCurrentPresentation().SlideHeight;
+
+             if (_rectWidth / n < _croppingAdorner.ActualWidth)
+             {
+                 var targetHeight = _rectWidth /n / slideWidth * slideHeight;
+                 rect = new Rect(
+                     0,
+                     (_rectHeight - targetHeight) / n / 2,
+                     _rectWidth,
+                     targetHeight);
+             }
+             else
+             {
+                var targetWidth = _rectHeight / slideHeight * slideWidth;
+                rect = new Rect(
+                    (_rectWidth - targetWidth) / 2,
+                    0,
+                    targetWidth,
+                    _rectHeight);
+             }
+             return rect;
+         }
+
         private void RotateFlipImg(RotateFlipType roatateFlipType)
         {
             var img = (Bitmap)Bitmap.FromFile(CropResult);
@@ -274,14 +315,24 @@ namespace PowerPointLabs.PictureSlidesLab.View
             CropResultThumbnail = rotatedImg;
         }
 
+       /* public void RotateFlipAutoFit()
+        {
+            var rect = AutoFit();
+            _croppingAdorner.ClippingRectangle = rect;
+        }*/
+
         private void LeftRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
             RotateFlipImg(RotateFlipType.Rotate270FlipNone);
+            var rect = RotateAutoFit();
+            _croppingAdorner.ClippingRectangle = rect;
         }
 
         private void RightRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
             RotateFlipImg(RotateFlipType.Rotate90FlipNone);
+            var rect = RotateAutoFit();
+            _croppingAdorner.ClippingRectangle = rect;
         }
 
         private void FlipHorizontalButton_OnClick(object sender, RoutedEventArgs e)
