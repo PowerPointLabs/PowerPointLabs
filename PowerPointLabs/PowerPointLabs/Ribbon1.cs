@@ -2122,7 +2122,18 @@ namespace PowerPointLabs
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
-            TransparentEffect(selection.ShapeRange);
+            PowerPoint.ShapeRange shapeRange;
+            try
+            {
+                shapeRange = selection.ShapeRange;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please select at least 1 shape");
+                return;
+            }
+
+            TransparentEffect(shapeRange);
         }
 
         public void FrostedGlassEffectClick(Office.IRibbonControl control)
@@ -2131,18 +2142,18 @@ namespace PowerPointLabs
 
             var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            PowerPoint.ShapeRange shapeRange;
 
+            PowerPoint.ShapeRange shapeRange;
             try
             {
                 shapeRange = selection.ShapeRange;
             }
             catch (Exception)
             {
-                MessageBox.Show("Please select a shape");
-
+                MessageBox.Show("Please select at least 1 shape");
                 return;
             }
+
             FrostedGlassEffect(curSlide.GetNativeSlide(), shapeRange);
         }
 
@@ -2214,7 +2225,7 @@ namespace PowerPointLabs
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show("Please select a shape");
+                MessageBox.Show("Please select at least 1 shape");
                 return null;
             }
             catch (Exception e)
@@ -2321,46 +2332,75 @@ namespace PowerPointLabs
 
         private void FrostedGlassEffect(PowerPoint.Slide curSlide, PowerPoint.ShapeRange shapeRange)
         {
-            shapeRange.Visible = Office.MsoTriState.msoFalse;
+            shapeRange.Cut();
 
             var imageFile = Path.Combine(Path.GetTempPath(), "frostedGlass.png");
-            var frostedGlassShape = GenerateFrostedGlassShape(curSlide, imageFile);
+            Utils.Graphics.ExportSlide(curSlide, imageFile);
+            var blurSlideImage = GenerateBlurShape(curSlide, imageFile);
+
+            var frostedGlassTexts = new List<PowerPoint.Shape>();
+            var frostedGlassTextBoxes = new List<PowerPoint.Shape>();
+
+            shapeRange = curSlide.Shapes.Paste();
 
             foreach (PowerPoint.Shape shape in shapeRange)
             {
-                if (!(shape.Type == Office.MsoShapeType.msoTextBox
-                    && shape.TextFrame.HasText == Office.MsoTriState.msoFalse))
+                if (shape.Type == Office.MsoShapeType.msoGroup)
                 {
-                    frostedGlassShape.PictureFormat.Crop.ShapeLeft = shape.Left;
-                    frostedGlassShape.PictureFormat.Crop.ShapeTop = shape.Top;
-                    frostedGlassShape.PictureFormat.Crop.ShapeWidth = shape.Width;
-                    frostedGlassShape.PictureFormat.Crop.ShapeHeight = shape.Height;
-                    Utils.Graphics.ExportShape(frostedGlassShape, imageFile);
+                    FrostedGlassEffect(curSlide, shape.Ungroup());
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPlaceholder
+                    || shape.Type == Office.MsoShapeType.msoTextBox)
+                {
+                    var textRange = shape.TextFrame2.TextRange.TrimText();
 
-                    shape.Fill.UserPicture(imageFile);
-                    shape.Line.Visible = Office.MsoTriState.msoFalse;
-                    shape.Visible = Office.MsoTriState.msoTrue;
+                    if (Utils.StringUtil.IsNotEmpty(textRange.Text))
+                    {
+                        var marginLeft = 7.2f;
+                        var marginTop = 3.6f;
+
+                        var left = textRange.BoundLeft - marginLeft;
+                        var top = textRange.BoundTop - marginTop;
+                        var width = textRange.BoundWidth + marginLeft * 2;
+                        var height = textRange.BoundHeight + marginTop * 2;
+
+                        var blurImage = blurSlideImage.Duplicate()[1];
+                        CropPicture(blurImage, left, top, width, height);
+                        var overlayImage = GenerateOverlayShape(curSlide, left, top, width, height);
+
+                        frostedGlassTextBoxes.Add(blurImage);
+                        frostedGlassTextBoxes.Add(overlayImage);
+                    }
+                }
+                else if (shape.Type == Office.MsoShapeType.msoAutoShape
+                    || shape.Type == Office.MsoShapeType.msoFreeform)
+                {
+                    var blurImage = blurSlideImage.Duplicate()[1];
+                    CropPicture(blurImage, shape.Left, shape.Top, shape.Width, shape.Height);
+                    CropImageToShape(shape, blurImage, imageFile);
+
+                    var overlayImage = GenerateOverlayShape(curSlide, shape.Left, shape.Top, shape.Width, shape.Height);
+                    CropImageToShape(shape, overlayImage, imageFile);
+
+                    shape.Delete();
                 }
             }
+            
+            blurSlideImage.Delete();
 
-            frostedGlassShape.Delete();
+            // bring frosted glass text box and text to front
+            foreach (var shape in frostedGlassTextBoxes)
+            {
+                shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            }
+            foreach (var shape in frostedGlassTexts)
+            {
+                shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            }
         }
 
-        private PowerPoint.Shape GenerateFrostedGlassShape(PowerPoint.Slide curSlide, string imageFile)
+        private PowerPoint.Shape GenerateBlurShape(PowerPoint.Slide curSlide, string imageFile)
         {
-            var overlayShape =
-                curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0,
-                    PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
-            overlayShape.Fill.Solid();
-            overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue("#000000"));
-            overlayShape.Fill.Transparency = 80f / 100;
-            overlayShape.Line.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue("#000000"));
-            overlayShape.Line.Transparency = 80f / 100;
-            overlayShape.Line.Weight = 5;
-            overlayShape.Line.Visible = Office.MsoTriState.msoFalse;
-            Utils.Graphics.ExportSlide(curSlide, imageFile);
-            overlayShape.Delete();
-
             using (var imageFactory = new ImageProcessor.ImageFactory())
             {
                 var image = imageFactory
@@ -2386,12 +2426,48 @@ namespace PowerPointLabs
                 image.Save(imageFile);
             }
 
-            var frostedGlassShape =
+            var blurShape =
                 curSlide.Shapes.AddPicture(imageFile, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, 0, 0);
-            FitToSlide.AutoFit(frostedGlassShape, PowerPointPresentation.Current.SlideWidth,
+            FitToSlide.AutoFit(blurShape, PowerPointPresentation.Current.SlideWidth,
                 PowerPointPresentation.Current.SlideHeight);
 
-            return frostedGlassShape;
+            return blurShape;
+        }
+
+        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide,
+            float left, float top, float width, float height)
+        {
+            var overlayShape =
+                curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
+
+            overlayShape.Fill.Solid();
+            overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue("#000000"));
+            overlayShape.Fill.Transparency = 80f / 100;
+            overlayShape.Line.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue("#000000"));
+            overlayShape.Line.Transparency = 80f / 100;
+            overlayShape.Line.Weight = 5;
+            overlayShape.Line.Visible = Office.MsoTriState.msoFalse;
+
+            return overlayShape;
+        }
+
+        private void CropImageToShape(PowerPoint.Shape shape, PowerPoint.Shape image, string imageFile)
+        {
+            var croppedShape = shape.Duplicate()[1];
+            Utils.Graphics.ExportShape(image, imageFile);
+            croppedShape.Fill.UserPicture(imageFile);
+            croppedShape.Line.Visible = Office.MsoTriState.msoFalse;
+            croppedShape.Left = shape.Left;
+            croppedShape.Top = shape.Top;
+            image.Delete();
+        }
+
+        private void CropPicture(PowerPoint.Shape picture, float left, float top, float width, float height)
+        {
+            picture.PictureFormat.Crop.ShapeLeft = left;
+            picture.PictureFormat.Crop.ShapeTop = top;
+            picture.PictureFormat.Crop.ShapeWidth = width;
+            picture.PictureFormat.Crop.ShapeHeight = height;
         }
         # endregion
 
