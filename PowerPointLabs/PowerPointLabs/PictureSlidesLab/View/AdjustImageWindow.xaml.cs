@@ -17,9 +17,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
     public partial class AdjustImageWindow
     {
-        private ObservableString thumbnailImageFile = new ObservableString();
         //used for display in the adjust dimensions window only.
-
+        private ObservableString thumbnailImageFile = new ObservableString();
         private const int AdjustUnit = 10;
 
         private CroppingAdorner _croppingAdorner;
@@ -31,12 +30,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private double _rectWidth;
         private double _rectHeight;
 
-        public string CropResult { get; set; }
         //used for applying styles to the ppt
-
-        public string CropResultThumbnail { get; set; }
+        public string CropResult { get; set; }
         //used in generating previews.
-
+        public string CropResultThumbnail { get; set; }
         public Rect Rect { get; set; }
         public bool IsCropped { get; set; }
         public bool IsRotated { get; set; }
