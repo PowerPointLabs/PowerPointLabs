@@ -873,15 +873,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
                     if (copiedObj is Image)
                     {
-                        Clipboard.SetImage((Image) copiedObj);
+                        Clipboard.SetImage((Image)copiedObj);
                     }
                     else if (copiedObj is StringCollection)
                     {
-                        Clipboard.SetFileDropList((StringCollection) copiedObj);
+                        Clipboard.SetFileDropList((StringCollection)copiedObj);
                     }
                     else if (!string.IsNullOrEmpty(copiedObj as string))
                     {
-                        Clipboard.SetText((string) copiedObj);
+                        Clipboard.SetText((string)copiedObj);
                     }
                 }
                 Logger.Log("Save clipboard done.");
@@ -1021,7 +1021,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     || contentSlide == null);
         }
 
-        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
+        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide,
             float slideWidth, float slideHeight, bool isMockPreviewImages = false)
         {
             Logger.Log("UpdateStylesVariationImages begins");

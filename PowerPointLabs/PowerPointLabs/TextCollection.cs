@@ -117,11 +117,19 @@
 
         # region Drawing Lab
         public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
-        # endregion
+        #endregion
 
-        # endregion
+        # region Drawing Lab
+        public const string PositionsLabSupertip = "Open Positions Lab window.";
+        #endregion
 
-        # region Help
+        #region Resize Lab
+        public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
+        #endregion
+
+        #endregion
+
+        #region Help
         public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
         public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
         public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
@@ -217,6 +225,14 @@
         # region Drawing Lab
         public const string DrawingsLabButtonLabel = "Drawing Lab";
         # endregion
+
+        # region Positions Lab
+        public const string PositionsLabButtonLabel = "Positions Lab";
+        # endregion
+
+        # region Resize Lab
+        public const string ResizeLabButtonLabel = "Resize Lab";
+        # endregion
         # endregion
 
         # region Help
@@ -289,6 +305,8 @@
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
         public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
+        public const string PositionsLabTaskPanelTitle = "Positions Lab";
+        public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         # endregion 
 
         # region ShapeGalleryPresentation
@@ -402,7 +420,7 @@
             public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
         }
 
-        # region Agenda Lab
+        #region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
         public const string AgendaLabNoSectionError = "Please group the slides into sections before generating agenda.";
@@ -439,7 +457,6 @@
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
         # endregion
-
 
         # region Drawing Lab
 
@@ -562,9 +579,31 @@
         public const string CustomShapeCategoryContextStripImportShapes = "Import Shapes";
         public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
-        # endregion
+        #endregion
 
-        # region Control - ShapesLabSetting
+        #region Positions Lab
+        public class PositionsLabText
+        {
+            public const string ErrorNoSelection = "Please select at least a shape before using this feature";
+            public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature";
+            public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature";
+            public const string ErrorFunctionNotSupportedForWithinShapes = "This function is not supported for Within Corner Most Objects Setting.";
+            public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
+            public const string ErrorUndefined = "'Undefined error in Resize Lab'";
+        }
+        #endregion
+
+        #region Task Pane - Resize Lab
+
+        public class ResizeLabText
+        {
+            public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'";
+            public const string ErrorUndefined = "'Undefined error in Resize Lab'";
+        }
+
+        #endregion
+
+        #region Control - ShapesLabSetting
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
         # endregion

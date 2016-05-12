@@ -262,7 +262,7 @@ namespace PPExtraEventHelper
         }
 
         #region Modifier Keys
-        private static bool IsCtrlPressed()
+        public static bool IsCtrlPressed()
         {
             return IsModifierPressed(Native.VirtualKey.VK_LCONTROL) || IsModifierPressed(Native.VirtualKey.VK_RCONTROL);
         }
@@ -272,7 +272,7 @@ namespace PPExtraEventHelper
             return IsModifierPressed(Native.VirtualKey.VK_LMENU) || IsModifierPressed(Native.VirtualKey.VK_RMENU);
         }
 
-        private static bool IsShiftPressed()
+        public static bool IsShiftPressed()
         {
             return IsModifierPressed(Native.VirtualKey.VK_LSHIFT) || IsModifierPressed(Native.VirtualKey.VK_RSHIFT);
         }
