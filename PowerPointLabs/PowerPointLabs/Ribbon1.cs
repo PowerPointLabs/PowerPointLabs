@@ -398,7 +398,12 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonSupertip;
         }
-        
+
+        public string GetResizeLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ResizeLabButtonSupertip;
+        }
+
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HelpButtonSupertip;
@@ -410,6 +415,10 @@ namespace PowerPointLabs
         public string GetAboutButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AboutButtonSupertip;
+        }
+        public string GetPositionsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLabSupertip;
         }
         # endregion
 
@@ -605,6 +614,11 @@ namespace PowerPointLabs
         public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.DrawingsLabButtonLabel;
+        }
+
+        public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLabButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -2397,6 +2411,20 @@ namespace PowerPointLabs
             }
         }
         #endregion
+
+        // TODO: Add the image for the icon on the ribbon bar
+        //public Bitmap GetPositionsLabImage(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return new Bitmap(Properties.Resources.PositionsLab);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        PowerPointLabsGlobals.LogException(e, "GetPositionsLabImage");
+        //        throw;
+        //    }
+        //}
 
         private static string GetResourceText(string resourceName)
         {
