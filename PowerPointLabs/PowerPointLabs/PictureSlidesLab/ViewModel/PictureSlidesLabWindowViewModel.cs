@@ -126,6 +126,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             FontFamilies.Add("Calibri Light");
             FontFamilies.Add("Arial Black");
             FontFamilies.Add("Times New Roman Italic");
+
+            FontFamilies = new ObservableCollection<string>(FontFamilies.OrderBy(i => i));
         }
 
         private void CleanUnusedPersistentData()

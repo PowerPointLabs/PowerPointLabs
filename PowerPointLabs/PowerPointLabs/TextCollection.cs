@@ -352,8 +352,8 @@
             public const string VariantCategoryTextGlowColor = "Text Glow Color";
             public const string VariantCategoryBannerColor = "Banner Color";
             public const string VariantCategoryTextBoxColor = "TextBox Color";
-            public const string VariantCategoryFrostedGlassTextBoxColor = "Frosted Glass TextBox Color";
-            public const string VariantCategoryFrostedGlassBannerColor = "Frosted Glass Banner Color";
+            public const string VariantCategoryFrostedGlassTextBoxColor = "TextBox Color";
+            public const string VariantCategoryFrostedGlassBannerColor = "Banner Color";
             public const string VariantCategoryFrameColor = "Frame Color";
             public const string VariantCategoryCircleColor = "Circle Color";
             public const string VariantCategoryTriangleColor = "Triangle Color";
@@ -374,6 +374,7 @@
             public const string VariantCategoryFrameTransparency = "Frame Transparency";
             public const string VariantCategoryCircleTransparency = "Circle Transparency";
             public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
+            public const string VariantCategoryTextTransparency = "Text Transparency";
 
             /// <summary>
             /// Styles Preview Name
