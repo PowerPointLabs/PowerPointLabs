@@ -1963,7 +1963,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            if (shapeRange.Count > 1)
+            if (shapeRange.Count > 1 || shapeRange[1].Type == Office.MsoShapeType.msoGroup)
             {
                 MessageBox.Show("Only one magnify area is allowed.");
                 

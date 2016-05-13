@@ -61,9 +61,29 @@ namespace PowerPointLabs
             {
                 if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
 
-                var shape = GetShapeForSelection(shapeRange);
-                TakeScreenshotProxy(shape);
-                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                //var shape = GetShapeForSelection(shapeRange);
+                shapeRange.Cut();
+                shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
+                TakeScreenshotProxy(shapeRange);
+
+                var ungroupedRange = UngroupAllForShapeRange(shapeRange);
+                PowerPoint.Shape filledShape = null;
+                var shapes = new string[ungroupedRange.Count];
+
+                for (int i = 1; i <= ungroupedRange.Count; i++)
+                {
+                    var shape = ungroupedRange[i];
+                    filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                    shapes[i - 1] = filledShape.Name;
+                }
+
+                if (ungroupedRange.Count > 1)
+                {
+                    var croppedShapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapes);
+                    var croppedShape = croppedShapeRange.Group();
+
+                    return croppedShape;
+                }
 
                 return filledShape;
             }
@@ -169,7 +189,14 @@ namespace PowerPointLabs
         {
             using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
             {
-                CreateFillInBackground(shape, slideImage, magnifyRatio);
+                if (shape.Rotation == 0)
+                {
+                    CreateFillInBackground(shape, slideImage, magnifyRatio);
+                }
+                else
+                {
+                    CreateRotatedFillInBackground(shape, slideImage, magnifyRatio);
+                }
             }
         }
 
@@ -182,6 +209,35 @@ namespace PowerPointLabs
                 shape.Height * Utils.Graphics.PictureExportingRatio,
                 magnifyRatio);
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
+        }
+
+        private static void CreateRotatedFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
+        {
+            var rotatedShape = new Utils.PPShape(shape, false);
+            var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * Utils.Graphics.PictureExportingRatio,
+                rotatedShape.ActualTopLeft.Y * Utils.Graphics.PictureExportingRatio);
+
+            Bitmap rotatedImage = new Bitmap((int)(shape.Width * Utils.Graphics.PictureExportingRatio),
+                (int)(shape.Height * Utils.Graphics.PictureExportingRatio));
+
+            using (Graphics g = Graphics.FromImage(rotatedImage))
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+                using (System.Drawing.Drawing2D.Matrix mat = new System.Drawing.Drawing2D.Matrix())
+                {
+                    mat.Translate(-topLeftPoint.X, -topLeftPoint.Y);
+                    mat.RotateAt(360 - shape.Rotation, topLeftPoint);
+
+                    g.Transform = mat;
+                    g.DrawImage(slideImage, new Rectangle(0, 0, slideImage.Width, slideImage.Height));
+                }
+            }
+
+            var magnifiedImage = (magnifyRatio == 1)
+                    ? rotatedImage
+                    : KiCut(rotatedImage, 0, 0, rotatedImage.Width, rotatedImage.Height, magnifyRatio);
+            magnifiedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
         public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
@@ -215,11 +271,11 @@ namespace PowerPointLabs
             }
         }
 
-        private static void TakeScreenshotProxy(PowerPoint.Shape shape)
+        private static void TakeScreenshotProxy(PowerPoint.ShapeRange shapeRange)
         {
-            shape.Visible = Office.MsoTriState.msoFalse;
+            shapeRange.Visible = Office.MsoTriState.msoFalse;
             Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, SlidePicture);
-            shape.Visible = Office.MsoTriState.msoTrue;
+            shapeRange.Visible = Office.MsoTriState.msoTrue;
         }
 
         private static PowerPoint.ShapeRange MakeCopyForShapeRange(PowerPoint.ShapeRange rangeOriginal)
@@ -295,7 +351,7 @@ namespace PowerPointLabs
                         queue.Enqueue(item as PowerPoint.Shape);
                     }
                 }
-                else if ((int)shape.Rotation != 0)
+                /*else if ((int)shape.Rotation != 0)
                 {
                     if (remove)
                     {
@@ -303,7 +359,7 @@ namespace PowerPointLabs
                     }
 
                     ThrowErrorCode(ErrorCodeForRotationNonZero);
-                }
+                }*/
                 else if (!IsShape(shape))
                 {
                     if (remove)
