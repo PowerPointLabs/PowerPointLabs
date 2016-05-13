@@ -35,10 +35,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
         public string CropResult { get; set; }
         //used in generating previews.
         public string CropResultThumbnail { get; set; }
+        public string RotateResult { get; set; }
         public Rect Rect { get; set; }
         public bool IsCropped { get; set; }
         public bool IsRotated { get; set; }
         public bool IsOpen { get; set; }
+        public Rect RotateRect { get; set; }
 
         public AdjustImageWindow()
         {
@@ -151,7 +153,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ImageHolder.Height = ImageHolder.ActualHeight;
             // adjust this window size
             Height = ImageHolder.ActualHeight + 15 + SaveCropButton.ActualHeight + 50;
-            Width = ImageHolder.ActualWidth + 20;
+            if (ImageHolder.ActualWidth + 20 > 545)
+            {
+                Width = ImageHolder.ActualWidth + 20;
+            }
+            else
+            {
+                Width = 545;
+            }
         }
 
         private void CenterWindowOnScreen()
@@ -274,8 +283,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
                                     + Guid.NewGuid().ToString().Substring(0, 7));
             img.Save(rotatedImg);
             CropResult = rotatedImg;
+            RotateResult = rotatedImg;
             thumbnailImageFile.Text = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
             CropResultThumbnail = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
+            IsRotated = true;
+            RotateRect = new Rect(
+                
+                
+                );
 
             Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
             {
