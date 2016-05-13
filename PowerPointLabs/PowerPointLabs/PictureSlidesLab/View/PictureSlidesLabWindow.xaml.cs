@@ -66,6 +66,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private bool _isDisplayDefaultPicture;
         private bool _isEnableUpdatePreview = true;
 
+        private int sysHeight;
+        private int sysWidth;
+
         # endregion
 
         #region Lifecycle
@@ -88,6 +91,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
+                GetScreenSize();
+                InitSize();
+                InitPosition();
                 InitUiExceptionHandling();
                 InitViewModel();
                 InitGotoSlideDialog();
@@ -103,6 +109,26 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
                 Logger.LogException(e, "Init");
             }
+        }
+
+        private void GetScreenSize()
+        {
+            System.Drawing.Size mSize = SystemInformation.WorkingArea.Size;
+            sysHeight = mSize.Height;
+            sysWidth = mSize.Width;
+        }
+
+        private void InitSize()
+        {
+            this.Window.Width = 1200 * (sysWidth * 1.0 / 1280);
+            this.Window.Height = 700 * (sysHeight * 1.0 / 800);
+        }
+
+        private void InitPosition()
+        {
+            this.Window.Left = (sysWidth * 1.0 - this.Window.Width) / 2;
+            this.Window.Top = (sysHeight * 1.0 - this.Window.Height) / 2;
+            this.Window.WindowStartupLocation = WindowStartupLocation.Manual;
         }
 
         private void InitUiExceptionHandling()
@@ -145,9 +171,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void InitViewModel()
         {
             ViewModel = new PictureSlidesLabWindowViewModel(this);
-            this.Window.Width = 1200;
-            this.Window.Height = 700;
-            this.Window.WindowStartupLocation(CenterScreen);
             ViewModel.StylesVariationList.CollectionChanged += StylesVariationList_OnCollectionChanged;
             ViewModel.StylesPreviewList.CollectionChanged += StylesPreviewList_OnCollectionChanged;
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
