@@ -153,14 +153,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ImageHolder.Height = ImageHolder.ActualHeight;
             // adjust this window size
             Height = ImageHolder.ActualHeight + 15 + SaveCropButton.ActualHeight + 50;
-            if (ImageHolder.ActualWidth + 20 > 545)
-            {
-                Width = ImageHolder.ActualWidth + 20;
-            }
-            else
-            {
-                Width = 545;
-            }
+            Width = ImageHolder.ActualWidth + 20;
         }
 
         private void CenterWindowOnScreen()

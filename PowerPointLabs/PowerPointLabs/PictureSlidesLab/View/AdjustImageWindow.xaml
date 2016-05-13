@@ -11,6 +11,7 @@
     ShowMinButton="False"
     ShowMaxRestoreButton="False"
     Width="800" Background="#FFFFFF" Loaded="Window_Loaded"
+    MinWidth="545"
     >
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
