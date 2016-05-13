@@ -8,6 +8,7 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.ImageAdjustment;
 using PowerPointLabs.WPF.Observable;
 using Color = System.Windows.Media.Color;
+using System.Windows.Threading;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -264,45 +265,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             _croppingAdorner.ZoomCroppingRect(-AdjustUnit);
         }
 
-
-         private Rect RotateAutoFit()
-         {
-            Rect rect;
-            var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            var slideHeight = this.GetCurrentPresentation().SlideHeight;
-
-            //var originalImg = (Bitmap)Bitmap.FromFile(CropResult);
-
-            double n;
-            n = (ImageHolder.Width / ImageHolder.Height);
-
-            double width, height;
-
-            width = ImageHolder.Height / n;
-            height = ImageHolder.Height;
-
-            if (width / height
-                < slideWidth / slideHeight)
-            {
-                var targetHeight = width / slideWidth * slideHeight;
-                rect = new Rect(
-                    0,
-                    (height - targetHeight) / 2,
-                    width,
-                    targetHeight);
-            }
-            else
-            {
-                var targetWidth = height / slideHeight * slideWidth;
-                rect = new Rect(
-                    (width - targetWidth) / 2,
-                    0,
-                    targetWidth,
-                    height);
-            }
-            return rect;
-         }
-
         private void RotateFlipImg(RotateFlipType roatateFlipType)
         {
             var img = (Bitmap)Bitmap.FromFile(CropResult);
@@ -314,6 +276,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
             thumbnailImageFile.Text = rotatedImg;
             CropResult = rotatedImg;
             CropResultThumbnail = rotatedImg;
+
+            Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
+            {
+                var rect = AutoFit();
+                _croppingAdorner.ClippingRectangle = rect;
+            }));
         }
 
        /* public void RotateFlipAutoFit()
@@ -325,15 +293,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void LeftRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
             RotateFlipImg(RotateFlipType.Rotate270FlipNone);
-            var rect = RotateAutoFit();
-            _croppingAdorner.ClippingRectangle = rect;
         }
 
         private void RightRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
             RotateFlipImg(RotateFlipType.Rotate90FlipNone);
-            var rect = RotateAutoFit();
-            _croppingAdorner.ClippingRectangle = rect;
         }
 
         private void FlipHorizontalButton_OnClick(object sender, RoutedEventArgs e)
