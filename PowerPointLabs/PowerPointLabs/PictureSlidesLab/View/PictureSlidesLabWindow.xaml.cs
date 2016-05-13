@@ -68,6 +68,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private int sysHeight;
         private int sysWidth;
+        private double sizeH;
+        private double sizeW;
 
         # endregion
 
@@ -116,12 +118,15 @@ namespace PowerPointLabs.PictureSlidesLab.View
             System.Drawing.Size mSize = SystemInformation.WorkingArea.Size;
             sysHeight = mSize.Height;
             sysWidth = mSize.Width;
+            sizeW = sysWidth * 1.0 / 1280;
+            sizeH = sysHeight * 1.0 / 800;
         }
 
         private void InitSize()
         {
-            this.Window.Width = 1200 * (sysWidth * 1.0 / 1280);
-            this.Window.Height = 700 * (sysHeight * 1.0 / 800);
+            this.Window.Width = 1200 * sizeW;
+            this.Window.Height = 700 * sizeH;
+            this.Window.StylesPreviewGrid.Width = 560 * sizeW;
         }
 
         private void InitPosition()
