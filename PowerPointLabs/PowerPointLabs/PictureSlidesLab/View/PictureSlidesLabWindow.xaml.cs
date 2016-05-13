@@ -145,6 +145,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void InitViewModel()
         {
             ViewModel = new PictureSlidesLabWindowViewModel(this);
+            this.Window.Width = 1200;
+            this.Window.Height = 700;
+            this.Window.WindowStartupLocation(CenterScreen);
             ViewModel.StylesVariationList.CollectionChanged += StylesVariationList_OnCollectionChanged;
             ViewModel.StylesPreviewList.CollectionChanged += StylesPreviewList_OnCollectionChanged;
             ViewModel.ImageSelectionList.CollectionChanged += ImageSelectionList_OnCollectionChanged;
@@ -1240,7 +1243,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 return (bool) propertyInfo.GetValue(this, null);
             }
         }
-
         #endregion
     }
 }
