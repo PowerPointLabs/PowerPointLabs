@@ -45,7 +45,7 @@
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveLeftButton" ToolTip="Move selection left" Click="MoveLeftButton_OnClick" Width="40" Height="40" HorizontalAlignment="Left" Margin="0,0,0,1">
+            <Button Grid.Column="1" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveLeftButton" ToolTip="Move selection left" Click="MoveLeftButton_OnClick" Width="40" Height="40">
                 <Image Width="24" Height="24" Name="MoveLeftImage"></Image>
             </Button>
             <Button Grid.Column="2" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="MoveUpButton" ToolTip="Move selection up" Click="MoveUpButton_OnClick" Width="40" Height="40">
@@ -64,7 +64,7 @@
                 <Image Width="24" Height="24" Name="ZoomOutImage"></Image>
             </Button>
             <Button Grid.Column="7" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="AutoFitButton" ToolTip="Auto fit picture dimensions" Click="AutoFitButton_OnClick" Width="40" Height="40">
-                <Image Width="24" Height="24" x:Name="AutoFitImage_Copy"/>
+                <Image Width="24" Height="24" x:Name="AutoFitImage"/>
             </Button>
             <Button Grid.Column="8" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="LeftRotateButton" ToolTip="Roate the picture to the left 90°" Click="LeftRotateButton_OnClick" Width="40" Height="40">
                 <Image Width="24" Height="24" x:Name="LeftRotateImage"/>

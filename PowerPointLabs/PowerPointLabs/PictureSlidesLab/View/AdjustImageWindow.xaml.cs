@@ -50,7 +50,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             MoveRightImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Right);
             ZoomInImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PlusZoom);
             ZoomOutImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.MinusZoom);
-            AutoFitImage_Copy.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Fit);
+            AutoFitImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Fit);
             LeftRotateImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.LeftRotate);
             RightRotateImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.RightRotate);
             FlipHorizontalImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.FlipHorizontal);
@@ -273,9 +273,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
                                     + DateTime.Now.GetHashCode() + "-"
                                     + Guid.NewGuid().ToString().Substring(0, 7));
             img.Save(rotatedImg);
-            thumbnailImageFile.Text = rotatedImg;
             CropResult = rotatedImg;
-            CropResultThumbnail = rotatedImg;
+            thumbnailImageFile.Text = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
+            CropResultThumbnail = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
 
             Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
             {
@@ -283,12 +283,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 _croppingAdorner.ClippingRectangle = rect;
             }));
         }
-
-       /* public void RotateFlipAutoFit()
-        {
-            var rect = AutoFit();
-            _croppingAdorner.ClippingRectangle = rect;
-        }*/
 
         private void LeftRotateButton_OnClick(object sender, RoutedEventArgs e)
         {
