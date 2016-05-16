@@ -74,10 +74,8 @@ namespace PowerPointLabs
 
                 if (ungroupedRange.Count > 1)
                 {
-                    var croppedShapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapes);
-                    var croppedShape = croppedShapeRange.Group();
-
-                    return croppedShape;
+                    var regroupedRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapes);
+                    filledShape = regroupedRange.Group();
                 }
 
                 return filledShape;
@@ -133,22 +131,9 @@ namespace PowerPointLabs
 
         private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0)
         {
-            if (shape.Type != Office.MsoShapeType.msoGroup)
-            {
-                CreateFillInBackgroundForShape(shape, magnifyRatio);
-                shape.Fill.UserPicture(FillInBackgroundPicture);
-            }
-            else
-            {
-                using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
-                {
-                    foreach (var shapeGroupItem in (from PowerPoint.Shape sh in shape.GroupItems select sh))
-                    {
-                        CreateFillInBackground(shapeGroupItem, slideImage);
-                        shapeGroupItem.Fill.UserPicture(FillInBackgroundPicture);
-                    }
-                }
-            }
+            CreateFillInBackgroundForShape(shape, magnifyRatio);
+            shape.Fill.UserPicture(FillInBackgroundPicture);
+
             shape.Line.Visible = Office.MsoTriState.msoFalse;
             shape.Copy();
             var shapeToReturn = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
@@ -188,8 +173,7 @@ namespace PowerPointLabs
             var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * Utils.Graphics.PictureExportingRatio,
                 rotatedShape.ActualTopLeft.Y * Utils.Graphics.PictureExportingRatio);
 
-            Bitmap rotatedImage = new Bitmap((int)(shape.Width * Utils.Graphics.PictureExportingRatio),
-                (int)(shape.Height * Utils.Graphics.PictureExportingRatio));
+            Bitmap rotatedImage = new Bitmap(slideImage);
 
             using (Graphics g = Graphics.FromImage(rotatedImage))
             {
@@ -198,16 +182,15 @@ namespace PowerPointLabs
                 using (System.Drawing.Drawing2D.Matrix mat = new System.Drawing.Drawing2D.Matrix())
                 {
                     mat.Translate(-topLeftPoint.X, -topLeftPoint.Y);
-                    mat.RotateAt(360 - shape.Rotation, topLeftPoint);
+                    mat.RotateAt(-shape.Rotation, topLeftPoint);
 
                     g.Transform = mat;
                     g.DrawImage(slideImage, new Rectangle(0, 0, slideImage.Width, slideImage.Height));
                 }
             }
 
-            var magnifiedImage = (magnifyRatio == 1)
-                    ? rotatedImage
-                    : KiCut(rotatedImage, 0, 0, rotatedImage.Width, rotatedImage.Height, magnifyRatio);
+            var magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * Utils.Graphics.PictureExportingRatio,
+                shape.Height * Utils.Graphics.PictureExportingRatio, magnifyRatio);
             magnifiedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
@@ -247,59 +230,6 @@ namespace PowerPointLabs
             shapeRange.Visible = Office.MsoTriState.msoFalse;
             Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, SlidePicture);
             shapeRange.Visible = Office.MsoTriState.msoTrue;
-        }
-
-        private static PowerPoint.ShapeRange MakeCopyForShapeRange(PowerPoint.ShapeRange rangeOriginal)
-        {
-            //Change shape's name in rangeOriginal, so that shape's name in rangeCopy is the same.
-            //This is a naming mechanism in office:
-            //When shape's name is the default one, its copy's name will be different (e.g. index got changed).
-            //When shape's name is not the default one, its copy's name will be the same as the original shape's
-            //use Guid here to ensure that name is unique
-            var appendString = Guid.NewGuid().ToString() + "temp";
-            ModifyNameForShapeRange(rangeOriginal, appendString);
-
-            rangeOriginal.Copy();
-            var rangeCopy = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
-            AdjustSamePositionForShapeRange(rangeOriginal, rangeCopy);
-
-            appendString = "_Copy";
-            ModifyNameForShapeRange(rangeCopy, appendString);
-            return rangeCopy;
-        }
-
-        /// <summary>
-        /// Assumption: 2 ranges have the same names
-        /// </summary>
-        /// <param name="rangeReference"></param>
-        /// <param name="rangeCopy"></param>
-        private static void AdjustSamePositionForShapeRange(PowerPoint.ShapeRange rangeReference, PowerPoint.ShapeRange rangeCopy)
-        {
-            var nameMap = (from PowerPoint.Shape shape in rangeReference select shape)
-                .ToDictionary(shape => shape.Name, shape => new Tuple<float, float>(shape.Left, shape.Top));
-            foreach (var shape in (from PowerPoint.Shape sh in rangeCopy select sh))
-            {
-                shape.Left = nameMap[shape.Name].Item1;
-                shape.Top = nameMap[shape.Name].Item2;
-            }
-        }
-
-        private static void ModifyNameForShapeRange(PowerPoint.ShapeRange range, string appendString)
-        {
-            foreach (var sh in range)
-            {
-                ((PowerPoint.Shape) sh).Name += appendString;
-            }
-        }
-
-        private static bool IsWithinSlide(PowerPoint.Shape shape)
-        {
-            //-1 and +1 for better user experience
-            bool cond1 = shape.Left >= -1;
-            bool cond2 = shape.Top >= -1;
-            bool cond3 = shape.Left + shape.Width <= PowerPointPresentation.Current.SlideWidth + 1;
-            bool cond4 = shape.Top + shape.Height <= PowerPointPresentation.Current.SlideHeight + 1;
-            return cond1 && cond2 && cond3 && cond4;
         }
 
         public static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range, bool remove = true)
