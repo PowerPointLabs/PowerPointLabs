@@ -321,8 +321,6 @@
             //------------ Msg -------------
             public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
-            public const string ErrorMessageForExceedSlideBound = "The selected shape needs to be within the slide's boundaries.";
-            public const string ErrorMessageForRotationNonZero = "'Crop To Shape' does not currently support rotated shapes.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
         }
 

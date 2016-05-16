@@ -19,13 +19,9 @@ namespace PowerPointLabs
 #pragma warning disable 0618
         private const int ErrorCodeForSelectionCountZero = 0;
         private const int ErrorCodeForSelectionNonShape = 1;
-        private const int ErrorCodeForExceedSlideBound = 2;
-        private const int ErrorCodeForRotationNonZero = 3;
 
         private const string ErrorMessageForSelectionCountZero = TextCollection.CropToShapeText.ErrorMessageForSelectionCountZero;
         private const string ErrorMessageForSelectionNonShape = TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape;
-        private const string ErrorMessageForExceedSlideBound = TextCollection.CropToShapeText.ErrorMessageForExceedSlideBound;
-        private const string ErrorMessageForRotationNonZero = TextCollection.CropToShapeText.ErrorMessageForRotationNonZero;
         private const string ErrorMessageForUndefined = TextCollection.CropToShapeText.ErrorMessageForUndefined;
 
         private const string MessageBoxTitle = "Unable to crop";
@@ -60,8 +56,7 @@ namespace PowerPointLabs
             try
             {
                 if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
-
-                //var shape = GetShapeForSelection(shapeRange);
+                
                 shapeRange.Cut();
                 shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
                 TakeScreenshotProxy(shapeRange);
@@ -134,30 +129,6 @@ namespace PowerPointLabs
             {
                 ThrowErrorCode(ErrorCodeForSelectionCountZero);
             }
-        }
-
-        private static PowerPoint.Shape GetShapeForSelection(PowerPoint.ShapeRange shapeRange)
-        {
-            var rangeOriginal = shapeRange;
-            //some shapes in the selection cannot be used due to 
-            //Powerpoint's 'Delete-Undo' issue: when a shape got deleted or cut programmatically, and users undo,
-            //then we can only read the shape's name/width/height/left/top.. for others, it'll throw an exception
-            //'Cut-Paste' is a common workaround method for this issue
-            rangeOriginal.Cut();
-            rangeOriginal = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
-
-            var rangeCopy = MakeCopyForShapeRange(rangeOriginal);
-            var ungroupedRangeCopy = UngroupAllForShapeRange(rangeCopy);
-
-            var mergedShape = ungroupedRangeCopy[1];
-            if (ungroupedRangeCopy.Count > 1)
-            {
-                mergedShape = ungroupedRangeCopy.Group();
-            }
-
-            rangeOriginal.Delete();
-
-            return mergedShape;
         }
 
         private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0)
@@ -351,15 +322,6 @@ namespace PowerPointLabs
                         queue.Enqueue(item as PowerPoint.Shape);
                     }
                 }
-                /*else if ((int)shape.Rotation != 0)
-                {
-                    if (remove)
-                    {
-                        RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
-                    }
-
-                    ThrowErrorCode(ErrorCodeForRotationNonZero);
-                }*/
                 else if (!IsShape(shape))
                 {
                     if (remove)
@@ -427,10 +389,6 @@ namespace PowerPointLabs
                     return ErrorMessageForSelectionCountZero;
                 case ErrorCodeForSelectionNonShape:
                     return ErrorMessageForSelectionNonShape;
-                case ErrorCodeForExceedSlideBound:
-                    return ErrorMessageForExceedSlideBound;
-                case ErrorCodeForRotationNonZero:
-                    return ErrorMessageForRotationNonZero;
                 default:
                     return ErrorMessageForUndefined;
             }
