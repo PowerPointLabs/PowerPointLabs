@@ -2334,67 +2334,48 @@ namespace PowerPointLabs
         {
             shapeRange.Cut();
 
-            var imageFile = Path.Combine(Path.GetTempPath(), "frostedGlass.png");
+            var imageFile = Path.Combine(Path.GetTempPath(), "blur.png");
             Utils.Graphics.ExportSlide(curSlide, imageFile);
             var blurSlideImage = GenerateBlurShape(curSlide, imageFile);
-
-            var frostedGlassTexts = new List<PowerPoint.Shape>();
-            var frostedGlassTextBoxes = new List<PowerPoint.Shape>();
+            FitToSlide.AutoFit(blurSlideImage, PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
 
             shapeRange = curSlide.Shapes.Paste();
 
-            foreach (PowerPoint.Shape shape in shapeRange)
-            {
-                if (shape.Type == Office.MsoShapeType.msoGroup)
-                {
-                    FrostedGlassEffect(curSlide, shape.Ungroup());
-                }
-                else if (shape.Type == Office.MsoShapeType.msoPlaceholder
-                    || shape.Type == Office.MsoShapeType.msoTextBox)
-                {
-                    var textRange = shape.TextFrame2.TextRange.TrimText();
+            var textBoxes = new List<PowerPoint.Shape>();
+            var blurShapeRange = GenerateFrostedGlassShapeRange(curSlide, shapeRange, textBoxes);
 
-                    if (Utils.StringUtil.IsNotEmpty(textRange.Text))
-                    {
-                        var marginLeft = 7.2f;
-                        var marginTop = 3.6f;
-
-                        var left = textRange.BoundLeft - marginLeft;
-                        var top = textRange.BoundTop - marginTop;
-                        var width = textRange.BoundWidth + marginLeft * 2;
-                        var height = textRange.BoundHeight + marginTop * 2;
-
-                        var blurImage = blurSlideImage.Duplicate()[1];
-                        CropPicture(blurImage, left, top, width, height);
-                        var overlayImage = GenerateOverlayShape(curSlide, left, top, width, height);
-
-                        frostedGlassTextBoxes.Add(blurImage);
-                        frostedGlassTextBoxes.Add(overlayImage);
-                    }
-                }
-                else if (shape.Type == Office.MsoShapeType.msoAutoShape
-                    || shape.Type == Office.MsoShapeType.msoFreeform)
-                {
-                    var blurImage = blurSlideImage.Duplicate()[1];
-                    CropPicture(blurImage, shape.Left, shape.Top, shape.Width, shape.Height);
-                    CropImageToShape(shape, blurImage, imageFile);
-
-                    var overlayImage = GenerateOverlayShape(curSlide, shape.Left, shape.Top, shape.Width, shape.Height);
-                    CropImageToShape(shape, overlayImage, imageFile);
-
-                    shape.Delete();
-                }
-            }
-            
+            blurSlideImage.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+            var blurShape = CropToShape.Crop(blurShapeRange, handleError: false);
             blurSlideImage.Delete();
 
-            // bring frosted glass text box and text to front
-            foreach (var shape in frostedGlassTextBoxes)
+            var overlayImage = GenerateOverlayShape(curSlide, 0, 0, PowerPointPresentation.Current.SlideWidth,
+                PowerPointPresentation.Current.SlideHeight);
+            Utils.Graphics.ExportShape(overlayImage, imageFile);
+            overlayImage.Delete();
+            
+            blurShape.Cut();
+            blurShapeRange = curSlide.Shapes.Paste();
+
+            var overlayShapeNames = new List<string>();
+
+            foreach (PowerPoint.Shape shape in blurShapeRange)
             {
-                shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                var overlayShape = CropImageToShape(shape, imageFile);
+                overlayShape.Left = shape.Left;
+                overlayShape.Top = shape.Top;
+                overlayShapeNames.Add(overlayShape.Name);
             }
-            foreach (var shape in frostedGlassTexts)
+
+            if (blurShapeRange.Count > 1)
             {
+                var overlayRange = curSlide.Shapes.Range(overlayShapeNames.ToArray());
+                overlayRange.Group();
+            }
+
+            foreach (var shape in textBoxes)
+            {
+                shape.Fill.Visible = Office.MsoTriState.msoFalse;
                 shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             }
         }
@@ -2428,17 +2409,85 @@ namespace PowerPointLabs
 
             var blurShape =
                 curSlide.Shapes.AddPicture(imageFile, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, 0, 0);
-            FitToSlide.AutoFit(blurShape, PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
 
             return blurShape;
         }
 
-        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide,
-            float left, float top, float width, float height)
+        private PowerPoint.ShapeRange GenerateFrostedGlassShapeRange(PowerPoint.Slide curSlide,
+            PowerPoint.ShapeRange shapeRange, List<PowerPoint.Shape> textBoxes)
         {
-            var overlayShape =
-                curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
+            var blurShapeNames = new List<string>();
+            var queue = new Queue<PowerPoint.Shape>();
+
+            foreach (PowerPoint.Shape shape in shapeRange)
+            {
+                queue.Enqueue(shape);
+            }
+
+            while (queue.Count != 0)
+            {
+                var shape = queue.Dequeue();
+
+                if (shape.Type == Office.MsoShapeType.msoGroup)
+                {
+                    var subRange = shape.Ungroup();
+                    foreach (PowerPoint.Shape item in subRange)
+                    {
+                        queue.Enqueue(item);
+                    }
+                }
+                else if (shape.Type == Office.MsoShapeType.msoPlaceholder
+                    || shape.Type == Office.MsoShapeType.msoTextBox)
+                {
+                    var textFrame = shape.TextFrame2;
+                    var textRange = textFrame.TextRange.TrimText();
+
+                    if (Utils.StringUtil.IsEmpty(textRange.Text))
+                    {
+                        continue;
+                    }
+
+                    var left = textRange.BoundLeft - textFrame.MarginLeft;
+                    var top = textRange.BoundTop - textFrame.MarginTop;
+                    var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight;
+                    var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom;
+
+                    var shapeWithoutText = curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle,
+                        left, top, width, height);
+
+                    shape.Fill.Visible = Office.MsoTriState.msoFalse;
+                    shape.Line.Visible = Office.MsoTriState.msoFalse;
+                    textBoxes.Add(shape);
+
+                    blurShapeNames.Add(shapeWithoutText.Name);
+                }
+                else if (shape.Type == Office.MsoShapeType.msoAutoShape
+                    || shape.Type == Office.MsoShapeType.msoFreeform)
+                {
+                    if (shape.HasTextFrame == Office.MsoTriState.msoTrue)
+                    {
+                        var shapeWithText = shape.Duplicate()[1];
+                        shapeWithText.Left = shape.Left;
+                        shapeWithText.Top = shape.Top;
+
+                        shapeWithText.Fill.Visible = Office.MsoTriState.msoFalse;
+                        shapeWithText.Line.Visible = Office.MsoTriState.msoFalse;
+                        textBoxes.Add(shapeWithText);
+
+                        shape.TextFrame2.DeleteText();
+                    }
+
+                    blurShapeNames.Add(shape.Name);
+                }
+            }
+
+            return curSlide.Shapes.Range(blurShapeNames.ToArray());
+        }
+
+        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide, float left, float top, float width,
+            float height)
+        {
+            var overlayShape = curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
 
             overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue("#000000"));
@@ -2451,23 +2500,15 @@ namespace PowerPointLabs
             return overlayShape;
         }
 
-        private void CropImageToShape(PowerPoint.Shape shape, PowerPoint.Shape image, string imageFile)
+        private PowerPoint.Shape CropImageToShape(PowerPoint.Shape shape, string imageFile)
         {
             var croppedShape = shape.Duplicate()[1];
-            Utils.Graphics.ExportShape(image, imageFile);
             croppedShape.Fill.UserPicture(imageFile);
             croppedShape.Line.Visible = Office.MsoTriState.msoFalse;
             croppedShape.Left = shape.Left;
             croppedShape.Top = shape.Top;
-            image.Delete();
-        }
 
-        private void CropPicture(PowerPoint.Shape picture, float left, float top, float width, float height)
-        {
-            picture.PictureFormat.Crop.ShapeLeft = left;
-            picture.PictureFormat.Crop.ShapeTop = top;
-            picture.PictureFormat.Crop.ShapeWidth = width;
-            picture.PictureFormat.Crop.ShapeHeight = height;
+            return croppedShape;
         }
         # endregion
 
