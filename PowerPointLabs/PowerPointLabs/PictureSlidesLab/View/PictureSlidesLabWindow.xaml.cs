@@ -66,10 +66,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private bool _isDisplayDefaultPicture;
         private bool _isEnableUpdatePreview = true;
 
-        private int sysHeight;
-        private int sysWidth;
-        private double sizeH;
-        private double sizeW;
+        //Window size control constant
+        private const double StandardSystemWidth = 1280.0;
+        private const double StandardSystemHeight = 800.0;
+        private const double StandardWindowWidth = 1200.0;
+        private const double StandardWindowHeight = 700.0;
+        private const double StandardPrewienGridWidth = 560.0;
 
         # endregion
 
@@ -93,9 +95,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                GetScreenSize();
-                InitSize();
-                InitPosition();
+                InitSizePosition();
                 InitUiExceptionHandling();
                 InitViewModel();
                 InitGotoSlideDialog();
@@ -113,26 +113,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void GetScreenSize()
+        private void InitSizePosition()
         {
             System.Drawing.Size mSize = SystemInformation.WorkingArea.Size;
-            sysHeight = mSize.Height;
-            sysWidth = mSize.Width;
-            sizeW = sysWidth * 1.0 / 1280;
-            sizeH = sysHeight * 1.0 / 800;
-        }
+            double systemHeight = mSize.Height * 1.0;
+            double systemWidth = mSize.Width * 1.0;
+            double windowWidth = systemWidth / StandardSystemWidth;
+            double windowHeight = systemHeight / StandardSystemHeight;
 
-        private void InitSize()
-        {
-            this.Window.Width = 1200 * sizeW;
-            this.Window.Height = 700 * sizeH;
-            this.Window.StylesPreviewGrid.Width = 560 * sizeW;
-        }
-
-        private void InitPosition()
-        {
-            this.Window.Left = (sysWidth * 1.0 - this.Window.Width) / 2;
-            this.Window.Top = (sysHeight * 1.0 - this.Window.Height) / 2;
+            this.Window.Width = StandardWindowWidth * windowWidth;
+            this.Window.Height = StandardWindowHeight * windowHeight;
+            this.Window.StylesPreviewGrid.Width = StandardPrewienGridWidth * windowWidth;
+            this.Window.Left = (systemWidth - this.Window.Width) / 2;
+            this.Window.Top = (systemHeight - this.Window.Height) / 2;
             this.Window.WindowStartupLocation = WindowStartupLocation.Manual;
         }
 

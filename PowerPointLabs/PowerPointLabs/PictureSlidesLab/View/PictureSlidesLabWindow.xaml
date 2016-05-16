@@ -300,42 +300,36 @@
                 </Grid>
             </Grid>
             <Grid Name="ImageSelectionGrid" Margin="5,0,0,0" Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="995*"/>
-                    <ColumnDefinition Width="48*"/>
-                    <ColumnDefinition Width="139*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5" />
                     <RowDefinition Height="35" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1" Margin="0,0,0,5" Grid.ColumnSpan="3">
+                <Grid Grid.Row="1" Margin="0,0,0,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="95" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="5*"></ColumnDefinition>
-                        <ColumnDefinition Width="38*"/>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="125" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
-                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="2,0,7,0" Grid.Column="1">Go to slide</Button>
+                    <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Go to slide</Button>
                     <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load the style or picture from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
-                    <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" Margin="10,5" />
-                    <Button Name="AddCitationSlideButton" Click="AddCitationSlideButton_OnClick" ToolTip="Add a picture sources slide." Margin="0,0,5,0" Grid.Column="6">Add sources slide</Button>
-                    <Button BorderThickness="0" Background="Transparent" Name="OpenSettingsButton" Click="OpenSettingsButton_OnClick" ToolTip="Open settings flyout." Margin="0,0,5,0" Grid.Column="7">
+                    <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
+                    <Button Name="AddCitationSlideButton" Click="AddCitationSlideButton_OnClick" ToolTip="Add a picture sources slide." Margin="0,0,5,0" Grid.Column="5">Add sources slide</Button>
+                    <Button BorderThickness="0" Background="Transparent" Name="OpenSettingsButton" Click="OpenSettingsButton_OnClick" ToolTip="Open settings flyout." Margin="0,0,5,0" Grid.Column="6">
                         <Image Name="SettingsButtonIcon"></Image>
                     </Button>
                 </Grid>
-                <TextBlock Visibility="Hidden" Margin="238,231,51,230" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">
+                <TextBlock Visibility="Hidden" Margin="10,0,10,0" Name="ImageSelectionInstructions" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">
                     To add pictures<LineBreak/>
                     1. Click ‘+’ and choose more pictures from your computer hard disk,<LineBreak/>
                     2. Or use a Browser to search in Google Image Search, and drag-and-drop the search result thumbnails (one at a time) onto this window or the quick drop icon.<LineBreak/>
                     3. Or use a Browser to navigate to a Web page containing the picture you want to use, and drag-and-drop (or copy-paste) the picture onto this window or the quick drop icon</TextBlock>
-                <TextBlock Visibility="Hidden" Margin="252,290,64,290" Name="ImageSelectionInstructionsForFirstTime" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Select a picture to preview styles, then select a style and click `Apply` button to apply it to the slide.</TextBlock>
-                <ListBox TabIndex="1" PreviewMouseDown="ImageSelectionListBox_OnPreviewMouseDown" Name="ImageSelectionListBox" KeyDown="ImageSelectionListBox_OnKeyDown" SelectionChanged="ImageSelectionListBox_OnSelectionChanged" SelectedItem="{Binding Path=ImageSelectionListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=ImageSelectionListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=ImageSelectionList, Mode=TwoWay}" Grid.Row="2" Grid.ColumnSpan="3">
+                <TextBlock Visibility="Hidden" Margin="10,0,10,0" Name="ImageSelectionInstructionsForFirstTime" MaxWidth="730" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAAAAA" FontSize="18" Grid.Row="2">Select a picture to preview styles, then select a style and click `Apply` button to apply it to the slide.</TextBlock>
+                <ListBox TabIndex="1" PreviewMouseDown="ImageSelectionListBox_OnPreviewMouseDown" Name="ImageSelectionListBox" KeyDown="ImageSelectionListBox_OnKeyDown" SelectionChanged="ImageSelectionListBox_OnSelectionChanged" SelectedItem="{Binding Path=ImageSelectionListSelectedItem.ImageItem, Mode=TwoWay}" SelectedIndex="{Binding Path=ImageSelectionListSelectedId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=ImageSelectionList, Mode=TwoWay}" Grid.Row="2">
                     <ListBox.ContextMenu>
                         <ContextMenu Name="ImageSelectionListBoxContextMenu">
                             <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClick"></MenuItem>
