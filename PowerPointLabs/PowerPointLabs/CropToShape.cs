@@ -173,7 +173,7 @@ namespace PowerPointLabs
             var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * Utils.Graphics.PictureExportingRatio,
                 rotatedShape.ActualTopLeft.Y * Utils.Graphics.PictureExportingRatio);
 
-            Bitmap rotatedImage = new Bitmap(slideImage);
+            Bitmap rotatedImage = new Bitmap(slideImage.Width, slideImage.Height);
 
             using (Graphics g = Graphics.FromImage(rotatedImage))
             {
