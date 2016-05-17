@@ -2352,7 +2352,7 @@ namespace PowerPointLabs
             }
 
             blurSlideImage.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
-            var blurShape = CropToShape.Crop(blurShapeRange, handleError: false);
+            var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
             blurSlideImage.Delete();
 
             var overlayImage = GenerateOverlayShape(curSlide, 0, 0, PowerPointPresentation.Current.SlideWidth,
@@ -2360,30 +2360,9 @@ namespace PowerPointLabs
             Utils.Graphics.ExportShape(overlayImage, imageFile);
             overlayImage.Delete();
             
-            if (blurShape.Type == Office.MsoShapeType.msoGroup)
-            {
-                var overlayShapeNames = new List<string>();
-                var ungroupedBlurShapes = blurShape.Ungroup();
-
-                foreach (PowerPoint.Shape shape in ungroupedBlurShapes)
-                {
-                    var overlayShape = CropImageToShape(shape, imageFile);
-                    overlayShape.Left = shape.Left;
-                    overlayShape.Top = shape.Top;
-                    overlayShape.Name = "shape" + overlayShapeNames.Count; // for group exception
-                    overlayShapeNames.Add(overlayShape.Name);
-                }
-
-                ungroupedBlurShapes.Group();
-                var overlayRange = curSlide.Shapes.Range(overlayShapeNames.ToArray());
-                overlayRange.Group();
-            }
-            else
-            {
-                var overlayShape = CropImageToShape(blurShape, imageFile);
-                overlayShape.Left = blurShape.Left;
-                overlayShape.Top = blurShape.Top;
-            }
+            var overlayShape = CropImageToShape(blurShape, imageFile);
+            overlayShape.Left = blurShape.Left;
+            overlayShape.Top = blurShape.Top;
 
             foreach (var shape in textBoxes)
             {
@@ -2456,7 +2435,7 @@ namespace PowerPointLabs
                         continue;
                     }
 
-                    var shapeWithoutText = GenerateShapeFromTextBound(curSlide, shape, true);
+                    var shapeWithoutText = GenerateShapeFromTextBound(curSlide, shape, isRect: true);
 
                     shape.Fill.Visible = Office.MsoTriState.msoFalse;
                     shape.Line.Visible = Office.MsoTriState.msoFalse;

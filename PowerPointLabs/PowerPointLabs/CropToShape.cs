@@ -33,7 +33,7 @@ namespace PowerPointLabs
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0,
+        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
                                             bool handleError = true)
         {
             try
@@ -51,21 +51,29 @@ namespace PowerPointLabs
                 throw;
             }
 
-            return Crop(selection.ShapeRange, handleError: handleError);
+            return Crop(selection.ShapeRange, isInPlace: isInPlace, handleError: handleError);
         }
 
-        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0,
+        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
             bool handleError = true)
         {
             try
             {
                 if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
 
-                var shape = GetShapeForSelection(shapeRange);
-                TakeScreenshotProxy(shape);
-                var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                var shapes = new List<string>();
 
-                return filledShape;
+                foreach (PowerPoint.Shape shape in UngroupAllForShapeRange(shapeRange))
+                {
+                    TakeScreenshotProxy(shape);
+                    var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio, isInPlace);
+                    shapes.Add(filledShape.Name);
+                }
+
+                var croppedShapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapes.ToArray());
+                var croppedShape = (shapes.Count == 1) ? croppedShapeRange[1] : croppedShapeRange.Group();
+
+                return croppedShape;
             }
             catch (Exception e)
             {
@@ -140,7 +148,8 @@ namespace PowerPointLabs
             return mergedShape;
         }
 
-        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0)
+        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0,
+            bool isInPlace = false)
         {
             if (shape.Type != Office.MsoShapeType.msoGroup)
             {
@@ -159,6 +168,12 @@ namespace PowerPointLabs
                 }
             }
             shape.Line.Visible = Office.MsoTriState.msoFalse;
+
+            if (isInPlace)
+            {
+                return shape;
+            }
+
             shape.Copy();
             var shapeToReturn = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
             shape.Delete();
