@@ -2345,6 +2345,12 @@ namespace PowerPointLabs
             var textBoxes = new List<PowerPoint.Shape>();
             var blurShapeRange = GenerateFrostedGlassShapeRange(curSlide, shapeRange, textBoxes);
 
+            if (blurShapeRange.Count == 0)
+            {
+                blurSlideImage.Delete();
+                return;
+            }
+
             blurSlideImage.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             var blurShape = CropToShape.Crop(blurShapeRange, handleError: false);
             blurSlideImage.Delete();
@@ -2354,23 +2360,29 @@ namespace PowerPointLabs
             Utils.Graphics.ExportShape(overlayImage, imageFile);
             overlayImage.Delete();
             
-            blurShape.Cut();
-            blurShapeRange = curSlide.Shapes.Paste();
-
-            var overlayShapeNames = new List<string>();
-
-            foreach (PowerPoint.Shape shape in blurShapeRange)
+            if (blurShape.Type == Office.MsoShapeType.msoGroup)
             {
-                var overlayShape = CropImageToShape(shape, imageFile);
-                overlayShape.Left = shape.Left;
-                overlayShape.Top = shape.Top;
-                overlayShapeNames.Add(overlayShape.Name);
-            }
+                var overlayShapeNames = new List<string>();
+                var ungroupedBlurShapes = blurShape.Ungroup();
 
-            if (blurShapeRange.Count > 1)
-            {
+                foreach (PowerPoint.Shape shape in ungroupedBlurShapes)
+                {
+                    var overlayShape = CropImageToShape(shape, imageFile);
+                    overlayShape.Left = shape.Left;
+                    overlayShape.Top = shape.Top;
+                    overlayShape.Name = "shape" + overlayShapeNames.Count; // for group exception
+                    overlayShapeNames.Add(overlayShape.Name);
+                }
+
+                ungroupedBlurShapes.Group();
                 var overlayRange = curSlide.Shapes.Range(overlayShapeNames.ToArray());
                 overlayRange.Group();
+            }
+            else
+            {
+                var overlayShape = CropImageToShape(blurShape, imageFile);
+                overlayShape.Left = blurShape.Left;
+                overlayShape.Top = blurShape.Top;
             }
 
             foreach (var shape in textBoxes)
@@ -2439,21 +2451,12 @@ namespace PowerPointLabs
                 else if (shape.Type == Office.MsoShapeType.msoPlaceholder
                     || shape.Type == Office.MsoShapeType.msoTextBox)
                 {
-                    var textFrame = shape.TextFrame2;
-                    var textRange = textFrame.TextRange.TrimText();
-
-                    if (Utils.StringUtil.IsEmpty(textRange.Text))
+                    if (String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
                     {
                         continue;
                     }
 
-                    var left = textRange.BoundLeft - textFrame.MarginLeft;
-                    var top = textRange.BoundTop - textFrame.MarginTop;
-                    var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight;
-                    var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom;
-
-                    var shapeWithoutText = curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle,
-                        left, top, width, height);
+                    var shapeWithoutText = GenerateShapeFromTextBound(curSlide, shape, true);
 
                     shape.Fill.Visible = Office.MsoTriState.msoFalse;
                     shape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -2464,16 +2467,18 @@ namespace PowerPointLabs
                 else if (shape.Type == Office.MsoShapeType.msoAutoShape
                     || shape.Type == Office.MsoShapeType.msoFreeform)
                 {
-                    if (shape.HasTextFrame == Office.MsoTriState.msoTrue)
+                    var textFrame = shape.TextFrame2;
+                    var textRange = textFrame.TextRange;
+
+                    if (!String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
                     {
-                        var shapeWithText = shape.Duplicate()[1];
-                        shapeWithText.Left = shape.Left;
-                        shapeWithText.Top = shape.Top;
+                        var textBox = GenerateShapeFromTextBound(curSlide, shape);
+                        textBox.Fill.Visible = Office.MsoTriState.msoFalse;
+                        textBox.Line.Visible = Office.MsoTriState.msoFalse;
+                        textRange.Copy();
+                        textBox.TextFrame2.TextRange.Paste();
 
-                        shapeWithText.Fill.Visible = Office.MsoTriState.msoFalse;
-                        shapeWithText.Line.Visible = Office.MsoTriState.msoFalse;
-                        textBoxes.Add(shapeWithText);
-
+                        textBoxes.Add(textBox);
                         shape.TextFrame2.DeleteText();
                     }
 
@@ -2481,7 +2486,9 @@ namespace PowerPointLabs
                 }
             }
 
-            return curSlide.Shapes.Range(blurShapeNames.ToArray());
+            var frostedGlassShapeRange = curSlide.Shapes.Range(blurShapeNames.ToArray());
+
+            return frostedGlassShapeRange;
         }
 
         private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide, float left, float top, float width,
@@ -2498,6 +2505,27 @@ namespace PowerPointLabs
             overlayShape.Line.Visible = Office.MsoTriState.msoFalse;
 
             return overlayShape;
+        }
+
+        /**
+         * If isRect, returns rectangle bounded by the text in shape
+         * Else, returns textbox bounded by the text in shape
+         */
+        private PowerPoint.Shape GenerateShapeFromTextBound(PowerPoint.Slide curSlide, PowerPoint.Shape shape, bool isRect = true)
+        {
+            var textFrame = shape.TextFrame2;
+            var textRange = textFrame.TextRange;
+
+            var left = textRange.BoundLeft - textFrame.MarginLeft;
+            var top = textRange.BoundTop - textFrame.MarginTop;
+            var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight;
+            var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom;
+
+            var textBoundShape = (isRect)
+                ? curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height)
+                : curSlide.Shapes.AddTextbox(textFrame.Orientation, left, top, width, height);
+
+            return textBoundShape;
         }
 
         private PowerPoint.Shape CropImageToShape(PowerPoint.Shape shape, string imageFile)
