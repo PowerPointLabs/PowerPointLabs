@@ -1980,10 +1980,7 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, handleError: false);
-
-                croppedShape.Left -= 12;
-                croppedShape.Top -= 12;
+                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
@@ -2355,14 +2352,7 @@ namespace PowerPointLabs
             var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
             blurSlideImage.Delete();
 
-            var overlayImage = GenerateOverlayShape(curSlide, 0, 0, PowerPointPresentation.Current.SlideWidth,
-                PowerPointPresentation.Current.SlideHeight);
-            Utils.Graphics.ExportShape(overlayImage, imageFile);
-            overlayImage.Delete();
-            
-            var overlayShape = CropImageToShape(blurShape, imageFile);
-            overlayShape.Left = blurShape.Left;
-            overlayShape.Top = blurShape.Top;
+            var overlayShape = GenerateOverlayShape(curSlide, blurShape);
 
             foreach (var shape in textBoxes)
             {
@@ -2470,11 +2460,12 @@ namespace PowerPointLabs
             return frostedGlassShapeRange;
         }
 
-        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide, float left, float top, float width,
-            float height)
+        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide, PowerPoint.Shape shape)
         {
-            var overlayShape = curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
-
+            var overlayShape = shape.Duplicate()[1];
+            overlayShape.Left = shape.Left;
+            overlayShape.Top = shape.Top;
+            
             overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue("#000000"));
             overlayShape.Fill.Transparency = 80f / 100;
@@ -2505,17 +2496,6 @@ namespace PowerPointLabs
                 : curSlide.Shapes.AddTextbox(textFrame.Orientation, left, top, width, height);
 
             return textBoundShape;
-        }
-
-        private PowerPoint.Shape CropImageToShape(PowerPoint.Shape shape, string imageFile)
-        {
-            var croppedShape = shape.Duplicate()[1];
-            croppedShape.Fill.UserPicture(imageFile);
-            croppedShape.Line.Visible = Office.MsoTriState.msoFalse;
-            croppedShape.Left = shape.Left;
-            croppedShape.Top = shape.Top;
-
-            return croppedShape;
         }
         # endregion
 
