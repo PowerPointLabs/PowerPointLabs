@@ -32,7 +32,7 @@ namespace PowerPointLabs
 
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
-
+        //public static readonly string FillInBackgroundPictureForBlur = Path.GetTempPath() + @"\currentFillInBg.png";
         public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0,
                                             bool handleError = true)
         {
@@ -407,6 +407,14 @@ namespace PowerPointLabs
                 Logger.LogException(e, "GetCutOutShapeMenuImage");
                 throw;
             }
+        }
+
+        public static string CreatImageForBlur()
+        {
+            var image = (Bitmap)Image.FromFile(FillInBackgroundPicture);            
+            string fillInBackgroundPictureForBlur = Path.GetTempPath() + @"\currentFillInBgForBlur.png";
+            image.Save(fillInBackgroundPictureForBlur);
+            return fillInBackgroundPictureForBlur;
         }
     }
 }

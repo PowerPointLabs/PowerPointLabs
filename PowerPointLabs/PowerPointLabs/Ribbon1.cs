@@ -2037,11 +2037,12 @@ namespace PowerPointLabs
             try
             {
                 var croppedShape = CropToShape.Crop(selection, handleError: false);
-
+               
                 croppedShape.Left -= 12;
                 croppedShape.Top -= 12;
 
-                FrostGlassEffect(croppedShape, 85);
+                string backgroundImage = CropToShape.CreatImageForBlur();
+                FrostGlassEffect(croppedShape, backgroundImage, 20);
             }
             catch (Exception e)
             {
@@ -2209,25 +2210,27 @@ namespace PowerPointLabs
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
         }
 
-        private void FrostGlassEffect(PowerPoint.Shape shape, int degree)
+        private void FrostGlassEffect(PowerPoint.Shape shape, string imageForBlur, int degree)
         {
-            string BackgroundPath = Path.Combine(Path.GetTempPath(), "FrostedArea.png");
-
+            //string BackgroundPath = Path.Combine(Path.GetTempPath(), "FrostedArea.png");
             if (degree != 0)
             {
-                //shape.BackgroundStyle = Office.MsoBackgroundStyleIndex.msoBackgroundStylePreset12;
-                //shape.PictureFormat.
                 var imageFactory = new ImageProcessor.ImageFactory();
-                var image = imageFactory.Load(BackgroundPath);
-                image = image.GaussianBlur(degree);
-                image.Save(BackgroundPath);
-                //shape = 
-                /*var newShape = PowerPoint.Shapes.AddPicture(BackgroundPath, Office.MsoTriState.msoFalse,
-                                                    Office.MsoTriState.msoTrue,
-                                                  shape.Left, shape.Top,
-                                                  shape.Width,
-                                                  shape.Height);
-                                                  */
+                var image = imageFactory.Load(imageForBlur).GaussianBlur(degree).Image;
+                image.Save(imageForBlur);
+                //shape.Fill.UserPicture(imageForBlur);
+
+                if (shape.Type != Office.MsoShapeType.msoGroup)
+                {
+                    shape.Fill.UserPicture(imageForBlur);
+                }
+                else
+                {
+                    foreach (var shapeGroupItem in (from PowerPoint.Shape sh in shape.GroupItems select sh))
+                    {
+                     shapeGroupItem.Fill.UserPicture(imageForBlur);
+                    }
+                }
             }
   
         }
