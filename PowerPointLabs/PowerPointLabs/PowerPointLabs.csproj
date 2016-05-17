@@ -1346,6 +1346,9 @@
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frost.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
