@@ -96,6 +96,7 @@
         public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
         public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
         public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
+        public const string EffectsLabFrostGlassSupertip = @"Apply frosted glass effect to a small area on the slide.";
         public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
         public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
         public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
@@ -205,6 +206,7 @@
         public const string EffectsLabButtonLabel = "Effects Lab";
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
+        public const string EffectsLabFrostGlassButtonLabel = "Frosted Glass";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";

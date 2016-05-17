@@ -408,5 +408,13 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+        public static string CreatImageForBlur()
+        {
+            var image = (Bitmap)Image.FromFile(FillInBackgroundPicture);            
+            string fillInBackgroundPictureForBlur = Path.GetTempPath() + @"\currentFillInBgForBlur.png";
+            image.Save(fillInBackgroundPictureForBlur);
+            return fillInBackgroundPictureForBlur;
+        }
     }
 }

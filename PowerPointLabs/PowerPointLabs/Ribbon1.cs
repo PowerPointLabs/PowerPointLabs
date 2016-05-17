@@ -344,6 +344,10 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabMagnifyGlassSupertip;
         }
+        public string GetEffectsLabFrostGlassSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabFrostGlassSupertip;
+        }
         public string GetEffectsLabBlurRemainderSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabBlurRemainderSupertip;
@@ -560,6 +564,10 @@ namespace PowerPointLabs
         public string GetEffectsLabMagnifyGlassButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMagnifyGlassButtonLabel;
+        }
+        public string GetEffectsLabFrostGlassButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabFrostGlassButtonLabel;
         }
         public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
         {
@@ -998,6 +1006,18 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetMagnifyImage");
+                throw;
+            }
+        }
+        public Bitmap GetFrostImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.Frost);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetFrostImage");
                 throw;
             }
         }
@@ -1988,6 +2008,51 @@ namespace PowerPointLabs
             }
         }
 
+        public void FrostGlassEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            PowerPoint.ShapeRange shapeRange;
+
+            try
+            {
+                shapeRange = selection.ShapeRange;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please select an area to frost.");
+
+                return;
+            }
+
+            if (shapeRange.Count > 1)
+            {
+                MessageBox.Show("Only one frost area is allowed.");
+
+                return;
+            }
+
+            try
+            {
+                var croppedShape = CropToShape.Crop(selection, handleError: false);
+               
+                croppedShape.Left -= 12;
+                croppedShape.Top -= 12;
+
+                string backgroundImage = CropToShape.CreatImageForBlur();
+                FrostGlassEffect(croppedShape, backgroundImage, 20);
+            }
+            catch (Exception e)
+            {
+                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                errorMessage = errorMessage.Replace("Crop To Shape", "Frost");
+
+                MessageBox.Show(errorMessage);
+            }
+        }
+
         public void BlurRemainderEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -2143,6 +2208,31 @@ namespace PowerPointLabs
             shape.ThreeD.LightAngle = 145;
 
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
+        }
+
+        private void FrostGlassEffect(PowerPoint.Shape shape, string imageForBlur, int degree)
+        {
+            //string BackgroundPath = Path.Combine(Path.GetTempPath(), "FrostedArea.png");
+            if (degree != 0)
+            {
+                var imageFactory = new ImageProcessor.ImageFactory();
+                var image = imageFactory.Load(imageForBlur).GaussianBlur(degree).Image;
+                image.Save(imageForBlur);
+                //shape.Fill.UserPicture(imageForBlur);
+
+                if (shape.Type != Office.MsoShapeType.msoGroup)
+                {
+                    shape.Fill.UserPicture(imageForBlur);
+                }
+                else
+                {
+                    foreach (var shapeGroupItem in (from PowerPoint.Shape sh in shape.GroupItems select sh))
+                    {
+                     shapeGroupItem.Fill.UserPicture(imageForBlur);
+                    }
+                }
+            }
+  
         }
 
         private PowerPointBgEffectSlide GenerateEffectSlide(bool generateOnRemainder)
