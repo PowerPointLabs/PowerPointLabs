@@ -339,6 +339,11 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void DuplicateRotateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void LockAxisButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;

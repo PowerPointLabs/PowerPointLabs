@@ -103,7 +103,7 @@
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="swapTextBlock" HorizontalAlignment="Left" Margin="18,460,0,0" TextWrapping="Wrap" Text="Swap" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <GroupBox x:Name="orientationGroupBox" Header="Reorientate" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Height="160" Width="280"/>
+            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Height="160" Width="280"/>
             <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
@@ -124,6 +124,10 @@
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="lockAxisTextBlock" HorizontalAlignment="Left" Margin="18,625,0,0" TextWrapping="Wrap" Text="Lock Axis" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <WPF:ImageButton ToolTip="Duplicate the object first and adjusts the rate of rotation for object" x:Name="DuplicateRotateButton" HorizontalAlignment="Left" Margin="86,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DuplicateRotateButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
+            </WPF:ImageButton>
+            <TextBlock x:Name="DuplicateRotateTextBlock" HorizontalAlignment="Left" Margin="86,625,0,0" TextWrapping="Wrap" Text="Duplicate and Rotate" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
