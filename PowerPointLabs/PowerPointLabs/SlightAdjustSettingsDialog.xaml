@@ -7,7 +7,7 @@
              xmlns:resizeLab="clr-namespace:PowerPointLabs.ResizeLab"
              mc:Ignorable="d"
              ResizeMode="NoResize" 
-             Title="Adjust Slightly Settings" 
+             Title="Settings: Adjust Slightly" 
              WindowStartupLocation="CenterScreen"
              Width="300"
              Height="155" 
