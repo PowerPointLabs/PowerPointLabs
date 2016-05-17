@@ -344,6 +344,10 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabMagnifyGlassSupertip;
         }
+        public string GetEffectsLabFrostGlassSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabFrostGlassSupertip;
+        }
         public string GetEffectsLabBlurRemainderSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabBlurRemainderSupertip;
@@ -560,6 +564,10 @@ namespace PowerPointLabs
         public string GetEffectsLabMagnifyGlassButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMagnifyGlassButtonLabel;
+        }
+        public string GetEffectsLabFrostGlassButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.EffectsLabFrostGlassButtonLabel;
         }
         public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
         {
@@ -998,6 +1006,18 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetMagnifyImage");
+                throw;
+            }
+        }
+        public Bitmap GetFrostImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.Frost);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetFrostImage");
                 throw;
             }
         }
@@ -1988,6 +2008,50 @@ namespace PowerPointLabs
             }
         }
 
+        public void FrostGlassEffectClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+
+            PowerPoint.ShapeRange shapeRange;
+
+            try
+            {
+                shapeRange = selection.ShapeRange;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Please select an area to frost.");
+
+                return;
+            }
+
+            if (shapeRange.Count > 1)
+            {
+                MessageBox.Show("Only one frost area is allowed.");
+
+                return;
+            }
+
+            try
+            {
+                var croppedShape = CropToShape.Crop(selection, handleError: false);
+
+                croppedShape.Left -= 12;
+                croppedShape.Top -= 12;
+
+                FrostGlassEffect(croppedShape, 85);
+            }
+            catch (Exception e)
+            {
+                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                errorMessage = errorMessage.Replace("Crop To Shape", "Frost");
+
+                MessageBox.Show(errorMessage);
+            }
+        }
+
         public void BlurRemainderEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -2143,6 +2207,29 @@ namespace PowerPointLabs
             shape.ThreeD.LightAngle = 145;
 
             shape.LockAspectRatio = Office.MsoTriState.msoTrue;
+        }
+
+        private void FrostGlassEffect(PowerPoint.Shape shape, int degree)
+        {
+            string BackgroundPath = Path.Combine(Path.GetTempPath(), "FrostedArea.png");
+
+            if (degree != 0)
+            {
+                //shape.BackgroundStyle = Office.MsoBackgroundStyleIndex.msoBackgroundStylePreset12;
+                //shape.PictureFormat.
+                var imageFactory = new ImageProcessor.ImageFactory();
+                var image = imageFactory.Load(BackgroundPath);
+                image = image.GaussianBlur(degree);
+                image.Save(BackgroundPath);
+                //shape = 
+                /*var newShape = PowerPoint.Shapes.AddPicture(BackgroundPath, Office.MsoTriState.msoFalse,
+                                                    Office.MsoTriState.msoTrue,
+                                                  shape.Left, shape.Top,
+                                                  shape.Width,
+                                                  shape.Height);
+                                                  */
+            }
+  
         }
 
         private PowerPointBgEffectSlide GenerateEffectSlide(bool generateOnRemainder)
