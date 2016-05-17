@@ -61,6 +61,9 @@ namespace PowerPointLabs
             {
                 if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
 
+                shapeRange.Cut();
+                shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
+
                 var shapes = new List<string>();
 
                 foreach (PowerPoint.Shape shape in UngroupAllForShapeRange(shapeRange))
@@ -290,7 +293,7 @@ namespace PowerPointLabs
             return cond1 && cond2 && cond3 && cond4;
         }
 
-        public static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range, bool remove = true)
+        public static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range, bool remove = false)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();

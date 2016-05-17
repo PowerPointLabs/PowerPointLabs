@@ -2333,31 +2333,41 @@ namespace PowerPointLabs
 
             var imageFile = Path.Combine(Path.GetTempPath(), "blur.png");
             Utils.Graphics.ExportSlide(curSlide, imageFile);
-            var blurSlideImage = GenerateBlurShape(curSlide, imageFile);
-            FitToSlide.AutoFit(blurSlideImage, PowerPointPresentation.Current.SlideWidth,
+            var blurSlideShape = GenerateBlurShape(curSlide, imageFile);
+            FitToSlide.AutoFit(blurSlideShape, PowerPointPresentation.Current.SlideWidth,
                 PowerPointPresentation.Current.SlideHeight);
 
             shapeRange = curSlide.Shapes.Paste();
 
             var textBoxes = new List<PowerPoint.Shape>();
             var blurShapeRange = GenerateFrostedGlassShapeRange(curSlide, shapeRange, textBoxes);
-
-            if (blurShapeRange.Count == 0)
+            
+            try
             {
-                blurSlideImage.Delete();
-                return;
+                blurSlideShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
+                blurSlideShape.Delete();
+
+                var overlayShape = GenerateOverlayShape(curSlide, blurShape);
+
+                foreach (var shape in textBoxes)
+                {
+                    shape.Fill.Visible = Office.MsoTriState.msoFalse;
+                    shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                }
             }
-
-            blurSlideImage.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
-            var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
-            blurSlideImage.Delete();
-
-            var overlayShape = GenerateOverlayShape(curSlide, blurShape);
-
-            foreach (var shape in textBoxes)
+            catch (Exception e)
             {
-                shape.Fill.Visible = Office.MsoTriState.msoFalse;
-                shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                blurSlideShape.Delete();
+
+                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                if (errorMessage == TextCollection.CropToShapeText.ErrorMessageForSelectionCountZero)
+                {
+                    errorMessage = TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape;
+                }
+                errorMessage = errorMessage.Replace("Crop To Shape", "Frosted Glass");
+
+                MessageBox.Show(errorMessage);
             }
         }
 
@@ -2425,7 +2435,7 @@ namespace PowerPointLabs
                         continue;
                     }
 
-                    var shapeWithoutText = GenerateShapeFromTextBound(curSlide, shape, isRect: true);
+                    var shapeWithoutText = GenerateShapeFromTextBoundary(curSlide, shape);
 
                     shape.Fill.Visible = Office.MsoTriState.msoFalse;
                     shape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -2436,16 +2446,9 @@ namespace PowerPointLabs
                 else if (shape.Type == Office.MsoShapeType.msoAutoShape
                     || shape.Type == Office.MsoShapeType.msoFreeform)
                 {
-                    var textFrame = shape.TextFrame2;
-                    var textRange = textFrame.TextRange;
-
                     if (!String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
                     {
-                        var textBox = GenerateShapeFromTextBound(curSlide, shape);
-                        textBox.Fill.Visible = Office.MsoTriState.msoFalse;
-                        textBox.Line.Visible = Office.MsoTriState.msoFalse;
-                        textRange.Copy();
-                        textBox.TextFrame2.TextRange.Paste();
+                        var textBox = GenerateShapeFromTextBoundary(curSlide, shape, isRect: false);
 
                         textBoxes.Add(textBox);
                         shape.TextFrame2.DeleteText();
@@ -2481,21 +2484,44 @@ namespace PowerPointLabs
          * If isRect, returns rectangle bounded by the text in shape
          * Else, returns textbox bounded by the text in shape
          */
-        private PowerPoint.Shape GenerateShapeFromTextBound(PowerPoint.Slide curSlide, PowerPoint.Shape shape, bool isRect = true)
+        private PowerPoint.Shape GenerateShapeFromTextBoundary(PowerPoint.Slide curSlide, PowerPoint.Shape shape, bool isRect = true)
         {
+            var rotation = shape.Rotation;
+            if (rotation != 0)
+            {
+                shape.Rotation = 0;
+            }
+
             var textFrame = shape.TextFrame2;
             var textRange = textFrame.TextRange;
 
             var left = textRange.BoundLeft - textFrame.MarginLeft;
             var top = textRange.BoundTop - textFrame.MarginTop;
-            var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight;
-            var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom;
+            var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight + 1;
+            var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom + 1;
 
-            var textBoundShape = (isRect)
-                ? curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height)
-                : curSlide.Shapes.AddTextbox(textFrame.Orientation, left, top, width, height);
+            PowerPoint.Shape textBoundaryShape = null;
 
-            return textBoundShape;
+            if (isRect)
+            {
+                textBoundaryShape = curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
+            }
+            else
+            {
+                textBoundaryShape = curSlide.Shapes.AddTextbox(textFrame.Orientation, left, top, width, height);
+                textBoundaryShape.Fill.Visible = Office.MsoTriState.msoFalse;
+                textBoundaryShape.Line.Visible = Office.MsoTriState.msoFalse;
+                textRange.Copy();
+                textBoundaryShape.TextFrame2.TextRange.Paste();
+            }
+
+            if (rotation != 0)
+            {
+                shape.Rotation = rotation;
+                textBoundaryShape.Rotation = rotation;
+            }
+
+            return textBoundaryShape;
         }
         # endregion
 
