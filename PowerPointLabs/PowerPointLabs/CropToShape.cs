@@ -64,11 +64,12 @@ namespace PowerPointLabs
                 shapeRange.Cut();
                 shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
 
+                TakeScreenshotProxy(shapeRange);
+
                 var shapes = new List<string>();
 
                 foreach (PowerPoint.Shape shape in UngroupAllForShapeRange(shapeRange))
                 {
-                    TakeScreenshotProxy(shape);
                     var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio, isInPlace);
                     shapes.Add(filledShape.Name);
                 }
@@ -233,11 +234,11 @@ namespace PowerPointLabs
             }
         }
 
-        private static void TakeScreenshotProxy(PowerPoint.Shape shape)
+        private static void TakeScreenshotProxy(PowerPoint.ShapeRange shapeRange)
         {
-            shape.Visible = Office.MsoTriState.msoFalse;
+            shapeRange.Visible = Office.MsoTriState.msoFalse;
             Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, SlidePicture);
-            shape.Visible = Office.MsoTriState.msoTrue;
+            shapeRange.Visible = Office.MsoTriState.msoTrue;
         }
 
         private static PowerPoint.ShapeRange MakeCopyForShapeRange(PowerPoint.ShapeRange rangeOriginal)
