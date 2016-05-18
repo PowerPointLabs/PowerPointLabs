@@ -339,9 +339,46 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void DuplicateRotateButton_Click(object sender, RoutedEventArgs e)
+        private void DuplicateRotationButton_Click(object sender, RoutedEventArgs e)
         {
+            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
 
+            if (noShapesSelected)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+            if (selectedShapes.Count <= 1)
+            {
+                ShowErrorMessageBox(ErrorMessageFewerThanTwoSelection);
+                return;
+            }
+
+            ClearAllEventHandlers();
+
+            var currentSlide = this.GetCurrentSlide();
+
+            _refPoint = selectedShapes[1];
+            _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
+            _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
+
+            var duplicatedShape = selectedShapes[2].Duplicate();
+            duplicatedShape.Left -= 12;
+            duplicatedShape.Top -= 12;
+            duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+
+            _dispatcherTimer.Tick += RotationHandler;
+
+            _leftMouseUpListener = new LMouseUpListener();
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
+
+            _leftMouseDownListener = new LMouseDownListener();
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
+
+            HighlightButton(duplicateRotationButton, lightBlueBrush, darkBlueBrush);
         }
 
         private void LockAxisButton_Click(object sender, RoutedEventArgs e)
@@ -844,6 +881,7 @@ namespace PowerPointLabs.PositionsLab
             _prevMousePos = new System.Drawing.Point();
 
             RemoveHighlightOnButton(rotationButton);
+            RemoveHighlightOnButton(duplicateRotationButton);
         }
 
         private void StartLockAxisMode()
