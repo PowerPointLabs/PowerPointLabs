@@ -103,7 +103,7 @@
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="swapTextBlock" HorizontalAlignment="Left" Margin="18,460,0,0" TextWrapping="Wrap" Text="Swap" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <GroupBox x:Name="orientationGroupBox" Header="Reorientate" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Height="170" Width="280"/>
+            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Height="170" Width="280"/>
             <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
