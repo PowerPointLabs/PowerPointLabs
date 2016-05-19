@@ -334,8 +334,6 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    shape.Name = System.Text.RegularExpressions.Regex.Replace(shape.Name, @"\d+$", 
-                        m => (int.Parse(m.Value) + 1).ToString());
                     ungroupedShapeNames.Add(shape.Name);
                 }
             }

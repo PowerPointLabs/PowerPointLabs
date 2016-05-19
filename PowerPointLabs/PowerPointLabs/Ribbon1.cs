@@ -2355,8 +2355,11 @@ namespace PowerPointLabs
 
                 foreach (var shape in textBoxes)
                 {
-                    shape.Fill.Visible = Office.MsoTriState.msoFalse;
                     shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+
+                    // prevent offset when cut and paste a shape that have another shape in the same location
+                    shape.Left -= 12;
+                    shape.Top -= 12;
                 }
             }
             catch (Exception e)
@@ -2452,8 +2455,11 @@ namespace PowerPointLabs
                     shape.Fill.Visible = Office.MsoTriState.msoFalse;
                     shape.Line.Visible = Office.MsoTriState.msoFalse;
 
-                    textBoxes.Add(shape);
+                    // prevent offset when cut and paste a shape that have another shape in the same location
+                    shape.Left += 12;
+                    shape.Top += 12;
 
+                    textBoxes.Add(shape);
                     blurShapeNames.Add(shapeWithoutText.Name);
                 }
                 else if (shape.Type == Office.MsoShapeType.msoAutoShape
@@ -2462,9 +2468,13 @@ namespace PowerPointLabs
                     if (!String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
                     {
                         var textBox = GenerateShapeFromTextBoundary(curSlide, shape, isRect: false);
+                        shape.TextFrame2.DeleteText();
+
+                        // prevent offset when cut and paste a shape that have another shape in the same location
+                        textBox.Left += 12;
+                        textBox.Top += 12;
 
                         textBoxes.Add(textBox);
-                        shape.TextFrame2.DeleteText();
                     }
 
                     blurShapeNames.Add(shape.Name);
@@ -2496,7 +2506,7 @@ namespace PowerPointLabs
 
             var match = System.Text.RegularExpressions.Regex.Match(shape.Name, @"\d+$");
             overlayShape.Name = (match.Success) ? shape.Name.Substring(0, match.Index) + (int.Parse(match.Value) + 1)
-                                                : shape.Name + " 1";
+                                                : shape.Name + " " + shape.Id;
 
             return overlayShape;
         }
