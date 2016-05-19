@@ -1347,7 +1347,7 @@
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
+    <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
