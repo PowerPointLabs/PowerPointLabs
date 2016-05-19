@@ -2136,8 +2136,7 @@ namespace PowerPointLabs
         public void FrostedGlassEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var curSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
             PowerPoint.ShapeRange shapeRange;
@@ -2151,7 +2150,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            FrostedGlassEffect(curSlide.GetNativeSlide(), shapeRange);
+            FrostedGlassEffect(shapeRange);
         }
 
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
@@ -2325,41 +2324,41 @@ namespace PowerPointLabs
             shape.Line.Transparency = 0.5f;
         }
 
-        private void FrostedGlassEffect(PowerPoint.Slide curSlide, PowerPoint.ShapeRange shapeRange)
+        private void FrostedGlassEffect(PowerPoint.ShapeRange shapeRange)
         {
             shapeRange.Cut();
 
             var imageFile = Path.Combine(Path.GetTempPath(), "blur.png");
-            Utils.Graphics.ExportSlide(curSlide, imageFile);
+            Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, imageFile);
 
-            shapeRange = curSlide.Shapes.Paste();
+            shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
             
             try
             {
                 var textBoxes = new List<PowerPoint.Shape>();
-                var blurShapeRange = GenerateFrostedGlassShapeRange(curSlide, shapeRange, textBoxes);
+                var blurShapeRange = GenerateFrostedGlassShapeRange(shapeRange, ref textBoxes);
                 
-                var blurSlideShape = GenerateBlurShape(curSlide, imageFile);
+                var blurSlideShape = GenerateBlurShape(imageFile);
                 FitToSlide.AutoFit(blurSlideShape, PowerPointPresentation.Current.SlideWidth,
                     PowerPointPresentation.Current.SlideHeight);
                 blurSlideShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
                 var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
                 blurSlideShape.Delete();
 
-                var overlayShape = GenerateOverlayShape(curSlide, blurShape);
+                var overlayShape = GenerateOverlayShape(blurShape);
                 if (overlayShape.Type == Office.MsoShapeType.msoGroup)
                 {
                     var overlayShapeRange = overlayShape.Ungroup();
                     overlayShapeRange.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
                 }
 
-                foreach (var shape in textBoxes)
+                foreach (var textBox in textBoxes)
                 {
-                    shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                    textBox.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
                     // prevent offset when cut and paste a shape that have another shape in the same location
-                    shape.Left -= 12;
-                    shape.Top -= 12;
+                    textBox.IncrementLeft(-12);
+                    textBox.IncrementTop(-12);
                 }
             }
             catch (Exception e)
@@ -2386,7 +2385,7 @@ namespace PowerPointLabs
             }
         }
 
-        private PowerPoint.Shape GenerateBlurShape(PowerPoint.Slide curSlide, string imageFile)
+        private PowerPoint.Shape GenerateBlurShape(string imageFile)
         {
             using (var imageFactory = new ImageProcessor.ImageFactory())
             {
@@ -2413,14 +2412,13 @@ namespace PowerPointLabs
                 image.Save(imageFile);
             }
 
-            var blurShape =
-                curSlide.Shapes.AddPicture(imageFile, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, 0, 0);
+            var blurShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(imageFile, Office.MsoTriState.msoFalse,
+                Office.MsoTriState.msoTrue, 0, 0);
 
             return blurShape;
         }
 
-        private PowerPoint.ShapeRange GenerateFrostedGlassShapeRange(PowerPoint.Slide curSlide,
-            PowerPoint.ShapeRange shapeRange, List<PowerPoint.Shape> textBoxes)
+        private PowerPoint.ShapeRange GenerateFrostedGlassShapeRange(PowerPoint.ShapeRange shapeRange, ref List<PowerPoint.Shape> textBoxes)
         {
             var blurShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -2450,14 +2448,11 @@ namespace PowerPointLabs
                         continue;
                     }
 
-                    var shapeWithoutText = GenerateShapeFromTextBoundary(curSlide, shape);
-
-                    shape.Fill.Visible = Office.MsoTriState.msoFalse;
-                    shape.Line.Visible = Office.MsoTriState.msoFalse;
+                    var shapeWithoutText = GenerateShapeFromTextBoundary(shape);
 
                     // prevent offset when cut and paste a shape that have another shape in the same location
-                    shape.Left += 12;
-                    shape.Top += 12;
+                    shape.IncrementLeft(12);
+                    shape.IncrementTop(12);
 
                     textBoxes.Add(shape);
                     blurShapeNames.Add(shapeWithoutText.Name);
@@ -2467,14 +2462,22 @@ namespace PowerPointLabs
                 {
                     if (!String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
                     {
-                        var textBox = GenerateShapeFromTextBoundary(curSlide, shape, isRect: false);
-                        shape.TextFrame2.DeleteText();
+                        var textBox = shape.Duplicate()[1];
+                        textBox.Left = shape.Left;
+                        textBox.Top = shape.Top;
+                        textBox.Fill.Visible = Office.MsoTriState.msoFalse;
+                        textBox.Line.Visible = Office.MsoTriState.msoFalse;
+
+                        var match = System.Text.RegularExpressions.Regex.Match(shape.Name, @"\d+$");
+                        textBox.Name = (match.Success) ? shape.Name.Substring(0, match.Index) + (int.Parse(match.Value) + 1)
+                                                            : shape.Name + " " + shape.Id;
 
                         // prevent offset when cut and paste a shape that have another shape in the same location
-                        textBox.Left += 12;
-                        textBox.Top += 12;
+                        textBox.IncrementLeft(12);
+                        textBox.IncrementTop(12);
 
                         textBoxes.Add(textBox);
+                        shape.TextFrame2.DeleteText();
                     }
 
                     blurShapeNames.Add(shape.Name);
@@ -2485,12 +2488,12 @@ namespace PowerPointLabs
                 }
             }
 
-            var frostedGlassShapeRange = curSlide.Shapes.Range(blurShapeNames.ToArray());
+            var frostedGlassShapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(blurShapeNames.ToArray());
 
             return frostedGlassShapeRange;
         }
 
-        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Slide curSlide, PowerPoint.Shape shape)
+        private PowerPoint.Shape GenerateOverlayShape(PowerPoint.Shape shape)
         {
             var overlayShape = shape.Duplicate()[1];
             overlayShape.Left = shape.Left;
@@ -2510,12 +2513,8 @@ namespace PowerPointLabs
 
             return overlayShape;
         }
-
-        /**
-         * If isRect, returns rectangle bounded by the text in shape
-         * Else, returns textbox bounded by the text in shape
-         */
-        private PowerPoint.Shape GenerateShapeFromTextBoundary(PowerPoint.Slide curSlide, PowerPoint.Shape shape, bool isRect = true)
+        
+        private PowerPoint.Shape GenerateShapeFromTextBoundary(PowerPoint.Shape shape)
         {
             var rotation = shape.Rotation;
             if (rotation != 0)
@@ -2524,32 +2523,27 @@ namespace PowerPointLabs
             }
 
             var textFrame = shape.TextFrame2;
-            var textRange = textFrame.TextRange;
+            var textRange = textFrame.TextRange.TrimText();
 
             var left = textRange.BoundLeft - textFrame.MarginLeft;
             var top = textRange.BoundTop - textFrame.MarginTop;
-            var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight + 1;
-            var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom + 1;
+            var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight;
+            var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom;
+            
+            var textBoundaryShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle,
+                left, top, width, height);
 
-            PowerPoint.Shape textBoundaryShape = null;
+            shape.Fill.Visible = Office.MsoTriState.msoFalse;
+            shape.Line.Visible = Office.MsoTriState.msoFalse;
 
-            if (isRect)
+            // for placeholders with text out of box affected due to cut and paste
+            // and text boxes with text out of box
+            if (shape.Height < textBoundaryShape.Height)
             {
-                textBoundaryShape = curSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
-
-                // for placeholders with text out of box affected due to cut and paste
                 shape.Left = textBoundaryShape.Left;
                 shape.Top = textBoundaryShape.Top;
                 shape.Width = textBoundaryShape.Width;
                 shape.Height = textBoundaryShape.Height;
-            }
-            else
-            {
-                textBoundaryShape = curSlide.Shapes.AddTextbox(textFrame.Orientation, left, top, width, height);
-                textBoundaryShape.Fill.Visible = Office.MsoTriState.msoFalse;
-                textBoundaryShape.Line.Visible = Office.MsoTriState.msoFalse;
-                textRange.Copy();
-                textBoundaryShape.TextFrame2.TextRange.Paste();
             }
 
             if (rotation != 0)
