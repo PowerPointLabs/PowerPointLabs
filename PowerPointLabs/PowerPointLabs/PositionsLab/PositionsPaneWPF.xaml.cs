@@ -433,6 +433,11 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void LockDirectionButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region Snap
