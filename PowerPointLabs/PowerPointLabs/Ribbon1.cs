@@ -2139,18 +2139,14 @@ namespace PowerPointLabs
             
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
 
-            PowerPoint.ShapeRange shapeRange;
-            try
+            if (!(selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
+                || selection.Type == PowerPoint.PpSelectionType.ppSelectionText))
             {
-                shapeRange = selection.ShapeRange;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Please select at least 1 shape");
+                MessageBox.Show(TextCollection.EffectsLabErrorFrostedGlassNoSelection, "Error");
                 return;
             }
 
-            FrostedGlassEffect(shapeRange);
+            FrostedGlassEffect(selection.ShapeRange);
         }
 
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
@@ -2366,21 +2362,25 @@ namespace PowerPointLabs
             {
                 blurSlideShape.Delete();
 
+                var messageBoxTitle = "Error";
                 var errorMessage = e.Message;
-
                 if (System.Text.RegularExpressions.Regex.IsMatch(errorMessage, @"^\d$"))
                 {
                     errorMessage = CropToShape.GetErrorMessageForErrorCode(errorMessage);
                 }
-
-                if (errorMessage.Equals(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape))
+                switch (errorMessage)
                 {
-                    errorMessage = errorMessage.Insert(errorMessage.IndexOf("objects"), "and text box ");
+                    case TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape:
+                        errorMessage = errorMessage.Insert(errorMessage.IndexOf("objects"), "and text box ");
+                        goto case TextCollection.EffectsLabErrorFrostedGlassEmptyTextBox;
+                    case TextCollection.EffectsLabErrorFrostedGlassEmptyTextBox:
+                        errorMessage = errorMessage.Replace("Crop To Shape", "Frosted Glass");
+                        MessageBox.Show(errorMessage, messageBoxTitle);
+                        break;
+                    default:
+                        ErrorDialogWrapper.ShowDialog(messageBoxTitle, e.Message, e);
+                        break;
                 }
-
-                errorMessage = errorMessage.Replace("Crop To Shape", "Frosted Glass");
-
-                MessageBox.Show(errorMessage);
             }
         }
 
@@ -2398,24 +2398,28 @@ namespace PowerPointLabs
             {
                 var shape = queue.Dequeue();
 
-                if (shape.Type == Office.MsoShapeType.msoGroup)
+                switch (shape.Type)
                 {
-                    var subRange = shape.Ungroup();
-                    foreach (PowerPoint.Shape item in subRange)
-                    {
-                        queue.Enqueue(item);
-                    }
-                }
-                else if (shape.Type == Office.MsoShapeType.msoPlaceholder
-                    || shape.Type == Office.MsoShapeType.msoTextBox
-                    || shape.Type == Office.MsoShapeType.msoAutoShape
-                    || shape.Type == Office.MsoShapeType.msoFreeform)
-                {
-                    ungroupedShapeNames.Add(shape.Name);
-                }
-                else
-                {
-                    throw new Exception(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape);
+                    case Office.MsoShapeType.msoGroup:
+                        var subRange = shape.Ungroup();
+                        foreach (PowerPoint.Shape item in subRange)
+                        {
+                            queue.Enqueue(item);
+                        }
+                        break;
+                    case Office.MsoShapeType.msoPlaceholder:
+                    case Office.MsoShapeType.msoTextBox:
+                        if (String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
+                        {
+                            throw new Exception(TextCollection.EffectsLabErrorFrostedGlassEmptyTextBox);
+                        }
+                        goto case Office.MsoShapeType.msoFreeform;
+                    case Office.MsoShapeType.msoAutoShape:
+                    case Office.MsoShapeType.msoFreeform:
+                        ungroupedShapeNames.Add(shape.Name);
+                        break;
+                    default:
+                        throw new Exception(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape);
                 }
             }
 
@@ -2444,6 +2448,10 @@ namespace PowerPointLabs
 
                         textBoxes.Add(shape);
                         blurShapeNames.Add(textBoundaryShape.Name);
+                    }
+                    else
+                    {
+                        throw new Exception(TextCollection.EffectsLabErrorFrostedGlassEmptyTextBox);
                     }
                 }
                 else // if (shape.Type == Office.MsoShapeType.msoAutoShape || shape.Type == Office.MsoShapeType.msoFreeform)

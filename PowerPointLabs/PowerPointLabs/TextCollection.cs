@@ -479,6 +479,13 @@
 
         # endregion
 
+        # region Effects Lab
+
+        public const string EffectsLabErrorFrostedGlassNoSelection = "'Frosted Glass'  requires at least one shape or text box to be selected.";
+        public const string EffectsLabErrorFrostedGlassEmptyTextBox = "'Frosted Glass' cannot be applied on an empty text box or text box with whitespaces.";
+
+        # endregion
+
         # region Task Pane - Recorder
         public const string RecorderInitialTimer = "00:00:00";
         public const string RecorderReadyStatusLabel = "Ready.";
