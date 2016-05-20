@@ -33,6 +33,7 @@ namespace TestInterface
         // Effects Lab
         void TransparentEffect();
         void MagnifyingGlassEffect();
+        void FrostedGlassEffect();
         void BlurRemainderEffect();
         void GreyScaleRemainderEffect();
         void GothamRemainderEffect();

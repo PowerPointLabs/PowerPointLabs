@@ -214,6 +214,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void FrostedGlassEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.FrostedGlassEffectClick(new RibbonControl("FrostedGlassEffect"));
+            });
+        }
+
         public void BlurRemainderEffect()
         {
             UIThreadExecutor.Execute(() =>
