@@ -339,6 +339,18 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        void _leftMouseUpListener_DuplicateRotation(object sender, SysMouseEventInfo e)
+        {
+            _dispatcherTimer.Stop();
+            foreach (var currentShape in _shapesToBeRotated)
+            {
+                var duplicatedShape = currentShape.Duplicate();
+                duplicatedShape.Left -= 12;
+                duplicatedShape.Top -= 12;
+                duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
+        }
+
         private void DuplicateRotationButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
@@ -365,15 +377,18 @@ namespace PowerPointLabs.PositionsLab
             _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
             _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
 
-            var duplicatedShape = selectedShapes[2].Duplicate();
-            duplicatedShape.Left -= 12;
-            duplicatedShape.Top -= 12;
-            duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            foreach (var currentShape in _shapesToBeRotated)
+            {
+                var duplicatedShape = currentShape.Duplicate();
+                duplicatedShape.Left -= 12;
+                duplicatedShape.Top -= 12;
+                duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
 
             _dispatcherTimer.Tick += RotationHandler;
 
             _leftMouseUpListener = new LMouseUpListener();
-            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_DuplicateRotation;
 
             _leftMouseDownListener = new LMouseDownListener();
             _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
