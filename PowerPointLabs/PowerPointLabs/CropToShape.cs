@@ -62,23 +62,19 @@ namespace PowerPointLabs
                 TakeScreenshotProxy(shapeRange);
 
                 var ungroupedRange = UngroupAllForShapeRange(shapeRange);
-                PowerPoint.Shape filledShape = null;
-                var shapes = new string[ungroupedRange.Count];
+                var shapeNames = new string[ungroupedRange.Count];
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
                     var shape = ungroupedRange[i];
-                    filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
-                    shapes[i - 1] = filledShape.Name;
+                    var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                    shapeNames[i - 1] = filledShape.Name;
                 }
+                
+                var croppedRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapeNames);
+                var croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
 
-                if (ungroupedRange.Count > 1)
-                {
-                    var regroupedRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapes);
-                    filledShape = regroupedRange.Group();
-                }
-
-                return filledShape;
+                return croppedShape;
             }
             catch (Exception e)
             {
