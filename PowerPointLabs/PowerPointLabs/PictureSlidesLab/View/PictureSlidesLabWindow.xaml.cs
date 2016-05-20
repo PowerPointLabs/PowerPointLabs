@@ -86,6 +86,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsOpen = true;
             SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
             PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
+            InitSizePosition();
             Logger.Log("PSL begins");
 
             SetTimeout(Init, 800);
@@ -95,7 +96,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                InitSizePosition();
                 InitUiExceptionHandling();
                 InitViewModel();
                 InitGotoSlideDialog();
