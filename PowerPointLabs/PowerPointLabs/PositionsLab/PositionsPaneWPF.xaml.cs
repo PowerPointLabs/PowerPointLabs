@@ -339,15 +339,49 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        void _leftMouseUpListener_DuplicateRotation(object sender, SysMouseEventInfo e)
+        void _leftMouseDownListener_DuplicateRotation(object sender, SysMouseEventInfo e)
         {
-            _dispatcherTimer.Stop();
-            foreach (var currentShape in _shapesToBeRotated)
+            try
             {
-                var duplicatedShape = currentShape.Duplicate();
-                duplicatedShape.Left -= 12;
-                duplicatedShape.Top -= 12;
-                duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                var p = System.Windows.Forms.Control.MousePosition;
+                var selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
+
+                if (selectedShape == null)
+                {
+                    DisableRotationMode();
+                    return;
+                }
+
+                var isShapeToBeRotated = _shapesToBeRotated.Contains(selectedShape);
+                var isRefPoint = _refPoint.Id == selectedShape.Id;
+
+                if (!isShapeToBeRotated && !isRefPoint)
+                {
+                    DisableRotationMode();
+                    return;
+                }
+
+                this.StartNewUndoEntry();
+
+                if (isRefPoint)
+                {
+                    this.GetCurrentSelection().Unselect();
+                    return;
+                }
+
+                _prevMousePos = p;
+                _dispatcherTimer.Start();
+                foreach (var currentShape in _shapesToBeRotated)
+                {
+                    var duplicatedShape = currentShape.Duplicate();
+                    duplicatedShape.Left -= 12;
+                    duplicatedShape.Top -= 12;
+                    duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "Rotation");
             }
         }
 
@@ -377,21 +411,13 @@ namespace PowerPointLabs.PositionsLab
             _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
             _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
 
-            foreach (var currentShape in _shapesToBeRotated)
-            {
-                var duplicatedShape = currentShape.Duplicate();
-                duplicatedShape.Left -= 12;
-                duplicatedShape.Top -= 12;
-                duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-            }
-
             _dispatcherTimer.Tick += RotationHandler;
 
             _leftMouseUpListener = new LMouseUpListener();
-            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_DuplicateRotation;
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
 
             _leftMouseDownListener = new LMouseDownListener();
-            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_DuplicateRotation;
 
             HighlightButton(duplicateRotationButton, lightBlueBrush, darkBlueBrush);
         }
