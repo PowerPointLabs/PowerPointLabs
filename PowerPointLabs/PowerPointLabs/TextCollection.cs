@@ -482,6 +482,7 @@
         # region Effects Lab
 
         public const string EffectsLabErrorFrostedGlassNoSelection = "'Frosted Glass'  requires at least one shape or text box to be selected.";
+        public const string EffectsLabErrorFrostedGlassNonShapeOrTextBox = "'Frosted Glass' only supports shape and text box objects.";
         public const string EffectsLabErrorFrostedGlassEmptyTextBox = "'Frosted Glass' cannot be applied on an empty text box or text box with whitespaces.";
 
         # endregion
