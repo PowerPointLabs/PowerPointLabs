@@ -339,6 +339,18 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void RotationClockwiseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Action<List<Shape>> positionsAction = (shapes) => PositionsLabMain.RotateClockwise(shapes);
+            ExecutePositionsAction(positionsAction, false);
+        }
+
+        private void RotationAntiClockwiseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Action<List<Shape>> positionsAction = (shapes) => PositionsLabMain.RotateAntiClockwise(shapes);
+            ExecutePositionsAction(positionsAction, false);
+        }
+
         private void LockAxisButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
