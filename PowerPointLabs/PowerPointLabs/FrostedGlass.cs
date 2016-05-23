@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
@@ -49,7 +50,7 @@ namespace PowerPointLabs
             try
             {
                 Utils.Graphics.ExportSlide(_slide, BlurPicture);
-                blurSlideShape = GenerateBlurShape(BlurPicture);
+                blurSlideShape = GetBlurShape(BlurPicture);
                 FitToSlide.AutoFit(blurSlideShape, slideWidth, slideHeight);
             }
             catch (Exception e)
@@ -64,13 +65,13 @@ namespace PowerPointLabs
             {
                 var ungroupedShapeRange = UngroupAllForFrostedGlassShapeRange(shapeRange);
                 var textBoxes = new List<PowerPoint.Shape>();
-                var blurShapeRange = GenerateFrostedGlassShapeRange(ungroupedShapeRange, ref textBoxes);
+                var blurShapeRange = GetFrostedGlassShapeRange(ungroupedShapeRange, ref textBoxes);
 
                 blurSlideShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
                 var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
                 blurSlideShape.Delete();
 
-                var overlayShape = GenerateOverlayShape(blurShape);
+                var overlayShape = GetOverlayShape(blurShape);
                 if (overlayShape.Type == Office.MsoShapeType.msoGroup)
                 {
                     var overlayShapeRange = overlayShape.Ungroup();
@@ -141,7 +142,7 @@ namespace PowerPointLabs
             return ungroupedShapeRange;
         }
 
-        private static PowerPoint.ShapeRange GenerateFrostedGlassShapeRange(PowerPoint.ShapeRange shapeRange,
+        private static PowerPoint.ShapeRange GetFrostedGlassShapeRange(PowerPoint.ShapeRange shapeRange,
             ref List<PowerPoint.Shape> textBoxes)
         {
             var blurShapeNames = new List<string>();
@@ -152,7 +153,7 @@ namespace PowerPointLabs
                 if (shape.Type == Office.MsoShapeType.msoPlaceholder
                     || shape.Type == Office.MsoShapeType.msoTextBox)
                 {
-                    var textBoundaryShape = GenerateShapeFromTextBoundary(shape);
+                    var textBoundaryShape = GetShapeFromTextBoundary(shape);
 
                     // prevent offset when cut and paste a shape that have another shape in the same location
                     shape.IncrementLeft(12);
@@ -186,7 +187,7 @@ namespace PowerPointLabs
             return frostedGlassShapeRange;
         }
 
-        private static PowerPoint.Shape GenerateBlurShape(string imageFile)
+        private static PowerPoint.Shape GetBlurShape(string imageFile)
         {
             using (var imageFactory = new ImageProcessor.ImageFactory())
             {
@@ -199,7 +200,7 @@ namespace PowerPointLabs
                 var targetWidth = Math.Round(targetHeight * ratio);
 
                 image = imageFactory
-                    .Resize(new System.Drawing.Size((int)targetWidth, (int)targetHeight))
+                    .Resize(new Size((int)targetWidth, (int)targetHeight))
                     .Image;
                 image.Save(imageFile);
             }
@@ -219,7 +220,7 @@ namespace PowerPointLabs
             return blurShape;
         }
 
-        private static PowerPoint.Shape GenerateOverlayShape(PowerPoint.Shape shape)
+        private static PowerPoint.Shape GetOverlayShape(PowerPoint.Shape shape)
         {
             var overlayShape = DuplicateShapeInPlace(shape);
 
@@ -234,7 +235,7 @@ namespace PowerPointLabs
             return overlayShape;
         }
 
-        private static PowerPoint.Shape GenerateShapeFromTextBoundary(PowerPoint.Shape shape)
+        private static PowerPoint.Shape GetShapeFromTextBoundary(PowerPoint.Shape shape)
         {
             var rotation = shape.Rotation;
             if (rotation != 0)
@@ -250,8 +251,7 @@ namespace PowerPointLabs
             var width = textRange.BoundWidth + textFrame.MarginLeft + textFrame.MarginRight;
             var height = textRange.BoundHeight + textFrame.MarginTop + textFrame.MarginBottom;
 
-            var textBoundaryShape = _slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle,
-                left, top, width, height);
+            var textBoundaryShape = _slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, left, top, width, height);
 
             shape.Fill.Visible = Office.MsoTriState.msoFalse;
             shape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -268,11 +268,30 @@ namespace PowerPointLabs
 
             if (rotation != 0)
             {
+                var rotatedShape = new Utils.PPShape(shape, false);
+                var rotatedTextBoundaryShape = new Utils.PPShape(textBoundaryShape, false);
+                rotatedTextBoundaryShape.VisualCenter = GetRotatedPoint(rotatedShape.VisualCenter, rotatedTextBoundaryShape.VisualCenter,
+                    rotation);
+
                 shape.Rotation = rotation;
                 textBoundaryShape.Rotation = rotation;
             }
 
             return textBoundaryShape;
+        }
+
+        private static PointF GetRotatedPoint(PointF referencePoint, PointF originalPoint, float angleInDegree)
+        {
+            var angleInRadian = angleInDegree * Math.PI / 180;
+
+            var x = (float)(Math.Cos(angleInRadian) * (originalPoint.X - referencePoint.X)
+                - Math.Sin(angleInRadian) * (originalPoint.Y - referencePoint.Y) + referencePoint.X);
+            var y = (float)(Math.Sin(angleInRadian) * (originalPoint.X - referencePoint.X)
+                + Math.Cos(angleInRadian) * (originalPoint.Y - referencePoint.Y) + referencePoint.Y);
+
+            var rotatedPoint = new PointF(x, y);
+
+            return rotatedPoint;
         }
 
         private static PowerPoint.Shape DuplicateShapeInPlace(PowerPoint.Shape shape)
