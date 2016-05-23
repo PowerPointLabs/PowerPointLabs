@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d"
              ResizeMode="NoResize" 
-             Title="Stretch Settings" 
+             Title="Settings: Stretch To Align" 
              WindowStartupLocation="CenterScreen"
              Width="350"
              Height="155" 

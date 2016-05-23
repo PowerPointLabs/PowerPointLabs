@@ -6,12 +6,12 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
     [Export("GeneralVariantWorker", typeof(IVariantWorker))]
-    [ExportMetadata("GeneralVariantWorkerOrder", 1)]
-    class FontColorVariantWorker : IVariantWorker
+    [ExportMetadata("GeneralVariantWorkerOrder", 6)]
+    class TextTransparencyVariantWorker : IVariantWorker
     {
         public string GetVariantName()
         {
-            return TextCollection.PictureSlidesLabText.VariantCategoryFontColor;
+            return TextCollection.PictureSlidesLabText.VariantCategoryTextTransparency;
         }
 
         public List<StyleVariant> GetVariants()
@@ -20,52 +20,44 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
             {
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "White"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FFFFFF"}
+                    {"OptionName", "0% Transparency"},
+                    {"TextTransparency", 0}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Black"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#000000"}
+                    {"OptionName", "10% Transparency"},
+                    {"TextTransparency", 10}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Yellow"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FFD700"}
+                    {"OptionName", "20% Transparency"},
+                    {"TextTransparency", 20}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Red"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#FF0000"}
+                    {"OptionName", "30% Transparency"},
+                    {"TextTransparency", 30}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Green"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#3DFF8F"}
+                    {"OptionName", "40% Transparency"},
+                    {"TextTransparency", 40}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Blue"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#007FFF"}
+                    {"OptionName", "50% Transparency"},
+                    {"TextTransparency", 50}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "Dark Blue"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", "#001550"}
+                    {"OptionName", "60% Transparency"},
+                    {"TextTransparency", 60}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
-                    {"OptionName", "No Effect"},
-                    {"IsUseTextFormat", true},
-                    {"FontColor", ""}
-                }),
+                    {"OptionName", "70% Transparency"},
+                    {"TextTransparency", 70}
+                })
             };
         }
     }

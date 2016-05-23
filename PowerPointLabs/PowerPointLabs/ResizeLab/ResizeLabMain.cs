@@ -69,7 +69,8 @@ namespace PowerPointLabs.ResizeLab
         /// <returns></returns>
         internal bool IsSelectionValid(PowerPoint.Selection selection, bool handleError = true, string[] optionalParameters = null)
         {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes && 
+                selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
             {
                 if (handleError)
                 {
