@@ -214,11 +214,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void FrostedGlassEffect()
+        public void BlurSelectedEffect()
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("EffectsLabFrostedGlassButton"));
+                Ribbon.OnAction(new RibbonControl("EffectsLabBlurSelectedButton"));
             });
         }
 

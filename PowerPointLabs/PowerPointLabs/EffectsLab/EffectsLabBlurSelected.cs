@@ -6,20 +6,19 @@ using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.EffectsLab
 {
-    public class EffectsLabFrostedGlass
+    public class EffectsLabBlurSelected
     {
         private static Models.PowerPointSlide _slide;
 
         private const string MessageBoxTitle = "Error";
-        private const string ErrorMessageNoSelection = TextCollection.EffectsLabErrorFrostedGlassNoSelection;
-        private const string ErrorMessageNonShapeOrTextBox = TextCollection.EffectsLabErrorFrostedGlassNonShapeOrTextBox;
-        private const string ErrorMessageEmptyTextBox = TextCollection.EffectsLabErrorFrostedGlassEmptyTextBox;
+        private const string ErrorMessageNoSelection = TextCollection.EffectsLabBlurSelectedErrorNoSelection;
+        private const string ErrorMessageNonShapeOrTextBox = TextCollection.EffectsLabBlurSelectedErrorNonShapeOrTextBox;
 
         private static readonly string BlurPicture = Path.GetTempPath() + @"\blur.png";
 
-        public static void FrostedGlassEffect(Models.PowerPointSlide slide, float slideWidth, float slideHeight,
+        public static void BlurSelected(Models.PowerPointSlide slide, float slideWidth, float slideHeight,
             PowerPoint.Selection selection)
         {
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes
@@ -29,10 +28,10 @@ namespace PowerPointLabs
                 return;
             }
 
-            FrostedGlassEffect(slide, slideWidth, slideHeight, selection.ShapeRange);
+            BlurSelected(slide, slideWidth, slideHeight, selection.ShapeRange);
         }
 
-        public static void FrostedGlassEffect(Models.PowerPointSlide slide, float slideWidth, float slideHeight,
+        public static void BlurSelected(Models.PowerPointSlide slide, float slideWidth, float slideHeight,
             PowerPoint.ShapeRange shapeRange)
         {
             if (shapeRange.Count == 0)
@@ -41,8 +40,6 @@ namespace PowerPointLabs
                 return;
             }
 
-            PowerPoint.Shape blurSlideShape = null;
-
             try
             {
                 _slide = slide;
@@ -50,50 +47,37 @@ namespace PowerPointLabs
                 shapeRange.Cut();
             
                 Utils.Graphics.ExportSlide(_slide, BlurPicture);
-                blurSlideShape = GetBlurShape(BlurPicture);
-                FitToSlide.AutoFit(blurSlideShape, slideWidth, slideHeight);
+                BlurImage(BlurPicture, 95);
 
                 shapeRange = slide.Shapes.Paste();
 
-                var ungroupedShapeRange = UngroupAllForFrostedGlassShapeRange(shapeRange);
-                var textBoxes = new List<PowerPoint.Shape>();
-                var blurShapeRange = GetFrostedGlassShapeRange(ungroupedShapeRange, ref textBoxes);
+                var ungroupedRange = UngroupAllShapeRange(shapeRange);
+                var shapeGroups = GetShapeGroups(ungroupedRange);
 
-                blurSlideShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
-                var blurShape = CropToShape.Crop(blurShapeRange, isInPlace: true, handleError: false);
-                blurSlideShape.Delete();
-                blurSlideShape = null;
-
-                var overlayShape = GetOverlayShape(blurShape);
-                if (overlayShape.Type == Office.MsoShapeType.msoGroup)
+                foreach (var shapes in shapeGroups)
                 {
-                    var overlayShapeRange = overlayShape.Ungroup();
-                    overlayShapeRange.MergeShapes(Office.MsoMergeCmd.msoMergeUnion);
-                }
+                    if (shapes.Length == 2)
+                    {
+                        shapes[0].ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
-                foreach (var textBox in textBoxes)
-                {
-                    textBox.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
+                        // prevent offset when cut and paste a shape that have another shape in the same location
+                        shapes[0].IncrementLeft(-12);
+                        shapes[0].IncrementTop(-12);
 
-                    // prevent offset when cut and paste a shape that have another shape in the same location
-                    textBox.IncrementLeft(-12);
-                    textBox.IncrementTop(-12);
+                        var range = _slide.Shapes.Range(new[] { shapes[0].Name, shapes[1].Name });
+                        range.Group();
+                    }
                 }
             }
             catch (Exception e)
             {
-                if (blurSlideShape != null)
-                {
-                    blurSlideShape.Delete();
-                }
-
-                ActionFramework.Common.Log.Logger.LogException(e, "FrostedGlassEffect");
+                ActionFramework.Common.Log.Logger.LogException(e, "BlurSelectedEffect");
 
                 ShowErrorMessageBox(e.Message, e);
             }
         }
 
-        private static PowerPoint.ShapeRange UngroupAllForFrostedGlassShapeRange(PowerPoint.ShapeRange shapeRange)
+        private static PowerPoint.ShapeRange UngroupAllShapeRange(PowerPoint.ShapeRange shapeRange)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -116,16 +100,8 @@ namespace PowerPointLabs
                     }
                 }
                 else if (shape.Type == Office.MsoShapeType.msoPlaceholder
-                    || shape.Type == Office.MsoShapeType.msoTextBox)
-                {
-                    if (String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
-                    {
-                        throw new Exception(ErrorMessageEmptyTextBox);
-                    }
-
-                    ungroupedShapeNames.Add(shape.Name);
-                }
-                else if (shape.Type == Office.MsoShapeType.msoAutoShape
+                    || shape.Type == Office.MsoShapeType.msoTextBox
+                    || shape.Type == Office.MsoShapeType.msoAutoShape
                     || shape.Type == Office.MsoShapeType.msoFreeform)
                 {
                     ungroupedShapeNames.Add(shape.Name);
@@ -141,29 +117,29 @@ namespace PowerPointLabs
             return ungroupedShapeRange;
         }
 
-        private static PowerPoint.ShapeRange GetFrostedGlassShapeRange(PowerPoint.ShapeRange shapeRange,
-            ref List<PowerPoint.Shape> textBoxes)
+        private static PowerPoint.Shape[][] GetShapeGroups(PowerPoint.ShapeRange shapeRange)
         {
-            var blurShapeNames = new List<string>();
-            var queue = new Queue<PowerPoint.Shape>();
+            var shapeGroups = new PowerPoint.Shape[shapeRange.Count][];
 
-            foreach (PowerPoint.Shape shape in shapeRange)
+            for (int i = 0; i < shapeRange.Count; i++)
             {
+                var shape = shapeRange[i + 1];
+
                 if (shape.Type == Office.MsoShapeType.msoPlaceholder
                     || shape.Type == Office.MsoShapeType.msoTextBox)
                 {
                     var textBoundaryShape = GetShapeFromTextBoundary(shape);
+                    textBoundaryShape = CropToShape.FillInShapeWithImage(BlurPicture, textBoundaryShape, isInPlace: true);
 
                     // prevent offset when cut and paste a shape that have another shape in the same location
                     shape.IncrementLeft(12);
                     shape.IncrementTop(12);
 
-                    textBoxes.Add(shape);
-                    blurShapeNames.Add(textBoundaryShape.Name);
+                    shapeGroups[i] = new PowerPoint.Shape[] { shape, textBoundaryShape };
                 }
                 else // if (shape.Type == Office.MsoShapeType.msoAutoShape || shape.Type == Office.MsoShapeType.msoFreeform)
                 {
-                    if (!String.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
+                    if (!string.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
                     {
                         var textBox = DuplicateShapeInPlace(shape);
                         textBox.Fill.Visible = Office.MsoTriState.msoFalse;
@@ -172,51 +148,66 @@ namespace PowerPointLabs
                         // prevent offset when cut and paste a shape that have another shape in the same location
                         textBox.IncrementLeft(12);
                         textBox.IncrementTop(12);
-
-                        textBoxes.Add(textBox);
+                        
                         shape.TextFrame2.DeleteText();
-                    }
+                        shape = CropToShape.FillInShapeWithImage(BlurPicture, shape, isInPlace: true);
 
-                    blurShapeNames.Add(shape.Name);
+                        shapeGroups[i] = new PowerPoint.Shape[] { textBox, shape };
+                    }
+                    else
+                    {
+                        shape = CropToShape.FillInShapeWithImage(BlurPicture, shape, isInPlace: true);
+                        shapeGroups[i] = new PowerPoint.Shape[] { shape };
+                    }
                 }
             }
 
-            var frostedGlassShapeRange = _slide.Shapes.Range(blurShapeNames.ToArray());
-
-            return frostedGlassShapeRange;
+            return shapeGroups;
         }
 
-        private static PowerPoint.Shape GetBlurShape(string imageFile)
+        private static void BlurImage(string imageFile, int degree)
         {
-            using (var imageFactory = new ImageProcessor.ImageFactory())
+            if (degree != 0)
             {
-                var image = imageFactory
-                    .Load(imageFile)
-                    .Image;
+                float originalWidth, originalHeight;
 
-                var ratio = (float)image.Width / image.Height;
-                var targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * 95);
-                var targetWidth = Math.Round(targetHeight * ratio);
+                using (var imageFactory = new ImageProcessor.ImageFactory())
+                {
+                    var image = imageFactory
+                        .Load(imageFile)
+                        .Image;
 
-                image = imageFactory
-                    .Resize(new Size((int)targetWidth, (int)targetHeight))
-                    .Image;
-                image.Save(imageFile);
+                    originalWidth = image.Width;
+                    originalHeight = image.Height;
+
+                    var ratio = (float)image.Width / image.Height;
+                    var targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * degree);
+                    var targetWidth = Math.Round(targetHeight * ratio);
+
+                    image = imageFactory
+                        .Resize(new Size((int)targetWidth, (int)targetHeight))
+                        .Image;
+                    image.Save(imageFile);
+                }
+
+                using (var imageFactory = new ImageProcessor.ImageFactory())
+                {
+                    var image = imageFactory
+                        .Load(imageFile)
+                        .GaussianBlur(5)
+                        .Image;
+                    image.Save(imageFile);
+                }
+
+                using (var imageFactory = new ImageProcessor.ImageFactory())
+                {
+                    var image = imageFactory
+                        .Load(imageFile)
+                        .Resize(new Size((int)originalWidth, (int)originalHeight))
+                        .Image;
+                    image.Save(imageFile);
+                }
             }
-
-            using (var imageFactory = new ImageProcessor.ImageFactory())
-            {
-                var image = imageFactory
-                    .Load(imageFile)
-                    .GaussianBlur(5)
-                    .Image;
-                image.Save(imageFile);
-            }
-
-            var blurShape = _slide.Shapes.AddPicture(imageFile, Office.MsoTriState.msoFalse,
-                Office.MsoTriState.msoTrue, 0, 0);
-
-            return blurShape;
         }
 
         private static PowerPoint.Shape GetOverlayShape(PowerPoint.Shape shape)
@@ -300,8 +291,7 @@ namespace PowerPointLabs
         private static void ShowErrorMessageBox(string content, Exception exception = null)
         {
             if (exception == null
-                || content.Equals(ErrorMessageNonShapeOrTextBox)
-                || content.Equals(ErrorMessageEmptyTextBox))
+                || content.Equals(ErrorMessageNonShapeOrTextBox))
             {
                 MessageBox.Show(content, MessageBoxTitle);
             }

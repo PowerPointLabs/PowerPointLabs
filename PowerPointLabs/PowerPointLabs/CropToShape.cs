@@ -67,7 +67,7 @@ namespace PowerPointLabs
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
-                    var filledShape = FillInShapeWithScreenshot(ungroupedRange[i], magnifyRatio, isInPlace);
+                    var filledShape = FillInShapeWithImage(SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
                     shapeNames[i - 1] = filledShape.Name;
                 }
                 
@@ -125,10 +125,10 @@ namespace PowerPointLabs
             }
         }
 
-        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0,
+        public static PowerPoint.Shape FillInShapeWithImage(string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0,
             bool isInPlace = false)
         {
-            CreateFillInBackgroundForShape(shape, magnifyRatio);
+            CreateFillInBackgroundForShape(imageFile, shape, magnifyRatio);
             shape.Fill.UserPicture(FillInBackgroundPicture);
 
             shape.Line.Visible = Office.MsoTriState.msoFalse;
@@ -144,9 +144,9 @@ namespace PowerPointLabs
             return shapeToReturn;
         }
 
-        private static void CreateFillInBackgroundForShape(PowerPoint.Shape shape, double magnifyRatio = 1.0)
+        private static void CreateFillInBackgroundForShape(string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0)
         {
-            using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
+            using (var slideImage = (Bitmap)Image.FromFile(imageFile))
             {
                 if (shape.Rotation == 0)
                 {

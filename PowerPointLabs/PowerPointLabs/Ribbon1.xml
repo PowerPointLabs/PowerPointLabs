@@ -230,7 +230,7 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
-            <button id="EffectsLabFrostedGlassButton"
+            <button id="EffectsLabBlurSelectedButton"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
