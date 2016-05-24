@@ -124,8 +124,8 @@
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="lockAxisTextBlock" HorizontalAlignment="Left" Margin="18,635,0,0" TextWrapping="Wrap" Text="Lock Axis" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Objects can only be moved in certain direction from original position" x:Name="lockDirectionButton" HorizontalAlignment="Left" Margin="154,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockDirectionButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
+            <WPF:ImageButton ToolTip="Objects can only be moved in certain direction from original position and the reference shape" x:Name="lockDirectionButton" HorizontalAlignment="Left" Margin="154,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockDirectionButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\LockDirectionIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="lockDirectionTextBlock" HorizontalAlignment="Left" Margin="154,635,0,0" TextWrapping="Wrap" Text="Lock Direction" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>
         </Grid>
