@@ -3,8 +3,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip
 {
-    [ExportSupertipRibbonId("frostedGlassEffect")]
-    class FrostedGlassSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId("EffectsLabFrostedGlassButton")]
+    class EffectsLabFrostedGlassSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {

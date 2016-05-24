@@ -3,8 +3,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId("frostedGlassEffect")]
-    class FrostedGlassLabelHandler : LabelHandler
+    [ExportLabelRibbonId("EffectsLabFrostedGlassButton")]
+    class EffectsLabFrostedGlassLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

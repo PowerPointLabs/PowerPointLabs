@@ -255,7 +255,7 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\Action\FrostedGlassActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EffectsLabFrostedGlassActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
@@ -282,7 +282,7 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
-    <Compile Include="ActionFramework\Label\FrostedGlassLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabFrostedGlassLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
     <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
@@ -292,7 +292,7 @@
     <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
-    <Compile Include="ActionFramework\Supertip\FrostedGlassSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\EffectsLabFrostedGlassSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
@@ -374,7 +374,7 @@
     <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FrostedGlass.cs" />
+    <Compile Include="EffectsLab\EffectsLabFrostedGlass.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">

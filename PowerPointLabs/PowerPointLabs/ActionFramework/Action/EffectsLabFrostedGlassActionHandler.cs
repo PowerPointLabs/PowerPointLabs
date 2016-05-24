@@ -4,8 +4,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
-    [ExportActionRibbonId("frostedGlassEffect")]
-    class FrostedGlassActionHandler : ActionHandler
+    [ExportActionRibbonId("EffectsLabFrostedGlassButton")]
+    class EffectsLabFrostedGlassActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
@@ -14,7 +14,7 @@ namespace PowerPointLabs.ActionFramework.Action
             var selection = this.GetCurrentSelection();
             var slide = this.GetCurrentSlide();
             var presentation = this.GetCurrentPresentation();
-            FrostedGlass.FrostedGlassEffect(slide, presentation.SlideWidth, presentation.SlideHeight, selection);
+            EffectsLabFrostedGlass.FrostedGlassEffect(slide, presentation.SlideWidth, presentation.SlideHeight, selection);
         }
     }
 }

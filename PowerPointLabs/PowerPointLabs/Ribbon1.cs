@@ -344,10 +344,6 @@ namespace PowerPointLabs
         {
             return TextCollection.EffectsLabMagnifyGlassSupertip;
         }
-        public string GetEffectsLabFrostedGlassSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabFrostedGlassSupertip;
-        }
         public string GetEffectsLabBlurRemainderSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabBlurRemainderSupertip;
@@ -564,10 +560,6 @@ namespace PowerPointLabs
         public string GetEffectsLabMagnifyGlassButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMagnifyGlassButtonLabel;
-        }
-        public string GetEffectsLabFrostedGlassButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabFrostedGlassButtonLabel;
         }
         public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
         {
@@ -2118,19 +2110,14 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-            PowerPoint.ShapeRange shapeRange;
-            try
-            {
-                shapeRange = selection.ShapeRange;
-            }
-            catch (Exception)
+            
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 MessageBox.Show("Please select at least 1 shape");
                 return;
             }
 
-            TransparentEffect(shapeRange);
+            TransparentEffect(selection.ShapeRange);
         }
 
         private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)

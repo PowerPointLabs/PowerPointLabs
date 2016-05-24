@@ -235,7 +235,7 @@ namespace PowerPointLabs
             shapeRange.Visible = Office.MsoTriState.msoTrue;
         }
 
-        public static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range, bool remove = false)
+        private static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -257,11 +257,6 @@ namespace PowerPointLabs
                 }
                 else if (!IsShape(shape))
                 {
-                    if (remove)
-                    {
-                        RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
-                    }
-
                     ThrowErrorCode(ErrorCodeForSelectionNonShape);
                 }
                 else
@@ -270,19 +265,6 @@ namespace PowerPointLabs
                 }
             }
             return PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapeNames.ToArray());
-        }
-
-        private static void RemoveShapesForUngroupAll(PowerPoint.Shape shape, List<string> ungroupedShapes, Queue<PowerPoint.Shape> queue)
-        {
-            shape.Delete();
-            if (ungroupedShapes.Count > 0)
-            {
-                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapes.ToArray()).Delete();
-            }
-            while (queue.Count != 0)
-            {
-                queue.Dequeue().Delete();
-            }
         }
 
         private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
