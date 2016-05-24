@@ -2121,6 +2121,11 @@ namespace PowerPointLabs.PositionsLab
             var origin = Graphics.GetCenterPoint(shapes[0]);
             shapes.RemoveAt(0);
 
+            Rotate(shapes, origin, angle);
+        }
+
+        public static void Rotate(IList<Shape> shapes, Drawing.PointF origin, float angle)
+        {
             foreach (var currentShape in shapes)
             {
                 var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
@@ -2129,7 +2134,7 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
                 currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
 
-                currentShape.Rotation = PositionsLabMain.AddAngles(currentShape.Rotation, angle);
+                currentShape.Rotation = AddAngles(currentShape.Rotation, angle);
             }
         }
 

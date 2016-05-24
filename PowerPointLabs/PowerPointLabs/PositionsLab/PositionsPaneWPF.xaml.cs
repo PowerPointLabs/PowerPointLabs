@@ -281,16 +281,7 @@ namespace PowerPointLabs.PositionsLab
             var angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), p) - prevAngle;
             var origin = Graphics.GetCenterPoint(_refPoint);
 
-            foreach (var currentShape in _shapesToBeRotated)
-            {
-                var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
-                var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
-
-                currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
-                currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
-
-                currentShape.Rotation = PositionsLabMain.AddAngles(currentShape.Rotation, angle);
-            }
+            PositionsLabMain.Rotate(_shapesToBeRotated, origin, angle);
 
             _prevMousePos = p;
         }
