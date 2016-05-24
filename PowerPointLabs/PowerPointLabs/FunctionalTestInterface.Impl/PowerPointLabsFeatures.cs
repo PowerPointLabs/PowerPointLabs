@@ -218,7 +218,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("frostedGlassEffect"));
+                Ribbon.OnAction(new RibbonControl("EffectsLabFrostedGlassButton"));
             });
         }
 

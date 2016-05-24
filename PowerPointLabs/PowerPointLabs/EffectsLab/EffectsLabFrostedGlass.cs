@@ -87,6 +87,8 @@ namespace PowerPointLabs
                     blurSlideShape.Delete();
                 }
 
+                ActionFramework.Common.Log.Logger.LogException(e, "FrostedGlassEffect");
+
                 ShowErrorMessageBox(e.Message, e);
             }
         }

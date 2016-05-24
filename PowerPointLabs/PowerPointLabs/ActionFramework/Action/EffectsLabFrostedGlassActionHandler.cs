@@ -9,6 +9,8 @@ namespace PowerPointLabs.ActionFramework.Action
     {
         protected override void ExecuteAction(string ribbonId)
         {
+            Common.Log.Logger.Log("Entering Effects Lab Frosted Glass");
+
             this.StartNewUndoEntry();
 
             var selection = this.GetCurrentSelection();
