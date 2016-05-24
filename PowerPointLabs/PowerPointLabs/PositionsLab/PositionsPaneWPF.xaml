@@ -108,11 +108,11 @@
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="rotateTextBlock" HorizontalAlignment="Left" Margin="18,560,0,0" TextWrapping="Wrap" Text="Rotate" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object slightly clockwise" x:Name="rotationClockwiseButton" HorizontalAlignment="Left" Margin="86,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationClockwiseButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Slightly adjusts the rate of rotation clockwise for object" x:Name="rotationClockwiseButton" HorizontalAlignment="Left" Margin="86,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationClockwiseButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="rotateClockwiseTextBlock" HorizontalAlignment="Left" Margin="86,560,0,0" TextWrapping="Wrap" Text="Rotate Clockwise" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>
-            <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object slightly anti-clockwise" x:Name="rotationAntiClockwiseButton" HorizontalAlignment="Left" Margin="154,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationAntiClockwiseButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Slightly adjusts the rate of rotation anti-clockwise for object" x:Name="rotationAntiClockwiseButton" HorizontalAlignment="Left" Margin="154,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationAntiClockwiseButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="rotateAntiClockwiseTextBlock" HorizontalAlignment="Left" Margin="151,560,0,0" TextWrapping="Wrap" Text="Rotate Anti-Clockwise" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="66"/>
