@@ -168,8 +168,11 @@ namespace PowerPointLabs.EffectsLab
                 }
             }
 
-            var range = _slide.Shapes.Range(shapeGroupNames);
-            range.Group();
+            if (shapeGroupNames.Length > 1)
+            {
+                var range = _slide.Shapes.Range(shapeGroupNames);
+                range.Group();
+            }
         }
 
         private static void BlurImage(string imageFile, int degree)
