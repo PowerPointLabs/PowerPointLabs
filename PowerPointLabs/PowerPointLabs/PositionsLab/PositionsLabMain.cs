@@ -2097,6 +2097,18 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        public static void Repack(List<PPShape> selectedShapes, bool isPreview)
+        {
+            if (selectedShapes.Count < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            var sortedShapes = selectedShapes;
+
+
+        }
+
         #endregion
 
         #region Snap
