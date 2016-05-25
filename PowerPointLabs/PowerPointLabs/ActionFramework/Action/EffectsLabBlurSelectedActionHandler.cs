@@ -16,7 +16,7 @@ namespace PowerPointLabs.ActionFramework.Action
             var selection = this.GetCurrentSelection();
             var slide = this.GetCurrentSlide();
             var presentation = this.GetCurrentPresentation();
-            EffectsLab.EffectsLabBlurSelected.BlurSelected(slide, presentation.SlideWidth, presentation.SlideHeight, selection);
+            EffectsLab.EffectsLabBlurSelected.BlurSelected(slide, selection);
         }
     }
 }
