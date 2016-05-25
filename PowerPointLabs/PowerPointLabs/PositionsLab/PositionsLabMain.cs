@@ -2101,31 +2101,10 @@ namespace PowerPointLabs.PositionsLab
 
         #region Adjustment
 
-        public static void RotateClockwise(IList<Shape> shapes)
+        public static void Rotate(IList<Shape> shapes, Shape refShape, float angle)
         {
-            Rotate(shapes, 1);
-        }
+            var origin = Graphics.GetCenterPoint(refShape);
 
-        public static void RotateAntiClockwise(IList<Shape> shapes)
-        {
-            Rotate(shapes, -1);
-        }
-
-        public static void Rotate(IList<Shape> shapes, float angle)
-        {
-            if (shapes.Count < 2)
-            {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
-            }
-
-            var origin = Graphics.GetCenterPoint(shapes[0]);
-            shapes.RemoveAt(0);
-
-            Rotate(shapes, origin, angle);
-        }
-
-        public static void Rotate(IList<Shape> shapes, Drawing.PointF origin, float angle)
-        {
             foreach (var currentShape in shapes)
             {
                 var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
