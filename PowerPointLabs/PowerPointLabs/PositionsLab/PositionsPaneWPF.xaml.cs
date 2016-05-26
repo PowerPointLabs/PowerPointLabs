@@ -69,7 +69,6 @@ namespace PowerPointLabs.PositionsLab
         public PositionsPaneWpf()
         {
             PositionsLabMain.InitPositionsLab();
-            InitializeHotKeys();
             lightBlueBrush = new System.Windows.Media.SolidColorBrush();
             var lightBlue = new System.Windows.Media.Color();
             lightBlue.R = 190;
@@ -87,31 +86,28 @@ namespace PowerPointLabs.PositionsLab
             darkBlueBrush.Color = darkBlue;
 
             InitializeComponent();
+            InitializeHotKeys();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
             Focusable = true;
         }
         
         private void InitializeHotKeys()
         {
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_LEFT, RunOnlyWhenActivated(() =>
-                {
-                    this.GetCurrentSelection().Unselect();
-                    PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, -1);
-                }));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_UP, RunOnlyWhenActivated(() =>
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_LEFT, RunOnlyWhenActivated(() =>
             {
-                this.GetCurrentSelection().Unselect();
-                PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, -1);
+                RotateSlightly(true);
             }));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_RIGHT, RunOnlyWhenActivated(() =>
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_UP, RunOnlyWhenActivated(() =>
             {
-                this.GetCurrentSelection().Unselect();
-                PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, 1);
+                RotateSlightly(true);
             }));
-            PPKeyboard.AddKeyupAction(Native.VirtualKey.VK_DOWN, RunOnlyWhenActivated(() =>
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_RIGHT, RunOnlyWhenActivated(() =>
             {
-                this.GetCurrentSelection().Unselect();
-                PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, 1);
+                RotateSlightly();
+            }));
+            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_DOWN, RunOnlyWhenActivated(() =>
+            {
+                RotateSlightly();
             }));
         }
 
@@ -125,6 +121,13 @@ namespace PowerPointLabs.PositionsLab
                     action();
                 }
             };
+        }
+        
+        private void RotateSlightly(bool isAntiClockwise = false)
+        {
+            this.GetCurrentSelection().Unselect();
+            var angle = (isAntiClockwise) ? -1f : 1f;
+            PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, angle);
         }
 
         #region Click Behaviour
@@ -306,6 +309,8 @@ namespace PowerPointLabs.PositionsLab
 
             _leftMouseDownListener = new LMouseDownListener();
             _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
+            
+            PPKeyboard.SetSlideViewWindowFocused();
         }
 
         private void RotationHandler(object sender, EventArgs e)

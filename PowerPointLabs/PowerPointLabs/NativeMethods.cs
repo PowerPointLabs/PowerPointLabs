@@ -36,6 +36,9 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll")]
         public static extern IntPtr GetFocus();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetFocus(IntPtr hWnd);
+
         [DllImport("gdi32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetPixel(
             System.IntPtr hdc,    // handle to DC
