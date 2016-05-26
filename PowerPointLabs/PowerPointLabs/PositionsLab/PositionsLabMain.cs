@@ -2105,8 +2105,20 @@ namespace PowerPointLabs.PositionsLab
             }
 
             var sortedShapes = selectedShapes;
+            System.Drawing.PointF[] topLeftPointList = new System.Drawing.PointF[selectedShapes.Count];
+            sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
 
+            for (var i = 0; i < selectedShapes.Count; i++)
+            {
+                topLeftPointList[i] = sortedShapes[i].ActualTopLeft;
+            }
 
+            for (var i = 0; i < selectedShapes.Count; i++)
+            {
+                var thisPoint = selectedShapes[i].ActualTopLeft;
+                selectedShapes[i].IncrementLeft(topLeftPointList[i].X - thisPoint.X);
+                selectedShapes[i].IncrementTop(topLeftPointList[i].Y - thisPoint.Y);
+            }
         }
 
         #endregion
