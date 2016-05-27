@@ -214,6 +214,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void BlurSelectedEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.OnAction(new RibbonControl("EffectsLabBlurSelectedButton"));
+            });
+        }
+
         public void BlurRemainderEffect()
         {
             UIThreadExecutor.Execute(() =>

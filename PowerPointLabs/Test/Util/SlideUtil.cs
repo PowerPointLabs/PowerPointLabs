@@ -49,10 +49,10 @@ namespace Test.Util
         public static void IsSameLooking(Slide expSlide, Slide actualSlide)
         {
             var hashCode = DateTime.Now.GetHashCode();
-            actualSlide.Export(PathUtil.GetTempPath("actualSlide" + hashCode), "PNG");
-            expSlide.Export(PathUtil.GetTempPath("expSlide" + hashCode), "PNG");
+            actualSlide.Export(PathUtil.GetTempPath("actualSlide" + hashCode + ".png"), "PNG");
+            expSlide.Export(PathUtil.GetTempPath("expSlide" + hashCode + ".png"), "PNG");
 
-            IsSameLooking("expSlide" + hashCode, "actualSlide" + hashCode);
+            IsSameLooking("expSlide" + hashCode + ".png", "actualSlide" + hashCode + ".png");
         }
 
         public static void IsSameLooking(string expSlideImage, string actualSlideImage)
