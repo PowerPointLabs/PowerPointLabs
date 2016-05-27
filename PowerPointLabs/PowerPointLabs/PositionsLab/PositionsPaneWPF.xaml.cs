@@ -31,6 +31,7 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection =
             TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = 
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageFunctionNotSupportedForSlide =
@@ -279,18 +280,8 @@ namespace PowerPointLabs.PositionsLab
 
             var prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), _prevMousePos);
             var angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), p) - prevAngle;
-            var origin = Graphics.GetCenterPoint(_refPoint);
 
-            foreach (var currentShape in _shapesToBeRotated)
-            {
-                var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
-                var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
-
-                currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
-                currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
-
-                currentShape.Rotation = PositionsLabMain.AddAngles(currentShape.Rotation, angle);
-            }
+            PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, angle);
 
             _prevMousePos = p;
         }
@@ -337,6 +328,31 @@ namespace PowerPointLabs.PositionsLab
             {
                 Logger.LogException(ex, "Rotation");
             }
+        }
+
+        private void EqualizeAngleButton_Click(object sender, RoutedEventArgs e)
+        {
+            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+
+            if (noShapesSelected)
+            {
+                ShowErrorMessageBox(ErrorMessageFewerThanFourSelection);
+                return;
+            }
+
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+            if (selectedShapes.Count < 4)
+            {
+                ShowErrorMessageBox(ErrorMessageFewerThanFourSelection);
+                return;
+            }
+
+            _refPoint = selectedShapes[1];
+            _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
+            
+            this.StartNewUndoEntry();
+            PositionsLabMain.EqualizeAngle(_shapesToBeRotated, _refPoint);
         }
 
         private void LockAxisButton_Click(object sender, RoutedEventArgs e)

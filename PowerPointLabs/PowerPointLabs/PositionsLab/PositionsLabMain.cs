@@ -2099,6 +2099,88 @@ namespace PowerPointLabs.PositionsLab
 
         #endregion
 
+        #region Adjustment
+
+        public static void Rotate(IList<Shape> shapes, Shape refShape, float angle)
+        {
+            var origin = Graphics.GetCenterPoint(refShape);
+
+            foreach (var currentShape in shapes)
+            {
+                Rotate(currentShape, origin, angle);
+            }
+        }
+
+        public static void Rotate(Shape shape, Drawing.PointF origin, float angle)
+        {
+            var unrotatedCenter = Graphics.GetCenterPoint(shape);
+            var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
+
+            shape.Left += (rotatedCenter.X - unrotatedCenter.X);
+            shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
+
+            shape.Rotation = AddAngles(shape.Rotation, angle);
+        }
+
+        public static void EqualizeAngle(IList<Shape> selectedShapes, Shape refShape)
+        {
+            var origin = Graphics.GetCenterPoint(refShape);
+            var shapesToEqualize = new List<Shape>(selectedShapes);
+
+            var firstShapeAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(shapesToEqualize[0]));
+            var secondShapeAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(shapesToEqualize[1]));
+
+            if (firstShapeAngle > secondShapeAngle)
+            {
+                var temp = firstShapeAngle;
+                firstShapeAngle = secondShapeAngle;
+                secondShapeAngle = temp;
+            }
+
+            var referenceAngle = secondShapeAngle - firstShapeAngle;
+            var referenceExplementAngle = 360 - referenceAngle;
+            var firstShapeAngleFromSecondShape = (firstShapeAngle + (360 - secondShapeAngle)) % 360;
+
+            shapesToEqualize.RemoveAt(1);
+            shapesToEqualize.RemoveAt(0);
+
+            var shapesWithinAngle = new SortedDictionary<float, Shape>();
+            var shapesWithinExplementAngle = new SortedDictionary<float, Shape>();
+
+            foreach (var shape in shapesToEqualize)
+            {
+                var shapeAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(shape));
+                var shapeAngleFromSecondShape = (shapeAngle + (360 - secondShapeAngle)) % 360;
+
+                if (shapeAngleFromSecondShape > firstShapeAngleFromSecondShape)
+                {
+                    shapesWithinAngle.Add(shapeAngleFromSecondShape, shape);
+                }
+                else
+                {
+                    shapesWithinExplementAngle.Add(shapeAngleFromSecondShape, shape);
+                }
+            }
+
+            EqualizeShapesWithinAngle(shapesWithinAngle, origin, referenceAngle, firstShapeAngleFromSecondShape);
+            EqualizeShapesWithinAngle(shapesWithinExplementAngle, origin, referenceExplementAngle, 0);
+        }
+
+        public static void EqualizeShapesWithinAngle(SortedDictionary<float, Shape> shapesWithinAngle, Drawing.PointF origin, float angle,
+            float startingAngle)
+        {
+            var spaceWithinAngle = angle / (shapesWithinAngle.Count + 1);
+            var destinationAngleFromSecondShape = startingAngle;
+            foreach (var pair in shapesWithinAngle)
+            {
+                destinationAngleFromSecondShape += spaceWithinAngle;
+                var rotateAngle = destinationAngleFromSecondShape - pair.Key;
+                Rotate(pair.Value, origin, rotateAngle);
+            }
+        }
+
+        #endregion
+
         #region Snap
 
         public static void SnapVertical(IList<Shape> selectedShapes)

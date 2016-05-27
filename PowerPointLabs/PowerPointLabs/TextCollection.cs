@@ -586,6 +586,7 @@
             public const string ErrorNoSelection = "Please select at least a shape before using this feature";
             public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature";
             public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature";
+            public const string ErrorFewerThanFourSelection = "Please select at least four shapes before using this feature";
             public const string ErrorFunctionNotSupportedForWithinShapes = "This function is not supported for Within Corner Most Objects Setting.";
             public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
