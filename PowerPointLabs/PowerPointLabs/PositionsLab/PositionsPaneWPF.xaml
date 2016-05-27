@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
-             mc:Ignorable="d" Height="670" Width="310"
+             mc:Ignorable="d" Height="680" Width="310"
              KeyDown="PositionsPane_KeyDown" KeyUp="PositionsPane_KeyUp" FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,7 +21,7 @@
         <KeyBinding Key="LeftCtrl"/>
     </UserControl.InputBindings>
     <ScrollViewer Margin="0,0,0,-20">
-        <Grid VerticalAlignment="Top" Height="670" Width="300">
+        <Grid VerticalAlignment="Top" Height="680" Width="300">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="160" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="alignSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-2,0" VerticalAlignment="Top" Width="20" Height="20" Click="AlignSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
@@ -103,7 +103,7 @@
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="swapTextBlock" HorizontalAlignment="Left" Margin="18,460,0,0" TextWrapping="Wrap" Text="Swap" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Height="160" Width="280"/>
+            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,485,0,0" VerticalAlignment="Top" Height="170" Width="280"/>
             <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>
@@ -120,10 +120,14 @@
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="snapAWayTextBlock" HorizontalAlignment="Left" Margin="222,560,0,0" TextWrapping="Wrap" Text="Snap Away" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="18,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="18,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </WPF:ImageButton>
-            <TextBlock x:Name="lockAxisTextBlock" HorizontalAlignment="Left" Margin="18,625,0,0" TextWrapping="Wrap" Text="Lock Axis" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <TextBlock x:Name="lockAxisTextBlock" HorizontalAlignment="Left" Margin="18,635,0,0" TextWrapping="Wrap" Text="Lock Axis" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <WPF:ImageButton ToolTip="Flip objects horizontally and pressing 'ctrl' to flip it vertically" x:Name="flipButton" HorizontalAlignment="Left" Margin="222,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="FlipButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\FlipHorizontalIcon.png"/>
+            </WPF:ImageButton>
+            <TextBlock x:Name="flipTextBlock" HorizontalAlignment="Left" Margin="222,635,0,0" TextWrapping="Wrap" Text="Flip" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

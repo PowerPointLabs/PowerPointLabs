@@ -433,6 +433,47 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void FlipButton_Click(object sender, RoutedEventArgs e)
+        {
+            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+
+            if (noShapesSelected)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+            ClearAllEventHandlers();
+
+            FlipHandler(selectedShapes);
+        }
+
+        void FlipHandler(PowerPoint.ShapeRange selectedShapes)
+        {
+            try
+            {
+                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    for (var i = 1; i <= selectedShapes.Count; i++)
+                    {
+                        var currentShape = selectedShapes[i];
+                        currentShape.Flip(Office.MsoFlipCmd.msoFlipVertical);
+                    }
+                }
+                else
+                {
+                    for (var i = 1; i <= selectedShapes.Count; i++)
+                    {
+                        var currentShape = selectedShapes[i];
+                        currentShape.Flip(Office.MsoFlipCmd.msoFlipHorizontal);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "Flip");
+            }
+        }
         #endregion
 
         #region Snap
