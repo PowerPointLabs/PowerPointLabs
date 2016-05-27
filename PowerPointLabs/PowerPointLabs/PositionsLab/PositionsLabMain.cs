@@ -2131,18 +2131,12 @@ namespace PowerPointLabs.PositionsLab
                 {
                     currentX = currentX + objectLength + distanceList[i];
                 }
-                /*else
-                {
-                    currentX = sortedShapes[i].ActualTopLeft.X + objectLength;
-                }*/
-                //topLeftPointList[i].Y = selectedShapes[i].ActualTopLeft.Y;
             }
 
             for (var i = 0; i < numOfShapes; i++)
             {
                 var thisPoint = selectedShapes[i].ActualTopLeft;
                 selectedShapes[i].IncrementLeft(topLeftPointList[i].X - thisPoint.X);
-                //selectedShapes[i].IncrementTop(topLeftPointList[i].Y - thisPoint.Y);
             }
         }
 
