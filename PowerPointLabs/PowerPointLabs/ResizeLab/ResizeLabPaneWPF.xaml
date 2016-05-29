@@ -69,7 +69,7 @@
                             <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
                         </RadioButton.RenderTransform>
                     </RadioButton>
-                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,25,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the visual height and width of objects">Use Visual Height / Width</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="3" FontSize="12" Margin="24,25,0,0" HorizontalAlignment="Left" Grid.Row="1" ToolTip="Resize objects using the visual height and width of objects" Text="Use Visual Dimensions"/>
                     <RadioButton x:Name="ActualHeightRadioBtn" GroupName="ResizeType" Grid.Column="0" ToolTip="Resize objects using the actual height and width of objects" Margin="0,44,0,-1" Checked="ResizeTypeActualBtn_Checked" Grid.Row="1">
                         <RadioButton.RenderTransform>
                             <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
