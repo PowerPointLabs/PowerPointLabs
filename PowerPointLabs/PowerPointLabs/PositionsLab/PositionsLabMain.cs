@@ -30,6 +30,7 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageFunctionNotSupportedForSlide =
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
@@ -41,6 +42,13 @@ namespace PowerPointLabs.PositionsLab
             FirstShape,
             FirstTwoShapes,
             ExtremeShapes
+        }
+
+        public enum DistributeAngleReferenceObject
+        {
+            AtSecondShape,
+            WithinSecondShape,
+            SecondThirdShape
         }
 
         public enum DistributeSpaceReferenceObject
@@ -59,6 +67,7 @@ namespace PowerPointLabs.PositionsLab
         }
 
         public static DistributeReferenceObject DistributeReference { get; private set; }
+        public static DistributeAngleReferenceObject DistributeAngleReference { get; private set; }
         public static DistributeSpaceReferenceObject DistributeSpaceReference { get; private set; }
         public static GridAlignment DistributeGridAlignment { get; private set; }
         public static float MarginTop { get; private set; }
@@ -175,6 +184,30 @@ namespace PowerPointLabs.PositionsLab
         public static void DistributeReferToExtremeShapes()
         {
             DistributeReference = DistributeReferenceObject.ExtremeShapes;
+        }
+
+        /// <summary>
+        /// Tells the Position Lab to use the second selected shape as the starting point for Distribute angle method
+        /// </summary>
+        public static void DistributeReferAtSecondShape()
+        {
+            DistributeAngleReference = DistributeAngleReferenceObject.AtSecondShape;
+        }
+
+        /// <summary>
+        /// Tells the Position Lab to use the second selected shape as the boundary shape for Distribute angle method
+        /// </summary>
+        public static void DistributeReferToSecondShape()
+        {
+            DistributeAngleReference = DistributeAngleReferenceObject.WithinSecondShape;
+        }
+
+        /// <summary>
+        /// Tells the Position Lab to use the second and third shape as the boundary points for Distribute angle method
+        /// </summary>
+        public static void DistributeReferToSecondThirdShape()
+        {
+            DistributeAngleReference = DistributeAngleReferenceObject.SecondThirdShape;
         }
 
         /// <summary>
@@ -2032,6 +2065,75 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        public static void DistributeAngle(List<PPShape> selectedShapes)
+        {
+            var isAtSecondShape = DistributeAngleReference == DistributeAngleReferenceObject.AtSecondShape;
+            var isWithinSecondShape = DistributeAngleReference == DistributeAngleReferenceObject.WithinSecondShape;
+            var isSecondThirdShape = DistributeAngleReference == DistributeAngleReferenceObject.SecondThirdShape;
+            var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
+            var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
+            
+            List<PPShape> shapesToEqualize = new List<PPShape>(selectedShapes);
+            float referenceAngle, startingAngle;
+            Drawing.PointF origin;
+
+            if (isSecondThirdShape && isObjectCenter)
+            {
+                if (selectedShapes.Count < 4)
+                {
+                    throw new Exception(ErrorMessageFewerThanFourSelection);
+                }
+
+                origin = shapesToEqualize[0].VisualCenter;
+                startingAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[1].VisualCenter);
+                var endingAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[2].VisualCenter);
+
+                if (startingAngle > endingAngle)
+                {
+                    var temp = startingAngle;
+                    startingAngle = endingAngle;
+                    endingAngle = temp;
+                }
+
+                referenceAngle = endingAngle - startingAngle;
+                var referenceExplementAngle = 360 - referenceAngle;
+
+                var shapesWithinAngle = new SortedDictionary<float, PPShape>();
+                var shapesWithinExplementAngle = new SortedDictionary<float, PPShape>();
+
+                for (int i = 3; i < shapesToEqualize.Count; i++)
+                {
+                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[i].VisualCenter);
+                    var shapeAngleFromStart = (shapeAngle + (360 - startingAngle)) % 360;
+
+                    if (shapeAngleFromStart < referenceAngle)
+                    {
+                        shapesWithinAngle.Add(shapeAngleFromStart, shapesToEqualize[i]);
+                    }
+                    else
+                    {
+                        shapesWithinExplementAngle.Add(shapeAngleFromStart, shapesToEqualize[i]);
+                    }
+                }
+
+                DistributeShapesWithinAngle(shapesWithinAngle, origin, referenceAngle, 0);
+                DistributeShapesWithinAngle(shapesWithinExplementAngle, origin, referenceExplementAngle, referenceAngle);
+            }
+        }
+
+        public static void DistributeShapesWithinAngle(SortedDictionary<float, PPShape> shapesWithinAngle, Drawing.PointF origin,
+            float totalAngle, float startingAngle)
+        {
+            var angleBetweenShapes = totalAngle / (shapesWithinAngle.Count + 1);
+            var endingAngle = startingAngle;
+            foreach (var pair in shapesWithinAngle)
+            {
+                endingAngle += angleBetweenShapes;
+                var rotationAngle = endingAngle - pair.Key;
+                Rotate(pair.Value, origin, rotationAngle);
+            }
+        }
+
         #endregion
 
         #region Swap
@@ -2107,76 +2209,25 @@ namespace PowerPointLabs.PositionsLab
 
             foreach (var currentShape in shapes)
             {
-                Rotate(currentShape, origin, angle);
+                var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
+                var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
+
+                currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
+                currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
+
+                currentShape.Rotation = AddAngles(currentShape.Rotation, angle);
             }
         }
 
-        public static void Rotate(Shape shape, Drawing.PointF origin, float angle)
+        public static void Rotate(PPShape shape, Drawing.PointF origin, float angle)
         {
-            var unrotatedCenter = Graphics.GetCenterPoint(shape);
+            var unrotatedCenter = shape.VisualCenter;
             var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
 
-            shape.Left += (rotatedCenter.X - unrotatedCenter.X);
-            shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
+            shape.VisualLeft += (rotatedCenter.X - unrotatedCenter.X);
+            shape.VisualTop += (rotatedCenter.Y - unrotatedCenter.Y);
 
-            shape.Rotation = AddAngles(shape.Rotation, angle);
-        }
-
-        public static void EqualizeAngle(IList<Shape> selectedShapes, Shape refShape)
-        {
-            var origin = Graphics.GetCenterPoint(refShape);
-            var shapesToEqualize = new List<Shape>(selectedShapes);
-
-            var firstShapeAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(shapesToEqualize[0]));
-            var secondShapeAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(shapesToEqualize[1]));
-
-            if (firstShapeAngle > secondShapeAngle)
-            {
-                var temp = firstShapeAngle;
-                firstShapeAngle = secondShapeAngle;
-                secondShapeAngle = temp;
-            }
-
-            var referenceAngle = secondShapeAngle - firstShapeAngle;
-            var referenceExplementAngle = 360 - referenceAngle;
-            var firstShapeAngleFromSecondShape = (firstShapeAngle + (360 - secondShapeAngle)) % 360;
-
-            shapesToEqualize.RemoveAt(1);
-            shapesToEqualize.RemoveAt(0);
-
-            var shapesWithinAngle = new SortedDictionary<float, Shape>();
-            var shapesWithinExplementAngle = new SortedDictionary<float, Shape>();
-
-            foreach (var shape in shapesToEqualize)
-            {
-                var shapeAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(shape));
-                var shapeAngleFromSecondShape = (shapeAngle + (360 - secondShapeAngle)) % 360;
-
-                if (shapeAngleFromSecondShape > firstShapeAngleFromSecondShape)
-                {
-                    shapesWithinAngle.Add(shapeAngleFromSecondShape, shape);
-                }
-                else
-                {
-                    shapesWithinExplementAngle.Add(shapeAngleFromSecondShape, shape);
-                }
-            }
-
-            EqualizeShapesWithinAngle(shapesWithinAngle, origin, referenceAngle, firstShapeAngleFromSecondShape);
-            EqualizeShapesWithinAngle(shapesWithinExplementAngle, origin, referenceExplementAngle, 0);
-        }
-
-        public static void EqualizeShapesWithinAngle(SortedDictionary<float, Shape> shapesWithinAngle, Drawing.PointF origin, float angle,
-            float startingAngle)
-        {
-            var spaceWithinAngle = angle / (shapesWithinAngle.Count + 1);
-            var destinationAngleFromSecondShape = startingAngle;
-            foreach (var pair in shapesWithinAngle)
-            {
-                destinationAngleFromSecondShape += spaceWithinAngle;
-                var rotateAngle = destinationAngleFromSecondShape - pair.Key;
-                Rotate(pair.Value, origin, rotateAngle);
-            }
+            shape.BoxRotation = AddAngles(shape.BoxRotation, angle);
         }
 
         #endregion
@@ -2862,6 +2913,7 @@ namespace PowerPointLabs.PositionsLab
             MarginRight = 5;
             DistributeGridAlignment = GridAlignment.AlignLeft;
             DistributeReferToFirstTwoShapes();
+            DistributeReferToSecondThirdShape();
             DistributeSpaceByBoundaries();
         }
 

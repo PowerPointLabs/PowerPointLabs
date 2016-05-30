@@ -49,6 +49,30 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void DistributeAtSecondShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.AtSecondShape)
+            {
+                distributeAtSecondShapeButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeToSecondShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.WithinSecondShape)
+            {
+                distributeAtSecondShapeButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeToSecondThirdShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.SecondThirdShape)
+            {
+                distributeToSecondThirdShapeButton.IsChecked = true;
+            }
+        }
+
         private void DistributeByBoundariesButton_Load(object sender, RoutedEventArgs e)
         {
             if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectBoundary)
@@ -88,6 +112,21 @@ namespace PowerPointLabs.PositionsLab
             if (distributeToExtremeShapesButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeReferToExtremeShapes();
+            }
+
+            if (distributeAtSecondShapeButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferAtSecondShape();
+            }
+
+            if (distributeToSecondShapeButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferToSecondShape();
+            }
+
+            if (distributeToSecondThirdShapeButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferToSecondThirdShape();
             }
 
             // Checks for space calculation reference

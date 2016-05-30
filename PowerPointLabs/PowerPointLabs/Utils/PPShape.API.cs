@@ -13,11 +13,13 @@ namespace PowerPointLabs.Utils
         private float _rotatedVisualLeft;
         private float _rotatedVisualTop;
         private float _originalRotation;
+        private float _shapeRotation;
 
         public PPShape(PowerPoint.Shape shape, bool redefineBoundingBox = true)
         {
             _shape = shape;
             _originalRotation = _shape.Rotation;
+            _shapeRotation = _originalRotation;
 
             if (redefineBoundingBox && (int) _shape.Rotation%90 != 0)
             {
@@ -396,12 +398,25 @@ namespace PowerPointLabs.Utils
             get { return _shape.Rotation; }
             set
             {
+                _shapeRotation += value;
                 _shape.Rotation = value;
                 ConvertToFreeform();
                 UpdateAbsoluteHeight();
                 UpdateAbsoluteWidth();
                 UpdateVisualLeft();
                 UpdateVisualTop();
+            }
+        }
+
+        /// <summary>
+        /// Return or set the degrees of specified shape rotated around the z-axis.
+        /// </summary>
+        public float ShapeRotation
+        {
+            get { return _shapeRotation; }
+            set
+            {
+                BoxRotation = value;
             }
         }
 

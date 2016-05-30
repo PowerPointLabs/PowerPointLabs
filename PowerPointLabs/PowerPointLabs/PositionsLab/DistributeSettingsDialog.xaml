@@ -5,7 +5,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
-                      Height="255"
+                      Height="345"
                       Width="350"
                       BorderThickness="1"
                       BorderBrush="#0070c0"
@@ -26,17 +26,24 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
-        <TextBlock x:Name="distributeLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Distribute"/></TextBlock>
+        <TextBlock x:Name="distributePositionLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Distribute Position"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
         <WrapPanel HorizontalAlignment="Left" Height="90" Margin="0,30,0,0" VerticalAlignment="Top" Width="342">
-            <RadioButton x:Name="distributeToSlideButton" Content="Within Slide Edges" ToolTip="Distribute functions will use the slide as a reference and distribute the selected shapes evenly in the whole slide" HorizontalAlignment="Left" Margin="20,5,0,0" VerticalAlignment="Top" Loaded="DistributeToSlideButton_Load"/>
-            <RadioButton x:Name="distributeToFirstShapeButton" Content="Within First Selected Object" ToolTip="Distribute functions will use the first selected shape as a reference and distribute other selected shapes evenly in the first shape" HorizontalAlignment="Left" Margin="-122,26,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="DistributeToFirstShapeButton_Load"/>
-            <RadioButton x:Name="distributeToFirstTwoShapesButton" Content="Within objects selected First and Second" ToolTip="Distribute functions will use the first two selected shapes as reference points and distribute other selected shapes evenly in the space between the first two shapes" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top" Loaded="DistributeToFirstTwoShapesButton_Load"/>
-            <RadioButton x:Name="distributeToExtremeShapesButton" Content="Within corner most objects" ToolTip="Distribute functions will use the shapes on the extreme left, right, top or bottom as reference points and distribute other selected shapes evenly in the space" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top" Loaded="DistributeExtremeShapesButton_Load"/>
+            <RadioButton x:Name="distributeToSlideButton" Content="Within Slide Edges" ToolTip="Distribute position functions will use the slide as a reference and distribute the selected shapes evenly in the whole slide" HorizontalAlignment="Left" Margin="20,5,0,0" VerticalAlignment="Top" Loaded="DistributeToSlideButton_Load"/>
+            <RadioButton x:Name="distributeToFirstShapeButton" Content="Within First Selected Object" ToolTip="Distribute position functions will use the first selected shape as a reference and distribute other selected shapes evenly in the first shape" HorizontalAlignment="Left" Margin="-122,26,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="DistributeToFirstShapeButton_Load"/>
+            <RadioButton x:Name="distributeToFirstTwoShapesButton" Content="Within objects selected First and Second" ToolTip="Distribute position functions will use the first two selected shapes as reference points and distribute other selected shapes evenly in the space between the first two shapes" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top" Loaded="DistributeToFirstTwoShapesButton_Load"/>
+            <RadioButton x:Name="distributeToExtremeShapesButton" Content="Within corner most objects" ToolTip="Distribute position functions will use the shapes on the extreme left, right, top or bottom as reference points and distribute other selected shapes evenly in the space" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top" Loaded="DistributeExtremeShapesButton_Load"/>
         </WrapPanel>
-        <TextBlock x:Name="distributeSpaceReferenceObjectLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,125,0,0"><Run Text="Equalise Space Between"/></TextBlock>
+        <TextBlock x:Name="distributeAngleLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,125,0,0"><Run Text="Distribute Angle"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,145,0,0" VerticalAlignment="Top" Width="335"/>
-        <WrapPanel HorizontalAlignment="Left" Height="25" Margin="0,145,0,0" VerticalAlignment="Top" Width="342">
+        <WrapPanel HorizontalAlignment="Left" Height="70" Margin="0,145,0,0" VerticalAlignment="Top" Width="342">
+            <RadioButton x:Name="distributeAtSecondShapeButton" Content="At Second Selected Object" ToolTip="Distribute angle function will use the first selected shape as a reference and the second selected shape as a starting point, and distribute other selected shapes evenly in a full circle" HorizontalAlignment="Left" Margin="20,5,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="DistributeAtSecondShapeButton_Load"/>
+            <RadioButton x:Name="distributeToSecondShapeButton" Content="Within Second Selected Object" ToolTip="Distribute angle function will use the first selected shape as a reference and the second selected shape as a boundary, and distribute other selected shapes evenly in the second selected shape" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top" Loaded="DistributeToSecondShapeButton_Load"/>
+            <RadioButton x:Name="distributeToSecondThirdShapeButton" Content="Within objects selected Second and Third" ToolTip="Distribute functions will use the first selected shape as a reference point and the second and third selected shapes as boundaries, and distribute other selected shapes evenly in the space between the second and third shape" HorizontalAlignment="Left" Margin="20,3,0,0" VerticalAlignment="Top" Loaded="DistributeToSecondThirdShapeButton_Load"/>
+        </WrapPanel>
+        <TextBlock x:Name="distributeSpaceReferenceObjectLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,215,0,0"><Run Text="Equalise Space Between"/></TextBlock>
+        <Separator HorizontalAlignment="Left" Height="2" Margin="5,235,0,0" VerticalAlignment="Top" Width="335"/>
+        <WrapPanel HorizontalAlignment="Left" Height="25" Margin="0,235,0,0" VerticalAlignment="Top" Width="342">
             <RadioButton x:Name="distributeByBoundariesButton" Content="Shape Edges" ToolTip="Distribute functions will use the slide as a reference and distribute the selected shapes evenly in the whole slide" HorizontalAlignment="Left" Margin="54,6,0,0" VerticalAlignment="Top" IsChecked="True" Loaded="DistributeByBoundariesButton_Load"/>
             <RadioButton x:Name="distributeByShapeCenterButton" Content="Shape Centers" ToolTip="Distribute functions will use the first selected shape as a reference and distribute other selected shapes evenly in the first shape" HorizontalAlignment="Left" Margin="55,6,0,0" VerticalAlignment="Top" Loaded="DistributeByShapeCenterButton_Load"/>
         </WrapPanel>
