@@ -1452,11 +1452,24 @@ namespace PowerPointLabs.PositionsLab
             {
                 _previewCallBack?.Invoke();
             }
+
+            if (IsChangeIconKeyPressed())
+            {
+                ChangeIconOfFlip();
+            }
+        }
+
+        void ChangeIconOfFlip()
+        {
+            Media.ImageSource flipVerticalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipVerticalIcon.png", UriKind.Relative));
+            flipButton.Image = flipVerticalIcon;
         }
 
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
         {
             UndoPreview();
+            Media.ImageSource flipVerticalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
+            flipButton.Image = flipVerticalIcon;
         }
 
         private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
@@ -1492,6 +1505,18 @@ namespace PowerPointLabs.PositionsLab
         private bool IsPreviewKeyPressed()
         {
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsChangeIconKeyPressed()
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 return true;
             }
