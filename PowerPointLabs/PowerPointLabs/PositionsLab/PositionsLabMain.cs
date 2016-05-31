@@ -2077,7 +2077,31 @@ namespace PowerPointLabs.PositionsLab
             float referenceAngle, startingAngle;
             Drawing.PointF origin;
 
-            if (isSecondThirdShape && isObjectCenter)
+            if (isAtSecondShape && isObjectCenter)
+            {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                origin = shapesToEqualize[0].VisualCenter;
+                startingAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[1].VisualCenter);
+
+                referenceAngle = 360f;
+
+                var shapesWithinAngle = new SortedDictionary<float, PPShape>();
+
+                for (int i = 2; i < shapesToEqualize.Count; i++)
+                {
+                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[i].VisualCenter);
+                    var shapeAngleFromStart = (shapeAngle + (360 - startingAngle)) % 360;
+
+                    shapesWithinAngle.Add(shapeAngleFromStart, shapesToEqualize[i]);
+                }
+
+                DistributeShapesWithinAngle(shapesWithinAngle, origin, referenceAngle, 0);
+            }
+            else if (isSecondThirdShape && isObjectCenter)
             {
                 if (selectedShapes.Count < 4)
                 {
