@@ -93,40 +93,41 @@ namespace PowerPointLabs.PositionsLab
         
         private void InitializeHotKeys()
         {
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_LEFT, RunOnlyWhenActivated(() =>
-            {
-                RotateSlightly(true);
-            }));
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_UP, RunOnlyWhenActivated(() =>
-            {
-                RotateSlightly(true);
-            }));
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_RIGHT, RunOnlyWhenActivated(() =>
-            {
-                RotateSlightly();
-            }));
-            PPKeyboard.AddKeydownAction(Native.VirtualKey.VK_DOWN, RunOnlyWhenActivated(() =>
-            {
-                RotateSlightly();
-            }));
+            Action<Native.VirtualKey, System.Windows.Controls.Primitives.ToggleButton, Action<bool, bool>, bool> bindHotKeys =
+                (key, button, action, direction) =>
+                {
+                    PPKeyboard.AddKeydownAction(key, RunOnlyWhenActivated(button, () => action(direction, true)));
+                    PPKeyboard.AddKeydownAction(key, RunOnlyWhenActivated(button, () => action(direction, false)), ctrl: true);
+                };
+
+            bindHotKeys(Native.VirtualKey.VK_LEFT, rotationButton, RotateSlightly, true);
+            bindHotKeys(Native.VirtualKey.VK_UP, rotationButton, RotateSlightly, true);
+            bindHotKeys(Native.VirtualKey.VK_RIGHT, rotationButton, RotateSlightly, false);
+            bindHotKeys(Native.VirtualKey.VK_DOWN, rotationButton, RotateSlightly, false);
         }
 
-        private Action RunOnlyWhenActivated(Action action)
+        private Func<bool> RunOnlyWhenActivated(System.Windows.Controls.Primitives.ToggleButton button, Action action)
         {
             return () =>
             {
                 var positionsPane = this.GetTaskPane(typeof(PositionsPane));
-                if (positionsPane != null && positionsPane.Visible && (bool)rotationButton.IsChecked)
+                if (positionsPane != null && positionsPane.Visible && (bool)button.IsChecked)
                 {
                     action();
+                    return true;
                 }
+                return false;
             };
         }
         
-        private void RotateSlightly(bool isAntiClockwise = false)
+        private void RotateSlightly(bool isAntiClockwise, bool isLarge)
         {
-            this.GetCurrentSelection().Unselect();
             var angle = (isAntiClockwise) ? -1f : 1f;
+            if (isLarge)
+            {
+                angle *= 5;
+            }
+
             PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, angle);
         }
 
