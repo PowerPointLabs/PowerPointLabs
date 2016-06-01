@@ -511,21 +511,32 @@ namespace PowerPointLabs.PositionsLab
         {
             this.GetCurrentSelection().Unselect();
 
-            var p = System.Windows.Forms.Control.MousePosition;
             var currentMousePos = System.Windows.Forms.Control.MousePosition;
 
             float diffX = currentMousePos.X - _initialMousePos.X;
             float diffY = currentMousePos.Y - _initialMousePos.Y;
 
-            var prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), _prevMousePos);
-            var angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), p) - prevAngle;
+            for (var i = 0; i < _shapesToBeMoved.Count; i++)
+            {
+                var sShape = _shapesToBeMoved[i];
+                PPShape s = new PPShape(_shapesToBeMoved[i], false);
+                var directionY = s.ActualTopRight.Y - s.ActualTopLeft.Y;
+                var directionX = s.ActualTopRight.X - s.ActualTopLeft.X;
+                var vectorLength = Math.Pow((Math.Pow(directionX, 2) + Math.Pow(directionY, 2)), 0.5);
+                var normalX = directionX / vectorLength;
+                var normalY = directionY / vectorLength;
 
-            var s = _shapesToBeMoved[0];
-            //var angle = diffX / 2000.0 * 3.6;
-
-            s.Rotation = PositionsLabMain.AddAngles(s.Rotation, angle);
-
-            _prevMousePos = p;
+                if (Math.Abs(diffX) > Math.Abs(diffY))
+                {
+                    sShape.Left = _initialPos[i, Left] + diffX * (float)normalX;
+                    sShape.Top = _initialPos[i, Top] + diffX * (float)normalY;
+                }
+                else
+                {
+                    sShape.Left = _initialPos[i, Left] + diffY * (float)normalX;
+                    sShape.Top = _initialPos[i, Top] + diffY * (float)normalY;
+                }
+            }
         }
 
         void _leftMouseUpListener_LockDirection(object sender, SysMouseEventInfo e)
@@ -606,6 +617,14 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 this.StartNewUndoEntry();
+
+                _initialPos = new float[_shapesToBeMoved.Count, 2];
+                for (var i = 0; i < _shapesToBeMoved.Count; i++)
+                {
+                    var s = _shapesToBeMoved[i];
+                    _initialPos[i, Left] = s.Left;
+                    _initialPos[i, Top] = s.Top;
+                }
 
                 _initialMousePos = p;
                 _dispatcherTimer.Start();
