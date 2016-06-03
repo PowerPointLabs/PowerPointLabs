@@ -40,7 +40,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
         public bool IsCropped { get; set; }
         public bool IsRotated { get; set; }
         public bool IsOpen { get; set; }
-        public Rect RotateRect { get; set; }
 
         public AdjustImageWindow()
         {
@@ -280,10 +279,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             thumbnailImageFile.Text = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
             CropResultThumbnail = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
             IsRotated = true;
-            RotateRect = new Rect(
-                
-                
-                );
 
             Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
             {
