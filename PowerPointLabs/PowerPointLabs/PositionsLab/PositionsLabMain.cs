@@ -2258,6 +2258,24 @@ namespace PowerPointLabs.PositionsLab
             return shapeIsVertical;
         }
 
+        public static void FlipHorizontal(ShapeRange selectedShapes)
+        {
+            for (var i = 1; i <= selectedShapes.Count; i++)
+            {
+                var currentShape = selectedShapes[i];
+                currentShape.Flip(Office.MsoFlipCmd.msoFlipVertical);
+            }
+        }
+
+        public static void FlipVertical(ShapeRange selectedShapes)
+        {
+            for (var i = 1; i <= selectedShapes.Count; i++)
+            {
+                var currentShape = selectedShapes[i];
+                currentShape.Flip(Office.MsoFlipCmd.msoFlipHorizontal);
+            }
+        }
+
         #endregion
 
         #endregion

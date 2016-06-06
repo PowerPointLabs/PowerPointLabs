@@ -454,19 +454,13 @@ namespace PowerPointLabs.PositionsLab
             {
                 if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
                 {
-                    for (var i = 1; i <= selectedShapes.Count; i++)
-                    {
-                        var currentShape = selectedShapes[i];
-                        currentShape.Flip(Office.MsoFlipCmd.msoFlipVertical);
-                    }
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
                 }
                 else
                 {
-                    for (var i = 1; i <= selectedShapes.Count; i++)
-                    {
-                        var currentShape = selectedShapes[i];
-                        currentShape.Flip(Office.MsoFlipCmd.msoFlipHorizontal);
-                    }
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
                 }
             }
             catch (Exception ex)
