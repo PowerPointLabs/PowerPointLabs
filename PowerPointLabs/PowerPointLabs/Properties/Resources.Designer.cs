@@ -413,6 +413,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap BlurSelected {
+            get {
+                object obj = ResourceManager.GetObject("BlurSelected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Brightness_icon_25x25 {
             get {
                 object obj = ResourceManager.GetObject("Brightness_icon_25x25", resourceCulture);

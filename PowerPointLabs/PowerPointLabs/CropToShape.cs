@@ -29,7 +29,7 @@ namespace PowerPointLabs
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0,
+        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
                                             bool handleError = true)
         {
             try
@@ -47,10 +47,10 @@ namespace PowerPointLabs
                 throw;
             }
 
-            return Crop(selection.ShapeRange, handleError: handleError);
+            return Crop(selection.ShapeRange, isInPlace: isInPlace, handleError: handleError);
         }
 
-        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0,
+        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
             bool handleError = true)
         {
             try
@@ -59,6 +59,7 @@ namespace PowerPointLabs
                 
                 shapeRange.Cut();
                 shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
+
                 TakeScreenshotProxy(shapeRange);
 
                 var ungroupedRange = UngroupAllForShapeRange(shapeRange);
@@ -66,14 +67,13 @@ namespace PowerPointLabs
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
-                    var shape = ungroupedRange[i];
-                    var filledShape = FillInShapeWithScreenshot(shape, magnifyRatio);
+                    var filledShape = FillInShapeWithImage(SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
                     shapeNames[i - 1] = filledShape.Name;
                 }
                 
                 var croppedRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapeNames);
                 var croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
-
+                
                 return croppedShape;
             }
             catch (Exception e)
@@ -125,21 +125,28 @@ namespace PowerPointLabs
             }
         }
 
-        private static PowerPoint.Shape FillInShapeWithScreenshot(PowerPoint.Shape shape, double magnifyRatio = 1.0)
+        public static PowerPoint.Shape FillInShapeWithImage(string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0,
+            bool isInPlace = false)
         {
-            CreateFillInBackgroundForShape(shape, magnifyRatio);
+            CreateFillInBackgroundForShape(imageFile, shape, magnifyRatio);
             shape.Fill.UserPicture(FillInBackgroundPicture);
 
             shape.Line.Visible = Office.MsoTriState.msoFalse;
+
+            if (isInPlace)
+            {
+                return shape;
+            }
+
             shape.Copy();
             var shapeToReturn = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
             shape.Delete();
             return shapeToReturn;
         }
 
-        private static void CreateFillInBackgroundForShape(PowerPoint.Shape shape, double magnifyRatio = 1.0)
+        private static void CreateFillInBackgroundForShape(string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0)
         {
-            using (var slideImage = (Bitmap)Image.FromFile(SlidePicture))
+            using (var slideImage = (Bitmap)Image.FromFile(imageFile))
             {
                 if (shape.Rotation == 0)
                 {
@@ -228,7 +235,7 @@ namespace PowerPointLabs
             shapeRange.Visible = Office.MsoTriState.msoTrue;
         }
 
-        public static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range, bool remove = true)
+        private static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -250,33 +257,14 @@ namespace PowerPointLabs
                 }
                 else if (!IsShape(shape))
                 {
-                    if (remove)
-                    {
-                        RemoveShapesForUngroupAll(shape, ungroupedShapeNames, queue);
-                    }
-
                     ThrowErrorCode(ErrorCodeForSelectionNonShape);
                 }
                 else
                 {
-                    shape.Name += Guid.NewGuid().ToString();
                     ungroupedShapeNames.Add(shape.Name);
                 }
             }
             return PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapeNames.ToArray());
-        }
-
-        private static void RemoveShapesForUngroupAll(PowerPoint.Shape shape, List<string> ungroupedShapes, Queue<PowerPoint.Shape> queue)
-        {
-            shape.Delete();
-            if (ungroupedShapes.Count > 0)
-            {
-                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapes.ToArray()).Delete();
-            }
-            while (queue.Count != 0)
-            {
-                queue.Dequeue().Delete();
-            }
         }
 
         private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
