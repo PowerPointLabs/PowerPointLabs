@@ -88,7 +88,7 @@ namespace Test.UnitTest.PositionsLab
         { 
             var actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(actualShapes);
             ExecutePositionsAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipHorizontal0DegreesSlideNo);

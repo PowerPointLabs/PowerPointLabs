@@ -2263,7 +2263,9 @@ namespace PowerPointLabs.PositionsLab
             for (var i = 1; i <= selectedShapes.Count; i++)
             {
                 var currentShape = selectedShapes[i];
-                currentShape.Flip(Office.MsoFlipCmd.msoFlipVertical);
+                var currentRotation = currentShape.Rotation;
+                currentShape.Flip(MsoFlipCmd.msoFlipHorizontal);
+                currentShape.Rotation = currentRotation;
             }
         }
 
@@ -2272,7 +2274,9 @@ namespace PowerPointLabs.PositionsLab
             for (var i = 1; i <= selectedShapes.Count; i++)
             {
                 var currentShape = selectedShapes[i];
-                currentShape.Flip(Office.MsoFlipCmd.msoFlipHorizontal);
+                var currentRotation = currentShape.Rotation;
+                currentShape.Flip(MsoFlipCmd.msoFlipVertical);
+                currentShape.Rotation = currentRotation;
             }
         }
 
