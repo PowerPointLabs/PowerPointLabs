@@ -61,7 +61,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.WithinSecondShape)
             {
-                distributeAtSecondShapeButton.IsChecked = true;
+                distributeToSecondShapeButton.IsChecked = true;
             }
         }
 

@@ -2,6 +2,7 @@ using System;
 using Microsoft.Office.Core;
 using System.Drawing;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Collections.Generic;
 
 namespace PowerPointLabs.Utils
 {
@@ -14,6 +15,7 @@ namespace PowerPointLabs.Utils
         private float _rotatedVisualTop;
         private float _originalRotation;
         private float _shapeRotation;
+        private List<PointF> _pointList;
 
         public PPShape(PowerPoint.Shape shape, bool redefineBoundingBox = true)
         {
@@ -24,6 +26,18 @@ namespace PowerPointLabs.Utils
             if (redefineBoundingBox && (int) _shape.Rotation%90 != 0)
             {
                 ConvertToFreeform();
+            }
+
+            if (_pointList == null)
+            {
+                // Convert AutoShape to Freeform shape
+                if (_shape.Type == MsoShapeType.msoAutoShape)
+                {
+                    _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
+                    _shape.Nodes.Delete(2);
+                }
+
+                SetPointList();
             }
 
             UpdateAbsoluteWidth();
@@ -419,6 +433,11 @@ namespace PowerPointLabs.Utils
                 BoxRotation = value;
             }
         }
+
+        /// <summary>
+        /// Returns the coordinates of nodes.
+        /// </summary>
+        public List<PointF> PointList => _pointList;
 
         /// <summary>
         /// Returns the position of the specified shape in the z-order. Read-only.

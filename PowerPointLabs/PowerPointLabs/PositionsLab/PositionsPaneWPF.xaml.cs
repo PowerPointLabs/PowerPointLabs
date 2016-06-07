@@ -29,8 +29,8 @@ namespace PowerPointLabs.PositionsLab
         //Error Messages
         private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
-        private const string ErrorMessageFewerThanThreeSelection =
-            TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
+        private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
         private const string ErrorMessageFunctionNotSupportedForExtremeShapes = 
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageFunctionNotSupportedForSlide =
@@ -904,6 +904,8 @@ namespace PowerPointLabs.PositionsLab
                     return ErrorMessageFewerThanTwoSelection;
                 case ErrorMessageFewerThanThreeSelection:
                     return ErrorMessageFewerThanThreeSelection;
+                case ErrorMessageFewerThanFourSelection:
+                    return ErrorMessageFewerThanFourSelection;
                 case ErrorMessageFunctionNotSupportedForExtremeShapes:
                     return ErrorMessageFunctionNotSupportedForExtremeShapes;
                 case ErrorMessageFunctionNotSupportedForSlide:

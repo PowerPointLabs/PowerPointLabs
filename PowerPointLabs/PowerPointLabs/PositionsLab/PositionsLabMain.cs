@@ -2073,7 +2073,6 @@ namespace PowerPointLabs.PositionsLab
             var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
             var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
             
-            List<PPShape> shapesToEqualize = new List<PPShape>(selectedShapes);
             float referenceAngle, startingAngle;
             Drawing.PointF origin;
 
@@ -2084,19 +2083,44 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(ErrorMessageFewerThanThreeSelection);
                 }
 
-                origin = shapesToEqualize[0].VisualCenter;
-                startingAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[1].VisualCenter);
+                origin = selectedShapes[0].VisualCenter;
+                startingAngle = (float)AngleBetweenTwoPoints(origin, selectedShapes[1].VisualCenter);
 
-                referenceAngle = 360f;
+                referenceAngle = 360;
 
                 var shapesWithinAngle = new SortedDictionary<float, PPShape>();
 
-                for (int i = 2; i < shapesToEqualize.Count; i++)
+                for (int i = 2; i < selectedShapes.Count; i++)
                 {
-                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[i].VisualCenter);
+                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, selectedShapes[i].VisualCenter);
                     var shapeAngleFromStart = (shapeAngle + (360 - startingAngle)) % 360;
 
-                    shapesWithinAngle.Add(shapeAngleFromStart, shapesToEqualize[i]);
+                    shapesWithinAngle.Add(shapeAngleFromStart, selectedShapes[i]);
+                }
+
+                DistributeShapesWithinAngle(shapesWithinAngle, origin, referenceAngle, 0);
+            }
+            else if (isWithinSecondShape && isObjectCenter)
+            {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                origin = selectedShapes[0].VisualCenter;
+                var boundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[1]);
+
+                referenceAngle = (boundaryAngles[0] > boundaryAngles[1]) ? 360 - boundaryAngles[0] + boundaryAngles[1]
+                                                                         : boundaryAngles[1] - boundaryAngles[0];
+
+                var shapesWithinAngle = new SortedDictionary<float, PPShape>();
+
+                for (int i = 2; i < selectedShapes.Count; i++)
+                {
+                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, selectedShapes[i].VisualCenter);
+                    var shapeAngleFromStart = (shapeAngle + (360 - boundaryAngles[0])) % 360;
+
+                    shapesWithinAngle.Add(shapeAngleFromStart, selectedShapes[i]);
                 }
 
                 DistributeShapesWithinAngle(shapesWithinAngle, origin, referenceAngle, 0);
@@ -2108,9 +2132,9 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(ErrorMessageFewerThanFourSelection);
                 }
 
-                origin = shapesToEqualize[0].VisualCenter;
-                startingAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[1].VisualCenter);
-                var endingAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[2].VisualCenter);
+                origin = selectedShapes[0].VisualCenter;
+                startingAngle = (float)AngleBetweenTwoPoints(origin, selectedShapes[1].VisualCenter);
+                var endingAngle = (float)AngleBetweenTwoPoints(origin, selectedShapes[2].VisualCenter);
 
                 if (startingAngle > endingAngle)
                 {
@@ -2125,18 +2149,18 @@ namespace PowerPointLabs.PositionsLab
                 var shapesWithinAngle = new SortedDictionary<float, PPShape>();
                 var shapesWithinExplementAngle = new SortedDictionary<float, PPShape>();
 
-                for (int i = 3; i < shapesToEqualize.Count; i++)
+                for (int i = 3; i < selectedShapes.Count; i++)
                 {
-                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, shapesToEqualize[i].VisualCenter);
+                    var shapeAngle = (float)AngleBetweenTwoPoints(origin, selectedShapes[i].VisualCenter);
                     var shapeAngleFromStart = (shapeAngle + (360 - startingAngle)) % 360;
 
                     if (shapeAngleFromStart < referenceAngle)
                     {
-                        shapesWithinAngle.Add(shapeAngleFromStart, shapesToEqualize[i]);
+                        shapesWithinAngle.Add(shapeAngleFromStart, selectedShapes[i]);
                     }
                     else
                     {
-                        shapesWithinExplementAngle.Add(shapeAngleFromStart, shapesToEqualize[i]);
+                        shapesWithinExplementAngle.Add(shapeAngleFromStart, selectedShapes[i]);
                     }
                 }
 
@@ -2145,15 +2169,17 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void DistributeShapesWithinAngle(SortedDictionary<float, PPShape> shapesWithinAngle, Drawing.PointF origin,
-            float totalAngle, float startingAngle)
+        public static void DistributeShapesWithinAngle(SortedDictionary<float, PPShape> shapesWithinAngle, Drawing.PointF origin, float totalAngle,
+            float startingAngle)
         {
             var angleBetweenShapes = totalAngle / (shapesWithinAngle.Count + 1);
             var endingAngle = startingAngle;
+
             foreach (var pair in shapesWithinAngle)
             {
                 endingAngle += angleBetweenShapes;
                 var rotationAngle = endingAngle - pair.Key;
+
                 Rotate(pair.Value, origin, rotationAngle);
             }
         }
@@ -2772,6 +2798,54 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return difference;
+        }
+
+        private static float[] GetShapeBoundaryAngles(Drawing.PointF origin, PPShape shape)
+        {
+            var pointAngles = new List<float>();
+            foreach (Drawing.PointF point in shape.PointList)
+            {
+                var angle = (float)AngleBetweenTwoPoints(origin, point);
+                pointAngles.Add(angle);
+            }
+
+            var boundaryAngles = new float[2];
+            boundaryAngles[0] = pointAngles[0];
+            boundaryAngles[1] = 0;
+
+            var isSpan0Degrees = false;
+            bool currentClockwise;
+            var previousClockwise = pointAngles[0] - pointAngles[pointAngles.Count - 1] >= 0;
+            var turningPointAngles = new List<float>();
+
+            for (int i = 1; i < pointAngles.Count; i++)
+            {
+                currentClockwise = pointAngles[i] - pointAngles[i - 1] >= 0;
+
+                if (currentClockwise == previousClockwise)
+                {
+                    continue;
+                }
+
+                if (Math.Abs(pointAngles[i] - pointAngles[i - 1]) > 180)
+                {
+                    isSpan0Degrees = true;
+                    continue;
+                }
+
+                if (previousClockwise && pointAngles[i - 1] > boundaryAngles[1])
+                {
+                    boundaryAngles[1] = pointAngles[i - 1];
+                }
+                else if (!previousClockwise && pointAngles[i - 1] < boundaryAngles[0] && (!isSpan0Degrees || pointAngles[i - 1] > boundaryAngles[1]))
+                {
+                    boundaryAngles[0] = pointAngles[i - 1];
+                }
+
+                previousClockwise = currentClockwise;
+            }
+
+            return boundaryAngles;
         }
 
         private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<string, Drawing.PointF> prevSelectedShapes)
