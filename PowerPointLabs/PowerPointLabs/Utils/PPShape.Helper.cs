@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Drawing;
 using Microsoft.Office.Core;
-using System.Collections.Generic;
 
 namespace PowerPointLabs.Utils
 {
@@ -22,7 +22,16 @@ namespace PowerPointLabs.Utils
                 _shape.Nodes.Delete(2);
             }
 
-            SetPointList();
+            // Save the coordinates of nodes
+            var pointList = new ArrayList();
+            for (int i = 1; i <= _shape.Nodes.Count; i++)
+            {
+                var node = _shape.Nodes[i];
+                var point = node.Points;
+                var newPoint = new float[] { point[1, 1], point[1, 2] };
+
+                pointList.Add(newPoint);
+            }
 
             // Rotate bounding box back to 0 degree, 
             // flip the shape to original orientation 
@@ -39,12 +48,12 @@ namespace PowerPointLabs.Utils
                 _shape.Flip(MsoFlipCmd.msoFlipHorizontal);
             }
 
-            for (int i = 0; i < _pointList.Count; i++)
+            for (int i = 0; i < pointList.Count; i++)
             {
-                var point = _pointList[i];
+                var point = (float[])pointList[i];
                 var nodeIndex = i + 1;
 
-                _shape.Nodes.SetPosition(nodeIndex, point.X, point.Y);
+                _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
             }
         }
 
@@ -176,23 +185,6 @@ namespace PowerPointLabs.Utils
         private void SetLeft()
         {
             _shape.Left = _rotatedVisualLeft - _shape.Width / 2 + _absoluteWidth / 2;
-        }
-
-        /// <summary>
-        // Save the coordinates of nodes
-        /// </summary>
-        private void SetPointList()
-        {
-            _pointList = new List<PointF>();
-
-            for (int i = 1; i <= _shape.Nodes.Count; i++)
-            {
-                var node = _shape.Nodes[i];
-                var point = node.Points;
-                var newPoint = new PointF(point[1, 1], point[1, 2]);
-
-                _pointList.Add(newPoint);
-            }
         }
 
         /// <summary>

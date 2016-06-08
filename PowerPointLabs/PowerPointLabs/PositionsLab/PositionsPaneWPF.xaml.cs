@@ -226,8 +226,8 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeAngleButton_Click(object sender, RoutedEventArgs e)
         {
-            Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
-            ExecutePositionsAction(positionsAction, false);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            ExecutePositionsAction(positionsAction, false, isConvertPPShape: false);
         }
 
         #endregion
@@ -287,7 +287,12 @@ namespace PowerPointLabs.PositionsLab
             var prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), _prevMousePos);
             var angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), p) - prevAngle;
 
-            PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, angle);
+            var origin = Graphics.GetCenterPoint(_refPoint);
+
+            foreach (var currentShape in _shapesToBeRotated)
+            {
+                PositionsLabMain.Rotate(currentShape, origin, angle);
+            }
 
             _prevMousePos = p;
         }
@@ -610,10 +615,10 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeAngleButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            Action<List<PPShape>> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
             _previewCallBack = delegate
             {
-                ExecutePositionsAction(positionsAction, true);
+                ExecutePositionsAction(positionsAction, true, isConvertPPShape: false);
             };
             PreviewHandler();
         }
@@ -921,7 +926,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Helper
         // align left and top
-        public void ExecutePositionsAction(Action<PowerPoint.ShapeRange> positionsAction, bool isPreview)
+        public void ExecutePositionsAction(Action<PowerPoint.ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape = true)
         {
             if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
@@ -955,7 +960,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     positionsAction.Invoke(selectedShapes);
                 }
-                else
+                else if (isConvertPPShape)
                 {
                     var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     var initialPositions = SaveOriginalPositions(simulatedPPShapes);
@@ -963,6 +968,12 @@ namespace PowerPointLabs.PositionsLab
                     positionsAction.Invoke(simulatedShapes);
 
                     SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                }
+                else
+                {
+                    positionsAction.Invoke(simulatedShapes);
+
+                    SyncShapes(selectedShapes, simulatedShapes);
                 }
                 if (isPreview)
                 {
@@ -1466,6 +1477,19 @@ namespace PowerPointLabs.PositionsLab
             else
             {
                 return false;
+            }
+        }
+
+        private void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes)
+        {
+            for (int i = 1; i <= selected.Count; i++)
+            {
+                var selectedShape = selected[i];
+                var simulatedShape = simulatedShapes[i];
+
+                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - Graphics.GetCenterPoint(selectedShape).X);
+                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - Graphics.GetCenterPoint(selectedShape).Y);
+                selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
 
