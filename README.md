@@ -10,12 +10,10 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/doc/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
 
 ### Dev Prerequisites
-0. Install Office 2016, 2013 or 2010 with PowerPoint.
+0. Install Office 2016 or 2013 with PowerPoint.
 1. Install SourceTree (recommended), GitHub for Windows, or at least, Git.
-2. Install Visual Studio 2015 (recommended), 2013, or 2012.
+2. Install Visual Studio 2015.
 3. Install `VSTO for IDE` (Visual Studio Tools for Office, AKA the Office SDK):<br>
-   for VS2012 - http://aka.ms/OfficeDevToolsForVS2012<br>
-   for VS2013 - http://aka.ms/OfficeDevToolsForVS2013<br>
    for VS2015 - http://aka.ms/OfficeDevToolsForVS2015<br>
 4. Install Microsoft .NET Framework 4.6.
 
@@ -29,7 +27,7 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 ### Testing
 0. Click Build (menu) >> Rebuild Solution.
 1. Click Test (menu) >> Windows >> Test Explorer. 
-2. In the open Test Explorer window, click `Group by Traits` >> right click `FT` >> click `Run Selected Tests`. During the test, *DO NOT move the mouse*.
+2. In the open Test Explorer window, click `Group by Traits` >> right click `FT` >> click `Run Selected Tests`. During the test, *DO NOT move the mouse & ensure the Windows UI is in English*.
 3. In the open Test Explorer window, click `Group by Traits` >> right click `UT` >> click `Run Selected Tests`.
 
 ### Acknowledgements
