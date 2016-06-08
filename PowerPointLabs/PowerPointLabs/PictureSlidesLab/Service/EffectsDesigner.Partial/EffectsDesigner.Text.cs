@@ -18,6 +18,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             if (shape == null)
                 return;
 
+            // a hack to enable the textbox layout
+            shape.Width = shape.Width;
+
             shape.Fill.Visible = MsoTriState.msoFalse;
             shape.Line.Visible = MsoTriState.msoFalse;
 
