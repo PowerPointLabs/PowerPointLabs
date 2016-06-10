@@ -15,6 +15,7 @@ namespace PowerPointLabs.Utils
         private float _rotatedVisualTop;
         private float _originalRotation;
         private float _shapeRotation;
+        private List<PointF> _points;
 
         public PPShape(PowerPoint.Shape shape, bool redefineBoundingBox = true)
         {
@@ -26,12 +27,21 @@ namespace PowerPointLabs.Utils
             {
                 ConvertToFreeform();
             }
+            else
+            {
+                SetPoints();
+            }
 
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
 
             UpdateVisualTop();
             UpdateVisualLeft();
+
+            if (_points == null)
+            {
+                SetBoundingBoxPoints();
+            }
         }
 
         #region Properties
@@ -420,6 +430,11 @@ namespace PowerPointLabs.Utils
                 BoxRotation = value;
             }
         }
+
+        /// <summary>
+        /// Returns the coordinates of nodes.
+        /// </summary>
+        public List<PointF> Points => _points;
 
         /// <summary>
         /// Returns the position of the specified shape in the z-order. Read-only.

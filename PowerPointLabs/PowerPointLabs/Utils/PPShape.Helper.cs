@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using Microsoft.Office.Core;
 
@@ -13,24 +13,11 @@ namespace PowerPointLabs.Utils
         private void ConvertToFreeform()
         {
             if ((int)_shape.Rotation == 0) return;
-            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform) || _shape.Nodes.Count < 1) return;
-
-            // Convert AutoShape to Freeform shape
-            if (_shape.Type == MsoShapeType.msoAutoShape)
+            
+            SetPoints(isConvertToFreeform: true);
+            if (_points == null)
             {
-                _shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
-                _shape.Nodes.Delete(2);
-            }
-
-            // Save the coordinates of nodes
-            var pointList = new ArrayList();
-            for (int i = 1; i <= _shape.Nodes.Count; i++)
-            {
-                var node = _shape.Nodes[i];
-                var point = node.Points;
-                var newPoint = new float[] { point[1, 1], point[1, 2] };
-
-                pointList.Add(newPoint);
+                return;
             }
 
             // Rotate bounding box back to 0 degree, 
@@ -48,12 +35,12 @@ namespace PowerPointLabs.Utils
                 _shape.Flip(MsoFlipCmd.msoFlipHorizontal);
             }
 
-            for (int i = 0; i < pointList.Count; i++)
+            for (int i = 0; i < _points.Count; i++)
             {
-                var point = (float[])pointList[i];
+                var point = _points[i];
                 var nodeIndex = i + 1;
 
-                _shape.Nodes.SetPosition(nodeIndex, point[0], point[1]);
+                _shape.Nodes.SetPosition(nodeIndex, point.X, point.Y);
             }
         }
 
@@ -185,6 +172,68 @@ namespace PowerPointLabs.Utils
         private void SetLeft()
         {
             _shape.Left = _rotatedVisualLeft - _shape.Width / 2 + _absoluteWidth / 2;
+        }
+
+        /// <summary>
+        /// Save the coordinates of nodes
+        /// </summary>
+        private void SetPoints(bool isConvertToFreeform = false)
+        {
+            if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform)
+                || _shape.Nodes.Count < 1)
+            {
+                return;
+            }
+
+            var shape = _shape;
+
+            if (!isConvertToFreeform)
+            {
+                shape = _shape.Duplicate()[1];
+                shape.Left = _shape.Left;
+                shape.Top = _shape.Top;
+            }
+
+            // Convert AutoShape to Freeform shape
+            if (shape.Type == MsoShapeType.msoAutoShape)
+            {
+                shape.Nodes.Insert(1, MsoSegmentType.msoSegmentLine, MsoEditingType.msoEditingAuto, 0, 0);
+                shape.Nodes.Delete(2);
+            }
+
+            _points = new List<PointF>();
+
+            for (int i = 1; i <= shape.Nodes.Count; i++)
+            {
+                var node = shape.Nodes[i];
+                var point = node.Points;
+                var newPoint = new PointF(point[1, 1], point[1, 2]);
+
+                _points.Add(newPoint);
+            }
+
+            if (!isConvertToFreeform)
+            {
+                shape.Delete();
+            }
+        }
+
+        /// <summary>
+        /// Save the coordinates of the bounding box nodes
+        /// </summary>
+        private void SetBoundingBoxPoints()
+        {
+            _points = new List<PointF>();
+
+            _points.Add(VisualTopLeft);
+            _points.Add(VisualTopCenter);
+            _points.Add(VisualTopRight);
+            _points.Add(VisualMiddleRight);
+            _points.Add(VisualBottomRight);
+            _points.Add(VisualBottomCenter);
+            _points.Add(VisualBottomLeft);
+            _points.Add(VisualMiddleLeft);
+            _points.Add(VisualTopLeft);
         }
 
         /// <summary>

@@ -35,6 +35,8 @@ namespace PowerPointLabs.PositionsLab
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageFunctionNotSupportedForSlide =
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
+        private const string ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter =
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Variable for preview
@@ -915,6 +917,8 @@ namespace PowerPointLabs.PositionsLab
                     return ErrorMessageFunctionNotSupportedForExtremeShapes;
                 case ErrorMessageFunctionNotSupportedForSlide:
                     return ErrorMessageFunctionNotSupportedForSlide;
+                case ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter:
+                    return ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter;
                 default:
                     return ErrorMessageUndefined;
             }
@@ -1514,7 +1518,6 @@ namespace PowerPointLabs.PositionsLab
 
                 selectedShape.IncrementLeft(simulatedShape.VisualCenter.X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(simulatedShape.VisualCenter.Y - originalPositions[i - 1, Top]);
-                selectedShape.Rotation = simulatedShape.ShapeRotation;
             }
         }
 
