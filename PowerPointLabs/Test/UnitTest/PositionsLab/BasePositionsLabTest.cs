@@ -24,6 +24,19 @@ namespace Test.UnitTest.PositionsLab
             return "PositionsLab.pptx";
         }
 
+        protected void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes)
+        {
+            for (int i = 1; i <= selected.Count; i++)
+            {
+                var selectedShape = selected[i];
+                var simulatedShape = simulatedShapes[i];
+
+                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - Graphics.GetCenterPoint(selectedShape).X);
+                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - Graphics.GetCenterPoint(selectedShape).Y);
+                selectedShape.Rotation = simulatedShape.Rotation;
+            }
+        }
+
         protected void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes, float[,] originalPositions)
         {
             for (int i = 1; i <= selected.Count; i++)
@@ -92,7 +105,8 @@ namespace Test.UnitTest.PositionsLab
             return shapes;
         }
 
-        protected void ExecutePositionsAction(Action<PowerPoint.ShapeRange> positionsAction, PowerPoint.ShapeRange selectedShapes)
+        protected void ExecutePositionsAction(Action<PowerPoint.ShapeRange> positionsAction, PowerPoint.ShapeRange selectedShapes,
+            bool isConvertPPShape = true)
         {
             if (selectedShapes == null || selectedShapes.Count == 0)
             {
@@ -109,7 +123,7 @@ namespace Test.UnitTest.PositionsLab
                 {
                     positionsAction.Invoke(selectedShapes);
                 }
-                else
+                else if (isConvertPPShape)
                 {
                     var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     var initialPositions = SaveOriginalPositions(simulatedPPShapes);
@@ -117,6 +131,12 @@ namespace Test.UnitTest.PositionsLab
                     positionsAction.Invoke(simulatedShapes);
 
                     SyncShapes(selectedShapes, simulatedShapes, initialPositions);
+                }
+                else
+                {
+                    positionsAction.Invoke(simulatedShapes);
+
+                    SyncShapes(selectedShapes, simulatedShapes);
                 }
             }
             catch (Exception ex)

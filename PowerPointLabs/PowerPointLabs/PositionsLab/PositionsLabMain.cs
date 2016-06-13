@@ -2124,22 +2124,21 @@ namespace PowerPointLabs.PositionsLab
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
 
                 var boundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
-                startingAngle = boundaryAngles[0];
+                startingAngle = boundaryAngles[1];
+                var endingAngle = boundaryAngles[0];
 
                 if (startingAngle == 0 && boundaryAngles[1] == 360)
                 {
                     throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
                 }
 
-                var shapeAngle = boundaryAngles[1] - startingAngle;
-                if (shapeAngle < 0)
+                referenceAngle = endingAngle - startingAngle;
+                if (referenceAngle < 0)
                 {
-                    shapeAngle += 360;
-                } 
-
-                referenceAngle = 360;
+                    referenceAngle += 360;
+                }
                 
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3, shapeAngle);
+                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3, 0);
             }
             else if (isAtSecondShape && isObjectCenter)
             {
@@ -2147,9 +2146,10 @@ namespace PowerPointLabs.PositionsLab
                 {
                     throw new Exception(ErrorMessageFewerThanThreeSelection);
                 }
-
+                
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
-                startingAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(selectedShapes[2]));
+                
+                startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
                 referenceAngle = 360;
 
                 DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3);
@@ -2252,8 +2252,8 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
-                startingAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(selectedShapes[2]));
-                var endingAngle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(selectedShapes[3]));
+                startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
+                var endingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[3]));
 
                 referenceAngle = endingAngle - startingAngle;
                 if (referenceAngle < 0)
@@ -2944,12 +2944,8 @@ namespace PowerPointLabs.PositionsLab
 
         private static float[] GetShapeBoundaryAngles(Drawing.PointF origin, Shape shape)
         {
-            var duplicateShape = shape.Duplicate()[1];
-            duplicateShape.Left = shape.Left;
-            duplicateShape.Top = shape.Top;
-
-            var duplicatePPShape = new PPShape(duplicateShape);
-            var points = duplicatePPShape.Points;
+            var ppShape = new PPShape(shape, false);
+            var points = ppShape.Points;
             var pointAngles = new List<float>();
 
             foreach (var point in points)
@@ -2957,8 +2953,6 @@ namespace PowerPointLabs.PositionsLab
                 var angle = (float)AngleBetweenTwoPoints(origin, point);
                 pointAngles.Add(angle);
             }
-            
-            duplicateShape.Delete();
 
             var isSpanAcross0Degrees = false;
             var hasTurningPoint = false;
@@ -2967,52 +2961,45 @@ namespace PowerPointLabs.PositionsLab
             var turningPointAngles = new List<float>();
 
             var boundaryAngles = new float[2];
-            if (isPreviousClockwise)
-            {
-                boundaryAngles[0] = pointAngles[0];
-                boundaryAngles[1] = 0;
-            }
-            else
-            {
-                boundaryAngles[0] = 360;
-                boundaryAngles[1] = pointAngles[0];
-            }
+            boundaryAngles[0] = pointAngles[0];
+            boundaryAngles[1] = pointAngles[0];
 
             for (int i = 1; i < pointAngles.Count; i++)
             {
-                isCurrentClockwise = pointAngles[i] - pointAngles[i - 1] >= 0;
+                var previousAngle = pointAngles[i - 1];
+                var currentAngle = pointAngles[i];
+                isCurrentClockwise = currentAngle - previousAngle >= 0;
 
-                if (Math.Abs(pointAngles[i] - pointAngles[i - 1]) > 180)
+                if (Math.Abs(currentAngle - previousAngle) > 180)
                 {
-                    isPreviousClockwise = !isCurrentClockwise;
+                    isCurrentClockwise = !isCurrentClockwise;
 
-                    if (!isSpanAcross0Degrees)
+                    if (isCurrentClockwise && (!isSpanAcross0Degrees || currentAngle > boundaryAngles[1]))
                     {
-                        if (isPreviousClockwise)
-                        {
-                            boundaryAngles[1] = pointAngles[i];
-                        }
-                        else
-                        {
-                            boundaryAngles[0] = pointAngles[i];
-                        }
-
-                        isSpanAcross0Degrees = true;
+                        boundaryAngles[1] = currentAngle;
                     }
+                    else if (!isCurrentClockwise && (!isSpanAcross0Degrees || currentAngle < boundaryAngles[0]))
+                    {
+                        boundaryAngles[0] = currentAngle;
+                    }
+
+                    isSpanAcross0Degrees = true;
                 }
-                else if (isCurrentClockwise != isPreviousClockwise)
+
+                if (isCurrentClockwise != isPreviousClockwise)
                 {
                     hasTurningPoint = true;
 
-                    if (isPreviousClockwise && pointAngles[i - 1] > boundaryAngles[1])
+                    if (isPreviousClockwise && previousAngle > boundaryAngles[1]
+                        && (!isSpanAcross0Degrees || previousAngle < boundaryAngles[0]))
                     {
-                        boundaryAngles[1] = pointAngles[i - 1];
+                        boundaryAngles[1] = previousAngle;
                     }
 
-                    if (!isPreviousClockwise && pointAngles[i - 1] < boundaryAngles[0]
-                        && (!isSpanAcross0Degrees || pointAngles[i - 1] > boundaryAngles[1]))
+                    if (!isPreviousClockwise && previousAngle < boundaryAngles[0]
+                        && (!isSpanAcross0Degrees || previousAngle > boundaryAngles[1]))
                     {
-                        boundaryAngles[0] = pointAngles[i - 1];
+                        boundaryAngles[0] = previousAngle;
                     }
 
                     isPreviousClockwise = isCurrentClockwise;
@@ -3026,6 +3013,19 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return boundaryAngles;
+        }
+
+        private static Drawing.PointF GetVisualCenter(Shape shape)
+        {
+            var duplicateShape = shape.Duplicate()[1];
+            duplicateShape.Left = shape.Left;
+            duplicateShape.Top = shape.Top;
+
+            var duplicatePPShape = new PPShape(duplicateShape);
+            var visualCenter = duplicatePPShape.VisualCenter;
+            duplicateShape.Delete();
+
+            return visualCenter;
         }
 
         private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<string, Drawing.PointF> prevSelectedShapes)
