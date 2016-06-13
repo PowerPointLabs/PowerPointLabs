@@ -278,6 +278,16 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
+        private void ProportionalAreaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProportionalPromptProportion())
+            {
+                Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustAreaProportionally(shapes);
+                ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                    ResizeLabMain.AdjustProportionally_ErrorParameters);
+            }
+        }
+
         private bool ProportionalPromptProportion()
         {
             var noOfShapes = GetSelectedShapes()?.Count;
