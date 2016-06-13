@@ -10,8 +10,8 @@
              WindowStartupLocation="CenterScreen"
              Name="Window"
              Title="Picture Slides Lab"
-             Width="1200"
-             Height="700"
+             
+                           
              WindowTitleBrush="#0070C0"
              BorderThickness="1"
              BorderBrush="#0070C0"

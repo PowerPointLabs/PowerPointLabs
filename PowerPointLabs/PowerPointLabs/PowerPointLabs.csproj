@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.7.4</ApplicationVersion>
+    <ApplicationVersion>2.8.7.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -255,6 +255,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\EffectsLabBlurSelectedActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
@@ -281,6 +283,7 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
     <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
@@ -290,6 +293,7 @@
     <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
@@ -371,6 +375,7 @@
     <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EffectsLab\EffectsLabBlurSelected.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
@@ -1346,6 +1351,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EffectsLab\BlurSelected.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

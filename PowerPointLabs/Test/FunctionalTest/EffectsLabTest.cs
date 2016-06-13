@@ -16,6 +16,7 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_EffectsLabTest()
         {
+            TestBlurSelected();
             TestRemainderEffect(26, PplFeatures.SepiaBackgroundEffect);
             TestRemainderEffect(23, PplFeatures.BlurBackgroundEffect);
             TestRemainderEffect(20, PplFeatures.SepiaRemainderEffect);
@@ -36,6 +37,18 @@ namespace Test.FunctionalTest
             AssertIsSame(startIdx + 1, startIdx + 3);
         }
 
+        private void TestBlurSelected()
+        {
+            PpOperations.SelectSlide(31);
+            PpOperations.SelectShape("selectMe");
+            PplFeatures.BlurSelectedEffect();
+            AssertIsSame(31, 32);
+
+            PpOperations.SelectSlide(29);
+            PpOperations.SelectShape("selectMe");
+            PplFeatures.BlurSelectedEffect();
+            AssertIsSame(29, 30);
+        }
 
         private void TestMagnifyingGlass()
         {

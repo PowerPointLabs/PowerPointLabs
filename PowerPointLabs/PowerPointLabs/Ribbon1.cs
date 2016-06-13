@@ -1972,10 +1972,7 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, handleError: false);
-
-                croppedShape.Left -= 12;
-                croppedShape.Top -= 12;
+                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
@@ -2113,6 +2110,12 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                MessageBox.Show("Please select at least 1 shape");
+                return;
+            }
 
             TransparentEffect(selection.ShapeRange);
         }
@@ -2185,7 +2188,7 @@ namespace PowerPointLabs
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show("Please select a shape");
+                MessageBox.Show("Please select at least 1 shape");
                 return null;
             }
             catch (Exception e)
@@ -2275,8 +2278,6 @@ namespace PowerPointLabs
         private void PlaceholderTransparencyHandler(PowerPoint.Shape picture)
         {
             PictureTransparencyHandler(picture);
-
-            PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Placeholders[2].Delete();
         }
 
         private void LineTransparencyHandler(PowerPoint.Shape shape)
