@@ -146,5 +146,33 @@ namespace Test.UnitTest.ResizeLab
             _resizeLab.AdjustHeightProportionally(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
         }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAdjustVisualAreaProportionally()
+        {
+            var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustVisualAreaProportionally, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
+            _resizeLab.AdjustProportionallyProportionList = _proportionList;
+            _resizeLab.AdjustAreaProportionally(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAdjustActualAreaProportionally()
+        {
+            var actualShapes = GetShapes(SlideNo.AdjustProportionallyOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AdjustActualAreaProportionally, _shapeNames);
+            actualShapes.LockAspectRatio = MsoTriState.msoFalse;
+
+            _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
+            _resizeLab.AdjustProportionallyProportionList = _proportionList;
+            _resizeLab.AdjustAreaProportionally(actualShapes);
+            CheckShapes(expectedShapes, actualShapes);
+        }
     }
 }
