@@ -24,6 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             UpdateVariantsColorPanelVisibility();
             UpdateVariantFontPanelVisibility();
+            UpdateVariantsSliderVisibility();
             UpdatePictureAspectRefreshButtonVisibility();
         }
         #endregion
@@ -73,6 +74,47 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     this.GetCurrentPresentation().SlideHeight);
             }
         }
+
+        private void VariantsSlider_OnDragCompleted(object sender, EventArgs e)
+        {
+            if (ViewModel.IsSliderValueChanged.Flag)
+            {
+                ViewModel.BindSelectedSliderValue(
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+                ViewModel.IsSliderValueChanged.Flag = false;
+            }
+        }
+
+        private void VariantsSlider_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (ViewModel.IsSliderValueChanged.Flag)
+            {
+                ViewModel.BindSelectedSliderValue(
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+                ViewModel.IsSliderValueChanged.Flag = false;
+            }
+        }
+
+        private void VariantsSlider_OnKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if ((e.Key == Key.Left || e.Key == Key.Right) && ViewModel.IsSliderValueChanged.Flag)
+            {
+                ViewModel.BindSelectedSliderValue(
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+                ViewModel.IsSliderValueChanged.Flag = false;
+            }
+        }
+
+        private void VariantsSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ViewModel.IsSliderValueChanged.Flag = true;
+        }
         #endregion
 
         #region Helper funcs
@@ -113,6 +155,28 @@ namespace PowerPointLabs.PictureSlidesLab.View
             else
             {
                 VariantsColorPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void UpdateVariantsSliderVisibility()
+        {
+            if (VariantsComboBox.SelectedValue == null) return;
+
+            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+            if ((currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness
+                 || currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness
+                 || currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
+                 && selectedItem != null
+                 && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.NoEffect)
+            {
+                VariantsSlider.Visibility = Visibility.Visible;
+                ViewModel.BindStyleToSlider();
+            }
+            else
+            {
+                VariantsSlider.Visibility = Visibility.Collapsed;
             }
         }
 

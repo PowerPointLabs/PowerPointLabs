@@ -62,6 +62,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public ObservableFont SelectedFontFamily { get; set; }
 
+        public ObservableInt SelectedSliderValue { get; set; }
+
+        public ObservableBoolean IsSliderValueChanged { get; set; }
+
+        public ObservableString SelectedSliderToolTip { get; set; }
+
+        public ObservableInt SelectedSliderMaximum { get; set; }
+
+        public ObservableInt SelectedSliderTickFrequency { get; set; }
+
         public Settings Settings { get; set; }
 
         #endregion
@@ -156,6 +166,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             VariantsCategory = new ObservableCollection<string>();
             SelectedFontId = new ObservableInt();
             SelectedFontFamily = new ObservableFont();
+            SelectedSliderValue = new ObservableInt();
+            IsSliderValueChanged = new ObservableBoolean { Flag = false };
+            SelectedSliderToolTip = new ObservableString();
+            SelectedSliderMaximum = new ObservableInt();
+            SelectedSliderTickFrequency = new ObservableInt();
 
             StylesPreviewList = new ObservableCollection<ImageItem>();
             StylesPreviewListSelectedId = new ObservableInt {Number = -1};
