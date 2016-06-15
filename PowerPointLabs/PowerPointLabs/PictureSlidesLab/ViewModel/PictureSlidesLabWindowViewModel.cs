@@ -66,8 +66,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public ObservableBoolean IsSliderValueChanged { get; set; }
 
-        public ObservableString SelectedSliderToolTip { get; set; }
-
         public ObservableInt SelectedSliderMaximum { get; set; }
 
         public ObservableInt SelectedSliderTickFrequency { get; set; }
@@ -168,7 +166,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             SelectedFontFamily = new ObservableFont();
             SelectedSliderValue = new ObservableInt();
             IsSliderValueChanged = new ObservableBoolean { Flag = false };
-            SelectedSliderToolTip = new ObservableString();
             SelectedSliderMaximum = new ObservableInt();
             SelectedSliderTickFrequency = new ObservableInt();
 

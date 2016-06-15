@@ -105,7 +105,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 var prop = type.GetProperty("BlurDegree");
                 var optValue = (int)prop.GetValue(styleOption, null);
-                SelectedSliderValue.Number = (optValue - 50) * 2;
+                SelectedSliderValue.Number = (optValue == 0) ? 0 : (optValue - 50) * 2;
                 SelectedSliderMaximum.Number = 100;
                 SelectedSliderTickFrequency.Number = 2;
             }
@@ -137,8 +137,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 SelectedSliderMaximum.Number = 100;
                 SelectedSliderTickFrequency.Number = 1;
             }
-
-            SelectedSliderToolTip.Text = SelectedSliderValue.Number + "%";
         }
 
         public void BindSelectedSliderValue(Slide contentSlide, float slideWidth, float slideHeight)
@@ -242,7 +240,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 var prop = type.GetProperty("IsUseBlurStyle");
                 prop.SetValue(styleOption, true, null);
                 prop = type.GetProperty("BlurDegree");
-                prop.SetValue(styleOption, 50 + (value / 2), null);
+                var optValue = (value == 0) ? 0 : 50 + (value / 2);
+                prop.SetValue(styleOption, optValue, null);
             }
             else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness)
             {
@@ -285,7 +284,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             {
                 styleVariant.Set("OptionName", "Customized");
                 styleVariant.Set("IsUseBlurStyle", true);
-                styleVariant.Set("BlurDegree", 50 + (value / 2));
+                var variantValue = (value == 0) ? 0 : 50 + (value / 2);
+                styleVariant.Set("BlurDegree", variantValue);
             }
             else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness)
             {
@@ -318,6 +318,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private string GetPropertyName(string categoryName)
         {
+            if (categoryName == TextCollection.PictureSlidesLabText.VariantCategoryOverlayTransparency)
+            {
+                return "Transparency";
+            }
+
             return categoryName.Replace(" ", string.Empty);
         }
         #endregion
