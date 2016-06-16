@@ -75,33 +75,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void VariantsSlider_OnDragCompleted(object sender, EventArgs e)
+        private void VariantsSlider_OnValueChangedFinal(object sender, EventArgs e)
         {
-            if (ViewModel.IsSliderValueChanged.Flag)
+            var type = e.GetType();
+            if (type.Equals(typeof(System.Windows.Input.KeyEventArgs)))
             {
-                ViewModel.BindSelectedSliderValue(
-                    this.GetCurrentSlide().GetNativeSlide(),
-                    this.GetCurrentPresentation().SlideWidth,
-                    this.GetCurrentPresentation().SlideHeight);
-                ViewModel.IsSliderValueChanged.Flag = false;
+                var eventArgs = (System.Windows.Input.KeyEventArgs)e;
+                if (eventArgs.Key != Key.Left && eventArgs.Key != Key.Right)
+                {
+                    return;
+                }
             }
-        }
 
-        private void VariantsSlider_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
             if (ViewModel.IsSliderValueChanged.Flag)
-            {
-                ViewModel.BindSelectedSliderValue(
-                    this.GetCurrentSlide().GetNativeSlide(),
-                    this.GetCurrentPresentation().SlideWidth,
-                    this.GetCurrentPresentation().SlideHeight);
-                ViewModel.IsSliderValueChanged.Flag = false;
-            }
-        }
-
-        private void VariantsSlider_OnKeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if ((e.Key == Key.Left || e.Key == Key.Right) && ViewModel.IsSliderValueChanged.Flag)
             {
                 ViewModel.BindSelectedSliderValue(
                     this.GetCurrentSlide().GetNativeSlide(),

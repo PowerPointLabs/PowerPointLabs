@@ -23,7 +23,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
 
         public object Get(string key)
         {
-            return _variants[key];
+            object value;
+            _variants.TryGetValue(key, out value);
+
+            return value;
         }
 
         public void Apply(StyleOption opt)

@@ -481,9 +481,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
 
             e.Handled = true;
-            var item = (ListBoxItem) listbox.ItemContainerGenerator
-                .ContainerFromItem(listbox.SelectedItem);
-            item.Focus();
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
-                var propName = GetPropertyName(currentCategory);
+                var propName = GetPropertyName(styleOption, currentCategory);
                 var type = styleOption.GetType();
                 var prop = type.GetProperty(propName);
                 var optValue = prop.GetValue(styleOption, null);
@@ -130,7 +130,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             else if (currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
             {
-                var propName = GetPropertyName(currentCategory);
+                var propName = GetPropertyName(styleOption, currentCategory);
                 var prop = type.GetProperty(propName);
                 var optValue = (int)prop.GetValue(styleOption, null);
                 SelectedSliderValue.Number = optValue;
@@ -177,7 +177,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 styleOption.OptionName = "Customized";
-                var propName = GetPropertyName(currentCategory);
+                var propName = GetPropertyName(styleOption, currentCategory);
                 var type = styleOption.GetType();
                 var prop = type.GetProperty(propName);
                 prop.SetValue(styleOption, targetColor, null);
@@ -194,7 +194,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 styleVariant.Set("OptionName", "Customized");
-                styleVariant.Set(GetPropertyName(currentCategory), StringUtil.GetHexValue(color));
+                styleVariant.Set(GetPropertyName(styleVariant, currentCategory), StringUtil.GetHexValue(color));
             }
         }
 
@@ -267,7 +267,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             else if (currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
             {
                 styleOption.OptionName = "Customized";
-                var propName = GetPropertyName(currentCategory);
+                var propName = GetPropertyName(styleOption, currentCategory);
                 var prop = type.GetProperty(propName);
                 prop.SetValue(styleOption, value, null);
             }
@@ -306,7 +306,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             else if (currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
             {
                 styleVariant.Set("OptionName", "Customized");
-                styleVariant.Set(GetPropertyName(currentCategory), value);
+                styleVariant.Set(GetPropertyName(styleVariant, currentCategory), value);
             }
         }
 
@@ -316,14 +316,38 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                      || VariantsCategory.Count == 0);
         }
 
-        private string GetPropertyName(string categoryName)
+        private string GetPropertyName(Model.StyleOption styleOption, string categoryName)
         {
             if (categoryName == TextCollection.PictureSlidesLabText.VariantCategoryOverlayTransparency)
             {
                 return "Transparency";
             }
 
-            return categoryName.Replace(" ", string.Empty);
+            var propName = categoryName.Replace(" ", string.Empty);
+            if (styleOption.IsUseFrostedGlassBannerStyle || styleOption.IsUseFrostedGlassTextBoxStyle)
+            {
+                propName = propName.Insert(0, "FrostedGlass");
+            }
+
+            return propName;
+        }
+
+        private string GetPropertyName(Model.StyleVariant styleVariant, string categoryName)
+        {
+            if (categoryName == TextCollection.PictureSlidesLabText.VariantCategoryOverlayTransparency)
+            {
+                return "Transparency";
+            }
+
+            var propName = categoryName.Replace(" ", string.Empty);
+
+            if (((bool?)styleVariant.Get("IsUseFrostedGlassBannerStyle") ?? true)
+                || ((bool?)styleVariant.Get("IsUseFrostedGlassTextBoxStyle") ?? true))
+            {
+                propName = propName.Insert(0, "FrostedGlass");
+            }
+
+            return propName;
         }
         #endregion
     }
