@@ -45,7 +45,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
-                    slideHeight);
+                    slideHeight,
+                    true);
                 BindStyleToColorPanel();
             }
             else
@@ -55,7 +56,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
-                    slideHeight);
+                    slideHeight,
+                    true);
             }
         }
         #endregion
@@ -88,7 +90,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 View.CreateDefaultPictureItem(),
                 contentSlide,
                 slideWidth,
-                slideHeight);
+                slideHeight,
+                true);
         }
         #endregion
 
@@ -149,7 +152,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
-                    slideHeight);
+                    slideHeight,
+                    true);
                 BindStyleToSlider();
             }
             else
@@ -159,7 +163,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
-                    slideHeight);
+                    slideHeight,
+                    true);
             }
         }
         #endregion
@@ -324,7 +329,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             var propName = categoryName.Replace(" ", string.Empty);
-            if (styleOption.IsUseFrostedGlassBannerStyle || styleOption.IsUseFrostedGlassTextBoxStyle)
+            if ((styleOption.IsUseFrostedGlassBannerStyle && categoryName.Contains(TextCollection.PictureSlidesLabText.BannerHasEffect))
+                || (styleOption.IsUseFrostedGlassTextBoxStyle && categoryName.Contains(TextCollection.PictureSlidesLabText.TextBoxHasEffect)))
             {
                 propName = propName.Insert(0, "FrostedGlass");
             }
@@ -341,8 +347,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var propName = categoryName.Replace(" ", string.Empty);
 
-            if (((bool?)styleVariant.Get("IsUseFrostedGlassBannerStyle") ?? true)
-                || ((bool?)styleVariant.Get("IsUseFrostedGlassTextBoxStyle") ?? true))
+            if (((bool?)styleVariant.Get("IsUseFrostedGlassBannerStyle") == true
+                && categoryName.Contains(TextCollection.PictureSlidesLabText.BannerHasEffect))
+                || ((bool?)styleVariant.Get("IsUseFrostedGlassTextBoxStyle") == true
+                && categoryName.Contains(TextCollection.PictureSlidesLabText.TextBoxHasEffect)))
             {
                 propName = propName.Insert(0, "FrostedGlass");
             }

@@ -376,12 +376,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <param name="contentSlide"></param>
         /// <param name="slideWidth"></param>
         /// <param name="slideHeight"></param>
-        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isForCurrentSelectedId = false)
         {
             if (View.IsVariationsFlyoutOpen)
             {
                 Logger.Log("Generate preview images for variation stage");
-                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight);
+                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight, isForCurrentSelectedId);
                 Logger.Log("Generate preview images for variation stage done");
             }
             else
@@ -476,20 +476,31 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation images after its flyout been open
         /// </summary>
-        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isForCurrentSelectedId = false)
         {
             Logger.Log("Variation is already open, update preview images");
             var selectedId = StylesVariationListSelectedId.Number;
             var scrollOffset = View.GetVariationListBoxScrollOffset();
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
-            StylesVariationList.Clear();
+            if (!isForCurrentSelectedId)
+            {
+                StylesVariationList.Clear();
+            }
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
                 return;
 
-            UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
-
             StylesVariationListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
+
+            if (isForCurrentSelectedId)
+            {
+                UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight, selectedId: StylesVariationListSelectedId.Number);
+            }
+            else
+            {
+                UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
+            }
+
             View.SetVariationListBoxScrollOffset(scrollOffset);
         }
 
@@ -1036,7 +1047,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         }
 
         private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide,
-            float slideWidth, float slideHeight, bool isMockPreviewImages = false)
+            float slideWidth, float slideHeight, bool isMockPreviewImages = false, int selectedId = -1)
         {
             Logger.Log("UpdateStylesVariationImages begins");
             var copiedPicture = LoadClipboardPicture();
@@ -1047,30 +1058,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     Logger.Log("Generate mock images for Picture aspect");
                 }
                 Logger.Log("Number of styles: " + _styleOptions.Count);
-                for (var i = 0; i < _styleOptions.Count; i++)
+                if (selectedId != -1)
                 {
-                    var styleOption = _styleOptions[i];
-                    PreviewInfo previewInfo;
-                    if (isMockPreviewImages)
+                    StylesVariationList[selectedId] =
+                        GenerateImageItem(source, contentSlide, slideWidth, slideHeight, isMockPreviewImages, selectedId);
+                }
+                else
+                {
+                    for (var i = 0; i < _styleOptions.Count; i++)
                     {
-                        previewInfo = new PreviewInfo
-                        {
-                            PreviewApplyStyleImagePath = StoragePath.NoPicturePlaceholderImgPath
-                        };
+                        StylesVariationList.Add(
+                            GenerateImageItem(source, contentSlide, slideWidth, slideHeight, isMockPreviewImages, i));
                     }
-                    else
-                    {
-                        previewInfo = Designer.PreviewApplyStyle(
-                            IsInPictureVariation()
-                                ? _8PicturesInPictureVariation[i]
-                                : source,
-                            contentSlide, slideWidth, slideHeight, styleOption);
-                    }
-                    StylesVariationList.Add(new ImageItem
-                    {
-                        ImageFile = previewInfo.PreviewApplyStyleImagePath,
-                        Tooltip = styleOption.OptionName
-                    });
                 }
                 GC.Collect();
             }
@@ -1081,6 +1080,34 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             SaveClipboardPicture(copiedPicture);
             Logger.Log("UpdateStylesVariationImages done");
+        }
+
+        private ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isMockPreviewImages,
+            int index)
+        {
+            var styleOption = _styleOptions[index];
+            PreviewInfo previewInfo;
+            if (isMockPreviewImages)
+            {
+                previewInfo = new PreviewInfo
+                {
+                    PreviewApplyStyleImagePath = StoragePath.NoPicturePlaceholderImgPath
+                };
+            }
+            else
+            {
+                previewInfo = Designer.PreviewApplyStyle(
+                    IsInPictureVariation()
+                        ? _8PicturesInPictureVariation[index]
+                        : source,
+                    contentSlide, slideWidth, slideHeight, styleOption);
+            }
+
+            return new ImageItem
+            {
+                ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                Tooltip = styleOption.OptionName
+            };
         }
 
         private ImageItem CreateChoosePicturesItem()
