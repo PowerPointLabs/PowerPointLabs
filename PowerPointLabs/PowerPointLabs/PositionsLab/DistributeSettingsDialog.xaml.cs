@@ -57,14 +57,6 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void DistributeToSecondShapeButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.WithinSecondShape)
-            {
-                distributeToSecondShapeButton.IsChecked = true;
-            }
-        }
-
         private void DistributeToSecondThirdShapeButton_Load(object sender, RoutedEventArgs e)
         {
             if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.SecondThirdShape)
@@ -117,11 +109,6 @@ namespace PowerPointLabs.PositionsLab
             if (distributeAtSecondShapeButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeReferAtSecondShape();
-            }
-
-            if (distributeToSecondShapeButton.IsChecked.GetValueOrDefault())
-            {
-                PositionsLabMain.DistributeReferToSecondShape();
             }
 
             if (distributeToSecondThirdShapeButton.IsChecked.GetValueOrDefault())

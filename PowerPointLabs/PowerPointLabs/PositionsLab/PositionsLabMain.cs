@@ -49,7 +49,6 @@ namespace PowerPointLabs.PositionsLab
         public enum DistributeAngleReferenceObject
         {
             AtSecondShape,
-            WithinSecondShape,
             SecondThirdShape
         }
 
@@ -230,14 +229,6 @@ namespace PowerPointLabs.PositionsLab
         public static void DistributeReferAtSecondShape()
         {
             DistributeAngleReference = DistributeAngleReferenceObject.AtSecondShape;
-        }
-
-        /// <summary>
-        /// Tells the Position Lab to use the second selected shape as the boundary shape for Distribute angle method
-        /// </summary>
-        public static void DistributeReferToSecondShape()
-        {
-            DistributeAngleReference = DistributeAngleReferenceObject.WithinSecondShape;
         }
 
         /// <summary>
@@ -2106,7 +2097,6 @@ namespace PowerPointLabs.PositionsLab
         public static void DistributeAngle(ShapeRange selectedShapes)
         {
             var isAtSecondShape = DistributeAngleReference == DistributeAngleReferenceObject.AtSecondShape;
-            var isWithinSecondShape = DistributeAngleReference == DistributeAngleReferenceObject.WithinSecondShape;
             var isSecondThirdShape = DistributeAngleReference == DistributeAngleReferenceObject.SecondThirdShape;
             var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
             var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
@@ -2151,56 +2141,6 @@ namespace PowerPointLabs.PositionsLab
                 
                 startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
                 referenceAngle = 360;
-
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3);
-            }
-            else if (isWithinSecondShape && isObjectBoundary)
-            {
-                if (selectedShapes.Count < 3)
-                {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
-                }
-
-                origin = Graphics.GetCenterPoint(selectedShapes[1]);
-                var boundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
-                startingAngle = boundaryAngles[0];
-                var endingAngle = boundaryAngles[1];
-
-                if (startingAngle == 0 && endingAngle == 360)
-                {
-                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
-                }
-
-                referenceAngle = endingAngle - startingAngle;
-                if (referenceAngle < 0)
-                {
-                    referenceAngle += 360;
-                }
-
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3, 0);
-            }
-            else if (isWithinSecondShape && isObjectCenter)
-            {
-                if (selectedShapes.Count < 3)
-                {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
-                }
-
-                origin = Graphics.GetCenterPoint(selectedShapes[1]);
-                var boundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
-                startingAngle = boundaryAngles[0];
-                var endingAngle = boundaryAngles[1];
-
-                if (startingAngle == 0 && endingAngle == 360)
-                {
-                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
-                }
-
-                referenceAngle = endingAngle - startingAngle;
-                if (referenceAngle < 0)
-                {
-                    referenceAngle += 360;
-                }
 
                 DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3);
             }

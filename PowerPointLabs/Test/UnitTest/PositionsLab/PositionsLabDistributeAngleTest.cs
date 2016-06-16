@@ -30,11 +30,8 @@ namespace Test.UnitTest.PositionsLab
         private const int DistributeAngleAtSecondWithEdgesSlide = 5;
         private const int DistributeAngleAtSecondWithCenterSlide = 6;
 
-        private const int DistributeAngleWithinSecondWithEdgesSlide = 8;
-        private const int DistributeAngleWithinSecondWithCenterSlide = 9;
-
-        private const int DistributeAngleWithinSecondAndThirdWithEdgesSlide = 11;
-        private const int DistributeAngleWithinSecondAndThirdWithCenterSlide = 12;
+        private const int DistributeAngleWithinSecondAndThirdWithEdgesSlide = 8;
+        private const int DistributeAngleWithinSecondAndThirdWithCenterSlide = 9;
 
         protected override string GetTestingSlideName()
         {
@@ -90,44 +87,6 @@ namespace Test.UnitTest.PositionsLab
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithCenterSlide);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
-            CheckShapes(expectedShapes, actualShapes);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestDistributeAngleWithinSecondWithEdges()
-        {
-            PositionsLabMain.DistributeReferToSecondShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            _shapeNames = new List<string> { Circle, Arrow, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron, BlueChevron,
-                PurpleChevron, BlackChevron, Picture };
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
-
-            PpOperations.SelectSlide(DistributeAngleWithinSecondWithEdgesSlide);
-            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
-
-            CheckShapes(expectedShapes, actualShapes);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestDistributeAngleWithinSecondWithCenter()
-        {
-            PositionsLabMain.DistributeReferToSecondShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            _shapeNames = new List<string> { Circle, Arrow, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron, BlueChevron,
-                PurpleChevron, BlackChevron, Picture };
-            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
-
-            PpOperations.SelectSlide(DistributeAngleWithinSecondWithCenterSlide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
