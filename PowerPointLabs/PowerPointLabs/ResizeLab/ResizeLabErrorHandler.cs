@@ -6,8 +6,10 @@
         private static ResizeLabErrorHandler _errorHandler;
 
         public const int ErrorCodeInvalidSelection = 0;
+        public const int ErrorCodeNotSameShapes = 1;
 
         private const string ErrorMessageInvalidSelection = TextCollection.ResizeLabText.ErrorInvalidSelection;
+        private const string ErrorMessageNotSameShapes = TextCollection.ResizeLabText.ErrorNotSameShapes;
         private const string ErrorMessageUndefined = TextCollection.ResizeLabText.ErrorUndefined;
 
         private ResizeLabErrorHandler(IResizeLabPane view = null)
@@ -15,7 +17,7 @@
             View = view;
         }
 
-        public static ResizeLabErrorHandler InitializErrorHandler(IResizeLabPane view = null)
+        public static ResizeLabErrorHandler InitializeErrorHandler(IResizeLabPane view = null)
         {
             if (_errorHandler == null)
             {
@@ -54,6 +56,8 @@
             {
                 case ErrorCodeInvalidSelection:
                     return ErrorMessageInvalidSelection;
+                case ErrorCodeNotSameShapes:
+                    return ErrorMessageNotSameShapes;
                 default:
                     return ErrorMessageUndefined;
             }

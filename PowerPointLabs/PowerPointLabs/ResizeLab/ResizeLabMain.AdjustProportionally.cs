@@ -68,15 +68,7 @@ namespace PowerPointLabs.ResizeLab
             var isAspectRatio = selectedShapes.LockAspectRatio;
 
             selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
-            switch (ResizeType)
-            {
-                case ResizeBy.Visual:
-                    AdjustVisualAreaProportionally(selectedShapes);
-                    break;
-                case ResizeBy.Actual:
-                    AdjustActualAreaProportionally(selectedShapes);
-                    break;
-            }
+            AdjustActualAreaProportionally(selectedShapes);
             selectedShapes.LockAspectRatio = isAspectRatio;
         }
 
@@ -139,44 +131,6 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "AdjustVisualHeightProportionally");
-            }
-        }
-
-        /// <summary>
-        /// Adjust the visual area of the specified shapes to the resize factor of first
-        /// selected shape's visual area.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        public void AdjustVisualAreaProportionally(PowerPoint.ShapeRange selectedShapes)
-        {
-            try
-            {
-                var referenceWidth = GetReferenceWidth(selectedShapes);
-                var referenceHeight = GetReferenceHeight(selectedShapes);
-                var referenceArea = (double)referenceWidth * referenceHeight;
-                var referenceProportion = (double)referenceHeight / referenceWidth;
-
-                if (referenceWidth <= 0 || referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
-
-                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
-                {
-                    var newArea = referenceArea *
-                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
-                    var newWidth = (float)Math.Sqrt(newArea / referenceProportion);
-                    var newHeight = (float)(newWidth * referenceProportion);
-
-                    var shape = new PPShape(selectedShapes[i + 1]);
-                    var anchorPoint = GetVisualAnchorPoint(shape);
-
-                    shape.AbsoluteWidth = newWidth;
-                    shape.AbsoluteHeight = newHeight;
-                    AlignVisualShape(shape, anchorPoint);
-                }
-                AdjustProportionallyProportionList = null;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AdjustVisualAreaProportionally");
             }
         }
 
@@ -251,8 +205,8 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                var referenceWidth = GetReferenceWidth(selectedShapes);
-                var referenceHeight = GetReferenceHeight(selectedShapes);
+                var referenceWidth = selectedShapes[1].Width;
+                var referenceHeight = selectedShapes[1].Height;
                 var referenceArea = (double)referenceWidth * referenceHeight;
                 var referenceProportion = (double)referenceHeight / referenceWidth;
 

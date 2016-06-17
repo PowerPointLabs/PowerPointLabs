@@ -38,7 +38,7 @@ namespace PowerPointLabs.ResizeLab
             UnlockAspectRatio();
             VisualHeightRadioBtn.IsChecked = true;
 
-            _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
+            _errorHandler = ResizeLabErrorHandler.InitializeErrorHandler(this);
             
             Focusable = true;
         }
@@ -280,7 +280,7 @@ namespace PowerPointLabs.ResizeLab
 
         private void ProportionalAreaBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ProportionalPromptProportion())
+            if (ProportionalPromptProportion(isForSameShapes: true))
             {
                 Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustAreaProportionally(shapes);
                 ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
@@ -288,12 +288,17 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private bool ProportionalPromptProportion()
+        private bool ProportionalPromptProportion(bool isForSameShapes = false)
         {
             var noOfShapes = GetSelectedShapes()?.Count;
             if (!noOfShapes.HasValue || noOfShapes < 2)
             {
                 _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, ResizeLabMain.AdjustProportionally_ErrorParameters);
+                return false;
+            }
+            if (isForSameShapes && !IsSameShape(GetSelectedShapes()))
+            {
+                _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeNotSameShapes);
                 return false;
             }
             if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
@@ -310,6 +315,34 @@ namespace PowerPointLabs.ResizeLab
             {
                 return false;
             }
+            return true;
+        }
+
+        private bool IsSameShape(PowerPoint.ShapeRange selectedShapes)
+        {
+            var type = selectedShapes[1].Type;
+            var autoShapeType = selectedShapes[1].AutoShapeType;
+            var adjustments = selectedShapes[1].Adjustments;
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                PowerPoint.Adjustments currentAdjustments;
+
+                if (selectedShapes[i].Type != type || selectedShapes[i].AutoShapeType != autoShapeType
+                    || (currentAdjustments = selectedShapes[i].Adjustments).Count != adjustments.Count)
+                {
+                    return false;
+                }
+
+                for (int j = 1; j < adjustments.Count; j++)
+                {
+                    if (currentAdjustments[j] != adjustments[j])
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 

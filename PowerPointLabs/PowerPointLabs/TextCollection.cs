@@ -606,6 +606,7 @@
         public class ResizeLabText
         {
             public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'";
+            public const string ErrorNotSameShapes = "You need to select the same type of objects before applying 'Adjust Area Proportionally'";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
 
