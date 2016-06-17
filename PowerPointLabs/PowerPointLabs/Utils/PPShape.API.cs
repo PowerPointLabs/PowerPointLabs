@@ -399,6 +399,24 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Return or set the degrees of specified shape's bounding box is rotated around the z-axis. 
+        /// Read/write.
+        /// </summary>
+        public float BoxRotation
+        {
+            get { return _shape.Rotation; }
+            set
+            {
+                _shape.Rotation = value;
+                ConvertToFreeform();
+                UpdateAbsoluteHeight();
+                UpdateAbsoluteWidth();
+                UpdateVisualLeft();
+                UpdateVisualTop();
+            }
+        }
+
+        /// <summary>
         /// Returns the coordinates of nodes.
         /// </summary>
         public List<PointF> Points => _points;
@@ -499,6 +517,8 @@ namespace PowerPointLabs.Utils
 
                 _shape.Nodes.SetPosition(i, newX, newY);
             }
+
+            _shape.Rotation = _originalRotation;
 
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
