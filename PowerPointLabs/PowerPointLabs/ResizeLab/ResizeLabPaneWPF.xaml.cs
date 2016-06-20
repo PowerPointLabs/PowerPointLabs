@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Linq;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -320,23 +321,65 @@ namespace PowerPointLabs.ResizeLab
 
         private bool IsSameShape(PowerPoint.ShapeRange selectedShapes)
         {
-            var type = selectedShapes[1].Type;
-            var autoShapeType = selectedShapes[1].AutoShapeType;
-            var adjustments = selectedShapes[1].Adjustments;
+            var referenceShape = selectedShapes[1];
+            var referenceAdjustments = referenceShape.Adjustments;
+            var isAutoShapeOrCallout = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape
+                                       || referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoCallout;
+            var isFreeform = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoFreeform;
+
+            Utils.PPShape referencePPShape;
+            List<System.Drawing.PointF> referenceShapePoints = null;
+
+            if (isFreeform)
+            {
+                referencePPShape = new Utils.PPShape(referenceShape, false);
+                referenceShapePoints = referencePPShape.Points;
+            }
 
             for (int i = 2; i <= selectedShapes.Count; i++)
             {
-                PowerPoint.Adjustments currentAdjustments;
+                var currentShape = selectedShapes[i];
 
-                if (selectedShapes[i].Type != type || selectedShapes[i].AutoShapeType != autoShapeType
-                    || (currentAdjustments = selectedShapes[i].Adjustments).Count != adjustments.Count)
+                if (currentShape.Type != referenceShape.Type || currentShape.AutoShapeType != referenceShape.AutoShapeType)
                 {
                     return false;
                 }
 
-                for (int j = 1; j < adjustments.Count; j++)
+                if (isAutoShapeOrCallout)
                 {
-                    if (currentAdjustments[j] != adjustments[j])
+                    var currentAdjustments = currentShape.Adjustments;
+
+                    if (currentAdjustments.Count != referenceAdjustments.Count)
+                    {
+                        return false;
+                    }
+
+                    for (int j = 1; j <= referenceAdjustments.Count; j++)
+                    {
+                        if (currentAdjustments[j] != referenceAdjustments[j])
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (isFreeform)
+                {
+                    var isAspectRatio = selectedShapes.LockAspectRatio;
+                    selectedShapes.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoFalse;
+
+                    var duplicateCurrentShape = currentShape.Duplicate()[1];
+                    duplicateCurrentShape.Width = referenceShape.Width;
+                    duplicateCurrentShape.Height = referenceShape.Height;
+                    duplicateCurrentShape.Rotation = referenceShape.Rotation;
+                    duplicateCurrentShape.Left = referenceShape.Left;
+                    duplicateCurrentShape.Top = referenceShape.Top;
+                    var currentPPShape = new Utils.PPShape(duplicateCurrentShape, false);
+                    var currentShapePoints = currentPPShape.Points;
+                    duplicateCurrentShape.Delete();
+
+                    selectedShapes.LockAspectRatio = isAspectRatio;
+
+                    if (!currentShapePoints.SequenceEqual(referenceShapePoints))
                     {
                         return false;
                     }
