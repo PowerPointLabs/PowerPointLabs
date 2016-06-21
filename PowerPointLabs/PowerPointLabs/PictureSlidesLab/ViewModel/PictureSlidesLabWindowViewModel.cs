@@ -21,6 +21,10 @@ using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 using Fonts = System.Windows.Media.Fonts;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
+using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {
@@ -91,6 +95,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         // Style Variants Factory
         public StyleVariantsFactory VariantsFactory { get; set; }
 
+        [Import(typeof(SliderPropHandlerFactory))]
+        private SliderPropHandlerFactory PropHandlerFactory { get; set; }
+
         #endregion
 
         #region States for variation stage
@@ -118,6 +125,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Designer.SetSettings(Settings);
             OptionsFactory = new StyleOptionsFactory();
             VariantsFactory = new StyleVariantsFactory();
+
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
+
             Logger.Log("Init PSL View Model done");
         }
 

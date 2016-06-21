@@ -102,44 +102,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
-            var type = styleOption.GetType();
-
-            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness)
-            {
-                var prop = type.GetProperty("BlurDegree");
-                var optValue = (int)prop.GetValue(styleOption, null);
-                SelectedSliderValue.Number = (optValue == 0) ? 0 : (optValue - 50) * 2;
-                SelectedSliderMaximum.Number = 100;
-                SelectedSliderTickFrequency.Number = 2;
-            }
-            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness)
-            {
-                var prop = type.GetProperty("OverlayColor");
-                var colorValue = (string)prop.GetValue(styleOption, null);
-                prop = type.GetProperty("Transparency");
-                var optValue = (int)prop.GetValue(styleOption, null);
-
-                if (colorValue == "#FFFFFF")
-                {
-                    SelectedSliderValue.Number = 200 - optValue;
-                }
-                else
-                {
-                    SelectedSliderValue.Number = optValue;
-                }
-                
-                SelectedSliderMaximum.Number = 200;
-                SelectedSliderTickFrequency.Number = 1;
-            }
-            else if (currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
-            {
-                var propName = GetPropertyName(styleOption, currentCategory);
-                var prop = type.GetProperty(propName);
-                var optValue = (int)prop.GetValue(styleOption, null);
-                SelectedSliderValue.Number = optValue;
-                SelectedSliderMaximum.Number = 100;
-                SelectedSliderTickFrequency.Number = 1;
-            }
+            var propName = GetPropertyName(styleOption, currentCategory);
+            var propHandler = PropHandlerFactory.GetSliderPropHandler(propName);
+            var sliderProperties = propHandler.GetSliderProperties(styleOption);
+            SelectedSliderValue.Number = sliderProperties.Value;
+            SelectedSliderMaximum.Number = sliderProperties.Maximum;
+            SelectedSliderTickFrequency.Number = sliderProperties.TickFrequency;
         }
 
         public void BindSelectedSliderValue(Slide contentSlide, float slideWidth, float slideHeight)
@@ -237,45 +205,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
-            var type = styleOption.GetType();
-
-            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness)
-            {
-                styleOption.OptionName = "Customized";
-                var prop = type.GetProperty("IsUseBlurStyle");
-                prop.SetValue(styleOption, true, null);
-                prop = type.GetProperty("BlurDegree");
-                var optValue = (value == 0) ? 0 : 50 + (value / 2);
-                prop.SetValue(styleOption, optValue, null);
-            }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness)
-            {
-                styleOption.OptionName = "Customized";
-                var prop = type.GetProperty("IsUseOverlayStyle");
-                prop.SetValue(styleOption, true, null);
-
-                if (value > 100)
-                {
-                    prop = type.GetProperty("OverlayColor");
-                    prop.SetValue(styleOption, "#FFFFFF", null);
-                    prop = type.GetProperty("Transparency");
-                    prop.SetValue(styleOption, 200 - value, null);
-                }
-                else
-                {
-                    prop = type.GetProperty("OverlayColor");
-                    prop.SetValue(styleOption, "#000000", null);
-                    prop = type.GetProperty("Transparency");
-                    prop.SetValue(styleOption, value, null);
-                }
-            }
-            else if (currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
-            {
-                styleOption.OptionName = "Customized";
-                var propName = GetPropertyName(styleOption, currentCategory);
-                var prop = type.GetProperty(propName);
-                prop.SetValue(styleOption, value, null);
-            }
+            var propName = GetPropertyName(styleOption, currentCategory);
+            PropHandlerFactory.GetSliderPropHandler(propName).BindStyleOption(styleOption, value);
         }
 
         private void BindSliderValueToVariant(int value)
@@ -284,35 +215,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var currentCategory = CurrentVariantCategory.Text;
             var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
-
-            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness)
-            {
-                styleVariant.Set("OptionName", "Customized");
-                styleVariant.Set("IsUseBlurStyle", true);
-                var variantValue = (value == 0) ? 0 : 50 + (value / 2);
-                styleVariant.Set("BlurDegree", variantValue);
-            }
-            else if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness)
-            {
-                styleVariant.Set("OptionName", "Customized");
-                styleVariant.Set("IsUseOverlayStyle", true);
-
-                if (value > 100)
-                {
-                    styleVariant.Set("OverlayColor", "#FFFFFF");
-                    styleVariant.Set("Transparency", 200 - value);
-                }
-                else
-                {
-                    styleVariant.Set("OverlayColor", "#000000");
-                    styleVariant.Set("Transparency", value);
-                }
-            }
-            else if (currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
-            {
-                styleVariant.Set("OptionName", "Customized");
-                styleVariant.Set(GetPropertyName(styleVariant, currentCategory), value);
-            }
+            var propName = GetPropertyName(styleVariant, currentCategory);
+            PropHandlerFactory.GetSliderPropHandler(propName).BindStyleVariant(styleVariant, value);
         }
 
         private bool IsAbleToBindProperty()
