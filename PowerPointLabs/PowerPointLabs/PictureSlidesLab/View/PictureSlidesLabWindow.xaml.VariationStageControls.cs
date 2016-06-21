@@ -151,9 +151,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
             var currentCategory = (string)VariantsComboBox.SelectedValue;
-            if ((currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness
-                 || currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness
-                 || currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
+            if (IsSliderSupported(currentCategory)
                  && selectedItem != null
                  && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.NoEffect)
             {
@@ -184,6 +182,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private Color GetColor(SolidColorBrush brush)
         {
             return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+        }
+
+        private bool IsSliderSupported(string currentCategory)
+        {
+            return currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness
+                 || currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness
+                 || currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect);
         }
         #endregion
     }
