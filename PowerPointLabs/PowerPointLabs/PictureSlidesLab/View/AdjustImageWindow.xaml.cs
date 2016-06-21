@@ -280,6 +280,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
             CropResultThumbnail = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
             IsRotated = true;
 
+            //Resize the ImageHolder and Window after rotating
+            if (roatateFlipType.Equals(RotateFlipType.Rotate270FlipNone)
+                || roatateFlipType.Equals(RotateFlipType.Rotate90FlipNone))
+            {
+                ImageHolder.Width = ImageHolder.ActualHeight / Bitmap.FromFile(CropResultThumbnail).Height * Bitmap.FromFile(CropResultThumbnail).Width;
+                ImageHolder.Height = ImageHolder.ActualHeight;
+                this.Width = ImageHolder.Width + 20;
+                this.CenterWindowOnScreen();
+            }
+
             Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
             {
                 var rect = AutoFit();
