@@ -297,10 +297,15 @@ namespace PowerPointLabs.ResizeLab
                 _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, ResizeLabMain.AdjustProportionally_ErrorParameters);
                 return false;
             }
-            if (isForSameShapes && !IsSameShape(GetSelectedShapes()))
+            if (isForSameShapes)
             {
-                _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeNotSameShapes);
-                return false;
+                var errorCode = IsValidShapes(GetSelectedShapes());
+
+                if (errorCode != -1)
+                {
+                    _errorHandler.ProcessErrorCode(errorCode);
+                    return false;
+                }
             }
             if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
             {
@@ -319,9 +324,15 @@ namespace PowerPointLabs.ResizeLab
             return true;
         }
 
-        private bool IsSameShape(PowerPoint.ShapeRange selectedShapes)
+        private int IsValidShapes(PowerPoint.ShapeRange selectedShapes)
         {
             var referenceShape = selectedShapes[1];
+
+            if (referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
+            {
+                return ResizeLabErrorHandler.ErrorCodeGroupShapeNotSupported;
+            }
+
             var referenceAdjustments = referenceShape.Adjustments;
             var isAutoShapeOrCallout = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape
                                        || referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoCallout;
@@ -340,9 +351,14 @@ namespace PowerPointLabs.ResizeLab
             {
                 var currentShape = selectedShapes[i];
 
+                if (currentShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
+                {
+                    return ResizeLabErrorHandler.ErrorCodeGroupShapeNotSupported;
+                }
+
                 if (currentShape.Type != referenceShape.Type || currentShape.AutoShapeType != referenceShape.AutoShapeType)
                 {
-                    return false;
+                    return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
                 }
 
                 if (isAutoShapeOrCallout)
@@ -351,14 +367,14 @@ namespace PowerPointLabs.ResizeLab
 
                     if (currentAdjustments.Count != referenceAdjustments.Count)
                     {
-                        return false;
+                        return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
                     }
 
                     for (int j = 1; j <= referenceAdjustments.Count; j++)
                     {
                         if (currentAdjustments[j] != referenceAdjustments[j])
                         {
-                            return false;
+                            return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
                         }
                     }
                 }
@@ -381,12 +397,12 @@ namespace PowerPointLabs.ResizeLab
 
                     if (!currentShapePoints.SequenceEqual(referenceShapePoints))
                     {
-                        return false;
+                        return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
                     }
                 }
             }
 
-            return true;
+            return -1;
         }
 
         #endregion
