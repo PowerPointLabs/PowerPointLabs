@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using PowerPointLabs.Models;
+using System.Text.RegularExpressions;
 
 namespace PowerPointLabs.SpeechEngine
 {
@@ -19,8 +20,60 @@ namespace PowerPointLabs.SpeechEngine
                 return;
             }
 
-            var builder = GetPromptForText(textToSpeak);
+            var newTextToSpeak = ReadSpelledOutWord(textToSpeak);
+
+            var builder = GetPromptForText(newTextToSpeak);
             PromptToAudio.Speak(builder);
+        }
+
+        public static string ReadSpelledOutWord(String textToSpeak)
+        {
+            string space = " ";
+            var textToSpeakList = textToSpeak.Split(space.ToCharArray()[0]);
+            string newTextToSpeak = "";
+
+            for (int i = 0; i < textToSpeakList.Length; i++)
+            {
+                var thisWord = textToSpeakList[i];
+                var charList = thisWord.ToArray();
+                bool allUpper = true;
+                if (thisWord.Length >= 2)
+                {
+
+                    for (int j = 0; j < charList.Length; j++)
+                    {
+                        var thisChar = charList[j];
+
+                        if (!Regex.IsMatch(thisChar.ToString(), "[A-Z]"))
+                        {
+                            if (!Char.IsPunctuation(thisChar))
+                            {
+                                allUpper = false;
+                            }
+                        }
+                    }
+
+                    if (allUpper)
+                    {
+                        thisWord = "";
+                        for (int j = 0; j < charList.Length; j++)
+                        {
+                            var thisChar = charList[j];
+                            if (thisChar.Equals("."))
+                            {
+                                thisWord = thisWord + ";" + " ";
+                            }
+                            else
+                            {
+                                thisWord = thisWord + " " + thisChar.ToString();
+                            }
+                        }
+                    }
+                }
+                newTextToSpeak = newTextToSpeak + " " + thisWord;
+            }
+
+            return newTextToSpeak;
         }
 
         private static PromptBuilder GetPromptForText(string textToConvert)
@@ -52,7 +105,8 @@ namespace PowerPointLabs.SpeechEngine
 
         public static void SaveStringToWaveFile(String textToSave, String filePath)
         {
-            var builder = GetPromptForText(textToSave);
+            var newTextToSave = ReadSpelledOutWord(textToSave);
+            var builder = GetPromptForText(newTextToSave);
             PromptToAudio.SaveAsWav(builder, filePath);
         }
 
