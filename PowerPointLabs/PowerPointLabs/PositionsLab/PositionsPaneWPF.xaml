@@ -94,7 +94,7 @@
             </WPF:ImageButton>
             <TextBlock x:Name="distributeGridTextBlock" HorizontalAlignment="Left" Margin="222,360,0,0" TextWrapping="Wrap" Text="Grid" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <WPF:ImageButton ToolTip="Equalize rate of rotation for objects within reference frame" x:Name="DistributeAngleButton" HorizontalAlignment="Left" Margin="18,380,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeAngleButton_Click" MouseEnter="DistributeAngleButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
+                <Image Source="..\Resources\PositionsLab\DistributeAngleIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="equalizeAngleTextBlock" HorizontalAlignment="Left" Margin="18,425,0,0" TextWrapping="Wrap" Text="Angle" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="18,255,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
