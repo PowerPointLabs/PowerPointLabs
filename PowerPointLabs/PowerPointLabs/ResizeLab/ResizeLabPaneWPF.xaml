@@ -264,7 +264,7 @@
                     <TextBlock Grid.Column="0">Width</TextBlock>
                     <cc:ImageButton x:Name="ProportionalHeightBtn" Text="Height" Grid.Column="1" Click="ProportionalHeightBtn_Click" Image="../Resources/ResizeLab/ResizeProportionHeight.png" ToolTip="{x:Static resizeLab:ResizeLabTooltip.AdjustProportionallyHeight}" />
                     <TextBlock Grid.Column="1">Height</TextBlock>
-                    <cc:ImageButton x:Name="ProportionalAreaBtn" Text="Both" Grid.Column="2" Click="ProportionalAreaBtn_Click" Image="/PowerPointLabs;component/Resources/ResizeLab/ResizeProportionWidth.png" ToolTip="{x:Static resizeLab:ResizeLabTooltip.AdjustProportionallyArea}" />
+                    <cc:ImageButton x:Name="ProportionalAreaBtn" Text="Area" Grid.Column="2" Click="ProportionalAreaBtn_Click" Image="../Resources/ResizeLab/ResizeProportionArea.png" ToolTip="{x:Static resizeLab:ResizeLabTooltip.AdjustProportionallyArea}" />
                     <TextBlock Grid.Column="2">Area</TextBlock>
                 </Grid>
             </GroupBox>
