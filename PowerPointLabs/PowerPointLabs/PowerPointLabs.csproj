@@ -646,6 +646,12 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="Views\CaptionsFormatDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CaptionsFormatDialogBox.Designer.cs">
+      <DependentUpon>CaptionsFormatDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -818,6 +824,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CaptionsFormatDialogBox.resx">
+      <DependentUpon>CaptionsFormatDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>

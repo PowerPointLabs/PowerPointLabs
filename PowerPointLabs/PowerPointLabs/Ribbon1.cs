@@ -304,6 +304,10 @@ namespace PowerPointLabs
         {
             return TextCollection.AddCaptionsButtonSupertip;
         }
+        public string GetSetCaptionFormatButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.SetCaptionFormatButtonSupertip;
+        }
         public string GetRemoveCaptionsButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.RemoveCaptionsButtonSupertip;
@@ -513,6 +517,10 @@ namespace PowerPointLabs
         public string GetAddCaptionsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddCaptionsButtonLabel;
+        }
+        public string GetSetCaptionFormatButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SetCaptionFormatButtonLabel;
         }
         public string GetRemoveCaptionsButtonLabel(Office.IRibbonControl control)
         {
@@ -1549,10 +1557,10 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public void HighlightBulletsDialogBoxPressed(Office.IRibbonControl control)
+        public void HighlightBulletsDialogBoxPressed(Office.IRibbonControl control) 
         {
             try
-            {
+            { 
                 var dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor, HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
                 dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
                 dialog.ShowDialog();
@@ -1871,6 +1879,21 @@ namespace PowerPointLabs
             foreach (var slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 slide.NotesPageText = string.Empty;
+            }
+        }
+
+        public void SetCaptionFormatClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                var dialog = new CaptionsFormatDialogBox(1, false);
+                dialog.SettingsHandler += null;
+                dialog.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "CaptionFormatDialogBoxPressed");
+                throw;
             }
         }
         # endregion
