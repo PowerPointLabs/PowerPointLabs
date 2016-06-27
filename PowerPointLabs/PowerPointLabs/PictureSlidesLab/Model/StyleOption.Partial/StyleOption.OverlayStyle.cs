@@ -12,6 +12,6 @@ namespace PowerPointLabs.PictureSlidesLab.Model
 
         // for background's overlay
         [DefaultValue(100)]
-        public int Transparency { get; set; }
+        public int OverlayTransparency { get; set; }
     }
 }

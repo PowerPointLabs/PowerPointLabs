@@ -389,12 +389,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <param name="contentSlide"></param>
         /// <param name="slideWidth"></param>
         /// <param name="slideHeight"></param>
-        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isForCurrentSelectedId = false)
+        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isUpdateSelectedPreviewOnly = false)
         {
             if (View.IsVariationsFlyoutOpen)
             {
                 Logger.Log("Generate preview images for variation stage");
-                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight, isForCurrentSelectedId);
+                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight, isUpdateSelectedPreviewOnly);
                 Logger.Log("Generate preview images for variation stage done");
             }
             else
@@ -489,13 +489,13 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation images after its flyout been open
         /// </summary>
-        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isForCurrentSelectedId = false)
+        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isUpdateSelectedPreviewOnly = false)
         {
             Logger.Log("Variation is already open, update preview images");
             var selectedId = StylesVariationListSelectedId.Number;
             var scrollOffset = View.GetVariationListBoxScrollOffset();
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
-            if (!isForCurrentSelectedId)
+            if (!isUpdateSelectedPreviewOnly)
             {
                 StylesVariationList.Clear();
             }
@@ -505,7 +505,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             StylesVariationListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
 
-            if (isForCurrentSelectedId)
+            if (isUpdateSelectedPreviewOnly)
             {
                 UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight, selectedId: StylesVariationListSelectedId.Number);
             }

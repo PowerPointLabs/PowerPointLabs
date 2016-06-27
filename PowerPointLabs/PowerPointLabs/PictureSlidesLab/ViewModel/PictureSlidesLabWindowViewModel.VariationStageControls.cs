@@ -24,7 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
-                var propName = GetPropertyName(styleOption, currentCategory);
+                var propName = GetPropertyName(currentCategory);
                 var type = styleOption.GetType();
                 var prop = type.GetProperty(propName);
                 var optValue = prop.GetValue(styleOption, null);
@@ -46,7 +46,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     contentSlide,
                     slideWidth,
                     slideHeight,
-                    true);
+                    isUpdateSelectedPreviewOnly: true);
                 BindStyleToColorPanel();
             }
             else
@@ -57,7 +57,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     contentSlide,
                     slideWidth,
                     slideHeight,
-                    true);
+                    isUpdateSelectedPreviewOnly: true);
             }
         }
         #endregion
@@ -91,7 +91,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 contentSlide,
                 slideWidth,
                 slideHeight,
-                true);
+                isUpdateSelectedPreviewOnly: true);
         }
         #endregion
 
@@ -102,7 +102,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
-            var propName = GetPropertyName(styleOption, currentCategory);
+            var propName = GetPropertyName(currentCategory);
             var propHandler = PropHandlerFactory.GetSliderPropHandler(propName);
             var sliderProperties = propHandler.GetSliderProperties(styleOption);
             SelectedSliderValue.Number = sliderProperties.Value;
@@ -121,7 +121,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     contentSlide,
                     slideWidth,
                     slideHeight,
-                    true);
+                    isUpdateSelectedPreviewOnly: true);
                 BindStyleToSlider();
             }
             else
@@ -132,7 +132,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     contentSlide,
                     slideWidth,
                     slideHeight,
-                    true);
+                    isUpdateSelectedPreviewOnly: true);
             }
         }
         #endregion
@@ -150,7 +150,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 styleOption.OptionName = "Customized";
-                var propName = GetPropertyName(styleOption, currentCategory);
+                var propName = GetPropertyName(currentCategory);
                 var type = styleOption.GetType();
                 var prop = type.GetProperty(propName);
                 prop.SetValue(styleOption, targetColor, null);
@@ -167,7 +167,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect))
             {
                 styleVariant.Set("OptionName", "Customized");
-                styleVariant.Set(GetPropertyName(styleVariant, currentCategory), StringUtil.GetHexValue(color));
+                styleVariant.Set(GetPropertyName(currentCategory), StringUtil.GetHexValue(color));
             }
         }
 
@@ -205,7 +205,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
-            var propName = GetPropertyName(styleOption, currentCategory);
+            var propName = GetPropertyName(currentCategory);
             PropHandlerFactory.GetSliderPropHandler(propName).BindStyleOption(styleOption, value);
         }
 
@@ -215,7 +215,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             var currentCategory = CurrentVariantCategory.Text;
             var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
-            var propName = GetPropertyName(styleVariant, currentCategory);
+            var propName = GetPropertyName(currentCategory);
             PropHandlerFactory.GetSliderPropHandler(propName).BindStyleVariant(styleVariant, value);
         }
 
@@ -225,36 +225,13 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                      || VariantsCategory.Count == 0);
         }
 
-        private string GetPropertyName(Model.StyleOption styleOption, string categoryName)
+        private string GetPropertyName(string categoryName)
         {
-            if (categoryName == TextCollection.PictureSlidesLabText.VariantCategoryOverlayTransparency)
-            {
-                return "Transparency";
-            }
-
             var propName = categoryName.Replace(" ", string.Empty);
+
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             if ((styleOption.IsUseFrostedGlassBannerStyle && categoryName.Contains(TextCollection.PictureSlidesLabText.BannerHasEffect))
                 || (styleOption.IsUseFrostedGlassTextBoxStyle && categoryName.Contains(TextCollection.PictureSlidesLabText.TextBoxHasEffect)))
-            {
-                propName = propName.Insert(0, "FrostedGlass");
-            }
-
-            return propName;
-        }
-
-        private string GetPropertyName(Model.StyleVariant styleVariant, string categoryName)
-        {
-            if (categoryName == TextCollection.PictureSlidesLabText.VariantCategoryOverlayTransparency)
-            {
-                return "Transparency";
-            }
-
-            var propName = categoryName.Replace(" ", string.Empty);
-
-            if (((bool?)styleVariant.Get("IsUseFrostedGlassBannerStyle") == true
-                && categoryName.Contains(TextCollection.PictureSlidesLabText.BannerHasEffect))
-                || ((bool?)styleVariant.Get("IsUseFrostedGlassTextBoxStyle") == true
-                && categoryName.Contains(TextCollection.PictureSlidesLabText.TextBoxHasEffect)))
             {
                 propName = propName.Insert(0, "FrostedGlass");
             }

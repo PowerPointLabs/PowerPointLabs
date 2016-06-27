@@ -12,7 +12,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
         {
             var sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
             var colorValue = option.OverlayColor;
-            var optValue = option.Transparency;
+            var optValue = option.OverlayTransparency;
             sliderProperties.Value = (colorValue == "#FFFFFF") ? 200 - optValue : optValue;
             sliderProperties.Maximum = 200;
             sliderProperties.TickFrequency = 1;
@@ -28,12 +28,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
             if (value > 100)
             {
                 option.OverlayColor = "#FFFFFF";
-                option.Transparency = 200 - value;
+                option.OverlayTransparency = 200 - value;
             }
             else
             {
                 option.OverlayColor = "#000000";
-                option.Transparency = value;
+                option.OverlayTransparency = value;
             }
         }
 
@@ -45,12 +45,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
             if (value > 100)
             {
                 variant.Set("OverlayColor", "#FFFFFF");
-                variant.Set("Transparency", 200 - value);
+                variant.Set("OverlayTransparency", 200 - value);
             }
             else
             {
                 variant.Set("OverlayColor", "#000000");
-                variant.Set("Transparency", value);
+                variant.Set("OverlayTransparency", value);
             }
         }
     }
