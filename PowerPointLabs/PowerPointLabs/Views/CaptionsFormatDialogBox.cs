@@ -37,7 +37,7 @@ namespace PowerPointLabs.Views
 
         private void Ok_Click(object sender, EventArgs e)
         {
-            //SettingsHandler(defaultVoice.Text, preview.Checked);
+            //SettingsHandler(1, true);
             Close();
         }
     }

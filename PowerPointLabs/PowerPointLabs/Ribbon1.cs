@@ -1887,12 +1887,32 @@ namespace PowerPointLabs
             try
             {
                 var dialog = new CaptionsFormatDialogBox(1, false);
-                dialog.SettingsHandler += null;
+                dialog.SettingsHandler += CaptionsFormatEdited;
                 dialog.ShowDialog();
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "CaptionFormatDialogBoxPressed");
+                Logger.LogException(e, "CaptionsFormatDialogBoxPressed");
+                throw;
+            }
+        }
+
+        public void CaptionsFormatEdited(int a, bool preview)
+        {
+            try
+            {
+                /*
+                DefaultDuration = newDuration;
+                FrameAnimationChecked = newFrameChecked;
+                AnimateInSlide.defaultDuration = newDuration;
+                AnimateInSlide.frameAnimationChecked = newFrameChecked;
+                AutoAnimate.defaultDuration = newDuration;
+                AutoAnimate.frameAnimationChecked = newFrameChecked;
+                */
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "CaptionsFormatEdited");
                 throw;
             }
         }
