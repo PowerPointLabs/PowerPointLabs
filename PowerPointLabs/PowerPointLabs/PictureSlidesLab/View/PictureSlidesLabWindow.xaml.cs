@@ -966,7 +966,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     source.Source = CropWindow.RotateResult;
                     source.ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(CropWindow.RotateResult);
                     source.FullSizeImageFile = CropWindow.RotateResult;
-                    source.ContextLink = source.ContextLink + "-Rotated";
+                    source.ContextLink = CropWindow.RotateResult;
                 }
                 source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);        
                 UpdatePreviewImages();
