@@ -270,7 +270,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             var img = (Bitmap)Bitmap.FromFile(CropResult);
             img.RotateFlip(roatateFlipType);
-            String rotatedImg = StoragePath.GetPath("crop-"
+            String rotatedImg = StoragePath.GetPath("rotated-"
                                     + DateTime.Now.GetHashCode() + "-"
                                     + Guid.NewGuid().ToString().Substring(0, 7));
             img.Save(rotatedImg);
