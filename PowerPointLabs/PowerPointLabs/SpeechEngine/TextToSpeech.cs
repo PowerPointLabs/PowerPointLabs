@@ -38,10 +38,43 @@ namespace PowerPointLabs.SpeechEngine
                 var thisWord = textToSpeakList[i];
                 var charList = thisWord.ToArray();
 
-                if (thisWord.ToString().StartsWith("[/s]"))
+                if (thisWord.StartsWith("[s]") && (!thisWord.Equals("[s]")))
+                {
+                    if (!thisWord.Contains("[/s]"))
+                    {
+                        isSpell = true;
+                        thisWord = thisWord.Substring(3);
+                        charList = thisWord.ToArray();
+                    }
+                }
+
+                if (thisWord.StartsWith("[/s]"))
                 {
                     thisWord = thisWord.Substring(4);
                     isSpell = false;
+                }
+                else if (thisWord.Contains("[/s]"))
+                {
+                    if (thisWord.StartsWith("[s]"))
+                    {
+                        thisWord = thisWord.Substring(3);
+                    }
+
+                    isSpell = false;
+                    string endS = "[/s]";
+                    var thisWordList = thisWord.Split(endS.ToCharArray());
+                    var thisCharList = thisWordList[0].ToArray();
+                    thisWord = "";
+                    for (int j = 0; j < thisCharList.Length; j++)
+                    {
+                        var thisChar = thisCharList[j];
+                        thisWord = thisWord + " " + thisChar.ToString();
+                    }
+
+                    for (int j = 1; j < thisWordList.Length; j++)
+                    {
+                        thisWord = thisWord + " " + thisWordList[j].ToString();
+                    }
                 }
 
                 if (isSpell)
