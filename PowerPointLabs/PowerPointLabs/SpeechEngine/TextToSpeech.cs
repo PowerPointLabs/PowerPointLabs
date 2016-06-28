@@ -31,45 +31,35 @@ namespace PowerPointLabs.SpeechEngine
             string space = " ";
             var textToSpeakList = textToSpeak.Split(space.ToCharArray()[0]);
             string newTextToSpeak = "";
+            bool isSpell = false;
 
             for (int i = 0; i < textToSpeakList.Length; i++)
             {
                 var thisWord = textToSpeakList[i];
                 var charList = thisWord.ToArray();
-                bool allUpper = true;
-                if (thisWord.Length >= 2)
-                {
 
+                if (thisWord.ToString().StartsWith("[/s]"))
+                {
+                    thisWord = thisWord.Substring(4);
+                    isSpell = false;
+                }
+
+                if (isSpell)
+                {
+                    thisWord = "";
                     for (int j = 0; j < charList.Length; j++)
                     {
                         var thisChar = charList[j];
-
-                        if (!Regex.IsMatch(thisChar.ToString(), "[A-Z]"))
-                        {
-                            if (!Char.IsPunctuation(thisChar))
-                            {
-                                allUpper = false;
-                            }
-                        }
-                    }
-
-                    if (allUpper)
-                    {
-                        thisWord = "";
-                        for (int j = 0; j < charList.Length; j++)
-                        {
-                            var thisChar = charList[j];
-                            if (thisChar.Equals("."))
-                            {
-                                thisWord = thisWord + ";" + " ";
-                            }
-                            else
-                            {
-                                thisWord = thisWord + " " + thisChar.ToString();
-                            }
-                        }
+                        thisWord = thisWord + " " + thisChar.ToString();
                     }
                 }
+
+                if (thisWord.Equals("[s]"))
+                {
+                    thisWord = "";
+                    isSpell = true;
+                }
+
                 newTextToSpeak = newTextToSpeak + " " + thisWord;
             }
 
