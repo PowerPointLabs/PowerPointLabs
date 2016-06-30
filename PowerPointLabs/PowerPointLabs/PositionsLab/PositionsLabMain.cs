@@ -18,6 +18,7 @@ namespace PowerPointLabs.PositionsLab
         private const float RotateRight = 270f;
         private const float RotateUp = 0f;
         private const float RotateDown = 180f;
+        private const float threshold = 0.01f;
         private const int None = -1;
         private const int Right = 0;
         private const int Down = 1;
@@ -79,8 +80,9 @@ namespace PowerPointLabs.PositionsLab
         private class ShapeAngleInfo : IComparable
         {
             public Shape Shape { get; private set; }
-            public float Angle { get; private set; }
-            public float ShapeAngle { get; private set; }
+            public float Angle { get; set; }
+            public float ShapeAngle { get; set; }
+            public float Offset { get; private set; }
 
             public ShapeAngleInfo(Shape shape, float angle)
             {
@@ -88,9 +90,10 @@ namespace PowerPointLabs.PositionsLab
                 Angle = angle;
             }
 
-            public ShapeAngleInfo(Shape shape, float angle, float shapeAngle) : this(shape, angle)
+            public ShapeAngleInfo(Shape shape, float angle, float shapeAngle, float offset) : this(shape, angle)
             {
                 ShapeAngle = shapeAngle;
+                Offset = offset;
             }
 
             public int CompareTo(object obj)
@@ -103,7 +106,9 @@ namespace PowerPointLabs.PositionsLab
                 var other = obj as ShapeAngleInfo;
                 if (other != null)
                 {
-                    return this.Angle.CompareTo(other.Angle);
+                    var angleWithOffset = (Angle - Offset) % 360;
+                    var otherAngleWithOffset = (other.Angle - other.Offset) % 360;
+                    return angleWithOffset.CompareTo(otherAngleWithOffset);
                 }
                 else
                 {
@@ -2127,8 +2132,14 @@ namespace PowerPointLabs.PositionsLab
                 {
                     referenceAngle += 360;
                 }
-                
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3, 0);
+
+                var offset = endingAngle - startingAngle;
+                if (offset > 0)
+                {
+                    offset -= 360;
+                }
+
+                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3, offset: offset);
             }
             else if (isAtSecondShape && isObjectCenter)
             {
@@ -2229,16 +2240,16 @@ namespace PowerPointLabs.PositionsLab
                 endingAngle += angleBetweenShapes;
 
                 var rotationAngle = endingAngle - shapeAngleInfo.Angle;
-                Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
+                Rotate(shapeAngleInfo.Shape, origin, rotationAngle, isKeepRotation: true);
             }
         }
 
         public static void DistributeShapesWithinAngle(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
-             float referenceAngle, int startingIndex, float startingShapeAngle, float endingShapeAngle = 0)
+             float referenceAngle, int startingIndex, float startingShapeAngle = 0, float endingShapeAngle = 0, float offset = 0)
         {
             var shapesWithinAngle = new List<ShapeAngleInfo>();
-
-            var totalShapeAngle = startingShapeAngle + endingShapeAngle;
+            var boundaryShapeAngle = startingShapeAngle + endingShapeAngle;
+            var totalShapeAngle = boundaryShapeAngle;
             var isExceedReferenceAngle = totalShapeAngle >= referenceAngle;
             if (isExceedReferenceAngle)
             {
@@ -2264,21 +2275,62 @@ namespace PowerPointLabs.PositionsLab
                 }
                 totalShapeAngle += shapeAngle;
 
-                var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], boundaryAnglesFromStart[0], shapeAngle);
+                var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], boundaryAnglesFromStart[0], shapeAngle, offset);
                 shapesWithinAngle.Add(shapeAngleInfo);
             }
 
             shapesWithinAngle.Sort();
-
-            var angleBetweenShapes = (referenceAngle - totalShapeAngle) / (shapesWithinAngle.Count + 1);
-            var endingAngle = (isExceedReferenceAngle) ? angleBetweenShapes : startingShapeAngle + angleBetweenShapes;
-
-            foreach (var shapeAngleInfo in shapesWithinAngle)
+            var isFirstLoop = true;
+            var count = 0;
+            var isStable = false;
+            while (!isStable)
             {
-                var rotationAngle = endingAngle - shapeAngleInfo.Angle;
-                Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
+                if (!isFirstLoop)
+                {
+                    totalShapeAngle = boundaryShapeAngle;
 
-                endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
+                    foreach (var shapeAngleInfo in shapesWithinAngle)
+                    {
+                        var boundaryAnglesFromStart = GetShapeBoundaryAngles(origin, shapeAngleInfo.Shape);
+
+                        if (boundaryAnglesFromStart[0] == 0 && boundaryAnglesFromStart[1] == 360)
+                        {
+                            throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+                        }
+
+                        boundaryAnglesFromStart[0] = (boundaryAnglesFromStart[0] + (360 - startingAngle)) % 360;
+                        boundaryAnglesFromStart[1] = (boundaryAnglesFromStart[1] + (360 - startingAngle)) % 360;
+
+                        var shapeAngle = boundaryAnglesFromStart[1] - boundaryAnglesFromStart[0];
+                        if (boundaryAnglesFromStart[0] > boundaryAnglesFromStart[1])
+                        {
+                            shapeAngle += 360;
+                        }
+                        totalShapeAngle += shapeAngle;
+
+                        shapeAngleInfo.Angle = boundaryAnglesFromStart[0];
+                        shapeAngleInfo.ShapeAngle = shapeAngle;
+                    }
+                }
+
+                var angleBetweenShapes = (referenceAngle - totalShapeAngle) / (shapesWithinAngle.Count + 1);
+                var endingAngle = (isExceedReferenceAngle) ? angleBetweenShapes : startingShapeAngle + angleBetweenShapes;
+
+                isStable = true;
+
+                foreach (var shapeAngleInfo in shapesWithinAngle)
+                {
+                    var rotationAngle = (endingAngle - shapeAngleInfo.Angle) % 360;
+                    if (rotationAngle > threshold || rotationAngle < -threshold)
+                    {
+                        isStable = false;
+                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle, isKeepRotation: true);
+                    }
+
+                    endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
+                }
+                count++;
+                isFirstLoop = false;
             }
         }
 
@@ -2351,7 +2403,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Adjustment
 
-        public static void Rotate(Shape shape, Drawing.PointF origin, float angle)
+        public static void Rotate(Shape shape, Drawing.PointF origin, float angle, bool isKeepRotation = false)
         {
             var unrotatedCenter = Graphics.GetCenterPoint(shape);
             var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
@@ -2359,7 +2411,10 @@ namespace PowerPointLabs.PositionsLab
             shape.Left += (rotatedCenter.X - unrotatedCenter.X);
             shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
 
-            shape.Rotation = AddAngles(shape.Rotation, angle);
+            if (!isKeepRotation)
+            {
+                shape.Rotation = AddAngles(shape.Rotation, angle);
+            }
         }
 
         #endregion
@@ -2533,7 +2588,7 @@ namespace PowerPointLabs.PositionsLab
         {
             var angle = Math.Atan((pt.Y - refPoint.Y)/(pt.X - refPoint.X))*180/Math.PI;
 
-            if (pt.X - refPoint.X > 0)
+            if (pt.X - refPoint.X >= 0)
             {
                 angle = 90 + angle;
             }
