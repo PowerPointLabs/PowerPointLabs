@@ -1886,7 +1886,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new CaptionsFormatDialogBox(1, false);
+                var dialog = new CaptionsFormatDialogBox(CaptionsFormat.defaultAlignment);
                 dialog.SettingsHandler += CaptionsFormatEdited;
                 dialog.ShowDialog();
             }
@@ -1897,18 +1897,11 @@ namespace PowerPointLabs
             }
         }
 
-        public void CaptionsFormatEdited(int a, bool preview)
+        public void CaptionsFormatEdited(Microsoft.Office.Core.MsoTextEffectAlignment newAlignment)
         {
             try
             {
-                /*
-                DefaultDuration = newDuration;
-                FrameAnimationChecked = newFrameChecked;
-                AnimateInSlide.defaultDuration = newDuration;
-                AnimateInSlide.frameAnimationChecked = newFrameChecked;
-                AutoAnimate.defaultDuration = newDuration;
-                AutoAnimate.frameAnimationChecked = newFrameChecked;
-                */
+                CaptionsFormat.defaultAlignment = newAlignment;
             }
             catch (Exception e)
             {

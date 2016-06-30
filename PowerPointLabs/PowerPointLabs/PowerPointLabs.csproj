@@ -318,6 +318,7 @@
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
     <Compile Include="AutoZoom.cs" />
+    <Compile Include="CaptionsFormat.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>
     </Compile>

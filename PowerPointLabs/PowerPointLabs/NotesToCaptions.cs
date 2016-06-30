@@ -93,7 +93,7 @@ namespace PowerPointLabs
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             textBox.TextFrame.TextRange.Text = caption;
             textBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            textBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            textBox.TextEffect.Alignment = CaptionsFormat.defaultAlignment;
             textBox.TextFrame.TextRange.Font.Size = 12;
             textBox.Fill.BackColor.RGB = 0;
             textBox.Fill.Transparency = 0.2f;
