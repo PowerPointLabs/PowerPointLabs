@@ -113,7 +113,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(53, 22);
             this.panel1.TabIndex = 8;
-            //this.panel1.Click += new System.EventHandler(this.Panel1_Click);
+            this.panel1.Click += new System.EventHandler(this.Panel1_Click);
             // 
             // CaptionsFormatDialogBox
             // 

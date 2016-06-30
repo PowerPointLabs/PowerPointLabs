@@ -97,7 +97,10 @@ namespace PowerPointLabs
             textBox.TextFrame.TextRange.Font.Size = 12;
             textBox.Fill.BackColor.RGB = 0;
             textBox.Fill.Transparency = 0.2f;
-            textBox.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+           
+            System.Drawing.Color thisColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultColor.R, CaptionsFormat.defaultColor.G, CaptionsFormat.defaultColor.B);
+            textBox.TextFrame.TextRange.Font.Color.RGB = thisColor.ToArgb();
+            //0xffffff;
 
             textBox.Top = slideHeight - textBox.Height;
             return textBox;

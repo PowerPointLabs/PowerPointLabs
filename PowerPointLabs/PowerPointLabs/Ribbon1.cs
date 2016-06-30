@@ -1886,7 +1886,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new CaptionsFormatDialogBox(CaptionsFormat.defaultAlignment);
+                var dialog = new CaptionsFormatDialogBox(CaptionsFormat.defaultAlignment, CaptionsFormat.defaultColor);
                 dialog.SettingsHandler += CaptionsFormatEdited;
                 dialog.ShowDialog();
             }
@@ -1897,11 +1897,12 @@ namespace PowerPointLabs
             }
         }
 
-        public void CaptionsFormatEdited(Microsoft.Office.Core.MsoTextEffectAlignment newAlignment)
+        public void CaptionsFormatEdited(Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newColor)
         {
             try
             {
                 CaptionsFormat.defaultAlignment = newAlignment;
+                CaptionsFormat.defaultColor = newColor;
             }
             catch (Exception e)
             {

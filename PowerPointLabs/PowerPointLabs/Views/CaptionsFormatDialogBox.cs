@@ -12,7 +12,7 @@ namespace PowerPointLabs.Views
 {
     public partial class CaptionsFormatDialogBox : Form
     {
-        public delegate void UpdateSettingsDelegate(MsoTextEffectAlignment alignment);
+        public delegate void UpdateSettingsDelegate(MsoTextEffectAlignment alignment, Color defaultColor);
         public UpdateSettingsDelegate SettingsHandler;
 
         private Dictionary<String, MsoTextEffectAlignment> alignmentMapping = new Dictionary<string, MsoTextEffectAlignment>
@@ -31,13 +31,14 @@ namespace PowerPointLabs.Views
             this.ShowInTaskbar = false;
         }
 
-        public CaptionsFormatDialogBox(MsoTextEffectAlignment defaultAlignment)
+        public CaptionsFormatDialogBox(MsoTextEffectAlignment defaultAlignment, Color defaultColor)
             : this()
         {
             String[] keys = alignmentMapping.Keys.ToArray();
             this.comboBox1.Items.AddRange(keys);
             MsoTextEffectAlignment[] values = alignmentMapping.Values.ToArray();
             this.comboBox1.SelectedIndex = Array.IndexOf(values, defaultAlignment);
+            panel1.BackColor = defaultColor;
         }
 
         private void CaptionsFormatDialogBox_Load(object sender, EventArgs e)
@@ -53,8 +54,19 @@ namespace PowerPointLabs.Views
 
         private void Ok_Click(object sender, EventArgs e)
         {
-            SettingsHandler(alignmentMapping[(String)this.comboBox1.SelectedItem]);
+            SettingsHandler(alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor);
             Close();
+        }
+
+        private void Panel1_Click(object sender, EventArgs e)
+        {
+            colorDialog1.Color = panel1.BackColor;
+            colorDialog1.FullOpen = true;
+            DialogResult result = colorDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                panel1.BackColor = colorDialog1.Color;
+            }
         }
     }
 }
