@@ -1886,7 +1886,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new CaptionsFormatDialogBox(CaptionsFormat.defaultAlignment, CaptionsFormat.defaultColor);
+                var dialog = new CaptionsFormatDialogBox(CaptionsFormat.defaultSize, CaptionsFormat.defaultAlignment, CaptionsFormat.defaultColor, CaptionsFormat.defaultBold, CaptionsFormat.defaultItalic);
                 dialog.SettingsHandler += CaptionsFormatEdited;
                 dialog.ShowDialog();
             }
@@ -1897,12 +1897,15 @@ namespace PowerPointLabs
             }
         }
 
-        public void CaptionsFormatEdited(Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newColor)
+        public void CaptionsFormatEdited(int newSize, Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newColor, bool newBold, bool newItalic)
         {
             try
             {
+                CaptionsFormat.defaultSize = newSize;
                 CaptionsFormat.defaultAlignment = newAlignment;
                 CaptionsFormat.defaultColor = newColor;
+                CaptionsFormat.defaultBold = newBold;
+                CaptionsFormat.defaultItalic = newItalic;
             }
             catch (Exception e)
             {

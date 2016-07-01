@@ -94,12 +94,17 @@ namespace PowerPointLabs
             textBox.TextFrame.TextRange.Text = caption;
             textBox.TextFrame.WordWrap = MsoTriState.msoTrue;
             textBox.TextEffect.Alignment = CaptionsFormat.defaultAlignment;
-            textBox.TextFrame.TextRange.Font.Size = 12;
+            textBox.TextFrame.TextRange.Font.Bold = CaptionsFormat.defaultBold ? MsoTriState.msoTrue : MsoTriState.msoFalse;
+            textBox.TextFrame.TextRange.Font.Italic = CaptionsFormat.defaultItalic ? MsoTriState.msoTrue : MsoTriState.msoFalse;
+            textBox.TextFrame.TextRange.Font.Size = CaptionsFormat.defaultSize;
             textBox.Fill.BackColor.RGB = 0;
-            textBox.Fill.Transparency = 0.2f;
-           
-            System.Drawing.Color thisColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultColor.R, CaptionsFormat.defaultColor.G, CaptionsFormat.defaultColor.B);
-            textBox.TextFrame.TextRange.Font.Color.RGB = thisColor.ToArgb();
+            textBox.Fill.Transparency = 0.2f;  
+            
+            byte[] colorByte = {CaptionsFormat.defaultColor.R, CaptionsFormat.defaultColor.G, CaptionsFormat.defaultColor.B };
+            int colorInt = System.BitConverter.ToInt16(colorByte, 0);
+            textBox.TextFrame.TextRange.Font.Color.RGB = CaptionsFormat.defaultColor.R;
+            //textBox.TextFrame.TextRange.Font.Color.Brightness = CaptionsFormat.defaultColor.GetBrightness();
+
             //0xffffff;
 
             textBox.Top = slideHeight - textBox.Height;

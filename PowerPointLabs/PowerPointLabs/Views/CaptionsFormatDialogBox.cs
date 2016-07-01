@@ -12,7 +12,7 @@ namespace PowerPointLabs.Views
 {
     public partial class CaptionsFormatDialogBox : Form
     {
-        public delegate void UpdateSettingsDelegate(MsoTextEffectAlignment alignment, Color defaultColor);
+        public delegate void UpdateSettingsDelegate(int size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic);
         public UpdateSettingsDelegate SettingsHandler;
 
         private Dictionary<String, MsoTextEffectAlignment> alignmentMapping = new Dictionary<string, MsoTextEffectAlignment>
@@ -31,20 +31,39 @@ namespace PowerPointLabs.Views
             this.ShowInTaskbar = false;
         }
 
-        public CaptionsFormatDialogBox(MsoTextEffectAlignment defaultAlignment, Color defaultColor)
+        public CaptionsFormatDialogBox(int defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultColor, bool defaultBlod, bool defaultItalic)
             : this()
         {
+            this.textBox1.Text = defaultSize.ToString();
             String[] keys = alignmentMapping.Keys.ToArray();
             this.comboBox1.Items.AddRange(keys);
             MsoTextEffectAlignment[] values = alignmentMapping.Values.ToArray();
             this.comboBox1.SelectedIndex = Array.IndexOf(values, defaultAlignment);
             panel1.BackColor = defaultColor;
+            this.boldBox.Checked = defaultBlod;
+            this.italicBox.Checked = defaultItalic;
         }
 
         private void CaptionsFormatDialogBox_Load(object sender, EventArgs e)
         {
             ToolTip ttComboBox = new ToolTip();
             ttComboBox.SetToolTip(comboBox1, "The alignment of the Captions.");
+        }
+
+        private void TextBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string text = textBox1.Text;
+            int thisSize = Int32.Parse(text);
+            int max = 50;
+            int min = 8;
+            if (thisSize >= max)
+            {
+                textBox1.Text = max.ToString();
+            }
+            if (thisSize <= min)
+            {
+                textBox1.Text = min.ToString();
+            }
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -54,7 +73,9 @@ namespace PowerPointLabs.Views
 
         private void Ok_Click(object sender, EventArgs e)
         {
-            SettingsHandler(alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor);
+            string text = textBox1.Text;
+
+            SettingsHandler(Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked);
             Close();
         }
 

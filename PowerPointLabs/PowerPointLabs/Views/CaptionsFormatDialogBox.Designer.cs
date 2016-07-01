@@ -37,14 +37,16 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.boldBox = new System.Windows.Forms.CheckBox();
+            this.italicBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(140, 110);
+            this.ok.Location = new System.Drawing.Point(140, 130);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(75, 23);
-            this.ok.TabIndex = 3;
+            this.ok.TabIndex = 1;
             this.ok.Text = "OK";
             this.ok.UseVisualStyleBackColor = true;
             this.ok.Click += new System.EventHandler(this.Ok_Click);
@@ -52,7 +54,7 @@
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(221, 110);
+            this.cancel.Location = new System.Drawing.Point(221, 130);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 2;
@@ -67,7 +69,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(116, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Text Size";
+            this.label1.Text = "Text Size: (8-50)";
             // 
             // textBox1
             // 
@@ -77,7 +79,7 @@
             this.textBox1.Size = new System.Drawing.Size(53, 20);
             this.textBox1.TabIndex = 4;
             this.textBox1.TabStop = false;
-            //this.textBox1.Validating += new System.ComponentModel.CancelEventHandler(this.TextBox1_Validating);
+            this.textBox1.Validating += new System.ComponentModel.CancelEventHandler(this.TextBox1_Validating);
             // 
             // comboBox1
             // 
@@ -114,6 +116,26 @@
             this.panel1.Size = new System.Drawing.Size(53, 22);
             this.panel1.TabIndex = 8;
             this.panel1.Click += new System.EventHandler(this.Panel1_Click);
+            //
+            // boldBox
+            //
+            this.boldBox.AutoSize = true;
+            this.boldBox.Location = new System.Drawing.Point(12, 94);
+            this.boldBox.Name = "boldBox";
+            this.boldBox.Size = new System.Drawing.Size(148, 17);
+            this.boldBox.TabIndex = 9;
+            this.boldBox.Text = "Bold";
+            this.boldBox.UseVisualStyleBackColor = true;
+            //
+            // italicBox
+            //
+            this.italicBox.AutoSize = true;
+            this.italicBox.Location = new System.Drawing.Point(12, 118);
+            this.italicBox.Name = "italixBox";
+            this.italicBox.Size = new System.Drawing.Size(148, 17);
+            this.italicBox.TabIndex = 9;
+            this.italicBox.Text = "Italic";
+            this.italicBox.UseVisualStyleBackColor = true;
             // 
             // CaptionsFormatDialogBox
             // 
@@ -121,13 +143,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(308, 147);
+            this.ClientSize = new System.Drawing.Size(308, 160);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.boldBox);
+            this.Controls.Add(this.italicBox);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -156,5 +180,7 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.CheckBox boldBox;
+        private System.Windows.Forms.CheckBox italicBox;
     }
 }
