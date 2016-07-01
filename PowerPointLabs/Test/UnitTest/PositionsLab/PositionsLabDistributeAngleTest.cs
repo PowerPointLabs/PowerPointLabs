@@ -15,7 +15,6 @@ namespace Test.UnitTest.PositionsLab
         private const int OriginalShapesSlideNo = 3;
         private const string Circle = "Oval 10";
         private const string Pie = "Pie 2";
-        private const string Arrow = "Circular Arrow 9";
         private const string WhiteChevron = "Chevron 1";
         private const string RedChevron = "Chevron 20";
         private const string OrangeChevron = "Chevron 19";
@@ -43,8 +42,8 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabMain.InitPositionsLab();
 
-            _shapeNames = new List<string> { Circle, Pie, Arrow, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron,
-                BlueChevron, PurpleChevron, BlackChevron, Picture};
+            _shapeNames = new List<string> { Circle, Pie, PurpleChevron, BlackChevron, BlueChevron, GreenChevron, OrangeChevron,
+                Picture, RedChevron, WhiteChevron, YellowChevron};
             InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
@@ -60,8 +59,6 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabMain.DistributeReferAtSecondShape();
             PositionsLabMain.DistributeSpaceByBoundaries();
-            _shapeNames = new List<string> { Circle, Pie, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron, BlueChevron,
-                PurpleChevron, BlackChevron, Picture };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
@@ -79,8 +76,6 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabMain.DistributeReferAtSecondShape();
             PositionsLabMain.DistributeSpaceByCenter();
-            _shapeNames = new List<string> { Circle, Pie, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron, BlueChevron,
-                PurpleChevron, BlackChevron, Picture };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
@@ -98,8 +93,6 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabMain.DistributeReferToSecondThirdShape();
             PositionsLabMain.DistributeSpaceByBoundaries();
-            _shapeNames = new List<string> { Circle, Pie, PurpleChevron, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron,
-                BlueChevron, BlackChevron, Picture };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
@@ -117,8 +110,6 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabMain.DistributeReferToSecondThirdShape();
             PositionsLabMain.DistributeSpaceByCenter();
-            _shapeNames = new List<string> { Circle, Pie, PurpleChevron, WhiteChevron, RedChevron, OrangeChevron, YellowChevron, GreenChevron,
-                BlueChevron, BlackChevron, Picture };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);

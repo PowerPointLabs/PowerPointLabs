@@ -8,6 +8,7 @@ using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Office = Microsoft.Office.Core;
 using System.Diagnostics;
 using Drawing = System.Drawing;
+using System.Linq;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -77,12 +78,11 @@ namespace PowerPointLabs.PositionsLab
         public static float MarginLeft { get; private set; }
         public static float MarginRight { get; private set; }
 
-        private class ShapeAngleInfo : IComparable
+        private class ShapeAngleInfo
         {
             public Shape Shape { get; private set; }
             public float Angle { get; set; }
             public float ShapeAngle { get; set; }
-            public float Offset { get; private set; }
 
             public ShapeAngleInfo(Shape shape, float angle)
             {
@@ -90,30 +90,9 @@ namespace PowerPointLabs.PositionsLab
                 Angle = angle;
             }
 
-            public ShapeAngleInfo(Shape shape, float angle, float shapeAngle, float offset) : this(shape, angle)
+            public ShapeAngleInfo(Shape shape, float angle, float shapeAngle) : this(shape, angle)
             {
                 ShapeAngle = shapeAngle;
-                Offset = offset;
-            }
-
-            public int CompareTo(object obj)
-            {
-                if (obj == null)
-                {
-                    return 1;
-                }
-
-                var other = obj as ShapeAngleInfo;
-                if (other != null)
-                {
-                    var angleWithOffset = (Angle - Offset) % 360;
-                    var otherAngleWithOffset = (other.Angle - other.Offset) % 360;
-                    return angleWithOffset.CompareTo(otherAngleWithOffset);
-                }
-                else
-                {
-                    throw new ArgumentException("Object is not a ShapeAngleInfo");
-                }
             }
         }
 
@@ -2139,7 +2118,7 @@ namespace PowerPointLabs.PositionsLab
                     offset -= 360;
                 }
 
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3, offset: offset);
+                DistributeShapesWithinAngleForBoundary(selectedShapes, origin, startingAngle, referenceAngle, 3, offset: offset);
             }
             else if (isAtSecondShape && isObjectCenter)
             {
@@ -2153,7 +2132,7 @@ namespace PowerPointLabs.PositionsLab
                 startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
                 referenceAngle = 360;
 
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 3);
+                DistributeShapesWithinAngleForCenter(selectedShapes, origin, startingAngle, referenceAngle, 3);
             }
             else if (isSecondThirdShape && isObjectBoundary)
             {
@@ -2192,7 +2171,7 @@ namespace PowerPointLabs.PositionsLab
                     referenceAngle += 360;
                 }
 
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 4, startingShapeAngle,
+                DistributeShapesWithinAngleForBoundary(selectedShapes, origin, startingAngle, referenceAngle, 4, startingShapeAngle,
                     endingShapeAngle);
             }
             else if (isSecondThirdShape && isObjectCenter)
@@ -2212,14 +2191,14 @@ namespace PowerPointLabs.PositionsLab
                     referenceAngle += 360;
                 }
 
-                DistributeShapesWithinAngle(selectedShapes, origin, startingAngle, referenceAngle, 4);
+                DistributeShapesWithinAngleForCenter(selectedShapes, origin, startingAngle, referenceAngle, 4);
             }
         }
 
-        public static void DistributeShapesWithinAngle(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
+        public static void DistributeShapesWithinAngleForCenter(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
             float referenceAngle, int startingIndex)
         {
-            var shapesWithinAngle = new List<ShapeAngleInfo>();
+            var shapeAngleInfos = new List<ShapeAngleInfo>();
 
             for (int i = startingIndex; i <= selectedShapes.Count; i++)
             {
@@ -2227,15 +2206,15 @@ namespace PowerPointLabs.PositionsLab
                 var angleFromStart = (angle + (360 - startingAngle)) % 360;
 
                 var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], angleFromStart);
-                shapesWithinAngle.Add(shapeAngleInfo);
+                shapeAngleInfos.Add(shapeAngleInfo);
             }
 
-            shapesWithinAngle.Sort();
+            shapeAngleInfos = shapeAngleInfos.OrderBy(x => x.Angle).ToList();
 
-            var angleBetweenShapes = referenceAngle / (shapesWithinAngle.Count + 1);
+            var angleBetweenShapes = referenceAngle / (shapeAngleInfos.Count + 1);
             var endingAngle = 0f;
 
-            foreach (var shapeAngleInfo in shapesWithinAngle)
+            foreach (var shapeAngleInfo in shapeAngleInfos)
             {
                 endingAngle += angleBetweenShapes;
 
@@ -2244,10 +2223,10 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void DistributeShapesWithinAngle(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
+        public static void DistributeShapesWithinAngleForBoundary(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
              float referenceAngle, int startingIndex, float startingShapeAngle = 0, float endingShapeAngle = 0, float offset = 0)
         {
-            var shapesWithinAngle = new List<ShapeAngleInfo>();
+            var shapeAngleInfos = new List<ShapeAngleInfo>();
             var boundaryShapeAngle = startingShapeAngle + endingShapeAngle;
             var totalShapeAngle = boundaryShapeAngle;
             var isExceedReferenceAngle = totalShapeAngle >= referenceAngle;
@@ -2256,69 +2235,46 @@ namespace PowerPointLabs.PositionsLab
                 totalShapeAngle = 0;
             }
 
-            for (int i = startingIndex; i <= selectedShapes.Count; i++)
-            {
-                var boundaryAnglesFromStart = GetShapeBoundaryAngles(origin, selectedShapes[i]);
-
-                if (boundaryAnglesFromStart[0] == 0 && boundaryAnglesFromStart[1] == 360)
-                {
-                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
-                }
-
-                boundaryAnglesFromStart[0] = (boundaryAnglesFromStart[0] + (360 - startingAngle)) % 360;
-                boundaryAnglesFromStart[1] = (boundaryAnglesFromStart[1] + (360 - startingAngle)) % 360;
-
-                var shapeAngle = boundaryAnglesFromStart[1] - boundaryAnglesFromStart[0];
-                if (boundaryAnglesFromStart[0] > boundaryAnglesFromStart[1])
-                {
-                    shapeAngle += 360;
-                }
-                totalShapeAngle += shapeAngle;
-
-                var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], boundaryAnglesFromStart[0], shapeAngle, offset);
-                shapesWithinAngle.Add(shapeAngleInfo);
-            }
-
-            shapesWithinAngle.Sort();
             var isFirstLoop = true;
-            var count = 0;
             var isStable = false;
             while (!isStable)
             {
-                if (!isFirstLoop)
+                if (isFirstLoop)
+                {
+                    for (int i = startingIndex; i <= selectedShapes.Count; i++)
+                    {
+                        float shapeAngle;
+                        var angle = GetShapeAngleInfo(selectedShapes[i], origin, startingAngle, totalShapeAngle, out shapeAngle);
+                        totalShapeAngle += shapeAngle;
+
+                        var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], angle, shapeAngle);
+                        shapeAngleInfos.Add(shapeAngleInfo);
+                    }
+
+                    shapeAngleInfos = shapeAngleInfos.OrderBy(x => (x.Angle - offset) % 360).ToList();
+                    isFirstLoop = false;
+                }
+                else
                 {
                     totalShapeAngle = boundaryShapeAngle;
 
-                    foreach (var shapeAngleInfo in shapesWithinAngle)
+                    foreach (var shapeAngleInfo in shapeAngleInfos)
                     {
-                        var boundaryAnglesFromStart = GetShapeBoundaryAngles(origin, shapeAngleInfo.Shape);
-
-                        if (boundaryAnglesFromStart[0] == 0 && boundaryAnglesFromStart[1] == 360)
-                        {
-                            throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
-                        }
-
-                        boundaryAnglesFromStart[0] = (boundaryAnglesFromStart[0] + (360 - startingAngle)) % 360;
-                        boundaryAnglesFromStart[1] = (boundaryAnglesFromStart[1] + (360 - startingAngle)) % 360;
-
-                        var shapeAngle = boundaryAnglesFromStart[1] - boundaryAnglesFromStart[0];
-                        if (boundaryAnglesFromStart[0] > boundaryAnglesFromStart[1])
-                        {
-                            shapeAngle += 360;
-                        }
+                        float shapeAngle;
+                        var angle = GetShapeAngleInfo(shapeAngleInfo.Shape, origin, startingAngle, totalShapeAngle, out shapeAngle);
                         totalShapeAngle += shapeAngle;
 
-                        shapeAngleInfo.Angle = boundaryAnglesFromStart[0];
+                        shapeAngleInfo.Angle = angle;
                         shapeAngleInfo.ShapeAngle = shapeAngle;
                     }
                 }
 
-                var angleBetweenShapes = (referenceAngle - totalShapeAngle) / (shapesWithinAngle.Count + 1);
+                var angleBetweenShapes = (referenceAngle - totalShapeAngle) / (shapeAngleInfos.Count + 1);
                 var endingAngle = (isExceedReferenceAngle) ? angleBetweenShapes : startingShapeAngle + angleBetweenShapes;
 
                 isStable = true;
 
-                foreach (var shapeAngleInfo in shapesWithinAngle)
+                foreach (var shapeAngleInfo in shapeAngleInfos)
                 {
                     var rotationAngle = (endingAngle - shapeAngleInfo.Angle) % 360;
                     if (rotationAngle > threshold || rotationAngle < -threshold)
@@ -2329,9 +2285,28 @@ namespace PowerPointLabs.PositionsLab
 
                     endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
                 }
-                count++;
-                isFirstLoop = false;
             }
+        }
+
+        private static float GetShapeAngleInfo(Shape shape, Drawing.PointF origin, float startingAngle, float totalShapeAngle,
+            out float shapeAngle)
+        {
+            var boundaryAnglesFromStart = GetShapeBoundaryAngles(origin, shape);
+            if (boundaryAnglesFromStart[0] == 0 && boundaryAnglesFromStart[1] == 360)
+            {
+                throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+            }
+
+            boundaryAnglesFromStart[0] = (boundaryAnglesFromStart[0] + (360 - startingAngle)) % 360;
+            boundaryAnglesFromStart[1] = (boundaryAnglesFromStart[1] + (360 - startingAngle)) % 360;
+
+            shapeAngle = boundaryAnglesFromStart[1] - boundaryAnglesFromStart[0];
+            if (boundaryAnglesFromStart[0] > boundaryAnglesFromStart[1])
+            {
+                shapeAngle += 360;
+            }
+
+            return boundaryAnglesFromStart[0];
         }
 
         #endregion
