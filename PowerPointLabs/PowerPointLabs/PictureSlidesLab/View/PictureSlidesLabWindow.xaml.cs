@@ -961,7 +961,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             if (CropWindow.IsCropped)
             {
-                source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);
+                if (CropWindow.IsRotated)
+                {
+                    source.Source = CropWindow.RotateResult;
+                    source.ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(CropWindow.RotateResult);
+                    source.FullSizeImageFile = CropWindow.RotateResult;
+                    source.ContextLink = CropWindow.RotateResult;
+                }
+                source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);        
                 UpdatePreviewImages();
             }
         }
