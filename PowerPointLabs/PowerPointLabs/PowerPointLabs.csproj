@@ -503,6 +503,12 @@
     <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BlurrinessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BrightnessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Factory\SliderPropHandlerFactory.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\ISliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\IPropHandlerNameMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\TransparencySliderPropHandler.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ErrorDialog.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.VariationStageControls.cs" />
     <Compile Include="PictureSlidesLab\View\Interface\IPictureSlidesLabWindowView.cs" />
