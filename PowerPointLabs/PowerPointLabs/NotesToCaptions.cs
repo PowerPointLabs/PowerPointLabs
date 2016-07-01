@@ -100,9 +100,10 @@ namespace PowerPointLabs
             textBox.Fill.BackColor.RGB = 0;
             textBox.Fill.Transparency = 0.2f;  
             
-            byte[] colorByte = {CaptionsFormat.defaultColor.R, CaptionsFormat.defaultColor.G, CaptionsFormat.defaultColor.B };
-            int colorInt = System.BitConverter.ToInt16(colorByte, 0);
-            textBox.TextFrame.TextRange.Font.Color.RGB = CaptionsFormat.defaultColor.R;
+            System.Drawing.Color thisColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultColor.B, 
+                                                                           CaptionsFormat.defaultColor.G, 
+                                                                           CaptionsFormat.defaultColor.R);
+            textBox.TextFrame.TextRange.Font.Color.RGB = thisColor.ToArgb();
             //textBox.TextFrame.TextRange.Font.Color.Brightness = CaptionsFormat.defaultColor.GetBrightness();
 
             //0xffffff;
