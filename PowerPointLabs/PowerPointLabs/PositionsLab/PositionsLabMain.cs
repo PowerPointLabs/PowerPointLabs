@@ -2227,19 +2227,20 @@ namespace PowerPointLabs.PositionsLab
              float referenceAngle, int startingIndex, float startingShapeAngle = 0, float endingShapeAngle = 0, float offset = 0)
         {
             var shapeAngleInfos = new List<ShapeAngleInfo>();
+
             var boundaryShapeAngle = startingShapeAngle + endingShapeAngle;
-            var totalShapeAngle = boundaryShapeAngle;
-            var isExceedReferenceAngle = totalShapeAngle >= referenceAngle;
-            if (isExceedReferenceAngle)
+            if (boundaryShapeAngle >= referenceAngle)
             {
-                totalShapeAngle = 0;
+                boundaryShapeAngle = 0;
             }
 
-            var isFirstLoop = true;
+            var count = 0;
             var isStable = false;
-            while (!isStable)
+            while (!isStable && count < 20)
             {
-                if (isFirstLoop)
+                var totalShapeAngle = boundaryShapeAngle;
+
+                if (count == 0)
                 {
                     for (int i = startingIndex; i <= selectedShapes.Count; i++)
                     {
@@ -2252,12 +2253,9 @@ namespace PowerPointLabs.PositionsLab
                     }
 
                     shapeAngleInfos = shapeAngleInfos.OrderBy(x => (x.Angle - offset) % 360).ToList();
-                    isFirstLoop = false;
                 }
                 else
                 {
-                    totalShapeAngle = boundaryShapeAngle;
-
                     foreach (var shapeAngleInfo in shapeAngleInfos)
                     {
                         float shapeAngle;
@@ -2270,7 +2268,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 var angleBetweenShapes = (referenceAngle - totalShapeAngle) / (shapeAngleInfos.Count + 1);
-                var endingAngle = (isExceedReferenceAngle) ? angleBetweenShapes : startingShapeAngle + angleBetweenShapes;
+                var endingAngle = (boundaryShapeAngle == 0) ? angleBetweenShapes : startingShapeAngle + angleBetweenShapes;
 
                 isStable = true;
 
@@ -2285,6 +2283,8 @@ namespace PowerPointLabs.PositionsLab
 
                     endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
                 }
+
+                count++;
             }
         }
 
