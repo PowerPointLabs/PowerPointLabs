@@ -503,6 +503,12 @@
     <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BlurrinessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BrightnessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Factory\SliderPropHandlerFactory.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\ISliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\IPropHandlerNameMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\TransparencySliderPropHandler.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ErrorDialog.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.VariationStageControls.cs" />
     <Compile Include="PictureSlidesLab\View\Interface\IPictureSlidesLabWindowView.cs" />
@@ -1354,6 +1360,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\EffectsLab\BlurSelected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LeftRotate.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-left_rotate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-right_rotate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-flip_hori.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-flip_verti.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
