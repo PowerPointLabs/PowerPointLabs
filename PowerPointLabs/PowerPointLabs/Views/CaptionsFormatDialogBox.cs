@@ -76,6 +76,10 @@ namespace PowerPointLabs.Views
             string text = textBox1.Text;
 
             SettingsHandler(Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked);
+            if (Ribbon1.HaveCaptions)
+            {
+                NotesToCaptions.EmbedCaptionsOnSelectedSlides();
+            }
             Close();
         }
 

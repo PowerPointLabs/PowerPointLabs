@@ -98,6 +98,7 @@ namespace PowerPointLabs
         public bool ReloadAutoMotionEnabled = true;
         public bool ReloadSpotlight = true;
         public bool RemoveCaptionsEnabled = true;
+        public static bool HaveCaptions = false;
         public bool RemoveAudioEnabled = true;
 
         public bool HighlightTextFragmentsEnabled = true;
@@ -1863,6 +1864,8 @@ namespace PowerPointLabs
                 }
             }
 
+            HaveCaptions = true;
+
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
             RefreshRibbonControl("RemoveCaptionsButton");
         }
@@ -1870,6 +1873,7 @@ namespace PowerPointLabs
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
             RemoveCaptionsEnabled = false;
+            HaveCaptions = false;
             RefreshRibbonControl("RemoveCaptionsButton");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
