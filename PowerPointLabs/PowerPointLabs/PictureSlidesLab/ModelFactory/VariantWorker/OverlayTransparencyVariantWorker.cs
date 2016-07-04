@@ -22,49 +22,49 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                 {
                     {"OptionName", "50% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 50}
+                    {"OverlayTransparency", 50}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "45% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 45}
+                    {"OverlayTransparency", 45}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "40% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 40}
+                    {"OverlayTransparency", 40}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "35% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 35}
+                    {"OverlayTransparency", 35}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "30% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 30}
+                    {"OverlayTransparency", 30}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "25% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 25}
+                    {"OverlayTransparency", 25}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "20% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 20}
+                    {"OverlayTransparency", 20}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "15% Transparency"},
                     {"IsUseOverlayStyle", true},
-                    {"Transparency", 15}
+                    {"OverlayTransparency", 15}
                 })
             };
         }

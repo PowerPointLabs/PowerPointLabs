@@ -10,8 +10,8 @@
              WindowStartupLocation="CenterScreen"
              Name="Window"
              Title="Picture Slides Lab"
-             Width="1200"
-             Height="700"
+             
+                           
              WindowTitleBrush="#0070C0"
              BorderThickness="1"
              BorderBrush="#0070C0"
@@ -193,6 +193,13 @@
                         Change Style
                     </Button>
                     <controls:ProgressRing ToolTip="Downloading picture..." Margin="5,0,0,0" HorizontalAlignment="Left" Foreground="#FFFFFF" Name="VariationProgressRing" Width="10" Height="10" Grid.Column="5" IsActive="False" />
+                    <Slider Name="VariantsSlider" PreviewMouseLeftButtonUp="VariantsSlider_OnValueChangedFinal" KeyUp="VariantsSlider_OnValueChangedFinal" ValueChanged="VariantsSlider_OnValueChanged" Value="{Binding Path=SelectedSliderValue.Number, Mode=TwoWay}" Height="26" Width="120" Minimum="0" Maximum="{Binding Path=SelectedSliderMaximum.Number, Mode=TwoWay}" TickFrequency="{Binding Path=SelectedSliderTickFrequency.Number, Mode=TwoWay}" IsSnapToTickEnabled="True" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" MinHeight="26">
+                        <Slider.ToolTip>
+                            <ToolTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+                                <TextBlock Text="{Binding Value, StringFormat='{}{0}%'}" />
+                            </ToolTip>
+                        </Slider.ToolTip>
+                    </Slider>
                     <Border Name="VariantsColorPanel" ToolTip="Click to change color" MouseLeftButtonUp="VariantsColorPanel_OnMouseLeftButtonUp" BorderBrush="#EEEEEE" BorderThickness="1" Height="26" Width="65" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="6" />
                     <ComboBox Name="FontPanel" KeyUp="VariantsFontPanel_OnKeyUp" DropDownClosed="VariantsFontPanel_OnDropDownClosed" ToolTip="Select the font here" Grid.Column="6" SelectedItem="{Binding Path=SelectedFontFamily.Font, Mode=TwoWay}" SelectedIndex="{Binding Path=SelectedFontId.Number, Mode=TwoWay}" ItemsSource="{Binding Path=FontFamilies, Mode=TwoWay}" Height="26" VerticalAlignment="Center">
                         <ComboBox.ItemsPanel>

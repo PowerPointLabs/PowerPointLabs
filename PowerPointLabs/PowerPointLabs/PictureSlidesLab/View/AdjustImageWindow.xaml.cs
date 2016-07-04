@@ -8,6 +8,7 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.ImageAdjustment;
 using PowerPointLabs.WPF.Observable;
 using Color = System.Windows.Media.Color;
+using System.Windows.Threading;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -17,8 +18,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
     public partial class AdjustImageWindow
     {
+        //used for display in the adjust dimensions window only.
         private ObservableString thumbnailImageFile = new ObservableString();
-
         private const int AdjustUnit = 10;
 
         private CroppingAdorner _croppingAdorner;
@@ -30,10 +31,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private double _rectWidth;
         private double _rectHeight;
 
+        //used for applying styles to the ppt
         public string CropResult { get; set; }
+        //used in generating previews.
         public string CropResultThumbnail { get; set; }
+        public string RotateResult { get; set; }
         public Rect Rect { get; set; }
         public bool IsCropped { get; set; }
+        public bool IsRotated { get; set; }
         public bool IsOpen { get; set; }
 
         public AdjustImageWindow()
@@ -47,6 +52,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
             ZoomInImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PlusZoom);
             ZoomOutImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.MinusZoom);
             AutoFitImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Fit);
+            LeftRotateImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.LeftRotate);
+            RightRotateImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.RightRotate);
+            FlipHorizontalImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.FlipHorizontal);
+            FlipVerticalImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.FlipVertical);
         }
 
         public void ShowAdjustPictureDimensionsDialog()
@@ -255,6 +264,57 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void ZoomOutButton_OnClick(object sender, RoutedEventArgs e)
         {
             _croppingAdorner.ZoomCroppingRect(-AdjustUnit);
+        }
+
+        private void RotateFlipImg(RotateFlipType roatateFlipType)
+        {
+            var img = (Bitmap)Bitmap.FromFile(CropResult);
+            img.RotateFlip(roatateFlipType);
+            String rotatedImg = StoragePath.GetPath("rotated-"
+                                    + DateTime.Now.GetHashCode() + "-"
+                                    + Guid.NewGuid().ToString().Substring(0, 7));
+            img.Save(rotatedImg);
+            CropResult = rotatedImg;
+            RotateResult = rotatedImg;
+            thumbnailImageFile.Text = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
+            CropResultThumbnail = ImageUtil.GetThumbnailFromFullSizeImg(rotatedImg);
+            IsRotated = true;
+
+            //Resize the ImageHolder and Window after rotating
+            if (roatateFlipType.Equals(RotateFlipType.Rotate270FlipNone)
+                || roatateFlipType.Equals(RotateFlipType.Rotate90FlipNone))
+            {
+                ImageHolder.Width = ImageHolder.ActualHeight / Bitmap.FromFile(CropResultThumbnail).Height * Bitmap.FromFile(CropResultThumbnail).Width;
+                ImageHolder.Height = ImageHolder.ActualHeight;
+                this.Width = ImageHolder.Width + 20;
+                this.CenterWindowOnScreen();
+            }
+
+            Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
+            {
+                var rect = AutoFit();
+                _croppingAdorner.ClippingRectangle = rect;
+            }));
+        }
+
+        private void LeftRotateButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            RotateFlipImg(RotateFlipType.Rotate270FlipNone);
+        }
+
+        private void RightRotateButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            RotateFlipImg(RotateFlipType.Rotate90FlipNone);
+        }
+
+        private void FlipHorizontalButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            RotateFlipImg(RotateFlipType.Rotate180FlipY);
+        }
+
+        private void FlipVerticalButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            RotateFlipImg(RotateFlipType.Rotate180FlipX);
         }
     }
 }

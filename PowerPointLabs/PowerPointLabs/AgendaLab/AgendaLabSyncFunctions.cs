@@ -250,7 +250,7 @@ namespace PowerPointLabs.AgendaLab
             candidate.Layout = refSlide.Layout;
             candidate.Design = refSlide.Design;
 
-            // syncronize extra shapes other than visual items in reference slide
+            // synchronize extra shapes other than visual items in reference slide
             var candidateSlideShapes = candidate.GetNameToShapeDictionary();
             var extraShapes = refSlide.Shapes.Cast<Shape>()
                                              .Where(shape => !PowerPointSlide.IsIndicator(shape) &&
@@ -265,7 +265,7 @@ namespace PowerPointLabs.AgendaLab
                 CopyShapesTo(refShapes, candidate);
             }
 
-            // syncronize shapes position and size, except bullet content
+            // synchronize shapes position and size, except bullet content
             candidateSlideShapes = candidate.GetNameToShapeDictionary();
             var sameShapes = refSlide.Shapes.Cast<Shape>()
                                             .Where(shape => !PowerPointSlide.IsIndicator(shape) &&
