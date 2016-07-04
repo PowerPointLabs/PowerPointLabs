@@ -104,9 +104,6 @@ namespace PowerPointLabs
                                                                            CaptionsFormat.defaultColor.G, 
                                                                            CaptionsFormat.defaultColor.R);
             textBox.TextFrame.TextRange.Font.Color.RGB = thisColor.ToArgb();
-            //textBox.TextFrame.TextRange.Font.Color.Brightness = CaptionsFormat.defaultColor.GetBrightness();
-
-            //0xffffff;
 
             textBox.Top = slideHeight - textBox.Height;
             return textBox;
