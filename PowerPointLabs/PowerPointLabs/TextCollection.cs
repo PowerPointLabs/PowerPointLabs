@@ -218,7 +218,7 @@
         public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
         public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
         public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
-        public const string AgendaLabUpdateAgendaButtonLabel = "Syncronize Agenda";
+        public const string AgendaLabUpdateAgendaButtonLabel = "Synchronize Agenda";
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
@@ -347,6 +347,9 @@
             /// </summary>
             public const string NoEffect = "No Effect";
             public const string ColorHasEffect = "Color";
+            public const string TransparencyHasEffect = "Transparency";
+            public const string BannerHasEffect = "Banner";
+            public const string TextBoxHasEffect = "TextBox";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
             public const string VariantCategoryTextGlowColor = "Text Glow Color";
