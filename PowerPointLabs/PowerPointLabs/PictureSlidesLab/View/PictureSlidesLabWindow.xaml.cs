@@ -481,9 +481,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
 
             e.Handled = true;
-            var item = (ListBoxItem) listbox.ItemContainerGenerator
-                .ContainerFromItem(listbox.SelectedItem);
-            item.Focus();
         }
 
         /// <summary>
@@ -961,7 +958,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             if (CropWindow.IsCropped)
             {
-                source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);
+                if (CropWindow.IsRotated)
+                {
+                    source.Source = CropWindow.RotateResult;
+                    source.ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(CropWindow.RotateResult);
+                    source.FullSizeImageFile = CropWindow.RotateResult;
+                    source.ContextLink = CropWindow.RotateResult;
+                }
+                source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);        
                 UpdatePreviewImages();
             }
         }
@@ -1028,6 +1032,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = true;
                 VariantsColorPanel.IsEnabled = true;
+                VariantsSlider.IsEnabled = true;
             }
             else if (this.GetCurrentSlide() == null)
             {
@@ -1035,6 +1040,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
+                VariantsSlider.IsEnabled = false;
             }
             else // select 'loading' image
             {
@@ -1042,6 +1048,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
+                VariantsSlider.IsEnabled = false;
             }
         }
 

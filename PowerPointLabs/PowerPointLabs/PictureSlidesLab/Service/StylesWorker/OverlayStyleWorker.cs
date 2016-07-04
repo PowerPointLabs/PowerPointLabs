@@ -15,7 +15,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
             var result = new List<Shape>();
             if (option.IsUseOverlayStyle)
             {
-                var backgroundOverlayShape = designer.ApplyOverlayEffect(option.OverlayColor, option.Transparency);
+                var backgroundOverlayShape = designer.ApplyOverlayEffect(option.OverlayColor, option.OverlayTransparency);
                 result.Add(backgroundOverlayShape);
             }
             return result;
