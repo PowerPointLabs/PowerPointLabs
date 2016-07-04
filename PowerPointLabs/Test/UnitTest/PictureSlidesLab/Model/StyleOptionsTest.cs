@@ -23,8 +23,8 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         public void TestSerialization()
         {
             option.OptionName = "Test Option Name";
-            option.Save(PathUtil.GetDocTestPath() + "option.user");
-            var loadedOption = StyleOption.Load(PathUtil.GetDocTestPath() + "option.user");
+            PowerPointLabs.PictureSlidesLab.Util.StoragePath.Save(option, PathUtil.GetDocTestPath() + "option.user");
+            var loadedOption = PowerPointLabs.PictureSlidesLab.Util.StoragePath.LoadStyleOption(PathUtil.GetDocTestPath() + "option.user");
             Assert.AreEqual("Test Option Name", loadedOption.OptionName);
         }
 

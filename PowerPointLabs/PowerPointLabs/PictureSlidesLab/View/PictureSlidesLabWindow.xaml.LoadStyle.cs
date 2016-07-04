@@ -18,49 +18,81 @@ namespace PowerPointLabs.PictureSlidesLab.View
 {
     partial class PictureSlidesLabWindow
     {
-        private readonly SlideSelectionDialog _loadStylesDialog = new SlideSelectionDialog();
+        private readonly SlideSelectionDialog _loadFromSlideDialog = new SlideSelectionDialog();
+        private readonly SlideSelectionDialog _loadUserCustomizedStyleDialog = new SlideSelectionDialog();
 
         private const string ShapeNamePrefix = EffectsDesigner.ShapeNamePrefix;
 
-        private void LoadButton_OnClick(object sender, RoutedEventArgs e)
+        private void LoadFromSlideButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_loadStylesDialog.IsOpen) return;
+            if (_loadFromSlideDialog.IsOpen) return;
 
-            _loadStylesDialog
+            _loadFromSlideDialog
                 .Init("Load Style or Picture from the Selected Slide")
                 .CustomizeGotoSlideButton("Load Style", "Load style from the selected slide.")
                 .CustomizeAdditionalButton("Load Picture", "Load picture from the selected slide.")
                 .FocusOkButton()
                 .OpenDialog();
-            this.ShowMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
+            this.ShowMetroDialogAsync(_loadFromSlideDialog, MetroDialogOptions);
+        }
+
+        private void LoadUserCustomizedStyleButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_loadUserCustomizedStyleDialog.IsOpen) return;
+
+            _loadUserCustomizedStyleDialog
+                .Init(ViewModel.UserCustomizedStyles, "Load User-customized Style")
+                .CustomizeGotoSlideButton("Load", "Load user-customized style.")
+                .CustomizeAdditionalButton("Delete", "Delete user-customized style.")
+                .FocusOkButton()
+                .OpenDialog();
+            this.ShowMetroDialogAsync(_loadUserCustomizedStyleDialog, MetroDialogOptions);
         }
 
         // it's actually using GotoSlide dialog, but to do stuff related to Load Styles
-        private void InitLoadStylesDialog()
+        private void InitLoadFromSlideDialog()
         {
-            _loadStylesDialog.GetType()
+            _loadFromSlideDialog.GetType()
                     .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
-                    .SetValue(_loadStylesDialog, this, null);
+                    .SetValue(_loadFromSlideDialog, this, null);
 
-            _loadStylesDialog.OnGotoSlide += LoadStyle;
+            _loadFromSlideDialog.OnGotoSlide += LoadStyle;
 
-            _loadStylesDialog.OnAdditionalButtonClick += LoadImage;
+            _loadFromSlideDialog.OnAdditionalButtonClick += LoadImage;
 
-            _loadStylesDialog.OnCancel += () =>
+            _loadFromSlideDialog.OnCancel += () =>
             {
-                _loadStylesDialog.CloseDialog();
-                this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
+                _loadFromSlideDialog.CloseDialog();
+                this.HideMetroDialogAsync(_loadFromSlideDialog, MetroDialogOptions);
             };
-            Logger.Log("PSL init LoadStylesDialog done");
+            Logger.Log("PSL init LoadFromSlideDialog done");
+        }
+
+        private void InitLoadUserCustomizedStyleDialog()
+        {
+            _loadUserCustomizedStyleDialog.GetType()
+                    .GetProperty("OwningWindow", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(_loadUserCustomizedStyleDialog, this, null);
+
+            _loadUserCustomizedStyleDialog.OnGotoSlide += LoadUserCustomizedStyle;
+
+            _loadUserCustomizedStyleDialog.OnAdditionalButtonClick += DeleteUserCustomizedStyle;
+
+            _loadUserCustomizedStyleDialog.OnCancel += () =>
+            {
+                _loadUserCustomizedStyleDialog.CloseDialog();
+                this.HideMetroDialogAsync(_loadUserCustomizedStyleDialog, MetroDialogOptions);
+            };
+            Logger.Log("PSL init LoadUserCustomizedStyleDialog done");
         }
 
         private void LoadImage()
         {
-            _loadStylesDialog.CloseDialog();
-            this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
+            _loadFromSlideDialog.CloseDialog();
+            this.HideMetroDialogAsync(_loadFromSlideDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
+            var currentSlide = this.GetCurrentPresentation().Slides[_loadFromSlideDialog.SelectedSlide - 1];
             if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
@@ -108,11 +140,11 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LoadStyle()
         {
-            _loadStylesDialog.CloseDialog();
-            this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
+            _loadFromSlideDialog.CloseDialog();
+            this.HideMetroDialogAsync(_loadFromSlideDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
+            var currentSlide = this.GetCurrentPresentation().Slides[_loadFromSlideDialog.SelectedSlide - 1];
             if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
@@ -205,6 +237,29 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return isSuccessfullyLoaded;
         }
 
+        private void LoadUserCustomizedStyle()
+        {
+            _loadUserCustomizedStyleDialog.CloseDialog();
+            this.HideMetroDialogAsync(_loadUserCustomizedStyleDialog, MetroDialogOptions);
+
+            if (ImageSelectionListBox.SelectedIndex < 0)
+            {
+                UpdatePreviewImages(CreateDefaultPictureItem());
+            }
+            else
+            {
+                UpdatePreviewImages((ImageItem)ImageSelectionListBox.SelectedValue);
+            }
+
+            var styleOption = ViewModel.UserCustomizedStyles[_loadUserCustomizedStyleDialog.SelectedSlide - 1];
+            OpenVariationFlyoutForReload(styleOption, canUseDefaultPicture: true);
+        }
+
+        private void DeleteUserCustomizedStyle()
+        {
+            ViewModel.UserCustomizedStyles.RemoveAt(_loadUserCustomizedStyleDialog.SelectedSlide - 1);
+        }
+
         #region Helper funcs
 
         private void UpdateImageSelection(int indexToSelect)
@@ -240,6 +295,36 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     {
                         CustomizeStyle(
                             (ImageItem) ImageSelectionListBox.SelectedValue,
+                            listOfStyles, variants);
+                    }
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        StylesVariationListBox.ScrollIntoView(StylesVariationListBox.SelectedItem);
+                    }));
+                }));
+            }));
+        }
+
+        private void OpenVariationFlyoutForReload(StyleOption styleOption, bool canUseDefaultPicture = false)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                StylesPreviewListBox.SelectedIndex = MapStyleNameToStyleIndex(styleOption.StyleName);
+                var listOfStyles = ConstructStylesFromStyleOption(styleOption);
+                var variants = ConstructVariantsFromStyle(listOfStyles[0]);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (canUseDefaultPicture
+                        && ImageSelectionListBox.SelectedIndex < 0)
+                    {
+                        CustomizeStyle(CreateDefaultPictureItem(),
+                            listOfStyles, variants);
+                        EnterDefaultPictureMode();
+                    }
+                    else
+                    {
+                        CustomizeStyle(
+                            (ImageItem)ImageSelectionListBox.SelectedValue,
                             listOfStyles, variants);
                     }
                     Dispatcher.BeginInvoke(new Action(() =>
@@ -346,6 +431,16 @@ namespace PowerPointLabs.PictureSlidesLab.View
             for (var i = 0; i < 8; i++)
             {
                 result.Add(ConstructStyleFromShapeInfo(shape));
+            }
+            return result;
+        }
+
+        private List<StyleOption> ConstructStylesFromStyleOption(StyleOption styleOption)
+        {
+            var result = new List<StyleOption>();
+            for (var i = 0; i < 8; i++)
+            {
+                result.Add(styleOption);
             }
             return result;
         }

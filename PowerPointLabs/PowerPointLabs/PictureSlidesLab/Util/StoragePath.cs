@@ -14,6 +14,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
     {
         private const string PictureSlidesLabImagesList = "PictureSlidesLabImagesList";
         private const string PictureSlidesLabSettings = "PictureSlidesLabSettings";
+        private const string PictureSlidesLabUserCustomizedStyles = "PictureSlidesLabUserCustomizedStyles";
 
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_pictureSlidesLab" + @"\";
 
@@ -71,6 +72,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 filesInUse.Add(AggregatedFolder + PictureSlidesLabImagesList);
                 filesInUse.Add(AggregatedFolder + PictureSlidesLabSettings);
+                filesInUse.Add(AggregatedFolder + PictureSlidesLabUserCustomizedStyles);
                 filesInUse.Add(LoadingImgPath);
                 filesInUse.Add(ChoosePicturesImgPath);
                 filesInUse.Add(NoPicturePlaceholderImgPath);
@@ -164,6 +166,49 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
         }
 
+        /// Taken from http://stackoverflow.com/a/14663848
+        /// <summary>
+        /// Saves style to an xml file
+        /// </summary>
+        /// <param name="filename">File path of the new xml file</param>
+        public static void Save(StyleOption styleOption, string filename)
+        {
+            try
+            {
+                using (var writer = new StreamWriter(filename))
+                {
+                    var serializer = new XmlSerializer(styleOption.GetType());
+                    serializer.Serialize(writer, styleOption);
+                    writer.Flush();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "Failed to save Picture Slides Lab Style Options: " + e.StackTrace);
+            }
+        }
+        
+        /// <summary>
+        /// Save user-customized style list
+        /// </summary>
+        /// <param name="styleOption"></param>
+        public static void Save(List<StyleOption> styleOptions)
+        {
+            try
+            {
+                using (var writer = new StreamWriter(GetPath(PictureSlidesLabUserCustomizedStyles)))
+                {
+                    var serializer = new XmlSerializer(styleOptions.GetType());
+                    serializer.Serialize(writer, styleOptions);
+                    writer.Flush();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "Failed to save Picture Slides Lab user-customized styles");
+            }
+        }
+
         /// <summary>
         /// Load images list
         /// </summary>
@@ -207,6 +252,52 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 Logger.LogException(e, "Failed to load Picture Slides Lab settings");
                 return new Model.Settings();
+            }
+        }
+        
+        /// <summary>
+        /// Load an object from an xml file
+        /// </summary>
+        /// <param name="filename">Xml file name</param>
+        /// <returns>The object created from the xml file</returns>
+        public static StyleOption LoadStyleOption(string filename)
+        {
+            try
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    var serializer = new XmlSerializer(typeof(StyleOption));
+                    var opt = serializer.Deserialize(stream) as StyleOption;
+                    return opt ?? new StyleOption();
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "Failed to load Picture Slides Lab Style Options: " + e.StackTrace);
+                return new StyleOption();
+            }
+        }
+
+        /// <summary>
+        /// Load user-customized style list
+        /// </summary>
+        /// <returns></returns>
+        public static List<StyleOption> LoadUserCustomizedStyles()
+        {
+            try
+            {
+                using (var stream = File.OpenRead(GetPath(PictureSlidesLabUserCustomizedStyles)))
+                {
+                    var serializer = new XmlSerializer(typeof(List<StyleOption>));
+                    var styleOptions = serializer.Deserialize(stream) as List<StyleOption>
+                        ?? new List<StyleOption>();
+                    return styleOptions;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "Failed to load Picture Slides Lab images list");
+                return new List<StyleOption>();
             }
         }
     }

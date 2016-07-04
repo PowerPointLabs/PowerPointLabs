@@ -317,16 +317,18 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="95" />
                         <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="125" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
                     <Button IsEnabled="false" Name="GotoSlideButton" ToolTip="Go to a slide to edit its style." Width="85" Click="GotoSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="1">Go to slide</Button>
-                    <Button IsEnabled="false" Name="LoadStylesButton" ToolTip="Load the style or picture from a slide to customize." Width="60" Click="LoadButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load...</Button>
-                    <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="3" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
-                    <Button Name="AddCitationSlideButton" Click="AddCitationSlideButton_OnClick" ToolTip="Add a picture sources slide." Margin="0,0,5,0" Grid.Column="5">Add sources slide</Button>
-                    <Button BorderThickness="0" Background="Transparent" Name="OpenSettingsButton" Click="OpenSettingsButton_OnClick" ToolTip="Open settings flyout." Margin="0,0,5,0" Grid.Column="6">
+                    <Button IsEnabled="false" Name="LoadFromSlideButton" ToolTip="Load the style or picture from a slide to customize." Width="110" Click="LoadFromSlideButton_OnClick" Margin="0,0,5,0" Grid.Column="2">Load from slide</Button>
+                    <Button IsEnabled="false" Name="LoadUserCustomizedStyleButton" ToolTip="Load a user-customized style to customize." Width="180" Click="LoadUserCustomizedStyleButton_OnClick" Margin="0,0,5,0" Grid.Column="3">Load user-customized style</Button>
+                    <controls:ProgressRing Name="ImageDownloadProgressRing" Width="10" Height="10" Grid.Column="4" IsActive="{Binding Path=IsActiveDownloadProgressRing.Flag, Mode=TwoWay}" />
+                    <Button Name="AddCitationSlideButton" Click="AddCitationSlideButton_OnClick" ToolTip="Add a picture sources slide." Margin="0,0,5,0" Grid.Column="6">Add sources slide</Button>
+                    <Button BorderThickness="0" Background="Transparent" Name="OpenSettingsButton" Click="OpenSettingsButton_OnClick" ToolTip="Open settings flyout." Margin="0,0,5,0" Grid.Column="7">
                         <Image Name="SettingsButtonIcon"></Image>
                     </Button>
                 </Grid>

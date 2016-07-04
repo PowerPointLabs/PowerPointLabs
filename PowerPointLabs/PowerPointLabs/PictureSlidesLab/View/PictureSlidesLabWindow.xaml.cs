@@ -99,7 +99,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 InitUiExceptionHandling();
                 InitViewModel();
                 InitGotoSlideDialog();
-                InitLoadStylesDialog();
+                InitLoadFromSlideDialog();
+                InitLoadUserCustomizedStyleDialog();
                 InitErrorTextDialog();
                 InitDragAndDrop();
                 // leave some time for data binding to finish
@@ -591,7 +592,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     Logger.Log("Current slide is null");
                     GotoSlideButton.IsEnabled = false;
-                    LoadStylesButton.IsEnabled = false;
+                    LoadFromSlideButton.IsEnabled = false;
+                    LoadUserCustomizedStyleButton.IsEnabled = false;
                     ViewModel.StylesPreviewList.Clear();
                     ViewModel.StylesVariationList.Clear();
                 }
@@ -599,7 +601,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 else if (_isStylePreviewRegionInit && _isAbleLoadingOnWindowActivate)
                 {
                     GotoSlideButton.IsEnabled = true;
-                    LoadStylesButton.IsEnabled = true;
+                    LoadFromSlideButton.IsEnabled = true;
+                    LoadUserCustomizedStyleButton.IsEnabled = true;
                     SetTimeout(() =>
                     {
                         // update preview images when slide no change
@@ -1017,7 +1020,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 _isStylePreviewRegionInit = true;
                 StylesPreviewGrid.Visibility = Visibility.Visible;
                 GotoSlideButton.IsEnabled = true;
-                LoadStylesButton.IsEnabled = true;
+                LoadFromSlideButton.IsEnabled = true;
+                LoadUserCustomizedStyleButton.IsEnabled = true;
             }
         }
 

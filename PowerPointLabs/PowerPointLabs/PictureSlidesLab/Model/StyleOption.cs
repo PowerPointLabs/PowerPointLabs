@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
 using PowerPointLabs.ActionFramework.Common.Log;
+using System.Linq;
 
 namespace PowerPointLabs.PictureSlidesLab.Model
 {
@@ -20,6 +21,27 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             Init();
         }
 
+        public override bool Equals(object obj)
+        {
+            var thisType = GetType();
+            var objType = obj.GetType();
+
+            foreach (var propertyInfo in thisType.GetProperties().Where(p => !p.Name.Contains("StyleName")))
+            {
+                if (propertyInfo != objType.GetProperty(propertyInfo.Name))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return GetHashCode();
+        }
+
         #region Initialization
         private void Init()
         {
@@ -34,58 +56,5 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             }
         }
         #endregion
-
-        #region IO serialization
-
-        // TODO move these to StorageUtil
-
-        /// Taken from http://stackoverflow.com/a/14663848
-
-        /// <summary>
-        /// Saves to an xml file
-        /// </summary>
-        /// <param name="filename">File path of the new xml file</param>
-        public void Save(string filename)
-        {
-            try
-            {
-                using (var writer = new StreamWriter(filename))
-                {
-                    var serializer = new XmlSerializer(GetType());
-                    serializer.Serialize(writer, this);
-                    writer.Flush();
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "Failed to save Picture Slides Lab Style Options: " + e.StackTrace);
-            }
-        }
-
-        /// <summary>
-        /// Load an object from an xml file
-        /// </summary>
-        /// <param name="filename">Xml file name</param>
-        /// <returns>The object created from the xml file</returns>
-        public static StyleOption Load(string filename)
-        {
-            try
-            {
-                using (var stream = File.OpenRead(filename))
-                {
-                    var serializer = new XmlSerializer(typeof(StyleOption));
-                    var opt = serializer.Deserialize(stream) as StyleOption;
-                    return opt ?? new StyleOption();
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "Failed to load Picture Slides Lab Style Options: " + e.StackTrace);
-                return new StyleOption();
-            }
-        }
-
-        # endregion
-        
     }
 }
