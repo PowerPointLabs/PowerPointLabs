@@ -5,6 +5,8 @@ using PowerPointLabs.PositionsLab;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
 using System.Diagnostics;
+using Test.Util;
+using System.Drawing;
 
 namespace Test.UnitTest.PositionsLab
 {
@@ -14,10 +16,30 @@ namespace Test.UnitTest.PositionsLab
         private List<string> _shapeNames;
 
         private const int OriginalShapesSlideNo = 3;
+        private const string Rectangle1 = "Rectangle 1";
+        private const string Oval2 = "Oval 2";
+        private const string IsoscelesTriangle3 = "Isosceles Triangle 3";
+
+        //Results of Operations
+        private const int DuplicateAndRotateSingle1SlideNo = 5;
+        private const int DuplicateAndRotateSingle2SlideNo = 6;
+        private const int DuplicateAndRotateMutiple1SlideNo = 8;
+        private const int DuplicateAndRotateMutiple2SlideNo = 9;
 
         protected override string GetTestingSlideName()
         {
             return "PositionsLab\\PositionsLabDuplicateAndRotate.pptx";
+        }
+
+        private void DragAndDrop(Point startPt, Point endPt)
+        {
+            MouseUtil.SendMouseDown(startPt.X, startPt.Y);
+            MouseUtil.SendMouseUp(endPt.X, endPt.Y);
+        }
+
+        private void Click(Point thisPt)
+        {
+            MouseUtil.SendMouseLeftClick(thisPt.X, thisPt.Y);
         }
 
         [TestInitialize]
@@ -25,7 +47,7 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabMain.InitPositionsLab();
 
-            _shapeNames = new List<string> { };
+            _shapeNames = new List<string> { Rectangle1, Oval2, IsoscelesTriangle3 };
             InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
@@ -37,14 +59,30 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestDuplicateAndRoate()
+        public void TestDuplicateAndRoateSingle1()
         {
+
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestDuplcateAndRoate2()
+        public void TestDuplcateAndRoateSingle2()
         {
+
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestDuplcateAndRoateMultiple1()
+        {
+
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestDuplcateAndRoateMultiple2()
+        {
+
         }
     }
 }
