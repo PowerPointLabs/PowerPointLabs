@@ -61,28 +61,65 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDuplicateAndRoateSingle1()
         {
+            _shapeNames = new List<string> { Rectangle1, Oval2, IsoscelesTriangle3 };
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
+
+            PpOperations.SelectSlide(DuplicateAndRotateSingle1SlideNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestDuplcateAndRoateSingle2()
         {
+            _shapeNames = new List<string> { Rectangle1, Oval2, IsoscelesTriangle3 };
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
+            PpOperations.SelectSlide(DuplicateAndRotateSingle1SlideNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestDuplcateAndRoateMultiple1()
         {
+            _shapeNames = new List<string> { Rectangle1, Oval2, IsoscelesTriangle3 };
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
+            PpOperations.SelectSlide(DuplicateAndRotateSingle1SlideNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestDuplcateAndRoateMultiple2()
         {
+            _shapeNames = new List<string> { Rectangle1, Oval2, IsoscelesTriangle3 };
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
+            PpOperations.SelectSlide(DuplicateAndRotateSingle1SlideNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+
+            InitOriginalShapes(OriginalShapesSlideNo, _shapeNames);
         }
     }
 }
