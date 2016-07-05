@@ -40,13 +40,56 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (_loadUserCustomizedStyleDialog.IsOpen) return;
 
-            _loadUserCustomizedStyleDialog
-                .Init(ViewModel.UserCustomizedStyles, "Load User-customized Style")
-                .CustomizeGotoSlideButton("Load", "Load user-customized style.")
-                .CustomizeAdditionalButton("Delete", "Delete user-customized style.")
-                .FocusOkButton()
-                .OpenDialog();
-            this.ShowMetroDialogAsync(_loadUserCustomizedStyleDialog, MetroDialogOptions);
+            if (ViewModel.UserCustomizedStyles.Count == 0)
+            {
+                ShowInfoMessageBox(TextCollection.PictureSlidesLabText.ErrorNoUserCustomizedStyleInfo);
+            }
+            else
+            {
+                _loadUserCustomizedStyleDialog
+                    .Init(GenerateUserCustomizedStylesImageItem(), "Load User-customized Style")
+                    .CustomizeGotoSlideButton("Load", "Load user-customized style.")
+                    .CustomizeAdditionalButton("Delete", "Delete user-customized style.")
+                    .FocusOkButton()
+                    .OpenDialog();
+                this.ShowMetroDialogAsync(_loadUserCustomizedStyleDialog, MetroDialogOptions);
+            }
+        }
+
+        private List<ImageItem> GenerateUserCustomizedStylesImageItem()
+        {
+            var imageItems = new List<ImageItem>();
+
+            var currentSlide = this.GetCurrentSlide();
+            var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
+            StyleOption userCustomizedStyle = null;
+
+            if (originalShapeList.Count > 0)
+            {
+                var currentStyle = ConstructStyleFromShapeInfo(originalShapeList[0]);
+                userCustomizedStyle = GetUserCustomizedStyle(currentStyle);
+            }
+
+            for (int i = 0; i < ViewModel.UserCustomizedStyles.Count; i++)
+            {
+                var currentUserCustomizedStyle = ViewModel.UserCustomizedStyles[i];
+
+                var imageItem = ViewModel.GenerateImageItem(
+                    (ImageItem)ImageSelectionListBox.SelectedValue ?? CreateDefaultPictureItem(),
+                    currentSlide.GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight,
+                    currentUserCustomizedStyle);
+
+                if (userCustomizedStyle != null && currentUserCustomizedStyle == userCustomizedStyle)
+                {
+                    imageItem.Tooltip.Insert(0, "(Current) ");
+                }
+
+                imageItems.Add(imageItem);
+            }
+
+            return imageItems;
         }
 
         // it's actually using GotoSlide dialog, but to do stuff related to Load Styles
@@ -251,13 +294,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 UpdatePreviewImages((ImageItem)ImageSelectionListBox.SelectedValue);
             }
 
-            var styleOption = ViewModel.UserCustomizedStyles[_loadUserCustomizedStyleDialog.SelectedSlide - 1];
+            var styleOption = ViewModel.UserCustomizedStyles[_loadUserCustomizedStyleDialog.SelectedSlide];
             OpenVariationFlyoutForReload(styleOption, canUseDefaultPicture: true);
         }
 
         private void DeleteUserCustomizedStyle()
         {
-            ViewModel.UserCustomizedStyles.RemoveAt(_loadUserCustomizedStyleDialog.SelectedSlide - 1);
+            ViewModel.UserCustomizedStyles.RemoveAt(_loadUserCustomizedStyleDialog.SelectedSlide);
         }
 
         #region Helper funcs
@@ -440,7 +483,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             var result = new List<StyleOption>();
             for (var i = 0; i < 8; i++)
             {
-                result.Add(styleOption);
+                result.Add(ConstructStyleFromStyleOption(styleOption));
             }
             return result;
         }
@@ -491,6 +534,47 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 }
             }
             return opt;
+        }
+
+        private StyleOption ConstructStyleFromStyleOption(StyleOption styleOption)
+        {
+            var opt = new StyleOption();
+            var props = opt.GetType().GetProperties();
+            foreach (var propertyInfo in props)
+            {
+                var value = styleOption.GetType().GetProperty(propertyInfo.Name).GetValue(styleOption, null);
+                propertyInfo.SetValue(opt, value, null);
+            }
+            return opt;
+        }
+
+        private StyleOption GetUserCustomizedStyle(StyleOption styleOption)
+        {
+            var type = styleOption.GetType();
+
+            for (int i = 0; i < ViewModel.UserCustomizedStyles.Count; i++)
+            {
+                var style = ViewModel.UserCustomizedStyles[i];
+                var styleType = style.GetType();
+                var isFound = true;
+
+                foreach (var propertyInfo in type.GetProperties())
+                {
+                    if (propertyInfo.Name != "OptionName"
+                        && !propertyInfo.GetValue(styleOption, null).Equals(styleType.GetProperty(propertyInfo.Name).GetValue(style, null)))
+                    {
+                        isFound = false;
+                        break;
+                    }
+                }
+
+                if (isFound)
+                {
+                    return style;
+                }
+            }
+
+            return null;
         }
     }
     #endregion

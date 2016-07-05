@@ -1099,6 +1099,22 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("UpdateStylesVariationImages done");
         }
 
+        public StyleOption GetStyleOption(int index)
+        {
+            return _styleOptions[index];
+        }
+
+        public ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, StyleOption styleOption)
+        {
+            var previewInfo = Designer.PreviewApplyStyle(source, contentSlide, slideWidth, slideHeight, styleOption);
+
+            return new ImageItem
+            {
+                ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                Tooltip = styleOption.OptionName
+            };
+        }
+
         private ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isMockPreviewImages,
             int index)
         {

@@ -1,9 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
-using System.Xml.Serialization;
-using PowerPointLabs.ActionFramework.Common.Log;
-using System.Linq;
 
 namespace PowerPointLabs.PictureSlidesLab.Model
 {
@@ -19,27 +15,6 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         public StyleOption()
         {
             Init();
-        }
-
-        public override bool Equals(object obj)
-        {
-            var thisType = GetType();
-            var objType = obj.GetType();
-
-            foreach (var propertyInfo in thisType.GetProperties().Where(p => !p.Name.Contains("StyleName")))
-            {
-                if (propertyInfo != objType.GetProperty(propertyInfo.Name))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public override int GetHashCode()
-        {
-            return GetHashCode();
         }
 
         #region Initialization

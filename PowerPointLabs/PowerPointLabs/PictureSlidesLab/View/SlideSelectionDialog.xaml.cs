@@ -99,6 +99,45 @@ namespace PowerPointLabs.PictureSlidesLab.View
             return this;
         }
 
+        /// <summary>
+        /// This method can only be called after dialog is fully initialized
+        /// </summary>
+        /// <param name="title"></param>
+        public SlideSelectionDialog Init(System.Collections.Generic.List<ImageItem> imageItems, string title)
+        {
+            DialogTitleProperty.Text = title;
+            Dispatcher.Invoke(new Action(() =>
+            {
+                SlideList.Clear();
+            }));
+
+            foreach (var imageItem in imageItems)
+            {
+                SlideList.Add(imageItem);
+            }
+
+            var selectedId = SelectCurrentSlide();
+            SlideListBox.ScrollIntoView(SlideListBox.SelectedItem);
+            
+            if (selectedId == 0)
+            {
+                _prevSlideIndex = selectedId;
+                _nextSlideIndex = selectedId + 1;
+            }
+            else if (selectedId == SlideList.Count - 1)
+            {
+                _prevSlideIndex = selectedId - 1;
+                _nextSlideIndex = selectedId;
+            }
+            else
+            {
+                _prevSlideIndex = selectedId - 1;
+                _nextSlideIndex = selectedId + 1;
+            }
+
+            return this;
+        }
+
         public void OpenDialog()
         {
             IsOpen = true;
@@ -109,15 +148,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsOpen = false;
         }
 
-        private void SelectCurrentSlide()
+        private int SelectCurrentSlide()
         {
-            foreach (var slide in SlideList)
+            for (int i = 0; i < SlideList.Count; i++)
             {
-                if (slide.Tooltip.Contains("Current"))
+                if (SlideList[i].Tooltip.Contains("Current"))
                 {
-                    SlideListBox.SelectedItem = slide;
+                    SlideListBox.SelectedItem = SlideList[i];
+                    return i;
                 }
             }
+
+            SlideListBox.SelectedItem = SlideList[0];
+            return 0;
         }
 
         private void AddSlideThumbnail(PowerPointSlide slide, int pos = -1, bool isCurrentSlide = false)
@@ -213,13 +256,19 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 GotoSlideButton.IsEnabled = true;
                 // obtain selected slide
                 var selectedItem = (ImageItem) SlideListBox.SelectedItem;
-                if (selectedItem.Tooltip.Contains("Current"))
+                var selectedString = selectedItem.Tooltip;
+                if (selectedString.StartsWith("(Current) "))
                 {
-                    SelectedSlide = Int32.Parse(selectedItem.Tooltip.Substring(16));   
+                    selectedString = selectedString.Remove(0, 10);
+                }
+                if (selectedString.StartsWith("Slide "))
+                {
+                    selectedString = selectedString.Remove(0, 6);
+                    SelectedSlide = Int32.Parse(selectedString);
                 }
                 else
                 {
-                    SelectedSlide = Int32.Parse(selectedItem.Tooltip.Substring(6));
+                    SelectedSlide = SlideListBox.SelectedIndex;
                 }
             }
         }

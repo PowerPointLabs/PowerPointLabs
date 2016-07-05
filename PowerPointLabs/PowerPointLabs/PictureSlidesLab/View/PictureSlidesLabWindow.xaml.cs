@@ -764,6 +764,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
+        private void MenuItemAddUserCustomizedStyle_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        {
+            var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
+
+            AddUserCustomizedStyle(StylesVariationListBox.SelectedIndex);
+        }
+
         /// <summary>
         /// Update controls states when selection changed in the variation stage
         /// </summary>
@@ -971,6 +979,34 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);        
                 UpdatePreviewImages();
             }
+        }
+
+        private void AddUserCustomizedStyle(int source)
+        {
+            var currentStyleOpton = ViewModel.GetStyleOption(source);
+            var userCustomizedStyle = GetUserCustomizedStyle(currentStyleOpton);
+
+            var metroDialogSettings = new MetroDialogSettings
+            {
+                DefaultText = (userCustomizedStyle == null) ? "" : userCustomizedStyle.OptionName
+            };
+            this.ShowInputAsync("Add User-customized Style", "Style name", metroDialogSettings)
+                .ContinueWith(task =>
+                {
+                    if (!string.IsNullOrEmpty(task.Result))
+                    {
+                        if (userCustomizedStyle == null)
+                        {
+                            userCustomizedStyle = ConstructStyleFromStyleOption(currentStyleOpton);
+                            userCustomizedStyle.OptionName = task.Result;
+                            ViewModel.UserCustomizedStyles.Add(userCustomizedStyle);
+                        }
+                        else
+                        {
+                            userCustomizedStyle.OptionName = task.Result;
+                        }
+                    }
+                });
         }
 
         /// <summary>
