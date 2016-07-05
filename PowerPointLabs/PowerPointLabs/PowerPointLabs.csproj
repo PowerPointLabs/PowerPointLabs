@@ -1359,6 +1359,9 @@
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\EffectsLab\BlurSelected.png" />
   </ItemGroup>
   <ItemGroup>
