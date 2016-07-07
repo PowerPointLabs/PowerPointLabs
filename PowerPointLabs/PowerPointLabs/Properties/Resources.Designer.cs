@@ -593,6 +593,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap DuplicateRotateIcon {
+            get {
+                object obj = ResourceManager.GetObject("DuplicateRotateIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap EditNameContext {
             get {
                 object obj = ResourceManager.GetObject("EditNameContext", resourceCulture);
@@ -666,6 +676,26 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap FitToWidth {
             get {
                 object obj = ResourceManager.GetObject("FitToWidth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap FlipHorizontal {
+            get {
+                object obj = ResourceManager.GetObject("FlipHorizontal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap FlipVertical {
+            get {
+                object obj = ResourceManager.GetObject("FlipVertical", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -776,6 +806,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap Left {
             get {
                 object obj = ResourceManager.GetObject("Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap LeftRotate {
+            get {
+                object obj = ResourceManager.GetObject("LeftRotate", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1336,6 +1376,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap RotateIcon {
             get {
                 object obj = ResourceManager.GetObject("RotateIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RightRotate {
+            get {
+                object obj = ResourceManager.GetObject("RightRotate", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

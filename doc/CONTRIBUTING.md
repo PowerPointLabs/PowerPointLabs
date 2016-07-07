@@ -152,5 +152,34 @@ We regularly publish the dev version of PowerPointLabs add-in, and a contributor
 
 If any strange behaviour or exception is encountered, please submit a [bug report](#bugs).
 
+<a name="branches"></a>
+## Branches convention
+
+### Default branches
+- `master` holds the RC (release-candidate) version.
+- `dev-release` holds the dev-release/develop/dogfooding version with corresponding installer settings.
+- `release-standalone` holds the public-release version with corresponding installer settings.
+- `release-web` holds the public-release version with corresponding installer settings.
+
+### Feature branches & issue branches
+- Feature branch should be named under the feature's name
+- Issue branch should be named in this format `{issue number}-issue-short-name`, e.g. `1234-support-abc-def-ghi`.
+
+<a name="release"></a>
+## Release strategy
+
+We follow the flows below as our release strategy:
+- Normal development flow: 
+  - `developers` submit pull request to `dev-release` branch
+  - `reviewers` review & merge codes
+  - `deployers` do dev-release from `dev-release` branch for dogfooding
+  - `owners` sign off RC and merge from `dev-release` to `master` branch
+  - `testers` sign off QA and merge from `master` to `release-standalone/web` branch
+  - `deployers` do public-release from `release-standalone/web` branch and new codes go LIVE
+- Hot-fix development flow: 
+  - `developers` submit hot-fix pull request to `master` branch
+  - `reviewers` review & merge codes
+  - `testers` sign off QA and merge from `master` to `release-standalone/web` branch
+  - `deployers` do public-release from `release-standalone/web` branch and hot-fix codes go LIVE
 
 Most text of this document is taken from this [issue-guidelines](https://github.com/necolas/issue-guidelines).
