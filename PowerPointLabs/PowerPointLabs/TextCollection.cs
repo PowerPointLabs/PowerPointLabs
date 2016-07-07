@@ -170,7 +170,7 @@
         # endregion
 
         # region Auto Narration
-        public const string EmbedAudioGroupLabel = "Auto Narrate";
+        public const string EmbedAudioGroupLabel = "Narrations Lab";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
         public const string AddRecordButtonLabel = "Record Audio Manually";
@@ -178,7 +178,7 @@
         # endregion
 
         # region Auto Caption
-        public const string EmbedCaptionGroupLabel = "Auto Captions";
+        public const string EmbedCaptionGroupLabel = "Captions Lab";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
@@ -347,6 +347,9 @@
             /// </summary>
             public const string NoEffect = "No Effect";
             public const string ColorHasEffect = "Color";
+            public const string TransparencyHasEffect = "Transparency";
+            public const string BannerHasEffect = "Banner";
+            public const string TextBoxHasEffect = "TextBox";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
             public const string VariantCategoryTextGlowColor = "Text Glow Color";

@@ -45,7 +45,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
-                    slideHeight);
+                    slideHeight,
+                    isUpdateSelectedPreviewOnly: true);
                 BindStyleToColorPanel();
             }
             else
@@ -55,7 +56,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     View.CreateDefaultPictureItem(),
                     contentSlide,
                     slideWidth,
-                    slideHeight);
+                    slideHeight,
+                    isUpdateSelectedPreviewOnly: true);
             }
         }
         #endregion
@@ -88,7 +90,50 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 View.CreateDefaultPictureItem(),
                 contentSlide,
                 slideWidth,
-                slideHeight);
+                slideHeight,
+                isUpdateSelectedPreviewOnly: true);
+        }
+        #endregion
+
+        #region Binding funcs for slider
+        public void BindStyleToSlider()
+        {
+            if (!IsAbleToBindProperty()) return;
+
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var propName = GetPropertyName(currentCategory);
+            var propHandler = PropHandlerFactory.GetSliderPropHandler(propName);
+            var sliderProperties = propHandler.GetSliderProperties(styleOption);
+            SelectedSliderValue.Number = sliderProperties.Value;
+            SelectedSliderMaximum.Number = sliderProperties.Maximum;
+            SelectedSliderTickFrequency.Number = sliderProperties.TickFrequency;
+        }
+
+        public void BindSelectedSliderValue(Slide contentSlide, float slideWidth, float slideHeight)
+        {
+            BindSliderValueToStyle(SelectedSliderValue.Number);
+            BindSliderValueToVariant(SelectedSliderValue.Number);
+            if (View.IsDisplayDefaultPicture())
+            {
+                UpdatePreviewImages(
+                    View.CreateDefaultPictureItem(),
+                    contentSlide,
+                    slideWidth,
+                    slideHeight,
+                    isUpdateSelectedPreviewOnly: true);
+                BindStyleToSlider();
+            }
+            else
+            {
+                UpdatePreviewImages(
+                    ImageSelectionListSelectedItem.ImageItem ??
+                    View.CreateDefaultPictureItem(),
+                    contentSlide,
+                    slideWidth,
+                    slideHeight,
+                    isUpdateSelectedPreviewOnly: true);
+            }
         }
         #endregion
 
@@ -154,6 +199,26 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
         }
 
+        private void BindSliderValueToStyle(int value)
+        {
+            if (!IsAbleToBindProperty()) return;
+
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var propName = GetPropertyName(currentCategory);
+            PropHandlerFactory.GetSliderPropHandler(propName).BindStyleOption(styleOption, value);
+        }
+
+        private void BindSliderValueToVariant(int value)
+        {
+            if (!IsAbleToBindProperty()) return;
+
+            var currentCategory = CurrentVariantCategory.Text;
+            var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
+            var propName = GetPropertyName(currentCategory);
+            PropHandlerFactory.GetSliderPropHandler(propName).BindStyleVariant(styleVariant, value);
+        }
+
         private bool IsAbleToBindProperty()
         {
             return !(StylesVariationListSelectedId.Number < 0
@@ -162,7 +227,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private string GetPropertyName(string categoryName)
         {
-            return categoryName.Replace(" ", string.Empty);
+            var propName = categoryName.Replace(" ", string.Empty);
+
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            if ((styleOption.IsUseFrostedGlassBannerStyle && categoryName.Contains(TextCollection.PictureSlidesLabText.BannerHasEffect))
+                || (styleOption.IsUseFrostedGlassTextBoxStyle && categoryName.Contains(TextCollection.PictureSlidesLabText.TextBoxHasEffect)))
+            {
+                propName = propName.Insert(0, "FrostedGlass");
+            }
+
+            return propName;
         }
         #endregion
     }
