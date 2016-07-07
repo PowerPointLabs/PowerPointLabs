@@ -87,7 +87,9 @@ namespace PowerPointLabs
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-            
+
+            caption = UpdateCaptions(caption);
+
             Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
                 slideWidth, 100);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
@@ -102,6 +104,11 @@ namespace PowerPointLabs
             textBox.Top = slideHeight - textBox.Height;
             return textBox;
         }
+
+        private static string UpdateCaptions(string caption)
+        {
+            return caption;
+        } 
 
         public static void EmbedCaptionsOnCurrentSlide()
         {
