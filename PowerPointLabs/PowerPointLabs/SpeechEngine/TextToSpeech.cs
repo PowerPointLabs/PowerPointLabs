@@ -26,7 +26,7 @@ namespace PowerPointLabs.SpeechEngine
             PromptToAudio.Speak(builder);
         }
 
-        public static string ReadSpelledOutWord(String textToSpeak)
+        public static string ReadSpelledOutWord(string textToSpeak)
         {
             string space = " ";
             var textToSpeakList = textToSpeak.Split(space.ToCharArray()[0]);

@@ -107,7 +107,75 @@ namespace PowerPointLabs
 
         private static string UpdateCaptions(string caption)
         {
-            return caption;
+            string space = " ";
+            var textToSpeakList = caption.Split(space.ToCharArray()[0]);
+            string newTextCaption = "";
+            bool isSpell = false;
+
+            for (int i = 0; i < textToSpeakList.Length; i++)
+            {
+                var thisWord = textToSpeakList[i];
+                var charList = thisWord.ToCharArray();
+
+                if (thisWord.StartsWith("[spell]") && (!thisWord.Equals("[spell]")))
+                {
+                    if (!thisWord.Contains("[/]"))
+                    {
+                        isSpell = true;
+                        thisWord = thisWord.Substring(7);
+                        charList = thisWord.ToCharArray();
+                    }
+                }
+
+                if (thisWord.StartsWith("[/]"))
+                {
+                    thisWord = thisWord.Substring(3);
+                    isSpell = false;
+                }
+                else if (thisWord.Contains("[/]"))
+                {
+                    if (thisWord.StartsWith("[spell]"))
+                    {
+                        thisWord = thisWord.Substring(7);
+                    }
+
+                    isSpell = false;
+                    string endS = "[/]";
+                    var thisWordList = thisWord.Split(endS.ToCharArray());
+                    var thisCharList = thisWordList[0].ToCharArray();
+                    thisWord = "";
+                    for (int j = 0; j < thisCharList.Length; j++)
+                    {
+                        var thisChar = thisCharList[j];
+                        thisWord = thisWord + " " + thisChar.ToString();
+                    }
+
+                    for (int j = 1; j < thisWordList.Length; j++)
+                    {
+                        thisWord = thisWord + " " + thisWordList[j].ToString();
+                    }
+                }
+
+                if (isSpell)
+                {
+                    thisWord = "";
+                    for (int j = 0; j < charList.Length; j++)
+                    {
+                        var thisChar = charList[j];
+                        thisWord = thisWord + " " + thisChar.ToString();
+                    }
+                }
+
+                if (thisWord.Equals("[spell]"))
+                {
+                    thisWord = "";
+                    isSpell = true;
+                }
+
+                newTextCaption = newTextCaption + " " + thisWord;
+            }
+
+            return newTextCaption;
         } 
 
         public static void EmbedCaptionsOnCurrentSlide()
