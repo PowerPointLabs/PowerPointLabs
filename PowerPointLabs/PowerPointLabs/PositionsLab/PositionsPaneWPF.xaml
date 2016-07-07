@@ -111,7 +111,7 @@
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </ToggleButton>
             <TextBlock x:Name="rotateTextBlock" HorizontalAlignment="Left" Margin="18,560,0,0" TextWrapping="Wrap" Text="Rotate" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <ToggleButton ToolTip="Duplicate the object first and adjusts the rate of rotation for object" x:Name="duplicateRotationButton" HorizontalAlignment="Left" Margin="86,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Checked="DuplicateRotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <ToggleButton ToolTip="Duplicate the object first and adjusts the rate of rotation for object" x:Name="duplicateRotationButton" HorizontalAlignment="Left" Margin="86,515,0,0" VerticalAlignment="Top" Width="60" Height="45" Checked="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\DuplicateRotateIcon.png"/>
             </ToggleButton>
             <TextBlock x:Name="duplicateRotateTextBlock" HorizontalAlignment="Left" Margin="86,560,0,0" TextWrapping="Wrap" Text="Duplicate and Rotate" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>

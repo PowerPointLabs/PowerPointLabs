@@ -9,9 +9,8 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
-using Media = System.Windows.Media;
-using System.Diagnostics;
 using System.Windows.Input;
+using System.Windows.Controls.Primitives;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -43,10 +42,6 @@ namespace PowerPointLabs.PositionsLab
         private PreviewCallBack _previewCallBack;
         private static Dictionary<int, PositionShapeProperties> allShapePos = new Dictionary<int, PositionShapeProperties>();
 
-        //Brushes for highlighting buttons
-        private Media.SolidColorBrush lightBlueBrush;
-        private Media.SolidColorBrush darkBlueBrush;
-
         //Variables for lock axis
         private const int Left = 0;
         private const int Top = 1;
@@ -61,6 +56,9 @@ namespace PowerPointLabs.PositionsLab
         private static List<Shape> _allShapesInSlide = new List<Shape>();
         private static System.Drawing.Point _prevMousePos;
 
+        //Variables for key binding
+        private const int CtrlProportion = 5;
+
         //Variables for settings
         private AlignSettingsDialog _alignSettingsDialog;
         private DistributeSettingsDialog _distributeSettingsDialog;
@@ -69,18 +67,6 @@ namespace PowerPointLabs.PositionsLab
         public PositionsPaneWpf()
         {
             PositionsLabMain.InitPositionsLab();
-            var lightBlue = new System.Windows.Media.Color();
-            lightBlue.R = 190;
-            lightBlue.G = 230;
-            lightBlue.B = 253;
-            lightBlue.A = 255;
-            
-            var darkBlue = new System.Windows.Media.Color();
-            darkBlue.R = 60;
-            darkBlue.G = 127;
-            darkBlue.B = 177;
-            darkBlue.A = 255;
-
             InitializeComponent();
             InitializeHotKeys();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
@@ -89,39 +75,55 @@ namespace PowerPointLabs.PositionsLab
         
         private void InitializeHotKeys()
         {
-            Action<Native.VirtualKey, System.Windows.Controls.Primitives.ToggleButton, Action<bool, bool>, bool> bindHotKeys =
-                (key, button, action, direction) =>
+            var buttonActionMapping = new Dictionary<ToggleButton, Action<bool, bool>>();
+            buttonActionMapping.Add(rotationButton, RotateSlightly);
+            buttonActionMapping.Add(duplicateRotationButton, RotateSlightly);
+
+            Action<Native.VirtualKey, bool> bindHotKeys =
+                (key, direction) =>
                 {
-                    PPKeyboard.AddKeydownAction(key, RunOnlyWhenActivated(button, () => action(direction, true)));
-                    PPKeyboard.AddKeydownAction(key, RunOnlyWhenActivated(button, () => action(direction, false)), ctrl: true);
+                    PPKeyboard.AddKeydownAction(key, RunOnlyWhenActivated(buttonActionMapping, direction, true));
+                    PPKeyboard.AddKeydownAction(key, RunOnlyWhenActivated(buttonActionMapping, direction, false), ctrl: true);
                 };
 
-            bindHotKeys(Native.VirtualKey.VK_LEFT, rotationButton, RotateSlightly, true);
-            bindHotKeys(Native.VirtualKey.VK_UP, rotationButton, RotateSlightly, true);
-            bindHotKeys(Native.VirtualKey.VK_RIGHT, rotationButton, RotateSlightly, false);
-            bindHotKeys(Native.VirtualKey.VK_DOWN, rotationButton, RotateSlightly, false);
+            bindHotKeys(Native.VirtualKey.VK_LEFT, false);
+            bindHotKeys(Native.VirtualKey.VK_UP, false);
+            bindHotKeys(Native.VirtualKey.VK_RIGHT, true);
+            bindHotKeys(Native.VirtualKey.VK_DOWN, true);
         }
 
-        private Func<bool> RunOnlyWhenActivated(System.Windows.Controls.Primitives.ToggleButton button, Action action)
+        private Func<bool> RunOnlyWhenActivated(Dictionary<ToggleButton, Action<bool, bool>> buttonActionMapping, bool direction, bool isLarge)
         {
             return () =>
             {
                 var positionsPane = this.GetTaskPane(typeof(PositionsPane));
-                if (positionsPane != null && positionsPane.Visible && (bool)button.IsChecked)
+                if (positionsPane == null || !positionsPane.Visible)
                 {
-                    action();
-                    return true;
+                    return false;
                 }
+
+                foreach (var mapping in buttonActionMapping)
+                {
+                    var button = mapping.Key;
+                    var action = mapping.Value;
+
+                    if ((bool)button.IsChecked)
+                    {
+                        action(direction, isLarge);
+                        return true;
+                    }
+                }
+
                 return false;
             };
         }
         
-        private void RotateSlightly(bool isAntiClockwise, bool isLarge)
+        private void RotateSlightly(bool isClockwise, bool isLarge)
         {
-            var angle = (isAntiClockwise) ? -1f : 1f;
+            var angle = (isClockwise) ? 1f : -1f;
             if (isLarge)
             {
-                angle *= 5;
+                angle *= CtrlProportion;
             }
 
             PositionsLabMain.Rotate(_shapesToBeRotated, _refPoint, angle);
@@ -274,10 +276,11 @@ namespace PowerPointLabs.PositionsLab
         private void RotationButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+            var button = (ToggleButton)sender;
 
             if (noShapesSelected)
             {
-                rotationButton.IsChecked = false;
+                button.IsChecked = false;
                 ShowErrorMessageBox(ErrorMessageFewerThanTwoSelection);
                 return;
             }
@@ -286,7 +289,7 @@ namespace PowerPointLabs.PositionsLab
 
             if (selectedShapes.Count <= 1)
             {
-                rotationButton.IsChecked = false;
+                button.IsChecked = false;
                 ShowErrorMessageBox(ErrorMessageFewerThanTwoSelection);
                 return;
             }
@@ -299,14 +302,9 @@ namespace PowerPointLabs.PositionsLab
             _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
             _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
 
-            _dispatcherTimer.Tick += RotationHandler;
+            StartRotationMode();
 
-            _leftMouseUpListener = new LMouseUpListener();
-            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
-
-            _leftMouseDownListener = new LMouseDownListener();
-            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
-            
+            // for key binding to work when select shapes first, then open panel and click button
             PPKeyboard.SetSlideViewWindowFocused();
         }
 
@@ -333,7 +331,11 @@ namespace PowerPointLabs.PositionsLab
         {
             try
             {
-                if (rotationButton.IsMouseOver)
+                var button = ((bool)rotationButton.IsChecked) ? rotationButton :
+                             ((bool)duplicateRotationButton.IsChecked) ? duplicateRotationButton
+                                                                       : null;
+
+                if (button.IsMouseOver)
                 {
                     DisableRotationMode();
                     return;
@@ -345,7 +347,7 @@ namespace PowerPointLabs.PositionsLab
                 if (selectedShape == null)
                 {
                     DisableRotationMode();
-                    rotationButton.IsChecked = false;
+                    button.IsChecked = false;
                     return;
                 }
 
@@ -355,7 +357,7 @@ namespace PowerPointLabs.PositionsLab
                 if (!isShapeToBeRotated && !isRefPoint)
                 {
                     DisableRotationMode();
-                    rotationButton.IsChecked = false;
+                    button.IsChecked = false;
                     return;
                 }
 
@@ -367,6 +369,17 @@ namespace PowerPointLabs.PositionsLab
                     return;
                 }
 
+                if (button == duplicateRotationButton)
+                {
+                    foreach (var currentShape in _shapesToBeRotated)
+                    {
+                        var duplicatedShape = currentShape.Duplicate()[1];
+                        duplicatedShape.Left -= 12;
+                        duplicatedShape.Top -= 12;
+                        Graphics.MoveZToJustBehind(duplicatedShape, currentShape);
+                    }
+                }
+
                 _prevMousePos = p;
                 _dispatcherTimer.Start();
             }
@@ -374,93 +387,6 @@ namespace PowerPointLabs.PositionsLab
             {
                 Logger.LogException(ex, "Rotation");
             }
-        }
-
-        void _leftMouseDownListener_DuplicateRotation(object sender, SysMouseEventInfo e)
-        {
-            try
-            {
-                if (duplicateRotationButton.IsMouseOver)
-                {
-                    DisableRotationMode();
-                    return;
-                }
-
-                var p = System.Windows.Forms.Control.MousePosition;
-                var selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
-
-                if (selectedShape == null)
-                {
-                    DisableRotationMode();
-                    return;
-                }
-
-                var isShapeToBeRotated = _shapesToBeRotated.Contains(selectedShape);
-                var isRefPoint = _refPoint.Id == selectedShape.Id;
-
-                if (!isShapeToBeRotated && !isRefPoint)
-                {
-                    DisableRotationMode();
-                    return;
-                }
-
-                this.StartNewUndoEntry();
-
-                if (isRefPoint)
-                {
-                    this.GetCurrentSelection().Unselect();
-                    return;
-                }
-
-                _prevMousePos = p;
-                _dispatcherTimer.Start();
-                foreach (var currentShape in _shapesToBeRotated)
-                {
-                    var duplicatedShape = currentShape.Duplicate();
-                    duplicatedShape.Left -= 12;
-                    duplicatedShape.Top -= 12;
-                    duplicatedShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex, "Rotation");
-            }
-        }
-
-        private void DuplicateRotationButton_Click(object sender, RoutedEventArgs e)
-        {
-            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
-
-            if (noShapesSelected)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-
-            var selectedShapes = this.GetCurrentSelection().ShapeRange;
-
-            if (selectedShapes.Count <= 1)
-            {
-                ShowErrorMessageBox(ErrorMessageFewerThanTwoSelection);
-                return;
-            }
-
-            ClearAllEventHandlers();
-
-            var currentSlide = this.GetCurrentSlide();
-
-            _refPoint = selectedShapes[1];
-            _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
-            _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
-
-            _dispatcherTimer.Tick += RotationHandler;
-
-            _leftMouseUpListener = new LMouseUpListener();
-            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
-
-            _leftMouseDownListener = new LMouseDownListener();
-            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_DuplicateRotation;
         }
 
         private void LockAxisButton_Click(object sender, RoutedEventArgs e)
@@ -469,6 +395,7 @@ namespace PowerPointLabs.PositionsLab
 
             if (noShapesSelected)
             {
+                lockAxisButton.IsChecked = false;
                 ShowErrorMessageBox(ErrorMessageNoSelection);
                 return;
             }
@@ -520,6 +447,12 @@ namespace PowerPointLabs.PositionsLab
         {
             try
             {
+                if (lockAxisButton.IsMouseOver)
+                {
+                    DisableLockAxisMode();
+                    return;
+                }
+
                 var p = System.Windows.Forms.Control.MousePosition;
                 var currentSlide = this.GetCurrentSlide();
                 var selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
@@ -527,6 +460,7 @@ namespace PowerPointLabs.PositionsLab
                 if (selectedShape == null)
                 {
                     DisableLockAxisMode();
+                    lockAxisButton.IsChecked = false;
                     return;
                 }
 
@@ -535,6 +469,7 @@ namespace PowerPointLabs.PositionsLab
                 if (!isShapeToBeMoved)
                 {
                     DisableLockAxisMode();
+                    lockAxisButton.IsChecked = false;
                     return;
                 }
 
@@ -954,6 +889,17 @@ namespace PowerPointLabs.PositionsLab
             _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
         }
 
+        private void StartRotationMode()
+        {
+            _dispatcherTimer.Tick += RotationHandler;
+
+            _leftMouseUpListener = new LMouseUpListener();
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_Rotation;
+
+            _leftMouseDownListener = new LMouseDownListener();
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_Rotation;
+        }
+
         private void DisableRotationMode()
         {
             ClearAllEventHandlers();
@@ -979,9 +925,6 @@ namespace PowerPointLabs.PositionsLab
             ClearAllEventHandlers();
             _shapesToBeMoved = null;
             _initialMousePos = new System.Drawing.Point();
-
-            lockAxisButton.Background = null;
-            lockAxisButton.BorderBrush = null;
         }
 
         #region Error Handling
