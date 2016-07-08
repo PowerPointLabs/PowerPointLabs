@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.7.6</ApplicationVersion>
+    <ApplicationVersion>2.8.7.7</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -1357,6 +1357,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\EffectsLab\BlurSelected.png" />
