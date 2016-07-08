@@ -111,6 +111,7 @@ namespace PowerPointLabs
             var textToSpeakList = caption.Split(space.ToCharArray()[0]);
             string newTextCaption = "";
             bool isSpell = false;
+            bool isEnd = false;
 
             for (int i = 0; i < textToSpeakList.Length; i++)
             {
@@ -121,7 +122,6 @@ namespace PowerPointLabs
                 {
                     if (!thisWord.Contains("[/]"))
                     {
-                        isSpell = true;
                         thisWord = thisWord.Substring(7);
                         charList = thisWord.ToCharArray();
                     }
@@ -130,7 +130,7 @@ namespace PowerPointLabs
                 if (thisWord.StartsWith("[/]"))
                 {
                     thisWord = thisWord.Substring(3);
-                    isSpell = false;
+                    isEnd = true;
                 }
                 else if (thisWord.Contains("[/]"))
                 {
@@ -138,32 +138,8 @@ namespace PowerPointLabs
                     {
                         thisWord = thisWord.Substring(7);
                     }
-
-                    isSpell = false;
                     string endS = "[/]";
-                    var thisWordList = thisWord.Split(endS.ToCharArray());
-                    var thisCharList = thisWordList[0].ToCharArray();
-                    thisWord = "";
-                    for (int j = 0; j < thisCharList.Length; j++)
-                    {
-                        var thisChar = thisCharList[j];
-                        thisWord = thisWord + " " + thisChar.ToString();
-                    }
-
-                    for (int j = 1; j < thisWordList.Length; j++)
-                    {
-                        thisWord = thisWord + " " + thisWordList[j].ToString();
-                    }
-                }
-
-                if (isSpell)
-                {
-                    thisWord = "";
-                    for (int j = 0; j < charList.Length; j++)
-                    {
-                        var thisChar = charList[j];
-                        thisWord = thisWord + " " + thisChar.ToString();
-                    }
+                    thisWord = thisWord.Replace(endS, "");
                 }
 
                 if (thisWord.Equals("[spell]"))
@@ -172,7 +148,16 @@ namespace PowerPointLabs
                     isSpell = true;
                 }
 
-                newTextCaption = newTextCaption + " " + thisWord;
+                if (isSpell || isEnd)
+                {
+                    newTextCaption = newTextCaption + thisWord;
+                    isSpell = false;
+                    isEnd = false;
+                }
+                else
+                {
+                    newTextCaption = newTextCaption + " " + thisWord;
+                }
             }
 
             return newTextCaption;
