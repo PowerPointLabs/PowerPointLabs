@@ -14,7 +14,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             var result = GetOptionsWithSuitableFontColor();
             foreach (var styleOption in result)
             {
-                styleOption.Transparency = 35;
+                styleOption.OverlayTransparency = 35;
                 styleOption.FontFamily = "Trebuchet MS";
             }
             return UpdateStyleName(result,
@@ -27,7 +27,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             {
                 StyleName = TextCollection.PictureSlidesLabText.StyleNameOverlay,
                 IsUseOverlayStyle = true,
-                Transparency = 35,
+                OverlayTransparency = 35,
                 OverlayColor = "#007FFF", // blue
                 IsUseSpecialEffectStyle = true,
                 SpecialEffect = 0,

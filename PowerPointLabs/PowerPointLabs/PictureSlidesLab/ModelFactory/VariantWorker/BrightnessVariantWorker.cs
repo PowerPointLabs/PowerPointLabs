@@ -20,56 +20,56 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
                     {"OptionName", "140% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#FFFFFF"},
-                    {"Transparency", 60}
+                    {"OverlayTransparency", 60}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "120% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#FFFFFF"},
-                    {"Transparency", 80}
+                    {"OverlayTransparency", 80}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "100% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 100}
+                    {"OverlayTransparency", 100}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "90% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 90}
+                    {"OverlayTransparency", 90}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "80% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 80}
+                    {"OverlayTransparency", 80}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "70% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 70}
+                    {"OverlayTransparency", 70}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "60% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 60}
+                    {"OverlayTransparency", 60}
                 }),
                 new StyleVariant(new Dictionary<string, object>
                 {
                     {"OptionName", "50% Brightness"},
                     {"IsUseOverlayStyle", true},
                     {"OverlayColor", "#000000"},
-                    {"Transparency", 50}
+                    {"OverlayTransparency", 50}
                 })
             };
         }
