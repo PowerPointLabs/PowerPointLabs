@@ -576,8 +576,12 @@ namespace PowerPointLabs.PositionsLab
                 var normalX = directionX / vectorLength;
                 var normalY = directionY / vectorLength;
 
-                if ((_initialCenter[i].X >= origin.X && _initialMousePos.X >= origin.X)
-                    || (_initialCenter[i].X < origin.X && _initialMousePos.X >= origin.X))
+                if (_initialCenter[i].X == origin.X)
+                {
+                    s.Top = _initialPos[i, Top] + diffY;
+                }
+                else if ((_initialCenter[i].X > origin.X && _initialMousePos.X > origin.X)
+                    || (_initialCenter[i].X < origin.X && _initialMousePos.X > origin.X))
                 {
                     s.Left = _initialPos[i, Left] + diffX * (float)normalX;
                     s.Top = _initialPos[i, Top] + diffX * (float)normalY;
