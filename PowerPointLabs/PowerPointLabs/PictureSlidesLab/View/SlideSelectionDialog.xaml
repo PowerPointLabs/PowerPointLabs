@@ -84,7 +84,7 @@
             </Grid.ColumnDefinitions>
             <Button ToolTip="Previous" Click="PrevButton_OnClick" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{DynamicResource MetroCircleButtonStyle}" Name="PrevButton" VerticalAlignment="Center" Content="&lt;"></Button>
             <Button ToolTip="Next" Click="NextButton_OnClick" Height="30" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Style="{DynamicResource MetroCircleButtonStyle}" Name="NextButton" Grid.Column="2" VerticalAlignment="Center" Content="&gt;"></Button>
-            <ListBox MouseDoubleClick="SlideListBox_OnMouseDoubleClick" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Visible"  SelectionMode="Single" SelectionChanged="SlideListBox_OnSelectionChanged" Name="SlideListBox" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Path=SlideList, Mode=TwoWay}">
+            <ListBox MouseDoubleClick="SlideListBox_OnMouseDoubleClick" Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Visible"  SelectionMode="Single" SelectionChanged="SlideListBox_OnSelectionChanged" Loaded="SlideListBox_OnLoaded" Name="SlideListBox" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Path=SlideList, Mode=TwoWay}">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True" VerticalAlignment="Center" />

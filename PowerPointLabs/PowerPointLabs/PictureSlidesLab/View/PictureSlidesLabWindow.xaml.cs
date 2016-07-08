@@ -100,7 +100,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 InitViewModel();
                 InitGotoSlideDialog();
                 InitLoadFromSlideDialog();
-                InitLoadUserCustomizedStyleDialog();
+                InitLoadCustomStyleDialog();
                 InitErrorTextDialog();
                 InitDragAndDrop();
                 // leave some time for data binding to finish
@@ -593,7 +593,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     Logger.Log("Current slide is null");
                     GotoSlideButton.IsEnabled = false;
                     LoadFromSlideButton.IsEnabled = false;
-                    LoadUserCustomizedStyleButton.IsEnabled = false;
+                    LoadCustomStyleButton.IsEnabled = false;
                     ViewModel.StylesPreviewList.Clear();
                     ViewModel.StylesVariationList.Clear();
                 }
@@ -602,7 +602,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     GotoSlideButton.IsEnabled = true;
                     LoadFromSlideButton.IsEnabled = true;
-                    LoadUserCustomizedStyleButton.IsEnabled = true;
+                    LoadCustomStyleButton.IsEnabled = true;
                     SetTimeout(() =>
                     {
                         // update preview images when slide no change
@@ -764,12 +764,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void MenuItemAddUserCustomizedStyle_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        private void MenuItemAddCustomStyle_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
         {
             var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
-            AddUserCustomizedStyle(StylesVariationListBox.SelectedIndex);
+            AddCustomStyle(StylesVariationListBox.SelectedIndex);
         }
 
         /// <summary>
@@ -981,29 +981,30 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void AddUserCustomizedStyle(int source)
+        private void AddCustomStyle(int source)
         {
-            var currentStyleOpton = ViewModel.GetStyleOption(source);
-            var userCustomizedStyle = GetUserCustomizedStyle(currentStyleOpton);
+            var currentStyle = ViewModel.GetStyleOption(source);
+            var currentCustomStyle = GetCustomStyle(currentStyle);
 
             var metroDialogSettings = new MetroDialogSettings
             {
-                DefaultText = (userCustomizedStyle == null) ? "" : userCustomizedStyle.OptionName
+                DefaultText = (currentCustomStyle == null) ? "" : currentCustomStyle.OptionName
             };
+
             this.ShowInputAsync("Add User-customized Style", "Style name", metroDialogSettings)
                 .ContinueWith(task =>
                 {
                     if (!string.IsNullOrEmpty(task.Result))
                     {
-                        if (userCustomizedStyle == null)
+                        if (currentCustomStyle == null)
                         {
-                            userCustomizedStyle = ConstructStyleFromStyleOption(currentStyleOpton);
-                            userCustomizedStyle.OptionName = task.Result;
-                            ViewModel.UserCustomizedStyles.Add(userCustomizedStyle);
+                            currentCustomStyle = ConstructStyleFromStyleOption(currentStyle);
+                            currentCustomStyle.OptionName = task.Result;
+                            ViewModel.CustomStyles.Add(currentCustomStyle);
                         }
                         else
                         {
-                            userCustomizedStyle.OptionName = task.Result;
+                            currentCustomStyle.OptionName = task.Result;
                         }
                     }
                 });
@@ -1057,7 +1058,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 StylesPreviewGrid.Visibility = Visibility.Visible;
                 GotoSlideButton.IsEnabled = true;
                 LoadFromSlideButton.IsEnabled = true;
-                LoadUserCustomizedStyleButton.IsEnabled = true;
+                LoadCustomStyleButton.IsEnabled = true;
             }
         }
 

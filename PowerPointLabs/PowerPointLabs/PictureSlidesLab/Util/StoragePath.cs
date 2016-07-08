@@ -14,7 +14,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
     {
         private const string PictureSlidesLabImagesList = "PictureSlidesLabImagesList";
         private const string PictureSlidesLabSettings = "PictureSlidesLabSettings";
-        private const string PictureSlidesLabUserCustomizedStyles = "PictureSlidesLabUserCustomizedStyles";
+        private const string PictureSlidesLabCustomStyles = "PictureSlidesLabCustomStyles";
 
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_pictureSlidesLab" + @"\";
 
@@ -72,7 +72,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 filesInUse.Add(AggregatedFolder + PictureSlidesLabImagesList);
                 filesInUse.Add(AggregatedFolder + PictureSlidesLabSettings);
-                filesInUse.Add(AggregatedFolder + PictureSlidesLabUserCustomizedStyles);
+                filesInUse.Add(AggregatedFolder + PictureSlidesLabCustomStyles);
                 filesInUse.Add(LoadingImgPath);
                 filesInUse.Add(ChoosePicturesImgPath);
                 filesInUse.Add(NoPicturePlaceholderImgPath);
@@ -196,7 +196,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                using (var writer = new StreamWriter(GetPath(PictureSlidesLabUserCustomizedStyles)))
+                using (var writer = new StreamWriter(GetPath(PictureSlidesLabCustomStyles)))
                 {
                     var serializer = new XmlSerializer(styleOptions.GetType());
                     serializer.Serialize(writer, styleOptions);
@@ -205,7 +205,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "Failed to save Picture Slides Lab user-customized styles");
+                Logger.LogException(e, "Failed to save Picture Slides Lab custom styles");
             }
         }
 
@@ -282,11 +282,11 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         /// Load user-customized style list
         /// </summary>
         /// <returns></returns>
-        public static List<StyleOption> LoadUserCustomizedStyles()
+        public static List<StyleOption> LoadCustomStyles()
         {
             try
             {
-                using (var stream = File.OpenRead(GetPath(PictureSlidesLabUserCustomizedStyles)))
+                using (var stream = File.OpenRead(GetPath(PictureSlidesLabCustomStyles)))
                 {
                     var serializer = new XmlSerializer(typeof(List<StyleOption>));
                     var styleOptions = serializer.Deserialize(stream) as List<StyleOption>
@@ -296,7 +296,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "Failed to load Picture Slides Lab images list");
+                Logger.LogException(e, "Failed to load Picture Slides Lab custom styles");
                 return new List<StyleOption>();
             }
         }

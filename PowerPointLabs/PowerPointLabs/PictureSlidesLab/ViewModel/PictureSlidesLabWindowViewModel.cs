@@ -76,7 +76,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public Settings Settings { get; set; }
 
-        public List<StyleOption> UserCustomizedStyles { get; set; }
+        public List<StyleOption> CustomStyles { get; set; }
 
         #endregion
 
@@ -192,7 +192,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList.Add(CreateChoosePicturesItem());
 
             Settings = StoragePath.LoadSettings();
-            UserCustomizedStyles = StoragePath.LoadUserCustomizedStyles();
+            CustomStyles = StoragePath.LoadCustomStyles();
 
             if (StoragePath.IsFirstTimeUsage())
             {
@@ -244,7 +244,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList.RemoveAt(0);
             StoragePath.Save(ImageSelectionList);
             StoragePath.Save(Settings);
-            StoragePath.Save(UserCustomizedStyles);
+            StoragePath.Save(CustomStyles);
             Logger.Log("ViewModel clean up done");
         }
         #endregion

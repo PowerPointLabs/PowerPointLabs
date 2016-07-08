@@ -412,8 +412,8 @@
                 "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
             public const string ErrorNoEmbeddedStyleInfo =
                 "No Picture Slides Lab styles are detected for the selected slide.";
-            public const string ErrorNoUserCustomizedStyleInfo =
-                "No Picture Slides Lab user-customized styles detected.";
+            public const string ErrorNoCustomStyleInfo =
+                "No Picture Slides Lab custom styles detected.";
             public const string ErrorWhenInitialize =
                 "Failed to initialize Picture Slides Lab. Some functions may not work.";
 
@@ -424,6 +424,7 @@
             public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
             public const string InfoAddPictureCitationSlide = "Added successfully!";
             public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
+            public const string InfoDeleteCustomStyle = "Do you want to delete custom style \"{0}\"?";
         }
 
         #region Agenda Lab

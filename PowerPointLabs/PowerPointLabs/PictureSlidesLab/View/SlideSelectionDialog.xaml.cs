@@ -8,6 +8,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.WPF.Observable;
+using System.Windows.Media;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -37,6 +38,8 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private int _prevSlideIndex = -1;
 
         private int _nextSlideIndex = -1;
+
+        private bool _isLoadNextSlide = true;
 
         public int SelectedSlide { get; set; }
 
@@ -102,10 +105,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <summary>
         /// This method can only be called after dialog is fully initialized
         /// </summary>
+        /// <param name="imageItems"></param>
         /// <param name="title"></param>
         public SlideSelectionDialog Init(System.Collections.Generic.List<ImageItem> imageItems, string title)
         {
             DialogTitleProperty.Text = title;
+            _isLoadNextSlide = false;
             Dispatcher.Invoke(new Action(() =>
             {
                 SlideList.Clear();
@@ -116,23 +121,23 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 SlideList.Add(imageItem);
             }
 
-            var selectedId = SelectCurrentSlide();
+            SelectCurrentSlide();
             SlideListBox.ScrollIntoView(SlideListBox.SelectedItem);
-            
-            if (selectedId == 0)
+
+            if (SlideListBox.SelectedIndex == 0)
             {
-                _prevSlideIndex = selectedId;
-                _nextSlideIndex = selectedId + 1;
+                _prevSlideIndex = SlideListBox.SelectedIndex;
+                _nextSlideIndex = SlideListBox.SelectedIndex + 1;
             }
-            else if (selectedId == SlideList.Count - 1)
+            else if (SlideListBox.SelectedIndex == SlideList.Count - 1)
             {
-                _prevSlideIndex = selectedId - 1;
-                _nextSlideIndex = selectedId;
+                _prevSlideIndex = SlideListBox.SelectedIndex - 1;
+                _nextSlideIndex = SlideListBox.SelectedIndex;
             }
             else
             {
-                _prevSlideIndex = selectedId - 1;
-                _nextSlideIndex = selectedId + 1;
+                _prevSlideIndex = SlideListBox.SelectedIndex - 1;
+                _nextSlideIndex = SlideListBox.SelectedIndex + 1;
             }
 
             return this;
@@ -148,19 +153,18 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsOpen = false;
         }
 
-        private int SelectCurrentSlide()
+        private void SelectCurrentSlide()
         {
-            for (int i = 0; i < SlideList.Count; i++)
+            foreach (var slide in SlideList)
             {
-                if (SlideList[i].Tooltip.Contains("Current"))
+                if (slide.Tooltip.Contains("Current"))
                 {
-                    SlideListBox.SelectedItem = SlideList[i];
-                    return i;
+                    SlideListBox.SelectedItem = slide;
+                    return;
                 }
             }
 
             SlideListBox.SelectedItem = SlideList[0];
-            return 0;
         }
 
         private void AddSlideThumbnail(PowerPointSlide slide, int pos = -1, bool isCurrentSlide = false)
@@ -204,6 +208,39 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private int GetPreviewWidth()
         {
             return (int)(this.GetCurrentPresentation().SlideWidth / this.GetCurrentPresentation().SlideHeight * PreviewHeight);
+        }
+
+        private Visual GetDescendantByType(Visual element, Type type)
+        {
+            if (element == null)
+            {
+                return null;
+            }
+
+            if (element.GetType() == type)
+            {
+                return element;
+            }
+
+            Visual foundElement = null;
+
+            if (element is FrameworkElement)
+            {
+                (element as FrameworkElement).ApplyTemplate();
+            }
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                var visual = VisualTreeHelper.GetChild(element, i) as Visual;
+                foundElement = GetDescendantByType(visual, type);
+
+                if (foundElement != null)
+                {
+                    break;
+                }
+            }
+
+            return foundElement;
         }
 
         private void GotoSlideButton_OnClick(object sender, RoutedEventArgs e)
@@ -270,6 +307,17 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     SelectedSlide = SlideListBox.SelectedIndex;
                 }
+            }
+        }
+
+        private void SlideListBox_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (SlideListBox.SelectedItem != null)
+            {
+                var scrollViewer = GetDescendantByType(SlideListBox, typeof(ScrollViewer)) as ScrollViewer;
+                var itemCenter = scrollViewer.ExtentWidth / SlideListBox.Items.Count * (SlideListBox.SelectedIndex + 0.5);
+                scrollViewer.ScrollToHorizontalOffset(Math.Min(scrollViewer.ExtentWidth - scrollViewer.ViewportWidth,
+                    Math.Max(0, itemCenter - scrollViewer.ViewportWidth / 2)));
             }
         }
 
@@ -348,7 +396,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
             else
             {
-                LoadNextSlides();
+                if (_isLoadNextSlide)
+                {
+                    LoadNextSlides();
+                }
             }
         }
 
