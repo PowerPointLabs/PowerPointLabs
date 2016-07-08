@@ -48,7 +48,7 @@ namespace PowerPointLabs.PositionsLab
             ExtremeShapes
         }
 
-        public enum DistributeAngleReferenceObject
+        public enum DistributeRadialReferenceObject
         {
             AtSecondShape,
             SecondThirdShape
@@ -66,11 +66,11 @@ namespace PowerPointLabs.PositionsLab
             None,
             AlignLeft,
             AlignCenter,
-            AlignRight,
+            AlignRight
         }
 
         public static DistributeReferenceObject DistributeReference { get; private set; }
-        public static DistributeAngleReferenceObject DistributeAngleReference { get; private set; }
+        public static DistributeRadialReferenceObject DistributeRadialReference { get; private set; }
         public static DistributeSpaceReferenceObject DistributeSpaceReference { get; private set; }
         public static GridAlignment DistributeGridAlignment { get; private set; }
         public static float MarginTop { get; private set; }
@@ -128,6 +128,15 @@ namespace PowerPointLabs.PositionsLab
 
         // Adjoin Variables
         public static bool AlignShapesToBeAdjoined { get; private set; }
+
+        // Radial Variables
+        public enum RadialShapeOrientationObject
+        {
+            Fixed,
+            Dynamic
+        }
+
+        public static RadialShapeOrientationObject RadialShapeOrientation { get; private set; }
 
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
 
@@ -208,19 +217,19 @@ namespace PowerPointLabs.PositionsLab
         }
 
         /// <summary>
-        /// Tells the Position Lab to use the second selected shape as the starting point for Distribute angle method
+        /// Tells the Position Lab to use the second selected shape as the starting point for Distribute Radial method
         /// </summary>
         public static void DistributeReferAtSecondShape()
         {
-            DistributeAngleReference = DistributeAngleReferenceObject.AtSecondShape;
+            DistributeRadialReference = DistributeRadialReferenceObject.AtSecondShape;
         }
 
         /// <summary>
-        /// Tells the Position Lab to use the second and third shape as the boundary points for Distribute angle method
+        /// Tells the Position Lab to use the second and third shape as the boundary points for Distribute Radial method
         /// </summary>
         public static void DistributeReferToSecondThirdShape()
         {
-            DistributeAngleReference = DistributeAngleReferenceObject.SecondThirdShape;
+            DistributeRadialReference = DistributeRadialReferenceObject.SecondThirdShape;
         }
 
         /// <summary>
@@ -262,6 +271,16 @@ namespace PowerPointLabs.PositionsLab
         public static void SetDistributeMarginRight(float marginRight)
         {
             MarginRight = marginRight;
+        }
+
+        public static void RadialShapeOrientationToFixed()
+        {
+            RadialShapeOrientation = RadialShapeOrientationObject.Fixed;
+        }
+
+        public static void RadialShapeOrientationToDynamic()
+        {
+            RadialShapeOrientation = RadialShapeOrientationObject.Dynamic;
         }
 
         #endregion
@@ -2078,10 +2097,10 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void DistributeAngle(ShapeRange selectedShapes)
+        public static void DistributeRadial(ShapeRange selectedShapes)
         {
-            var isAtSecondShape = DistributeAngleReference == DistributeAngleReferenceObject.AtSecondShape;
-            var isSecondThirdShape = DistributeAngleReference == DistributeAngleReferenceObject.SecondThirdShape;
+            var isAtSecondShape = DistributeRadialReference == DistributeRadialReferenceObject.AtSecondShape;
+            var isSecondThirdShape = DistributeRadialReference == DistributeRadialReferenceObject.SecondThirdShape;
             var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
             var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
             
@@ -2219,7 +2238,7 @@ namespace PowerPointLabs.PositionsLab
                 endingAngle += angleBetweenShapes;
 
                 var rotationAngle = endingAngle - shapeAngleInfo.Angle;
-                Rotate(shapeAngleInfo.Shape, origin, rotationAngle, isKeepRotation: true);
+                Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
             }
         }
 
@@ -2278,7 +2297,7 @@ namespace PowerPointLabs.PositionsLab
                     if (rotationAngle > threshold || rotationAngle < -threshold)
                     {
                         isStable = false;
-                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle, isKeepRotation: true);
+                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
                     }
 
                     endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
@@ -2378,7 +2397,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Adjustment
 
-        public static void Rotate(Shape shape, Drawing.PointF origin, float angle, bool isKeepRotation = false)
+        public static void Rotate(Shape shape, Drawing.PointF origin, float angle)
         {
             var unrotatedCenter = Graphics.GetCenterPoint(shape);
             var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
@@ -2386,7 +2405,7 @@ namespace PowerPointLabs.PositionsLab
             shape.Left += (rotatedCenter.X - unrotatedCenter.X);
             shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
 
-            if (!isKeepRotation)
+            if (RadialShapeOrientation == RadialShapeOrientationObject.Dynamic)
             {
                 shape.Rotation = AddAngles(shape.Rotation, angle);
             }
@@ -3165,6 +3184,11 @@ namespace PowerPointLabs.PositionsLab
             DistributeSpaceByBoundaries();
         }
 
+        private static void InitDefaultRadialSettings()
+        {
+            RadialShapeOrientationToFixed();
+        }
+
         private static void InitDefaultSwapSettings()
         {
             IsSwapByClickOrder = false;
@@ -3178,6 +3202,7 @@ namespace PowerPointLabs.PositionsLab
             InitDefaultAlignSettings();
             InitDefaultAdjoinSettings();
             InitDefaultDistributeSettings();
+            InitDefaultRadialSettings();
             InitDefaultSwapSettings();
             InitDefaultShapesAngles();
         }

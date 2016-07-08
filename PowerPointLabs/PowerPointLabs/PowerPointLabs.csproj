@@ -558,6 +558,9 @@
     <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
       <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PositionsLab\ReorientSettingsDialog.xaml.cs">
+      <DependentUpon>ReorientSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PositionsLab\DistributeSettingsDialog.xaml.cs">
       <DependentUpon>DistributeSettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -1106,6 +1109,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PositionsLab\ReorientSettingsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PositionsLab\DistributeSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1365,7 +1372,7 @@
     <Resource Include="Resources\EffectsLab\BlurSelected.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\PositionsLab\DistributeAngleIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeRadialIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\LeftRotate.bmp" />

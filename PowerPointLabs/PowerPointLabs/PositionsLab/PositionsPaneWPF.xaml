@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
-             mc:Ignorable="d" Height="755" Width="310"
+             mc:Ignorable="d" Height="725" Width="310"
              KeyDown="PositionsPane_KeyDown" KeyUp="PositionsPane_KeyUp" FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,7 +21,7 @@
         <KeyBinding Key="LeftCtrl"/>
     </UserControl.InputBindings>
     <ScrollViewer>
-        <Grid VerticalAlignment="Top" Height="755" Width="300">
+        <Grid VerticalAlignment="Top" Height="725" Width="300">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="160" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="alignSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-2,0" VerticalAlignment="Top" Width="20" Height="20" Click="AlignSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
@@ -93,10 +93,10 @@
                 <Image Source="..\Resources\PositionsLab\DistributeGridIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="distributeGridTextBlock" HorizontalAlignment="Left" Margin="222,360,0,0" TextWrapping="Wrap" Text="Grid" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Equalize rate of rotation for objects within reference frame" x:Name="DistributeAngleButton" HorizontalAlignment="Left" Margin="18,380,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeAngleButton_Click" MouseEnter="DistributeAngleButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Image Source="..\Resources\PositionsLab\DistributeAngleIcon.png"/>
+            <WPF:ImageButton ToolTip="Equalize rate of rotation for objects within reference frame" x:Name="DistributeRadialButton" HorizontalAlignment="Left" Margin="18,380,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DistributeRadialButton_Click" MouseEnter="DistributeRadialButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\DistributeRadialIcon.png"/>
             </WPF:ImageButton>
-            <TextBlock x:Name="equalizeAngleTextBlock" HorizontalAlignment="Left" Margin="18,425,0,0" TextWrapping="Wrap" Text="Angle" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <TextBlock x:Name="distributeRadialTextBlock" HorizontalAlignment="Left" Margin="18,425,0,0" TextWrapping="Wrap" Text="Radial" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <Button ToolTip="Distribute objects along the edge of reference frame" x:Name="distributeAlongEdgeButton" Content="Edges" HorizontalAlignment="Left" Margin="18,255,0,0" VerticalAlignment="Top" Width="60" Height="45" Visibility="Hidden"/>
             <GroupBox x:Name="reorderGroupBox" Header="Reorder" HorizontalAlignment="Left" Margin="10,450,0,0" VerticalAlignment="Top" Height="95" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Reorder functions" x:Name="reorderSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorderSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
@@ -107,7 +107,11 @@
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="swapTextBlock" HorizontalAlignment="Left" Margin="18,525,0,0" TextWrapping="Wrap" Text="Swap" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,550,0,0" VerticalAlignment="Top" Height="170" Width="280"/>
+            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,550,0,0" VerticalAlignment="Top" Height="170" Width="280">
+                <WPF:ImageButton ToolTip="Opens the settings for Reorient functions" x:Name="reorientSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorientSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                    <Image Source="..\Resources\SettingsGear.png"/>
+                </WPF:ImageButton>
+            </GroupBox>
             <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
             </WPF:ImageButton>

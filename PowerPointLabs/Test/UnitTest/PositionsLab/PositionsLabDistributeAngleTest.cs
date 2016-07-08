@@ -61,7 +61,7 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabMain.DistributeSpaceByBoundaries();
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithEdgesSlide);
@@ -78,7 +78,7 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabMain.DistributeSpaceByCenter();
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithCenterSlide);
@@ -95,7 +95,7 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabMain.DistributeSpaceByBoundaries();
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleWithinSecondAndThirdWithEdgesSlide);
@@ -112,7 +112,7 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabMain.DistributeSpaceByCenter();
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleWithinSecondAndThirdWithCenterSlide);

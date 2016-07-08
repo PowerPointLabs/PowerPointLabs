@@ -10,7 +10,6 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Media = System.Windows.Media;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace PowerPointLabs.PositionsLab
@@ -63,10 +62,13 @@ namespace PowerPointLabs.PositionsLab
         private static List<Shape> _allShapesInSlide = new List<Shape>();
         private static System.Drawing.Point _prevMousePos;
 
+        private static PowerPoint.ShapeRange _selectedRange;
+
         //Variables for settings
         private AlignSettingsDialog _alignSettingsDialog;
         private DistributeSettingsDialog _distributeSettingsDialog;
         private ReorderSettingsDialog _reorderSettingsDialog;
+        private ReorientSettingsDialog _reorientSettingsDialog;
 
         public PositionsPaneWpf()
         {
@@ -226,9 +228,9 @@ namespace PowerPointLabs.PositionsLab
             }  
         }
 
-        private void DistributeAngleButton_Click(object sender, RoutedEventArgs e)
+        private void DistributeRadialButton_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, false, isConvertPPShape: false);
         }
 
@@ -268,6 +270,7 @@ namespace PowerPointLabs.PositionsLab
             _refPoint = selectedShapes[1];
             _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
             _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
+            _selectedRange = selectedShapes;
 
             _dispatcherTimer.Tick += RotationHandler;
 
@@ -302,6 +305,7 @@ namespace PowerPointLabs.PositionsLab
         void _leftMouseUpListener_Rotation(object sender, SysMouseEventInfo e)
         {
             _dispatcherTimer.Stop();
+            _selectedRange.Select();
         }
 
         void _leftMouseDownListener_Rotation(object sender, SysMouseEventInfo e)
@@ -414,6 +418,7 @@ namespace PowerPointLabs.PositionsLab
             _refPoint = selectedShapes[1];
             _shapesToBeRotated = ConvertShapeRangeToShapeList(selectedShapes, 2);
             _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
+            _selectedRange = selectedShapes;
 
             _dispatcherTimer.Tick += RotationHandler;
 
@@ -444,6 +449,7 @@ namespace PowerPointLabs.PositionsLab
 
             _shapesToBeMoved = ConvertShapeRangeToShapeList(selectedShapes, 1);
             _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
+            _selectedRange = selectedShapes;
 
             StartLockAxisMode();
         }
@@ -477,6 +483,7 @@ namespace PowerPointLabs.PositionsLab
         void _leftMouseUpListener_LockAxis(object sender, SysMouseEventInfo e)
         {
             _dispatcherTimer.Stop();
+            _selectedRange.Select();
         }
 
         void _leftMouseDownListener_LockAxis(object sender, SysMouseEventInfo e)
@@ -698,9 +705,9 @@ namespace PowerPointLabs.PositionsLab
             PreviewHandler();
         }
 
-        private void DistributeAngleButton_MouseEnter(object sender, MouseEventArgs e)
+        private void DistributeRadialButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeAngle(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, true, isConvertPPShape: false);
@@ -909,6 +916,19 @@ namespace PowerPointLabs.PositionsLab
                 _reorderSettingsDialog.Activate();
             }
         }
+
+        private void ReorientSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_reorientSettingsDialog == null || !_reorientSettingsDialog.IsOpen)
+            {
+                _reorientSettingsDialog = new ReorientSettingsDialog();
+                _reorientSettingsDialog.ShowDialog();
+            }
+            else
+            {
+                _reorientSettingsDialog.Activate();
+            }
+        }
         #endregion
 
         public static void ClearAllEventHandlers()
@@ -930,6 +950,7 @@ namespace PowerPointLabs.PositionsLab
         private void DisableRotationMode()
         {
             ClearAllEventHandlers();
+            _selectedRange = null;
             _refPoint = null;
             _shapesToBeRotated = new List<Shape>();
             _allShapesInSlide = new List<Shape>();
@@ -955,6 +976,7 @@ namespace PowerPointLabs.PositionsLab
         private void DisableLockAxisMode()
         {
             ClearAllEventHandlers();
+            _selectedRange = null;
             _shapesToBeMoved = null;
             _initialMousePos = new System.Drawing.Point();
 

@@ -51,7 +51,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeAtSecondShapeButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.AtSecondShape)
+            if (PositionsLabMain.DistributeRadialReference == PositionsLabMain.DistributeRadialReferenceObject.AtSecondShape)
             {
                 distributeAtSecondShapeButton.IsChecked = true;
             }
@@ -59,7 +59,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeToSecondThirdShapeButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.DistributeAngleReference == PositionsLabMain.DistributeAngleReferenceObject.SecondThirdShape)
+            if (PositionsLabMain.DistributeRadialReference == PositionsLabMain.DistributeRadialReferenceObject.SecondThirdShape)
             {
                 distributeToSecondThirdShapeButton.IsChecked = true;
             }
@@ -78,6 +78,22 @@ namespace PowerPointLabs.PositionsLab
             if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectCenter)
             {
                 distributeByShapeCenterButton.IsChecked = true;
+            }
+        }
+
+        private void RadialShapeOrientationFixedButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.RadialShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Fixed)
+            {
+                radialShapeOrientationFixedButton.IsChecked = true;
+            }
+        }
+
+        private void RadialShapeOrientationDynamicButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.RadialShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Dynamic)
+            {
+                radialShapeOrientationDynamicButton.IsChecked = true;
             }
         }
         #endregion
@@ -125,6 +141,17 @@ namespace PowerPointLabs.PositionsLab
             if (distributeByShapeCenterButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeSpaceByCenter();
+            }
+
+            // Checks for radial shape orientation
+            if (radialShapeOrientationFixedButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.RadialShapeOrientationToFixed();
+            }
+
+            if (radialShapeOrientationDynamicButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.RadialShapeOrientationToDynamic();
             }
 
             IsOpen = false;
