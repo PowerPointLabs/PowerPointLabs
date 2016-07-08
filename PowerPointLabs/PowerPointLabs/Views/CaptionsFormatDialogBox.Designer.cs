@@ -39,6 +39,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.boldBox = new System.Windows.Forms.CheckBox();
             this.italicBox = new System.Windows.Forms.CheckBox();
+            this.fillColor = new System.Windows.Forms.Panel();
+            this.fillColorDialog = new System.Windows.Forms.ColorDialog();
             this.SuspendLayout();
             // 
             // ok
@@ -182,5 +184,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox boldBox;
         private System.Windows.Forms.CheckBox italicBox;
+        private System.Windows.Forms.ComboBox font;
+        private System.Windows.Forms.Panel fillColor;
+        private System.Windows.Forms.ColorDialog fillColorDialog;
     }
 }
