@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
+using System.Collections;
 
 namespace PowerPointLabs.Views
 {
     public partial class CaptionsFormatDialogBox : Form
     {
-        public delegate void UpdateSettingsDelegate(int size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic, Color defaultFillColor);
+        public delegate void UpdateSettingsDelegate(string fontName, int size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic, Color defaultFillColor);
         public UpdateSettingsDelegate SettingsHandler;
 
         private Dictionary<String, MsoTextEffectAlignment> alignmentMapping = new Dictionary<string, MsoTextEffectAlignment>
@@ -31,12 +32,14 @@ namespace PowerPointLabs.Views
             this.ShowInTaskbar = false;
         }
 
-        public CaptionsFormatDialogBox(int defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultTextColor, bool defaultBlod, bool defaultItalic, Color defaultFillColor)
+        public CaptionsFormatDialogBox(ArrayList fontList, string defaultFontName, int defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultTextColor, bool defaultBlod, bool defaultItalic, Color defaultFillColor)
             : this()
         {
             this.textBox1.Text = defaultSize.ToString();
             String[] keys = alignmentMapping.Keys.ToArray();
             this.comboBox1.Items.AddRange(keys);
+            this.fontBox.DataSource = fontList;
+            this.fontBox.SelectedIndex = fontList.IndexOf(CaptionsFormat.defaultFont);
             MsoTextEffectAlignment[] values = alignmentMapping.Values.ToArray();
             this.comboBox1.SelectedIndex = Array.IndexOf(values, defaultAlignment);
             panel1.BackColor = defaultTextColor;
@@ -49,6 +52,9 @@ namespace PowerPointLabs.Views
         {
             ToolTip ttComboBox = new ToolTip();
             ttComboBox.SetToolTip(comboBox1, "The alignment of the Captions.");
+
+            ToolTip fontComboBox = new ToolTip();
+            fontComboBox.SetToolTip(fontBox, "The font of the text.");
         }
 
         private void TextBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -76,7 +82,7 @@ namespace PowerPointLabs.Views
         {
             string text = textBox1.Text;
 
-            SettingsHandler(Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked, fillColor.BackColor);
+            SettingsHandler(fontBox.Text, Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked, fillColor.BackColor);
             if (Ribbon1.HaveCaptions)
             {
                 NotesToCaptions.EmbedCaptionsOnSelectedSlides();

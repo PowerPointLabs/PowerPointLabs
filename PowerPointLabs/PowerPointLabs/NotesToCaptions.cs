@@ -97,13 +97,12 @@ namespace PowerPointLabs
             textBox.TextFrame.TextRange.Font.Bold = CaptionsFormat.defaultBold ? MsoTriState.msoTrue : MsoTriState.msoFalse;
             textBox.TextFrame.TextRange.Font.Italic = CaptionsFormat.defaultItalic ? MsoTriState.msoTrue : MsoTriState.msoFalse;
             textBox.TextFrame.TextRange.Font.Size = CaptionsFormat.defaultSize;
-            //textBox.TextFrame.TextRange.Font.Name = "";
+            textBox.TextFrame.TextRange.Font.Name = CaptionsFormat.defaultFont;
             System.Drawing.Color fillColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultFillColor.B,
                                                                            CaptionsFormat.defaultFillColor.G,
                                                                            CaptionsFormat.defaultFillColor.R);
             textBox.Fill.BackColor.RGB = fillColor.ToArgb();
             textBox.Fill.Transparency = 0.2f;
-
             System.Drawing.Color textColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultColor.B, 
                                                                            CaptionsFormat.defaultColor.G, 
                                                                            CaptionsFormat.defaultColor.R);

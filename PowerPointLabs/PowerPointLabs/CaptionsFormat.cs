@@ -15,5 +15,6 @@ namespace PowerPointLabs
         public static bool defaultBold = false;
         public static bool defaultItalic = false;
         public static Color defaultFillColor = Color.Black;
+        public static string defaultFont = "Calibri";
     }
 }

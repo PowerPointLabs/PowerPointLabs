@@ -16,6 +16,9 @@ using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
+using System.Drawing.Text;
+using System.Collections;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -111,6 +114,8 @@ namespace PowerPointLabs
         private List<string> _voiceNames;
 
         private int _voiceSelected;
+
+        public ArrayList systemFontList = new ArrayList();
 
         #region IRibbonExtensibility Members
 
@@ -1890,7 +1895,8 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new CaptionsFormatDialogBox(CaptionsFormat.defaultSize, CaptionsFormat.defaultAlignment, CaptionsFormat.defaultColor, CaptionsFormat.defaultBold, CaptionsFormat.defaultItalic, CaptionsFormat.defaultFillColor);
+                systemFontList = GetFontList();
+                var dialog = new CaptionsFormatDialogBox(systemFontList, CaptionsFormat.defaultFont, CaptionsFormat.defaultSize, CaptionsFormat.defaultAlignment, CaptionsFormat.defaultColor, CaptionsFormat.defaultBold, CaptionsFormat.defaultItalic, CaptionsFormat.defaultFillColor);
                 dialog.SettingsHandler += CaptionsFormatEdited;
                 dialog.ShowDialog();
             }
@@ -1901,7 +1907,7 @@ namespace PowerPointLabs
             }
         }
 
-        public void CaptionsFormatEdited(int newSize, Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newTextColor, bool newBold, bool newItalic, Color newFillColor)
+        public void CaptionsFormatEdited(string newFontName, int newSize, Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newTextColor, bool newBold, bool newItalic, Color newFillColor)
         {
             try
             {
@@ -1911,12 +1917,29 @@ namespace PowerPointLabs
                 CaptionsFormat.defaultBold = newBold;
                 CaptionsFormat.defaultItalic = newItalic;
                 CaptionsFormat.defaultFillColor = newFillColor;
+                CaptionsFormat.defaultFont = newFontName;
             }
             catch (Exception e)
             {
                 Logger.LogException(e, "CaptionsFormatEdited");
                 throw;
             }
+        }
+
+        private ArrayList GetFontList()
+        {
+            InstalledFontCollection myFont = new InstalledFontCollection();
+            FontFamily[] myFontFamilies = myFont.Families;
+            ArrayList fontList = new ArrayList();
+            int count = myFontFamilies.Length;
+
+            for (int i = 0; i < count; i++)
+            {
+                string fontName = myFontFamilies[i].Name;
+                fontList.Add(fontName);
+            }
+
+            return fontList;
         }
         # endregion
 
