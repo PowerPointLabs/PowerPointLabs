@@ -33,7 +33,8 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
         private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
-        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+        private const string ErrorMessageFunctionNotSupportedForExtremeShapes =
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageFunctionNotSupportedForSlide =
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
         private const string ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter =
@@ -594,6 +595,29 @@ namespace PowerPointLabs.PositionsLab
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static void AlignRadial(ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count < 3)
+            {
+                throw new Exception(ErrorMessageFewerThanThreeSelection);
+            }
+                    
+            var origin = Graphics.GetCenterPoint(selectedShapes[1]);
+            var refPoint = Graphics.GetCenterPoint(selectedShapes[2]);
+            var distance = DistanceBetweenTwoPoints(origin, refPoint);
+
+            for (var i = 3; i <= selectedShapes.Count; i++)
+            {
+                var shape = selectedShapes[i];
+                var point = Graphics.GetCenterPoint(shape);
+                var currentDistance = DistanceBetweenTwoPoints(origin, point);
+                var proportion = (currentDistance - distance) / currentDistance;
+
+                shape.IncrementLeft((float)((origin.X - point.X) * proportion));
+                shape.IncrementTop((float)((origin.Y - point.Y) * proportion));
             }
         }
 
@@ -2592,6 +2616,12 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return angle;
+        }
+
+        public static double DistanceBetweenTwoPoints(Drawing.PointF refPoint, Drawing.PointF pt)
+        {
+            var distance = Math.Sqrt(Math.Pow(pt.X - refPoint.X, 2) + Math.Pow(refPoint.Y - pt.Y, 2));
+            return distance;
         }
 
         public static bool NearlyEqual(float a, float b, float epsilon)

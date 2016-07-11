@@ -143,6 +143,12 @@ namespace PowerPointLabs.PositionsLab
             Action<PowerPoint.ShapeRange, float, float> positionsAction = (shapes, height, width) => PositionsLabMain.AlignCenter(shapes, height, width);
             ExecutePositionsAction(positionsAction, slideHeight, slideWidth, false);
         }
+
+        private void AlignRadialButton_Click(object sender, RoutedEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
+            ExecutePositionsAction(positionsAction, false, isConvertPPShape: false);
+        }
         #endregion
 
         #region Adjoin
@@ -623,6 +629,16 @@ namespace PowerPointLabs.PositionsLab
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, slideHeight, slideWidth, true);
+            };
+            PreviewHandler();
+        }
+
+        private void AlignRadialButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true, isConvertPPShape: false);
             };
             PreviewHandler();
         }
