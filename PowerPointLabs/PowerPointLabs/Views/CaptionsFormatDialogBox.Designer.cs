@@ -41,11 +41,12 @@
             this.italicBox = new System.Windows.Forms.CheckBox();
             this.fillColor = new System.Windows.Forms.Panel();
             this.fillColorDialog = new System.Windows.Forms.ColorDialog();
+            this.fillColorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(140, 130);
+            this.ok.Location = new System.Drawing.Point(140, 158);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(75, 23);
             this.ok.TabIndex = 1;
@@ -56,7 +57,7 @@
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(221, 130);
+            this.cancel.Location = new System.Drawing.Point(221, 158);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 2;
@@ -113,29 +114,47 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Black;
-            this.panel1.Location = new System.Drawing.Point(243, 72);
+            this.panel1.Location = new System.Drawing.Point(243, 69);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(53, 22);
             this.panel1.TabIndex = 8;
             this.panel1.Click += new System.EventHandler(this.Panel1_Click);
+            // 
+            // fillColorLabel
+            // 
+            this.fillColorLabel.AutoSize = true;
+            this.fillColorLabel.Location = new System.Drawing.Point(12, 97);
+            this.fillColorLabel.Name = "fillColorLabel";
+            this.fillColorLabel.Size = new System.Drawing.Size(75, 13);
+            this.fillColorLabel.TabIndex = 9;
+            this.fillColorLabel.Text = "Back Color";
+            // 
+            // fillColor
+            // 
+            this.fillColor.BackColor = System.Drawing.Color.Black;
+            this.fillColor.Location = new System.Drawing.Point(243, 97);
+            this.fillColor.Name = "fillColor";
+            this.fillColor.Size = new System.Drawing.Size(53, 22);
+            this.fillColor.TabIndex = 10;
+            this.fillColor.Click += new System.EventHandler(this.FillColor_Click);
             //
             // boldBox
             //
             this.boldBox.AutoSize = true;
-            this.boldBox.Location = new System.Drawing.Point(12, 94);
+            this.boldBox.Location = new System.Drawing.Point(12, 119);
             this.boldBox.Name = "boldBox";
             this.boldBox.Size = new System.Drawing.Size(148, 17);
-            this.boldBox.TabIndex = 9;
+            this.boldBox.TabIndex = 11;
             this.boldBox.Text = "Bold";
             this.boldBox.UseVisualStyleBackColor = true;
             //
             // italicBox
             //
             this.italicBox.AutoSize = true;
-            this.italicBox.Location = new System.Drawing.Point(12, 118);
+            this.italicBox.Location = new System.Drawing.Point(12, 144);
             this.italicBox.Name = "italixBox";
             this.italicBox.Size = new System.Drawing.Size(148, 17);
-            this.italicBox.TabIndex = 9;
+            this.italicBox.TabIndex = 12;
             this.italicBox.Text = "Italic";
             this.italicBox.UseVisualStyleBackColor = true;
             // 
@@ -145,13 +164,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(308, 160);
+            this.ClientSize = new System.Drawing.Size(308, 188);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.fillColorLabel);
+            this.Controls.Add(this.fillColor);
             this.Controls.Add(this.boldBox);
             this.Controls.Add(this.italicBox);
             this.Controls.Add(this.cancel);
@@ -184,7 +205,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox boldBox;
         private System.Windows.Forms.CheckBox italicBox;
-        private System.Windows.Forms.ComboBox font;
+        //private System.Windows.Forms.ComboBox font;
+        private System.Windows.Forms.Label fillColorLabel;
         private System.Windows.Forms.Panel fillColor;
         private System.Windows.Forms.ColorDialog fillColorDialog;
     }

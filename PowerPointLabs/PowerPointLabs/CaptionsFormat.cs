@@ -14,6 +14,6 @@ namespace PowerPointLabs
         public static int defaultSize = 12;
         public static bool defaultBold = false;
         public static bool defaultItalic = false;
-        public static int defaultFillColor = 0;
+        public static Color defaultFillColor = Color.Black;
     }
 }

@@ -12,7 +12,7 @@ namespace PowerPointLabs.Views
 {
     public partial class CaptionsFormatDialogBox : Form
     {
-        public delegate void UpdateSettingsDelegate(int size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic);
+        public delegate void UpdateSettingsDelegate(int size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic, Color defaultFillColor);
         public UpdateSettingsDelegate SettingsHandler;
 
         private Dictionary<String, MsoTextEffectAlignment> alignmentMapping = new Dictionary<string, MsoTextEffectAlignment>
@@ -31,7 +31,7 @@ namespace PowerPointLabs.Views
             this.ShowInTaskbar = false;
         }
 
-        public CaptionsFormatDialogBox(int defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultColor, bool defaultBlod, bool defaultItalic)
+        public CaptionsFormatDialogBox(int defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultTextColor, bool defaultBlod, bool defaultItalic, Color defaultFillColor)
             : this()
         {
             this.textBox1.Text = defaultSize.ToString();
@@ -39,9 +39,10 @@ namespace PowerPointLabs.Views
             this.comboBox1.Items.AddRange(keys);
             MsoTextEffectAlignment[] values = alignmentMapping.Values.ToArray();
             this.comboBox1.SelectedIndex = Array.IndexOf(values, defaultAlignment);
-            panel1.BackColor = defaultColor;
+            panel1.BackColor = defaultTextColor;
             this.boldBox.Checked = defaultBlod;
             this.italicBox.Checked = defaultItalic;
+            fillColor.BackColor = defaultFillColor;
         }
 
         private void CaptionsFormatDialogBox_Load(object sender, EventArgs e)
@@ -75,7 +76,7 @@ namespace PowerPointLabs.Views
         {
             string text = textBox1.Text;
 
-            SettingsHandler(Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked);
+            SettingsHandler(Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked, fillColor.BackColor);
             if (Ribbon1.HaveCaptions)
             {
                 NotesToCaptions.EmbedCaptionsOnSelectedSlides();
@@ -91,6 +92,17 @@ namespace PowerPointLabs.Views
             if (result == DialogResult.OK)
             {
                 panel1.BackColor = colorDialog1.Color;
+            }
+        }
+
+        private void FillColor_Click(object sender, EventArgs e)
+        {
+            fillColorDialog.Color = fillColor.BackColor;
+            fillColorDialog.FullOpen = true;
+            DialogResult result = fillColorDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                fillColor.BackColor = fillColorDialog.Color;
             }
         }
     }
