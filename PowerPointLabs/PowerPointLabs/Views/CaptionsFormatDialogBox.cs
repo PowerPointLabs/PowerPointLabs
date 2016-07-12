@@ -99,6 +99,7 @@ namespace PowerPointLabs.Views
             {
                 panel1.BackColor = colorDialog1.Color;
             }
+            UpdatePreviewText();
         }
 
         private void FillColor_Click(object sender, EventArgs e)
@@ -110,6 +111,48 @@ namespace PowerPointLabs.Views
             {
                 fillColor.BackColor = fillColorDialog.Color;
             }
+            UpdatePreviewText();
+        }
+
+        private void FontBox_Click(object sender, EventArgs e)
+        {
+            UpdatePreviewText();
+        }
+
+        private void BoldBox_Click(object sender, EventArgs e)
+        {
+            UpdatePreviewText();
+        }
+
+        private void ItalicBox_Click(object sender, EventArgs e)
+        {
+            UpdatePreviewText();
+        }
+
+        private void UpdatePreviewText()
+        {
+            this.prewviewText.BackColor = this.fillColor.BackColor;
+            this.prewviewText.ForeColor = this.panel1.BackColor;
+            if (this.boldBox.Checked && this.italicBox.Checked)
+            {
+                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Bold | FontStyle.Italic);
+            }
+            else if (this.boldBox.Checked)
+            {
+                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Bold);
+            }
+            else if (this.italicBox.Checked)
+            {
+                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Italic);
+            }
+            else
+            {
+                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size, 
+                                                  FontStyle.Regular);
+            }          
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace PowerPointLabs.Views
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace PowerPointLabs.Views
 {
     partial class CaptionsFormatDialogBox
     {
@@ -44,11 +47,12 @@
             this.fillColorLabel = new System.Windows.Forms.Label();
             this.fontLabel = new System.Windows.Forms.Label();
             this.fontBox = new System.Windows.Forms.ComboBox();
+            this.prewviewText = new ReadOnlyRichTextBox();
             this.SuspendLayout();
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(140, 184);
+            this.ok.Location = new System.Drawing.Point(140, 234);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(75, 23);
             this.ok.TabIndex = 1;
@@ -59,7 +63,7 @@
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(221, 184);
+            this.cancel.Location = new System.Drawing.Point(221, 234);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 2;
@@ -121,6 +125,7 @@
             this.fontBox.Name = "fontBox";
             this.fontBox.Size = new System.Drawing.Size(121, 21);
             this.fontBox.TabIndex = 8;
+            this.fontBox.SelectedIndexChanged += new System.EventHandler(this.FontBox_Click);
             // 
             // label3
             // 
@@ -133,7 +138,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.Black;
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Location = new System.Drawing.Point(243, 95);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(53, 22);
@@ -152,7 +157,7 @@
             // fillColor
             // 
             this.fillColor.BackColor = System.Drawing.Color.Black;
-            this.fillColor.Location = new System.Drawing.Point(243, 123);
+            this.fillColor.Location = new System.Drawing.Point(243, 120);
             this.fillColor.Name = "fillColor";
             this.fillColor.Size = new System.Drawing.Size(53, 22);
             this.fillColor.TabIndex = 12;
@@ -167,6 +172,7 @@
             this.boldBox.TabIndex = 13;
             this.boldBox.Text = "Bold";
             this.boldBox.UseVisualStyleBackColor = true;
+            this.boldBox.Click += new System.EventHandler(this.BoldBox_Click);
             //
             // italicBox
             //
@@ -177,6 +183,22 @@
             this.italicBox.TabIndex = 14;
             this.italicBox.Text = "Italic";
             this.italicBox.UseVisualStyleBackColor = true;
+            this.italicBox.Click += new System.EventHandler(this.ItalicBox_Click);
+            // 
+            // prewviewText
+            // 
+            this.prewviewText.Location = new System.Drawing.Point(146, 145);
+            this.prewviewText.MaxLength = 10;
+            this.prewviewText.Name = "prewviewText";
+            this.prewviewText.Size = new System.Drawing.Size(150, 80);
+            this.prewviewText.TabIndex = 15;
+            this.prewviewText.TabStop = false;
+            this.prewviewText.ReadOnly = true;
+            this.prewviewText.ForeColor = this.panel1.BackColor;
+            this.prewviewText.Text = " ABC";
+            this.prewviewText.Font = new Font(CaptionsFormat.defaultFont, 36, prewviewText.Font.Style);
+            this.prewviewText.BackColor = this.fillColor.BackColor;
+            this.prewviewText.Validating += new System.ComponentModel.CancelEventHandler(this.TextBox1_Validating);
             // 
             // CaptionsFormatDialogBox
             // 
@@ -184,7 +206,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(308, 214);
+            this.ClientSize = new System.Drawing.Size(308, 264);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -197,6 +219,7 @@
             this.Controls.Add(this.fillColor);
             this.Controls.Add(this.boldBox);
             this.Controls.Add(this.italicBox);
+            this.Controls.Add(this.prewviewText);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -216,6 +239,41 @@
 
         #endregion
 
+        public class ReadOnlyRichTextBox : RichTextBox 
+        {
+            private const int WM_SETFOCUS = 0x7;
+            private const int WM_LBUTTONDOWN = 0x201;
+            private const int WM_LBUTTONUP = 0x202;
+            private const int WM_LBUTTONDBLCLK = 0x203;
+            private const int WM_RBUTTONDOWN = 0x204;
+            private const int WM_RBUTTONUP = 0x205;
+            private const int WM_RBUTTONDBLCLK = 0x206;
+            private const int WM_KEYDOWN = 0x0100;
+            private const int WM_KEYUP = 0x0101;
+
+            public ReadOnlyRichTextBox()
+            {
+                this.Cursor = Cursors.Arrow;  
+            }
+
+            protected override void WndProc(ref Message m)
+            {
+                if (m.Msg == WM_SETFOCUS
+                    || m.Msg == WM_KEYDOWN
+                    || m.Msg == WM_KEYUP
+                    || m.Msg == WM_LBUTTONDOWN
+                    || m.Msg == WM_LBUTTONUP
+                    || m.Msg == WM_LBUTTONDBLCLK
+                    || m.Msg == WM_RBUTTONDOWN
+                    || m.Msg == WM_RBUTTONUP
+                    || m.Msg == WM_RBUTTONDBLCLK)
+                {
+                    return;
+                }
+                base.WndProc(ref m);
+            }
+        }
+
         private System.Windows.Forms.Button cancel;
         private System.Windows.Forms.Button ok;
         private System.Windows.Forms.Label label1;
@@ -232,5 +290,6 @@
         private System.Windows.Forms.Label fillColorLabel;
         private System.Windows.Forms.Panel fillColor;
         private System.Windows.Forms.ColorDialog fillColorDialog;
+        private ReadOnlyRichTextBox prewviewText;
     }
 }
