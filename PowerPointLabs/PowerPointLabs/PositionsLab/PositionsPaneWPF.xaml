@@ -56,7 +56,7 @@
             </WPF:ImageButton>
             <TextBlock x:Name="alignCenterTextBlock" HorizontalAlignment="Left" Margin="154,145,0,0" TextWrapping="Wrap" Text="Center" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <WPF:ImageButton ToolTip="Aligns objects in equal distance to the center of reference object" x:Name="alignRadialButton" HorizontalAlignment="Left" Margin="222,100,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="AlignRadialButton_Click" MouseEnter="AlignRadialButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
-                <Image Source="..\Resources\PositionsLab\AlignCenterIcon.png"/>
+                <Image Source="..\Resources\PositionsLab\AlignRadialIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="alignRadialTextBlock" HorizontalAlignment="Left" Margin="222,145,0,0" TextWrapping="Wrap" Text="Radial" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <GroupBox x:Name="adjoinGroupBox" Header="Adjoin" HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top" Height="110" Width="280"/>

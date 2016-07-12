@@ -1299,7 +1299,7 @@
     <Resource Include="Resources\PositionsLab\AlignLeftDefaultIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignRightDefaultIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignTopDefaultIcon.png" />
-    <None Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
@@ -1388,6 +1388,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon-flip_verti.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignRadialIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\RadialShapeOrientationDynamicIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
