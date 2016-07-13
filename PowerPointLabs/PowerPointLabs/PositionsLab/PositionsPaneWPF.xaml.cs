@@ -302,7 +302,7 @@ namespace PowerPointLabs.PositionsLab
 
             foreach (var currentShape in _shapesToBeRotated)
             {
-                PositionsLabMain.Rotate(currentShape, origin, angle);
+                PositionsLabMain.Rotate(currentShape, origin, angle, PositionsLabMain.ReorientShapeOrientation);
             }
 
             _prevMousePos = p;

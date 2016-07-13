@@ -10,11 +10,9 @@
              Title="Distribute by Grid"
              Width="350"
              Height="290"
-             WindowTitleBrush="#0070C0"
              BorderThickness="1"
              BorderBrush="#0070C0"
              ResizeMode="NoResize"
-             Topmost="True"
              Closed="PositionsDistributeGridDialong_Closed"
              WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>

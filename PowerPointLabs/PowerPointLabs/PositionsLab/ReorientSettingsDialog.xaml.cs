@@ -17,19 +17,19 @@ namespace PowerPointLabs.PositionsLab
         }
 
         #region On-Load Settings
-        private void RadialShapeOrientationFixedButton_Load(object sender, RoutedEventArgs e)
+        private void ReorientShapeOrientationFixedButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.RadialShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Fixed)
+            if (PositionsLabMain.ReorientShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Fixed)
             {
-                radialShapeOrientationFixedButton.IsChecked = true;
+                reorientShapeOrientationFixedButton.IsChecked = true;
             }
         }
 
-        private void RadialShapeOrientationDynamicButton_Load(object sender, RoutedEventArgs e)
+        private void ReorientShapeOrientationDynamicButton_Load(object sender, RoutedEventArgs e)
         {
-            if (PositionsLabMain.RadialShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Dynamic)
+            if (PositionsLabMain.ReorientShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Dynamic)
             {
-                radialShapeOrientationDynamicButton.IsChecked = true;
+                reorientShapeOrientationDynamicButton.IsChecked = true;
             }
         }
         #endregion
@@ -38,14 +38,14 @@ namespace PowerPointLabs.PositionsLab
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             // Checks for radial shape orientation
-            if (radialShapeOrientationFixedButton.IsChecked.GetValueOrDefault())
+            if (reorientShapeOrientationFixedButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.RadialShapeOrientationToFixed();
+                PositionsLabMain.ReorientShapeOrientationToFixed();
             }
 
-            if (radialShapeOrientationDynamicButton.IsChecked.GetValueOrDefault())
+            if (reorientShapeOrientationDynamicButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.RadialShapeOrientationToDynamic();
+                PositionsLabMain.ReorientShapeOrientationToDynamic();
             }
 
             IsOpen = false;

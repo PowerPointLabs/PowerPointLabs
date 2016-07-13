@@ -136,8 +136,8 @@ namespace PowerPointLabs.PositionsLab
             Fixed,
             Dynamic
         }
-
-        public static RadialShapeOrientationObject RadialShapeOrientation { get; private set; }
+        public static RadialShapeOrientationObject DistributeShapeOrientation { get; private set; }
+        public static RadialShapeOrientationObject ReorientShapeOrientation { get; private set; }
 
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
 
@@ -274,14 +274,24 @@ namespace PowerPointLabs.PositionsLab
             MarginRight = marginRight;
         }
 
-        public static void RadialShapeOrientationToFixed()
+        public static void DistributeShapeOrientationToFixed()
         {
-            RadialShapeOrientation = RadialShapeOrientationObject.Fixed;
+            DistributeShapeOrientation = RadialShapeOrientationObject.Fixed;
         }
 
-        public static void RadialShapeOrientationToDynamic()
+        public static void DistributeShapeOrientationToDynamic()
         {
-            RadialShapeOrientation = RadialShapeOrientationObject.Dynamic;
+            DistributeShapeOrientation = RadialShapeOrientationObject.Dynamic;
+        }
+
+        public static void ReorientShapeOrientationToFixed()
+        {
+            ReorientShapeOrientation = RadialShapeOrientationObject.Fixed;
+        }
+
+        public static void ReorientShapeOrientationToDynamic()
+        {
+            ReorientShapeOrientation = RadialShapeOrientationObject.Dynamic;
         }
 
         #endregion
@@ -2262,7 +2272,7 @@ namespace PowerPointLabs.PositionsLab
                 endingAngle += angleBetweenShapes;
 
                 var rotationAngle = endingAngle - shapeAngleInfo.Angle;
-                Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
+                Rotate(shapeAngleInfo.Shape, origin, rotationAngle, DistributeShapeOrientation);
             }
         }
 
@@ -2321,7 +2331,7 @@ namespace PowerPointLabs.PositionsLab
                     if (rotationAngle > threshold || rotationAngle < -threshold)
                     {
                         isStable = false;
-                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
+                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle, DistributeShapeOrientation);
                     }
 
                     endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
@@ -2421,7 +2431,7 @@ namespace PowerPointLabs.PositionsLab
 
         #region Adjustment
 
-        public static void Rotate(Shape shape, Drawing.PointF origin, float angle)
+        public static void Rotate(Shape shape, Drawing.PointF origin, float angle, RadialShapeOrientationObject shapeOrientation)
         {
             var unrotatedCenter = Graphics.GetCenterPoint(shape);
             var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
@@ -2429,7 +2439,7 @@ namespace PowerPointLabs.PositionsLab
             shape.Left += (rotatedCenter.X - unrotatedCenter.X);
             shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
 
-            if (RadialShapeOrientation == RadialShapeOrientationObject.Dynamic)
+            if (shapeOrientation == RadialShapeOrientationObject.Dynamic)
             {
                 shape.Rotation = AddAngles(shape.Rotation, angle);
             }
@@ -3212,11 +3222,7 @@ namespace PowerPointLabs.PositionsLab
             DistributeReferToFirstTwoShapes();
             DistributeReferToSecondThirdShape();
             DistributeSpaceByBoundaries();
-        }
-
-        private static void InitDefaultRadialSettings()
-        {
-            RadialShapeOrientationToFixed();
+            DistributeShapeOrientationToFixed();
         }
 
         private static void InitDefaultSwapSettings()
@@ -3225,15 +3231,20 @@ namespace PowerPointLabs.PositionsLab
             SwapReferencePoint = SwapReference.MiddleCenter;
             prevSelectedShapes = new Dictionary<string, Drawing.PointF>();
             prevSortedShapeNames = new List<string>();
-    }   
+        }
+        
+        private static void InitDefaultReorientSettings()
+        {
+            ReorientShapeOrientationToFixed();
+        }
 
         public static void InitPositionsLab()
         {
             InitDefaultAlignSettings();
             InitDefaultAdjoinSettings();
             InitDefaultDistributeSettings();
-            InitDefaultRadialSettings();
             InitDefaultSwapSettings();
+            InitDefaultReorientSettings();
             InitDefaultShapesAngles();
         }
 
