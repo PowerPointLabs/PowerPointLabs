@@ -133,6 +133,9 @@ namespace PowerPointLabs.Views
         {
             this.prewviewText.BackColor = this.fillColor.BackColor;
             this.prewviewText.ForeColor = this.panel1.BackColor;
+            Font thisFont = new Font(this.fontBox.Text, this.prewviewText.Font.Size, 
+                                     FontStyle.Bold | FontStyle.Italic);
+
             if (this.boldBox.Checked && this.italicBox.Checked)
             {
                 this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
@@ -140,18 +143,48 @@ namespace PowerPointLabs.Views
             }
             else if (this.boldBox.Checked)
             {
-                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
-                                                  FontStyle.Bold);
+                if ((!thisFont.FontFamily.IsStyleAvailable(FontStyle.Regular))
+                    &&thisFont.FontFamily.IsStyleAvailable(FontStyle.Italic))
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Italic | FontStyle.Bold);
+                }
+                else
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                      FontStyle.Bold);
+                }
             }
             else if (this.italicBox.Checked)
             {
-                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
-                                                  FontStyle.Italic);
+                if ((!thisFont.FontFamily.IsStyleAvailable(FontStyle.Regular))
+                   && thisFont.FontFamily.IsStyleAvailable(FontStyle.Bold))
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Italic | FontStyle.Bold);
+                }
+                else
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                      FontStyle.Italic);
+                }
             }
             else
             {
-                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size, 
-                                                  FontStyle.Regular);
+                if (thisFont.FontFamily.IsStyleAvailable(FontStyle.Regular))
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size);
+                }
+                else if (thisFont.FontFamily.IsStyleAvailable(FontStyle.Italic))
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Italic);
+                }
+                else if (thisFont.FontFamily.IsStyleAvailable(FontStyle.Bold))
+                {
+                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                                                  FontStyle.Bold);
+                }
             }          
         }
     }
