@@ -66,6 +66,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private bool _isDisplayDefaultPicture;
         private bool _isEnableUpdatePreview = true;
 
+        //Window size control constant
+        private const double StandardSystemWidth = 1280.0;
+        private const double StandardSystemHeight = 800.0;
+        private const double StandardWindowWidth = 1200.0;
+        private const double StandardWindowHeight = 700.0;
+        private const double StandardPrewienGridWidth = 560.0;
+
         # endregion
 
         #region Lifecycle
@@ -79,6 +86,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsOpen = true;
             SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
             PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
+            InitSizePosition();
             Logger.Log("PSL begins");
 
             SetTimeout(Init, 800);
@@ -103,6 +111,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
                 Logger.LogException(e, "Init");
             }
+        }
+
+        private void InitSizePosition()
+        {
+            System.Drawing.Size mSize = SystemInformation.WorkingArea.Size;
+            double systemHeight = mSize.Height * 1.0;
+            double systemWidth = mSize.Width * 1.0;
+            double windowWidth = systemWidth / StandardSystemWidth;
+            double windowHeight = systemHeight / StandardSystemHeight;
+
+            this.Window.Width = StandardWindowWidth * windowWidth;
+            this.Window.Height = StandardWindowHeight * windowHeight;
+            this.Window.StylesPreviewGrid.Width = StandardPrewienGridWidth * windowWidth;
+            this.Window.Left = (systemWidth - this.Window.Width) / 2;
+            this.Window.Top = (systemHeight - this.Window.Height) / 2;
+            this.Window.WindowStartupLocation = WindowStartupLocation.Manual;
         }
 
         private void InitUiExceptionHandling()
@@ -457,9 +481,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
 
             e.Handled = true;
-            var item = (ListBoxItem) listbox.ItemContainerGenerator
-                .ContainerFromItem(listbox.SelectedItem);
-            item.Focus();
         }
 
         /// <summary>
@@ -937,7 +958,14 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             if (CropWindow.IsCropped)
             {
-                source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);
+                if (CropWindow.IsRotated)
+                {
+                    source.Source = CropWindow.RotateResult;
+                    source.ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(CropWindow.RotateResult);
+                    source.FullSizeImageFile = CropWindow.RotateResult;
+                    source.ContextLink = CropWindow.RotateResult;
+                }
+                source.UpdateImageAdjustmentOffset(CropWindow.CropResult, CropWindow.CropResultThumbnail, CropWindow.Rect);        
                 UpdatePreviewImages();
             }
         }
@@ -1004,6 +1032,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = true;
                 VariantsColorPanel.IsEnabled = true;
+                VariantsSlider.IsEnabled = true;
             }
             else if (this.GetCurrentSlide() == null)
             {
@@ -1011,6 +1040,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Visible;
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
+                VariantsSlider.IsEnabled = false;
             }
             else // select 'loading' image
             {
@@ -1018,6 +1048,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 VariationInstructionsWhenNoSelectedSlide.Visibility = Visibility.Hidden;
                 VariantsComboBox.IsEnabled = false;
                 VariantsColorPanel.IsEnabled = false;
+                VariantsSlider.IsEnabled = false;
             }
         }
 
@@ -1240,7 +1271,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 return (bool) propertyInfo.GetValue(this, null);
             }
         }
-
         #endregion
     }
 }

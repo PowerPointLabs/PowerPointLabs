@@ -24,6 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             UpdateVariantsColorPanelVisibility();
             UpdateVariantFontPanelVisibility();
+            UpdateVariantsSliderVisibility();
             UpdatePictureAspectRefreshButtonVisibility();
         }
         #endregion
@@ -73,6 +74,33 @@ namespace PowerPointLabs.PictureSlidesLab.View
                     this.GetCurrentPresentation().SlideHeight);
             }
         }
+
+        private void VariantsSlider_OnValueChangedFinal(object sender, EventArgs e)
+        {
+            var type = e.GetType();
+            if (type.Equals(typeof(System.Windows.Input.KeyEventArgs)))
+            {
+                var eventArgs = (System.Windows.Input.KeyEventArgs)e;
+                if (eventArgs.Key != Key.Left && eventArgs.Key != Key.Right)
+                {
+                    return;
+                }
+            }
+
+            if (ViewModel.IsSliderValueChanged.Flag)
+            {
+                ViewModel.BindSelectedSliderValue(
+                    this.GetCurrentSlide().GetNativeSlide(),
+                    this.GetCurrentPresentation().SlideWidth,
+                    this.GetCurrentPresentation().SlideHeight);
+                ViewModel.IsSliderValueChanged.Flag = false;
+            }
+        }
+
+        private void VariantsSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ViewModel.IsSliderValueChanged.Flag = true;
+        }
         #endregion
 
         #region Helper funcs
@@ -116,6 +144,26 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
+        private void UpdateVariantsSliderVisibility()
+        {
+            if (VariantsComboBox.SelectedValue == null) return;
+
+            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+
+            var currentCategory = (string)VariantsComboBox.SelectedValue;
+            if (IsSliderSupported(currentCategory)
+                 && selectedItem != null
+                 && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.NoEffect)
+            {
+                VariantsSlider.Visibility = Visibility.Visible;
+                ViewModel.BindStyleToSlider();
+            }
+            else
+            {
+                VariantsSlider.Visibility = Visibility.Collapsed;
+            }
+        }
+
         private void UpdatePictureAspectRefreshButtonVisibility()
         {
             if (VariantsComboBox.SelectedValue == null) return;
@@ -134,6 +182,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private Color GetColor(SolidColorBrush brush)
         {
             return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+        }
+
+        private bool IsSliderSupported(string currentCategory)
+        {
+            return currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness
+                 || currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness
+                 || currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect);
         }
         #endregion
     }
