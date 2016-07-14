@@ -46,6 +46,7 @@ namespace PowerPointLabs.Views
             this.boldBox.Checked = defaultBlod;
             this.italicBox.Checked = defaultItalic;
             fillColor.BackColor = defaultFillColor;
+            UpdatePreviewText();
         }
 
         private void CaptionsFormatDialogBox_Load(object sender, EventArgs e)

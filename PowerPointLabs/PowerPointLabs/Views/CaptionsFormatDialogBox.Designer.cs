@@ -194,12 +194,12 @@ namespace PowerPointLabs.Views
             this.prewviewText.TabIndex = 15;
             this.prewviewText.TabStop = false;
             this.prewviewText.ReadOnly = true;
-            this.prewviewText.ForeColor = this.panel1.BackColor;
+            this.prewviewText.ForeColor = CaptionsFormat.defaultColor;
+            this.prewviewText.SelectAll();
             this.prewviewText.SelectionAlignment = HorizontalAlignment.Center;
             this.prewviewText.SelectedText = "ABC";
             this.prewviewText.Font = new Font(CaptionsFormat.defaultFont, 36, prewviewText.Font.Style);
-            this.prewviewText.BackColor = this.fillColor.BackColor;
-            this.prewviewText.Validating += new System.ComponentModel.CancelEventHandler(this.TextBox1_Validating);
+            this.prewviewText.BackColor = CaptionsFormat.defaultFillColor;
             // 
             // CaptionsFormatDialogBox
             // 
