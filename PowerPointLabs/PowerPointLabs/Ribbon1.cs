@@ -1907,7 +1907,7 @@ namespace PowerPointLabs
             }
         }
 
-        public void CaptionsFormatEdited(string newFontName, int newSize, Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newTextColor, bool newBold, bool newItalic, Color newFillColor)
+        public void CaptionsFormatEdited(string newFontName, float newSize, Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newTextColor, bool newBold, bool newItalic, Color newFillColor)
         {
             try
             {

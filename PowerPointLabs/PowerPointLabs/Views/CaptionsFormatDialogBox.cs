@@ -8,12 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace PowerPointLabs.Views
 {
     public partial class CaptionsFormatDialogBox : Form
     {
-        public delegate void UpdateSettingsDelegate(string fontName, int size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic, Color defaultFillColor);
+        public delegate void UpdateSettingsDelegate(string fontName, float size, MsoTextEffectAlignment alignment, Color defaultColor, bool isBold, bool isItalic, Color defaultFillColor);
         public UpdateSettingsDelegate SettingsHandler;
 
         private Dictionary<String, MsoTextEffectAlignment> alignmentMapping = new Dictionary<string, MsoTextEffectAlignment>
@@ -32,7 +33,7 @@ namespace PowerPointLabs.Views
             this.ShowInTaskbar = false;
         }
 
-        public CaptionsFormatDialogBox(ArrayList fontList, string defaultFontName, int defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultTextColor, bool defaultBlod, bool defaultItalic, Color defaultFillColor)
+        public CaptionsFormatDialogBox(ArrayList fontList, string defaultFontName, float defaultSize, MsoTextEffectAlignment defaultAlignment, Color defaultTextColor, bool defaultBlod, bool defaultItalic, Color defaultFillColor)
             : this()
         {
             this.textBox1.Text = defaultSize.ToString();
@@ -61,17 +62,41 @@ namespace PowerPointLabs.Views
         private void TextBox1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string text = textBox1.Text;
-            int thisSize = Int32.Parse(text);
-            int max = 50;
-            int min = 8;
-            if (thisSize >= max)
+            if (IsNumber(text))
             {
-                textBox1.Text = max.ToString();
+                float thisSize = float.Parse(text);
+                int max = 50;
+                int min = 8;
+                if (thisSize >= max)
+                {
+                    textBox1.Text = max.ToString();
+                }
+                if (thisSize <= min)
+                {
+                    textBox1.Text = min.ToString();
+                }
             }
-            if (thisSize <= min)
+            else
             {
-                textBox1.Text = min.ToString();
+                MessageBox.Show("Please type in a number from 8 to 50!", "Text Size Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
             }
+        }
+
+        public bool IsNumber(String strNumber)
+        {
+            Regex objNotNumberPattern = new Regex("[^0-9.-]");
+            Regex objTwoDotPattern = new Regex("[0-9]*[.][0-9]*[.][0-9]*");
+            Regex objTwoMinusPattern = new Regex("[0-9]*[-][0-9]*[-][0-9]*");
+
+            String strValidRealPattern = "^([-]|[.]|[-.]|[0-9])[0-9]*[.]*[0-9]+$";
+            String strValidIntegerPattern = "^([-]|[0-9])[0-9]*$";
+
+            Regex objNumberPattern = new Regex("(" + strValidRealPattern + ")|(" + strValidIntegerPattern + ")");
+
+            return !objNotNumberPattern.IsMatch(strNumber) &&
+                   !objTwoDotPattern.IsMatch(strNumber) &&
+                   !objTwoMinusPattern.IsMatch(strNumber) &&
+                   objNumberPattern.IsMatch(strNumber);
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -83,7 +108,7 @@ namespace PowerPointLabs.Views
         {
             string text = textBox1.Text;
 
-            SettingsHandler(fontBox.Text, Int32.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked, fillColor.BackColor);
+            SettingsHandler(fontBox.Text, float.Parse(text), alignmentMapping[(String)this.comboBox1.SelectedItem], panel1.BackColor, this.boldBox.Checked, this.italicBox.Checked, fillColor.BackColor);
             if (Ribbon1.HaveCaptions)
             {
                 NotesToCaptions.EmbedCaptionsOnSelectedSlides();
