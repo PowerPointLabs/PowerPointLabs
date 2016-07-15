@@ -49,6 +49,14 @@ namespace PowerPointLabs
         private ImageHandlerFactory ImageHandlerFactory { get; set; }
 
         private SupertipHandlerFactory SupertipHandlerFactory { get; set; }
+        
+        private ItemCountHandlerFactory ItemCountHandlerFactory { get; set; }
+
+        private ItemIdHandlerFactory ItemIdHandlerFactory { get; set; }
+
+        private ItemLabelHandlerFactory ItemLabelHandlerFactory { get; set; }
+
+        private GalleryActionHandlerFactory GalleryActionHandlerFactory { get; set; }
         #endregion
 
         #region Action Framework entry point
@@ -75,6 +83,30 @@ namespace PowerPointLabs
         {
             var imageHandler = ImageHandlerFactory.CreateInstance(control.Id);
             return imageHandler.Get(control.Id);
+        }
+
+        public int GetItemCount(Office.IRibbonControl control)
+        {
+            var itemCountHandler = ItemCountHandlerFactory.CreateInstance(control.Id);
+            return itemCountHandler.Get(control.Id);
+        }
+
+        public string GetItemId(Office.IRibbonControl control, int index)
+        {
+            var itemIdHandler = ItemIdHandlerFactory.CreateInstance(control.Id);
+            return itemIdHandler.Get(control.Id, index);
+        }
+
+        public string GetItemLabel(Office.IRibbonControl control, int index)
+        {
+            var itemLabelHandler = ItemLabelHandlerFactory.CreateInstance(control.Id);
+            return itemLabelHandler.Get(control.Id, index);
+        }
+
+        public void OnGalleryAction(Office.IRibbonControl control, string selectedId, int selectedIndex)
+        {
+            var galleryActionHandler = GalleryActionHandlerFactory.CreateInstance(control.Id);
+            galleryActionHandler.Execute(control.Id, selectedId, selectedIndex);
         }
 
         #endregion
@@ -129,6 +161,10 @@ namespace PowerPointLabs
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
+            ItemCountHandlerFactory = new ItemCountHandlerFactory();
+            ItemIdHandlerFactory = new ItemIdHandlerFactory();
+            ItemLabelHandlerFactory = new ItemLabelHandlerFactory();
+            GalleryActionHandlerFactory = new GalleryActionHandlerFactory();
 
             _ribbon = ribbonUi;
 

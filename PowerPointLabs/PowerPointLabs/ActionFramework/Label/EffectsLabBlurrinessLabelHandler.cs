@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId("EffectsLabBlurSelectedGallery")]
-    class EffectsLabBlurSelectedLabelHandler : LabelHandler
+    [ExportLabelRibbonId("EffectsLabBlurSelectedButton")]
+    class EffectsLabBlurrinessLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.EffectsLabBlurSelectedGalleryLabel;
+            return TextCollection.EffectsLabBlurrinessButtonLabel;
         }
     }
 }

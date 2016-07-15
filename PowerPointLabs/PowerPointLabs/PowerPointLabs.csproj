@@ -255,25 +255,40 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\Action\EffectsLabBlurSelectedActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportGalleryActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportItemIdRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportItemCountRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportItemLabelRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\GalleryActionHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\GalleryActionHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
     <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
     <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ItemIdHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ItemCountHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ItemLabelHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\GalleryActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ItemIdHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ItemCountHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ItemLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\GalleryAction\EffectsLabBlurrinessGalleryActionHandler.cs" />
+    <Compile Include="ActionFramework\GalleryAction\EmptyGalleryActionHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
@@ -283,6 +298,13 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\ItemCount\EffectsLabBlurrinessItemCountHandler.cs" />
+    <Compile Include="ActionFramework\ItemCount\EmptyItemCountHandler.cs" />
+    <Compile Include="ActionFramework\ItemId\EffectsLabBlurrinessItemIdHandler.cs" />
+    <Compile Include="ActionFramework\ItemId\EmptyItemIdHandler.cs" />
+    <Compile Include="ActionFramework\ItemLabel\EffectsLabBlurrinessItemLabelHandler.cs" />
+    <Compile Include="ActionFramework\ItemLabel\EmptyItemLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
@@ -652,6 +674,12 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="Views\EffectsLabBlurrinessDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\EffectsLabBlurrinessDialogBox.Designer.cs">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -824,6 +852,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\EffectsLabBlurrinessDialogBox.resx">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -1379,6 +1410,7 @@
   <ItemGroup>
     <None Include="Resources\icon-flip_verti.png" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

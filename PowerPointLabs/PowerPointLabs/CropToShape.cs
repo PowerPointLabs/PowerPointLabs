@@ -47,7 +47,13 @@ namespace PowerPointLabs
                 throw;
             }
 
-            return Crop(selection.ShapeRange, isInPlace: isInPlace, handleError: handleError);
+            var croppedShape = Crop(selection.ShapeRange, isInPlace: isInPlace, handleError: handleError);
+            if (croppedShape != null)
+            {
+                croppedShape.Select();
+            }
+
+            return croppedShape;
         }
 
         public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
@@ -201,7 +207,6 @@ namespace PowerPointLabs
                                     double magnifyRatio = 1.0)
         {
             if (original == null) return null;
-            if (startX >= original.Width || startY >= original.Height) return null;
             try
             {
                 var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format32bppArgb);

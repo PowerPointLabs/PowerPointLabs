@@ -96,7 +96,7 @@
         public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
         public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
         public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
-        public const string EffectsLabBlurSelectedSupertip = @"Blur the selected shapes.";
+        public const string EffectsLabBlurSelectedSupertip = @"Blur the area covered by the selected shapes.";
         public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
         public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
         public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
@@ -206,7 +206,7 @@
         public const string EffectsLabButtonLabel = "Effects Lab";
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
-        public const string EffectsLabBlurSelectedButtonLabel = "Blur Selected";
+        public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
@@ -242,10 +242,17 @@
         public const string HelpButtonLabel = "Help";
         public const string FeedbackButtonLabel = "Report Issues/ Send Feedback";
         public const string AboutButtonLabel = "About";
-        # endregion
+        #endregion
+        #endregion
+
+        # region Gallery and Item Labels
+
+        public const string EffectsLabBlurSelectedGalleryLabel = "Blur Selected";
+        public const string EffectsLabBlurItemLabel = "Blurriness";
+
         # endregion
 
-        # region Context Menu Labels
+        #region Context Menu Labels
 
         public const string PowerPointLabsMenuLabel = "PowerPointLabs";
         public const string NameEditShapeLabel = "Edit Name";
