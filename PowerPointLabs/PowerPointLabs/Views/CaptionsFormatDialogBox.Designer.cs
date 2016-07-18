@@ -47,12 +47,13 @@ namespace PowerPointLabs.Views
             this.fillColorLabel = new System.Windows.Forms.Label();
             this.fontLabel = new System.Windows.Forms.Label();
             this.fontBox = new System.Windows.Forms.ComboBox();
-            this.prewviewText = new ReadOnlyRichTextBox();
+            this.previewText = new ReadOnlyRichTextBox();
+            this.previewTextLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ok
             // 
-            this.ok.Location = new System.Drawing.Point(140, 234);
+            this.ok.Location = new System.Drawing.Point(140, 325);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(75, 23);
             this.ok.TabIndex = 1;
@@ -63,7 +64,7 @@ namespace PowerPointLabs.Views
             // cancel
             // 
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancel.Location = new System.Drawing.Point(221, 234);
+            this.cancel.Location = new System.Drawing.Point(221, 325);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 2;
@@ -185,21 +186,31 @@ namespace PowerPointLabs.Views
             this.italicBox.UseVisualStyleBackColor = true;
             this.italicBox.Click += new System.EventHandler(this.ItalicBox_Click);
             // 
+            // previewTextLabel
+            // 
+            this.previewTextLabel.AutoSize = true;
+            this.previewTextLabel.Location = new System.Drawing.Point(12, 195);
+            this.previewTextLabel.Name = "previewTextLabel";
+            this.previewTextLabel.Size = new System.Drawing.Size(75, 13);
+            this.previewTextLabel.TabIndex = 9;
+            this.previewTextLabel.Text = "Preview";
+            // 
             // prewviewText
             // 
-            this.prewviewText.Location = new System.Drawing.Point(146, 145);
-            this.prewviewText.MaxLength = 10;
-            this.prewviewText.Name = "prewviewText";
-            this.prewviewText.Size = new System.Drawing.Size(150, 80);
-            this.prewviewText.TabIndex = 15;
-            this.prewviewText.TabStop = false;
-            this.prewviewText.ReadOnly = true;
-            this.prewviewText.ForeColor = CaptionsFormat.defaultColor;
-            this.prewviewText.SelectAll();
-            this.prewviewText.SelectionAlignment = HorizontalAlignment.Center;
-            this.prewviewText.SelectedText = "ABC";
-            this.prewviewText.Font = new Font(CaptionsFormat.defaultFont, 32, prewviewText.Font.Style);
-            this.prewviewText.BackColor = CaptionsFormat.defaultFillColor;
+            this.previewText.Location = new System.Drawing.Point(12, 220);
+            this.previewText.MaxLength = 10;
+            this.previewText.Name = "prewviewText";
+            this.previewText.Size = new System.Drawing.Size(284, 90);
+            this.previewText.TabIndex = 15;
+            this.previewText.TabStop = false;
+            this.previewText.ReadOnly = true;
+            this.previewText.ForeColor = CaptionsFormat.defaultColor;
+            this.previewText.SelectAll();
+            this.previewText.SelectionAlignment = HorizontalAlignment.Center;
+            this.previewText.SelectedText = "ABC";
+            this.previewText.ScrollBars = RichTextBoxScrollBars.None;
+            this.previewText.Font = new Font(CaptionsFormat.defaultFont, 35, previewText.Font.Style);
+            this.previewText.BackColor = CaptionsFormat.defaultFillColor;
             // 
             // CaptionsFormatDialogBox
             // 
@@ -207,7 +218,7 @@ namespace PowerPointLabs.Views
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancel;
-            this.ClientSize = new System.Drawing.Size(308, 264);
+            this.ClientSize = new System.Drawing.Size(308, 355);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -220,7 +231,8 @@ namespace PowerPointLabs.Views
             this.Controls.Add(this.fillColor);
             this.Controls.Add(this.boldBox);
             this.Controls.Add(this.italicBox);
-            this.Controls.Add(this.prewviewText);
+            this.Controls.Add(this.previewTextLabel);
+            this.Controls.Add(this.previewText);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -291,6 +303,7 @@ namespace PowerPointLabs.Views
         private System.Windows.Forms.Label fillColorLabel;
         private System.Windows.Forms.Panel fillColor;
         private System.Windows.Forms.ColorDialog fillColorDialog;
-        private ReadOnlyRichTextBox prewviewText;
+        private ReadOnlyRichTextBox previewText;
+        private System.Windows.Forms.Label previewTextLabel;
     }
 }

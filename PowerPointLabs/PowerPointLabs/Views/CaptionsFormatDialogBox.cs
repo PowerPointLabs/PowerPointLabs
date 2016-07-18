@@ -157,14 +157,14 @@ namespace PowerPointLabs.Views
 
         private void UpdatePreviewText()
         {
-            this.prewviewText.BackColor = this.fillColor.BackColor;
-            this.prewviewText.ForeColor = this.panel1.BackColor;
-            Font thisFont = new Font(this.fontBox.Text, this.prewviewText.Font.Size, 
+            this.previewText.BackColor = this.fillColor.BackColor;
+            this.previewText.ForeColor = this.panel1.BackColor;
+            Font thisFont = new Font(this.fontBox.Text, this.previewText.Font.Size, 
                                      FontStyle.Bold | FontStyle.Italic);
 
             if (this.boldBox.Checked && this.italicBox.Checked)
             {
-                this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                   FontStyle.Bold | FontStyle.Italic);
             }
             else if (this.boldBox.Checked)
@@ -172,12 +172,12 @@ namespace PowerPointLabs.Views
                 if ((!thisFont.FontFamily.IsStyleAvailable(FontStyle.Regular))
                     &&thisFont.FontFamily.IsStyleAvailable(FontStyle.Italic))
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                   FontStyle.Italic | FontStyle.Bold);
                 }
                 else
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                       FontStyle.Bold);
                 }
             }
@@ -186,12 +186,12 @@ namespace PowerPointLabs.Views
                 if ((!thisFont.FontFamily.IsStyleAvailable(FontStyle.Regular))
                    && thisFont.FontFamily.IsStyleAvailable(FontStyle.Bold))
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                   FontStyle.Italic | FontStyle.Bold);
                 }
                 else
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                       FontStyle.Italic);
                 }
             }
@@ -199,16 +199,16 @@ namespace PowerPointLabs.Views
             {
                 if (thisFont.FontFamily.IsStyleAvailable(FontStyle.Regular))
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size);
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size);
                 }
                 else if (thisFont.FontFamily.IsStyleAvailable(FontStyle.Italic))
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                   FontStyle.Italic);
                 }
                 else if (thisFont.FontFamily.IsStyleAvailable(FontStyle.Bold))
                 {
-                    this.prewviewText.Font = new Font(this.fontBox.Text, this.prewviewText.Font.Size,
+                    this.previewText.Font = new Font(this.fontBox.Text, this.previewText.Font.Size,
                                                   FontStyle.Bold);
                 }
             }          
