@@ -193,7 +193,7 @@ namespace PowerPointLabs.Views
             this.previewTextLabel.Name = "previewTextLabel";
             this.previewTextLabel.Size = new System.Drawing.Size(75, 13);
             this.previewTextLabel.TabIndex = 9;
-            this.previewTextLabel.Text = "Preview";
+            this.previewTextLabel.Text = "Preview:";
             // 
             // prewviewText
             // 
