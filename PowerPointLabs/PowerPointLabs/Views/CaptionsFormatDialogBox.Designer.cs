@@ -198,7 +198,7 @@ namespace PowerPointLabs.Views
             this.prewviewText.SelectAll();
             this.prewviewText.SelectionAlignment = HorizontalAlignment.Center;
             this.prewviewText.SelectedText = "ABC";
-            this.prewviewText.Font = new Font(CaptionsFormat.defaultFont, 30, prewviewText.Font.Style);
+            this.prewviewText.Font = new Font(CaptionsFormat.defaultFont, 32, prewviewText.Font.Style);
             this.prewviewText.BackColor = CaptionsFormat.defaultFillColor;
             // 
             // CaptionsFormatDialogBox
