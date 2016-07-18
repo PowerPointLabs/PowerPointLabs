@@ -7,11 +7,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// </summary>
     public abstract class SupertipHandler
     {
-        public string Get(string ribbonId)
+        public string Get(string ribbonId, string ribbonTag)
         {
             try
             {
-                return GetSupertip(ribbonId);
+                return GetSupertip(ribbonId, ribbonTag);
             }
             catch (Exception e)
             {
@@ -21,6 +21,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract string GetSupertip(string ribbonId);
+        protected abstract string GetSupertip(string ribbonId, string ribbonTag);
     }
 }

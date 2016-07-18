@@ -3,23 +3,24 @@
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
-    /// Handler that handles OnGalleryAction call
+    /// Handler that handles GetPressed call
     /// </summary>
-    public abstract class GalleryActionHandler
+    public abstract class PressedHandler
     {
-        public void Execute(string ribbonId, string selectedId, int selectedIndex)
+        public bool Get(string ribbonId, string ribbonTag)
         {
             try
             {
-                ExecuteGalleryAction(ribbonId, selectedId, selectedIndex);
+                return GetPressed(ribbonId, ribbonTag);
             }
             catch (Exception e)
             {
                 Log.Logger.LogException(e, ribbonId);
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
+                return false;
             }
         }
 
-        protected abstract void ExecuteGalleryAction(string ribbonId, string selectedId, int selectedIndex);
+        protected abstract bool GetPressed(string ribbonId, string ribbonTag);
     }
 }

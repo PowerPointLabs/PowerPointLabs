@@ -7,7 +7,7 @@ namespace PowerPointLabs.ActionFramework.Action
     [ExportActionRibbonId("PositionsLabButton")]
     class PositionsLabActionHandler : ActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecuteAction(string ribbonId, string ribbonTag)
         {
             this.RegisterTaskPane(typeof(PositionsPane), TextCollection.PositionsLabTaskPanelTitle);
             var positionsPane = this.GetTaskPane(typeof(PositionsPane));

@@ -4,10 +4,10 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image
 {
-    [ExportImageRibbonId("EffectsLabBlurSelectedGallery")]
+    [ExportImageRibbonId("EffectsLabBlurSelectedDynamicMenu")]
     class EffectsLabBlurSelectedImageHandler : ImageHandler
     {
-        protected override Bitmap GetImage(string ribbonId)
+        protected override Bitmap GetImage(string ribbonId, string ribbonTag)
         {
             return new Bitmap(Properties.Resources.BlurSelected);
         }

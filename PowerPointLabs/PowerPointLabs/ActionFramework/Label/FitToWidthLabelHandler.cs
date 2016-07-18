@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.Label
         "fitToWidthTable")]
     class FitToWidthLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId)
+        protected override string GetLabel(string ribbonId, string ribbonTag)
         {
             return TextCollection.FitToWidthShapeLabel;
         }

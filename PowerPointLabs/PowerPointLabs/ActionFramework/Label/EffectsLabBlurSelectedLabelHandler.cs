@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId("EffectsLabBlurSelectedGallery")]
+    [ExportLabelRibbonId("EffectsLabBlurSelectedDynamicMenu")]
     class EffectsLabBlurSelectedLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId)
+        protected override string GetLabel(string ribbonId, string ribbonTag)
         {
-            return TextCollection.EffectsLabBlurSelectedGalleryLabel;
+            return TextCollection.EffectsLabBlurSelectedMenuLabel;
         }
     }
 }

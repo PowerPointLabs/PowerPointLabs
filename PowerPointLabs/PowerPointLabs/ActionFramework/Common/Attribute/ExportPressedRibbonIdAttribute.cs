@@ -7,13 +7,13 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Common.Attribute
 {
     /// <summary>
-    /// Apply this attribute with Ribbon Id to ItemLabelHandler to register its factory
+    /// Apply this attribute with Ribbon Id to PressedHandler to register its factory
     /// </summary>
     [AttributeUsage(AttributeTargets.Class), MetadataAttribute]
-    public class ExportItemLabelRibbonIdAttribute : ExportAttribute, IRibbonIdMetadata
+    public class ExportPressedRibbonIdAttribute : ExportAttribute, IRibbonIdMetadata
     {
-        public ExportItemLabelRibbonIdAttribute(params string[] ribbonIds)
-            : base(typeof(ItemLabelHandler))
+        public ExportPressedRibbonIdAttribute(params string[] ribbonIds)
+            : base(typeof(PressedHandler))
         {
             RibbonIds = ribbonIds ?? Enumerable.Empty<string>();
         }

@@ -3,10 +3,10 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip
 {
-    [ExportSupertipRibbonId("EffectsLabBlurSelectedGallery")]
+    [ExportSupertipRibbonId("EffectsLabBlurSelectedDynamicMenu")]
     class EffectsLabBlurSelectedSupertipHandler : SupertipHandler
     {
-        protected override string GetSupertip(string ribbonId)
+        protected override string GetSupertip(string ribbonId, string ribbonTag)
         {
             return TextCollection.EffectsLabBlurSelectedSupertip;
         }

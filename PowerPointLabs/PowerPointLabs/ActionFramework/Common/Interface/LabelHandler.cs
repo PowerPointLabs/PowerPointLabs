@@ -7,11 +7,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// </summary>
     public abstract class LabelHandler
     {
-        public string Get(string ribbonId)
+        public string Get(string ribbonId, string ribbonTag)
         {
             try
             {
-                return GetLabel(ribbonId);
+                return GetLabel(ribbonId, ribbonTag);
             }
             catch (Exception e)
             {
@@ -21,6 +21,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract string GetLabel(string ribbonId);
+        protected abstract string GetLabel(string ribbonId, string ribbonTag);
     }
 }

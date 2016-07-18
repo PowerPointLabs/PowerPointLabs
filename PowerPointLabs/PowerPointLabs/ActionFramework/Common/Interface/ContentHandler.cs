@@ -3,24 +3,24 @@
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
-    /// Handler that handles GetItemCount call
+    /// Handler that handles GetContent call
     /// </summary>
-    public abstract class ItemCountHandler
+    public abstract class ContentHandler
     {
-        public int Get(string ribbonId)
+        public string Get(string ribbonId, string ribbonTag)
         {
             try
             {
-                return GetItemCount(ribbonId);
+                return GetContent(ribbonId, ribbonTag);
             }
             catch (Exception e)
             {
                 Log.Logger.LogException(e, ribbonId);
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
-                return 0;
+                return "";
             }
         }
 
-        protected abstract int GetItemCount(string ribbonId);
+        protected abstract string GetContent(string ribbonId, string ribbonTag);
     }
 }

@@ -7,7 +7,7 @@ namespace PowerPointLabs.ActionFramework.Action
     /// </summary>
     class EmptyActionHandler : ActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecuteAction(string ribbonId, string ribbonTag)
         {
         }
     }

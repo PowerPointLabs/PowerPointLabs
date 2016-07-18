@@ -5,7 +5,7 @@ namespace PowerPointLabs.ActionFramework.Image
 {
     class EmptyImageHandler : ImageHandler
     {
-        protected override Bitmap GetImage(string ribbonId)
+        protected override Bitmap GetImage(string ribbonId, string ribbonTag)
         {
             return null;
         }

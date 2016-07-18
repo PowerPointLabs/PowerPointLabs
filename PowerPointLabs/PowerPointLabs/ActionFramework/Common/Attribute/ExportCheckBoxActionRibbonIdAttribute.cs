@@ -7,13 +7,13 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Common.Attribute
 {
     /// <summary>
-    /// Apply this attribute with Ribbon Id to ItemIdHandler to register its factory
+    /// Apply this attribute with Ribbon Id to CheckBoxActionHandler to register its factory
     /// </summary>
     [AttributeUsage(AttributeTargets.Class), MetadataAttribute]
-    public class ExportItemIdRibbonIdAttribute : ExportAttribute, IRibbonIdMetadata
+    public class ExportCheckBoxActionRibbonIdAttribute : ExportAttribute, IRibbonIdMetadata
     {
-        public ExportItemIdRibbonIdAttribute(params string[] ribbonIds)
-            : base(typeof(ItemIdHandler))
+        public ExportCheckBoxActionRibbonIdAttribute(params string[] ribbonIds)
+            : base(typeof(CheckBoxActionHandler))
         {
             RibbonIds = ribbonIds ?? Enumerable.Empty<string>();
         }

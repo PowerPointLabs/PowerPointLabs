@@ -22,10 +22,8 @@ namespace PowerPointLabs.EffectsLab
 
         public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes
-                && selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
+            if (!IsValidSelection(selection))
             {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
                 return null;
             }
 
@@ -40,9 +38,8 @@ namespace PowerPointLabs.EffectsLab
 
         public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.ShapeRange shapeRange, int percentage)
         {
-            if (shapeRange.Count == 0)
+            if (!IsValidShapeRange(shapeRange))
             {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
                 return null;
             }
 
@@ -51,9 +48,9 @@ namespace PowerPointLabs.EffectsLab
                 _slide = slide;
 
                 shapeRange.Cut();
-            
+
                 Utils.Graphics.ExportSlide(_slide, BlurPicture);
-                
+
                 BlurImage(BlurPicture, percentage);
 
                 shapeRange = slide.Shapes.Paste();
@@ -71,6 +68,29 @@ namespace PowerPointLabs.EffectsLab
                 ShowErrorMessageBox(e.Message, e);
                 return null;
             }
+        }
+
+        public static bool IsValidSelection(PowerPoint.Selection selection)
+        {
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
+                || selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+            {
+                return true;
+            }
+
+            ShowErrorMessageBox(ErrorMessageNoSelection);
+            return false;
+        }
+
+        public static bool IsValidShapeRange(PowerPoint.ShapeRange shapeRange)
+        {
+            if (shapeRange.Count > 0)
+            {
+                return true;
+            }
+
+            ShowErrorMessageBox(ErrorMessageNoSelection);
+            return false;
         }
 
         private static PowerPoint.ShapeRange UngroupAllShapeRange(PowerPoint.ShapeRange shapeRange)
@@ -264,6 +284,7 @@ namespace PowerPointLabs.EffectsLab
         private static void ShowErrorMessageBox(string content, Exception exception = null)
         {
             if (exception == null
+                || content.Equals(ErrorMessageNoSelection)
                 || content.Equals(ErrorMessageNonShapeOrTextBox))
             {
                 MessageBox.Show(content, MessageBoxTitle);

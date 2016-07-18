@@ -3,24 +3,23 @@
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
-    /// Handler that handles GetItemId call
+    /// Handler that handles OnCheckBoxAction call
     /// </summary>
-    public abstract class ItemIdHandler
+    public abstract class CheckBoxActionHandler
     {
-        public string Get(string ribbonId, int index)
+        public void Execute(string ribbonId, string ribbonTag, bool pressed)
         {
             try
             {
-                return GetItemId(ribbonId, index);
+                ExecuteCheckBoxAction(ribbonId, ribbonTag, pressed);
             }
             catch (Exception e)
             {
                 Log.Logger.LogException(e, ribbonId);
                 Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
-                return "";
             }
         }
 
-        protected abstract string GetItemId(string ribbonId, int index);
+        protected abstract void ExecuteCheckBoxAction(string ribbonId, string ribbonTag, bool pressed);
     }
 }

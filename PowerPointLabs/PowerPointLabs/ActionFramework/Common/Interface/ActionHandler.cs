@@ -7,11 +7,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// </summary>
     public abstract class ActionHandler
     {
-        public void Execute(string ribbonId)
+        public void Execute(string ribbonId, string ribbonTag)
         {
             try
             {
-                ExecuteAction(ribbonId);
+                ExecuteAction(ribbonId, ribbonTag);
             }
             catch (Exception e)
             {
@@ -20,6 +20,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract void ExecuteAction(string ribbonId);
+        protected abstract void ExecuteAction(string ribbonId, string ribbonTag);
     }
 }

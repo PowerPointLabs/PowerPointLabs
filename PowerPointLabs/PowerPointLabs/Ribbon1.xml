@@ -230,20 +230,11 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
-            <gallery id="EffectsLabBlurSelectedGallery"
-                     getLabel="GetLabel"
-                     getImage="GetImage"
-                     getSupertip="GetSupertip"
-                     columns="1"
-                     rows="7"
-                     getItemCount="GetItemCount"
-                     getItemID="GetItemID"
-                     getItemLabel="GetItemLabel"
-                     onAction="OnGalleryAction">
-              <button id="EffectsLabBlurSelectedButton"
-                      getLabel="GetLabel"
-                      onAction="OnAction"/>
-            </gallery>
+            <dynamicMenu id="EffectsLabBlurSelectedDynamicMenu"
+                         getLabel="GetLabel"
+                         getImage="GetImage"
+                         getSupertip="GetSupertip"
+                         getContent="GetContent"/>
             <button id="blurRemainderEffect"
                     getLabel="GetEffectsLabBlurRemainderButtonLabel"
                     getImage="GetBlurRemainderImage"

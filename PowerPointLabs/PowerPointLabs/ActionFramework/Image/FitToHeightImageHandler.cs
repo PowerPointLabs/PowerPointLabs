@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.Image
         "fitToHeightTable")]
     class FitToHeightImageHandler : ImageHandler
     {
-        protected override Bitmap GetImage(string ribbonId)
+        protected override Bitmap GetImage(string ribbonId, string ribbonTag)
         {
             return new Bitmap(Properties.Resources.FitToHeight);
         }

@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.Action
         "fitToWidthTable")]
     class FitToWidthActionHandler : ActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecuteAction(string ribbonId, string ribbonTag)
         {
             this.StartNewUndoEntry();
             var selectedShape = this.GetCurrentSelection().ShapeRange[1];

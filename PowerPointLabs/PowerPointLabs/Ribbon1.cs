@@ -49,64 +49,56 @@ namespace PowerPointLabs
         private ImageHandlerFactory ImageHandlerFactory { get; set; }
 
         private SupertipHandlerFactory SupertipHandlerFactory { get; set; }
-        
-        private ItemCountHandlerFactory ItemCountHandlerFactory { get; set; }
 
-        private ItemIdHandlerFactory ItemIdHandlerFactory { get; set; }
+        private ContentHandlerFactory ContentHandlerFactory { get; set; }
 
-        private ItemLabelHandlerFactory ItemLabelHandlerFactory { get; set; }
+        private PressedHandlerFactory PressedHandlerFactory { get; set; }
 
-        private GalleryActionHandlerFactory GalleryActionHandlerFactory { get; set; }
+        private CheckBoxActionHandlerFactory CheckBoxActionHandlerFactory { get; set; }
         #endregion
 
         #region Action Framework entry point
 
         public void OnAction(Office.IRibbonControl control)
         {
-            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id);
-            actionHandler.Execute(control.Id);
+            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
+            actionHandler.Execute(control.Id, control.Tag);
         }
 
         public string GetLabel(Office.IRibbonControl control)
         {
-            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id);
-            return labelHandler.Get(control.Id);
+            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return labelHandler.Get(control.Id, control.Tag);
         }
 
         public string GetSupertip(Office.IRibbonControl control)
         {
-            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id);
-            return supertipHandler.Get(control.Id);
+            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return supertipHandler.Get(control.Id, control.Tag);
         }
 
         public Bitmap GetImage(Office.IRibbonControl control)
         {
-            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id);
-            return imageHandler.Get(control.Id);
+            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return imageHandler.Get(control.Id, control.Tag);
         }
 
-        public int GetItemCount(Office.IRibbonControl control)
+        public string GetContent(Office.IRibbonControl control)
         {
-            var itemCountHandler = ItemCountHandlerFactory.CreateInstance(control.Id);
-            return itemCountHandler.Get(control.Id);
+            var contentHandler = ContentHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return contentHandler.Get(control.Id, control.Tag);
         }
 
-        public string GetItemId(Office.IRibbonControl control, int index)
+        public bool GetPressed(Office.IRibbonControl control)
         {
-            var itemIdHandler = ItemIdHandlerFactory.CreateInstance(control.Id);
-            return itemIdHandler.Get(control.Id, index);
+            var pressedHandler = PressedHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return pressedHandler.Get(control.Id, control.Tag);
         }
 
-        public string GetItemLabel(Office.IRibbonControl control, int index)
+        public void OnCheckBoxAction(Office.IRibbonControl control, bool pressed)
         {
-            var itemLabelHandler = ItemLabelHandlerFactory.CreateInstance(control.Id);
-            return itemLabelHandler.Get(control.Id, index);
-        }
-
-        public void OnGalleryAction(Office.IRibbonControl control, string selectedId, int selectedIndex)
-        {
-            var galleryActionHandler = GalleryActionHandlerFactory.CreateInstance(control.Id);
-            galleryActionHandler.Execute(control.Id, selectedId, selectedIndex);
+            var checkBoxActionHandler = CheckBoxActionHandlerFactory.CreateInstance(control.Id, control.Tag);
+            checkBoxActionHandler.Execute(control.Id, control.Tag, pressed);
         }
 
         #endregion
@@ -161,10 +153,9 @@ namespace PowerPointLabs
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
-            ItemCountHandlerFactory = new ItemCountHandlerFactory();
-            ItemIdHandlerFactory = new ItemIdHandlerFactory();
-            ItemLabelHandlerFactory = new ItemLabelHandlerFactory();
-            GalleryActionHandlerFactory = new GalleryActionHandlerFactory();
+            ContentHandlerFactory = new ContentHandlerFactory();
+            PressedHandlerFactory = new PressedHandlerFactory();
+            CheckBoxActionHandlerFactory = new CheckBoxActionHandlerFactory();
 
             _ribbon = ribbonUi;
 

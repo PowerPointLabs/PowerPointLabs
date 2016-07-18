@@ -7,7 +7,7 @@ namespace PowerPointLabs.ActionFramework.Image
     [ExportImageRibbonId("ColorsLabButton")]
     class ColorsLabImageHandler : ImageHandler
     {
-        protected override Bitmap GetImage(string ribbonId)
+        protected override Bitmap GetImage(string ribbonId, string ribbonTag)
         {
             return new Bitmap(Properties.Resources.ColorsLab);
         }

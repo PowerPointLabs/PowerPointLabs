@@ -7,7 +7,7 @@ namespace PowerPointLabs.ActionFramework.Action
     [ExportActionRibbonId("ColorsLabButton")]
     class ColorsLabActionHandler : ActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecuteAction(string ribbonId, string ribbonTag)
         {
             var colorPane = 
                 this.RegisterTaskPane(typeof(ColorPane), TextCollection.ColorsLabTaskPanelTitle);

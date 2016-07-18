@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Label
     [ExportLabelRibbonId("ColorsLabButton")]
     class ColorsLabLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId)
+        protected override string GetLabel(string ribbonId, string ribbonTag)
         {
             return TextCollection.ColorPickerButtonLabel;
         }
