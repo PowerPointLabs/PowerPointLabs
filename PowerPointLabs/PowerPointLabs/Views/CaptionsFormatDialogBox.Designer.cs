@@ -153,7 +153,7 @@ namespace PowerPointLabs.Views
             this.fillColorLabel.Name = "fillColorLabel";
             this.fillColorLabel.Size = new System.Drawing.Size(75, 13);
             this.fillColorLabel.TabIndex = 11;
-            this.fillColorLabel.Text = "Back Color";
+            this.fillColorLabel.Text = "Background Color";
             // 
             // fillColor
             // 
