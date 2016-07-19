@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ImageProcessor;
+using ImageProcessor.Imaging;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -47,13 +49,22 @@ namespace PowerPointLabs.EffectsLab
             {
                 _slide = slide;
 
+                var hasManyShapes = shapeRange.Count > 1;
+                var shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
+                var left = shape.Left;
+                var top = shape.Top;
                 shapeRange.Cut();
 
                 Utils.Graphics.ExportSlide(_slide, BlurPicture);
-
                 BlurImage(BlurPicture, percentage);
 
                 shapeRange = slide.Shapes.Paste();
+                shapeRange.Left = left;
+                shapeRange.Top = top;
+                if (hasManyShapes)
+                {
+                    shapeRange = shapeRange.Ungroup();
+                }
 
                 var ungroupedRange = UngroupAllShapeRange(shapeRange);
                 var shapeGroupNames = ApplyBlurEffect(BlurPicture, ungroupedRange);
@@ -219,49 +230,28 @@ namespace PowerPointLabs.EffectsLab
             return groupedShape;
         }
 
-        private static void BlurImage(string imageFile, int percentage)
+        public static void BlurImage(string imageFile, int percentage)
         {
             if (percentage != 0)
             {
                 var degree = 50 + (percentage / 2);
 
-                float originalWidth, originalHeight;
-
-                using (var imageFactory = new ImageProcessor.ImageFactory())
+                using (var imageFactory = new ImageFactory())
                 {
-                    var image = imageFactory
-                        .Load(imageFile)
-                        .Image;
+                    var loadedImageFactory = imageFactory.Load(imageFile);
+                    var image = loadedImageFactory.Image;
+                    var originalWidth = image.Width;
+                    var originalHeight = image.Height;
 
-                    originalWidth = image.Width;
-                    originalHeight = image.Height;
-
-                    var ratio = (float)image.Width / image.Height;
+                    var ratio = (float)originalWidth / originalHeight;
                     var targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * degree);
                     var targetWidth = Math.Round(targetHeight * ratio);
 
-                    image = imageFactory
+                    loadedImageFactory
                         .Resize(new Size((int)targetWidth, (int)targetHeight))
-                        .Image;
-                    image.Save(imageFile);
-                }
-
-                using (var imageFactory = new ImageProcessor.ImageFactory())
-                {
-                    var image = imageFactory
-                        .Load(imageFile)
                         .GaussianBlur(5)
-                        .Image;
-                    image.Save(imageFile);
-                }
-
-                using (var imageFactory = new ImageProcessor.ImageFactory())
-                {
-                    var image = imageFactory
-                        .Load(imageFile)
-                        .Resize(new Size((int)originalWidth, (int)originalHeight))
-                        .Image;
-                    image.Save(imageFile);
+                        .Resize(new ResizeLayer(new Size(originalWidth, originalHeight), resizeMode: ResizeMode.Stretch))
+                        .Save(imageFile);
                 }
             }
         }

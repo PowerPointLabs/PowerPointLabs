@@ -62,9 +62,19 @@ namespace PowerPointLabs
             try
             {
                 if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
-                
-                shapeRange.Cut();
+
+                var hasManyShapes = shapeRange.Count > 1;
+                var shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
+                var left = shape.Left;
+                var top = shape.Top;
+                shape.Cut();
                 shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
+                shapeRange.Left = left;
+                shapeRange.Top = top;
+                if (hasManyShapes)
+                {
+                    shapeRange = shapeRange.Ungroup();
+                }
 
                 TakeScreenshotProxy(shapeRange);
 

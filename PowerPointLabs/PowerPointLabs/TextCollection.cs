@@ -206,6 +206,7 @@
         public const string EffectsLabButtonLabel = "Effects Lab";
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
+        public const string EffectsLabBlurSelectedButtonLabel = "Blur Selected";
         public const string EffectsLabBlurRemainderButtonLabel = "Blur Remainder";
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
@@ -246,7 +247,6 @@
 
         # region Dynamic Menu Labels
 
-        public const string EffectsLabBlurSelectedMenuLabel = "Blur Selected";
         public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
         public const string EffectsLabBlurrinessCheckBoxLabel = "Insert Overlay";
         public const string EffectsLabBlurrinessTag = "Blurriness";

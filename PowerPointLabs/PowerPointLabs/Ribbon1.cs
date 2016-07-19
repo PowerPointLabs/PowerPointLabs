@@ -2012,7 +2012,7 @@ namespace PowerPointLabs
             }
         }
 
-        public void BlurRemainderEffectClick(Office.IRibbonControl control)
+        public void BlurRemainderEffectClick(int percentage)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
@@ -2020,7 +2020,7 @@ namespace PowerPointLabs
 
             if (effectSlide == null) return;
 
-            effectSlide.BlurBackground();
+            effectSlide.BlurBackground(percentage);
             effectSlide.GetNativeSlide().Select();
         }
 
@@ -2072,7 +2072,7 @@ namespace PowerPointLabs
             effectSlide.GetNativeSlide().Select();
         }
 
-        public void BlurBackgroundEffectClick(Office.IRibbonControl control)
+        public void BlurBackgroundEffectClick(int percentage)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
@@ -2080,7 +2080,7 @@ namespace PowerPointLabs
 
             if (effectSlide == null) return;
 
-            effectSlide.BlurBackground();
+            effectSlide.BlurBackground(percentage);
             effectSlide.GetNativeSlide().Select();
         }
 

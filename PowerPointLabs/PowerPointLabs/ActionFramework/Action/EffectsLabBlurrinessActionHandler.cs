@@ -45,24 +45,17 @@ namespace PowerPointLabs.ActionFramework.Action
             else
             {
                 var startIndex = keywordIndex + 6;
-                var value = int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
-                ExecuteBlurAction(value);
+                var percentage = int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
+                ExecuteBlurAction(percentage);
             }
         }
 
         private bool IsValidSelection()
         {
-            switch (feature)
+            if (EffectsLab.EffectsLabBlurSelected.IsValidSelection(selection)
+                && EffectsLab.EffectsLabBlurSelected.IsValidShapeRange(selection.ShapeRange))
             {
-                case "EffectsLabBlurSelected":
-                    if (EffectsLab.EffectsLabBlurSelected.IsValidSelection(selection)
-                        && EffectsLab.EffectsLabBlurSelected.IsValidShapeRange(selection.ShapeRange))
-                    {
-                        return true;
-                    }
-                    break;
-                default:
-                    throw new System.Exception("Invalid feature");
+                return true;
             }
 
             return false;
@@ -71,24 +64,24 @@ namespace PowerPointLabs.ActionFramework.Action
         private void PropertiesEdited(int percentage, bool hasOverlay)
         {
             EffectsLab.EffectsLabBlurSelected.HasOverlay = hasOverlay;
-
-
-            switch (feature)
-            {
-                case "EffectsLabBlurSelected":
-                    EffectsLab.EffectsLabBlurSelected.BlurSelected(slide, selection, percentage);
-                    break;
-                default:
-                    throw new System.Exception("Invalid feature");
-            }
+            this.GetRibbonUi().RefreshRibbonControl(feature + "CheckBox");
+            
+            ExecuteBlurAction(percentage);
         }
 
-        private void ExecuteBlurAction(int value)
+        private void ExecuteBlurAction(int percentage)
         {
             switch (feature)
             {
                 case "EffectsLabBlurSelected":
-                    EffectsLab.EffectsLabBlurSelected.BlurSelected(slide, selection, value);
+                    this.StartNewUndoEntry();
+                    EffectsLab.EffectsLabBlurSelected.BlurSelected(slide, selection, percentage);
+                    break;
+                case "EffectsLabBlurRemainder":
+                    this.GetRibbonUi().BlurRemainderEffectClick(percentage);
+                    break;
+                case "EffectsLabBlurBackground":
+                    this.GetRibbonUi().BlurBackgroundEffectClick(percentage);
                     break;
                 default:
                     throw new System.Exception("Invalid feature");

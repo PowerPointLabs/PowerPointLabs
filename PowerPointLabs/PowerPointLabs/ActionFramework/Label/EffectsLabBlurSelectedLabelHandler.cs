@@ -8,7 +8,7 @@ namespace PowerPointLabs.ActionFramework.Label
     {
         protected override string GetLabel(string ribbonId, string ribbonTag)
         {
-            return TextCollection.EffectsLabBlurSelectedMenuLabel;
+            return TextCollection.EffectsLabBlurSelectedButtonLabel;
         }
     }
 }

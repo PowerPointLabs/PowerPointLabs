@@ -218,7 +218,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("EffectsLabBlurSelectedButton"));
+                var control = new RibbonControl("EffectsLabBlurSelectedOption90");
+                control.Tag = "Blurriness";
+                Ribbon.OnAction(control);
             });
         }
 
@@ -226,7 +228,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BlurRemainderEffectClick(new RibbonControl("BlurRemainderEffect"));
+                var control = new RibbonControl("EffectsLabBlurRemainderOption90");
+                control.Tag = "Blurriness";
+                Ribbon.OnAction(control);
             });
         }
 
@@ -260,7 +264,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BlurBackgroundEffectClick(new RibbonControl("BlurRemainderEffect"));
+                var control = new RibbonControl("EffectsLabBlurBackgroundOption90");
+                control.Tag = "Blurriness";
+                Ribbon.OnAction(control);
             });
         }
 

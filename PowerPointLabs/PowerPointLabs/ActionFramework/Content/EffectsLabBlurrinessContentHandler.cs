@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Content
 {
-    [ExportContentRibbonId("EffectsLabBlurSelectedDynamicMenu")]
+    [ExportContentRibbonId("EffectsLabBlurSelectedDynamicMenu", "EffectsLabBlurRemainderDynamicMenu", "EffectsLabBlurBackgroundDynamicMenu")]
     class EffectsLabBlurrinessContentHandler : ContentHandler
     {
         protected override string GetContent(string ribbonId, string ribbonTag)
