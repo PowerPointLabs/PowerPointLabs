@@ -136,6 +136,11 @@ namespace PowerPointLabs.Models
                                                   PowerPointPresentation.Current.SlideHeight);
 
             newBackground.ZOrder(Core.MsoZOrderCmd.msoSendToBack);
+
+            if (filter == null && EffectsLab.EffectsLabBlurSelected.HasOverlay)
+            {
+                var overlayShape = EffectsLab.EffectsLabBlurSelected.GenerateOverlayShape(this, newBackground);
+            }
         }
 
         private static Shape MakeFrontImage(ShapeRange shapeRange)

@@ -16,6 +16,9 @@ namespace PowerPointLabs.EffectsLab
 
         private static Models.PowerPointSlide _slide;
 
+        private const string HexColor = "#000000";
+        private const float Transparency = 0.8f;
+
         private const string MessageBoxTitle = "Error";
         private const string ErrorMessageNoSelection = TextCollection.EffectsLabBlurSelectedErrorNoSelection;
         private const string ErrorMessageNonShapeOrTextBox = TextCollection.EffectsLabBlurSelectedErrorNonShapeOrTextBox;
@@ -155,57 +158,57 @@ namespace PowerPointLabs.EffectsLab
                 if (shape.Type == Office.MsoShapeType.msoPlaceholder
                     || shape.Type == Office.MsoShapeType.msoTextBox)
                 {
-                    var shapes = ApplyBlurEffectTextBox(imageFile, shape);
-
-                    foreach (var blurShape in shapes)
-                    {
-                        shapeGroupNames.Add(blurShape.Name);
-                    }
+                    var shapeNames = ApplyBlurEffectTextBox(imageFile, shape);
+                    shapeGroupNames.AddRange(shapeNames);
                 }
                 else // if (shape.Type == Office.MsoShapeType.msoAutoShape || shape.Type == Office.MsoShapeType.msoFreeform)
                 {
-                    var blurShape = ApplyBlurEffectShape(imageFile, shape);
-                    shapeGroupNames.Add(blurShape.Name);
+                    var shapeName = ApplyBlurEffectShape(imageFile, shape);
+                    shapeGroupNames.Add(shapeName);
                 }
             }
 
             return shapeGroupNames;
         }
 
-        private static List<PowerPoint.Shape> ApplyBlurEffectTextBox(string imageFile, PowerPoint.Shape textBox)
+        private static List<string> ApplyBlurEffectTextBox(string imageFile, PowerPoint.Shape textBox)
         {
+            var shapeNames = new List<string>();
+            shapeNames.Add(textBox.Name);
+
             textBox.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
-
-            var shapes = new List<PowerPoint.Shape>();
-
-            var shape = _slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, textBox.Left, textBox.Top, textBox.Width,
-                        textBox.Height);
-            shape.Rotation = textBox.Rotation;
-            Utils.Graphics.MoveZToJustBehind(shape, textBox);
-            CropToShape.FillInShapeWithImage(imageFile, shape, isInPlace: true);
-
             textBox.Fill.Visible = Office.MsoTriState.msoFalse;
             textBox.Line.Visible = Office.MsoTriState.msoFalse;
 
-            if (textBox.Type == Office.MsoShapeType.msoPlaceholder)
+            var blurShape = _slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, textBox.Left, textBox.Top, textBox.Width,
+                        textBox.Height);
+            blurShape.Rotation = textBox.Rotation;
+            Utils.Graphics.MoveZToJustBehind(blurShape, textBox);
+            CropToShape.FillInShapeWithImage(imageFile, blurShape, isInPlace: true);
+            shapeNames.Add(blurShape.Name);
+            
+            if (HasOverlay)
             {
-                // cannot group placeholders
-                shapes.Add(textBox);
-                shapes.Add(shape);
-            }
-            else
-            {
-                var subRange = _slide.Shapes.Range(new[] { shape.Name, textBox.Name });
-                var groupedShape = subRange.Group();
-                shapes.Add(groupedShape);
+                var overlayShape = GenerateOverlayShape(_slide, blurShape);
+                shapeNames.Add(overlayShape.Name);
             }
 
-            return shapes;
+            // cannot group placeholders
+            if (textBox.Type != Office.MsoShapeType.msoPlaceholder)
+            {
+                var subRange = _slide.Shapes.Range(shapeNames.ToArray());
+                var groupedShape = subRange.Group();
+                shapeNames.Clear();
+                shapeNames.Add(groupedShape.Name);
+            }
+
+            return shapeNames;
         }
 
-        private static PowerPoint.Shape ApplyBlurEffectShape(string imageFile, PowerPoint.Shape shape)
+        private static string ApplyBlurEffectShape(string imageFile, PowerPoint.Shape shape)
         {
-            PowerPoint.Shape groupedShape;
+            var shapeNames = new List<string>();
+            shapeNames.Add(shape.Name);
 
             if (!string.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
             {
@@ -215,19 +218,27 @@ namespace PowerPointLabs.EffectsLab
                 textBox.Fill.Visible = Office.MsoTriState.msoFalse;
                 textBox.Line.Visible = Office.MsoTriState.msoFalse;
                 Utils.Graphics.MoveZToJustInFront(textBox, shape);
-
-                var subRange = _slide.Shapes.Range(new[] { shape.Name, textBox.Name });
-                groupedShape = subRange.Group();
-            }
-            else
-            {
-                groupedShape = shape;
+                shapeNames.Add(textBox.Name);
             }
 
             shape.TextFrame2.DeleteText();
             CropToShape.FillInShapeWithImage(imageFile, shape, isInPlace: true);
 
-            return groupedShape;
+            if (HasOverlay)
+            {
+                var overlayShape = GenerateOverlayShape(_slide, shape);
+                shapeNames.Add(overlayShape.Name);
+            }
+
+            if (shapeNames.Count > 1)
+            {
+                var subRange = _slide.Shapes.Range(shapeNames.ToArray());
+                var groupedShape = subRange.Group();
+
+                return groupedShape.Name;
+            }
+
+            return shapeNames[1];
         }
 
         public static void BlurImage(string imageFile, int percentage)
@@ -254,6 +265,35 @@ namespace PowerPointLabs.EffectsLab
                         .Save(imageFile);
                 }
             }
+        }
+
+        public static PowerPoint.Shape GenerateOverlayShape(Models.PowerPointSlide slide, PowerPoint.Shape blurShape)
+        {
+            PowerPoint.Shape overlayShape = null;
+            
+            if (blurShape.Type == Office.MsoShapeType.msoPicture)
+            {
+                overlayShape = slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, blurShape.Left, blurShape.Top, blurShape.Width,
+                    blurShape.Height);
+                overlayShape.Rotation = blurShape.Rotation;
+            }
+            else
+            {
+                overlayShape = DuplicateShapeInPlace(blurShape);
+            }
+
+            Utils.Graphics.MoveZToJustInFront(overlayShape, blurShape);
+
+            var rgb = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
+
+            overlayShape.Fill.Solid();
+            overlayShape.Fill.ForeColor.RGB = rgb;
+            overlayShape.Fill.Transparency = Transparency;
+            overlayShape.Line.ForeColor.RGB = rgb;
+            overlayShape.Line.Transparency = Transparency;
+            overlayShape.Line.Visible = Office.MsoTriState.msoFalse;
+
+            return overlayShape;
         }
 
         private static PowerPoint.Shape DuplicateShapeInPlace(PowerPoint.Shape shape)
