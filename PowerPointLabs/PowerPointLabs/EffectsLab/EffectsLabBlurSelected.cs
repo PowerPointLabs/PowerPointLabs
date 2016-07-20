@@ -12,7 +12,9 @@ namespace PowerPointLabs.EffectsLab
 {
     public class EffectsLabBlurSelected
     {
-        public static bool HasOverlay = false;
+        public static bool IsTintSelected = false;
+        public static bool IsTintRemainder = false;
+        public static bool IsTintBackground = false;
 
         private static Models.PowerPointSlide _slide;
 
@@ -187,7 +189,7 @@ namespace PowerPointLabs.EffectsLab
             CropToShape.FillInShapeWithImage(imageFile, blurShape, isInPlace: true);
             shapeNames.Add(blurShape.Name);
             
-            if (HasOverlay)
+            if (IsTintSelected)
             {
                 var overlayShape = GenerateOverlayShape(_slide, blurShape);
                 shapeNames.Add(overlayShape.Name);
@@ -224,7 +226,7 @@ namespace PowerPointLabs.EffectsLab
             shape.TextFrame2.DeleteText();
             CropToShape.FillInShapeWithImage(imageFile, shape, isInPlace: true);
 
-            if (HasOverlay)
+            if (IsTintSelected)
             {
                 var overlayShape = GenerateOverlayShape(_slide, shape);
                 shapeNames.Add(overlayShape.Name);

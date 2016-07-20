@@ -214,11 +214,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
         
-        public void BlurrinessOverlay(bool pressed)
+        public void BlurrinessOverlay(string feature, bool pressed)
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurSelectedCheckBox");
+                var control = new RibbonControl(feature + TextCollection.DynamicMenuCheckBoxId);
                 control.Tag = "Blurriness";
                 Ribbon.OnCheckBoxAction(control, pressed);
             });

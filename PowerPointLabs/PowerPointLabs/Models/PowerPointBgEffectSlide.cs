@@ -84,9 +84,9 @@ namespace PowerPointLabs.Models
             AddBackgroundImage(null, percentage: percentage);
         }
 
-        public void BlurBackground(int percentage)
+        public void BlurBackground(int percentage, bool isTint)
         {
-            AddBackgroundImage(null, percentage: percentage);
+            AddBackgroundImage(null, percentage: percentage, isTint: isTint);
         }
 
         public void GreyScaleBackground()
@@ -111,7 +111,7 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Helper Functions
-        private void AddBackgroundImage(IMatrixFilter filter, int percentage = 0)
+        private void AddBackgroundImage(IMatrixFilter filter, int percentage = 0, bool isTint = false)
         {
             if (filter == null)
             {
@@ -137,7 +137,7 @@ namespace PowerPointLabs.Models
 
             newBackground.ZOrder(Core.MsoZOrderCmd.msoSendToBack);
 
-            if (filter == null && EffectsLab.EffectsLabBlurSelected.HasOverlay)
+            if (filter == null && isTint)
             {
                 var overlayShape = EffectsLab.EffectsLabBlurSelected.GenerateOverlayShape(this, newBackground);
             }

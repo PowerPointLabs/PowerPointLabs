@@ -669,10 +669,10 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
-    <Compile Include="Views\EffectsLabBlurrinessDialogBox.cs">
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\EffectsLabBlurrinessDialogBox.Designer.cs">
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
@@ -851,7 +851,7 @@
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\EffectsLabBlurrinessDialogBox.resx">
+    <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">

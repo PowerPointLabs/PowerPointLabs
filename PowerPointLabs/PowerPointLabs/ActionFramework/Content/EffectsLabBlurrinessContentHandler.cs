@@ -3,12 +3,15 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Content
 {
-    [ExportContentRibbonId("EffectsLabBlurSelectedDynamicMenu", "EffectsLabBlurRemainderDynamicMenu", "EffectsLabBlurBackgroundDynamicMenu")]
+    [ExportContentRibbonId(
+        TextCollection.EffectsLabBlurrinessFeatureSelected + TextCollection.DynamicMenuId,
+        TextCollection.EffectsLabBlurrinessFeatureRemainder + TextCollection.DynamicMenuId,
+        TextCollection.EffectsLabBlurrinessFeatureBackground + TextCollection.DynamicMenuId)]
     class EffectsLabBlurrinessContentHandler : ContentHandler
     {
         protected override string GetContent(string ribbonId, string ribbonTag)
         {
-            var feature = ribbonId.Replace("DynamicMenu", "");
+            var feature = ribbonId.Replace(TextCollection.DynamicMenuId, "");
 
             var xmlString = new System.Text.StringBuilder("<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">");
 
@@ -16,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.Content
             {
                 xmlString.Append("<button id=\"");
                 xmlString.Append(feature);
-                xmlString.Append("Option");
+                xmlString.Append(TextCollection.DynamicMenuOptionId);
                 xmlString.Append(i + 4);
                 xmlString.Append("0\" tag=\"");
                 xmlString.Append(TextCollection.EffectsLabBlurrinessTag);
@@ -29,13 +32,15 @@ namespace PowerPointLabs.ActionFramework.Content
 
             xmlString.Append("<checkBox id=\"");
             xmlString.Append(feature);
-            xmlString.Append("CheckBox\" tag=\"");
+            xmlString.Append(TextCollection.DynamicMenuCheckBoxId);
+            xmlString.Append("\" tag=\"");
             xmlString.Append(TextCollection.EffectsLabBlurrinessTag);
             xmlString.Append("\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>");
 
             xmlString.Append("<button id=\"");
             xmlString.Append(feature);
-            xmlString.Append("Button\" tag=\"");
+            xmlString.Append(TextCollection.DynamicMenuButtonId);
+            xmlString.Append("\" tag=\"");
             xmlString.Append(TextCollection.EffectsLabBlurrinessTag);
             xmlString.Append("\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>");
 

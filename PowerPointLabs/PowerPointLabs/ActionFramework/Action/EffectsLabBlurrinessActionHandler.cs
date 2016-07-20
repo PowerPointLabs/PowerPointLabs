@@ -16,15 +16,15 @@ namespace PowerPointLabs.ActionFramework.Action
             var isButton = false;
             int keywordIndex;
 
-            if (ribbonId.Contains("Button"))
+            if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
             {
                 isButton = true;
-                keywordIndex = ribbonId.IndexOf("Button");
+                keywordIndex = ribbonId.IndexOf(TextCollection.DynamicMenuButtonId);
                 feature = ribbonId.Substring(0, keywordIndex);
             }
             else
             {
-                keywordIndex = ribbonId.IndexOf("Option");
+                keywordIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId);
                 feature = ribbonId.Substring(0, keywordIndex);
             }
             
@@ -38,13 +38,13 @@ namespace PowerPointLabs.ActionFramework.Action
                     return;
                 }
 
-                var dialog = new Views.EffectsLabBlurrinessDialogBox();
+                var dialog = new EffectsLab.View.EffectsLabBlurrinessDialogBox(feature);
                 dialog.SettingsHandler += PropertiesEdited;
                 dialog.ShowDialog();
             }
             else
             {
-                var startIndex = keywordIndex + 6;
+                var startIndex = keywordIndex + TextCollection.DynamicMenuOptionId.Length;
                 var percentage = int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
                 ExecuteBlurAction(percentage);
             }
@@ -61,13 +61,24 @@ namespace PowerPointLabs.ActionFramework.Action
             return false;
         }
 
-        private void PropertiesEdited(int percentage, bool hasOverlay)
+        private void PropertiesEdited(int percentage, bool isTint)
         {
-            EffectsLab.EffectsLabBlurSelected.HasOverlay = hasOverlay;
-            var ribbon = this.GetRibbonUi();
-            ribbon.RefreshRibbonControl("EffectsLabBlurSelectedCheckBox");
-            ribbon.RefreshRibbonControl("EffectsLabBlurRemainderCheckBox");
-            ribbon.RefreshRibbonControl("EffectsLabBlurBackgroundCheckBox");
+            switch (feature)
+            {
+                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                    EffectsLab.EffectsLabBlurSelected.IsTintSelected = isTint;
+                    break;
+                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                    EffectsLab.EffectsLabBlurSelected.IsTintRemainder = isTint;
+                    break;
+                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                    EffectsLab.EffectsLabBlurSelected.IsTintBackground = isTint;
+                    break;
+                default:
+                    throw new System.Exception("Invalid feature");
+            }
+
+            this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection.DynamicMenuCheckBoxId);
 
             ExecuteBlurAction(percentage);
         }
@@ -76,14 +87,14 @@ namespace PowerPointLabs.ActionFramework.Action
         {
             switch (feature)
             {
-                case "EffectsLabBlurSelected":
+                case TextCollection.EffectsLabBlurrinessFeatureSelected:
                     this.StartNewUndoEntry();
                     EffectsLab.EffectsLabBlurSelected.BlurSelected(slide, selection, percentage);
                     break;
-                case "EffectsLabBlurRemainder":
+                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
                     this.GetRibbonUi().BlurRemainderEffectClick(percentage);
                     break;
-                case "EffectsLabBlurBackground":
+                case TextCollection.EffectsLabBlurrinessFeatureBackground:
                     this.GetRibbonUi().BlurBackgroundEffectClick(percentage);
                     break;
                 default:

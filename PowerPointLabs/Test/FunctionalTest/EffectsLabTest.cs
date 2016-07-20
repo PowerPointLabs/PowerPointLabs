@@ -16,20 +16,22 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_EffectsLabTest()
         {
-            PplFeatures.BlurrinessOverlay(true);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", true);
             TestRemainderEffect(40, PplFeatures.BlurBackgroundEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", true);
             TestRemainderEffect(37, PplFeatures.BlurRemainderEffect);
-            PplFeatures.BlurrinessOverlay(false);
             TestRemainderEffect(34, PplFeatures.SepiaBackgroundEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", false);
             TestRemainderEffect(31, PplFeatures.BlurBackgroundEffect);
             TestRemainderEffect(28, PplFeatures.SepiaRemainderEffect);
             TestRemainderEffect(25, PplFeatures.GothamRemainderEffect);
             TestRemainderEffect(22, PplFeatures.BlackAndWhiteBackgroundEffect);
             TestRemainderEffect(19, PplFeatures.GreyScaleRemainderEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", false);
             TestRemainderEffect(16, PplFeatures.BlurRemainderEffect);
             TestEffect(14, PplFeatures.BlurSelectedEffect);
             TestEffect(12, PplFeatures.BlurSelectedEffect);
-            PplFeatures.BlurrinessOverlay(true);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurSelected", true);
             TestEffect(10, PplFeatures.BlurSelectedEffect);
             TestEffect(8, PplFeatures.BlurSelectedEffect);
             TestEffect(6, PplFeatures.MagnifyingGlassEffect);

@@ -247,9 +247,16 @@
 
         # region Dynamic Menu Labels
 
+        public const string DynamicMenuId = "DynamicMenu";
+        public const string DynamicMenuButtonId = "Button";
+        public const string DynamicMenuCheckBoxId = "CheckBox";
+        public const string DynamicMenuOptionId = "Option";
         public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
-        public const string EffectsLabBlurrinessCheckBoxLabel = "Insert Overlay";
+        public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";
+        public const string EffectsLabBlurrinessFeatureSelected = "EffectsLabBlurSelected";
+        public const string EffectsLabBlurrinessFeatureRemainder = "EffectsLabBlurRemainder";
+        public const string EffectsLabBlurrinessFeatureBackground = "EffectsLabBlurBackground";
 
         # endregion
 

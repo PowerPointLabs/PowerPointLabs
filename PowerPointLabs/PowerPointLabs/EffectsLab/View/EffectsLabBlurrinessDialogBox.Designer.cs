@@ -1,4 +1,4 @@
-﻿namespace PowerPointLabs.Views
+﻿namespace PowerPointLabs.EffectsLab.View
 {
     partial class EffectsLabBlurrinessDialogBox
     {
@@ -72,9 +72,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(15, 46);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(91, 17);
+            this.checkBox1.Size = new System.Drawing.Size(47, 17);
             this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "Insert Overlay";
+            this.checkBox1.Text = "Tint ";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // label2

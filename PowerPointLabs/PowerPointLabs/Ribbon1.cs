@@ -2020,7 +2020,7 @@ namespace PowerPointLabs
 
             if (effectSlide == null) return;
 
-            effectSlide.BlurBackground(percentage);
+            effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintRemainder);
             effectSlide.GetNativeSlide().Select();
         }
 
@@ -2080,7 +2080,7 @@ namespace PowerPointLabs
 
             if (effectSlide == null) return;
 
-            effectSlide.BlurBackground(percentage);
+            effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintBackground);
             effectSlide.GetNativeSlide().Select();
         }
 

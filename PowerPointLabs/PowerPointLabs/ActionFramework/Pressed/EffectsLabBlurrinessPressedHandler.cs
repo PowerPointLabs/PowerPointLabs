@@ -8,7 +8,19 @@ namespace PowerPointLabs.ActionFramework.Pressed
     {
         protected override bool GetPressed(string ribbonId, string ribbonTag)
         {
-            return EffectsLab.EffectsLabBlurSelected.HasOverlay;
+            var feature = ribbonId.Substring(0, ribbonId.IndexOf(TextCollection.DynamicMenuCheckBoxId));
+
+            switch (feature)
+            {
+                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                    return EffectsLab.EffectsLabBlurSelected.IsTintSelected;
+                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                    return EffectsLab.EffectsLabBlurSelected.IsTintRemainder;
+                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                    return EffectsLab.EffectsLabBlurSelected.IsTintBackground;
+                default:
+                    throw new System.Exception("Invalid feature");
+            }
         }
     }
 }

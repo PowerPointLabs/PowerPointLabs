@@ -9,11 +9,22 @@ namespace PowerPointLabs.ActionFramework.CheckBoxAction
     {
         protected override void ExecuteCheckBoxAction(string ribbonId, string ribbonTag, bool pressed)
         {
-            EffectsLab.EffectsLabBlurSelected.HasOverlay = pressed;
-            var ribbon = this.GetRibbonUi();
-            ribbon.RefreshRibbonControl("EffectsLabBlurSelectedCheckBox");
-            ribbon.RefreshRibbonControl("EffectsLabBlurRemainderCheckBox");
-            ribbon.RefreshRibbonControl("EffectsLabBlurBackgroundCheckBox");
+            var feature = ribbonId.Substring(0, ribbonId.IndexOf(TextCollection.DynamicMenuCheckBoxId));
+
+            switch (feature)
+            {
+                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                    EffectsLab.EffectsLabBlurSelected.IsTintSelected = pressed;
+                    break;
+                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                    EffectsLab.EffectsLabBlurSelected.IsTintRemainder = pressed;
+                    break;
+                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                    EffectsLab.EffectsLabBlurSelected.IsTintBackground = pressed;
+                    break;
+                default:
+                    throw new System.Exception("Invalid feature");
+            }
         }
     }
 }
