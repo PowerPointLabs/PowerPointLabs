@@ -238,7 +238,7 @@
             <dynamicMenu id="EffectsLabBlurRemainderDynamicMenu"
                          getLabel="GetEffectsLabBlurRemainderButtonLabel"
                          getImage="GetBlurRemainderImage"
-                         getSupertip="GetSupertip"
+                         getSupertip="GetEffectsLabBlurRemainderSupertip"
                          getContent="GetContent"/>
             <dynamicMenu id="EffectsLabBlurBackgroundDynamicMenu"
                          getLabel="GetEffectsLabBlurBackgroundButtonLabel"

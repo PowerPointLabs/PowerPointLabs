@@ -10,6 +10,10 @@ namespace PowerPointLabs.ActionFramework.CheckBoxAction
         protected override void ExecuteCheckBoxAction(string ribbonId, string ribbonTag, bool pressed)
         {
             EffectsLab.EffectsLabBlurSelected.HasOverlay = pressed;
+            var ribbon = this.GetRibbonUi();
+            ribbon.RefreshRibbonControl("EffectsLabBlurSelectedCheckBox");
+            ribbon.RefreshRibbonControl("EffectsLabBlurRemainderCheckBox");
+            ribbon.RefreshRibbonControl("EffectsLabBlurBackgroundCheckBox");
         }
     }
 }

@@ -213,6 +213,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 Ribbon.MagnifyGlassEffectClick(new RibbonControl("MagnifyingGlassEffect"));
             });
         }
+        
+        public void BlurrinessOverlay(bool pressed)
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("EffectsLabBlurSelectedCheckBox");
+                control.Tag = "Blurriness";
+                Ribbon.OnCheckBoxAction(control, pressed);
+            });
+        }
 
         public void BlurSelectedEffect()
         {

@@ -238,7 +238,7 @@ namespace PowerPointLabs.EffectsLab
                 return groupedShape.Name;
             }
 
-            return shapeNames[1];
+            return shapeNames[0];
         }
 
         public static void BlurImage(string imageFile, int percentage)

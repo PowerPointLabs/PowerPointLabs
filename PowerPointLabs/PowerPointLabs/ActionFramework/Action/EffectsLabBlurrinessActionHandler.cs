@@ -64,8 +64,11 @@ namespace PowerPointLabs.ActionFramework.Action
         private void PropertiesEdited(int percentage, bool hasOverlay)
         {
             EffectsLab.EffectsLabBlurSelected.HasOverlay = hasOverlay;
-            this.GetRibbonUi().RefreshRibbonControl(feature + "CheckBox");
-            
+            var ribbon = this.GetRibbonUi();
+            ribbon.RefreshRibbonControl("EffectsLabBlurSelectedCheckBox");
+            ribbon.RefreshRibbonControl("EffectsLabBlurRemainderCheckBox");
+            ribbon.RefreshRibbonControl("EffectsLabBlurBackgroundCheckBox");
+
             ExecuteBlurAction(percentage);
         }
 
