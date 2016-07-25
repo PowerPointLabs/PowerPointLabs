@@ -145,26 +145,26 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Auto Animation
-        public const string AutoAnimateGroupLabel = "Auto Animate";
+        public const string AutoAnimateGroupLabel = "Animate Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
         # endregion
 
         # region Auto Zoom
-        public const string AutoZoomGroupLabel = "Auto Zoom";
+        public const string AutoZoomGroupLabel = "Zoom Lab";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
         # endregion
 
         # region Auto Crop
-        public const string AutoCropGroupLabel = "Auto Crop";
+        public const string AutoCropGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         # endregion
 
         # region Spotlight
-        public const string SpotLightGroupLabel = "Spotlight";
+        public const string SpotLightGroupLabel = "Spotlight Lab";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
         # endregion
@@ -185,7 +185,7 @@
         # endregion
 
         # region Highlight Points
-        public const string HighlightBulletsGroupLabel = "Highlight Bullets";
+        public const string HighlightBulletsGroupLabel = "Highlight Bullets Lab";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
