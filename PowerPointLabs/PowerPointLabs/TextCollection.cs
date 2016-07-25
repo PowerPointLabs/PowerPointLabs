@@ -145,7 +145,7 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Auto Animation
-        public const string AutoAnimateGroupLabel = "Animate Lab";
+        public const string AutoAnimateGroupLabel = "Animation Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
