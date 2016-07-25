@@ -7,11 +7,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// </summary>
     public abstract class PressedHandler
     {
-        public bool Get(string ribbonId, string ribbonTag)
+        public bool Get(string ribbonId)
         {
             try
             {
-                return GetPressed(ribbonId, ribbonTag);
+                return GetPressed(ribbonId);
             }
             catch (Exception e)
             {
@@ -21,6 +21,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract bool GetPressed(string ribbonId, string ribbonTag);
+        protected abstract bool GetPressed(string ribbonId);
     }
 }

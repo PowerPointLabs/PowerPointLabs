@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Label
     [ExportLabelRibbonId("EffectsLabBlurSelectedDynamicMenu")]
     class EffectsLabBlurSelectedLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId, string ribbonTag)
+        protected override string GetLabel(string ribbonId)
         {
             return TextCollection.EffectsLabBlurSelectedButtonLabel;
         }

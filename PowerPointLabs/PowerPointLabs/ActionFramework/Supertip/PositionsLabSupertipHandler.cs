@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Supertip
     [ExportSupertipRibbonId("PositionsLabButton")]
     class PositionsLabSupertipHandler : SupertipHandler
     {
-        protected override string GetSupertip(string ribbonId, string ribbonTag)
+        protected override string GetSupertip(string ribbonId)
         {
             return TextCollection.PositionsLabSupertip;
         }

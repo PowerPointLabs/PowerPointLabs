@@ -251,6 +251,10 @@
         public const string DynamicMenuButtonId = "Button";
         public const string DynamicMenuCheckBoxId = "CheckBox";
         public const string DynamicMenuOptionId = "Option";
+        public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
+        public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
+        public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
+        public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
         public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
         public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";

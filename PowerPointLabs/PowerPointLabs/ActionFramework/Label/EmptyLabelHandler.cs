@@ -4,7 +4,7 @@ namespace PowerPointLabs.ActionFramework.Label
 {
     class EmptyLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId, string ribbonTag)
+        protected override string GetLabel(string ribbonId)
         {
             return "";
         }

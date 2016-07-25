@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Label
     [ExportLabelRibbonId("ResizeLabButton")]
     class ResizeLabLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId, string ribbonTag)
+        protected override string GetLabel(string ribbonId)
         {
             return TextCollection.ResizeLabButtonLabel;
         }

@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Pressed
     [ExportPressedRibbonId(TextCollection.EffectsLabBlurrinessTag)]
     class EffectsLabBlurrinessPressedHandler : PressedHandler
     {
-        protected override bool GetPressed(string ribbonId, string ribbonTag)
+        protected override bool GetPressed(string ribbonId)
         {
             var feature = ribbonId.Substring(0, ribbonId.IndexOf(TextCollection.DynamicMenuCheckBoxId));
 

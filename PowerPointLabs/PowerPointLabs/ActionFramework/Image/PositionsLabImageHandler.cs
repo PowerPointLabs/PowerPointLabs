@@ -7,7 +7,7 @@ namespace PowerPointLabs.ActionFramework.Image
     [ExportImageRibbonId("PositionsLabButton")]
     class PositionsLabImageHandler : ImageHandler
     {
-        protected override Bitmap GetImage(string ribbonId, string ribbonTag)
+        protected override Bitmap GetImage(string ribbonId)
         {
             return new Bitmap(Properties.Resources.PositionsLab);
         }

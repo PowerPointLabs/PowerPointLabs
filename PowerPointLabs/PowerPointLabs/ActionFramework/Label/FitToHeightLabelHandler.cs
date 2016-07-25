@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.Label
         "fitToHeightTable")]
     class FitToHeightLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId, string ribbonTag)
+        protected override string GetLabel(string ribbonId)
         {
             return TextCollection.FitToHeightShapeLabel;
         }

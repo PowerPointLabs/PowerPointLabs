@@ -5,13 +5,13 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles OnAction call
     /// </summary>
-    public abstract class ActionHandler
+    public abstract class ActionHandler : BaseActionHandler
     {
-        public void Execute(string ribbonId, string ribbonTag)
+        public void Execute(string ribbonId)
         {
             try
             {
-                ExecuteAction(ribbonId, ribbonTag);
+                ExecuteAction(ribbonId);
             }
             catch (Exception e)
             {
@@ -20,6 +20,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract void ExecuteAction(string ribbonId, string ribbonTag);
+        protected abstract void ExecuteAction(string ribbonId);
     }
 }

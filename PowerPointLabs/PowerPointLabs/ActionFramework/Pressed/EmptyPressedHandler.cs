@@ -4,7 +4,7 @@ namespace PowerPointLabs.ActionFramework.Pressed
 {
     class EmptyPressedHandler : PressedHandler
     {
-        protected override bool GetPressed(string ribbonId, string ribbonTag)
+        protected override bool GetPressed(string ribbonId)
         {
             return false;
         }

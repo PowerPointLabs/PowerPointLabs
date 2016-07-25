@@ -8,7 +8,7 @@ namespace PowerPointLabs.ActionFramework.Action
     [ExportActionRibbonId("ResizeLabButton")]
     class ResizeLabActionHandler : ActionHandler
     {
-        protected override void ExecuteAction(string ribbonId, string ribbonTag)
+        protected override void ExecuteAction(string ribbonId)
         {
             var resizePane =
                 this.RegisterTaskPane(typeof(ResizeLabPane), TextCollection.ResizeLabsTaskPaneTitle);

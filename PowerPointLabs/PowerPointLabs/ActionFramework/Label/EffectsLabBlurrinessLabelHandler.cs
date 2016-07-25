@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Label
     [ExportLabelRibbonId(TextCollection.EffectsLabBlurrinessTag)]
     class EffectsLabBlurrinessLabelHandler : LabelHandler
     {
-        protected override string GetLabel(string ribbonId, string ribbonTag)
+        protected override string GetLabel(string ribbonId)
         {
             if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
             {
@@ -24,7 +24,7 @@ namespace PowerPointLabs.ActionFramework.Label
             var startIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId) + TextCollection.DynamicMenuOptionId.Length;
             var percentage = ribbonId.Substring(startIndex, ribbonId.Length - startIndex);
 
-            return percentage + "% " + ribbonTag;
+            return percentage + "% " + TextCollection.EffectsLabBlurrinessTag;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.Action
         private Microsoft.Office.Interop.PowerPoint.Selection selection;
         private Models.PowerPointSlide slide;
 
-        protected override void ExecuteAction(string ribbonId, string ribbonTag)
+        protected override void ExecuteAction(string ribbonId)
         {
             var isButton = false;
             int keywordIndex;

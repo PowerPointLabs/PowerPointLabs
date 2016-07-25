@@ -4,7 +4,7 @@ namespace PowerPointLabs.ActionFramework.Content
 {
     class EmptyContentHandler : ContentHandler
     {
-        protected override string GetContent(string ribbonId, string ribbonTag)
+        protected override string GetContent(string ribbonId)
         {
             return "";
         }

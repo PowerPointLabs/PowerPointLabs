@@ -5,13 +5,13 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles OnCheckBoxAction call
     /// </summary>
-    public abstract class CheckBoxActionHandler
+    public abstract class CheckBoxActionHandler : BaseActionHandler
     {
-        public void Execute(string ribbonId, string ribbonTag, bool pressed)
+        public void Execute(string ribbonId, bool pressed)
         {
             try
             {
-                ExecuteCheckBoxAction(ribbonId, ribbonTag, pressed);
+                ExecuteCheckBoxAction(ribbonId, pressed);
             }
             catch (Exception e)
             {
@@ -20,6 +20,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract void ExecuteCheckBoxAction(string ribbonId, string ribbonTag, bool pressed);
+        protected abstract void ExecuteCheckBoxAction(string ribbonId, bool pressed);
     }
 }

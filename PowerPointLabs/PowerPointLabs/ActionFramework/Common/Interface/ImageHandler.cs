@@ -8,11 +8,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// </summary>
     public abstract class ImageHandler
     {
-        public Bitmap Get(string ribbonId, string ribbonTag)
+        public Bitmap Get(string ribbonId)
         {
             try
             {
-                return GetImage(ribbonId, ribbonTag);
+                return GetImage(ribbonId);
             }
             catch (Exception e)
             {
@@ -22,6 +22,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract Bitmap GetImage(string ribbonId, string ribbonTag);
+        protected abstract Bitmap GetImage(string ribbonId);
     }
 }

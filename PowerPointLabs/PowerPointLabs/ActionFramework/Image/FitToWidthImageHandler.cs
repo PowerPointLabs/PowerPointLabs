@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.Image
         "fitToWidthTable")]
     class FitToWidthImageHandler : ImageHandler
     {
-        protected override Bitmap GetImage(string ribbonId, string ribbonTag)
+        protected override Bitmap GetImage(string ribbonId)
         {
             return new Bitmap(Properties.Resources.FitToWidth);
         }

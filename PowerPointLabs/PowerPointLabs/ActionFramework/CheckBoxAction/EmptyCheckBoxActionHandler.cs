@@ -7,7 +7,7 @@ namespace PowerPointLabs.ActionFramework.CheckBoxAction
     /// </summary>
     class EmptyCheckBoxActionHandler : CheckBoxActionHandler
     {
-        protected override void ExecuteCheckBoxAction(string ribbonId, string ribbonTag, bool pressed)
+        protected override void ExecuteCheckBoxAction(string ribbonId, bool pressed)
         {
         }
     }

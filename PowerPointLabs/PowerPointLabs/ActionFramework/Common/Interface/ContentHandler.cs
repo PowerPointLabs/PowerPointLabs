@@ -7,11 +7,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// </summary>
     public abstract class ContentHandler
     {
-        public string Get(string ribbonId, string ribbonTag)
+        public string Get(string ribbonId)
         {
             try
             {
-                return GetContent(ribbonId, ribbonTag);
+                return GetContent(ribbonId);
             }
             catch (Exception e)
             {
@@ -21,6 +21,6 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
         }
 
-        protected abstract string GetContent(string ribbonId, string ribbonTag);
+        protected abstract string GetContent(string ribbonId);
     }
 }

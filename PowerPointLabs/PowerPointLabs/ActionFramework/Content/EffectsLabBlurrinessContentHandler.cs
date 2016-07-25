@@ -9,44 +9,25 @@ namespace PowerPointLabs.ActionFramework.Content
         TextCollection.EffectsLabBlurrinessFeatureBackground + TextCollection.DynamicMenuId)]
     class EffectsLabBlurrinessContentHandler : ContentHandler
     {
-        protected override string GetContent(string ribbonId, string ribbonTag)
+        protected override string GetContent(string ribbonId)
         {
             var feature = ribbonId.Replace(TextCollection.DynamicMenuId, "");
 
-            var xmlString = new System.Text.StringBuilder("<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">");
+            var xmlString = new System.Text.StringBuilder();
 
             for (int i = 0; i < 7; i++)
             {
-                xmlString.Append("<button id=\"");
-                xmlString.Append(feature);
-                xmlString.Append(TextCollection.DynamicMenuOptionId);
-                xmlString.Append(i + 4);
-                xmlString.Append("0\" tag=\"");
-                xmlString.Append(TextCollection.EffectsLabBlurrinessTag);
-                xmlString.Append("\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>");
+                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, feature + TextCollection.DynamicMenuOptionId + (i + 4) + "0",
+                    TextCollection.EffectsLabBlurrinessTag));
             }
 
-            xmlString.Append("<menuSeparator id=\"");
-            xmlString.Append(feature);
-            xmlString.Append("Separator\"/>");
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, feature));
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlCheckBox, feature + TextCollection.DynamicMenuCheckBoxId,
+                TextCollection.EffectsLabBlurrinessTag));
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, feature + TextCollection.DynamicMenuButtonId,
+                TextCollection.EffectsLabBlurrinessTag));
 
-            xmlString.Append("<checkBox id=\"");
-            xmlString.Append(feature);
-            xmlString.Append(TextCollection.DynamicMenuCheckBoxId);
-            xmlString.Append("\" tag=\"");
-            xmlString.Append(TextCollection.EffectsLabBlurrinessTag);
-            xmlString.Append("\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>");
-
-            xmlString.Append("<button id=\"");
-            xmlString.Append(feature);
-            xmlString.Append(TextCollection.DynamicMenuButtonId);
-            xmlString.Append("\" tag=\"");
-            xmlString.Append(TextCollection.EffectsLabBlurrinessTag);
-            xmlString.Append("\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>");
-
-            xmlString.Append("</menu>");
-
-            return xmlString.ToString();
+            return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);
         }
     }
 }
