@@ -230,6 +230,11 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
+            <button id="EffectsLabBlurSelectedButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
             <button id="blurRemainderEffect"
                     getLabel="GetEffectsLabBlurRemainderButtonLabel"
                     getImage="GetBlurRemainderImage"
@@ -314,6 +319,20 @@
                   getImage="GetDrawingsLabImage"
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
+          <button id="PositionsLabButton"
+                  visible="true"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+          <button id="ResizeLabButton"
+                  visible="true"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"

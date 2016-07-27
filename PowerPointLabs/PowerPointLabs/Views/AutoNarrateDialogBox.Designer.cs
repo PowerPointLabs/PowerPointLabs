@@ -102,7 +102,7 @@
             this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Auto Narrate Properties";
+            this.Text = "Narrations Lab Properties";
             this.Load += new System.EventHandler(this.AutoNarrateDialogBox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

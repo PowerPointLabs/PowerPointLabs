@@ -70,6 +70,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         [DefaultValue("#FFFFFF")]
         public string FontColor { get; set; }
 
+        [DefaultValue(0)]
+        public int TextTransparency { get; set; }
+
         [DefaultValue(5)]
         public int TextBoxPosition { get; set; }
 

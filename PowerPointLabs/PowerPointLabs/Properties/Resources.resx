@@ -385,11 +385,185 @@
   <data name="PslSample2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PslSample2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ResizeFitToFill" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeFitToFill.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeFitToHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeFitToHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeFitToWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeFitToWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeLock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeLock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSameHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSameHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSameSize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSameSize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSameWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSameWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeStore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeStore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeStretchBottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeStretchBottom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeStretchLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeStretchLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeStretchRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeStretchRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeStretchTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeStretchTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeUnlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeUnlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PositionsLab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\PositionsLab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeLab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeLab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SettingsGear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SettingsGear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignBottomIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignBottomIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignLeftIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignLeftIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignRightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignRightIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignTopIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignTopIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DistributeCenterIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\DistributeCenterIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DistributeGridIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\DistributeGridIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DistributeHorizontalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\DistributeHorizontalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DistributeShapeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\DistributeShapeIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DistributeVerticalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\DistributeVerticalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdjoinHorizontalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AdjoinHorizontalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdjoinVerticalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AdjoinVerticalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RotateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\RotateIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SnapAwayIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SnapAwayIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SnapHorizontalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SnapHorizontalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SnapVerticalIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SnapVerticalIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SwapIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\SwapIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSymmetricBottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSymmetricBottom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSymmetricLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSymmetricLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSymmetricRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSymmetricRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeSymmetricTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeSymmetricTop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="PslSettings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AgendaSettings1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PslRefresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AgendaSync1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignBottomDefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignBottomDefaultIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignLeftDefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignLeftDefaultIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignRightDefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignRightDefaultIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignTopDefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignTopDefaultIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignCenterIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignCenterIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignHorizontalCenterDefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignHorizontalCenterDefaultIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignHorizontalCenterIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignHorizontalCenterIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignVerticalCenterDefaultIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignVerticalCenterDefaultIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignVerticalCenterIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AlignVerticalCenterIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LockAxisIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\LockAxisIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeDecreaseHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeDecreaseHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeDecreaseWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeDecreaseWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeIncreaseHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeIncreaseHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeIncreaseWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeIncreaseWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdjoinHorizontalWithAlignIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AdjoinHorizontalWithAlignIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AdjoinVerticalWithAlignIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\AdjoinVerticalWithAlignIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeMatchHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeMatchHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeMatchWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeMatchWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeProportionHeight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeProportionHeight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ResizeProportionWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ResizeLab\ResizeProportionWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DuplicateRotateIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PositionsLab\DuplicateRotateIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlurSelected" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EffectsLab\BlurSelected.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FlipHorizontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon-flip_hori.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

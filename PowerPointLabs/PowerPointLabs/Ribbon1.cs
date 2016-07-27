@@ -398,7 +398,12 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonSupertip;
         }
-        
+
+        public string GetResizeLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.ResizeLabButtonSupertip;
+        }
+
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HelpButtonSupertip;
@@ -410,6 +415,10 @@ namespace PowerPointLabs
         public string GetAboutButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AboutButtonSupertip;
+        }
+        public string GetPositionsLabSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLabSupertip;
         }
         # endregion
 
@@ -605,6 +614,11 @@ namespace PowerPointLabs
         public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.DrawingsLabButtonLabel;
+        }
+
+        public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.PositionsLabButtonLabel;
         }
 
         public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
@@ -1949,7 +1963,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            if (shapeRange.Count > 1)
+            if (shapeRange.Count > 1 || shapeRange[1].Type == Office.MsoShapeType.msoGroup)
             {
                 MessageBox.Show("Only one magnify area is allowed.");
                 
@@ -1958,10 +1972,7 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, handleError: false);
-
-                croppedShape.Left -= 12;
-                croppedShape.Top -= 12;
+                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
@@ -2099,6 +2110,12 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                MessageBox.Show("Please select at least 1 shape");
+                return;
+            }
 
             TransparentEffect(selection.ShapeRange);
         }
@@ -2171,7 +2188,7 @@ namespace PowerPointLabs
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show("Please select a shape");
+                MessageBox.Show("Please select at least 1 shape");
                 return null;
             }
             catch (Exception e)
@@ -2261,8 +2278,6 @@ namespace PowerPointLabs
         private void PlaceholderTransparencyHandler(PowerPoint.Shape picture)
         {
             PictureTransparencyHandler(picture);
-
-            PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Placeholders[2].Delete();
         }
 
         private void LineTransparencyHandler(PowerPoint.Shape shape)
@@ -2397,6 +2412,20 @@ namespace PowerPointLabs
             }
         }
         #endregion
+
+        // TODO: Add the image for the icon on the ribbon bar
+        //public Bitmap GetPositionsLabImage(Office.IRibbonControl control)
+        //{
+        //    try
+        //    {
+        //        return new Bitmap(Properties.Resources.PositionsLab);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        PowerPointLabsGlobals.LogException(e, "GetPositionsLabImage");
+        //        throw;
+        //    }
+        //}
 
         private static string GetResourceText(string resourceName)
         {

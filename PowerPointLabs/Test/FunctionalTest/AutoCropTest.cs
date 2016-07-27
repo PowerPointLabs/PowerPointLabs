@@ -18,6 +18,7 @@ namespace Test.FunctionalTest
         {
             CropOneShapeSuccessfully();
             CropMultipleShapesSuccessfully();
+            CropRotatedShapeSuccessfully();
         }
 
         [TestMethod]
@@ -26,7 +27,6 @@ namespace Test.FunctionalTest
         {
             CropOnNothingUnsuccessfully();
             CropOnPictureObjectUnsuccessfully();
-            CropOnRotatedShapeUnsuccessfully();
         }
 
         #region Positive Test Cases
@@ -82,6 +82,30 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
+        private void CropRotatedShapeSuccessfully()
+        {
+            var actualSlide = PpOperations.SelectSlide(10);
+            PpOperations.SelectShape("selectMe");
+
+            // Execute the Crop To Shape feature
+            PplFeatures.AutoCrop();
+
+            var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            var resultShapeInPic = PpOperations.ExportSelectedShapes();
+
+            var expSlide = PpOperations.SelectSlide(11);
+
+            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            var expShapeInPic = PpOperations.ExportSelectedShapes();
+
+            // remove elements that affect comparing slides
+            // e.g. "Expected" textbox
+            PpOperations.SelectShapesByPrefix("text").Delete();
+
+            SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
         #endregion
         #region Negative Test Cases
 
@@ -104,18 +128,6 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to crop", 
                 "'Crop To Shape' only supports shape objects.",
-                PplFeatures.AutoCrop);
-        }
-
-        private void CropOnRotatedShapeUnsuccessfully()
-        {
-            PpOperations.SelectSlide(4);
-            var shape = PpOperations.SelectShape("selectMe")[1];
-            shape.Rotation = 45;
-
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
-                "'Crop To Shape' does not currently support rotated shapes.",
                 PplFeatures.AutoCrop);
         }
 
