@@ -94,7 +94,7 @@
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Auto Zoom Properties";
+            this.Text = "Zoom Lab Properties";
             this.Load += new System.EventHandler(this.AutoZoomDialogBox_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
