@@ -66,6 +66,8 @@
         # region Auto Caption
         public const string AddCaptionsButtonSupertip =
             "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
+        public const string SetCaptionFormatButtonSupertip =
+            "Set formatf fot the movie-style subtitles";
         public const string RemoveCaptionsButtonSupertip =
             "Removes captions added using Auto Captions from the selected slides.";
         public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
@@ -180,6 +182,7 @@
         # region Auto Caption
         public const string EmbedCaptionGroupLabel = "Captions Lab";
         public const string AddCaptionsButtonLabel = "Add Captions";
+        public const string SetCaptionFormatButtonLabel = "Set Captions Format";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
         # endregion

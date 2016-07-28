@@ -16,6 +16,9 @@ using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
+using System.Drawing.Text;
+using System.Collections;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -98,6 +101,7 @@ namespace PowerPointLabs
         public bool ReloadAutoMotionEnabled = true;
         public bool ReloadSpotlight = true;
         public bool RemoveCaptionsEnabled = true;
+        public static bool HaveCaptions = false;
         public bool RemoveAudioEnabled = true;
 
         public bool HighlightTextFragmentsEnabled = true;
@@ -110,6 +114,8 @@ namespace PowerPointLabs
         private List<string> _voiceNames;
 
         private int _voiceSelected;
+
+        public ArrayList systemFontList = new ArrayList();
 
         #region IRibbonExtensibility Members
 
@@ -303,6 +309,10 @@ namespace PowerPointLabs
         public string GetAddCaptionsButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddCaptionsButtonSupertip;
+        }
+        public string GetSetCaptionFormatButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.SetCaptionFormatButtonSupertip;
         }
         public string GetRemoveCaptionsButtonSupertip(Office.IRibbonControl control)
         {
@@ -513,6 +523,10 @@ namespace PowerPointLabs
         public string GetAddCaptionsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddCaptionsButtonLabel;
+        }
+        public string GetSetCaptionFormatButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SetCaptionFormatButtonLabel;
         }
         public string GetRemoveCaptionsButtonLabel(Office.IRibbonControl control)
         {
@@ -1549,10 +1563,10 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public void HighlightBulletsDialogBoxPressed(Office.IRibbonControl control)
+        public void HighlightBulletsDialogBoxPressed(Office.IRibbonControl control) 
         {
             try
-            {
+            { 
                 var dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor, HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
                 dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
                 dialog.ShowDialog();
@@ -1855,6 +1869,8 @@ namespace PowerPointLabs
                 }
             }
 
+            HaveCaptions = true;
+
             NotesToCaptions.EmbedCaptionsOnSelectedSlides();
             RefreshRibbonControl("RemoveCaptionsButton");
         }
@@ -1862,6 +1878,7 @@ namespace PowerPointLabs
         public void RemoveCaptionClick(Office.IRibbonControl control)
         {
             RemoveCaptionsEnabled = false;
+            HaveCaptions = false;
             RefreshRibbonControl("RemoveCaptionsButton");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }
@@ -1872,6 +1889,57 @@ namespace PowerPointLabs
             {
                 slide.NotesPageText = string.Empty;
             }
+        }
+
+        public void SetCaptionFormatClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                systemFontList = GetFontList();
+                var dialog = new CaptionsFormatDialogBox(systemFontList, CaptionsFormat.defaultFont, CaptionsFormat.defaultSize, CaptionsFormat.defaultAlignment, CaptionsFormat.defaultColor, CaptionsFormat.defaultBold, CaptionsFormat.defaultItalic, CaptionsFormat.defaultFillColor);
+                dialog.SettingsHandler += CaptionsFormatEdited;
+                dialog.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "CaptionsFormatDialogBoxPressed");
+                throw;
+            }
+        }
+
+        public void CaptionsFormatEdited(string newFontName, float newSize, Microsoft.Office.Core.MsoTextEffectAlignment newAlignment, Color newTextColor, bool newBold, bool newItalic, Color newFillColor)
+        {
+            try
+            {
+                CaptionsFormat.defaultSize = newSize;
+                CaptionsFormat.defaultAlignment = newAlignment;
+                CaptionsFormat.defaultColor = newTextColor;
+                CaptionsFormat.defaultBold = newBold;
+                CaptionsFormat.defaultItalic = newItalic;
+                CaptionsFormat.defaultFillColor = newFillColor;
+                CaptionsFormat.defaultFont = newFontName;
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "CaptionsFormatEdited");
+                throw;
+            }
+        }
+
+        private ArrayList GetFontList()
+        {
+            InstalledFontCollection myFont = new InstalledFontCollection();
+            FontFamily[] myFontFamilies = myFont.Families;
+            ArrayList fontList = new ArrayList();
+            int count = myFontFamilies.Length;
+
+            for (int i = 0; i < count; i++)
+            {
+                string fontName = myFontFamilies[i].Name;
+                fontList.Add(fontName);
+            }
+
+            return fontList;
         }
         # endregion
 

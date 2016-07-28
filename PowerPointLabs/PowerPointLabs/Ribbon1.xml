@@ -132,13 +132,20 @@
         </group>
         <group id="embedCaptions"
                getLabel="GetEmbedCaptionGroupLabel">
-          <button id="AddCaptionsButton"
-                  getLabel="GetAddCaptionsButtonLabel"
-                  keytip="CA"
-                  getSupertip="GetAddCaptionsButtonSupertip"
-                  onAction="AddCaptionClick"
-                  getImage="GetAddCaptionsImage"
-                  size="large" />
+          <splitButton id ="addCaptionSplit" size ="large">
+            <button id="AddCaptionsButton"
+                    getLabel="GetAddCaptionsButtonLabel"
+                    keytip="CA"
+                    getSupertip="GetAddCaptionsButtonSupertip"
+                    onAction="AddCaptionClick"
+                    getImage="GetAddCaptionsImage"/>
+            <menu id ="setCaptionFormatMenu">
+               <button id="SetCaptionFormatButton"
+                      getLabel="GetSetCaptionFormatButtonLabel"
+                      getSupertip="GetSetCaptionFormatButtonSupertip"
+                      onAction="SetCaptionFormatClick"/>
+            </menu>
+          </splitButton>
           <splitButton id ="removeCaptionSplit" size ="large">  
             <button id="RemoveCaptionsButton"
                     getLabel="GetRemoveCaptionsButtonLabel"
@@ -154,6 +161,10 @@
                       onAction="RemoveAllNotesClick"/>
              </menu>
           </splitButton>
+          <dialogBoxLauncher>
+            <button id="CaptionsFormatDialogBox"
+                    onAction="SetCaptionFormatClick"/>
+          </dialogBoxLauncher>
         </group>
         <group id="HighlightBullets"
                getLabel="GetHighlightBulletsGroupLabel"

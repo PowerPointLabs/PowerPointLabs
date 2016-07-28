@@ -93,11 +93,20 @@ namespace PowerPointLabs
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             textBox.TextFrame.TextRange.Text = caption;
             textBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            textBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-            textBox.TextFrame.TextRange.Font.Size = 12;
-            textBox.Fill.BackColor.RGB = 0;
+            textBox.TextEffect.Alignment = CaptionsFormat.defaultAlignment;
+            textBox.TextFrame.TextRange.Font.Bold = CaptionsFormat.defaultBold ? MsoTriState.msoTrue : MsoTriState.msoFalse;
+            textBox.TextFrame.TextRange.Font.Italic = CaptionsFormat.defaultItalic ? MsoTriState.msoTrue : MsoTriState.msoFalse;
+            textBox.TextFrame.TextRange.Font.Size = CaptionsFormat.defaultSize;
+            textBox.TextFrame.TextRange.Font.Name = CaptionsFormat.defaultFont;
+            System.Drawing.Color fillColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultFillColor.B,
+                                                                           CaptionsFormat.defaultFillColor.G,
+                                                                           CaptionsFormat.defaultFillColor.R);
+            textBox.Fill.BackColor.RGB = fillColor.ToArgb();
             textBox.Fill.Transparency = 0.2f;
-            textBox.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+            System.Drawing.Color textColor = System.Drawing.Color.FromArgb(CaptionsFormat.defaultColor.B, 
+                                                                           CaptionsFormat.defaultColor.G, 
+                                                                           CaptionsFormat.defaultColor.R);
+            textBox.TextFrame.TextRange.Font.Color.RGB = textColor.ToArgb();
 
             textBox.Top = slideHeight - textBox.Height;
             return textBox;
