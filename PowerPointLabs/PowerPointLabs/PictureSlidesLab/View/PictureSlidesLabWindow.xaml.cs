@@ -991,7 +991,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 DefaultText = (currentCustomStyle == null) ? "" : currentCustomStyle.OptionName
             };
 
-            this.ShowInputAsync("Add User-customized Style", "Style name", metroDialogSettings)
+            this.ShowInputAsync("Add Custom Style", "Style name", metroDialogSettings)
                 .ContinueWith(task =>
                 {
                     if (!string.IsNullOrEmpty(task.Result))
