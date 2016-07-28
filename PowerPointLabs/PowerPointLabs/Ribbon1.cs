@@ -523,9 +523,9 @@ namespace PowerPointLabs
             return TextCollection.RemoveAllNotesButtonLabel;
         }
 
-        public string GetHighlightBulletsGroupLabel(Office.IRibbonControl control)
+        public string GetHighlightLabGroupLabel(Office.IRibbonControl control)
         {
-            return TextCollection.HighlightBulletsGroupLabel;
+            return TextCollection.HighlightLabGroupLabel;
         }
         public string GetHighlightBulletsTextButtonLabel(Office.IRibbonControl control)
         {

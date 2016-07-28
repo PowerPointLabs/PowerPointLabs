@@ -185,7 +185,7 @@
         # endregion
 
         # region Highlight Points
-        public const string HighlightBulletsGroupLabel = "Highlight Bullets Lab";
+        public const string HighlightLabGroupLabel = "Highlight Lab";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";

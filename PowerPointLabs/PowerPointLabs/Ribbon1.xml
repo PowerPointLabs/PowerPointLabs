@@ -83,13 +83,7 @@
         <group id="SpotLightGroup"
                getLabel="GetSpotLightGroupLabel"
                visible="true">
-          <button   id="AddSpotlightButton"
-                   getLabel="GetAddSpotlightButtonLabel"
-                   size="large"
-                   getSupertip="GetAddSpotlightButtonSupertip"
-                   getImage="GetSpotlightImage"
-                   getEnabled="OnGetEnabledSpotlight"
-                   onAction="SpotlightBtnClick"/>
+          
           <dialogBoxLauncher>
             <button id ="SpotlightDialogBox"
                     onAction="SpotlightDialogButtonPressed"/>
@@ -156,8 +150,15 @@
           </splitButton>
         </group>
         <group id="HighlightBullets"
-               getLabel="GetHighlightBulletsGroupLabel"
+               getLabel="GetHighlightLabGroupLabel"
                visible="true">
+          <button   id="AddSpotlightButton"
+                   getLabel="GetAddSpotlightButtonLabel"
+                   size="large"
+                   getSupertip="GetAddSpotlightButtonSupertip"
+                   getImage="GetSpotlightImage"
+                   getEnabled="OnGetEnabledSpotlight"
+                   onAction="SpotlightBtnClick"/>
           <button id="HighlightBulletsTextButton"
                  getLabel ="GetHighlightBulletsTextButtonLabel"
                  size ="large"
