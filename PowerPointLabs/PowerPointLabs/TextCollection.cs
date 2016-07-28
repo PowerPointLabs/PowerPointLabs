@@ -192,7 +192,7 @@
         # endregion
 
         # region Labs
-        public const string LabsGroupLabel = "Labs";
+        public const string LabsGroupLabel = "More Labs";
 
         # region Colors Lab
         public const string ColorPickerButtonLabel = "Colors Lab";
