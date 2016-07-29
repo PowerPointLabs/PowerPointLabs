@@ -764,12 +764,12 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void MenuItemAddCustomStyle_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
+        private void MenuItemSaveCustomStyle_OnClickFromPreviewListBox(object sender, RoutedEventArgs e)
         {
             var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
-            AddCustomStyle(StylesVariationListBox.SelectedIndex);
+            SaveCustomStyle(StylesVariationListBox.SelectedIndex);
         }
 
         /// <summary>
@@ -981,7 +981,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             }
         }
 
-        private void AddCustomStyle(int source)
+        private void SaveCustomStyle(int source)
         {
             var currentStyle = ViewModel.GetStyleOption(source);
             var currentCustomStyle = GetCustomStyle(currentStyle);
@@ -991,7 +991,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 DefaultText = (currentCustomStyle == null) ? "" : currentCustomStyle.OptionName
             };
 
-            this.ShowInputAsync("Add Custom Style", "Style name", metroDialogSettings)
+            this.ShowInputAsync("Save Custom Style", "Style name", metroDialogSettings)
                 .ContinueWith(task =>
                 {
                     if (!string.IsNullOrEmpty(task.Result))

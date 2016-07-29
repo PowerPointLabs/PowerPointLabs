@@ -230,7 +230,7 @@
                             <ContextMenu>
                                 <MenuItem Header="Adjust picture dimensions" Click="MenuItemAdjustImage_OnClickFromPreviewListBox"></MenuItem>
                                 <MenuItem Header="Edit picture source" Click="MenuItemEditSource_OnClickFromPreviewListBox"></MenuItem>
-                                <MenuItem Header="Add custom style" Click="MenuItemAddCustomStyle_OnClickFromPreviewListBox"></MenuItem>
+                                <MenuItem Header="Save custom style" Click="MenuItemSaveCustomStyle_OnClickFromPreviewListBox"></MenuItem>
                             </ContextMenu>
                         </ListBox.ContextMenu>
                         <ListBox.Template>
