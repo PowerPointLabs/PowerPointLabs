@@ -283,6 +283,11 @@ namespace PowerPointLabs
             return TextCollection.AddSpotlightButtonSupertip;
         }
 
+        public string GetSpotlightPropertiesButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.SpotlightPropertiesButtonSupertip;
+        }
+
         public string GetAddAudioButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddAudioButtonSupertip;
@@ -471,11 +476,6 @@ namespace PowerPointLabs
         {
             return TextCollection.MoveCropShapeButtonLabel;
         }
-
-        public string GetSpotLightGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.SpotLightGroupLabel;
-        }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -522,7 +522,10 @@ namespace PowerPointLabs
         {
             return TextCollection.RemoveAllNotesButtonLabel;
         }
-
+        public string GetSpotlightPropertiesButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SpotlightPropertiesButtonLabel;
+        }
         public string GetHighlightLabGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightLabGroupLabel;
@@ -538,8 +541,7 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonLabel;
-        }
-        
+        }        
         public string GetLabsGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.LabsGroupLabel;

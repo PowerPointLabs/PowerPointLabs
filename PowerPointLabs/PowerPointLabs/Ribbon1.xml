@@ -80,15 +80,6 @@
                   getSupertip="GetMoveCropShapeButtonSupertip"
                   onAction="CropShapeButtonClick"/>
         </group>
-        <group id="SpotLightGroup"
-               getLabel="GetSpotLightGroupLabel"
-               visible="true">
-          
-          <dialogBoxLauncher>
-            <button id ="SpotlightDialogBox"
-                    onAction="SpotlightDialogButtonPressed"/>
-          </dialogBoxLauncher>
-        </group>
         <group id="embedAudio"
                getLabel="GetEmbedAudioGroupLabel">
           <splitButton id="addAudioSplit" size="large">
@@ -152,13 +143,20 @@
         <group id="HighlightBullets"
                getLabel="GetHighlightLabGroupLabel"
                visible="true">
-          <button   id="AddSpotlightButton"
-                   getLabel="GetAddSpotlightButtonLabel"
-                   size="large"
-                   getSupertip="GetAddSpotlightButtonSupertip"
-                   getImage="GetSpotlightImage"
-                   getEnabled="OnGetEnabledSpotlight"
-                   onAction="SpotlightBtnClick"/>
+          <splitButton id ="addSpotlight" size ="large">  
+            <button id="AddSpotlightButton"
+                    getLabel="GetAddSpotlightButtonLabel"
+                    getSupertip="GetAddSpotlightButtonSupertip"
+                    getImage="GetSpotlightImage"
+                    getEnabled="OnGetEnabledSpotlight"
+                    onAction="SpotlightBtnClick"/>
+            <menu id ="spotlightPropertiesMenu">
+               <button id="SpotlightPropertiesButton"
+                      getLabel="GetSpotlightPropertiesButtonLabel"
+                      getSupertip="GetSpotlightPropertiesButtonSupertip"
+                      onAction="SpotlightDialogButtonPressed"/>
+            </menu>
+          </splitButton>
           <button id="HighlightBulletsTextButton"
                  getLabel ="GetHighlightBulletsTextButtonLabel"
                  size ="large"
