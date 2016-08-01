@@ -440,7 +440,7 @@ namespace PowerPointLabs
 
         public string GetAutoAnimateGroupLabel(Office.IRibbonControl control)
         {
-            return TextCollection.AutoAnimateGroupLabel;
+            return TextCollection.AnimationLabGroupLabel;
         }
         public string GetAddAnimationButtonLabel(Office.IRibbonControl control)
         {
@@ -453,7 +453,7 @@ namespace PowerPointLabs
 
         public string GetAutoZoomGroupLabel(Office.IRibbonControl control)
         {
-            return TextCollection.AutoZoomGroupLabel;
+            return TextCollection.ZoomLabGroupLabel;
         }
         public string GetAddZoomInButtonLabel(Office.IRibbonControl control)
         {
@@ -470,7 +470,7 @@ namespace PowerPointLabs
 
         public string GetAutoCropGroupLabel(Office.IRibbonControl control)
         {
-            return TextCollection.AutoCropGroupLabel;
+            return TextCollection.CropLabGroupLabel;
         }
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
         {

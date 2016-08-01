@@ -46,12 +46,6 @@
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
         # endregion
 
-        # region Spotlight
-        public const string AddSpotlightButtonSupertip =
-            "Creates a spotlight effect for a selected shape.\n\n" +
-            "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
-        # endregion
-
         # region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
@@ -72,6 +66,9 @@
         # endregion
 
         # region Highlight Lab
+        public const string AddSpotlightButtonSupertip =
+            "Creates a spotlight effect for a selected shape.\n\n" +
+            "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
         public const string SpotlightPropertiesButtonSupertip =
             "Set the Spotlight properries.";
         public const string HighlightBulletsTextButtonSupertip =
