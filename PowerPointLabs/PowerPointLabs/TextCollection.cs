@@ -54,14 +54,14 @@
         public const string AddRecordButtonSupertip =
             "Manually record audio to replace synthesized narration.";
         public const string RemoveAudioButtonSupertip =
-            "Removes synthesized audio added using Auto Narrate from the selected slides.";
+            "Removes synthesized audio added using Narrations Lab from the selected slides.";
         # endregion
 
         # region Captions Lab
         public const string AddCaptionsButtonSupertip =
             "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
         public const string RemoveCaptionsButtonSupertip =
-            "Removes captions added using Auto Captions from the selected slides.";
+            "Removes captions added using Captions Lab from the selected slides.";
         public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
         # endregion
 
@@ -144,21 +144,21 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Animation Lab
-        public const string AutoAnimateGroupLabel = "Animation Lab";
+        public const string AnimationLabGroupLabel = "Animation Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
         # endregion
 
         # region Zoom Lab
-        public const string AutoZoomGroupLabel = "Zoom Lab";
+        public const string ZoomLabGroupLabel = "Zoom Lab";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
         # endregion
 
         # region Crop Lab
-        public const string AutoCropGroupLabel = "Crop Lab";
+        public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         # endregion
 

@@ -438,7 +438,7 @@ namespace PowerPointLabs
             return TextCollection.CombineShapesLabel;
         }
 
-        public string GetAutoAnimateGroupLabel(Office.IRibbonControl control)
+        public string GetAnimationLabGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.AnimationLabGroupLabel;
         }
@@ -451,7 +451,7 @@ namespace PowerPointLabs
             return TextCollection.AddAnimationInSlideAnimateButtonLabel;
         }
 
-        public string GetAutoZoomGroupLabel(Office.IRibbonControl control)
+        public string GetZoomLabGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.ZoomLabGroupLabel;
         }
@@ -468,7 +468,7 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonLabel;
         }
 
-        public string GetAutoCropGroupLabel(Office.IRibbonControl control)
+        public string GetCropLabGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.CropLabGroupLabel;
         }
@@ -1440,17 +1440,17 @@ namespace PowerPointLabs
             }
         }
 
-        public void AutoAnimateDialogButtonPressed(Office.IRibbonControl control)
+        public void AnimationLabDialogButtonPressed(Office.IRibbonControl control)
         {
             try
             {
-                var dialog = new AutoAnimateDialogBox(DefaultDuration, FrameAnimationChecked);
+                var dialog = new AnimationLabDialogBox(DefaultDuration, FrameAnimationChecked);
                 dialog.SettingsHandler += AnimationPropertiesEdited;
                 dialog.ShowDialog();
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "AutoAnimateDialogButtonPressed");
+                Logger.LogException(e, "AnimationLabDialogButtonPressed");
                 throw;
             }
         }
@@ -1473,17 +1473,17 @@ namespace PowerPointLabs
             }
         }
 
-        public void AutoZoomDialogButtonPressed(Office.IRibbonControl control)
+        public void ZoomLabDialogButtonPressed(Office.IRibbonControl control)
         {
             try
             {
-                var dialog = new AutoZoomDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
+                var dialog = new ZoomLabDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
                 dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.ShowDialog();
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "AutoZoomDialogButtonPressed");
+                Logger.LogException(e, "ZoomLabDialogButtonPressed");
                 throw;
             }
         }
@@ -1705,7 +1705,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region Feature: Auto Narration
+        # region Feature: Narrations Lab
         public void AddAudioClick(Office.IRibbonControl control)
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
@@ -1739,23 +1739,23 @@ namespace PowerPointLabs
             PreviewAnimationsIfChecked();
         }
 
-        public void AutoNarrateDialogButtonPressed(Office.IRibbonControl control)
+        public void NarrationsLabDialogButtonPressed(Office.IRibbonControl control)
         {
             try
             {
-                var dialog = new AutoNarrateDialogBox(_voiceSelected, _voiceNames,
+                var dialog = new NarrationsLabDialogBox(_voiceSelected, _voiceNames,
                     _previewCurrentSlide);
-                dialog.SettingsHandler += AutoNarrateSettingsChanged;
+                dialog.SettingsHandler += NarrationsLabSettingsChanged;
                 dialog.ShowDialog();
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "AutoNarrateDialogButtonPressed");
+                Logger.LogException(e, "NarrationsLabDialogButtonPressed");
                 throw;
             }
         }
 
-        public void AutoNarrateSettingsChanged(String voiceName, bool previewCurrentSlide)
+        public void NarrationsLabSettingsChanged(String voiceName, bool previewCurrentSlide)
         {
             _previewCurrentSlide = previewCurrentSlide;
             if (!String.IsNullOrWhiteSpace(voiceName))
@@ -1843,7 +1843,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region Feature: Auto Caption
+        # region Feature: Captions Lab
         public void AddCaptionClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
