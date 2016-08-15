@@ -2097,6 +2097,48 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        public static void Repack(List<PPShape> selectedShapes, bool isPreview)
+        {
+            var numOfShapes = selectedShapes.Count;
+
+            if (numOfShapes < 2)
+            {
+                throw new Exception(ErrorMessageFewerThanTwoSelection);
+            }
+
+            System.Drawing.PointF[] topLeftPointList = new System.Drawing.PointF[numOfShapes];
+            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+            float[] distanceList = new float[numOfShapes - 1];
+            var currentX = sortedShapes[0].ActualTopLeft.X;
+
+            for (var i = 0; i < numOfShapes - 1; i++)
+            {
+                var thisPoint = sortedShapes[i].ActualTopRight;
+                var nextPoint = sortedShapes[i + 1].ActualTopLeft;
+                distanceList[i] = nextPoint.X - thisPoint.X;
+            }
+
+            for (var i = 0; i < numOfShapes; i++)
+            {
+                var leftPoint = selectedShapes[i].ActualTopLeft;
+                var rightPoint = selectedShapes[i].ActualTopRight;
+                var objectLength = rightPoint.X - leftPoint.X;
+
+                topLeftPointList[i].X = currentX;
+
+                if (i < numOfShapes - 1)
+                {
+                    currentX = currentX + objectLength + distanceList[i];
+                }
+            }
+
+            for (var i = 0; i < numOfShapes; i++)
+            {
+                var thisPoint = selectedShapes[i].ActualTopLeft;
+                selectedShapes[i].IncrementLeft(topLeftPointList[i].X - thisPoint.X);
+            }
+        }
+
         #endregion
 
         #region Snap

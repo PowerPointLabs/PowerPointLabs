@@ -231,6 +231,12 @@ namespace PowerPointLabs.PositionsLab
             Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
             ExecutePositionsAction(positionsAction, false, false);
         }
+
+        private void RepackButton_Click(object sender, RoutedEventArgs e)
+        {
+            Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Repack(shapes, isPreview);
+            ExecutePositionsAction(positionsAction, false, false);
+        }
         #endregion
 
         #region Adjustment
@@ -697,6 +703,16 @@ namespace PowerPointLabs.PositionsLab
         private void SwapPositionsButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
+            _previewCallBack = delegate
+            {
+                ExecutePositionsAction(positionsAction, true, true);
+            };
+            PreviewHandler();
+        }
+
+        private void RepackButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Repack(shapes, isPreview);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, true, true);
