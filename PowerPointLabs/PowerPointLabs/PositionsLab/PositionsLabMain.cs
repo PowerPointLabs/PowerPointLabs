@@ -2106,9 +2106,8 @@ namespace PowerPointLabs.PositionsLab
                 throw new Exception(ErrorMessageFewerThanTwoSelection);
             }
 
-            var sortedShapes = selectedShapes;
             System.Drawing.PointF[] topLeftPointList = new System.Drawing.PointF[numOfShapes];
-            sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
+            var sortedShapes = Graphics.SortShapesByLeft(selectedShapes);
             float[] distanceList = new float[numOfShapes - 1];
             var currentX = sortedShapes[0].ActualTopLeft.X;
 
