@@ -51,7 +51,7 @@
         <Border IsEnabled="{Binding Path=IsInsertCitation}" Name="CitationFontColorPanel" MouseLeftButtonUp="ColorPanel_OnMouseLeftButtonUp" Background="{Binding Path=CitationFontColor, Mode=TwoWay, NotifyOnSourceUpdated=True}" BorderBrush="#464646" BorderThickness="1" Height="29" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" />
 
         <Label Height="35" Name="CitationFontSizeLabel" Content="Citation Font Size" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
-        <Slider Height="35" Name="CitationFontSizeSlider" ToolTip="{Binding Value, RelativeSource={RelativeSource self}}" Value="{Binding Path=CitationFontSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="120" Minimum="5" Maximum="14" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"></Slider>
+        <Slider MinHeight="32" Height="35" Name="CitationFontSizeSlider" ToolTip="{Binding Value, RelativeSource={RelativeSource self}}" Value="{Binding Path=CitationFontSize, Mode=TwoWay, NotifyOnSourceUpdated=True}" Width="120" Minimum="5" Maximum="14" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5"></Slider>
 
         <Label Height="35" Name="CitationAlignmentLabel" Content="Citation Text Alignment" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6"/>
         <ComboBox Height="35" Name="CitationAlignmentComboBox" SelectedIndex="{Binding Path=CitationAlignment, Mode=TwoWay, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Grid.Row="6">

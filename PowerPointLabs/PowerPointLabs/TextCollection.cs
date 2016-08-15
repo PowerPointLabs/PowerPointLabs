@@ -145,32 +145,32 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Auto Animation
-        public const string AutoAnimateGroupLabel = "Auto Animate";
+        public const string AutoAnimateGroupLabel = "Animation Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
         # endregion
 
         # region Auto Zoom
-        public const string AutoZoomGroupLabel = "Auto Zoom";
+        public const string AutoZoomGroupLabel = "Zoom Lab";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
         # endregion
 
         # region Auto Crop
-        public const string AutoCropGroupLabel = "Auto Crop";
+        public const string AutoCropGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         # endregion
 
         # region Spotlight
-        public const string SpotLightGroupLabel = "Spotlight";
+        public const string SpotLightGroupLabel = "Spotlight Lab";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
         # endregion
 
         # region Auto Narration
-        public const string EmbedAudioGroupLabel = "Auto Narrate";
+        public const string EmbedAudioGroupLabel = "Narrations Lab";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
         public const string AddRecordButtonLabel = "Record Audio Manually";
@@ -178,14 +178,14 @@
         # endregion
 
         # region Auto Caption
-        public const string EmbedCaptionGroupLabel = "Auto Captions";
+        public const string EmbedCaptionGroupLabel = "Captions Lab";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
         # endregion
 
         # region Highlight Points
-        public const string HighlightBulletsGroupLabel = "Highlight Bullets";
+        public const string HighlightBulletsGroupLabel = "Highlight Bullets Lab";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
@@ -218,7 +218,7 @@
         public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
         public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
         public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
-        public const string AgendaLabUpdateAgendaButtonLabel = "Syncronize Agenda";
+        public const string AgendaLabUpdateAgendaButtonLabel = "Synchronize Agenda";
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
@@ -347,6 +347,9 @@
             /// </summary>
             public const string NoEffect = "No Effect";
             public const string ColorHasEffect = "Color";
+            public const string TransparencyHasEffect = "Transparency";
+            public const string BannerHasEffect = "Banner";
+            public const string TextBoxHasEffect = "TextBox";
             public const string VariantCategoryOverlayColor = "Overlay Color";
             public const string VariantCategoryFontColor = "Font Color";
             public const string VariantCategoryTextGlowColor = "Text Glow Color";
