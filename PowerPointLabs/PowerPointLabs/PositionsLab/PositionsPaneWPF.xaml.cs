@@ -234,6 +234,20 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Adjustment
+        private void Pane_MouseEnter(object sender, MouseEventArgs e)
+        {
+            positionLabPane.Focus();
+            if (IsChangeIconKeyPressed())
+            {
+                ChangeIconOfFlip();
+            }
+            else
+            {
+                Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
+                flipButton.Image = flipHorizontalIcon;
+            }
+        }
+
         private void RotationButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
@@ -1546,8 +1560,8 @@ namespace PowerPointLabs.PositionsLab
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
         {
             UndoPreview();
-            Media.ImageSource flipVerticalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
-            flipButton.Image = flipVerticalIcon;
+            Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
+            flipButton.Image = flipHorizontalIcon;
         }
 
         private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
