@@ -123,7 +123,7 @@
             <WPF:ImageButton ToolTip="Snaps objects away from a reference object" x:Name="snapAwayButton" HorizontalAlignment="Left" Margin="18,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapAwayButton_Click" MouseEnter="SnapAwayButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
-            <TextBlock x:Name="snapAWayTextBlock" HorizontalAlignment="Left" Margin="222,560,0,0" TextWrapping="Wrap" Text="Snap Away" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <TextBlock x:Name="snapAWayTextBlock" HorizontalAlignment="Left" Margin="18,635,0,0" TextWrapping="Wrap" Text="Snap Away" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="86,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </WPF:ImageButton>
