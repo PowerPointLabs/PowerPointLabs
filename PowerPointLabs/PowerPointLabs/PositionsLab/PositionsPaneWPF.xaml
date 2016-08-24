@@ -124,7 +124,7 @@
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="snapAWayTextBlock" HorizontalAlignment="Left" Margin="18,635,0,0" TextWrapping="Wrap" Text="Snap Away" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Flip objects horizontally and pressing 'ctrl' to flip it vertically" x:Name="flipButton" HorizontalAlignment="Left" Margin="154,590,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="FlipButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <WPF:ImageButton ToolTip="Flip objects horizontally and pressing 'ctrl' to flip it vertically" x:Name="flipButton" HorizontalAlignment="Left" Margin="154,590,0,0" VerticalAlignment="Top" Width="60" Height="45" MouseEnter="FlipButton_MouseEnter" MouseLeave="UndoPreview" Click="FlipButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\FlipHorizontalIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="flipTextBlock" HorizontalAlignment="Left" Margin="154,635,0,0" TextWrapping="Wrap" Text="Flip" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>

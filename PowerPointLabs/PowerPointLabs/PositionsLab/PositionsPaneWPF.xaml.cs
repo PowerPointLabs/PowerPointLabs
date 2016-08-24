@@ -782,6 +782,29 @@ namespace PowerPointLabs.PositionsLab
             };
             PreviewHandler();
         }
+
+        private void FlipButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
+                ExecutePositionsAction(positionsAction, false);
+                _previewCallBack = delegate
+                {
+                    ExecutePositionsAction(positionsAction, true);
+                };
+            }
+            else
+            {
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+                ExecutePositionsAction(positionsAction, false);
+                _previewCallBack = delegate
+                {
+                    ExecutePositionsAction(positionsAction, true);
+                };
+            }
+            PreviewHandler();
+        }
         #endregion
 
         #region Helper
