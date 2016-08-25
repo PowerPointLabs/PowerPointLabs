@@ -311,7 +311,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void AlignTop(ShapeRange toAlign)
+        public static void AlignTop(ShapeRange toAlign)   
         {
             var selectedShapes = new List<PPShape>();
 
@@ -2258,25 +2258,43 @@ namespace PowerPointLabs.PositionsLab
             return shapeIsVertical;
         }
 
-        public static void FlipHorizontal(ShapeRange selectedShapes)
+        public static void FlipHorizontal(ShapeRange toFlip)
         {
-            for (var i = 1; i <= selectedShapes.Count; i++)
+            var selectedShapes = new List<PPShape>();
+
+            if (toFlip.Count < 1)
+            {
+                return;
+            }
+
+            selectedShapes = ConvertShapeRangeToPPShapeList(toFlip);
+
+            for (var i = 0; i < selectedShapes.Count; i++)
             {
                 var currentShape = selectedShapes[i];
-                var currentRotation = currentShape.Rotation;
+                //var currentRotation = currentShape.Rotation;
                 currentShape.Flip(MsoFlipCmd.msoFlipHorizontal);
-                currentShape.Rotation = currentRotation;
+                //currentShape.Rotation = currentRotation;
             }
         }
 
-        public static void FlipVertical(ShapeRange selectedShapes)
+        public static void FlipVertical(ShapeRange toFlip)
         {
-            for (var i = 1; i <= selectedShapes.Count; i++)
+            var selectedShapes = new List<PPShape>();
+
+            if (toFlip.Count < 1)
+            {
+                return;
+            }
+
+            selectedShapes = ConvertShapeRangeToPPShapeList(toFlip);
+
+            for (var i = 0; i < selectedShapes.Count; i++)
             {
                 var currentShape = selectedShapes[i];
-                var currentRotation = currentShape.Rotation;
+                //var currentRotation = currentShape.Rotation;
                 currentShape.Flip(MsoFlipCmd.msoFlipVertical);
-                currentShape.Rotation = currentRotation;
+                //currentShape.Rotation = currentRotation;
             }
         }
 

@@ -529,7 +529,9 @@ namespace PowerPointLabs.PositionsLab
                 Logger.LogException(ex, "LockAxis");
             }
         }
+        #endregion
 
+        #region Flip
         private void FlipButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
@@ -785,11 +787,10 @@ namespace PowerPointLabs.PositionsLab
 
         private void FlipButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
             if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
             {
-                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
-                ExecutePositionsAction(positionsAction, false);
                 _previewCallBack = delegate
                 {
                     ExecutePositionsAction(positionsAction, true);
@@ -797,9 +798,7 @@ namespace PowerPointLabs.PositionsLab
             }
             else
             {
-                var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
-                ExecutePositionsAction(positionsAction, false);
                 _previewCallBack = delegate
                 {
                     ExecutePositionsAction(positionsAction, true);
