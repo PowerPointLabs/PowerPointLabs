@@ -2099,6 +2099,26 @@ namespace PowerPointLabs.PositionsLab
 
         #endregion
 
+        #region Adjustment
+
+        public static void Rotate(IList<Shape> shapes, Shape refShape, float angle)
+        {
+            var origin = Graphics.GetCenterPoint(refShape);
+
+            foreach (var currentShape in shapes)
+            {
+                var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
+                var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
+
+                currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
+                currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
+
+                currentShape.Rotation = AddAngles(currentShape.Rotation, angle);
+            }
+        }
+
+        #endregion
+
         #region Snap
 
         public static void SnapVertical(IList<Shape> selectedShapes)
