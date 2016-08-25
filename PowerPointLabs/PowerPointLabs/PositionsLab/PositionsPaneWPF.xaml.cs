@@ -787,7 +787,8 @@ namespace PowerPointLabs.PositionsLab
         {
             if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
             {
-                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
                 ExecutePositionsAction(positionsAction, false);
                 _previewCallBack = delegate
                 {
@@ -796,7 +797,8 @@ namespace PowerPointLabs.PositionsLab
             }
             else
             {
-                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
                 ExecutePositionsAction(positionsAction, false);
                 _previewCallBack = delegate
                 {
