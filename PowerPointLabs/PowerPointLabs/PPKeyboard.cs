@@ -180,7 +180,7 @@ namespace PPExtraEventHelper
         //for Office 2010, its window structure is like MDIClient --> mdiClass --> paneClassDC (SlideView)
         //but for Office 2013, it's like MDIClient --> mdiClass (SlideView)
         //this structure can be found using SPY++ provided by visual studio
-        private static IntPtr FindSlideViewWindowHandle(IntPtr handle)
+        public static IntPtr FindSlideViewWindowHandle(IntPtr handle)
         {
             IntPtr slideViewWindowHandle = IntPtr.Zero;
             IntPtr mdiClient = Native.FindWindowEx(handle, IntPtr.Zero, "MDIClient", "");
@@ -207,6 +207,12 @@ namespace PPExtraEventHelper
             return Native.GetFocus() == _currentSlideViewWindowHandle;
         }
 
+        public static void SetSlideViewWindowFocused()
+        {
+            RefreshSlideViewWindowHandle();
+            Native.SetFocus(_currentSlideViewWindowHandle);
+        }
+
         private static int HookProcedureCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             RefreshSlideViewWindowHandle();
@@ -225,11 +231,12 @@ namespace PPExtraEventHelper
                         if (!keyStatus.IsPressed)
                         {
                             keyStatus.Press();
-                            foreach (var action in _keyDownActions[keyIndex])
-                            {
-                                var block = action.RunConditionally(keyStatus);
-                                if (block) blockInput = true;
-                            }
+                        }
+
+                        foreach (var action in _keyDownActions[keyIndex])
+                        {
+                            var block = action.RunConditionally(keyStatus);
+                            if (block) blockInput = true;
                         }
                     }
                     else

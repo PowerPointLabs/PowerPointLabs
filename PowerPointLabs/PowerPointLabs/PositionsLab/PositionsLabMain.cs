@@ -2272,7 +2272,7 @@ namespace PowerPointLabs.PositionsLab
                 endingAngle += angleBetweenShapes;
 
                 var rotationAngle = endingAngle - shapeAngleInfo.Angle;
-                Rotate(shapeAngleInfo.Shape, origin, rotationAngle, DistributeShapeOrientation);
+                Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
             }
         }
 
@@ -2331,7 +2331,7 @@ namespace PowerPointLabs.PositionsLab
                     if (rotationAngle > threshold || rotationAngle < -threshold)
                     {
                         isStable = false;
-                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle, DistributeShapeOrientation);
+                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle);
                     }
 
                     endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
@@ -2430,8 +2430,8 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Adjustment
-
-        public static void Rotate(Shape shape, Drawing.PointF origin, float angle, RadialShapeOrientationObject shapeOrientation)
+        
+        public static void Rotate(Shape shape, Drawing.PointF origin, float angle)
         {
             var unrotatedCenter = Graphics.GetCenterPoint(shape);
             var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
@@ -2439,7 +2439,7 @@ namespace PowerPointLabs.PositionsLab
             shape.Left += (rotatedCenter.X - unrotatedCenter.X);
             shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
 
-            if (shapeOrientation == RadialShapeOrientationObject.Dynamic)
+            if (ReorientShapeOrientation == RadialShapeOrientationObject.Dynamic)
             {
                 shape.Rotation = AddAngles(shape.Rotation, angle);
             }

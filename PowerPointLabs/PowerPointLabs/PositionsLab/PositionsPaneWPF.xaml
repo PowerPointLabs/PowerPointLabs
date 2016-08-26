@@ -15,6 +15,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type ToggleButton}">
+                <Setter Property="Focusable" Value="false"/>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.InputBindings>
@@ -116,13 +119,13 @@
                     <Image Source="..\Resources\SettingsGear.png"/>
                 </WPF:ImageButton>
             </GroupBox>
-            <WPF:ImageButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <ToggleButton ToolTip="Adjusts the rate of rotation for object" x:Name="rotationButton" HorizontalAlignment="Left" Margin="18,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Checked="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\RotateIcon.png"/>
-            </WPF:ImageButton>
+            </ToggleButton>
             <TextBlock x:Name="rotateTextBlock" HorizontalAlignment="Left" Margin="18,625,0,0" TextWrapping="Wrap" Text="Rotate" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Duplicate the object first and adjusts the rate of rotation for object" x:Name="duplicateRotationButton" HorizontalAlignment="Left" Margin="86,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="DuplicateRotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <ToggleButton ToolTip="Duplicate the object first and adjusts the rate of rotation for object" x:Name="duplicateRotationButton" HorizontalAlignment="Left" Margin="86,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Checked="RotationButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\DuplicateRotateIcon.png"/>
-            </WPF:ImageButton>
+            </ToggleButton>
             <TextBlock x:Name="duplicateRotateTextBlock" HorizontalAlignment="Left" Margin="86,625,0,0" TextWrapping="Wrap" Text="Duplicate and Rotate" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>
             <WPF:ImageButton ToolTip="Snaps object to a horizontal rotation" x:Name="snapHorizontalButton" HorizontalAlignment="Left" Margin="154,580,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="SnapHorizontalButton_Click" MouseEnter="SnapHorizontalButton_MouseEnter" MouseLeave="UndoPreview" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\SnapHorizontalIcon.png"/>
@@ -136,9 +139,9 @@
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="snapAWayTextBlock" HorizontalAlignment="Left" Margin="18,700,0,0" TextWrapping="Wrap" Text="Snap Away" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <WPF:ImageButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="86,655,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+            <ToggleButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="86,655,0,0" VerticalAlignment="Top" Width="60" Height="45" Checked="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
-            </WPF:ImageButton>
+            </ToggleButton>
             <TextBlock x:Name="lockAxisTextBlock" HorizontalAlignment="Left" Margin="86,700,0,0" TextWrapping="Wrap" Text="Lock Axis" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
         </Grid>
     </ScrollViewer>
