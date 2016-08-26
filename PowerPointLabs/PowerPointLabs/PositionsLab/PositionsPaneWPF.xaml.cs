@@ -65,6 +65,8 @@ namespace PowerPointLabs.PositionsLab
         private DistributeSettingsDialog _distributeSettingsDialog;
         private ReorderSettingsDialog _reorderSettingsDialog;
 
+        private int flipPreview = 0;
+
         public PositionsPaneWpf()
         {
             PositionsLabMain.InitPositionsLab();
@@ -765,23 +767,46 @@ namespace PowerPointLabs.PositionsLab
         private void FlipButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var selectedShapes = this.GetCurrentSelection().ShapeRange;
-            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            if (IsPreviewKeyPressed())
             {
-                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
-                _previewCallBack = delegate
+                if (selectedShapes.Count < 1)
                 {
-                    ExecutePositionsAction(positionsAction, true);
-                };
+                    return;
+                }
+                else
+                {
+                    flipPreview = 1;
+                }
+                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                else
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
             }
-            else
+        }
+
+        private void FlipButton_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+            if (flipPreview == 1)
             {
-                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
-                _previewCallBack = delegate
+                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
                 {
-                    ExecutePositionsAction(positionsAction, true);
-                };
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                else
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                flipPreview = 0;
             }
-            PreviewHandler();
         }
         #endregion
 
@@ -1550,6 +1575,21 @@ namespace PowerPointLabs.PositionsLab
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
         {
             UndoPreview();
+            if (flipPreview == 1)
+            {
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                else
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                flipPreview = 0;
+            }
             Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
             flipButton.Image = flipHorizontalIcon;
         }
