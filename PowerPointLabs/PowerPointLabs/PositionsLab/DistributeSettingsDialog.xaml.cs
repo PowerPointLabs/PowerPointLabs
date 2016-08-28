@@ -49,6 +49,22 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void DistributeAtSecondShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeRadialReference == PositionsLabMain.DistributeRadialReferenceObject.AtSecondShape)
+            {
+                distributeAtSecondShapeButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeToSecondThirdShapeButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeRadialReference == PositionsLabMain.DistributeRadialReferenceObject.SecondThirdShape)
+            {
+                distributeToSecondThirdShapeButton.IsChecked = true;
+            }
+        }
+
         private void DistributeByBoundariesButton_Load(object sender, RoutedEventArgs e)
         {
             if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectBoundary)
@@ -62,6 +78,22 @@ namespace PowerPointLabs.PositionsLab
             if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectCenter)
             {
                 distributeByShapeCenterButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeShapeOrientationFixedButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Fixed)
+            {
+                distributeShapeOrientationFixedButton.IsChecked = true;
+            }
+        }
+
+        private void DistributeShapeOrientationDynamicButton_Load(object sender, RoutedEventArgs e)
+        {
+            if (PositionsLabMain.DistributeShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Dynamic)
+            {
+                distributeShapeOrientationDynamicButton.IsChecked = true;
             }
         }
         #endregion
@@ -90,6 +122,16 @@ namespace PowerPointLabs.PositionsLab
                 PositionsLabMain.DistributeReferToExtremeShapes();
             }
 
+            if (distributeAtSecondShapeButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferAtSecondShape();
+            }
+
+            if (distributeToSecondThirdShapeButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeReferToSecondThirdShape();
+            }
+
             // Checks for space calculation reference
             if (distributeByBoundariesButton.IsChecked.GetValueOrDefault())
             {
@@ -99,6 +141,17 @@ namespace PowerPointLabs.PositionsLab
             if (distributeByShapeCenterButton.IsChecked.GetValueOrDefault())
             {
                 PositionsLabMain.DistributeSpaceByCenter();
+            }
+
+            // Checks for radial shape orientation
+            if (distributeShapeOrientationFixedButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeShapeOrientationToFixed();
+            }
+
+            if (distributeShapeOrientationDynamicButton.IsChecked.GetValueOrDefault())
+            {
+                PositionsLabMain.DistributeShapeOrientationToDynamic();
             }
 
             IsOpen = false;

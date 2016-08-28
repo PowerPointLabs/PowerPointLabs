@@ -558,6 +558,9 @@
     <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
       <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PositionsLab\ReorientSettingsDialog.xaml.cs">
+      <DependentUpon>ReorientSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PositionsLab\DistributeSettingsDialog.xaml.cs">
       <DependentUpon>DistributeSettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -1106,6 +1109,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PositionsLab\ReorientSettingsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PositionsLab\DistributeSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1292,7 +1299,7 @@
     <Resource Include="Resources\PositionsLab\AlignLeftDefaultIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignRightDefaultIcon.png" />
     <Resource Include="Resources\PositionsLab\AlignTopDefaultIcon.png" />
-    <None Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\PositionsLab\PositionsLab.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
     <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
@@ -1362,22 +1369,34 @@
     <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\EffectsLab\BlurSelected.png" />
+    <Resource Include="Resources\EffectsLab\BlurSelected.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\LeftRotate.bmp" />
+    <Resource Include="Resources\PositionsLab\DistributeRadialIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-left_rotate.png" />
+    <Resource Include="Resources\LeftRotate.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-right_rotate.png" />
+    <Resource Include="Resources\icon-left_rotate.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-flip_hori.png" />
+    <Resource Include="Resources\icon-right_rotate.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon-flip_verti.png" />
+    <Resource Include="Resources\icon-flip_hori.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon-flip_verti.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignRadialIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\RadialShapeOrientationDynamicIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

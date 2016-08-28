@@ -50,6 +50,8 @@ namespace Test.UnitTest.PositionsLab
         private const int AlignShapesVerticalDefaultNo = 33;
         private const int AlignShapesCenterDefaultNo = 34;
 
+        private const int AlignShapesRadialNo = 36;
+
         protected override string GetTestingSlideName()
         {
             return "PositionsLab\\PositionsLabAlign.pptx";
@@ -537,6 +539,21 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabMain.AlignCenter(actualShapes, slideHeight, slideWidth);
 
             PpOperations.SelectSlide(AlignShapesCenterDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignRadial()
+        {
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
+            ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
+
+            PpOperations.SelectSlide(AlignShapesRadialNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
