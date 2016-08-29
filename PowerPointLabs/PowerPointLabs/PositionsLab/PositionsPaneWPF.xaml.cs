@@ -11,6 +11,8 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using Media = System.Windows.Media;
+using System.Diagnostics;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -44,12 +46,17 @@ namespace PowerPointLabs.PositionsLab
         private PreviewCallBack _previewCallBack;
         private static Dictionary<int, PositionShapeProperties> allShapePos = new Dictionary<int, PositionShapeProperties>();
 
+        //Brushes for highlighting buttons
+        private Media.SolidColorBrush lightBlueBrush;
+        private Media.SolidColorBrush darkBlueBrush;
+
         //Variables for lock axis
         private const int Left = 0;
         private const int Top = 1;
         private static List<Shape> _shapesToBeMoved;
         private static System.Drawing.Point _initialMousePos;
         private float[,] _initialPos;
+        private System.Drawing.PointF[] _initialCenter;
 
         //Variables for rotation
         private const float RefpointRadius = 10;
@@ -71,6 +78,22 @@ namespace PowerPointLabs.PositionsLab
         public PositionsPaneWpf()
         {
             PositionsLabMain.InitPositionsLab();
+            lightBlueBrush = new System.Windows.Media.SolidColorBrush();
+            var lightBlue = new System.Windows.Media.Color();
+            lightBlue.R = 190;
+            lightBlue.G = 230;
+            lightBlue.B = 253;
+            lightBlue.A = 255;
+            lightBlueBrush.Color = lightBlue;
+            
+            darkBlueBrush = new System.Windows.Media.SolidColorBrush();
+            var darkBlue = new System.Windows.Media.Color();
+            darkBlue.R = 60;
+            darkBlue.G = 127;
+            darkBlue.B = 177;
+            darkBlue.A = 255;
+            darkBlueBrush.Color = darkBlue;
+
             InitializeComponent();
             InitializeHotKeys();
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
@@ -523,6 +546,213 @@ namespace PowerPointLabs.PositionsLab
         }
 
         #endregion
+
+        #region Lock direction
+        private void LockDirectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+
+            if (noShapesSelected)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+
+            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+            if (selectedShapes.Count < 1)
+            {
+                ShowErrorMessageBox(ErrorMessageNoSelection);
+                return;
+            }
+            else 
+            {
+                ClearAllEventHandlers();
+                var currentSlide = this.GetCurrentSlide();
+                _allShapesInSlide = ConvertShapesToShapeList(currentSlide.Shapes);
+                _refPoint = selectedShapes[1];
+
+                if (selectedShapes.Count == 1)
+                {
+                    _shapesToBeMoved = ConvertShapeRangeToShapeList(selectedShapes, 1);                    
+
+                    StartSingleLockDirectionMode();
+                }
+                else
+                {
+                    _shapesToBeMoved = ConvertShapeRangeToShapeList(selectedShapes, 2);
+
+                    StartLockDirectionMode();
+                }
+            }
+        }
+
+        private void LockDirectionHandler(object sender, EventArgs e)
+        {
+            this.GetCurrentSelection().Unselect();
+
+            var currentMousePos = System.Windows.Forms.Control.MousePosition;
+
+            float diffX = currentMousePos.X - _initialMousePos.X;
+            float diffY = currentMousePos.Y - _initialMousePos.Y;
+
+            var origin = Graphics.GetCenterPoint(_refPoint);
+
+            for (var i = 0; i < _shapesToBeMoved.Count; i++)
+            {
+                var s = _shapesToBeMoved[i];
+                var directionY = _initialCenter[i].Y - origin.Y;
+                var directionX = _initialCenter[i].X - origin.X;
+                var vectorLength = Math.Pow((Math.Pow(directionX, 2) + Math.Pow(directionY, 2)), 0.5);
+                var normalX = directionX / vectorLength;
+                var normalY = directionY / vectorLength;
+
+                if (_initialCenter[i].X == origin.X)
+                {
+                    s.Top = _initialPos[i, Top] + diffY;
+                }
+                else if ((_initialCenter[i].X > origin.X && _initialMousePos.X > origin.X)
+                    || (_initialCenter[i].X < origin.X && _initialMousePos.X > origin.X))
+                {
+                    s.Left = _initialPos[i, Left] + diffX * (float)normalX;
+                    s.Top = _initialPos[i, Top] + diffX * (float)normalY;
+                }
+                else
+                {
+                    s.Left = _initialPos[i, Left] - diffX * (float)normalX;
+                    s.Top = _initialPos[i, Top] - diffX * (float)normalY;
+                }
+            }
+        }
+
+        private void SingleLockDirectionHandler(object sender, EventArgs e)
+        {
+            this.GetCurrentSelection().Unselect();
+
+            var currentMousePos = System.Windows.Forms.Control.MousePosition;
+
+            float diffX = currentMousePos.X - _initialMousePos.X;
+            float diffY = currentMousePos.Y - _initialMousePos.Y;
+
+            for (var i = 0; i < _shapesToBeMoved.Count; i++)
+            {
+                var sShape = _shapesToBeMoved[i];
+                PPShape s = new PPShape(_shapesToBeMoved[i], false);
+                var directionY = s.ActualTopRight.Y - s.ActualTopLeft.Y;
+                var directionX = s.ActualTopRight.X - s.ActualTopLeft.X;
+                var vectorLength = Math.Pow((Math.Pow(directionX, 2) + Math.Pow(directionY, 2)), 0.5);
+                var normalX = directionX / vectorLength;
+                var normalY = directionY / vectorLength;
+
+                if (Math.Abs(diffX) > Math.Abs(diffY))
+                {
+                    sShape.Left = _initialPos[i, Left] + diffX * (float)normalX;
+                    sShape.Top = _initialPos[i, Top] + diffX * (float)normalY;
+                }
+                else
+                {
+                    sShape.Left = _initialPos[i, Left] + diffY * (float)normalX;
+                    sShape.Top = _initialPos[i, Top] + diffY * (float)normalY;
+                }
+            }
+        }
+
+        void _leftMouseUpListener_LockDirection(object sender, SysMouseEventInfo e)
+        {
+            _dispatcherTimer.Stop();
+        }
+
+        void _leftMouseDownListener_LockDirection(object sender, SysMouseEventInfo e)
+        {
+            try
+            {
+                var p = System.Windows.Forms.Control.MousePosition;
+                var currentSlide = this.GetCurrentSlide();
+                var selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
+
+                if (selectedShape == null)
+                {
+                    DisableLockDirectionMode();
+                    return;
+                }
+
+                var isShapeToBeMoved = _shapesToBeMoved.Contains(selectedShape);
+                var isRefPoint = _refPoint.Id == selectedShape.Id;
+
+                if (!isShapeToBeMoved && !isRefPoint)
+                {
+                    DisableLockDirectionMode();
+                    return;
+                }
+
+                this.StartNewUndoEntry();
+
+                if (isRefPoint)
+                {
+                    this.GetCurrentSelection().Unselect();
+                    return;
+                }
+
+                _initialPos = new float[_shapesToBeMoved.Count, 2];
+                _initialCenter = new System.Drawing.PointF[_shapesToBeMoved.Count];
+                for (var i = 0; i < _shapesToBeMoved.Count; i++)
+                {
+                    var s = _shapesToBeMoved[i];
+                    _initialPos[i, Left] = s.Left;
+                    _initialPos[i, Top] = s.Top;
+                    _initialCenter[i] = Graphics.GetCenterPoint(s);
+                }
+
+                _initialMousePos = p;
+                _dispatcherTimer.Start();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "LockDirection");
+            }
+        }
+
+        void _leftMouseDownListener_SingleLockDirection(object sender, SysMouseEventInfo e)
+        {
+            try
+            {
+                var p = System.Windows.Forms.Control.MousePosition;
+                var currentSlide = this.GetCurrentSlide();
+                var selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
+
+                if (selectedShape == null)
+                {
+                    DisableLockDirectionMode();
+                    return;
+                }
+
+                var isShapeToBeMoved = _shapesToBeMoved.Contains(selectedShape);
+
+                if (!isShapeToBeMoved)
+                {
+                    DisableLockDirectionMode();
+                    return;
+                }
+
+                this.StartNewUndoEntry();
+
+                _initialPos = new float[_shapesToBeMoved.Count, 2];
+                for (var i = 0; i < _shapesToBeMoved.Count; i++)
+                {
+                    var s = _shapesToBeMoved[i];
+                    _initialPos[i, Left] = s.Left;
+                    _initialPos[i, Top] = s.Top;
+                }
+
+                _initialMousePos = p;
+                _dispatcherTimer.Start();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "SingleLockDirection");
+            }
+        }
+        #endregion 
 
         #region Snap
         private void SnapHorizontalButton_Click(object sender, RoutedEventArgs e)
@@ -992,6 +1222,45 @@ namespace PowerPointLabs.PositionsLab
             _initialMousePos = new System.Drawing.Point();
         }
 
+        private void StartLockDirectionMode()
+        {
+            _dispatcherTimer.Tick += LockDirectionHandler;
+            _leftMouseUpListener = new LMouseUpListener();
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_LockDirection;
+
+            _leftMouseDownListener = new LMouseDownListener();
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_LockDirection;
+
+            HighlightButton(lockDirectionButton, lightBlueBrush, darkBlueBrush);
+        }
+
+        private void StartSingleLockDirectionMode()
+        {
+            _dispatcherTimer.Tick += SingleLockDirectionHandler;
+            _leftMouseUpListener = new LMouseUpListener();
+            _leftMouseUpListener.LButtonUpClicked += _leftMouseUpListener_LockDirection;
+
+            _leftMouseDownListener = new LMouseDownListener();
+            _leftMouseDownListener.LButtonDownClicked += _leftMouseDownListener_SingleLockDirection;
+
+            HighlightButton(lockDirectionButton, lightBlueBrush, darkBlueBrush);
+        }
+
+        private void DisableLockDirectionMode()
+        {
+            ClearAllEventHandlers();
+            _refPoint = null;
+            _shapesToBeMoved = new List<Shape>();
+            _allShapesInSlide = new List<Shape>();
+            _initialMousePos = new System.Drawing.Point();
+            _prevMousePos = new System.Drawing.Point();
+
+            lockDirectionButton.Background = null;
+            lockDirectionButton.BorderBrush = null;
+
+            RemoveHighlightOnButton(lockDirectionButton);
+        }
+        
         #region Error Handling
         public void ShowErrorMessageBox(string content, Exception exception = null)
         {
@@ -1520,7 +1789,19 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void PreviewHandler()
+        private void HighlightButton(WPF.ImageButton button, Media.SolidColorBrush highlightBrush, Media.SolidColorBrush borderBrush)
+         {
+             button.Background = highlightBrush;
+             button.BorderBrush = borderBrush;
+         }
+ 
+         private void RemoveHighlightOnButton(WPF.ImageButton button)
+         {
+             button.Background = null;
+             button.BorderBrush = null;
+         }
+
+private void PreviewHandler()
         {
             Focus();
             if (IsPreviewKeyPressed())
