@@ -2,7 +2,6 @@ using System;
 using Microsoft.Office.Core;
 using System.Drawing;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using System.Collections.Generic;
 
 namespace PowerPointLabs.Utils
 {
@@ -14,7 +13,6 @@ namespace PowerPointLabs.Utils
         private float _rotatedVisualLeft;
         private float _rotatedVisualTop;
         private float _originalRotation;
-        private List<PointF> _points;
 
         public PPShape(PowerPoint.Shape shape, bool redefineBoundingBox = true)
         {
@@ -25,21 +23,12 @@ namespace PowerPointLabs.Utils
             {
                 ConvertToFreeform();
             }
-            else
-            {
-                SetPoints();
-            }
 
             UpdateAbsoluteWidth();
             UpdateAbsoluteHeight();
 
             UpdateVisualTop();
             UpdateVisualLeft();
-
-            if (_points == null)
-            {
-                SetBoundingBoxPoints();
-            }
         }
 
         #region Properties
@@ -415,11 +404,6 @@ namespace PowerPointLabs.Utils
                 UpdateVisualTop();
             }
         }
-
-        /// <summary>
-        /// Returns the coordinates of nodes.
-        /// </summary>
-        public List<PointF> Points => _points;
 
         /// <summary>
         /// Returns the position of the specified shape in the z-order. Read-only.
