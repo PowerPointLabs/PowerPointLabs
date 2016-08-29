@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
-             mc:Ignorable="d" Height="725" Width="310"
+             mc:Ignorable="d" Height="745" Width="310"
              KeyDown="PositionsPane_KeyDown" KeyUp="PositionsPane_KeyUp" FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -24,7 +24,7 @@
         <KeyBinding Key="LeftCtrl"/>
     </UserControl.InputBindings>
     <ScrollViewer>
-        <Grid VerticalAlignment="Top" Height="725" Width="300">
+        <Grid VerticalAlignment="Top" Height="745" Width="300">
             <GroupBox x:Name="alignGroupBox" Header="Align" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="160" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Distribute functions" x:Name="alignSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-2,0" VerticalAlignment="Top" Width="20" Height="20" Click="AlignSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
@@ -114,7 +114,7 @@
                 <Image Source="..\Resources\PositionsLab\SwapIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="swapTextBlock" HorizontalAlignment="Left" Margin="18,525,0,0" TextWrapping="Wrap" Text="Swap" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
-            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,550,0,0" VerticalAlignment="Top" Height="170" Width="280">
+            <GroupBox x:Name="orientationGroupBox" Header="Reorient" HorizontalAlignment="Left" Margin="10,550,0,0" VerticalAlignment="Top" Height="190" Width="280">
                 <WPF:ImageButton ToolTip="Opens the settings for Reorient functions" x:Name="reorientSettingsButton" HorizontalAlignment="Right" Margin="0,-29,-3,0" VerticalAlignment="Top" Width="20" Height="20" Click="ReorientSettingsButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                     <Image Source="..\Resources\SettingsGear.png"/>
                 </WPF:ImageButton>
@@ -143,6 +143,10 @@
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </ToggleButton>
             <TextBlock x:Name="lockAxisTextBlock" HorizontalAlignment="Left" Margin="86,700,0,0" TextWrapping="Wrap" Text="Lock Axis" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <WPF:ImageButton ToolTip="Objects can only be moved in certain direction from original position and the reference shape" x:Name="lockDirectionButton" HorizontalAlignment="Left" Margin="154,655,0,0" VerticalAlignment="Top" Width="60" Height="45" Click="LockDirectionButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\LockDirectionIcon.png"/>
+            </WPF:ImageButton>
+            <TextBlock x:Name="lockDirectionTextBlock" HorizontalAlignment="Left" Margin="154,700,0,0" TextWrapping="Wrap" Text="Lock Direction" VerticalAlignment="Top" TextAlignment="Center" Height="30" Width="60"/>
         </Grid>
     </ScrollViewer>
 </UserControl>
