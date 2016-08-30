@@ -560,23 +560,6 @@ namespace PowerPointLabs.PositionsLab
             {
                 Logger.LogException(ex, "Flip");
             }
-            /*
-            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
-
-            if (noShapesSelected)
-            {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
-                return;
-            }
-            var selectedShapes = this.GetCurrentSelection().ShapeRange;
-            ClearAllEventHandlers();
-            */
-            //FlipHandler(selectedShapes);
-        }
-
-        void FlipHandler(PowerPoint.ShapeRange selectedShapes)
-        {
-            
         }
         #endregion
 
@@ -1690,23 +1673,6 @@ namespace PowerPointLabs.PositionsLab
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
         {
             UndoPreview();
-            /*
-            if (flipPreview == 1)
-            {
-                var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-                {
-                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
-                    ExecutePositionsAction(positionsAction, false);
-                }
-                else
-                {
-                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
-                    ExecutePositionsAction(positionsAction, false);
-                }
-                flipPreview = 0;
-            }
-            */
             Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
             flipButton.Image = flipHorizontalIcon;
         }
