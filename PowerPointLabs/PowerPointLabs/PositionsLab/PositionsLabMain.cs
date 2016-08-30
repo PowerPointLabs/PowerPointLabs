@@ -2606,18 +2606,14 @@ namespace PowerPointLabs.PositionsLab
             return shapeIsVertical;
         }
 
-        public static void FlipHorizontal(ShapeRange toFlip)
+        public static void FlipHorizontal(ShapeRange selectedShapes)
         {
-            var selectedShapes = new List<PPShape>();
-
-            if (toFlip.Count < 1)
+            if (selectedShapes.Count < 1)
             {
-                return;
+                throw new Exception(ErrorMessageNoSelection);
             }
 
-            selectedShapes = ConvertShapeRangeToPPShapeList(toFlip);
-
-            for (var i = 0; i < selectedShapes.Count; i++)
+            for (var i = 1; i <= selectedShapes.Count; i++)
             {
                 var currentShape = selectedShapes[i];
                 //var currentRotation = currentShape.Rotation;
@@ -2626,18 +2622,14 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void FlipVertical(ShapeRange toFlip)
+        public static void FlipVertical(ShapeRange selectedShapes)
         {
-            var selectedShapes = new List<PPShape>();
-
-            if (toFlip.Count < 1)
+            if (selectedShapes.Count < 1)
             {
-                return;
+                throw new Exception(ErrorMessageNoSelection);
             }
 
-            selectedShapes = ConvertShapeRangeToPPShapeList(toFlip);
-
-            for (var i = 0; i < selectedShapes.Count; i++)
+            for (var i = 1; i <= selectedShapes.Count; i++)
             {
                 var currentShape = selectedShapes[i];
                 //var currentRotation = currentShape.Rotation;

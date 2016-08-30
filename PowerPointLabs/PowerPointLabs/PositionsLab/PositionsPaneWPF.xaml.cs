@@ -543,6 +543,24 @@ namespace PowerPointLabs.PositionsLab
         #region Flip
         private void FlipButton_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
+                    ExecuteFlipAction(positionsAction, false);
+                }
+                else
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+                    ExecuteFlipAction(positionsAction, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "Flip");
+            }
+            /*
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
 
             if (noShapesSelected)
@@ -552,29 +570,13 @@ namespace PowerPointLabs.PositionsLab
             }
             var selectedShapes = this.GetCurrentSelection().ShapeRange;
             ClearAllEventHandlers();
-
-            FlipHandler(selectedShapes);
+            */
+            //FlipHandler(selectedShapes);
         }
 
         void FlipHandler(PowerPoint.ShapeRange selectedShapes)
         {
-            try
-            {
-                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-                {
-                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
-                    ExecutePositionsAction(positionsAction, false);
-                }
-                else
-                {
-                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
-                    ExecutePositionsAction(positionsAction, false);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogException(ex, "Flip");
-            }
+            
         }
         #endregion
 
@@ -816,27 +818,23 @@ namespace PowerPointLabs.PositionsLab
 
         private void FlipButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (IsPreviewKeyPressed())
+            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
             {
-                var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                if (selectedShapes.Count < 1)
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
+                _previewCallBack = delegate
                 {
-                    return;
-                }
-                else
+                    ExecuteFlipAction(positionsAction, true);
+                };
+                PreviewHandler();
+            }
+            else
+            {
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+                _previewCallBack = delegate
                 {
-                    flipPreview = 1;
-                }
-                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-                {
-                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
-                    ExecutePositionsAction(positionsAction, false);
-                }
-                else
-                {
-                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
-                    ExecutePositionsAction(positionsAction, false);
-                }
+                    ExecuteFlipAction(positionsAction, true);
+                };
+                PreviewHandler();
             }
         }
 
@@ -1208,6 +1206,48 @@ namespace PowerPointLabs.PositionsLab
                 {
                     simulatedShapes.Delete();
                     GC.Collect();
+                }
+            }
+        }
+
+        public void ExecuteFlipAction(Action<PowerPoint.ShapeRange> positionsAction, bool isPreview)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                if (!isPreview)
+                {
+                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                }
+                return;
+            }
+
+            try
+            {
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+                if (isPreview)
+                {
+                    SaveSelectedShapePositions(selectedShapes, allShapePos);
+                }
+                else
+                {
+                    UndoPreview();
+                    _previewCallBack = null;
+                    this.StartNewUndoEntry();
+                }
+
+                positionsAction.Invoke(selectedShapes);
+               
+                if (isPreview)
+                {
+                    _previewIsExecuted = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!isPreview)
+                {
+                    ShowErrorMessageBox(ex.Message, ex);
                 }
             }
         }
@@ -1650,6 +1690,7 @@ namespace PowerPointLabs.PositionsLab
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
         {
             UndoPreview();
+            /*
             if (flipPreview == 1)
             {
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
@@ -1665,6 +1706,7 @@ namespace PowerPointLabs.PositionsLab
                 }
                 flipPreview = 0;
             }
+            */
             Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
             flipButton.Image = flipHorizontalIcon;
         }
@@ -1691,6 +1733,14 @@ namespace PowerPointLabs.PositionsLab
                         s.Left = properties.Position.X;
                         s.Top = properties.Position.Y;
                         s.Rotation = properties.Rotation;
+                        if (s.VerticalFlip != properties.FlipVerticalState)
+                        {
+                            s.Flip(Office.MsoFlipCmd.msoFlipVertical);
+                        }
+                        else if (s.HorizontalFlip != properties.FlipHorizontalState)
+                        {
+                            s.Flip(Office.MsoFlipCmd.msoFlipHorizontal);
+                        }
                     }
                 }
 
@@ -1797,7 +1847,7 @@ namespace PowerPointLabs.PositionsLab
             dictionary.Clear();
             foreach (Shape s in shapes)
             {
-                dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation));
+                dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation, s.HorizontalFlip, s.VerticalFlip));
             }
         }
         #endregion
