@@ -333,6 +333,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AlignRadialIcon {
+            get {
+                object obj = ResourceManager.GetObject("AlignRadialIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap AlignRightDefaultIcon {
             get {
                 object obj = ResourceManager.GetObject("AlignRightDefaultIcon", resourceCulture);
@@ -546,6 +556,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap DistributeHorizontalIcon {
             get {
                 object obj = ResourceManager.GetObject("DistributeHorizontalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap DistributeRadialIcon {
+            get {
+                object obj = ResourceManager.GetObject("DistributeRadialIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1038,6 +1058,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap RadialShapeOrientationDynamicIcon {
+            get {
+                object obj = ResourceManager.GetObject("RadialShapeOrientationDynamicIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RadialShapeOrientationFixedIcon {
+            get {
+                object obj = ResourceManager.GetObject("RadialShapeOrientationFixedIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap RecolorRemainder {
             get {
                 object obj = ResourceManager.GetObject("RecolorRemainder", resourceCulture);
@@ -1388,19 +1428,19 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap RotateIcon {
-            get {
-                object obj = ResourceManager.GetObject("RotateIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap RightRotate {
             get {
                 object obj = ResourceManager.GetObject("RightRotate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RotateIcon {
+            get {
+                object obj = ResourceManager.GetObject("RotateIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

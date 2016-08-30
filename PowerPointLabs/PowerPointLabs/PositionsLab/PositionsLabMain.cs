@@ -8,6 +8,7 @@ using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Office = Microsoft.Office.Core;
 using System.Diagnostics;
 using Drawing = System.Drawing;
+using System.Linq;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -18,6 +19,7 @@ namespace PowerPointLabs.PositionsLab
         private const float RotateRight = 270f;
         private const float RotateUp = 0f;
         private const float RotateDown = 180f;
+        private const float threshold = 0.01f;
         private const int None = -1;
         private const int Right = 0;
         private const int Down = 1;
@@ -30,9 +32,13 @@ namespace PowerPointLabs.PositionsLab
         private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
         private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
         private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
-        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+        private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
+        private const string ErrorMessageFunctionNotSupportedForExtremeShapes =
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
         private const string ErrorMessageFunctionNotSupportedForSlide =
             TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
+        private const string ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter =
+            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter;
         private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         public enum DistributeReferenceObject
@@ -41,6 +47,12 @@ namespace PowerPointLabs.PositionsLab
             FirstShape,
             FirstTwoShapes,
             ExtremeShapes
+        }
+
+        public enum DistributeRadialReferenceObject
+        {
+            AtSecondShape,
+            SecondThirdShape
         }
 
         public enum DistributeSpaceReferenceObject
@@ -55,16 +67,35 @@ namespace PowerPointLabs.PositionsLab
             None,
             AlignLeft,
             AlignCenter,
-            AlignRight,
+            AlignRight
         }
 
         public static DistributeReferenceObject DistributeReference { get; private set; }
+        public static DistributeRadialReferenceObject DistributeRadialReference { get; private set; }
         public static DistributeSpaceReferenceObject DistributeSpaceReference { get; private set; }
         public static GridAlignment DistributeGridAlignment { get; private set; }
         public static float MarginTop { get; private set; }
         public static float MarginBottom { get; private set; }
         public static float MarginLeft { get; private set; }
         public static float MarginRight { get; private set; }
+
+        private class ShapeAngleInfo
+        {
+            public Shape Shape { get; private set; }
+            public float Angle { get; set; }
+            public float ShapeAngle { get; set; }
+
+            public ShapeAngleInfo(Shape shape, float angle)
+            {
+                Shape = shape;
+                Angle = angle;
+            }
+
+            public ShapeAngleInfo(Shape shape, float angle, float shapeAngle) : this(shape, angle)
+            {
+                ShapeAngle = shapeAngle;
+            }
+        }
 
         //Reorder Variables
         public enum SwapReference
@@ -98,6 +129,15 @@ namespace PowerPointLabs.PositionsLab
 
         // Adjoin Variables
         public static bool AlignShapesToBeAdjoined { get; private set; }
+
+        // Radial Variables
+        public enum RadialShapeOrientationObject
+        {
+            Fixed,
+            Dynamic
+        }
+        public static RadialShapeOrientationObject DistributeShapeOrientation { get; private set; }
+        public static RadialShapeOrientationObject ReorientShapeOrientation { get; private set; }
 
         private static Dictionary<MsoAutoShapeType, float> shapeDefaultUpAngle;
 
@@ -178,6 +218,22 @@ namespace PowerPointLabs.PositionsLab
         }
 
         /// <summary>
+        /// Tells the Position Lab to use the second selected shape as the starting point for Distribute Radial method
+        /// </summary>
+        public static void DistributeReferAtSecondShape()
+        {
+            DistributeRadialReference = DistributeRadialReferenceObject.AtSecondShape;
+        }
+
+        /// <summary>
+        /// Tells the Position Lab to use the second and third shape as the boundary points for Distribute Radial method
+        /// </summary>
+        public static void DistributeReferToSecondThirdShape()
+        {
+            DistributeRadialReference = DistributeRadialReferenceObject.SecondThirdShape;
+        }
+
+        /// <summary>
         /// Tells the Positions Lab to use object boundaries to calculate how much space to distribute the objects by
         /// </summary>
         public static void DistributeSpaceByBoundaries()
@@ -216,6 +272,26 @@ namespace PowerPointLabs.PositionsLab
         public static void SetDistributeMarginRight(float marginRight)
         {
             MarginRight = marginRight;
+        }
+
+        public static void DistributeShapeOrientationToFixed()
+        {
+            DistributeShapeOrientation = RadialShapeOrientationObject.Fixed;
+        }
+
+        public static void DistributeShapeOrientationToDynamic()
+        {
+            DistributeShapeOrientation = RadialShapeOrientationObject.Dynamic;
+        }
+
+        public static void ReorientShapeOrientationToFixed()
+        {
+            ReorientShapeOrientation = RadialShapeOrientationObject.Fixed;
+        }
+
+        public static void ReorientShapeOrientationToDynamic()
+        {
+            ReorientShapeOrientation = RadialShapeOrientationObject.Dynamic;
         }
 
         #endregion
@@ -529,6 +605,29 @@ namespace PowerPointLabs.PositionsLab
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static void AlignRadial(ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count < 3)
+            {
+                throw new Exception(ErrorMessageFewerThanThreeSelection);
+            }
+                    
+            var origin = Graphics.GetCenterPoint(selectedShapes[1]);
+            var refPoint = Graphics.GetCenterPoint(selectedShapes[2]);
+            var distance = DistanceBetweenTwoPoints(origin, refPoint);
+
+            for (var i = 3; i <= selectedShapes.Count; i++)
+            {
+                var shape = selectedShapes[i];
+                var point = Graphics.GetCenterPoint(shape);
+                var currentDistance = DistanceBetweenTwoPoints(origin, point);
+                var proportion = (currentDistance - distance) / currentDistance;
+
+                shape.IncrementLeft((float)((origin.X - point.X) * proportion));
+                shape.IncrementTop((float)((origin.Y - point.Y) * proportion));
             }
         }
 
@@ -2032,6 +2131,237 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        public static void DistributeRadial(ShapeRange selectedShapes)
+        {
+            var isAtSecondShape = DistributeRadialReference == DistributeRadialReferenceObject.AtSecondShape;
+            var isSecondThirdShape = DistributeRadialReference == DistributeRadialReferenceObject.SecondThirdShape;
+            var isObjectBoundary = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectBoundary;
+            var isObjectCenter = DistributeSpaceReference == DistributeSpaceReferenceObject.ObjectCenter;
+            
+            Drawing.PointF origin;
+            float referenceAngle, startingAngle;
+
+            if (isAtSecondShape && isObjectBoundary)
+            {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+
+                origin = Graphics.GetCenterPoint(selectedShapes[1]);
+
+                var boundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
+                startingAngle = boundaryAngles[1];
+                var endingAngle = boundaryAngles[0];
+
+                if (startingAngle == 0 && boundaryAngles[1] == 360)
+                {
+                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+                }
+
+                referenceAngle = endingAngle - startingAngle;
+                if (referenceAngle < 0)
+                {
+                    referenceAngle += 360;
+                }
+
+                var offset = endingAngle - startingAngle;
+                if (offset > 0)
+                {
+                    offset -= 360;
+                }
+
+                DistributeShapesWithinAngleForBoundary(selectedShapes, origin, startingAngle, referenceAngle, 3, offset: offset);
+            }
+            else if (isAtSecondShape && isObjectCenter)
+            {
+                if (selectedShapes.Count < 3)
+                {
+                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                }
+                
+                origin = Graphics.GetCenterPoint(selectedShapes[1]);
+                
+                startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
+                referenceAngle = 360;
+
+                DistributeShapesWithinAngleForCenter(selectedShapes, origin, startingAngle, referenceAngle, 3);
+            }
+            else if (isSecondThirdShape && isObjectBoundary)
+            {
+                if (selectedShapes.Count < 4)
+                {
+                    throw new Exception(ErrorMessageFewerThanFourSelection);
+                }
+
+                origin = Graphics.GetCenterPoint(selectedShapes[1]);
+                var startingShapeBoundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
+                var endingShapeBoundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[3]);
+                startingAngle = startingShapeBoundaryAngles[0];
+                var endingAngle = endingShapeBoundaryAngles[1];
+
+                if ((startingAngle == 0 && startingShapeBoundaryAngles[1] == 360)
+                    || (endingShapeBoundaryAngles[0] == 0 && endingAngle == 360))
+                {
+                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+                }
+
+                var startingShapeAngle = startingShapeBoundaryAngles[1] - startingAngle;
+                if (startingShapeAngle < 0)
+                {
+                    startingShapeAngle += 360;
+                }
+
+                var endingShapeAngle = endingAngle - endingShapeBoundaryAngles[0];
+                if (endingShapeAngle < 0)
+                {
+                    endingShapeAngle += 360;
+                }
+
+                referenceAngle = endingAngle - startingAngle;
+                if (referenceAngle < 0)
+                {
+                    referenceAngle += 360;
+                }
+
+                DistributeShapesWithinAngleForBoundary(selectedShapes, origin, startingAngle, referenceAngle, 4, startingShapeAngle,
+                    endingShapeAngle);
+            }
+            else if (isSecondThirdShape && isObjectCenter)
+            {
+                if (selectedShapes.Count < 4)
+                {
+                    throw new Exception(ErrorMessageFewerThanFourSelection);
+                }
+
+                origin = Graphics.GetCenterPoint(selectedShapes[1]);
+                startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
+                var endingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[3]));
+
+                referenceAngle = endingAngle - startingAngle;
+                if (referenceAngle < 0)
+                {
+                    referenceAngle += 360;
+                }
+
+                DistributeShapesWithinAngleForCenter(selectedShapes, origin, startingAngle, referenceAngle, 4);
+            }
+        }
+
+        public static void DistributeShapesWithinAngleForCenter(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
+            float referenceAngle, int startingIndex)
+        {
+            var shapeAngleInfos = new List<ShapeAngleInfo>();
+
+            for (int i = startingIndex; i <= selectedShapes.Count; i++)
+            {
+                var angle = (float)AngleBetweenTwoPoints(origin, Graphics.GetCenterPoint(selectedShapes[i]));
+                var angleFromStart = (angle + (360 - startingAngle)) % 360;
+
+                var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], angleFromStart);
+                shapeAngleInfos.Add(shapeAngleInfo);
+            }
+
+            shapeAngleInfos = shapeAngleInfos.OrderBy(x => x.Angle).ToList();
+
+            var angleBetweenShapes = referenceAngle / (shapeAngleInfos.Count + 1);
+            var endingAngle = 0f;
+
+            foreach (var shapeAngleInfo in shapeAngleInfos)
+            {
+                endingAngle += angleBetweenShapes;
+
+                var rotationAngle = endingAngle - shapeAngleInfo.Angle;
+                Rotate(shapeAngleInfo.Shape, origin, rotationAngle, DistributeShapeOrientation);
+            }
+        }
+
+        public static void DistributeShapesWithinAngleForBoundary(ShapeRange selectedShapes, Drawing.PointF origin, float startingAngle,
+             float referenceAngle, int startingIndex, float startingShapeAngle = 0, float endingShapeAngle = 0, float offset = 0)
+        {
+            var shapeAngleInfos = new List<ShapeAngleInfo>();
+
+            var boundaryShapeAngle = startingShapeAngle + endingShapeAngle;
+            if (boundaryShapeAngle >= referenceAngle)
+            {
+                boundaryShapeAngle = 0;
+            }
+
+            var count = 0;
+            var isStable = false;
+            while (!isStable && count < 20)
+            {
+                var totalShapeAngle = boundaryShapeAngle;
+
+                if (count == 0)
+                {
+                    for (int i = startingIndex; i <= selectedShapes.Count; i++)
+                    {
+                        float shapeAngle;
+                        var angle = GetShapeAngleInfo(selectedShapes[i], origin, startingAngle, totalShapeAngle, out shapeAngle);
+                        totalShapeAngle += shapeAngle;
+
+                        var shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], angle, shapeAngle);
+                        shapeAngleInfos.Add(shapeAngleInfo);
+                    }
+
+                    shapeAngleInfos = shapeAngleInfos.OrderBy(x => (x.Angle - offset) % 360).ToList();
+                }
+                else
+                {
+                    foreach (var shapeAngleInfo in shapeAngleInfos)
+                    {
+                        float shapeAngle;
+                        var angle = GetShapeAngleInfo(shapeAngleInfo.Shape, origin, startingAngle, totalShapeAngle, out shapeAngle);
+                        totalShapeAngle += shapeAngle;
+
+                        shapeAngleInfo.Angle = angle;
+                        shapeAngleInfo.ShapeAngle = shapeAngle;
+                    }
+                }
+
+                var angleBetweenShapes = (referenceAngle - totalShapeAngle) / (shapeAngleInfos.Count + 1);
+                var endingAngle = (boundaryShapeAngle == 0) ? angleBetweenShapes : startingShapeAngle + angleBetweenShapes;
+
+                isStable = true;
+
+                foreach (var shapeAngleInfo in shapeAngleInfos)
+                {
+                    var rotationAngle = (endingAngle - shapeAngleInfo.Angle) % 360;
+                    if (rotationAngle > threshold || rotationAngle < -threshold)
+                    {
+                        isStable = false;
+                        Rotate(shapeAngleInfo.Shape, origin, rotationAngle, DistributeShapeOrientation);
+                    }
+
+                    endingAngle += shapeAngleInfo.ShapeAngle + angleBetweenShapes;
+                }
+
+                count++;
+            }
+        }
+
+        private static float GetShapeAngleInfo(Shape shape, Drawing.PointF origin, float startingAngle, float totalShapeAngle,
+            out float shapeAngle)
+        {
+            var boundaryAnglesFromStart = GetShapeBoundaryAngles(origin, shape);
+            if (boundaryAnglesFromStart[0] == 0 && boundaryAnglesFromStart[1] == 360)
+            {
+                throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+            }
+
+            boundaryAnglesFromStart[0] = (boundaryAnglesFromStart[0] + (360 - startingAngle)) % 360;
+            boundaryAnglesFromStart[1] = (boundaryAnglesFromStart[1] + (360 - startingAngle)) % 360;
+
+            shapeAngle = boundaryAnglesFromStart[1] - boundaryAnglesFromStart[0];
+            if (boundaryAnglesFromStart[0] > boundaryAnglesFromStart[1])
+            {
+                shapeAngle += 360;
+            }
+
+            return boundaryAnglesFromStart[0];
+        }
+
         #endregion
 
         #region Swap
@@ -2100,20 +2430,18 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Adjustment
-
-        public static void Rotate(IList<Shape> shapes, Shape refShape, float angle)
+        
+        public static void Rotate(Shape shape, Drawing.PointF origin, float angle, RadialShapeOrientationObject shapeOrientation)
         {
-            var origin = Graphics.GetCenterPoint(refShape);
+            var unrotatedCenter = Graphics.GetCenterPoint(shape);
+            var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
 
-            foreach (var currentShape in shapes)
+            shape.Left += (rotatedCenter.X - unrotatedCenter.X);
+            shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
+
+            if (shapeOrientation == RadialShapeOrientationObject.Dynamic)
             {
-                var unrotatedCenter = Graphics.GetCenterPoint(currentShape);
-                var rotatedCenter = Graphics.RotatePoint(unrotatedCenter, origin, angle);
-
-                currentShape.Left += (rotatedCenter.X - unrotatedCenter.X);
-                currentShape.Top += (rotatedCenter.Y - unrotatedCenter.Y);
-
-                currentShape.Rotation = AddAngles(currentShape.Rotation, angle);
+                shape.Rotation = AddAngles(shape.Rotation, angle);
             }
         }
 
@@ -2328,7 +2656,7 @@ namespace PowerPointLabs.PositionsLab
         {
             var angle = Math.Atan((pt.Y - refPoint.Y)/(pt.X - refPoint.X))*180/Math.PI;
 
-            if (pt.X - refPoint.X > 0)
+            if (pt.X - refPoint.X >= 0)
             {
                 angle = 90 + angle;
             }
@@ -2338,6 +2666,12 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return angle;
+        }
+
+        public static double DistanceBetweenTwoPoints(Drawing.PointF refPoint, Drawing.PointF pt)
+        {
+            var distance = Math.Sqrt(Math.Pow(pt.X - refPoint.X, 2) + Math.Pow(refPoint.Y - pt.Y, 2));
+            return distance;
         }
 
         public static bool NearlyEqual(float a, float b, float epsilon)
@@ -2677,6 +3011,92 @@ namespace PowerPointLabs.PositionsLab
             return difference;
         }
 
+        private static float[] GetShapeBoundaryAngles(Drawing.PointF origin, Shape shape)
+        {
+            var ppShape = new PPShape(shape, false);
+            var points = ppShape.Points;
+            var pointAngles = new List<float>();
+
+            foreach (var point in points)
+            {
+                var angle = (float)AngleBetweenTwoPoints(origin, point);
+                pointAngles.Add(angle);
+            }
+
+            var isSpanAcross0Degrees = false;
+            var hasTurningPoint = false;
+            bool isCurrentClockwise;
+            var isPreviousClockwise = pointAngles[0] - pointAngles[pointAngles.Count - 1] >= 0;
+            var turningPointAngles = new List<float>();
+
+            var boundaryAngles = new float[2];
+            boundaryAngles[0] = pointAngles[0];
+            boundaryAngles[1] = pointAngles[0];
+
+            for (int i = 1; i < pointAngles.Count; i++)
+            {
+                var previousAngle = pointAngles[i - 1];
+                var currentAngle = pointAngles[i];
+                isCurrentClockwise = currentAngle - previousAngle >= 0;
+
+                if (Math.Abs(currentAngle - previousAngle) > 180)
+                {
+                    isCurrentClockwise = !isCurrentClockwise;
+
+                    if (isCurrentClockwise && (!isSpanAcross0Degrees || currentAngle > boundaryAngles[1]))
+                    {
+                        boundaryAngles[1] = currentAngle;
+                    }
+                    else if (!isCurrentClockwise && (!isSpanAcross0Degrees || currentAngle < boundaryAngles[0]))
+                    {
+                        boundaryAngles[0] = currentAngle;
+                    }
+
+                    isSpanAcross0Degrees = true;
+                }
+
+                if (isCurrentClockwise != isPreviousClockwise)
+                {
+                    hasTurningPoint = true;
+
+                    if (isPreviousClockwise && previousAngle > boundaryAngles[1]
+                        && (!isSpanAcross0Degrees || previousAngle < boundaryAngles[0]))
+                    {
+                        boundaryAngles[1] = previousAngle;
+                    }
+
+                    if (!isPreviousClockwise && previousAngle < boundaryAngles[0]
+                        && (!isSpanAcross0Degrees || previousAngle > boundaryAngles[1]))
+                    {
+                        boundaryAngles[0] = previousAngle;
+                    }
+
+                    isPreviousClockwise = isCurrentClockwise;
+                }
+            }
+
+            if (pointAngles[0] == pointAngles[pointAngles.Count - 1] && !hasTurningPoint)
+            {
+                boundaryAngles[0] = 0;
+                boundaryAngles[1] = 360;
+            }
+
+            return boundaryAngles;
+        }
+
+        private static Drawing.PointF GetVisualCenter(Shape shape)
+        {
+            var duplicateShape = shape.Duplicate()[1];
+            duplicateShape.Left = shape.Left;
+            duplicateShape.Top = shape.Top;
+
+            var duplicatePPShape = new PPShape(duplicateShape);
+            var visualCenter = duplicatePPShape.VisualCenter;
+            duplicateShape.Delete();
+
+            return visualCenter;
+        }
+
         private static bool ListIsPreviouslySelected(List<PPShape> selectedShapes, Dictionary<string, Drawing.PointF> prevSelectedShapes)
         {
             try
@@ -2840,7 +3260,9 @@ namespace PowerPointLabs.PositionsLab
             MarginRight = 5;
             DistributeGridAlignment = GridAlignment.AlignLeft;
             DistributeReferToFirstTwoShapes();
+            DistributeReferToSecondThirdShape();
             DistributeSpaceByBoundaries();
+            DistributeShapeOrientationToFixed();
         }
 
         private static void InitDefaultSwapSettings()
@@ -2849,7 +3271,12 @@ namespace PowerPointLabs.PositionsLab
             SwapReferencePoint = SwapReference.MiddleCenter;
             prevSelectedShapes = new Dictionary<string, Drawing.PointF>();
             prevSortedShapeNames = new List<string>();
-    }   
+        }
+        
+        private static void InitDefaultReorientSettings()
+        {
+            ReorientShapeOrientationToFixed();
+        }
 
         public static void InitPositionsLab()
         {
@@ -2857,6 +3284,7 @@ namespace PowerPointLabs.PositionsLab
             InitDefaultAdjoinSettings();
             InitDefaultDistributeSettings();
             InitDefaultSwapSettings();
+            InitDefaultReorientSettings();
             InitDefaultShapesAngles();
         }
 
