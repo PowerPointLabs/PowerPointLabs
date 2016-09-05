@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
     This section defines project-level properties.
@@ -256,7 +256,13 @@
   <ItemGroup>
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportContentRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportPressedRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
