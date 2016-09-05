@@ -25,11 +25,12 @@ namespace PowerPointLabs.ActionFramework.Common.Factory
             container.ComposeParts(this);
         }
 
-        public THandler CreateInstance(string ribbonId)
+        public THandler CreateInstance(string ribbonId, string ribbonTag)
         {
             foreach (var handler in ImportedHandlers)
             {
-                if (handler.Metadata.RibbonIds.Contains(ribbonId))
+                if (handler.Metadata.RibbonIds.Contains(ribbonId)
+                    || handler.Metadata.RibbonIds.Contains(ribbonTag))
                 {
                     return handler.Value;
                 }
