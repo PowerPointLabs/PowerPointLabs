@@ -70,6 +70,7 @@ namespace PowerPointLabs.PositionsLab
         private ReorientSettingsDialog _reorientSettingsDialog;
 
         private int flipPreview = 0;
+        private bool isCtrlPressed = false;
 
         public PositionsPaneWpf()
         {
@@ -300,7 +301,7 @@ namespace PowerPointLabs.PositionsLab
         private void Pane_MouseEnter(object sender, MouseEventArgs e)
         {
             positionLabPane.Focus();
-            if (IsChangeIconKeyPressed())
+            if (isCtrlPressed)
             {
                 ChangeIconOfFlip();
             }
@@ -545,7 +546,7 @@ namespace PowerPointLabs.PositionsLab
         {
             try
             {
-                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                if (isCtrlPressed)
                 {
                     Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
                     ExecuteFlipAction(positionsAction, false);
@@ -801,7 +802,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void FlipButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            if (isCtrlPressed)
             {
                 Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
                 _previewCallBack = delegate
@@ -826,7 +827,7 @@ namespace PowerPointLabs.PositionsLab
             if (flipPreview == 1)
             {
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
-                if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                if (IsChangeIconKeyPressed())
                 {
                     Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
                     ExecutePositionsAction(positionsAction, false);
@@ -1660,21 +1661,28 @@ namespace PowerPointLabs.PositionsLab
 
             if (IsChangeIconKeyPressed())
             {
+                isCtrlPressed = !isCtrlPressed;
                 ChangeIconOfFlip();
             }
         }
 
         void ChangeIconOfFlip()
         {
-            Media.ImageSource flipVerticalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipVerticalIcon.png", UriKind.Relative));
-            flipButton.Image = flipVerticalIcon;
+            if (isCtrlPressed)
+            {
+                Media.ImageSource flipVerticalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipVerticalIcon.png", UriKind.Relative));
+                flipButton.Image = flipVerticalIcon;
+            }
+            else
+            {
+                Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
+                flipButton.Image = flipHorizontalIcon;
+            }
         }
 
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
         {
             UndoPreview();
-            Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
-            flipButton.Image = flipHorizontalIcon;
         }
 
         private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
