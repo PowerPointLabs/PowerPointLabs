@@ -85,16 +85,17 @@ namespace Test.UnitTest.PositionsLab
         [TestMethod]
         [TestCategory("UT")]
         public void TestFlipHorizontal0Degrees()
-        { 
+        {
             var actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(actualShapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipHorizontal0DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -104,7 +105,7 @@ namespace Test.UnitTest.PositionsLab
             var actualShapes = GetShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipHorizontal315DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -119,7 +120,7 @@ namespace Test.UnitTest.PositionsLab
             var actualShapes = GetShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipHorizontal225DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -134,7 +135,7 @@ namespace Test.UnitTest.PositionsLab
             var actualShapes = GetShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipHorizontal135DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -149,7 +150,7 @@ namespace Test.UnitTest.PositionsLab
             var actualShapes = GetShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipHorizontal45DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -163,8 +164,8 @@ namespace Test.UnitTest.PositionsLab
         {
             var actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipVertical0DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -178,8 +179,8 @@ namespace Test.UnitTest.PositionsLab
         {
             var actualShapes = GetShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipVertical315DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -193,8 +194,8 @@ namespace Test.UnitTest.PositionsLab
         {
             var actualShapes = GetShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipVertical225DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -208,8 +209,8 @@ namespace Test.UnitTest.PositionsLab
         {
             var actualShapes = GetShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipVertical135DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -223,8 +224,8 @@ namespace Test.UnitTest.PositionsLab
         {
             var actualShapes = GetShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
-            ExecutePositionsAction(positionsAction, actualShapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipVertical45DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
