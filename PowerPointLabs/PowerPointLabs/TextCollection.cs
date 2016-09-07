@@ -145,26 +145,26 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Auto Animation
-        public const string AutoAnimateGroupLabel = "Auto Animate";
+        public const string AutoAnimateGroupLabel = "Animation Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
         # endregion
 
         # region Auto Zoom
-        public const string AutoZoomGroupLabel = "Auto Zoom";
+        public const string AutoZoomGroupLabel = "Zoom Lab";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
         # endregion
 
         # region Auto Crop
-        public const string AutoCropGroupLabel = "Auto Crop";
+        public const string AutoCropGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         # endregion
 
         # region Spotlight
-        public const string SpotLightGroupLabel = "Spotlight";
+        public const string SpotLightGroupLabel = "Spotlight Lab";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
         # endregion
@@ -185,7 +185,7 @@
         # endregion
 
         # region Highlight Points
-        public const string HighlightBulletsGroupLabel = "Highlight Bullets";
+        public const string HighlightBulletsGroupLabel = "Highlight Bullets Lab";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
@@ -598,8 +598,10 @@
             public const string ErrorNoSelection = "Please select at least a shape before using this feature";
             public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature";
             public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature";
+            public const string ErrorFewerThanFourSelection = "Please select at least four shapes before using this feature";
             public const string ErrorFunctionNotSupportedForWithinShapes = "This function is not supported for Within Corner Most Objects Setting.";
             public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
+            public const string ErrorFunctionNotSupportedForOverlapRefShapeCenter = "This function is not supported for shapes that overlap the center of the reference shape.";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
         #endregion

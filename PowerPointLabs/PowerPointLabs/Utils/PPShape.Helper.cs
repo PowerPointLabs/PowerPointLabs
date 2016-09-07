@@ -180,7 +180,7 @@ namespace PowerPointLabs.Utils
         private void SetPoints(bool isConvertToFreeform = false)
         {
             if (!(_shape.Type == MsoShapeType.msoAutoShape || _shape.Type == MsoShapeType.msoFreeform)
-                || _shape.Nodes.Count< 1)
+                || _shape.Nodes.Count < 1)
             {
                 return;
             }

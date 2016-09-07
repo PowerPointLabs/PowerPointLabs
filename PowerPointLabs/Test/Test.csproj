@@ -124,6 +124,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\Model\StyleVariantsTest.cs" />
     <Compile Include="UnitTest\PositionsLab\BasePositionsLabTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabAdjoinTest.cs" />
+    <Compile Include="UnitTest\PositionsLab\PositionsLabDistributeRadialTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabSnapTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabDistributeGridTest.cs" />
     <Compile Include="UnitTest\PositionsLab\PositionsLabSwapTest.cs" />

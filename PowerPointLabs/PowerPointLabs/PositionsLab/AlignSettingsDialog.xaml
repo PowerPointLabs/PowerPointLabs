@@ -26,7 +26,7 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
-        <TextBlock x:Name="alignToLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Align to"/></TextBlock>
+        <TextBlock x:Name="alignToLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="Align to [All Features Except Radial]"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
         <RadioButton x:Name="alignToShapeButton" Content="First Selected Object" ToolTip="Align functions will take the first selected shape as a reference and align the rest of the selected objects to the first shape" HorizontalAlignment="Left" Margin="20,38,0,0" IsChecked="True" VerticalAlignment="Top" Loaded="AlignToShapeButton_Load"/>
         <RadioButton x:Name="alignToSlideButton" Content="Slide" ToolTip="Align functions will take the slide as a reference and align the selected objects to the slide" HorizontalAlignment="Left" Margin="172,38,0,0" VerticalAlignment="Top" Loaded="AlignToSlideButton_Load"/>

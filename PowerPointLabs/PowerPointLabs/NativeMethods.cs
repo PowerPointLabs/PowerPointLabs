@@ -36,6 +36,9 @@ namespace PPExtraEventHelper
         [DllImport("user32.dll")]
         public static extern IntPtr GetFocus();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr SetFocus(IntPtr hWnd);
+
         [DllImport("gdi32.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetPixel(
             System.IntPtr hdc,    // handle to DC
@@ -220,6 +223,10 @@ namespace PPExtraEventHelper
             VK_RMENU = 0xA5,
             VK_RETURN = 0x0D,
           	VK_ESCAPE =	0x1B,
+            VK_LEFT = 0x25,
+            VK_UP = 0x26,
+            VK_RIGHT = 0x27,
+            VK_DOWN = 0x28,
             VK_OEM_COMMA = 0xBC,
             VK_OEM_PERIOD = 0xBE,
             VK_A = 0x41,
