@@ -19,39 +19,39 @@ namespace Test.UnitTest.PositionsLab
         private const int OriginalShapes135DegreesSlideNo = 6;
         private const int OriginalShapes45DegreesSlideNo = 7;
 
-        private const string Rectangle3 = "Rectangle 31";
-        private const string Oval4 = "Oval 41";
-        private const string Rectangle6 = "Rectangle 61";
-        private const string Picture3 = "Picture 31";
-        private const string Picture4 = "Picture 41";
-        private const string Picture2 = "Picture 21";
-        private const string LeftArrow2 = "Left Arrow 21";
-        private const string UpArrow10 = "Up Arrow 101";
-        private const string DownArrow11 = "Down Arrow 111";
-        private const string LeftRightArrow12 = "Left-Right Arrow 121";
-        private const string UpDownArrow13 = "Up-Down Arrow 131";
-        private const string QuadArrow14 = "Quad Arrow 141";
-        private const string LeftRightUpArrow15 = "Left-Right-Up Arrow 151";
-        private const string BentArrow16 = "Bent Arrow 161";
-        private const string UTurnArrow17 = "U-Turn Arrow 171";
-        private const string LeftUpArrow18 = "Left-Up Arrow 181";
-        private const string BentUpArrow19 = "Bent-Up Arrow 191";
-        private const string CurvedRightArrow20 = "Curved Right Arrow 201";
-        private const string CurvedLeftArrow21 = "Curved Left Arrow 211";
-        private const string CurvedDownArrow22 = "Curved Down Arrow 221";
-        private const string CurvedUpArrow23 = "Curved Up Arrow 231";
-        private const string StripedRightArrow24 = "Striped Right Arrow 241";
-        private const string NotchedRightArrow25 = "Notched Right Arrow 251";
-        private const string Pentagon26 = "Pentagon 261";
-        private const string Chevron27 = "Chevron 271";
-        private const string RightArrowCallout28 = "Right Arrow Callout 281";
-        private const string DownArrowCallout29 = "Down Arrow Callout 291";
-        private const string LeftArrowCallout30 = "Left Arrow Callout 301";
-        private const string UpArrowCallout31 = "Up Arrow Callout 311";
-        private const string LeftRightArrowCallout32 = "Left-Right Arrow Callout 321";
-        private const string QuadArrowCallout33 = "Quad Arrow Callout 331";
-        private const string CircularArrow34 = "Circular Arrow 341";
-        private const string RightArrow1 = "Right Arrow 11";
+        private const string Rectangle31 = "Rectangle 31";
+        private const string Oval41 = "Oval 41";
+        private const string Rectangle61 = "Rectangle 61";
+        private const string Picture31 = "Picture 31";
+        private const string Picture41 = "Picture 41";
+        private const string Picture21 = "Picture 21";
+        private const string LeftArrow21 = "Left Arrow 21";
+        private const string UpArrow101 = "Up Arrow 101";
+        private const string DownArrow111 = "Down Arrow 111";
+        private const string LeftRightArrow121 = "Left-Right Arrow 121";
+        private const string UpDownArrow131 = "Up-Down Arrow 131";
+        private const string QuadArrow141 = "Quad Arrow 141";
+        private const string LeftRightUpArrow151 = "Left-Right-Up Arrow 151";
+        private const string BentArrow161 = "Bent Arrow 161";
+        private const string UTurnArrow171 = "U-Turn Arrow 171";
+        private const string LeftUpArrow181 = "Left-Up Arrow 181";
+        private const string BentUpArrow191 = "Bent-Up Arrow 191";
+        private const string CurvedRightArrow201 = "Curved Right Arrow 201";
+        private const string CurvedLeftArrow211 = "Curved Left Arrow 211";
+        private const string CurvedDownArrow221 = "Curved Down Arrow 221";
+        private const string CurvedUpArrow231 = "Curved Up Arrow 231";
+        private const string StripedRightArrow241 = "Striped Right Arrow 241";
+        private const string NotchedRightArrow251 = "Notched Right Arrow 251";
+        private const string Pentagon261 = "Pentagon 261";
+        private const string Chevron271 = "Chevron 271";
+        private const string RightArrowCallout281 = "Right Arrow Callout 281";
+        private const string DownArrowCallout291 = "Down Arrow Callout 291";
+        private const string LeftArrowCallout301 = "Left Arrow Callout 301";
+        private const string UpArrowCallout311 = "Up Arrow Callout 311";
+        private const string LeftRightArrowCallout321 = "Left-Right Arrow Callout 321";
+        private const string QuadArrowCallout331 = "Quad Arrow Callout 331";
+        private const string CircularArrow341 = "Circular Arrow 341";
+        private const string RightArrow11 = "Right Arrow 11";
 
         //Results of Operations
         private const int FlipHorizontal0DegreesSlideNo = 9;
@@ -75,8 +75,8 @@ namespace Test.UnitTest.PositionsLab
         public void TestInitialize()
         {
             PositionsLabMain.InitPositionsLab();
-            _shapeNames = new List<string> { Rectangle3, Oval4, Rectangle6, Picture3, Picture4, Picture2, LeftArrow2, UpArrow10, DownArrow11,
-                                            LeftRightArrow12, UpDownArrow13, QuadArrow14, LeftRightUpArrow15, BentArrow16, UTurnArrow17, LeftUpArrow18, BentUpArrow19,
+            _shapeNames = new List<string> { Rectangle31, Oval41, Rectangle6, Picture3, Picture4, Picture2, LeftArrow2, UpArrow10, DownArrow11,
+                                            LeftRightArrow121, UpDownArrow13, QuadArrow14, LeftRightUpArrow15, BentArrow16, UTurnArrow17, LeftUpArrow18, BentUpArrow19,
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
