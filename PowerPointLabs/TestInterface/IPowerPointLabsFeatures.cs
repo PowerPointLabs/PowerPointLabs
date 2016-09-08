@@ -33,6 +33,7 @@ namespace TestInterface
         // Effects Lab
         void TransparentEffect();
         void MagnifyingGlassEffect();
+        void BlurrinessOverlay(string feature, bool pressed);
         void BlurSelectedEffect();
         void BlurRemainderEffect();
         void GreyScaleRemainderEffect();
