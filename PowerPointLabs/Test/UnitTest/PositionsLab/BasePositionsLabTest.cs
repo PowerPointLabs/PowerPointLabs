@@ -161,21 +161,12 @@ namespace Test.UnitTest.PositionsLab
             }
 
             PowerPoint.ShapeRange simulatedShapes = null;
-
+            
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
 
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
-                {
-                    positionsAction.Invoke(selectedShapes);
-                }
-                else
-                {
-                    positionsAction.Invoke(simulatedShapes);
-
-                    SyncShapes(selectedShapes, simulatedShapes);
-                }
+                positionsAction.Invoke(selectedShapes);
             }
             catch (Exception ex)
             {

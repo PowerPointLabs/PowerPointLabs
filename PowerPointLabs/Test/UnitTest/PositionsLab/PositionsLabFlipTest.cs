@@ -19,39 +19,39 @@ namespace Test.UnitTest.PositionsLab
         private const int OriginalShapes135DegreesSlideNo = 6;
         private const int OriginalShapes45DegreesSlideNo = 7;
 
-        private const string Rectangle3 = "Rectangle 3";
-        private const string Oval4 = "Oval 4";
-        private const string Rectangle6 = "Rectangle 6";
-        private const string Picture3 = "Picture 3";
-        private const string Picture4 = "Picture 4";
-        private const string Picture2 = "Picture 2";
-        private const string LeftArrow2 = "Left Arrow 2";
-        private const string UpArrow10 = "Up Arrow 10";
-        private const string DownArrow11 = "Down Arrow 11";
-        private const string LeftRightArrow12 = "Left-Right Arrow 12";
-        private const string UpDownArrow13 = "Up-Down Arrow 13";
-        private const string QuadArrow14 = "Quad Arrow 14";
-        private const string LeftRightUpArrow15 = "Left-Right-Up Arrow 15";
-        private const string BentArrow16 = "Bent Arrow 16";
-        private const string UTurnArrow17 = "U-Turn Arrow 17";
-        private const string LeftUpArrow18 = "Left-Up Arrow 18";
-        private const string BentUpArrow19 = "Bent-Up Arrow 19";
-        private const string CurvedRightArrow20 = "Curved Right Arrow 20";
-        private const string CurvedLeftArrow21 = "Curved Left Arrow 21";
-        private const string CurvedDownArrow22 = "Curved Down Arrow 22";
-        private const string CurvedUpArrow23 = "Curved Up Arrow 23";
-        private const string StripedRightArrow24 = "Striped Right Arrow 24";
-        private const string NotchedRightArrow25 = "Notched Right Arrow 25";
-        private const string Pentagon26 = "Pentagon 26";
-        private const string Chevron27 = "Chevron 27";
-        private const string RightArrowCallout28 = "Right Arrow Callout 28";
-        private const string DownArrowCallout29 = "Down Arrow Callout 29";
-        private const string LeftArrowCallout30 = "Left Arrow Callout 30";
-        private const string UpArrowCallout31 = "Up Arrow Callout 31";
-        private const string LeftRightArrowCallout32 = "Left-Right Arrow Callout 32";
-        private const string QuadArrowCallout33 = "Quad Arrow Callout 33";
-        private const string CircularArrow34 = "Circular Arrow 34";
-        private const string RightArrow1 = "Right Arrow 1";
+        private const string Rectangle3 = "Rectangle 31";
+        private const string Oval4 = "Oval 41";
+        private const string Rectangle6 = "Rectangle 61";
+        private const string Picture3 = "Picture 31";
+        private const string Picture4 = "Picture 41";
+        private const string Picture2 = "Picture 21";
+        private const string LeftArrow2 = "Left Arrow 21";
+        private const string UpArrow10 = "Up Arrow 101";
+        private const string DownArrow11 = "Down Arrow 111";
+        private const string LeftRightArrow12 = "Left-Right Arrow 121";
+        private const string UpDownArrow13 = "Up-Down Arrow 131";
+        private const string QuadArrow14 = "Quad Arrow 141";
+        private const string LeftRightUpArrow15 = "Left-Right-Up Arrow 151";
+        private const string BentArrow16 = "Bent Arrow 161";
+        private const string UTurnArrow17 = "U-Turn Arrow 171";
+        private const string LeftUpArrow18 = "Left-Up Arrow 181";
+        private const string BentUpArrow19 = "Bent-Up Arrow 191";
+        private const string CurvedRightArrow20 = "Curved Right Arrow 201";
+        private const string CurvedLeftArrow21 = "Curved Left Arrow 211";
+        private const string CurvedDownArrow22 = "Curved Down Arrow 221";
+        private const string CurvedUpArrow23 = "Curved Up Arrow 231";
+        private const string StripedRightArrow24 = "Striped Right Arrow 241";
+        private const string NotchedRightArrow25 = "Notched Right Arrow 251";
+        private const string Pentagon26 = "Pentagon 261";
+        private const string Chevron27 = "Chevron 271";
+        private const string RightArrowCallout28 = "Right Arrow Callout 281";
+        private const string DownArrowCallout29 = "Down Arrow Callout 291";
+        private const string LeftArrowCallout30 = "Left Arrow Callout 301";
+        private const string UpArrowCallout31 = "Up Arrow Callout 311";
+        private const string LeftRightArrowCallout32 = "Left-Right Arrow Callout 321";
+        private const string QuadArrowCallout33 = "Quad Arrow Callout 331";
+        private const string CircularArrow34 = "Circular Arrow 341";
+        private const string RightArrow1 = "Right Arrow 11";
 
         //Results of Operations
         private const int FlipHorizontal0DegreesSlideNo = 9;
@@ -82,10 +82,23 @@ namespace Test.UnitTest.PositionsLab
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
         }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+        }
+
         [TestMethod]
         [TestCategory("UT")]
         public void TestFlipHorizontal0Degrees()
         {
+            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            _shapeNames = new List<string> { Rectangle3, Oval4, Rectangle6, Picture3, Picture4, Picture2, LeftArrow2, UpArrow10, DownArrow11,
+                                            LeftRightArrow12, UpDownArrow13, QuadArrow14, LeftRightUpArrow15, BentArrow16, UTurnArrow17, LeftUpArrow18, BentUpArrow19,
+                                            CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
+                                            Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
+                                            LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
+
             var actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
@@ -95,7 +108,7 @@ namespace Test.UnitTest.PositionsLab
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            //RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
