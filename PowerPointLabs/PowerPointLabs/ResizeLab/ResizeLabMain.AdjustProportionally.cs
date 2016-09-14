@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -60,6 +61,16 @@ namespace PowerPointLabs.ResizeLab
                     AdjustActualHeightProportionally(selectedShapes);
                     break;
             }
+        }
+
+        public void AdjustAreaProportionally(PowerPoint.ShapeRange selectedShapes)
+        {
+            var isAspectRatio = selectedShapes.LockAspectRatio;
+            var isLockedRatio = isAspectRatio == MsoTriState.msoTrue;
+
+            selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
+            AdjustActualAreaProportionally(selectedShapes, isLockedRatio);
+            selectedShapes.LockAspectRatio = isAspectRatio;
         }
 
         /// <summary>
@@ -183,6 +194,52 @@ namespace PowerPointLabs.ResizeLab
             catch (Exception e)
             {
                 Logger.LogException(e, "AdjustActualHeightProportionally");
+            }
+        }
+
+        /// <summary>
+        /// Adjust the actual area of the specified shapes to the resize factor of first
+        /// selected shape's actual area.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        public void AdjustActualAreaProportionally(PowerPoint.ShapeRange selectedShapes, bool isLockedRatio)
+        {
+            try
+            {
+                var referenceWidth = selectedShapes[1].Width;
+                var referenceHeight = selectedShapes[1].Height;
+                var referenceArea = (double)referenceWidth * referenceHeight;
+                var referenceRatio = (double)referenceHeight / referenceWidth;
+
+                if (referenceWidth <= 0 || referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+
+                for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
+                {
+                    var shape = new PPShape(selectedShapes[i + 1], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
+
+                    var newArea = referenceArea *
+                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
+
+                    if (isLockedRatio)
+                    {
+                        referenceWidth = shape.ShapeWidth;
+                        referenceHeight = shape.ShapeHeight;
+                        referenceRatio = (double)referenceHeight / referenceWidth;
+                    }
+
+                    var newWidth = (float)Math.Sqrt(newArea / referenceRatio);
+                    var newHeight = (float)(newWidth * referenceRatio);
+                    
+                    shape.ShapeWidth = newWidth;
+                    shape.ShapeHeight = newHeight;
+                    AlignActualShape(shape, anchorPoint);
+                }
+                AdjustProportionallyProportionList = null;
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "AdjustActualAreaProportionally");
             }
         }
     }

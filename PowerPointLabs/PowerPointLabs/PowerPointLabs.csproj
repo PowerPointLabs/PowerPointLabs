@@ -1415,6 +1415,9 @@
     <Resource Include="Resources\icon-right_rotate.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionArea.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\icon-flip_hori.png" />
   </ItemGroup>
   <ItemGroup>
