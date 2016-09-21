@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Linq;
 
 namespace PowerPointLabs.ResizeLab
 {
@@ -38,7 +39,7 @@ namespace PowerPointLabs.ResizeLab
             UnlockAspectRatio();
             VisualHeightRadioBtn.IsChecked = true;
 
-            _errorHandler = ResizeLabErrorHandler.InitializErrorHandler(this);
+            _errorHandler = ResizeLabErrorHandler.InitializeErrorHandler(this);
             
             Focusable = true;
         }
@@ -278,13 +279,33 @@ namespace PowerPointLabs.ResizeLab
             }
         }
 
-        private bool ProportionalPromptProportion()
+        private void ProportionalAreaBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProportionalPromptProportion(isForSameShapes: true))
+            {
+                Action<PowerPoint.ShapeRange> resizeAction = shapes => _resizeLab.AdjustAreaProportionally(shapes);
+                ClickHandler(resizeAction, ResizeLabMain.AdjustProportionally_MinNoOfShapesRequired,
+                    ResizeLabMain.AdjustProportionally_ErrorParameters);
+            }
+        }
+
+        private bool ProportionalPromptProportion(bool isForSameShapes = false)
         {
             var noOfShapes = GetSelectedShapes()?.Count;
             if (!noOfShapes.HasValue || noOfShapes < 2)
             {
                 _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, ResizeLabMain.AdjustProportionally_ErrorParameters);
                 return false;
+            }
+            if (isForSameShapes)
+            {
+                var errorCode = IsValidShapes(GetSelectedShapes());
+
+                if (errorCode != -1)
+                {
+                    _errorHandler.ProcessErrorCode(errorCode);
+                    return false;
+                }
             }
             if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
             {
@@ -301,6 +322,87 @@ namespace PowerPointLabs.ResizeLab
                 return false;
             }
             return true;
+        }
+
+        private int IsValidShapes(PowerPoint.ShapeRange selectedShapes)
+        {
+            var referenceShape = selectedShapes[1];
+
+            if (referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
+            {
+                return ResizeLabErrorHandler.ErrorCodeGroupShapeNotSupported;
+            }
+
+            var referenceAdjustments = referenceShape.Adjustments;
+            var isAutoShapeOrCallout = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape
+                                       || referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoCallout;
+            var isFreeform = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoFreeform;
+
+            Utils.PPShape referencePPShape;
+            List<System.Drawing.PointF> referenceShapePoints = null;
+
+            if (isFreeform)
+            {
+                referencePPShape = new Utils.PPShape(referenceShape, false);
+                referenceShapePoints = referencePPShape.Points;
+            }
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                var currentShape = selectedShapes[i];
+
+                if (currentShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
+                {
+                    return ResizeLabErrorHandler.ErrorCodeGroupShapeNotSupported;
+                }
+
+                if (currentShape.Type != referenceShape.Type || currentShape.AutoShapeType != referenceShape.AutoShapeType)
+                {
+                    return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
+                }
+
+                if (isAutoShapeOrCallout)
+                {
+                    var currentAdjustments = currentShape.Adjustments;
+
+                    if (currentAdjustments.Count != referenceAdjustments.Count)
+                    {
+                        return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
+                    }
+
+                    for (int j = 1; j <= referenceAdjustments.Count; j++)
+                    {
+                        if (currentAdjustments[j] != referenceAdjustments[j])
+                        {
+                            return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
+                        }
+                    }
+                }
+                else if (isFreeform)
+                {
+                    var isAspectRatio = selectedShapes.LockAspectRatio;
+                    selectedShapes.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoFalse;
+
+                    var duplicateCurrentShape = currentShape.Duplicate()[1];
+                    duplicateCurrentShape.Width = referenceShape.Width;
+                    duplicateCurrentShape.Height = referenceShape.Height;
+                    duplicateCurrentShape.Rotation = referenceShape.Rotation;
+                    duplicateCurrentShape.Left = referenceShape.Left;
+                    duplicateCurrentShape.Top = referenceShape.Top;
+                    var currentPPShape = new Utils.PPShape(duplicateCurrentShape, false);
+                    var currentShapePoints = currentPPShape.Points;
+                    duplicateCurrentShape.Delete();
+
+                    selectedShapes.LockAspectRatio = isAspectRatio;
+
+                    if (!currentShapePoints.SequenceEqual(referenceShapePoints))
+                    {
+                        return ResizeLabErrorHandler.ErrorCodeNotSameShapes;
+                    }
+                }
+            }
+
+            return -1;
         }
 
         #endregion
