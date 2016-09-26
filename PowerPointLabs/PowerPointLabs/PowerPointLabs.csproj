@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.7.7</ApplicationVersion>
+    <ApplicationVersion>2.8.7.8</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -255,25 +255,39 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\Action\EffectsLabBlurSelectedActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportContentRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportPressedRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\CheckBoxActionHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
-    <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\BaseActionHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
     <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
     <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\BaseActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\CheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ContentHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\PressedHandler.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
+    <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
@@ -283,6 +297,7 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
@@ -293,6 +308,8 @@
     <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
+    <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
@@ -655,6 +672,12 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -818,15 +841,21 @@
     <None Include="Resources\Type-icon.png" />
     <EmbeddedResource Include="ColorPicker\ColorInformationDialog.resx">
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
       <DependentUpon>DrawingsPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -840,9 +869,11 @@
     <None Include="Resources\Pause.png" />
     <EmbeddedResource Include="LabeledThumbnail.resx">
       <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomShapePane.resx">
       <DependentUpon>CustomShapePane.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
@@ -1393,6 +1424,9 @@
     <None Include="Resources\LeftRotate.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionArea.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\icon-flip_hori.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1407,6 +1441,7 @@
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -49,32 +49,56 @@ namespace PowerPointLabs
         private ImageHandlerFactory ImageHandlerFactory { get; set; }
 
         private SupertipHandlerFactory SupertipHandlerFactory { get; set; }
+
+        private ContentHandlerFactory ContentHandlerFactory { get; set; }
+
+        private PressedHandlerFactory PressedHandlerFactory { get; set; }
+
+        private CheckBoxActionHandlerFactory CheckBoxActionHandlerFactory { get; set; }
         #endregion
 
         #region Action Framework entry point
 
         public void OnAction(Office.IRibbonControl control)
         {
-            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id);
+            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             actionHandler.Execute(control.Id);
         }
 
         public string GetLabel(Office.IRibbonControl control)
         {
-            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id);
+            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id, control.Tag);
             return labelHandler.Get(control.Id);
         }
 
         public string GetSupertip(Office.IRibbonControl control)
         {
-            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id);
+            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id, control.Tag);
             return supertipHandler.Get(control.Id);
         }
 
         public Bitmap GetImage(Office.IRibbonControl control)
         {
-            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id);
+            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id, control.Tag);
             return imageHandler.Get(control.Id);
+        }
+
+        public string GetContent(Office.IRibbonControl control)
+        {
+            var contentHandler = ContentHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return contentHandler.Get(control.Id);
+        }
+
+        public bool GetPressed(Office.IRibbonControl control)
+        {
+            var pressedHandler = PressedHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return pressedHandler.Get(control.Id);
+        }
+
+        public void OnCheckBoxAction(Office.IRibbonControl control, bool pressed)
+        {
+            var checkBoxActionHandler = CheckBoxActionHandlerFactory.CreateInstance(control.Id, control.Tag);
+            checkBoxActionHandler.Execute(control.Id, pressed);
         }
 
         #endregion
@@ -129,6 +153,9 @@ namespace PowerPointLabs
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
+            ContentHandlerFactory = new ContentHandlerFactory();
+            PressedHandlerFactory = new PressedHandlerFactory();
+            CheckBoxActionHandlerFactory = new CheckBoxActionHandlerFactory();
 
             _ribbon = ribbonUi;
 
@@ -1985,7 +2012,7 @@ namespace PowerPointLabs
             }
         }
 
-        public void BlurRemainderEffectClick(Office.IRibbonControl control)
+        public void BlurRemainderEffectClick(int percentage)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
@@ -1993,7 +2020,7 @@ namespace PowerPointLabs
 
             if (effectSlide == null) return;
 
-            effectSlide.BlurBackground();
+            effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintRemainder);
             effectSlide.GetNativeSlide().Select();
         }
 
@@ -2045,7 +2072,7 @@ namespace PowerPointLabs
             effectSlide.GetNativeSlide().Select();
         }
 
-        public void BlurBackgroundEffectClick(Office.IRibbonControl control)
+        public void BlurBackgroundEffectClick(int percentage)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
@@ -2053,7 +2080,7 @@ namespace PowerPointLabs
 
             if (effectSlide == null) return;
 
-            effectSlide.BlurBackground();
+            effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintBackground);
             effectSlide.GetNativeSlide().Select();
         }
 

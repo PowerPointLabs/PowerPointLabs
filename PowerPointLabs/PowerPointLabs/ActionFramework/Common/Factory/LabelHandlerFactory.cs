@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Label;
 namespace PowerPointLabs.ActionFramework.Common.Factory
 {
     /// <summary>
-    /// Factory for ImageHandler
+    /// Factory for LabelHandler
     /// </summary>
     public class LabelHandlerFactory : BaseHandlerFactory<LabelHandler>
     {

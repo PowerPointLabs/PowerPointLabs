@@ -79,14 +79,14 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
-        public void BlurAllBackground()
+        public void BlurAllBackground(int percentage)
         {
-            AddBackgroundImage(null);
+            AddBackgroundImage(null, percentage: percentage);
         }
 
-        public void BlurBackground()
+        public void BlurBackground(int percentage, bool isTint)
         {
-            AddBackgroundImage(null);
+            AddBackgroundImage(null, percentage: percentage, isTint: isTint);
         }
 
         public void GreyScaleBackground()
@@ -111,15 +111,22 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Helper Functions
-        private void AddBackgroundImage(IMatrixFilter filter)
+        private void AddBackgroundImage(IMatrixFilter filter, int percentage = 0, bool isTint = false)
         {
-            using (var imageFactory = new ImageFactory())
+            if (filter == null)
             {
-                var image = imageFactory.Load(AnimatedBackgroundPath);
+                EffectsLab.EffectsLabBlurSelected.BlurImage(AnimatedBackgroundPath, percentage);
+            }
+            else
+            {
+                using (var imageFactory = new ImageFactory())
+                {
+                    var image = imageFactory.Load(AnimatedBackgroundPath);
 
-                image = filter == null ? image.GaussianBlur(20) : image.Filter(filter);
+                    image = image.Filter(filter);
 
-                image.Save(AnimatedBackgroundPath);
+                    image.Save(AnimatedBackgroundPath);
+                }
             }
 
             var newBackground = Shapes.AddPicture(AnimatedBackgroundPath, Core.MsoTriState.msoFalse,
@@ -129,6 +136,11 @@ namespace PowerPointLabs.Models
                                                   PowerPointPresentation.Current.SlideHeight);
 
             newBackground.ZOrder(Core.MsoZOrderCmd.msoSendToBack);
+
+            if (filter == null && isTint)
+            {
+                var overlayShape = EffectsLab.EffectsLabBlurSelected.GenerateOverlayShape(this, newBackground);
+            }
         }
 
         private static Shape MakeFrontImage(ShapeRange shapeRange)

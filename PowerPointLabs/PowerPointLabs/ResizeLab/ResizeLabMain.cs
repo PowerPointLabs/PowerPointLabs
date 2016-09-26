@@ -12,7 +12,7 @@ namespace PowerPointLabs.ResizeLab
 
         public ResizeLabMain()
         {
-            _errorHandler = ResizeLabErrorHandler.InitializErrorHandler();
+            _errorHandler = ResizeLabErrorHandler.InitializeErrorHandler();
         }
 
         private enum Dimension

@@ -1268,6 +1268,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ResizeProportionArea {
+            get {
+                object obj = ResourceManager.GetObject("ResizeProportionArea", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeProportionHeight {
             get {
                 object obj = ResourceManager.GetObject("ResizeProportionHeight", resourceCulture);

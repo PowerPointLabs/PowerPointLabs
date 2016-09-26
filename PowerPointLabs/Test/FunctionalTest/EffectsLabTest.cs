@@ -16,16 +16,26 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_EffectsLabTest()
         {
-            TestBlurSelected();
-            TestRemainderEffect(26, PplFeatures.SepiaBackgroundEffect);
-            TestRemainderEffect(23, PplFeatures.BlurBackgroundEffect);
-            TestRemainderEffect(20, PplFeatures.SepiaRemainderEffect);
-            TestRemainderEffect(17, PplFeatures.GothamRemainderEffect);
-            TestRemainderEffect(14, PplFeatures.BlackAndWhiteBackgroundEffect);
-            TestRemainderEffect(11, PplFeatures.GreyScaleRemainderEffect);
-            TestRemainderEffect(8, PplFeatures.BlurRemainderEffect);
-            TestMagnifyingGlass();
-            TestTransparent();
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", true);
+            TestRemainderEffect(40, PplFeatures.BlurBackgroundEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", true);
+            TestRemainderEffect(37, PplFeatures.BlurRemainderEffect);
+            TestRemainderEffect(34, PplFeatures.SepiaBackgroundEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", false);
+            TestRemainderEffect(31, PplFeatures.BlurBackgroundEffect);
+            TestRemainderEffect(28, PplFeatures.SepiaRemainderEffect);
+            TestRemainderEffect(25, PplFeatures.GothamRemainderEffect);
+            TestRemainderEffect(22, PplFeatures.BlackAndWhiteBackgroundEffect);
+            TestRemainderEffect(19, PplFeatures.GreyScaleRemainderEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", false);
+            TestRemainderEffect(16, PplFeatures.BlurRemainderEffect);
+            TestEffect(14, PplFeatures.BlurSelectedEffect);
+            TestEffect(12, PplFeatures.BlurSelectedEffect);
+            PplFeatures.BlurrinessOverlay("EffectsLabBlurSelected", true);
+            TestEffect(10, PplFeatures.BlurSelectedEffect);
+            TestEffect(8, PplFeatures.BlurSelectedEffect);
+            TestEffect(6, PplFeatures.MagnifyingGlassEffect);
+            TestEffect(4, PplFeatures.TransparentEffect);
         }
 
         private void TestRemainderEffect(int startIdx, Action effectAction)
@@ -37,33 +47,12 @@ namespace Test.FunctionalTest
             AssertIsSame(startIdx + 1, startIdx + 3);
         }
 
-        private void TestBlurSelected()
+        private void TestEffect(int startIdx, Action effectAction)
         {
-            PpOperations.SelectSlide(31);
+            PpOperations.SelectSlide(startIdx);
             PpOperations.SelectShape("selectMe");
-            PplFeatures.BlurSelectedEffect();
-            AssertIsSame(31, 32);
-
-            PpOperations.SelectSlide(29);
-            PpOperations.SelectShape("selectMe");
-            PplFeatures.BlurSelectedEffect();
-            AssertIsSame(29, 30);
-        }
-
-        private void TestMagnifyingGlass()
-        {
-            PpOperations.SelectSlide(6);
-            PpOperations.SelectShape("selectMe");
-            PplFeatures.MagnifyingGlassEffect();
-            AssertIsSame(6, 7);
-        }
-
-        private void TestTransparent()
-        {
-            PpOperations.SelectSlide(4);
-            PpOperations.SelectShape("selectMe");
-            PplFeatures.TransparentEffect();
-            AssertIsSame(4, 5);
+            effectAction.Invoke();
+            AssertIsSame(startIdx, startIdx + 1);
         }
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)

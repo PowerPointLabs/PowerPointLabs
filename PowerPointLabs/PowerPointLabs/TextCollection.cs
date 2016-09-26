@@ -96,7 +96,7 @@
         public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
         public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
         public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
-        public const string EffectsLabBlurSelectedSupertip = @"Blur the selected shapes.";
+        public const string EffectsLabBlurSelectedSupertip = @"Blur the area covered by the selected shapes.";
         public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
         public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
         public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
@@ -242,10 +242,29 @@
         public const string HelpButtonLabel = "Help";
         public const string FeedbackButtonLabel = "Report Issues/ Send Feedback";
         public const string AboutButtonLabel = "About";
-        # endregion
+        #endregion
+        #endregion
+
+        # region Dynamic Menu Labels
+
+        public const string DynamicMenuId = "DynamicMenu";
+        public const string DynamicMenuButtonId = "Button";
+        public const string DynamicMenuCheckBoxId = "CheckBox";
+        public const string DynamicMenuOptionId = "Option";
+        public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
+        public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
+        public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
+        public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
+        public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
+        public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
+        public const string EffectsLabBlurrinessTag = "Blurriness";
+        public const string EffectsLabBlurrinessFeatureSelected = "EffectsLabBlurSelected";
+        public const string EffectsLabBlurrinessFeatureRemainder = "EffectsLabBlurRemainder";
+        public const string EffectsLabBlurrinessFeatureBackground = "EffectsLabBlurBackground";
+
         # endregion
 
-        # region Context Menu Labels
+        #region Context Menu Labels
 
         public const string PowerPointLabsMenuLabel = "PowerPointLabs";
         public const string NameEditShapeLabel = "Edit Name";
@@ -611,6 +630,8 @@
         public class ResizeLabText
         {
             public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'";
+            public const string ErrorNotSameShapes = "You need to select the same type of objects before applying 'Adjust Area Proportionally'";
+            public const string ErrorGroupShapeNotSupported = "'Adjust Area Proportionally' does not support grouped objects";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
 

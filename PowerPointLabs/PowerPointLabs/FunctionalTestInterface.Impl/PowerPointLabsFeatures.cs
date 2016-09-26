@@ -213,12 +213,24 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 Ribbon.MagnifyGlassEffectClick(new RibbonControl("MagnifyingGlassEffect"));
             });
         }
+        
+        public void BlurrinessOverlay(string feature, bool pressed)
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl(feature + TextCollection.DynamicMenuCheckBoxId);
+                control.Tag = "Blurriness";
+                Ribbon.OnCheckBoxAction(control, pressed);
+            });
+        }
 
         public void BlurSelectedEffect()
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("EffectsLabBlurSelectedButton"));
+                var control = new RibbonControl("EffectsLabBlurSelectedOption90");
+                control.Tag = "Blurriness";
+                Ribbon.OnAction(control);
             });
         }
 
@@ -226,7 +238,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BlurRemainderEffectClick(new RibbonControl("BlurRemainderEffect"));
+                var control = new RibbonControl("EffectsLabBlurRemainderOption90");
+                control.Tag = "Blurriness";
+                Ribbon.OnAction(control);
             });
         }
 
@@ -260,7 +274,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BlurBackgroundEffectClick(new RibbonControl("BlurRemainderEffect"));
+                var control = new RibbonControl("EffectsLabBlurBackgroundOption90");
+                control.Tag = "Blurriness";
+                Ribbon.OnAction(control);
             });
         }
 

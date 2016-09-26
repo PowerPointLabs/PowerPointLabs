@@ -62,6 +62,7 @@ namespace PowerPointLabs.ResizeLab
 
         public const string AdjustProportionallyWidth = "Resizes selected object's width proportionally to the width of the first object selected";
         public const string AdjustProportionallyHeight = "Resizes selected object's height proportionally to the height of the first object selected";
+        public const string AdjustProportionallyArea = "Resizes selected object's area proportionally to the area of the first object selected";
         // Settings
         public const string AdjustProportionallySettingsTextBox = "Enter a decimal value greater than 0";
 
