@@ -14,57 +14,34 @@ namespace Test.UnitTest.PositionsLab
         private List<string> _shapeNames;
 
         private const int OriginalShapes0DegreesSlideNo = 3;
-        private const int OriginalShapes315DegreesSlideNo = 4;
-        private const int OriginalShapes225DegreesSlideNo = 5;
-        private const int OriginalShapes135DegreesSlideNo = 6;
-        private const int OriginalShapes45DegreesSlideNo = 7;
+        private const int OriginalShapes30DegreesSlideNo = 4;
+        private const int OriginalShapes60DegreesSlideNo = 5;
+        private const int OriginalShapes105DegreesSlideNo = 6;
+        private const int OriginalShapes120DegreesSlideNo = 7;
 
-        private const string Rectangle31 = "Rectangle 31";
-        private const string Oval41 = "Oval 41";
-        private const string Rectangle61 = "Rectangle 61";
-        private const string Picture31 = "Picture 31";
-        private const string Picture41 = "Picture 41";
-        private const string Picture21 = "Picture 21";
-        private const string LeftArrow21 = "Left Arrow 21";
-        private const string UpArrow101 = "Up Arrow 101";
-        private const string DownArrow111 = "Down Arrow 111";
-        private const string LeftRightArrow121 = "Left-Right Arrow 121";
-        private const string UpDownArrow131 = "Up-Down Arrow 131";
-        private const string QuadArrow141 = "Quad Arrow 141";
-        private const string LeftRightUpArrow151 = "Left-Right-Up Arrow 151";
-        private const string BentArrow161 = "Bent Arrow 161";
-        private const string UTurnArrow171 = "U-Turn Arrow 171";
-        private const string LeftUpArrow181 = "Left-Up Arrow 181";
-        private const string BentUpArrow191 = "Bent-Up Arrow 191";
-        private const string CurvedRightArrow201 = "Curved Right Arrow 201";
-        private const string CurvedLeftArrow211 = "Curved Left Arrow 211";
-        private const string CurvedDownArrow221 = "Curved Down Arrow 221";
-        private const string CurvedUpArrow231 = "Curved Up Arrow 231";
-        private const string StripedRightArrow241 = "Striped Right Arrow 241";
-        private const string NotchedRightArrow251 = "Notched Right Arrow 251";
-        private const string Pentagon261 = "Pentagon 261";
-        private const string Chevron271 = "Chevron 271";
-        private const string RightArrowCallout281 = "Right Arrow Callout 281";
-        private const string DownArrowCallout291 = "Down Arrow Callout 291";
-        private const string LeftArrowCallout301 = "Left Arrow Callout 301";
-        private const string UpArrowCallout311 = "Up Arrow Callout 311";
-        private const string LeftRightArrowCallout321 = "Left-Right Arrow Callout 321";
-        private const string QuadArrowCallout331 = "Quad Arrow Callout 331";
-        private const string CircularArrow341 = "Circular Arrow 341";
-        private const string RightArrow11 = "Right Arrow 11";
+        private const string Cloud5 = "Cloud 5";
+        private const string Smile9 = "Smile 9";
+        private const string Plus8 = "Plus 8";
+        private const string Heart3 = "Heart 3";
+        private const string Arrow1 = "Arrow 1";
+        private const string Arrow2 = "Arrow 2";
+        private const string Triangle5 = "Triangle 5";
+        private const string Rectangle1 = "Rectangle 1";
+        private const string Picture1 = "Picture 1";
+        private const string Picture2 = "Picture 2";
 
-        //Results of Operations
+    //Results of Operations
         private const int FlipHorizontal0DegreesSlideNo = 9;
-        private const int FlipHorizontal315DegreesSlideNo = 10;
-        private const int FlipHorizontal225DegreesSlideNo = 11;
-        private const int FlipHorizontal135DegreesSlideNo = 12;
-        private const int FlipHorizontal45DegreesSlideNo = 13;
+        private const int FlipHorizontal30DegreesSlideNo = 10;
+        private const int FlipHorizontal60DegreesSlideNo = 11;
+        private const int FlipHorizontal105DegreesSlideNo = 12;
+        private const int FlipHorizontal120DegreesSlideNo = 13;
 
         private const int FlipVertical0DegreesSlideNo = 15;
-        private const int FlipVertical315DegreesSlideNo = 16;
-        private const int FlipVertical225DegreesSlideNo = 17;
-        private const int FlipVertical135DegreesSlideNo = 18;
-        private const int FlipVertical45DegreesSlideNo = 19;
+        private const int FlipVertical30DegreesSlideNo = 16;
+        private const int FlipVertical60DegreesSlideNo = 17;
+        private const int FlipVertical105DegreesSlideNo = 18;
+        private const int FlipVertical120DegreesSlideNo = 19;
 
         protected override string GetTestingSlideName()
         {
@@ -75,11 +52,8 @@ namespace Test.UnitTest.PositionsLab
         public void TestInitialize()
         {
             PositionsLabMain.InitPositionsLab();
-            _shapeNames = new List<string> { Rectangle31, Oval41, Rectangle6, Picture3, Picture4, Picture2, LeftArrow2, UpArrow10, DownArrow11,
-                                            LeftRightArrow121, UpDownArrow13, QuadArrow14, LeftRightUpArrow15, BentArrow16, UTurnArrow17, LeftUpArrow18, BentUpArrow19,
-                                            CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
-                                            Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
-                                            LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
+            _shapeNames = new List<string> { Cloud5, Smile9, Plus8, Heart3, Arrow1, Arrow2,
+                                             Triangle5, Rectangle1, Picture1, Picture2 };
         }
 
         [TestCleanup]
@@ -93,11 +67,8 @@ namespace Test.UnitTest.PositionsLab
         public void TestFlipHorizontal0Degrees()
         {
             InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
-            _shapeNames = new List<string> { Rectangle3, Oval4, Rectangle6, Picture3, Picture4, Picture2, LeftArrow2, UpArrow10, DownArrow11,
-                                            LeftRightArrow12, UpDownArrow13, QuadArrow14, LeftRightUpArrow15, BentArrow16, UTurnArrow17, LeftUpArrow18, BentUpArrow19,
-                                            CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
-                                            Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
-                                            LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
+            //_shapeNames = new List<string> { Cloud5, Smile9, Plus8, Heart3, Arrow1, Arrow2,
+            //                                 Triangle5, Rectangle1, Picture1, Picture2 };
 
             var actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
@@ -113,14 +84,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipHorizontal315Degrees()
+        public void TestFlipHorizontal30Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes30DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipHorizontal315DegreesSlideNo);
+            PpOperations.SelectSlide(FlipHorizontal30DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -128,14 +99,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipHorizontal225Degrees()
+        public void TestFlipHorizontal60Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes60DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipHorizontal225DegreesSlideNo);
+            PpOperations.SelectSlide(FlipHorizontal60DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -143,14 +114,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipHorizontal135Degrees()
+        public void TestFlipHorizontal105Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes105DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipHorizontal135DegreesSlideNo);
+            PpOperations.SelectSlide(FlipHorizontal105DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -158,14 +129,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipHorizontal45Degrees()
+        public void TestFlipHorizontal120Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes120DegreesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipHorizontal45DegreesSlideNo);
+            PpOperations.SelectSlide(FlipHorizontal120DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -177,7 +148,7 @@ namespace Test.UnitTest.PositionsLab
         {
             var actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
             PpOperations.SelectSlide(FlipVertical0DegreesSlideNo);
@@ -188,14 +159,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipVertical315Degrees()
+        public void TestFlipVertical30Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes30DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipVertical315DegreesSlideNo);
+            PpOperations.SelectSlide(FlipVertical30DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -203,14 +174,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipVertical225Degrees()
+        public void TestFlipVertical60Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes60DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipVertical225DegreesSlideNo);
+            PpOperations.SelectSlide(FlipVertical60DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -218,14 +189,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipVertical135Degrees()
+        public void TestFlipVertical105Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes105DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipVertical135DegreesSlideNo);
+            PpOperations.SelectSlide(FlipVertical105DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
@@ -233,14 +204,14 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestFlipVertical45Degrees()
+        public void TestFlipVertical120Degrees()
         {
-            var actualShapes = GetShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapes120DegreesSlideNo, _shapeNames);
 
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
             ExecuteFlipAction(positionsAction, actualShapes);
 
-            PpOperations.SelectSlide(FlipVertical45DegreesSlideNo);
+            PpOperations.SelectSlide(FlipVertical120DegreesSlideNo);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
