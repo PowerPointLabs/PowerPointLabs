@@ -6,7 +6,7 @@ using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
     [Export("GeneralVariantWorker", typeof(IVariantWorker))]
-    [ExportMetadata("GeneralVariantWorkerOrder", 6)]
+    [ExportMetadata("GeneralVariantWorkerOrder", 3)]
     class PictureVariantWorker : IVariantWorker
     {
         public string GetVariantName()
