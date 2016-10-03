@@ -21,6 +21,10 @@ using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 using Fonts = System.Windows.Media.Fonts;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
+using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {
@@ -62,6 +66,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public ObservableFont SelectedFontFamily { get; set; }
 
+        public ObservableInt SelectedSliderValue { get; set; }
+
+        public ObservableBoolean IsSliderValueChanged { get; set; }
+
+        public ObservableInt SelectedSliderMaximum { get; set; }
+
+        public ObservableInt SelectedSliderTickFrequency { get; set; }
+
         public Settings Settings { get; set; }
 
         #endregion
@@ -82,6 +94,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         // Style Variants Factory
         public StyleVariantsFactory VariantsFactory { get; set; }
+
+        [Import(typeof(SliderPropHandlerFactory))]
+        private SliderPropHandlerFactory PropHandlerFactory { get; set; }
 
         #endregion
 
@@ -110,6 +125,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Designer.SetSettings(Settings);
             OptionsFactory = new StyleOptionsFactory();
             VariantsFactory = new StyleVariantsFactory();
+
+            var catalog = new AggregateCatalog(
+                new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
+
             Logger.Log("Init PSL View Model done");
         }
 
@@ -126,6 +147,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             FontFamilies.Add("Calibri Light");
             FontFamilies.Add("Arial Black");
             FontFamilies.Add("Times New Roman Italic");
+
+            FontFamilies = new ObservableCollection<string>(FontFamilies.OrderBy(i => i));
         }
 
         private void CleanUnusedPersistentData()
@@ -154,6 +177,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             VariantsCategory = new ObservableCollection<string>();
             SelectedFontId = new ObservableInt();
             SelectedFontFamily = new ObservableFont();
+            SelectedSliderValue = new ObservableInt();
+            IsSliderValueChanged = new ObservableBoolean { Flag = false };
+            SelectedSliderMaximum = new ObservableInt();
+            SelectedSliderTickFrequency = new ObservableInt();
 
             StylesPreviewList = new ObservableCollection<ImageItem>();
             StylesPreviewListSelectedId = new ObservableInt {Number = -1};
@@ -362,12 +389,12 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <param name="contentSlide"></param>
         /// <param name="slideWidth"></param>
         /// <param name="slideHeight"></param>
-        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdatePreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isUpdateSelectedPreviewOnly = false)
         {
             if (View.IsVariationsFlyoutOpen)
             {
                 Logger.Log("Generate preview images for variation stage");
-                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight);
+                UpdateStylesVariationImagesAfterOpenFlyout(source, contentSlide, slideWidth, slideHeight, isUpdateSelectedPreviewOnly);
                 Logger.Log("Generate preview images for variation stage done");
             }
             else
@@ -462,20 +489,31 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         /// <summary>
         /// Update styles variation images after its flyout been open
         /// </summary>
-        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
+        public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isUpdateSelectedPreviewOnly = false)
         {
             Logger.Log("Variation is already open, update preview images");
             var selectedId = StylesVariationListSelectedId.Number;
             var scrollOffset = View.GetVariationListBoxScrollOffset();
             var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
-            StylesVariationList.Clear();
+            if (!isUpdateSelectedPreviewOnly)
+            {
+                StylesVariationList.Clear();
+            }
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
                 return;
 
-            UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
-
             StylesVariationListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
+
+            if (isUpdateSelectedPreviewOnly)
+            {
+                UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight, selectedId: StylesVariationListSelectedId.Number);
+            }
+            else
+            {
+                UpdateStylesVariationImages(source, contentSlide, slideWidth, slideHeight);
+            }
+
             View.SetVariationListBoxScrollOffset(scrollOffset);
         }
 
@@ -873,15 +911,15 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
                     if (copiedObj is Image)
                     {
-                        Clipboard.SetImage((Image) copiedObj);
+                        Clipboard.SetImage((Image)copiedObj);
                     }
                     else if (copiedObj is StringCollection)
                     {
-                        Clipboard.SetFileDropList((StringCollection) copiedObj);
+                        Clipboard.SetFileDropList((StringCollection)copiedObj);
                     }
                     else if (!string.IsNullOrEmpty(copiedObj as string))
                     {
-                        Clipboard.SetText((string) copiedObj);
+                        Clipboard.SetText((string)copiedObj);
                     }
                 }
                 Logger.Log("Save clipboard done.");
@@ -1021,8 +1059,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     || contentSlide == null);
         }
 
-        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide, 
-            float slideWidth, float slideHeight, bool isMockPreviewImages = false)
+        private void UpdateStylesVariationImages(ImageItem source, Slide contentSlide,
+            float slideWidth, float slideHeight, bool isMockPreviewImages = false, int selectedId = -1)
         {
             Logger.Log("UpdateStylesVariationImages begins");
             var copiedPicture = LoadClipboardPicture();
@@ -1033,30 +1071,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     Logger.Log("Generate mock images for Picture aspect");
                 }
                 Logger.Log("Number of styles: " + _styleOptions.Count);
-                for (var i = 0; i < _styleOptions.Count; i++)
+                if (selectedId != -1)
                 {
-                    var styleOption = _styleOptions[i];
-                    PreviewInfo previewInfo;
-                    if (isMockPreviewImages)
+                    StylesVariationList[selectedId] =
+                        GenerateImageItem(source, contentSlide, slideWidth, slideHeight, isMockPreviewImages, selectedId);
+                }
+                else
+                {
+                    for (var i = 0; i < _styleOptions.Count; i++)
                     {
-                        previewInfo = new PreviewInfo
-                        {
-                            PreviewApplyStyleImagePath = StoragePath.NoPicturePlaceholderImgPath
-                        };
+                        StylesVariationList.Add(
+                            GenerateImageItem(source, contentSlide, slideWidth, slideHeight, isMockPreviewImages, i));
                     }
-                    else
-                    {
-                        previewInfo = Designer.PreviewApplyStyle(
-                            IsInPictureVariation()
-                                ? _8PicturesInPictureVariation[i]
-                                : source,
-                            contentSlide, slideWidth, slideHeight, styleOption);
-                    }
-                    StylesVariationList.Add(new ImageItem
-                    {
-                        ImageFile = previewInfo.PreviewApplyStyleImagePath,
-                        Tooltip = styleOption.OptionName
-                    });
                 }
                 GC.Collect();
             }
@@ -1067,6 +1093,34 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             SaveClipboardPicture(copiedPicture);
             Logger.Log("UpdateStylesVariationImages done");
+        }
+
+        private ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isMockPreviewImages,
+            int index)
+        {
+            var styleOption = _styleOptions[index];
+            PreviewInfo previewInfo;
+            if (isMockPreviewImages)
+            {
+                previewInfo = new PreviewInfo
+                {
+                    PreviewApplyStyleImagePath = StoragePath.NoPicturePlaceholderImgPath
+                };
+            }
+            else
+            {
+                previewInfo = Designer.PreviewApplyStyle(
+                    IsInPictureVariation()
+                        ? _8PicturesInPictureVariation[index]
+                        : source,
+                    contentSlide, slideWidth, slideHeight, styleOption);
+            }
+
+            return new ImageItem
+            {
+                ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                Tooltip = styleOption.OptionName
+            };
         }
 
         private ImageItem CreateChoosePicturesItem()

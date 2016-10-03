@@ -255,22 +255,41 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportContentRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportPressedRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\CheckBoxActionHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
-    <Compile Include="ActionFramework\Common\Extension\ActionHandlerExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\BaseActionHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
     <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
     <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\BaseActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\CheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ContentHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\PressedHandler.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
+    <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
@@ -278,6 +297,10 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
     <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
@@ -285,10 +308,16 @@
     <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
+    <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EmptySupertipHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\SupertipHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ResizeLabSupertipHandler.cs" />
     <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab\AgendaLabUtility.cs" />
@@ -363,6 +392,7 @@
     <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EffectsLab\EffectsLabBlurSelected.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
@@ -396,6 +426,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrameStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassBannerStyleVariants.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassTextBoxStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IGeneralVariantWorkerOrderMetadata.cs" />
@@ -413,7 +444,7 @@
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\CircleVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontColorVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontFamilyVariantWorker.cs" />
-    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontPositionVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextPositionVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontSizeIncreaseVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameTransparencyVariantWorker.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameVariantWorker.cs" />
@@ -489,6 +520,12 @@
     <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
     <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BlurrinessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BrightnessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Factory\SliderPropHandlerFactory.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\ISliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\IPropHandlerNameMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\TransparencySliderPropHandler.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ErrorDialog.cs" />
     <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.VariationStageControls.cs" />
     <Compile Include="PictureSlidesLab\View\Interface\IPictureSlidesLabWindowView.cs" />
@@ -535,6 +572,64 @@
     <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
     <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
     <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
+    <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
+      <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\ReorientSettingsDialog.xaml.cs">
+      <DependentUpon>ReorientSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\DistributeSettingsDialog.xaml.cs">
+      <DependentUpon>DistributeSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
+    </Compile>
+    <Compile Include="PositionsLab\PositionShapeProperties.cs" />
+    <Compile Include="PositionsLab\PositionsLabMain.cs" />
+    <Compile Include="PositionsLab\PositionsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsPane.Designer.cs">
+      <DependentUpon>PositionsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
+      <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\ReorderSettingsDialog.xaml.cs">
+      <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
+      <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
+    <Compile Include="ResizeLab\ResizeLabTooltip.cs" />
+    <Compile Include="ResizeLab\ResizeLabUtil.cs" />
+    <Compile Include="ResizeLab\Symmetric.cs" />
+    <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
+    <Compile Include="ResizeLab\IResizeLabPane.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.MainSettings.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Equalize.cs" />
+    <Compile Include="ResizeLab\ResizeLabPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabPane.Designer.cs">
+      <DependentUpon>ResizeLabPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.cs">
+      <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\StretchSettingsDialog.xaml.cs">
+      <DependentUpon>StretchSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
+      <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -573,8 +668,16 @@
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
     <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\PPShape.API.cs" />
+    <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -738,12 +841,21 @@
     <None Include="Resources\Type-icon.png" />
     <EmbeddedResource Include="ColorPicker\ColorInformationDialog.resx">
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
       <DependentUpon>DrawingsPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
+      <DependentUpon>PositionsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -757,9 +869,11 @@
     <None Include="Resources\Pause.png" />
     <EmbeddedResource Include="LabeledThumbnail.resx">
       <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomShapePane.resx">
       <DependentUpon>CustomShapePane.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
@@ -983,7 +1097,7 @@
     <None Include="Resources\AgendaRemove.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AgendaSettings.png" />
+    <Resource Include="Resources\AgendaSettings.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSidebar.png" />
@@ -1019,6 +1133,46 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\AlignSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\ReorientSettingsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PositionsLab\DistributeSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\PositionsDistributeGridDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\PositionsPaneWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PositionsLab\ReorderSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResizeLab\AdjustProportionallySettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResizeLab\ResizeLabPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ResizeLab\StretchSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SlightAdjustSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1117,15 +1271,175 @@
     <None Include="Resources\closed_business.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeFitToFill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeFitToHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeFitToWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeLock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeSameHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeSameSize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeSameWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchBottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeStretchTop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeUnlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\SwapIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\SnapAwayIcon.png" />
+    <Resource Include="Resources\PositionsLab\RotateIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeCenterIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeGridIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeShapeIcon.png" />
+    <Resource Include="Resources\PositionsLab\DistributeVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignBottomDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignLeftDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignRightDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\AlignTopDefaultIcon.png" />
+    <Resource Include="Resources\PositionsLab\PositionsLab.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricTop.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricRight.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricLeft.png" />
+    <Resource Include="Resources\ResizeLab\ResizeSymmetricBottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\SettingsGear.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\AgendaSettings1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaSync1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignHorizontalCenterDefaultIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignHorizontalCenterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignVerticalCenterDefaultIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignVerticalCenterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\LockAxisIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeDecreaseWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeIncreaseWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AdjoinHorizontalWithAlignIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AdjoinVerticalWithAlignIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeMatchHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeMatchWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\EffectsLab\BlurSelected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\DistributeRadialIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LeftRotate.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon-left_rotate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon-right_rotate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ResizeLab\ResizeProportionArea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon-flip_hori.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon-flip_verti.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\AlignRadialIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\RadialShapeOrientationDynamicIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
+  </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->
@@ -1136,7 +1450,7 @@
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="55214155BE32CF10E93E0815C7758604B8DF3CF2" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="3C479C724DD0B888FEB05B76BDA06F4F1DCC10ED" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
