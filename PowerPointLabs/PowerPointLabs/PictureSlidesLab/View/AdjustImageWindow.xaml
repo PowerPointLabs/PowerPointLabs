@@ -11,6 +11,7 @@
     ShowMinButton="False"
     ShowMaxRestoreButton="False"
     Width="800" Background="#FFFFFF" Loaded="Window_Loaded"
+    MinWidth="545"
     >
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -28,10 +29,14 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image x:Name="ImageHolder" MaxHeight="600" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" Margin="10,5,10,10" Grid.Row="0"/>
+        <Image x:Name="ImageHolder" Height="440" Source="{Binding Path=Text, Mode=TwoWay, NotifyOnSourceUpdated=True}" Margin="10,5,10,10" Grid.Row="0"/>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
+                <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
                 <ColumnDefinition Width="40"></ColumnDefinition>
@@ -60,9 +65,21 @@
                 <Image Width="24" Height="24" Name="ZoomOutImage"></Image>
             </Button>
             <Button Grid.Column="7" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="AutoFitButton" ToolTip="Auto fit picture dimensions" Click="AutoFitButton_OnClick" Width="40" Height="40">
-                <Image Width="24" Height="24" Name="AutoFitImage"></Image>
+                <Image Width="24" Height="24" x:Name="AutoFitImage"/>
             </Button>
-            <Button Height="28" Grid.Column="8" x:Name="SaveCropButton" ToolTip="Save current image dimensions" Click="SaveCropButton_OnClick" Margin="0,0,20,0" Width="45" HorizontalAlignment="Right">Save</Button>
+            <Button Grid.Column="8" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="LeftRotateButton" ToolTip="Roate the picture to the left 90°" Click="LeftRotateButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" x:Name="LeftRotateImage"/>
+            </Button>
+            <Button Grid.Column="9" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="RightRotateButton" ToolTip="Roate the picture to the right 90°" Click="RightRotateButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" x:Name="RightRotateImage"/>
+            </Button>
+            <Button Grid.Column="10" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="FlipHorizontalButton" ToolTip="Flip the picture horizontally" Click="FlipHorizontalButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" x:Name="FlipHorizontalImage"/>
+            </Button>
+            <Button Grid.Column="11" Style="{DynamicResource MetroCircleButtonStyle}" x:Name="FlipVerticalButton" ToolTip="Flip the picture vertically" Click="FlipVerticalButton_OnClick" Width="40" Height="40">
+                <Image Width="24" Height="24" x:Name="FlipVerticalImage"/>
+            </Button>
+            <Button Height="28" Grid.Column="12" x:Name="SaveCropButton" ToolTip="Save current image dimensions" Click="SaveCropButton_OnClick" Margin="0,0,20,0" Width="45" HorizontalAlignment="Right">Save</Button>
         </Grid>
     </Grid>
 </controls:MetroWindow>

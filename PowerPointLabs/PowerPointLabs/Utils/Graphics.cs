@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PPExtraEventHelper;
@@ -12,6 +15,7 @@ using PowerPointLabs.Models;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
+using Drawing = System.Drawing;
 
 namespace PowerPointLabs.Utils
 {
@@ -527,6 +531,63 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        public static PointF RotatePoint(PointF p, PointF origin, float rotation)
+        {
+            var rotationInRadian = DegreeToRadian(rotation);
+            var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
+            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+
+            return new PointF((float)rotatedX, (float)rotatedY);
+        }
+
+        public static double DegreeToRadian(float angle)
+        {
+            return angle / 180.0 * Math.PI;
+        }
+
+        public static PointF GetCenterPoint(Shape s)
+        {
+            return new PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
+        }
+
+        internal static List<PPShape> SortShapesByLeft(List<PPShape> selectedShapes)
+        {
+            List<PPShape> shapesToBeSorted = new List<PPShape>();
+
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                shapesToBeSorted.Add(selectedShapes[i]);
+            }
+
+            shapesToBeSorted.Sort(LeftComparator);
+
+            return shapesToBeSorted;
+        }
+
+        internal static List<PPShape> SortShapesByTop(List<PPShape> selectedShapes)
+        {
+            List<PPShape> shapesToBeSorted = new List<PPShape>();
+
+            for (int i = 0; i < selectedShapes.Count; i++)
+            {
+                shapesToBeSorted.Add(selectedShapes[i]);
+            }
+
+            shapesToBeSorted.Sort(TopComparator);
+
+            return shapesToBeSorted;
+        }
+
+        private static int LeftComparator(PPShape s1, PPShape s2)
+        {
+            return s1.VisualLeft.CompareTo(s2.VisualLeft);
+        }
+
+        private static int TopComparator(PPShape s1, PPShape s2)
+        {
+            return s1.VisualTop.CompareTo(s2.VisualTop);
+        }
+
         # endregion
 
         # region Text
@@ -711,7 +772,7 @@ namespace PowerPointLabs.Utils
         # endregion
 
         # region Color
-        public static int ConvertColorToRgb(Color argb)
+        public static int ConvertColorToRgb(Drawing.Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
         }
@@ -721,9 +782,9 @@ namespace PowerPointLabs.Utils
             return (b << 16) | (g << 8) | r;
         }
 
-        public static Color ConvertRgbToColor(int rgb)
+        public static Drawing.Color ConvertRgbToColor(int rgb)
         {
-            return Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
+            return Drawing.Color.FromArgb(rgb & 255, (rgb >> 8) & 255, (rgb >> 16) & 255);
         }
 
         public static void UnpackRgbInt(int rgb, out byte r, out byte g, out byte b)
@@ -786,6 +847,41 @@ namespace PowerPointLabs.Utils
             candidateShape.Height = refShape.Height;
 
             candidateShape.LockAspectRatio = candidateLockRatio;
+        }
+
+        /// <summary>
+        /// Converts a Bitmap to Bitmap source
+        /// </summary>
+        /// <param name="bitmap">The bitmap to convert</param>
+        /// <returns>The converted object</returns>
+        public static BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)
+        {
+            var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+
+            var bitmapData = bitmap.LockBits(
+                rect,
+                ImageLockMode.ReadWrite,
+                Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            try
+            {
+                var size = (rect.Width * rect.Height) * 4;
+
+                return BitmapSource.Create(
+                    bitmap.Width,
+                    bitmap.Height,
+                    bitmap.HorizontalResolution,
+                    bitmap.VerticalResolution,
+                    PixelFormats.Bgra32,
+                    null,
+                    bitmapData.Scan0,
+                    size,
+                    bitmapData.Stride);
+            }
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
         }
         # endregion
     }

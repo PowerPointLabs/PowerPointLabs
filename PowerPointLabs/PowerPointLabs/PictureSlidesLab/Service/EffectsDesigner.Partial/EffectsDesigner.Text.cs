@@ -12,7 +12,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     partial class EffectsDesigner
     {
         // apply text formats to textbox & placeholer
-        public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease)
+        public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease, int fontTransparency)
         {
             var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
@@ -45,6 +45,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             {
                 shape.TextFrame.AutoSize = PowerPoint.PpAutoSize.ppAutoSizeNone;
                 shape.TextEffect.FontSize = float.Parse(shape.Tags[Tag.OriginalFontSize]) + fontSizeToIncrease;
+            }
+
+            if (fontTransparency != -1)
+            {
+                font.Fill.Transparency = (float)fontTransparency / 100;
             }
         }
 
