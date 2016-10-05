@@ -153,6 +153,35 @@ namespace Test.UnitTest.PositionsLab
             }
         }
 
+        protected void ExecuteFlipAction(Action<PowerPoint.ShapeRange> positionsAction, PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes == null || selectedShapes.Count == 0)
+            {
+                throw new Exception(ErrorInvalidShapesSelected);
+            }
+
+            PowerPoint.ShapeRange simulatedShapes = null;
+            
+            try
+            {
+                simulatedShapes = DuplicateShapes(selectedShapes);
+
+                positionsAction.Invoke(selectedShapes);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
+            }
+        } 
+
         // Align right, bottom, vertical center, horizontal center
         protected void ExecutePositionsAction(Action<PowerPoint.ShapeRange, float> positionsAction, PowerPoint.ShapeRange selectedShapes, float dimension)
         {

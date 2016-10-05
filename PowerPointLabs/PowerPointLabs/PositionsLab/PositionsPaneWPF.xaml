@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
              mc:Ignorable="d" Height="725" Width="310"
-             KeyDown="PositionsPane_KeyDown" KeyUp="PositionsPane_KeyUp" FocusVisualStyle="{x:Null}">
+             x:Name="positionLabPane" KeyDown="PositionsPane_KeyDown" KeyUp="PositionsPane_KeyUp" FocusVisualStyle="{x:Null}" MouseEnter="Pane_MouseEnter">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -139,6 +139,10 @@
                 <Image Source="..\Resources\PositionsLab\SnapAwayIcon.png"/>
             </WPF:ImageButton>
             <TextBlock x:Name="snapAWayTextBlock" HorizontalAlignment="Left" Margin="18,700,0,0" TextWrapping="Wrap" Text="Snap Away" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
+            <WPF:ImageButton ToolTip="Flip objects, use 'ctrl' to switch flipping horizontally or vertically" x:Name="flipButton" HorizontalAlignment="Left" Margin="154,655,0,0" VerticalAlignment="Top" Width="60" Height="45" MouseEnter="FlipButton_MouseEnter" MouseLeave="UndoPreview" Click="FlipButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="..\Resources\PositionsLab\FlipHorizontalIcon.png"/>
+            </WPF:ImageButton>
+            <TextBlock x:Name="flipTextBlock" HorizontalAlignment="Left" Margin="154,700,0,0" TextWrapping="Wrap" Text="Flip" VerticalAlignment="Top" TextAlignment="Center" Height="15" Width="60"/>
             <ToggleButton ToolTip="Objects can only be moved horizontally or vertically from original position" x:Name="lockAxisButton" HorizontalAlignment="Left" Margin="86,655,0,0" VerticalAlignment="Top" Width="60" Height="45" Checked="LockAxisButton_Click" Background="{x:Null}" BorderBrush="{x:Null}">
                 <Image Source="..\Resources\PositionsLab\LockAxisIcon.png"/>
             </ToggleButton>

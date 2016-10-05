@@ -1397,6 +1397,9 @@
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\PositionsLab\FlipHorizontalIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1413,6 +1416,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon-right_rotate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\FlipVerticalIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LeftRotate.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeProportionArea.png" />

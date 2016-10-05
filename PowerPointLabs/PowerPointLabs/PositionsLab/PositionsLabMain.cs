@@ -387,7 +387,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        public static void AlignTop(ShapeRange toAlign)
+        public static void AlignTop(ShapeRange toAlign)   
         {
             var selectedShapes = new List<PPShape>();
 
@@ -2604,6 +2604,38 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return shapeIsVertical;
+        }
+
+        public static void FlipHorizontal(ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count < 1)
+            {
+                throw new Exception(ErrorMessageNoSelection);
+            }
+
+            for (var i = 1; i <= selectedShapes.Count; i++)
+            {
+                var currentShape = selectedShapes[i];
+                var currentRotation = currentShape.Rotation;
+                currentShape.Flip(MsoFlipCmd.msoFlipHorizontal);
+                currentShape.Rotation = currentRotation;
+            }
+        }
+
+        public static void FlipVertical(ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count < 1)
+            {
+                throw new Exception(ErrorMessageNoSelection);
+            }
+
+            for (var i = 1; i <= selectedShapes.Count; i++)
+            {
+                var currentShape = selectedShapes[i];
+                var currentRotation = currentShape.Rotation;
+                currentShape.Flip(MsoFlipCmd.msoFlipVertical);
+                currentShape.Rotation = currentRotation;
+            }
         }
 
         #endregion

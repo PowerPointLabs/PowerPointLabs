@@ -29,6 +29,10 @@ namespace Test.Util
                 "different shape width. exp:{0}, actual:{1}", expShape.Width, actualShape.Width);
             Assert.IsTrue(IsRoughlySame(expShape.Height, actualShape.Height),
                 "different shape height. exp:{0}, actual:{1}", expShape.Height, actualShape.Height);
+            Assert.IsTrue(expShape.HorizontalFlip == actualShape.HorizontalFlip,
+                "different shape horizontal flip. exp:{0}, actual:{1}", expShape.HorizontalFlip, actualShape.HorizontalFlip);
+            Assert.IsTrue(expShape.VerticalFlip == actualShape.VerticalFlip,
+                "different shape vertical flip. exp:{0}, actual:{1}", expShape.VerticalFlip, actualShape.VerticalFlip);
         }
 
         // compare shape's prop & looking
