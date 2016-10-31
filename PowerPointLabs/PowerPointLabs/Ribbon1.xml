@@ -327,7 +327,7 @@
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
           <button id="ResizeLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
