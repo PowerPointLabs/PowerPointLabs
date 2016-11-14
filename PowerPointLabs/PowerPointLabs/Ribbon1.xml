@@ -319,14 +319,14 @@
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
           <button id="PositionsLabButton"
-                  visible="true"
+                  visible="false"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
           <button id="ResizeLabButton"
-                  visible="true"
+                  visible="false"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
