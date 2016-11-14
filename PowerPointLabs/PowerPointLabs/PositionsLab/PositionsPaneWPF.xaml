@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
              mc:Ignorable="d" Height="725" Width="310"
-             KeyDown="PositionsPane_KeyDown" KeyUp="PositionsPane_KeyUp" FocusVisualStyle="{x:Null}">
+             x:Name="positionLabPane" FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
