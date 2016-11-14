@@ -703,6 +703,14 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+
+        public static System.Drawing.Bitmap FlipHorizontalIcon {
+            get {
+                object obj = ResourceManager.GetObject("FlipHorizontalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
         public static System.Drawing.Bitmap FlipHorizontal {
             get {
                 object obj = ResourceManager.GetObject("FlipHorizontal", resourceCulture);
@@ -713,6 +721,13 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap FlipVerticalIcon {
+            get {
+                object obj = ResourceManager.GetObject("FlipVerticalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
         public static System.Drawing.Bitmap FlipVertical {
             get {
                 object obj = ResourceManager.GetObject("FlipVertical", resourceCulture);

@@ -11,6 +11,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using Media = System.Windows.Media;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -294,6 +295,7 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Adjustment
+
         private void RotationButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
@@ -521,7 +523,6 @@ namespace PowerPointLabs.PositionsLab
                 Logger.LogException(ex, "LockAxis");
             }
         }
-
         #endregion
 
         #region Snap
@@ -1529,19 +1530,6 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void PositionsPane_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (IsPreviewKeyPressed() && !_previewIsExecuted)
-            {
-                _previewCallBack?.Invoke();
-            }
-        }
-
-        private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
-        {
-            UndoPreview();
-        }
-
         private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
         {
             UndoPreview();
@@ -1575,6 +1563,18 @@ namespace PowerPointLabs.PositionsLab
         private bool IsPreviewKeyPressed()
         {
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsChangeIconKeyPressed()
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 return true;
             }
@@ -1658,7 +1658,7 @@ namespace PowerPointLabs.PositionsLab
             dictionary.Clear();
             foreach (Shape s in shapes)
             {
-                dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation));
+                dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation, s.HorizontalFlip, s.VerticalFlip));
             }
         }
         #endregion
