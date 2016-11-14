@@ -17,7 +17,7 @@
 
         # region Ribbon XML
         # region Supertips
-        # region Auto Animation
+        # region Animation Lab
         public const string AddAnimationButtonSupertip =
             "Creates an animation slide to transition from the currently selected slide to the next slide.";
         public const string ReloadButtonSupertip =
@@ -28,7 +28,7 @@
             "To activate, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button";
         # endregion
 
-        # region Auto Zoom
+        # region Zoom Lab
         public const string AddZoomInButtonSupertip =
             "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
             "To activate, select a rectangle shape on the slide to drill down from, then click this button.";
@@ -40,19 +40,13 @@
             "This feature works best with high-resolution images.";
         # endregion
 
-        # region Auto Crop
+        # region Crop Lab
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
         # endregion
 
-        # region Spotlight
-        public const string AddSpotlightButtonSupertip =
-            "Creates a spotlight effect for a selected shape.\n\n" +
-            "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
-        # endregion
-
-        # region Auto Narrate
+        # region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -60,18 +54,23 @@
         public const string AddRecordButtonSupertip =
             "Manually record audio to replace synthesized narration.";
         public const string RemoveAudioButtonSupertip =
-            "Removes synthesized audio added using Auto Narrate from the selected slides.";
+            "Removes synthesized audio added using Narrations Lab from the selected slides.";
         # endregion
 
-        # region Auto Caption
+        # region Captions Lab
         public const string AddCaptionsButtonSupertip =
             "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
         public const string RemoveCaptionsButtonSupertip =
-            "Removes captions added using Auto Captions from the selected slides.";
+            "Removes captions added using Captions Lab from the selected slides.";
         public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
         # endregion
 
-        # region Highlight Points
+        # region Highlight Lab
+        public const string AddSpotlightButtonSupertip =
+            "Creates a spotlight effect for a selected shape.\n\n" +
+            "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
+        public const string SpotlightPropertiesButtonSupertip =
+            "Set the Spotlight properries.";
         public const string HighlightBulletsTextButtonSupertip =
             "Highlights selected bullet points by changing the text's color.\n\n" +
             "To activate, select the bullet points to highlight, then click this button.";
@@ -83,7 +82,7 @@
             "To activate, select the text to highlight, then click this button.";
         # endregion
 
-        # region Labs
+        # region More Labs
         # region Colors Lab
         public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
         # endregion
@@ -144,32 +143,26 @@
         # region Button Labels
         public const string CombineShapesLabel = "Combine Shapes";
 
-        # region Auto Animation
-        public const string AutoAnimateGroupLabel = "Animation Lab";
+        # region Animation Lab
+        public const string AnimationLabGroupLabel = "Animation Lab";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
         # endregion
 
-        # region Auto Zoom
-        public const string AutoZoomGroupLabel = "Zoom Lab";
+        # region Zoom Lab
+        public const string ZoomLabGroupLabel = "Zoom Lab";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
         # endregion
 
-        # region Auto Crop
-        public const string AutoCropGroupLabel = "Crop Lab";
+        # region Crop Lab
+        public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         # endregion
 
-        # region Spotlight
-        public const string SpotLightGroupLabel = "Spotlight Lab";
-        public const string AddSpotlightButtonLabel = "Create Spotlight";
-        public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
-        # endregion
-
-        # region Auto Narration
+        # region Narrations Lab
         public const string EmbedAudioGroupLabel = "Narrations Lab";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
@@ -177,22 +170,25 @@
         public const string RemoveAudioButtonLabel = "Remove Audio";
         # endregion
 
-        # region Auto Caption
+        # region Captions Lab
         public const string EmbedCaptionGroupLabel = "Captions Lab";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
         # endregion
 
-        # region Highlight Points
-        public const string HighlightBulletsGroupLabel = "Highlight Bullets Lab";
+        # region Highlight Lab
+        public const string HighlightLabGroupLabel = "Highlight Lab";
+        public const string SpotlightPropertiesButtonLabel = "Spotlight Properties";
+        public const string AddSpotlightButtonLabel = "Create Spotlight";
+        public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
         # endregion
 
         # region Labs
-        public const string LabsGroupLabel = "Labs";
+        public const string LabsGroupLabel = "More Labs";
 
         # region Colors Lab
         public const string ColorPickerButtonLabel = "Colors Lab";

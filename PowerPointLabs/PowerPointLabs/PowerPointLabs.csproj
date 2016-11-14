@@ -702,17 +702,17 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AnimateInSlide.cs" />
-    <Compile Include="Views\AutoAnimateDialogBox.cs">
+    <Compile Include="Views\AnimationLabDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\AutoAnimateDialogBox.Designer.cs">
-      <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
+    <Compile Include="Views\AnimationLabDialogBox.Designer.cs">
+      <DependentUpon>AnimationLabDialogBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\AutoZoomDialogBox.cs">
+    <Compile Include="Views\ZoomLabDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\AutoZoomDialogBox.Designer.cs">
-      <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
+    <Compile Include="Views\ZoomLabDialogBox.Designer.cs">
+      <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
     <Compile Include="Views\FolderDialogLauncher.cs" />
@@ -781,11 +781,11 @@
     <Compile Include="Views\SpotlightDialogBox.Designer.cs">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\AutoNarrateDialogBox.cs">
+    <Compile Include="Views\NarrationsLabDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\AutoNarrateDialogBox.Designer.cs">
-      <DependentUpon>AutoNarrateDialogBox.cs</DependentUpon>
+    <Compile Include="Views\NarrationsLabDialogBox.Designer.cs">
+      <DependentUpon>NarrationsLabDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessingStatusForm.cs">
       <SubType>Form</SubType>
@@ -880,11 +880,11 @@
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\AutoAnimateDialogBox.resx">
-      <DependentUpon>AutoAnimateDialogBox.cs</DependentUpon>
+    <EmbeddedResource Include="Views\AnimationLabDialogBox.resx">
+      <DependentUpon>AnimationLabDialogBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\AutoZoomDialogBox.resx">
-      <DependentUpon>AutoZoomDialogBox.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ZoomLabDialogBox.resx">
+      <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -912,8 +912,8 @@
     <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
       <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\AutoNarrateDialogBox.resx">
-      <DependentUpon>AutoNarrateDialogBox.cs</DependentUpon>
+    <EmbeddedResource Include="Views\NarrationsLabDialogBox.resx">
+      <DependentUpon>NarrationsLabDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
@@ -1396,6 +1396,9 @@
     <Resource Include="Resources\ResizeLab\ResizeProportionWidth.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\PositionsLab\FlipHorizontalIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\PositionsLab\DuplicateRotateIcon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1412,6 +1415,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icon-right_rotate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PositionsLab\FlipVerticalIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LeftRotate.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ResizeLab\ResizeProportionArea.png" />
