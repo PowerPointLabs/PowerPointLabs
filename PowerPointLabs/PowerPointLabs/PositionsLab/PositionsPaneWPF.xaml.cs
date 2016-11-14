@@ -11,6 +11,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
+using Media = System.Windows.Media;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -67,6 +68,9 @@ namespace PowerPointLabs.PositionsLab
         private DistributeSettingsDialog _distributeSettingsDialog;
         private ReorderSettingsDialog _reorderSettingsDialog;
         private ReorientSettingsDialog _reorientSettingsDialog;
+
+        private int flipPreview = 0;
+        private bool isCtrlPressed = false;
 
         public PositionsPaneWpf()
         {
@@ -294,6 +298,20 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Adjustment
+        private void Pane_MouseEnter(object sender, MouseEventArgs e)
+        {
+            positionLabPane.Focus();
+            if (isCtrlPressed)
+            {
+                ChangeIconOfFlip();
+            }
+            else
+            {
+                Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
+                flipButton.Image = flipHorizontalIcon;
+            }
+        }
+
         private void RotationButton_Click(object sender, RoutedEventArgs e)
         {
             var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
@@ -521,7 +539,29 @@ namespace PowerPointLabs.PositionsLab
                 Logger.LogException(ex, "LockAxis");
             }
         }
+        #endregion
 
+        #region Flip
+        private void FlipButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (isCtrlPressed)
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
+                    ExecuteFlipAction(positionsAction, false);
+                }
+                else
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+                    ExecuteFlipAction(positionsAction, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, "Flip");
+            }
+        }
         #endregion
 
         #region Snap
@@ -758,6 +798,47 @@ namespace PowerPointLabs.PositionsLab
                 ExecutePositionsAction(positionsAction, true);
             };
             PreviewHandler();
+        }
+
+        private void FlipButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (isCtrlPressed)
+            {
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(shapes);
+                _previewCallBack = delegate
+                {
+                    ExecuteFlipAction(positionsAction, true);
+                };
+                PreviewHandler();
+            }
+            else
+            {
+                Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(shapes);
+                _previewCallBack = delegate
+                {
+                    ExecuteFlipAction(positionsAction, true);
+                };
+                PreviewHandler();
+            }
+        }
+
+        private void FlipButton_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (flipPreview == 1)
+            {
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                if (IsChangeIconKeyPressed())
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipVertical(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                else
+                {
+                    Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.FlipHorizontal(selectedShapes);
+                    ExecutePositionsAction(positionsAction, false);
+                }
+                flipPreview = 0;
+            }
         }
         #endregion
 
@@ -1109,6 +1190,48 @@ namespace PowerPointLabs.PositionsLab
                 {
                     simulatedShapes.Delete();
                     GC.Collect();
+                }
+            }
+        }
+
+        public void ExecuteFlipAction(Action<PowerPoint.ShapeRange> positionsAction, bool isPreview)
+        {
+            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                if (!isPreview)
+                {
+                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                }
+                return;
+            }
+
+            try
+            {
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+                if (isPreview)
+                {
+                    SaveSelectedShapePositions(selectedShapes, allShapePos);
+                }
+                else
+                {
+                    UndoPreview();
+                    _previewCallBack = null;
+                    this.StartNewUndoEntry();
+                }
+
+                positionsAction.Invoke(selectedShapes);
+               
+                if (isPreview)
+                {
+                    _previewIsExecuted = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!isPreview)
+                {
+                    ShowErrorMessageBox(ex.Message, ex);
                 }
             }
         }
@@ -1535,6 +1658,26 @@ namespace PowerPointLabs.PositionsLab
             {
                 _previewCallBack?.Invoke();
             }
+
+            if (IsChangeIconKeyPressed())
+            {
+                isCtrlPressed = !isCtrlPressed;
+                ChangeIconOfFlip();
+            }
+        }
+
+        void ChangeIconOfFlip()
+        {
+            if (isCtrlPressed)
+            {
+                Media.ImageSource flipVerticalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipVerticalIcon.png", UriKind.Relative));
+                flipButton.Image = flipVerticalIcon;
+            }
+            else
+            {
+                Media.ImageSource flipHorizontalIcon = new System.Windows.Media.Imaging.BitmapImage(new Uri("..\\Resources\\PositionsLab\\FlipHorizontalIcon.png", UriKind.Relative));
+                flipButton.Image = flipHorizontalIcon;
+            }
         }
 
         private void PositionsPane_KeyUp(object sender, KeyEventArgs e)
@@ -1564,6 +1707,14 @@ namespace PowerPointLabs.PositionsLab
                         s.Left = properties.Position.X;
                         s.Top = properties.Position.Y;
                         s.Rotation = properties.Rotation;
+                        if (s.VerticalFlip != properties.FlipVerticalState)
+                        {
+                            s.Flip(Office.MsoFlipCmd.msoFlipVertical);
+                        }
+                        else if (s.HorizontalFlip != properties.FlipHorizontalState)
+                        {
+                            s.Flip(Office.MsoFlipCmd.msoFlipHorizontal);
+                        }
                     }
                 }
 
@@ -1575,6 +1726,18 @@ namespace PowerPointLabs.PositionsLab
         private bool IsPreviewKeyPressed()
         {
             if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsChangeIconKeyPressed()
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 return true;
             }
@@ -1658,7 +1821,7 @@ namespace PowerPointLabs.PositionsLab
             dictionary.Clear();
             foreach (Shape s in shapes)
             {
-                dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation));
+                dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation, s.HorizontalFlip, s.VerticalFlip));
             }
         }
         #endregion

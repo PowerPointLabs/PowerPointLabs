@@ -20,7 +20,7 @@
       <tab id="PowerPointLabsAddIns"
            getLabel="GetPowerPointLabsAddInsTabLabel">
         <group id="AutoMotionGroup"
-               getLabel="GetAutoAnimateGroupLabel"
+               getLabel="GetAnimationLabGroupLabel"
                visible ="true">
           <button id="AddAnimationButton"
                   getLabel="GetAddAnimationButtonLabel"
@@ -37,12 +37,12 @@
                    getEnabled="OnGetEnabledAddInSlide"
                    onAction="AddInSlideAnimationButtonClick"/>
           <dialogBoxLauncher>
-            <button id ="AutoAnimateDialogBox"
-                    onAction="AutoAnimateDialogButtonPressed"/>
+            <button id ="AnimationLabDialogBox"
+                    onAction="AnimationLabDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="AutoZoomGroup"
-               getLabel="GetAutoZoomGroupLabel"
+        <group id="ZoomLabGroup"
+               getLabel="GetZoomLabGroupLabel"
                visible ="true">
           <button id="AddZoomInButton"
                  getLabel ="GetAddZoomInButtonLabel"
@@ -66,12 +66,12 @@
                  getEnabled="OnGetEnabledZoomButton"
                  onAction="ZoomBtnClick"/>
           <dialogBoxLauncher>
-            <button id ="AutoZoomDialogBox"
-                    onAction="AutoZoomDialogButtonPressed"/>
+            <button id ="ZoomLabDialogBox"
+                    onAction="ZoomLabDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="AutoCropGroup"
-               getLabel="GetAutoCropGroupLabel"
+        <group id="CropLabGroup"
+               getLabel="GetCropLabGroupLabel"
                visible="true">
           <button id="MoveCropShapeButton"
                   getLabel ="GetMoveCropShapeButtonLabel"
@@ -79,21 +79,6 @@
                   getImage="GetCropShapeImage"
                   getSupertip="GetMoveCropShapeButtonSupertip"
                   onAction="CropShapeButtonClick"/>
-        </group>
-        <group id="SpotLightGroup"
-               getLabel="GetSpotLightGroupLabel"
-               visible="true">
-          <button   id="AddSpotlightButton"
-                   getLabel="GetAddSpotlightButtonLabel"
-                   size="large"
-                   getSupertip="GetAddSpotlightButtonSupertip"
-                   getImage="GetSpotlightImage"
-                   getEnabled="OnGetEnabledSpotlight"
-                   onAction="SpotlightBtnClick"/>
-          <dialogBoxLauncher>
-            <button id ="SpotlightDialogBox"
-                    onAction="SpotlightDialogButtonPressed"/>
-          </dialogBoxLauncher>
         </group>
         <group id="embedAudio"
                getLabel="GetEmbedAudioGroupLabel">
@@ -126,8 +111,8 @@
                   getImage="GetRemoveAudioImage"
                   size="large" />
           <dialogBoxLauncher>
-            <button id="AutoNarrateDialogBox"
-                    onAction="AutoNarrateDialogButtonPressed"/>
+            <button id="NarrationsLabDialogBox"
+                    onAction="NarrationsLabDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
         <group id="embedCaptions"
@@ -156,8 +141,22 @@
           </splitButton>
         </group>
         <group id="HighlightBullets"
-               getLabel="GetHighlightBulletsGroupLabel"
+               getLabel="GetHighlightLabGroupLabel"
                visible="true">
+          <splitButton id ="addSpotlight" size ="large">  
+            <button id="AddSpotlightButton"
+                    getLabel="GetAddSpotlightButtonLabel"
+                    getSupertip="GetAddSpotlightButtonSupertip"
+                    getImage="GetSpotlightImage"
+                    getEnabled="OnGetEnabledSpotlight"
+                    onAction="SpotlightBtnClick"/>
+            <menu id ="spotlightPropertiesMenu">
+               <button id="SpotlightPropertiesButton"
+                      getLabel="GetSpotlightPropertiesButtonLabel"
+                      getSupertip="GetSpotlightPropertiesButtonSupertip"
+                      onAction="SpotlightDialogButtonPressed"/>
+            </menu>
+          </splitButton>
           <button id="HighlightBulletsTextButton"
                  getLabel ="GetHighlightBulletsTextButtonLabel"
                  size ="large"
