@@ -304,7 +304,12 @@ namespace PowerPointLabs
         {
             return TextCollection.MoveCropShapeButtonSupertip;
         }
-        
+
+        public string GetCropToSlideButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSlideButtonSupertip;
+        }
+
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -499,10 +504,17 @@ namespace PowerPointLabs
         {
             return TextCollection.CropLabGroupLabel;
         }
+
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonLabel;
         }
+
+        public string GetCropToSlideButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSlideButtonLabel;
+        }
+
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -977,6 +989,19 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropShapeImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetCropToSlideImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropToSlide);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropToSlideImage");
                 throw;
             }
         }
@@ -1698,6 +1723,20 @@ namespace PowerPointLabs
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToShape.Crop(selection);
+        }
+
+        public void CropToSlideButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var shapeHolder =
+                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(
+                    Office.MsoAutoShapeType.msoShapeRectangle,
+                    0,
+                    0,
+                    PowerPointPresentation.Current.SlideWidth,
+                    PowerPointPresentation.Current.SlideHeight);
+            CropToShape.CropToSlide(shapeHolder);
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)

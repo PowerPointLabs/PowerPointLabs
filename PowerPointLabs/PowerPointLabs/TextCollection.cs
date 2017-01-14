@@ -44,9 +44,11 @@
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        # endregion
+        public const string CropToSlideButtonSupertip =
+            "Crops a picture of the current slide.";
+        #endregion
 
-        # region Narrations Lab
+        #region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -160,6 +162,7 @@
         # region Crop Lab
         public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        public const string CropToSlideButtonLabel = "Crop To Slide";
         # endregion
 
         # region Narrations Lab
