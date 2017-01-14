@@ -1729,14 +1729,8 @@ namespace PowerPointLabs
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var shapeHolder =
-                PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddShape(
-                    Office.MsoAutoShapeType.msoShapeRectangle,
-                    0,
-                    0,
-                    PowerPointPresentation.Current.SlideWidth,
-                    PowerPointPresentation.Current.SlideHeight);
-            CropToShape.CropToSlide(shapeHolder);
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropToShape.CropToSlide(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
