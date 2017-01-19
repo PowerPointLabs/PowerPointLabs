@@ -299,12 +299,16 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonSupertip;
         }
-        
+
         public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonSupertip;
         }
-        
+        public string GetCropOutPaddingButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropOutPaddingButtonSupertip;
+        }
+
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -502,6 +506,10 @@ namespace PowerPointLabs
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonLabel;
+        }
+        public string GetCropOutPaddingButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropOutPaddingButtonLabel;
         }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
@@ -1703,6 +1711,18 @@ namespace PowerPointLabs
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
         {
             return CropToShape.GetCutOutShapeMenuImage(control);
+        }
+
+        #endregion
+
+        #region Feature: Crop Out Padding
+
+        public void CropOutPaddingButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropOutPadding.Crop(selection);
         }
 
         #endregion

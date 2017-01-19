@@ -73,12 +73,22 @@
         <group id="CropLabGroup"
                getLabel="GetCropLabGroupLabel"
                visible="true">
-          <button id="MoveCropShapeButton"
-                  getLabel ="GetMoveCropShapeButtonLabel"
-                  size ="large"
+            <menu id="CropLabsMenu"
+                  getLabel="GetMoveCropShapeButtonLabel"
                   getImage="GetCropShapeImage"
-                  getSupertip="GetMoveCropShapeButtonSupertip"
-                  onAction="CropShapeButtonClick"/>
+                  getSupertip="getMoveCropShapeButtonSupertip"
+                  size="large">
+                <button id="MoveCropShapeButton"
+                        getLabel="GetMoveCropShapeButtonLabel"
+                        getImage="GetCropShapeImage"
+                        getSupertip="GetMoveCropShapeButtonSupertip"
+                        onAction="CropShapeButtonClick"/>
+                <button id="CropOutPaddingButton"
+                        getLabel="GetCropOutPaddingButtonLabel"
+                        getImage="GetCropOutPaddingImage"
+                        getSupertip="GetCropOutPaddingButtonSupertip"
+                        onAction="CropOutPaddingButtonClick"/>
+            </menu>
         </group>
         <group id="embedAudio"
                getLabel="GetEmbedAudioGroupLabel">

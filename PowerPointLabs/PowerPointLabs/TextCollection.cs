@@ -44,6 +44,10 @@
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
+
+        public const string CropOutPaddingButtonSupertip =
+            "Crop out transparent areas of a picture.\n\n" +
+            "To activate, select the picture, then click this button.";
         # endregion
 
         # region Narrations Lab
@@ -160,6 +164,7 @@
         # region Crop Lab
         public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        public const string CropOutPaddingButtonLabel = "Crop Out Padding";
         # endregion
 
         # region Narrations Lab
@@ -339,6 +344,18 @@
             public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
+        }
+
+        # endregion
+
+        # region CropOutPadding
+
+        public class CropOutPaddingText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop Out Padding' requires at least one picture to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop Out Padding' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop Out Padding'.";
         }
 
         # endregion
