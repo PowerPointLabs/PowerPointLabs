@@ -30,6 +30,16 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 2. In the open Test Explorer window, click `Group by Traits` >> right click `FT` >> click `Run Selected Tests`. During the test, *DO NOT move the mouse & ensure the Windows UI is in English*.
 3. In the open Test Explorer window, click `Group by Traits` >> right click `UT` >> click `Run Selected Tests`.
 
+### Dev Team
+
+Area | Responsibilities | Lead | Co-Lead | Past Leads
+-----|------------------|------|---------|-----|
+DevOps | Installer, issue tracker, releases, CI | | | Hanyang|
+Community | communit growth, user support | | | Fiona|
+Testing | test coverage, test automation | | | Kai|
+Docs | Website, tutorials, dev docs | | | Fiona|
+Quality | code quality, design quality | | | Kai|
+
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
 
