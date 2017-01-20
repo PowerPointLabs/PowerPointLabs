@@ -344,6 +344,18 @@
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
         }
 
+        #endregion
+
+        #region CropToSlide
+
+        public class CropToSlideText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
+        }
+
         # endregion
 
         # region ConvertToPicture
