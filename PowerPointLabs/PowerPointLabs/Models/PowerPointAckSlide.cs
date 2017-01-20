@@ -22,10 +22,11 @@ namespace PowerPointLabs.Models
                 _slide.Name = PptLabsAckSlideName;
                 String tempFileName = Path.GetTempFileName();
                 Properties.Resources.Acknowledgement.Save(tempFileName);
-                float width = PowerPointPresentation.Current.SlideWidth * 0.858f;
-                float height = PowerPointPresentation.Current.SlideHeight * (5.33f / 7.5f);
-                PowerPoint.Shape ackShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, ((PowerPointPresentation.Current.SlideWidth - width) / 2), ((PowerPointPresentation.Current.SlideHeight - height) / 2), width, height);
+                PowerPoint.Shape ackShape = _slide.Shapes.AddPicture(tempFileName, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue, 0, 0);
                 _slide.SlideShowTransition.Hidden = Office.MsoTriState.msoTrue;
+
+                ackShape.Left = (PowerPointPresentation.Current.SlideWidth - ackShape.Width) / 2;
+                ackShape.Top = (PowerPointPresentation.Current.SlideHeight - ackShape.Height) / 2;
 
                 //_slide.NotesPage.Shapes
                 /*NotesPageText = teststr;
