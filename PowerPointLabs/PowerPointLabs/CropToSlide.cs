@@ -63,7 +63,6 @@ namespace PowerPointLabs
                         RectangleF location = GetAbsoluteBounds(shape);
                         Utils.Graphics.ExportShape(shape, ShapePicture);
                         var slideImage = (Bitmap)Image.FromFile(ShapePicture);
-                        //var rotatedShape = new Utils.PPShape(shape, false);
                         shape.Delete();
                         var newShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(ShapePicture,
                             Office.MsoTriState.msoTrue,
@@ -227,18 +226,6 @@ namespace PowerPointLabs
                 Views.ErrorDialogWrapper.ShowDialog(MessageBoxTitle, e.Message, e);
             }
         }
-
-        public static Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CutOutShapeMenu);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCutOutShapeMenuImage");
-                throw;
-            }
-        }
+        
     }
 }
