@@ -1730,7 +1730,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.CropToSlide(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
+            CropToSlide.Crop(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
