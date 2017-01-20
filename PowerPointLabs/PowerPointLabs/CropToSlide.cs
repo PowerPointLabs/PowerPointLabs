@@ -62,7 +62,6 @@ namespace PowerPointLabs
                     {
                         RectangleF location = GetAbsoluteBounds(shape);
                         Utils.Graphics.ExportShape(shape, ShapePicture);
-                        var slideImage = (Bitmap)Image.FromFile(ShapePicture);
                         shape.Delete();
                         var newShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(ShapePicture,
                             Office.MsoTriState.msoTrue,
