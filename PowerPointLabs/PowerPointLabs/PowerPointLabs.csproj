@@ -343,6 +343,7 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="Converters\DrawingsLabConverters.cs" />
+    <Compile Include="CropToSlide.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -1443,6 +1444,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CropToSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CropsLab\" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
