@@ -111,6 +111,7 @@
     <Compile Include="FunctionalTest\ShapesLabTest.cs" />
     <Compile Include="FunctionalTest\SpotlightTest.cs" />
     <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
+    <Compile Include="FunctionalTest\CropToSlideTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
