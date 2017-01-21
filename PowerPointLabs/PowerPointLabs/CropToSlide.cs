@@ -63,7 +63,7 @@ namespace PowerPointLabs
                         RectangleF location = GetAbsoluteBounds(shape);
                         Utils.Graphics.ExportShape(shape, ShapePicture);
                         var newShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(ShapePicture,
-                            Office.MsoTriState.msoTrue,
+                            Office.MsoTriState.msoFalse,
                             Office.MsoTriState.msoTrue,
                             location.Left, location.Top, location.Width, location.Height);
                         toRotate = newShape;
