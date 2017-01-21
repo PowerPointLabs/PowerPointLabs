@@ -62,12 +62,13 @@ namespace PowerPointLabs
                     {
                         RectangleF location = GetAbsoluteBounds(shape);
                         Utils.Graphics.ExportShape(shape, ShapePicture);
-                        shape.Delete();
                         var newShape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(ShapePicture,
                             Office.MsoTriState.msoTrue,
                             Office.MsoTriState.msoTrue,
                             location.Left, location.Top, location.Width, location.Height);
                         toRotate = newShape;
+                        toRotate.Name = shape.Name;
+                        shape.Delete();
 
                     }
                     RectangleF cropArea = GetCropArea(toRotate, slideWidth, slideHeight);
