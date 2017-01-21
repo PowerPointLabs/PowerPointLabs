@@ -34,11 +34,13 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 
 Area | Responsibilities | Lead | Co-Lead | Past Leads
 -----|------------------|------|---------|-----|
-DevOps | Installer, issue tracker, releases, CI | | | Hanyang|
-Community | communit growth, user support | | | Fiona|
-Testing | test coverage, test automation | | | Kai|
-Docs | Website, tutorials, dev docs | | | Fiona|
-Quality | code quality, design quality | | | Kai|
+Community | communit growth, user support | Kenneth | HengLe | Fiona |
+Docs | Website, tutorials, dev docs | Jamos | Shi Ya | Fiona|
+DevOps | Installer, issue tracker, releases, CI | Syed | Kenneth | Hanyang|
+Quality | code quality, design quality | Heng Le | Jamos | Kai|
+Testing | test coverage, test automation | Ian | Syed | Kai|
+UI/UX | UI matters, UX matters | Shi Ya | Ian | |
+
 
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
