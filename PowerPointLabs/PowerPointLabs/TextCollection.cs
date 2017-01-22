@@ -165,7 +165,8 @@
         public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingButtonLabel = "Crop Out Padding";
-        # endregion
+        public const string CropToAspectRatioMenuLabel = "Crop To Aspect Ratio";
+        #endregion
 
         # region Narrations Lab
         public const string EmbedAudioGroupLabel = "Narrations Lab";
@@ -356,6 +357,18 @@
             public const string ErrorMessageForSelectionCountZero = "'Crop Out Padding' requires at least one picture to be selected.";
             public const string ErrorMessageForSelectionNonPicture = "'Crop Out Padding' only supports picture objects.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop Out Padding'.";
+        }
+
+        # endregion
+
+        # region CropToAspectRatio
+
+        public class CropToAspectRatioText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Aspect Ratio' requires at least one picture to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Aspect Ratio' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Aspect Ratio'.";
         }
 
         # endregion

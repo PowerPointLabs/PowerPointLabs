@@ -511,6 +511,10 @@ namespace PowerPointLabs
         {
             return TextCollection.CropOutPaddingButtonLabel;
         }
+        public string GetCropToAspectRatioMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioMenuLabel;
+        }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -1723,6 +1727,40 @@ namespace PowerPointLabs
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropOutPadding.Crop(selection);
+        }
+
+        #endregion
+
+        #region Feature: Crop To Aspect Ratio
+
+        public void CropToAspectRatioButtonClick(Office.IRibbonControl control)
+        {
+            string[] tagTokens = control.Tag.Split(':');
+            CropToAspectRatioInput(tagTokens[0], tagTokens[1]);
+        }
+
+        public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
+        {
+            var dialog = new CropToAspectRatioDialogBox();
+            dialog.ShowDialog();
+        }
+
+        public void CropToAspectRatioInput(string widthText, string heightText)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            float aspectRatioWidth = 0.0f;
+            float aspectRatioHeight = 0.0f;
+
+            if (!float.TryParse(widthText, out aspectRatioWidth) ||
+                !float.TryParse(heightText, out aspectRatioHeight))
+            {
+                MessageBox.Show("The aspect ratio is invalid.");
+                return;
+            }
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropToAspectRatio.Crop(selection, aspectRatioWidth, aspectRatioHeight);
         }
 
         #endregion

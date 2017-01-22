@@ -343,6 +343,7 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="Converters\DrawingsLabConverters.cs" />
+    <Compile Include="CropToAspectRatio.cs" />
     <Compile Include="CropOutPadding.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
@@ -679,6 +680,12 @@
     <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CropToAspectRatioDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CropToAspectRatioDialogBox.Designer.cs">
+      <DependentUpon>CropToAspectRatioDialogBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -857,6 +864,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CropToAspectRatioDialogBox.resx">
+      <DependentUpon>CropToAspectRatioDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
