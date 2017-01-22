@@ -66,6 +66,21 @@ namespace PowerPointLabs
 
             // Default color to CornFlowerBlue
             SetDefaultColor(Color.CornflowerBlue);
+
+            EnableScrolling();
+        }
+
+        private void EnableScrolling()
+        {
+            // Account for scrollbar width
+            this.Width += System.Windows.Forms.SystemInformation.VerticalScrollBarWidth;
+
+            // Prevent horizontal scrollbar from appearing
+            this.HorizontalScroll.Visible = false;
+            this.HorizontalScroll.Maximum = 0;
+
+            // Enable Autoscroll
+            this.AutoScroll = true;
         }
 
         public void SaveDefaultColorPaneThemeColors()
