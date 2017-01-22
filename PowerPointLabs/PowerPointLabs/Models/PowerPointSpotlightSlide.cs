@@ -183,7 +183,7 @@ namespace PowerPointLabs.Models
 
             PowerPoint.Selection currentSelection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
 
-            // Save the original dimensions because ppPastePNG resizes it in Version 2016
+            // Save the original dimensions because ppPastePNG is resized in PowerPoint 2016
             float originalWidth = currentSelection.ShapeRange[1].Width;
             float originalHeight = currentSelection.ShapeRange[1].Height;
             currentSelection.Cut();
