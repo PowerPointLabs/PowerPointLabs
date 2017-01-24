@@ -155,6 +155,7 @@ namespace PowerPointLabs
 
             if ((frameAnimationChecked && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
                 || ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
+                || (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip)
                 || finalFont != initialFont)
             {
                 return true;
