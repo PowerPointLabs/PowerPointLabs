@@ -365,7 +365,7 @@ namespace PowerPointLabs
             return null;
         }
 
-        public static double RadiansToDegrees(double radians)
+        private static double RadiansToDegrees(double radians)
         {
             return radians * (180.0 / Math.PI);
         }
