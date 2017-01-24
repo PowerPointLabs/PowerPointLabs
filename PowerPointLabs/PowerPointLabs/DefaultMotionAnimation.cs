@@ -9,12 +9,15 @@ namespace PowerPointLabs
     class DefaultMotionAnimation
     {
 #pragma warning disable 0618
+
+        private const float ArrowheadLength = 6.0f;
+
         //Use initial shape and final shape to calculate intial and final positions
         //Add motion, resize and rotation animations to shape
         public static void AddDefaultMotionAnimation(
-            PowerPointSlide animationSlide, 
-            PowerPoint.Shape initialShape, 
-            PowerPoint.Shape finalShape, 
+            PowerPointSlide animationSlide,
+            PowerPoint.Shape initialShape,
+            PowerPoint.Shape finalShape,
             float duration,
             PowerPoint.MsoAnimTriggerType trigger)
         {
@@ -30,9 +33,95 @@ namespace PowerPointLabs
             float finalWidth = finalShape.Width;
             float finalHeight = finalShape.Height;
 
+            if (Utils.Graphics.IsStraightLine(initialShape))
+            {
+                double initialAngle = GetLineAngle(initialShape);
+                double finalAngle = GetLineAngle(finalShape);
+                double deltaAngle = initialAngle - finalAngle;
+                finalRotation = (float)(RadiansToDegrees(deltaAngle));
+                
+                double acuteInitialAngle = GetLineAngle(initialShape, true);
+                // rounding due to floating point deviation for Math.Cos(PI/2) and its equivalent
+                float initialProjectionX = (float)Math.Round(Math.Cos(acuteInitialAngle), 4);
+                float initialProjectionY = (float)Math.Round(Math.Sin(acuteInitialAngle), 4);
+                float finalLength = (float)Math.Sqrt(finalWidth * finalWidth + finalHeight * finalHeight);
+                finalWidth = finalLength * initialProjectionX;
+                finalHeight = finalLength * initialProjectionY;
+                
+                double acuteFinalAngle = GetLineAngle(finalShape, true);
+                float finalProjectionX = (float)Math.Round(Math.Cos(acuteFinalAngle), 4);
+                float finalProjectionY = (float)Math.Round(Math.Sin(acuteFinalAngle), 4);
+                bool isHorizontalFlipped = initialShape.HorizontalFlip == Office.MsoTriState.msoTrue;
+                bool isVerticalFlipped = initialShape.VerticalFlip == Office.MsoTriState.msoTrue;
+                finalX += GetLineArrowheadOffset(initialShape, initialProjectionX, isHorizontalFlipped);
+                finalY += GetLineArrowheadOffset(initialShape, initialProjectionY, isVerticalFlipped);
+            }
+
             AddMotionAnimation(animationSlide, initialShape, initialX, initialY, finalX, finalY, duration, ref trigger);
             AddResizeAnimation(animationSlide, initialShape, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
             AddRotationAnimation(animationSlide, initialShape, initialRotation, finalRotation, duration, ref trigger);
+        }
+        
+
+        private static float GetLineArrowheadOffset(PowerPoint.Shape shape, float projectionRatio, bool flipped)
+        {
+            float offsetAmount = ArrowheadLength * projectionRatio;
+            float offset = 0.0f;
+
+            if (shape.Line.BeginArrowheadStyle != Office.MsoArrowheadStyle.msoArrowheadNone)
+            {
+                offset += offsetAmount;
+            }
+            if (shape.Line.EndArrowheadStyle != Office.MsoArrowheadStyle.msoArrowheadNone)
+            {
+                offset -= offsetAmount;
+            }
+            
+            return flipped ? -offset : offset;
+        }
+
+        private static double GetLineAngle(PowerPoint.Shape shape, bool acute = false)
+        {
+            double angle = 0.0;
+
+            if (shape.Width == 0.0f)
+            {
+                angle = Math.PI / 2.0;
+            }
+            else if (shape.Height == 0.0f)
+            {
+                angle = 0.0;
+            }
+            else
+            {
+                angle = Math.Atan(shape.Height / shape.Width);
+            }
+
+            if (acute)
+            {
+                return angle;
+            }
+
+            if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
+                shape.VerticalFlip == Office.MsoTriState.msoTrue)
+            {
+                // Pointing top left (2nd quadrant)
+                angle = Math.PI - angle;
+            }
+            else if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
+                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
+            {
+                // Pointing bottom left (3rd quadrant)
+                angle = Math.PI + angle;
+            }
+            else if (shape.HorizontalFlip == Office.MsoTriState.msoFalse &&
+                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
+            {
+                // Pointing bottom right (4th quadrant)
+                angle = Math.PI * 2.0 - angle;
+            }
+
+            return angle;
         }
 
         //Use reference shape and slide dimensions to calculate intial and final positions
@@ -253,6 +342,12 @@ namespace PowerPointLabs
 
         private static PowerPoint.Effect AddResizeAnimation(PowerPointSlide animationSlide, PowerPoint.Shape animationShape, float initialWidth, float initialHeight, float finalWidth, float finalHeight, float duration, ref PowerPoint.MsoAnimTriggerType trigger)
         {
+            // To prevent zero multiplication and zero division
+            initialWidth = SetToPositiveMinIfIsZero(initialWidth);
+            initialHeight = SetToPositiveMinIfIsZero(initialHeight);
+            finalWidth = SetToPositiveMinIfIsZero(finalWidth);
+            finalHeight = SetToPositiveMinIfIsZero(finalHeight);
+
             if ((finalWidth != initialWidth) || (finalHeight != initialHeight))
             {
                 animationShape.LockAspectRatio = Office.MsoTriState.msoFalse;
@@ -268,6 +363,16 @@ namespace PowerPointLabs
                 return effectResize;
             }
             return null;
+        }
+
+        public static double RadiansToDegrees(double radians)
+        {
+            return radians * (180.0 / Math.PI);
+        }
+
+        private static float SetToPositiveMinIfIsZero(float value)
+        {
+            return value == 0.0f ? 0.1f : value;
         }
     }
 }

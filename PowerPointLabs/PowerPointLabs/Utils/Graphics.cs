@@ -85,6 +85,14 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        public static bool IsStraightLine(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoLine ||
+                    (shape.Type == MsoShapeType.msoAutoShape &&
+                     shape.AutoShapeType == MsoAutoShapeType.msoShapeMixed &&
+                     shape.ConnectorFormat.Type == MsoConnectorType.msoConnectorStraight);
+        }
+
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
                                           bool exactMatch = true, float blurRadius = float.Epsilon)
         {

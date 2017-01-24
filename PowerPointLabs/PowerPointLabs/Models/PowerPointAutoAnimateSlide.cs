@@ -49,7 +49,7 @@ namespace PowerPointLabs.Models
                     {
                         DeleteShapeAnimations(sh);
                         PowerPoint.MsoAnimTriggerType trigger = (matchingShapeIndex == 0) ? PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious : PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                        if (NeedsFrameAnimation(sh, nextSlideSlideShapes[matchingShapeIndex]))
+                        if (NeedsFrameAnimation(sh, nextSlideSlideShapes[matchingShapeIndex]) && !Utils.Graphics.IsStraightLine(sh))
                         {
                             FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kAutoAnimate;
                             FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration);
