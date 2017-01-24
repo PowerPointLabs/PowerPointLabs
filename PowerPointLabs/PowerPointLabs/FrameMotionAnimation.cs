@@ -65,6 +65,11 @@ namespace PowerPointLabs
             int numFrames = (int)(duration / 0.04f);
             numFrames = (numFrames > 30) ? 30 : numFrames;
 
+            initialWidth = SetToPositiveMinIfIsZero(initialWidth);
+            initialHeight = SetToPositiveMinIfIsZero(initialHeight);
+            finalWidth = SetToPositiveMinIfIsZero(finalWidth);
+            finalHeight = SetToPositiveMinIfIsZero(finalHeight);
+
             float incrementWidth = ((finalWidth / initialWidth) - 1.0f) / numFrames;
             float incrementHeight = ((finalHeight / initialHeight) - 1.0f) / numFrames;
             float incrementRotation = LegacyShapeUtil.GetMinimumRotation(initialRotation, finalRotation) / numFrames;
@@ -248,6 +253,11 @@ namespace PowerPointLabs
         private static double RadiansToDegrees(double radians)
         {
             return radians * (180.0 / Math.PI);
+        }
+
+        private static float SetToPositiveMinIfIsZero(float value)
+        {
+            return value == 0.0f ? 0.1f : value;
         }
     }
 }
