@@ -645,6 +645,20 @@ namespace PowerPointLabs
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 
+        public void RegisterSyncLabPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            RegisterTaskPane(
+                new SyncLabPane(),
+                TextCollection.SyncLabTaskPanelTitle, activeWindow, null, null);
+        }
+
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
