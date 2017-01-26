@@ -80,7 +80,7 @@ namespace PowerPointLabs
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally:false, isFlippedVertically:false, incrementRotation:0.0f, incrementFont:0.0f, duration:duration, numFrames:numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally: false, isFlippedVertically: false, incrementRotation: 0.0f, incrementFont: 0.0f, duration: duration, numFrames: numFrames);
         }
 
         public static void AddZoomToAreaPanFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape)
