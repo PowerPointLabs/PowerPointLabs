@@ -32,6 +32,7 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
+<<<<<<< HEAD
         public void FT_AnimateInSlideStraightLinesTest()
         {
             PpOperations.SelectSlide(18);
@@ -46,6 +47,26 @@ namespace Test.FunctionalTest
 
             // remove text "Expected"
             PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
+=======
+        public void FT_AnimateInSlideFlippedTest()
+        {
+            PpOperations.SelectSlide(10);
+
+            PpOperations.SelectShapes(new List<string> { "Arrow 1a", "Arrow 1b"});
+            PplFeatures.AnimateInSlide();
+
+            PpOperations.SelectShapes(new List<string> { "Arrow 2a", "Arrow 2b" });
+            PplFeatures.AnimateInSlide();
+
+            PpOperations.SelectShapes(new List<string> { "Bolt 1a", "Bolt 1b" });
+            PplFeatures.AnimateInSlide();
+
+            var actualSlide = PpOperations.SelectSlide(10);
+            var expSlide = PpOperations.SelectSlide(11);
+
+            // remove text "Expected"
+            PpOperations.SelectShape("text 3")[1].Delete();
+>>>>>>> Add functional test
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
