@@ -99,7 +99,7 @@ namespace PowerPointLabs
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, false, false, 0.0f, 0.0f, duration, numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally:false, isFlippedVertically:false, incrementRotation:0.0f, incrementFont:0.0f, duration:duration, numFrames:numFrames);
         }
 
         public static void AddZoomToAreaPanFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape)
@@ -122,7 +122,7 @@ namespace PowerPointLabs
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, false, false, 0.0f, 0.0f, duration, numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally: false, isFlippedVertically: false, incrementRotation: 0.0f, incrementFont: 0.0f, duration: duration, numFrames: numFrames);
         }
 
         private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, bool isFlippedHorizontally, bool isFlippedVertically, float incrementRotation, float incrementFont, float duration, int numFrames)
