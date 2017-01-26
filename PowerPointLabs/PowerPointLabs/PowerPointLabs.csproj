@@ -737,6 +737,21 @@
     <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
       <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SyncLab\ObjectFormats\FillFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ObjectFormat.cs" />
+    <Compile Include="SyncLab\SyncLabListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SyncLab\SyncLabListBox.Designer.cs">
+      <DependentUpon>SyncLabListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\SyncLabPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SyncLab\SyncLabPane.Designer.cs">
+      <DependentUpon>SyncLabPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -966,6 +981,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyncLab\SyncLabListBox.resx">
+      <DependentUpon>SyncLabListBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyncLab\SyncLabPane.resx">
+      <DependentUpon>SyncLabPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -1580,6 +1601,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLab.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
