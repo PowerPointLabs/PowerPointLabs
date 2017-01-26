@@ -39,14 +39,13 @@ namespace PowerPointLabs
                 double finalAngle = GetLineAngle(finalShape);
                 double deltaAngle = initialAngle - finalAngle;
                 finalRotation = (float)(RadiansToDegrees(deltaAngle));
-
-                double acuteInitialAngle = GetLineAngle(initialShape, true);
-                // rounding due to floating point deviation for Math.Cos(PI/2) and its equivalent
-                float initialProjectionX = (float)Math.Round(Math.Cos(acuteInitialAngle), 4);
-                float initialProjectionY = (float)Math.Round(Math.Sin(acuteInitialAngle), 4);
+                
+                float initialLength = (float)Math.Sqrt(initialWidth * initialWidth + initialHeight * initialHeight);
                 float finalLength = (float)Math.Sqrt(finalWidth * finalWidth + finalHeight * finalHeight);
-                finalWidth = finalLength * initialProjectionX;
-                finalHeight = finalLength * initialProjectionY;
+                float initialAngleCosine = initialWidth / initialLength;
+                float initialAngleSine = initialHeight / initialLength;
+                finalWidth = finalLength * initialAngleCosine;
+                finalHeight = finalLength * initialAngleSine;
 
                 initialShape = MakePivotCenteredLine(animationSlide, initialShape);
             }
@@ -199,7 +198,7 @@ namespace PowerPointLabs
             return newLine;
         }
 
-        private static double GetLineAngle(PowerPoint.Shape shape, bool acute = false)
+        private static double GetLineAngle(PowerPoint.Shape shape)
         {
             double angle = 0.0;
 
@@ -215,12 +214,7 @@ namespace PowerPointLabs
             {
                 angle = Math.Atan(shape.Height / shape.Width);
             }
-
-            if (acute)
-            {
-                return angle;
-            }
-
+            
             if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
                 shape.VerticalFlip == Office.MsoTriState.msoTrue)
             {
