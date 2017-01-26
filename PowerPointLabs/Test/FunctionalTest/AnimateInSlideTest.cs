@@ -29,5 +29,29 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
+
+        [TestMethod]
+        [TestCategory("FT")]
+        public void FT_AnimateInSlideFlippedTest()
+        {
+            PpOperations.SelectSlide(10);
+
+            PpOperations.SelectShapes(new List<string> { "Arrow 1a", "Arrow 1b"});
+            PplFeatures.AnimateInSlide();
+
+            PpOperations.SelectShapes(new List<string> { "Arrow 2a", "Arrow 2b" });
+            PplFeatures.AnimateInSlide();
+
+            PpOperations.SelectShapes(new List<string> { "Bolt 1a", "Bolt 1b" });
+            PplFeatures.AnimateInSlide();
+
+            var actualSlide = PpOperations.SelectSlide(10);
+            var expSlide = PpOperations.SelectSlide(11);
+
+            // remove text "Expected"
+            PpOperations.SelectShape("text 3")[1].Delete();
+            SlideUtil.IsSameAnimations(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
     }
 }
