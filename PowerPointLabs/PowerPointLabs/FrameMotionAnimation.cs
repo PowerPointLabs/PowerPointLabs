@@ -191,7 +191,7 @@ namespace PowerPointLabs
             animationSlide.TransferAnimation(line, tempAnimationHolder);
 
             List<PowerPoint.Shape> toGroup = new List<PowerPoint.Shape> { line, transparentLine };
-            PowerPoint.Shape newLine = PowerPointCurrentPresentationInfo.CurrentSlide.ToShapeRange(toGroup).Group();
+            PowerPoint.Shape newLine = animationSlide.ToShapeRange(toGroup).Group();
 
             animationSlide.TransferAnimation(tempAnimationHolder, newLine);
             tempAnimationHolder.Delete();
