@@ -30,13 +30,13 @@ namespace PowerPointLabs
             float finalHeight = finalShape.Height;
             float finalFont = 0.0f;
 
-            bool flipHorizontal = initialShape.HorizontalFlip != finalShape.HorizontalFlip;
-            bool flipVertical = initialShape.VerticalFlip != finalShape.VerticalFlip;
-            if (flipHorizontal)
+            bool isFlippedHorizontally = initialShape.HorizontalFlip != finalShape.HorizontalFlip;
+            bool isFlippedVertically = initialShape.VerticalFlip != finalShape.VerticalFlip;
+            if (isFlippedHorizontally)
             {
                 finalWidth = -finalWidth;
             }
-            if (flipVertical)
+            if (isFlippedVertically)
             {
                 finalHeight = -finalHeight;
             }
@@ -57,7 +57,7 @@ namespace PowerPointLabs
             float incrementTop = (finalY - initialY) / numFrames;
             float incrementFont = (finalFont - initialFont) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, flipHorizontal, flipVertical, incrementRotation, incrementFont, duration, numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally, isFlippedVertically, incrementRotation, incrementFont, duration, numFrames);
         }
 
         public static void AddStepBackFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape)
@@ -106,7 +106,7 @@ namespace PowerPointLabs
             AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, false, false, 0.0f, 0.0f, duration, numFrames);
         }
 
-        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, bool flipHorizontal, bool flipVertical, float incrementRotation, float incrementFont, float duration, int numFrames)
+        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, bool isFlippedHorizontally, bool isFlippedVertically, float incrementRotation, float incrementFont, float duration, int numFrames)
         {
             PowerPoint.Shape lastShape = initialShape;
             PowerPoint.Sequence sequence = animationSlide.TimeLine.MainSequence;
@@ -144,13 +144,13 @@ namespace PowerPointLabs
                 if (incrementFont != 0.0f)
                     dupShape.TextFrame.TextRange.Font.Size += (incrementFont * i);
 
-                if (flipHorizontal && 1.0f + (incrementWidth * i) < 0)
+                if (isFlippedHorizontally && 1.0f + (incrementWidth * i) < 0)
                 {
                     dupShape.Flip(Microsoft.Office.Core.MsoFlipCmd.msoFlipHorizontal);
                     dupShape.Rotation = -dupShape.Rotation;
                 }
 
-                if (flipVertical && 1.0f + (incrementHeight * i) < 0)
+                if (isFlippedVertically && 1.0f + (incrementHeight * i) < 0)
                 {
                     dupShape.Flip(Microsoft.Office.Core.MsoFlipCmd.msoFlipVertical);
                     dupShape.Rotation = -dupShape.Rotation;
