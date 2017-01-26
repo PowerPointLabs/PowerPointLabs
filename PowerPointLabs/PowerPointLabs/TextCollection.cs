@@ -324,6 +324,7 @@
         public const string RecManagementPanelTitle = "Record Management";
         public const string PositionsLabTaskPanelTitle = "Positions Lab";
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
+        public const string SyncLabTaskPanelTitle = "Sync Lab";
         # endregion 
 
         # region ShapeGalleryPresentation

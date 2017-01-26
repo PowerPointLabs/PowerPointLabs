@@ -16,6 +16,7 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 using Drawing = System.Drawing;
+using System.IO;
 
 namespace PowerPointLabs.Utils
 {
@@ -51,6 +52,17 @@ namespace PowerPointLabs.Utils
 
             shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                               slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static Image ShapeToImage(Shape shape)
+        {
+            string fileName = "temp_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".png";
+            string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
+            ExportShape(shape, tempPicPath);
+            Image tempImage = Image.FromFile(tempPicPath);
+            Image image = (Image)tempImage.Clone(); // free up the original file to be deleted
+            tempImage.Dispose();
+            return image;
         }
 
         public static void FitShapeToSlide(ref Shape shapeToMove)

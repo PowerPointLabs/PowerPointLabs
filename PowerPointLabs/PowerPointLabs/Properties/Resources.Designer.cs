@@ -703,14 +703,6 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-
-        public static System.Drawing.Bitmap FlipHorizontalIcon {
-            get {
-                object obj = ResourceManager.GetObject("FlipHorizontalIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
         public static System.Drawing.Bitmap FlipHorizontal {
             get {
                 object obj = ResourceManager.GetObject("FlipHorizontal", resourceCulture);
@@ -721,16 +713,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap FlipVerticalIcon {
+        public static System.Drawing.Bitmap FlipHorizontalIcon {
             get {
-                object obj = ResourceManager.GetObject("FlipVerticalIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("FlipHorizontalIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap FlipVertical {
             get {
                 object obj = ResourceManager.GetObject("FlipVertical", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap FlipVerticalIcon {
+            get {
+                object obj = ResourceManager.GetObject("FlipVerticalIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1561,6 +1566,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap SwapIcon {
             get {
                 object obj = ResourceManager.GetObject("SwapIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SyncLab {
+            get {
+                object obj = ResourceManager.GetObject("SyncLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
