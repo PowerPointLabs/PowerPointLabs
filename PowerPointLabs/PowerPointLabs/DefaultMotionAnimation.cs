@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
@@ -9,9 +10,6 @@ namespace PowerPointLabs
     class DefaultMotionAnimation
     {
 #pragma warning disable 0618
-
-        private const float ArrowheadLength = 6.0f;
-
         //Use initial shape and final shape to calculate intial and final positions
         //Add motion, resize and rotation animations to shape
         public static void AddDefaultMotionAnimation(
@@ -48,80 +46,12 @@ namespace PowerPointLabs
                 finalWidth = finalLength * initialProjectionX;
                 finalHeight = finalLength * initialProjectionY;
                 
-                double acuteFinalAngle = GetLineAngle(finalShape, true);
-                float finalProjectionX = (float)Math.Round(Math.Cos(acuteFinalAngle), 4);
-                float finalProjectionY = (float)Math.Round(Math.Sin(acuteFinalAngle), 4);
-                bool isHorizontalFlipped = initialShape.HorizontalFlip == Office.MsoTriState.msoTrue;
-                bool isVerticalFlipped = initialShape.VerticalFlip == Office.MsoTriState.msoTrue;
-                finalX += GetLineArrowheadOffset(initialShape, initialProjectionX, isHorizontalFlipped);
-                finalY += GetLineArrowheadOffset(initialShape, initialProjectionY, isVerticalFlipped);
+                initialShape = MakePivotCenteredLine(animationSlide, initialShape);
             }
 
             AddMotionAnimation(animationSlide, initialShape, initialX, initialY, finalX, finalY, duration, ref trigger);
             AddResizeAnimation(animationSlide, initialShape, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
             AddRotationAnimation(animationSlide, initialShape, initialRotation, finalRotation, duration, ref trigger);
-        }
-        
-
-        private static float GetLineArrowheadOffset(PowerPoint.Shape shape, float projectionRatio, bool flipped)
-        {
-            float offsetAmount = ArrowheadLength * projectionRatio;
-            float offset = 0.0f;
-
-            if (shape.Line.BeginArrowheadStyle != Office.MsoArrowheadStyle.msoArrowheadNone)
-            {
-                offset += offsetAmount;
-            }
-            if (shape.Line.EndArrowheadStyle != Office.MsoArrowheadStyle.msoArrowheadNone)
-            {
-                offset -= offsetAmount;
-            }
-            
-            return flipped ? -offset : offset;
-        }
-
-        private static double GetLineAngle(PowerPoint.Shape shape, bool acute = false)
-        {
-            double angle = 0.0;
-
-            if (shape.Width == 0.0f)
-            {
-                angle = Math.PI / 2.0;
-            }
-            else if (shape.Height == 0.0f)
-            {
-                angle = 0.0;
-            }
-            else
-            {
-                angle = Math.Atan(shape.Height / shape.Width);
-            }
-
-            if (acute)
-            {
-                return angle;
-            }
-
-            if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
-                shape.VerticalFlip == Office.MsoTriState.msoTrue)
-            {
-                // Pointing top left (2nd quadrant)
-                angle = Math.PI - angle;
-            }
-            else if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
-                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
-            {
-                // Pointing bottom left (3rd quadrant)
-                angle = Math.PI + angle;
-            }
-            else if (shape.HorizontalFlip == Office.MsoTriState.msoFalse &&
-                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
-            {
-                // Pointing bottom right (4th quadrant)
-                angle = Math.PI * 2.0 - angle;
-            }
-
-            return angle;
         }
 
         //Use reference shape and slide dimensions to calculate intial and final positions
@@ -363,6 +293,71 @@ namespace PowerPointLabs
                 return effectResize;
             }
             return null;
+        }
+
+        private static PowerPoint.Shape MakePivotCenteredLine(PowerPointSlide animationSlide, PowerPoint.Shape line)
+        {
+            // Add a 180 degree rotated line to offset its pivot shift caused by arrowhead
+            PowerPoint.Shape transparentLine = line.Duplicate()[1];
+            transparentLine.Line.Transparency = 1.0f;
+            transparentLine.Rotation = 180.0f;
+            transparentLine.Left = line.Left;
+            transparentLine.Top = line.Top;
+
+            PowerPoint.Shape tempAnimationHolder = line.Duplicate()[1];
+            animationSlide.TransferAnimation(line, tempAnimationHolder);
+
+            List<PowerPoint.Shape> toGroup = new List<PowerPoint.Shape> { line, transparentLine };
+            PowerPoint.Shape newLine = PowerPointCurrentPresentationInfo.CurrentSlide.ToShapeRange(toGroup).Group();
+
+            animationSlide.TransferAnimation(tempAnimationHolder, newLine);
+            tempAnimationHolder.Delete();
+
+            return newLine;
+        }
+
+        private static double GetLineAngle(PowerPoint.Shape line, bool acute = false)
+        {
+            double angle = 0.0;
+
+            if (line.Width == 0.0f)
+            {
+                angle = Math.PI / 2.0;
+            }
+            else if (line.Height == 0.0f)
+            {
+                angle = 0.0;
+            }
+            else
+            {
+                angle = Math.Atan(line.Height / line.Width);
+            }
+
+            if (acute)
+            {
+                return angle;
+            }
+
+            if (line.HorizontalFlip == Office.MsoTriState.msoTrue &&
+                line.VerticalFlip == Office.MsoTriState.msoTrue)
+            {
+                // Pointing top left (2nd quadrant)
+                angle = Math.PI - angle;
+            }
+            else if (line.HorizontalFlip == Office.MsoTriState.msoTrue &&
+                     line.VerticalFlip == Office.MsoTriState.msoFalse)
+            {
+                // Pointing bottom left (3rd quadrant)
+                angle = Math.PI + angle;
+            }
+            else if (line.HorizontalFlip == Office.MsoTriState.msoFalse &&
+                     line.VerticalFlip == Office.MsoTriState.msoFalse)
+            {
+                // Pointing bottom right (4th quadrant)
+                angle = Math.PI * 2.0 - angle;
+            }
+
+            return angle;
         }
 
         private static double RadiansToDegrees(double radians)

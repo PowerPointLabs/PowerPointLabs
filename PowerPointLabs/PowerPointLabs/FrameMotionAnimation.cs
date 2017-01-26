@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -12,10 +9,8 @@ namespace PowerPointLabs
     class FrameMotionAnimation
     {
 #pragma warning disable 0618
-
         public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan, kZoomToAreaDeMagnify };
         public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
-        private const float ArrowheadLength = 6.0f;
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
         {
             float initialX = (initialShape.Left + (initialShape.Width) / 2);
@@ -53,13 +48,7 @@ namespace PowerPointLabs
                 finalWidth = finalLength * initialProjectionX;
                 finalHeight = finalLength * initialProjectionY;
 
-                double acuteFinalAngle = GetLineAngle(finalShape, true);
-                float finalProjectionX = (float)Math.Round(Math.Cos(acuteFinalAngle), 4);
-                float finalProjectionY = (float)Math.Round(Math.Sin(acuteFinalAngle), 4);
-                bool isHorizontalFlipped = initialShape.HorizontalFlip == Office.MsoTriState.msoTrue;
-                bool isVerticalFlipped = initialShape.VerticalFlip == Office.MsoTriState.msoTrue;
-                finalX += GetLineArrowheadOffset(initialShape, initialProjectionX, isHorizontalFlipped);
-                finalY += GetLineArrowheadOffset(initialShape, initialProjectionY, isVerticalFlipped);
+                initialShape = MakePivotCenteredLine(animationSlide, initialShape);
             }
 
             int numFrames = (int)(duration / 0.04f);
@@ -78,67 +67,6 @@ namespace PowerPointLabs
             float incrementFont = (finalFont - initialFont) / numFrames;
 
             AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, incrementRotation, incrementFont, duration, numFrames);
-        }
-
-        private static float GetLineArrowheadOffset(PowerPoint.Shape shape, float projectionRatio, bool flipped)
-        {
-            float offsetAmount = ArrowheadLength * projectionRatio;
-            float offset = 0.0f;
-
-            if (shape.Line.BeginArrowheadStyle != Office.MsoArrowheadStyle.msoArrowheadNone)
-            {
-                offset += offsetAmount;
-            }
-            if (shape.Line.EndArrowheadStyle != Office.MsoArrowheadStyle.msoArrowheadNone)
-            {
-                offset -= offsetAmount;
-            }
-
-            return flipped ? -offset : offset;
-        }
-
-        private static double GetLineAngle(PowerPoint.Shape shape, bool acute = false)
-        {
-            double angle = 0.0;
-
-            if (shape.Width == 0.0f)
-            {
-                angle = Math.PI / 2.0;
-            }
-            else if (shape.Height == 0.0f)
-            {
-                angle = 0.0;
-            }
-            else
-            {
-                angle = Math.Atan(shape.Height / shape.Width);
-            }
-
-            if (acute)
-            {
-                return angle;
-            }
-
-            if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
-                shape.VerticalFlip == Office.MsoTriState.msoTrue)
-            {
-                // Pointing top left (2nd quadrant)
-                angle = Math.PI - angle;
-            }
-            else if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
-                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
-            {
-                // Pointing bottom left (3rd quadrant)
-                angle = Math.PI + angle;
-            }
-            else if (shape.HorizontalFlip == Office.MsoTriState.msoFalse &&
-                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
-            {
-                // Pointing bottom right (4th quadrant)
-                angle = Math.PI * 2.0 - angle;
-            }
-
-            return angle;
         }
 
         public static void AddStepBackFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape)
@@ -248,6 +176,71 @@ namespace PowerPointLabs
                 disappearLast.Exit = Office.MsoTriState.msoTrue;
                 disappearLast.Timing.TriggerDelayTime = duration;
             }
+        }
+
+        private static PowerPoint.Shape MakePivotCenteredLine(PowerPointSlide animationSlide, PowerPoint.Shape line)
+        {
+            // Add a 180 degree rotated line to offset its pivot shift caused by arrowhead
+            PowerPoint.Shape transparentLine = line.Duplicate()[1];
+            transparentLine.Line.Transparency = 1.0f;
+            transparentLine.Rotation = 180.0f;
+            transparentLine.Left = line.Left;
+            transparentLine.Top = line.Top;
+
+            PowerPoint.Shape tempAnimationHolder = line.Duplicate()[1];
+            animationSlide.TransferAnimation(line, tempAnimationHolder);
+
+            List<PowerPoint.Shape> toGroup = new List<PowerPoint.Shape> { line, transparentLine };
+            PowerPoint.Shape newLine = PowerPointCurrentPresentationInfo.CurrentSlide.ToShapeRange(toGroup).Group();
+
+            animationSlide.TransferAnimation(tempAnimationHolder, newLine);
+            tempAnimationHolder.Delete();
+
+            return newLine;
+        }
+
+        private static double GetLineAngle(PowerPoint.Shape shape, bool acute = false)
+        {
+            double angle = 0.0;
+
+            if (shape.Width == 0.0f)
+            {
+                angle = Math.PI / 2.0;
+            }
+            else if (shape.Height == 0.0f)
+            {
+                angle = 0.0;
+            }
+            else
+            {
+                angle = Math.Atan(shape.Height / shape.Width);
+            }
+
+            if (acute)
+            {
+                return angle;
+            }
+
+            if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
+                shape.VerticalFlip == Office.MsoTriState.msoTrue)
+            {
+                // Pointing top left (2nd quadrant)
+                angle = Math.PI - angle;
+            }
+            else if (shape.HorizontalFlip == Office.MsoTriState.msoTrue &&
+                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
+            {
+                // Pointing bottom left (3rd quadrant)
+                angle = Math.PI + angle;
+            }
+            else if (shape.HorizontalFlip == Office.MsoTriState.msoFalse &&
+                     shape.VerticalFlip == Office.MsoTriState.msoFalse)
+            {
+                // Pointing bottom right (4th quadrant)
+                angle = Math.PI * 2.0 - angle;
+            }
+
+            return angle;
         }
 
         private static double RadiansToDegrees(double radians)
