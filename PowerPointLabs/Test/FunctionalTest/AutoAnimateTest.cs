@@ -26,8 +26,7 @@ namespace Test.FunctionalTest
         {
             AutoAnimateWithCopyPasteShapesSuccessfully();
         }
-
-        // create a new test, since the previous one will change the later's slide index..
+        
         [TestMethod]
         [TestCategory("FT")]
         public void FT_AutoAnimateStraightLinesSuccessfully()
@@ -97,11 +96,11 @@ namespace Test.FunctionalTest
 
             var actualSlide = PpOperations.SelectSlide(39);
             // remove elements that affect comparing slides
-            PpOperations.SelectShapesByPrefix("Text Label Initial Slide").Delete();
+            PpOperations.SelectShape("Text Label Initial Slide")[1].Delete();
 
             var expSlide = PpOperations.SelectSlide(41);
             // remove elements that affect comparing slides
-            PpOperations.SelectShapesByPrefix("Text Label Expected Output").Delete();
+            PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
 
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
