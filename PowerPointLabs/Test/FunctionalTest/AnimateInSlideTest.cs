@@ -34,15 +34,15 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_AnimateInSlideStraightLinesTest()
         {
-            PpOperations.SelectSlide(18);
+            PpOperations.SelectSlide(21);
             PpOperations.SelectShapes(new List<string> { "Straight Arrow Connector 61",
                                                          "Straight Arrow Connector 63",
                                                          "Straight Arrow Connector 66" });
 
             PplFeatures.AnimateInSlide();
 
-            var actualSlide = PpOperations.SelectSlide(18);
-            var expSlide = PpOperations.SelectSlide(19);
+            var actualSlide = PpOperations.SelectSlide(21);
+            var expSlide = PpOperations.SelectSlide(22);
 
             // remove text "Expected"
             PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
