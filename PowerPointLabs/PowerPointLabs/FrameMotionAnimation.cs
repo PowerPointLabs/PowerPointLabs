@@ -27,6 +27,17 @@ namespace PowerPointLabs
             float finalHeight = finalShape.Height;
             float finalFont = 0.0f;
 
+            bool isFlippedHorizontally = initialShape.HorizontalFlip != finalShape.HorizontalFlip;
+            bool isFlippedVertically = initialShape.VerticalFlip != finalShape.VerticalFlip;
+            if (isFlippedHorizontally)
+            {
+                finalWidth = -finalWidth;
+            }
+            if (isFlippedVertically)
+            {
+                finalHeight = -finalHeight;
+            }
+
             if (initialShape.HasTextFrame == Office.MsoTriState.msoTrue && (initialShape.TextFrame.HasText == Office.MsoTriState.msoTriStateMixed || initialShape.TextFrame.HasText == Office.MsoTriState.msoTrue) && initialShape.TextFrame.TextRange.Font.Size != finalShape.TextFrame.TextRange.Font.Size)
             {
                 finalFont = finalShape.TextFrame.TextRange.Font.Size;
@@ -65,7 +76,7 @@ namespace PowerPointLabs
             float incrementTop = (finalY - initialY) / numFrames;
             float incrementFont = (finalFont - initialFont) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, incrementRotation, incrementFont, duration, numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally, isFlippedVertically, incrementRotation, incrementFont, duration, numFrames);
         }
 
         public static void AddStepBackFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape)
@@ -88,7 +99,7 @@ namespace PowerPointLabs
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, 0.0f, 0.0f, duration, numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally: false, isFlippedVertically: false, incrementRotation: 0.0f, incrementFont: 0.0f, duration: duration, numFrames: numFrames);
         }
 
         public static void AddZoomToAreaPanFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape)
@@ -111,10 +122,10 @@ namespace PowerPointLabs
             float incrementLeft = (finalX - initialX) / numFrames;
             float incrementTop = (finalY - initialY) / numFrames;
 
-            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, 0.0f, 0.0f, duration, numFrames);
+            AddFrameAnimationEffects(animationSlide, initialShape, incrementLeft, incrementTop, incrementWidth, incrementHeight, isFlippedHorizontally: false, isFlippedVertically: false, incrementRotation: 0.0f, incrementFont: 0.0f, duration: duration, numFrames: numFrames);
         }
 
-        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, float incrementRotation, float incrementFont, float duration, int numFrames)
+        private static void AddFrameAnimationEffects(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, float incrementLeft, float incrementTop, float incrementWidth, float incrementHeight, bool isFlippedHorizontally, bool isFlippedVertically, float incrementRotation, float incrementFont, float duration, int numFrames)
         {
             PowerPoint.Shape lastShape = initialShape;
             PowerPoint.Sequence sequence = animationSlide.TimeLine.MainSequence;
@@ -135,10 +146,10 @@ namespace PowerPointLabs
                 dupShape.Top = initialShape.Top;
 
                 if (incrementWidth != 0.0f)
-                    dupShape.ScaleWidth((1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                    dupShape.ScaleWidth(Math.Abs(1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
 
                 if (incrementHeight != 0.0f)
-                    dupShape.ScaleHeight((1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                    dupShape.ScaleHeight(Math.Abs(1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
 
                 if (incrementRotation != 0.0f)
                     dupShape.Rotation += (incrementRotation * i);
@@ -151,6 +162,18 @@ namespace PowerPointLabs
 
                 if (incrementFont != 0.0f)
                     dupShape.TextFrame.TextRange.Font.Size += (incrementFont * i);
+
+                if (isFlippedHorizontally && 1.0f + (incrementWidth * i) < 0)
+                {
+                    dupShape.Flip(Microsoft.Office.Core.MsoFlipCmd.msoFlipHorizontal);
+                    dupShape.Rotation = -dupShape.Rotation;
+                }
+
+                if (isFlippedVertically && 1.0f + (incrementHeight * i) < 0)
+                {
+                    dupShape.Flip(Microsoft.Office.Core.MsoFlipCmd.msoFlipVertical);
+                    dupShape.Rotation = -dupShape.Rotation;
+                }
 
                 if (i == 1 && (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan)) 
                 {
