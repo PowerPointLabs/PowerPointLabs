@@ -29,5 +29,25 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
+
+        [TestMethod]
+        [TestCategory("FT")]
+        public void FT_AnimateInSlideStraightLinesTest()
+        {
+            PpOperations.SelectSlide(18);
+            PpOperations.SelectShapes(new List<string> { "Straight Arrow Connector 61",
+                                                         "Straight Arrow Connector 63",
+                                                         "Straight Arrow Connector 66" });
+
+            PplFeatures.AnimateInSlide();
+
+            var actualSlide = PpOperations.SelectSlide(18);
+            var expSlide = PpOperations.SelectSlide(19);
+
+            // remove text "Expected"
+            PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
+            SlideUtil.IsSameAnimations(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
     }
 }

@@ -116,7 +116,7 @@ namespace PowerPointLabs
                         PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 }
                 PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
-                        shape1,
+                        Utils.Graphics.IsStraightLine(shape1) ? shape1.ParentGroup : shape1,
                         PowerPoint.MsoAnimEffect.msoAnimEffectFade,
                         PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
                         PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);

@@ -40,7 +40,15 @@ namespace PowerPointLabs.Models
         private void AnimateMatchingShapes(PowerPoint.Shape[] currentSlideShapes, PowerPoint.Shape[] nextSlideSlideShapes, int[] matchingShapeIDs)
         {
             int matchingShapeIndex;
-            foreach (PowerPoint.Shape sh in _slide.Shapes)
+
+            // Copy the shapes as the list may be modified when iterating
+            PowerPoint.Shape[] slideShapesCopy = new PowerPoint.Shape[_slide.Shapes.Count];
+            for (int i = 0; i < slideShapesCopy.Length; i++)
+            {
+                slideShapesCopy[i] = _slide.Shapes[i + 1];
+            }
+
+            foreach (PowerPoint.Shape sh in slideShapesCopy)
             {
                 if (matchingShapeIDs.Contains(sh.Id))
                 {

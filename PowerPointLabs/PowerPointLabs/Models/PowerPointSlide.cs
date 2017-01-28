@@ -609,7 +609,7 @@ namespace PowerPointLabs.Models
                 InsertAnimationAtIndex(destination, entryDetails.Index, entryDetails.EffectType, entryDetails.Timing.TriggerType);
             }
 
-            Effect exitDetails = enumerableSequence.Last(effect => effect.Shape.Equals(source));
+            Effect exitDetails = enumerableSequence.LastOrDefault(effect => effect.Shape.Equals(source));
             if (exitDetails != null && !exitDetails.Equals(entryDetails))
             {
                 InsertAnimationAtIndex(destination, exitDetails.Index, exitDetails.EffectType,
