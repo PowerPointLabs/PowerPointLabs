@@ -307,6 +307,12 @@
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
           </menu>
+          <button id="SyncLabButton"
+                  getLabel="GetSyncButtonLabel"
+                  size="large"
+                  getImage="GetSyncLabImage"
+                  getSupertip="GetSyncLabButtonSupertip"
+                  onAction="SyncLabButtonClick"/>
           <button id="DrawingsLabButton"
                   visible="false"
                   getLabel="GetDrawingsLabButtonLabel"
