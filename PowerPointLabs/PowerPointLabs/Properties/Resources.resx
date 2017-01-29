@@ -598,4 +598,10 @@
   <data name="RadialShapeOrientationFixedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PositionsLab\RadialShapeOrientationFixedIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CropOutPadding" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropOutPadding.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CropToAspectRatio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropToAspectRatio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

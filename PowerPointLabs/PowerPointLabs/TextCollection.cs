@@ -48,9 +48,13 @@
         public const string CropOutPaddingButtonSupertip =
             "Crop out transparent areas of a picture.\n\n" +
             "To activate, select the picture, then click this button.";
-        # endregion
 
-        # region Narrations Lab
+        public const string CropToAspectRatioButtonSupertip =
+            "Crop a picture to a specified aspect ratio.\n\n" +
+            "To activate, select the picture, then click this button and enter the desired aspect ratio.";
+        #endregion
+
+        #region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -165,7 +169,7 @@
         public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingButtonLabel = "Crop Out Padding";
-        public const string CropToAspectRatioMenuLabel = "Crop To Aspect Ratio";
+        public const string CropToAspectRatioButtonLabel = "Crop To Aspect Ratio";
         #endregion
 
         # region Narrations Lab

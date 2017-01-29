@@ -503,6 +503,26 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap CropOutPadding {
+            get {
+                object obj = ResourceManager.GetObject("CropOutPadding", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CropToAspectRatio {
+            get {
+                object obj = ResourceManager.GetObject("CropToAspectRatio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap CutOutShape {
             get {
                 object obj = ResourceManager.GetObject("CutOutShape", resourceCulture);
@@ -703,14 +723,6 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-
-        public static System.Drawing.Bitmap FlipHorizontalIcon {
-            get {
-                object obj = ResourceManager.GetObject("FlipHorizontalIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
         public static System.Drawing.Bitmap FlipHorizontal {
             get {
                 object obj = ResourceManager.GetObject("FlipHorizontal", resourceCulture);
@@ -721,16 +733,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap FlipVerticalIcon {
+        public static System.Drawing.Bitmap FlipHorizontalIcon {
             get {
-                object obj = ResourceManager.GetObject("FlipVerticalIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("FlipHorizontalIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap FlipVertical {
             get {
                 object obj = ResourceManager.GetObject("FlipVertical", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap FlipVerticalIcon {
+            get {
+                object obj = ResourceManager.GetObject("FlipVerticalIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

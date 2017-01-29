@@ -308,6 +308,10 @@ namespace PowerPointLabs
         {
             return TextCollection.CropOutPaddingButtonSupertip;
         }
+        public string GetCropToAspectRatioButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioButtonSupertip;
+        }
 
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
@@ -511,9 +515,9 @@ namespace PowerPointLabs
         {
             return TextCollection.CropOutPaddingButtonLabel;
         }
-        public string GetCropToAspectRatioMenuLabel(Office.IRibbonControl control)
+        public string GetCropToAspectRatioButtonLabel(Office.IRibbonControl control)
         {
-            return TextCollection.CropToAspectRatioMenuLabel;
+            return TextCollection.CropToAspectRatioButtonLabel;
         }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
@@ -989,6 +993,32 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropShapeImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetCropOutPaddingImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropOutPadding);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropOutPaddingImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetCropToAspectRatioImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropToAspectRatio);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropToAspectRatioImage");
                 throw;
             }
         }
@@ -1734,12 +1764,6 @@ namespace PowerPointLabs
         #region Feature: Crop To Aspect Ratio
 
         public void CropToAspectRatioButtonClick(Office.IRibbonControl control)
-        {
-            string[] tagTokens = control.Tag.Split(':');
-            CropToAspectRatioInput(tagTokens[0], tagTokens[1]);
-        }
-
-        public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
         {
             var dialog = new CropToAspectRatioDialogBox();
             dialog.ShowDialog();

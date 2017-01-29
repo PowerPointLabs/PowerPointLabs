@@ -85,26 +85,14 @@
                         onAction="CropShapeButtonClick"/>
                 <button id="CropOutPaddingButton"
                         getLabel="GetCropOutPaddingButtonLabel"
+                        getImage="GetCropOutPaddingImage"
                         getSupertip="GetCropOutPaddingButtonSupertip"
                         onAction="CropOutPaddingButtonClick"/>
-                <menu id="CropToAspectRatioDynamicMenu"
-                      getLabel="GetCropToAspectRatioMenuLabel">
-                    <button id="CropToAspectRatioW1H1Button"
-                            label="1:1"
-                            tag="1:1"
-                            onAction="CropToAspectRatioButtonClick"/>
-                    <button id="CropToAspectRatioW4H3Button"
-                            label="4:3"
-                            tag="4:3"
-                            onAction="CropToAspectRatioButtonClick"/>
-                    <button id="CropToAspectRatioW16H9Button"
-                            label="16:9"
-                            tag="16:9"
-                            onAction="CropToAspectRatioButtonClick"/>
-                    <button id="CropToAspectRatioCustomButton"
-                            label="Custom"
-                            onAction="CropToAspectRatioCustomButtonClick"/>
-                </menu>
+                <button id="CropToAspectRatioButton"
+                        getLabel="GetCropToAspectRatioButtonLabel"
+                        getImage="GetCropToAspectRatioImage"
+                        getSupertip="GetCropToAspectRatioButtonSupertip"
+                        onAction="CropToAspectRatioButtonClick"/>
             </menu>
         </group>
         <group id="embedAudio"
