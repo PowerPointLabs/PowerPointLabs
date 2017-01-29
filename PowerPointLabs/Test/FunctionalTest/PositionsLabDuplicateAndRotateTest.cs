@@ -62,7 +62,6 @@ namespace Test.FunctionalTest
             positionsLab.ToggleDuplicateAndRotateButton();
 
             RotateShape(shapeStart, shapeEnd);
-            positionsLab.ToggleDuplicateAndRotateButton();
 
             var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestOneFixed);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -81,7 +80,6 @@ namespace Test.FunctionalTest
             positionsLab.ToggleDuplicateAndRotateButton();
 
             RotateShape(shapeStart, shapeEnd);
-            positionsLab.ToggleDuplicateAndRotateButton();
 
             var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestOneDynamic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -100,7 +98,6 @@ namespace Test.FunctionalTest
             positionsLab.ToggleDuplicateAndRotateButton();
 
             RotateShape(shapeStart, shapeEnd);
-            positionsLab.ToggleDuplicateAndRotateButton();
 
             var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestMultipleFixed);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -119,7 +116,6 @@ namespace Test.FunctionalTest
             positionsLab.ToggleDuplicateAndRotateButton();
 
             RotateShape(shapeStart, shapeEnd);
-            positionsLab.ToggleDuplicateAndRotateButton();
 
             var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestMultipleDynamic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -136,12 +132,20 @@ namespace Test.FunctionalTest
                 PpOperations.PointsToScreenPixelsX(to.Left + to.Width/2),
                 PpOperations.PointsToScreenPixelsY(to.Top + to.Height/2));
             DragAndDrop(startPt, endPt);
+
+            //Need to click away to end rotate
+            MouseUtil.SendMouseLeftClick(0, 0);
         }
 
         private void DragAndDrop(Point startPt, Point endPt)
         {
             MouseUtil.SendMouseDown(startPt.X, startPt.Y);
             MouseUtil.SendMouseUp(endPt.X, endPt.Y);
+        }
+
+        private void Click(Control target)
+        {
+            var pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
         }
         # endregion
     }
