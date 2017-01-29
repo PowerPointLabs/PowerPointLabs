@@ -5,6 +5,8 @@ namespace TestInterface
     public interface IPowerPointLabsFeatures
     {
         void AutoCrop();
+        void CropOutPadding();
+        void CropToAspectRatio(string widthText, string heightText);
         void AutoAnimate();
         void AnimateInSlide();
         void AutoCaptions();

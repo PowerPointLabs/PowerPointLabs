@@ -104,6 +104,7 @@
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
     <Compile Include="FunctionalTest\ColorsLabTest.cs" />
     <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
+    <Compile Include="FunctionalTest\CropOutPaddingTest.cs" />
     <Compile Include="FunctionalTest\EffectsLabTest.cs" />
     <Compile Include="FunctionalTest\FitToSlideTest.cs" />
     <Compile Include="FunctionalTest\HighlightBulletsTest.cs" />
