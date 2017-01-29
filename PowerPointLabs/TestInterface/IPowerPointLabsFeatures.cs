@@ -6,7 +6,7 @@ namespace TestInterface
     {
         void AutoCrop();
         void CropOutPadding();
-        void CropToAspectRatio(string widthText, string heightText);
+        void CropToAspectRatioW1H10();
         void AutoAnimate();
         void AnimateInSlide();
         void AutoCaptions();

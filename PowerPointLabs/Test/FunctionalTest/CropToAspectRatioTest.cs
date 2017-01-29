@@ -4,16 +4,16 @@ using Test.Util;
 namespace Test.FunctionalTest
 {
     [TestClass]
-    public class CropOutPaddingTest : BaseFunctionalTest
+    public class CropToAspectRatioTest : BaseFunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "CropOutPadding.pptx";
+            return "CropToAspectRatio.pptx";
         }
 
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_CropOutPaddingTest()
+        public void FT_CropToAspectRatioTest()
         {
             CropOnePictureSuccessfully();
             CropMultiplePicturesSuccessfully();
@@ -22,7 +22,7 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_CropOutPaddingNegativeTest()
+        public void FT_CropToAspectRatioNegativeTest()
         {
             CropOnNothingUnsuccessfully();
             CropOnNonPictureObjectUnsuccessfully();
@@ -35,7 +35,7 @@ namespace Test.FunctionalTest
             var actualSlide = PpOperations.SelectSlide(4);
             PpOperations.SelectShape("selectMe");
             
-            PplFeatures.CropOutPadding();
+            PplFeatures.CropToAspectRatioW1H10();
 
             var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
             var resultShapeInPic = PpOperations.ExportSelectedShapes();
@@ -59,8 +59,8 @@ namespace Test.FunctionalTest
             var shapesBeforeCrop = PpOperations.SelectShapesByPrefix("selectMe");
             Assert.AreEqual(2, shapesBeforeCrop.Count);
             
-            PplFeatures.CropOutPadding();
-            
+            PplFeatures.CropToAspectRatioW1H10();
+
             var resultShape = PpOperations.SelectShapesByPrefix("selectMe");
             var resultShapeInPic = PpOperations.ExportSelectedShapes();
 
@@ -81,8 +81,8 @@ namespace Test.FunctionalTest
         {
             var actualSlide = PpOperations.SelectSlide(10);
             PpOperations.SelectShape("selectMe");
-            
-            PplFeatures.CropOutPadding();
+
+            PplFeatures.CropToAspectRatioW1H10();
 
             var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
             var resultShapeInPic = PpOperations.ExportSelectedShapes();
@@ -110,8 +110,8 @@ namespace Test.FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to crop",
-                "'Crop Out Padding' requires at least one picture to be selected.",
-                PplFeatures.CropOutPadding);
+                "'Crop To Aspect Ratio' requires at least one picture to be selected.",
+                PplFeatures.CropToAspectRatioW1H10);
         }
 
         private void CropOnNonPictureObjectUnsuccessfully()
@@ -121,8 +121,8 @@ namespace Test.FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to crop",
-                "'Crop Out Padding' only supports picture objects.",
-                PplFeatures.CropOutPadding);
+                "'Crop To Aspect Ratio' only supports picture objects.",
+                PplFeatures.CropToAspectRatioW1H10);
         }
 
         #endregion
