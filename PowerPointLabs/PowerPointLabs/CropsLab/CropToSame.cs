@@ -30,19 +30,25 @@ namespace PowerPointLabs
         private static readonly string ShapePicture = Path.GetTempPath() + @"\shape.png";
 
         private static DispatcherTimer cropTimer = new DispatcherTimer();
-
+        private static bool isHandlerAdded = false;
         private static PowerPoint.ShapeRange shapes;
 
-        public static void StartCropToSame(PowerPoint.Selection selection, Office.IRibbonControl control, bool handleError = true)
+        public static void StartCropToSame(PowerPoint.Selection selection, bool handleError = true)
         {
             try
             {
                 VerifyIsSelectionValid(selection);
                 if (!VerifyIsShapeRangeValid(selection.ShapeRange, handleError)) return;
-                cropTimer.Tick -= CropHandler;
-                cropTimer.Tick += CropHandler;
+                if (!isHandlerAdded)
+                {
+                    isHandlerAdded = true;
+                    cropTimer.Tick += CropHandler;
+                }
 
                 shapes = selection.ShapeRange;
+                shapes[1].Select();
+
+                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("PictureCrop");
                 cropTimer.Start();
             }
             catch (Exception e)
@@ -60,9 +66,12 @@ namespace PowerPointLabs
 
         private static bool IsFirstShapeSelected()
         {
+            if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
+            {
+                return false;
+            }
             foreach (PowerPoint.Shape shape in PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange)
             {
-                MessageBox.Show(shapes[1].Id + " " + shape.Id);
                 if (shapes[1].Id == shape.Id)
                 {
                     return true;
@@ -76,16 +85,13 @@ namespace PowerPointLabs
             {
                 cropTimer.Stop();
             }
-            /*
-            for (int i = 2; i < shapes.Count; i++)
+            for (int i = 2; i <= shapes.Count; i++)
             {
-
                 shapes[i].PictureFormat.CropTop = shapes[1].PictureFormat.CropTop;
                 shapes[i].PictureFormat.CropLeft = shapes[1].PictureFormat.CropLeft;
                 shapes[i].PictureFormat.CropRight = shapes[1].PictureFormat.CropRight;
                 shapes[i].PictureFormat.CropBottom = shapes[1].PictureFormat.CropBottom;
             }
-            */
         }
 
         private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)

@@ -1763,8 +1763,7 @@ namespace PowerPointLabs
             
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             
-            //CropToSlide.Crop(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
-            CropToSame.StartCropToSame(selection, control);
+            CropToSame.StartCropToSame(selection);
            
         }
 
