@@ -640,11 +640,6 @@ namespace PowerPointLabs.AgendaLab
             var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var textRange = contentHolder.TextFrame2.TextRange;
 
-            while (textRange.Paragraphs.Count < numberOfSections)
-            {
-                textRange.InsertAfter("\r ");
-            }
-
             while (textRange.Paragraphs.Count > 3 && textRange.Paragraphs.Count > numberOfSections)
             {
                 textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
