@@ -88,6 +88,11 @@
                     getImage="GetCropToSlideImage"
                     getSupertip="GetCropToSlideButtonSupertip"
                     onAction="CropToSlideButtonClick"/>
+            <button id="CropToSame"
+                    getLabel="GetCropToSameButtonLabel"
+                    getImage="GetCropToSameImage"
+                    getSupertip="GetCropToSameButtonSupertip"
+                    onAction="CropToSameButtonClick"/>
           </menu>
         </group>
         <group id="embedAudio"

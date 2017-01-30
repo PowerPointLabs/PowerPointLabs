@@ -30,6 +30,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void CropToSame()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.CropToSameButtonClick(new RibbonControl("CropToSame"));
+            });
+        }
+
         public void AutoAnimate()
         {
             UIThreadExecutor.Execute(() =>

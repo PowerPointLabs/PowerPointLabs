@@ -111,6 +111,7 @@ namespace PowerPointLabs
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
         public bool MultiSlideZoomChecked = true;
+        public bool CropToSameChecked = false;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 
@@ -308,6 +309,11 @@ namespace PowerPointLabs
         public string GetCropToSlideButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.CropToSlideButtonSupertip;
+        }
+
+        public string GetCropToSameButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSameButtonSupertip;
         }
 
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
@@ -513,6 +519,11 @@ namespace PowerPointLabs
         public string GetCropToSlideButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CropToSlideButtonLabel;
+        }
+
+        public string GetCropToSameButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSameButtonLabel;
         }
 
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
@@ -1002,6 +1013,19 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropToSlideImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetCropToSameImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropToSame);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropToSameImage");
                 throw;
             }
         }
@@ -1731,6 +1755,17 @@ namespace PowerPointLabs
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToSlide.Crop(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
+        }
+
+        public void CropToSameButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            
+            //CropToSlide.Crop(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
+            CropToSame.StartCropToSame(selection, control);
+           
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
