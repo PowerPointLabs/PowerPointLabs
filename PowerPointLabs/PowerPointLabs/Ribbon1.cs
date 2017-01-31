@@ -364,6 +364,11 @@ namespace PowerPointLabs
             return TextCollection.CustomeShapeButtonSupertip;
         }
 
+        public string GetSyncLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.SyncLabButtonSupertip;
+        }
+
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMenuSupertip;
@@ -576,6 +581,11 @@ namespace PowerPointLabs
         public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonLabel;
+        }
+
+        public string GetSyncButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SyncLabButtonLabel;
         }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
@@ -1367,6 +1377,18 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
+        public Bitmap GetSyncLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.SyncLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetSyncLabImage");
                 throw;
             }
         }
