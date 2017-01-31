@@ -790,7 +790,7 @@ namespace PowerPointLabs.Utils
         }
         #endregion
 
-        #region Design
+        # region Design
 
         public static Design CreateDesign(string designName)
         {
@@ -820,9 +820,9 @@ namespace PowerPointLabs.Utils
             design.SlideMaster.Background.Fill.BackColor = refSlide.GetNativeSlide().Background.Fill.BackColor;
         }
 
-        #endregion
+        # endregion
 
-        #region Color
+        # region Color
         public static int ConvertColorToRgb(Drawing.Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
