@@ -788,7 +788,7 @@ namespace PowerPointLabs.Utils
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             control.Refresh();
         }
-        #endregion
+        # endregion
 
         # region Design
 
