@@ -214,6 +214,8 @@ namespace PowerPointLabs.AgendaLab
                 currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 BringToFront(refSlide);
+                
+                Graphics.CopyToDesign("Agenda Template", refSlide);
 
                 switch (type)
                 {
@@ -317,6 +319,8 @@ namespace PowerPointLabs.AgendaLab
             AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Beam);
             refSlide.AddTemplateSlideMarker();
             refSlide.Hidden = true;
+
+            Graphics.CopyToDesign("Agenda Template", refSlide);
 
             return refSlide;
         }
@@ -460,6 +464,8 @@ namespace PowerPointLabs.AgendaLab
             refSlide.AddTemplateSlideMarker();
             refSlide.Hidden = true;
 
+            Graphics.CopyToDesign("Agenda Template", refSlide);
+
             return refSlide;
         }
 
@@ -483,6 +489,8 @@ namespace PowerPointLabs.AgendaLab
             AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Visual);
             refSlide.AddTemplateSlideMarker();
             refSlide.Hidden = true;
+
+            Graphics.CopyToDesign("Agenda Template", refSlide);
 
             return refSlide;
         }

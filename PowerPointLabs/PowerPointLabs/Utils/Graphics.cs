@@ -788,9 +788,41 @@ namespace PowerPointLabs.Utils
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             control.Refresh();
         }
-        # endregion
+        #endregion
 
-        # region Color
+        #region Design
+
+        public static Design CreateDesign(string designName)
+        {
+            return Globals.ThisAddIn.Application.ActivePresentation.Designs.Add(designName);
+        }
+
+        public static Design GetDesign(string designName)
+        {
+            foreach (Design design in Globals.ThisAddIn.Application.ActivePresentation.Designs)
+            {
+                if (design.Name.Equals(designName))
+                {
+                    return design;
+                }
+            }
+            return null;
+        }
+
+        public static void CopyToDesign(string designName, PowerPointSlide refSlide)
+        {
+            var design = GetDesign(designName);
+            if (design == null)
+            {
+                design = CreateDesign(designName);
+            }
+            design.SlideMaster.Background.Fill.ForeColor = refSlide.GetNativeSlide().Background.Fill.ForeColor;
+            design.SlideMaster.Background.Fill.BackColor = refSlide.GetNativeSlide().Background.Fill.BackColor;
+        }
+
+        #endregion
+
+        #region Color
         public static int ConvertColorToRgb(Drawing.Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
