@@ -631,8 +631,10 @@
       <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="SyncLab\ObjectFormats\FillFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ObjectFormat.cs" />
+    <Compile Include="SyncLab\SyncFormatUtil.cs" />
     <Compile Include="SyncLab\SyncLabListBox.cs">
       <SubType>Component</SubType>
     </Compile>
