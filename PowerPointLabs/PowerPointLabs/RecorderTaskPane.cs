@@ -536,6 +536,7 @@ namespace PowerPointLabs
 
         private void UpdateRecordList(int relativeSlideId)
         {
+            ResetTimer();
             ClearRecordDisplayList();
 
             for (int index = 0; index < _audioList[relativeSlideId].Count; index++)

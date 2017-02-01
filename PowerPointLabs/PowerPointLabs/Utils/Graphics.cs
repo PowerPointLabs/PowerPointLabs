@@ -24,6 +24,17 @@ namespace PowerPointLabs.Utils
 #pragma warning disable 0618
         #region Const
         public const float PictureExportingRatio = 96.0f / 72.0f;
+        private const float TargetDpi = 96.0f;
+        private static float dpiScale = 1.0f;
+
+        // Static initializer to retrieve dpi scale once
+        static Graphics()
+        {
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            {
+                dpiScale = g.DpiX / TargetDpi;
+            }
+        }
         # endregion
 
         # region API
@@ -72,6 +83,14 @@ namespace PowerPointLabs.Utils
             {
                 return true;
             }
+        }
+
+        public static bool IsStraightLine(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoLine ||
+                    (shape.Type == MsoShapeType.msoAutoShape &&
+                     shape.AutoShapeType == MsoAutoShapeType.msoShapeMixed &&
+                     shape.ConnectorFormat.Type == MsoConnectorType.msoConnectorStraight);
         }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
@@ -882,6 +901,11 @@ namespace PowerPointLabs.Utils
             {
                 bitmap.UnlockBits(bitmapData);
             }
+        }
+
+        public static float GetDpiScale()
+        {
+            return dpiScale;
         }
         # endregion
     }

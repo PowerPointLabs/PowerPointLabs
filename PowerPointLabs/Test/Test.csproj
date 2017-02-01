@@ -102,6 +102,7 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\PositionsLabDuplicateAndRotateTest.cs" />
     <Compile Include="FunctionalTest\ColorsLabTest.cs" />
     <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
     <Compile Include="FunctionalTest\EffectsLabTest.cs" />
