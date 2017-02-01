@@ -47,6 +47,26 @@ Quality | code quality, design quality | Ong Heng Le | Jamos | Kai|
 Testing | test coverage, test automation | Ian Teo | Syed | Kai|
 UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
 
+Feature  | Lead | Co-Lead | Past Leads
+-----|------|---------|-----|
+AgendaLab |  |  | Shunhao, Huang Da
+AnimationLab (d) |  |  | Raunak
+CaptionsLab |  |  | Jerome
+ColorsLab |  |  | Karan
+CropLab |  |  | Raunak
+EffectsLab |  |  | Fiona
+HighlightLab |  |  | Karan
+NarrationsLab |  |  | Jerome
+PasteLab |  |  |
+PictureSlideLab |  |  | Xie Kai
+PositionsLab | Victor |  | Oswell
+ResizeLab | Min Oo | Yu Ting |  
+ShapesLab (d) |  |  | Huang Da
+ShortcutsLab |  |  | Raunak
+SyncLab |  |  |
+ZoomLab |  |  | Raunak
+
+Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
 
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
