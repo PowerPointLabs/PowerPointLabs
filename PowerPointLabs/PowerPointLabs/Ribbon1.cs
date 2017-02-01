@@ -364,6 +364,11 @@ namespace PowerPointLabs
             return TextCollection.CustomeShapeButtonSupertip;
         }
 
+        public string GetSyncLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.SyncLabButtonSupertip;
+        }
+
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMenuSupertip;
@@ -576,6 +581,11 @@ namespace PowerPointLabs
         public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonLabel;
+        }
+
+        public string GetSyncButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SyncLabButtonLabel;
         }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
@@ -1367,6 +1377,18 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
+        public Bitmap GetSyncLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.SyncLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetSyncLabImage");
                 throw;
             }
         }
@@ -2439,6 +2461,45 @@ namespace PowerPointLabs
                 Logger.LogException(e, "DrawingsLabButtonClicked");
                 throw;
             }
+        }
+        #endregion
+
+        #region Feature: Sync Lab
+        public void SyncLabButtonClick(Office.IRibbonControl control)
+        {
+            InitSyncLabPane();
+        }
+
+        private static SyncLabPane InitSyncLabPane()
+        {
+            var prensentation = PowerPointPresentation.Current.Presentation;
+
+            Globals.ThisAddIn.RegisterSyncLabPane(prensentation);
+
+            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncLabPane));
+
+            if (syncLabPane == null || !(syncLabPane.Control is SyncLabPane))
+            {
+                return null;
+            }
+
+            var syncLab = syncLabPane.Control as SyncLabPane;
+
+            Trace.TraceInformation(
+                "Before Visible: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              syncLabPane.Width, syncLabPane.Height, syncLab.Width, syncLab.Height));
+
+            // if currently the pane is hidden, show the pane
+            if (!syncLabPane.Visible)
+            {
+                syncLabPane.Visible = true;
+
+                syncLab.Width = syncLabPane.Width - 16;
+                syncLab.PaneReload();
+            }
+
+            return syncLab;
         }
         #endregion
 

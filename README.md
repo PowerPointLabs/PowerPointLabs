@@ -30,6 +30,24 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 2. In the open Test Explorer window, click `Group by Traits` >> right click `FT` >> click `Run Selected Tests`. During the test, *DO NOT move the mouse & ensure the Windows UI is in English*.
 3. In the open Test Explorer window, click `Group by Traits` >> right click `UT` >> click `Run Selected Tests`.
 
+### Current Dev Team
+
+Mentors: Damith C. Rajapakse, Xie Kai
+
+Team Leads: Yan Min Oo, Yu Ting
+
+Senior Devs: Fiona Chang, Hanyang Liu, Victor Hazali, Oh Shunhao 
+
+Area | Responsibilities | Lead | Co-Lead | Past Leads
+-----|------------------|------|---------|-----|
+Community | communit growth, user support | Kenneth Loh | HengLe | Fiona |
+Docs | Website, tutorials, dev docs | Jamos Tay | Shi Ya | Fiona|
+DevOps | Installer, issue tracker, releases, CI | Syed Abdullah | Kenneth | Hanyang|
+Quality | code quality, design quality | Ong Heng Le | Jamos | Kai|
+Testing | test coverage, test automation | Ian Teo | Syed | Kai|
+UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
+
+
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
 
