@@ -15,6 +15,7 @@ namespace PowerPointLabs.SyncLab
 
         protected string displayText;
         protected Image displayImage;
+        protected Shape formatShape; // A shape whose format we want
 
         public abstract void ApplyTo(Shape shape);
 
@@ -31,6 +32,14 @@ namespace PowerPointLabs.SyncLab
             get
             {
                 return displayImage;
+            }
+        }
+
+        public Shape FormatShape
+        {
+            get
+            {
+                return formatShape;
             }
         }
     }

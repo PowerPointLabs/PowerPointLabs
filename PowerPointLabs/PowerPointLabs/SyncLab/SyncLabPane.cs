@@ -31,8 +31,9 @@ namespace PowerPointLabs
         {
             List<Type> objectFormats = new List<Type>();
             // Only add ObjectFormat types
-            //objectFormats.Add(typeof(SyncLab.ObjectFormats.LineFormat));
-            objectFormats.Add(typeof(SyncLab.ObjectFormats.FillFormat));
+            objectFormats.Add(typeof(SyncLab.ObjectFormats.LineFormat));
+            objectFormats.Add(typeof(SyncLab.ObjectFormats.FontFormat));
+            //objectFormats.Add(typeof(SyncLab.ObjectFormats.FillFormat));
             //objectFormats.Add(typeof(SyncLab.ObjectFormats.FillFormat));
             foreach (Type t in objectFormats) // Ensure all types in list are ObjectFormat types
             {
