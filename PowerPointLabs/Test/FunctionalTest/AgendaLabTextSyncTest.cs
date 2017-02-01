@@ -37,6 +37,16 @@ namespace Test.FunctionalTest
             var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSyncHideUnvisited.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+
+            PpOperations.SelectShape("PptLabsAgenda_&^@ContentShape_&^@2015061916283877850").TextFrame2.TextRange.Paragraphs[3].Text = "Readd bullet format";
+
+            PplFeatures.SynchronizeAgenda();
+
+            actualSlides = PpOperations.FetchCurrentPresentationData();
+            expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSyncUnhideUnvisited.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+
         }
 
 
