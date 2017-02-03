@@ -16,6 +16,7 @@ using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Text.RegularExpressions;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -515,9 +516,25 @@ namespace PowerPointLabs
         {
             return TextCollection.CropOutPaddingButtonLabel;
         }
-        public string GetCropToAspectRatioButtonLabel(Office.IRibbonControl control)
+        public string GetCropToAspectRatioMenuLabel(Office.IRibbonControl control)
         {
-            return TextCollection.CropToAspectRatioButtonLabel;
+            return TextCollection.CropToAspectRatioMenuLabel;
+        }
+        public string GetCropToAspectRatioW1H1ButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioW1H1ButtonLabel;
+        }
+        public string GetCropToAspectRatioW4H3ButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioW4H3ButtonLabel;
+        }
+        public string GetCropToAspectRatioW16H9ButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioW16H9ButtonLabel;
+        }
+        public string GetCropToAspectRatioCustomButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioCustomButtonLabel;
         }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
@@ -1765,6 +1782,18 @@ namespace PowerPointLabs
 
         public void CropToAspectRatioButtonClick(Office.IRibbonControl control)
         {
+            string pattern = @"(\d+):(\d+)";
+            Match matches = Regex.Match(control.Tag, pattern);
+            if (!matches.Success)
+            {
+                MessageBox.Show("An unexpected error occurred in CropToAspectRatioButtonClick.");
+                return;
+            }
+            CropToAspectRatioInput(matches.Groups[1].Value, matches.Groups[2].Value);
+        }
+
+        public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
+        {
             var dialog = new CropToAspectRatioDialogBox();
             dialog.ShowDialog();
         }
@@ -1779,7 +1808,7 @@ namespace PowerPointLabs
             if (!float.TryParse(widthText, out aspectRatioWidth) ||
                 !float.TryParse(heightText, out aspectRatioHeight))
             {
-                MessageBox.Show("The aspect ratio is invalid.");
+                MessageBox.Show("The given aspect ratio is invalid.");
                 return;
             }
 

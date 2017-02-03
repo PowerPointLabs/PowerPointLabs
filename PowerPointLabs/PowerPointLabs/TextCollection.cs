@@ -169,7 +169,11 @@
         public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingButtonLabel = "Crop Out Padding";
-        public const string CropToAspectRatioButtonLabel = "Crop To Aspect Ratio";
+        public const string CropToAspectRatioMenuLabel = "Crop To Aspect Ratio";
+        public const string CropToAspectRatioW1H1ButtonLabel = "1:1";
+        public const string CropToAspectRatioW4H3ButtonLabel = "4:3";
+        public const string CropToAspectRatioW16H9ButtonLabel = "16:9";
+        public const string CropToAspectRatioCustomButtonLabel = "Custom";
         #endregion
 
         # region Narrations Lab
