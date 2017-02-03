@@ -644,7 +644,7 @@ namespace PowerPointLabs.AgendaLab
             {
                 textRange.InsertAfter("\r ");
             }
-            
+
             while (textRange.Paragraphs.Count > 3 && textRange.Paragraphs.Count > numberOfSections)
             {
                 textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
