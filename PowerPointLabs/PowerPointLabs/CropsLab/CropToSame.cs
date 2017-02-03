@@ -28,10 +28,7 @@ namespace PowerPointLabs
         private const string MessageBoxTitle = "Unable to crop";
 
         private static readonly string ShapePicture = Path.GetTempPath() + @"\shape.png";
-
-        private static DispatcherTimer cropTimer = new DispatcherTimer();
-        private static bool isHandlerAdded = false;
-        private static PowerPoint.ShapeRange shapes;
+        
 
         public static void StartCropToSame(PowerPoint.Selection selection, bool handleError = true)
         {
@@ -39,17 +36,33 @@ namespace PowerPointLabs
             {
                 VerifyIsSelectionValid(selection);
                 if (!VerifyIsShapeRangeValid(selection.ShapeRange, handleError)) return;
-                if (!isHandlerAdded)
+                var shapes = selection.ShapeRange;
+                var refShape = shapes[1];
+                float refScaleWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(refShape);
+                float refScaleHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(refShape);
+                //MessageBox.Show(shapes[1].PictureFormat.CropTop.ToString() + " " + shapes[1].PictureFormat.CropBottom.ToString() + " " + shapes[1].Height.ToString() + " " + );
+
+                float epsilon = 0.001F;
+                for (int i = 2; i <= shapes.Count; i++)
                 {
-                    isHandlerAdded = true;
-                    cropTimer.Tick += CropHandler;
+                    float scaleWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(shapes[i]);
+                    float scaleHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(shapes[i]);
+                    float heightToCrop = shapes[i].Height - refShape.Height;
+                    float widthToCrop = shapes[i].Width - refShape.Width;
+
+                    float cropTop = Math.Max(shapes[1].PictureFormat.CropTop, epsilon);
+                    float cropBottom = Math.Max(shapes[1].PictureFormat.CropBottom, epsilon);
+                    float cropLeft = Math.Max(shapes[1].PictureFormat.CropLeft, epsilon);
+                    float cropRight = Math.Max(shapes[1].PictureFormat.CropRight, epsilon);
+
+                    float refShapeCroppedHeight = cropTop + cropBottom;
+                    float refShapeCroppedWidth = cropLeft + cropRight;
+
+                    shapes[i].PictureFormat.CropTop = Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);
+                    shapes[i].PictureFormat.CropLeft = Math.Max(0, widthToCrop * cropLeft / refShapeCroppedWidth / scaleWidth);
+                    shapes[i].PictureFormat.CropRight = Math.Max(0, widthToCrop * cropRight / refShapeCroppedWidth / scaleWidth);
+                    shapes[i].PictureFormat.CropBottom = Math.Max(0, heightToCrop * cropBottom / refShapeCroppedHeight / scaleHeight);
                 }
-
-                shapes = selection.ShapeRange;
-                shapes[1].Select();
-
-                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("PictureCrop");
-                cropTimer.Start();
             }
             catch (Exception e)
             {
@@ -62,36 +75,6 @@ namespace PowerPointLabs
                 throw;
             }
             
-        }
-
-        private static bool IsFirstShapeSelected()
-        {
-            if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
-            {
-                return false;
-            }
-            foreach (PowerPoint.Shape shape in PowerPointCurrentPresentationInfo.CurrentSelection.ShapeRange)
-            {
-                if (shapes[1].Id == shape.Id)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        private static void CropHandler(object sender, EventArgs e)
-        {
-            if (!IsFirstShapeSelected())
-            {
-                cropTimer.Stop();
-            }
-            for (int i = 2; i <= shapes.Count; i++)
-            {
-                shapes[i].PictureFormat.CropTop = shapes[1].PictureFormat.CropTop;
-                shapes[i].PictureFormat.CropLeft = shapes[1].PictureFormat.CropLeft;
-                shapes[i].PictureFormat.CropRight = shapes[1].PictureFormat.CropRight;
-                shapes[i].PictureFormat.CropBottom = shapes[1].PictureFormat.CropBottom;
-            }
         }
 
         private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
