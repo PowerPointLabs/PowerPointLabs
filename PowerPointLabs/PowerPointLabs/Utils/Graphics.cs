@@ -298,6 +298,11 @@ namespace PowerPointLabs.Utils
                     candidateTextRange.Text = candidateTextRange.Text + "\r";
                 }
             }
+            
+            if (refTextRange.Text.Trim().Equals(""))
+            {
+                candidateTextRange.Text = " ";
+            }
         }
 
         /// <summary>
