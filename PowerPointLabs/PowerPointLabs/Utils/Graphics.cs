@@ -8,10 +8,12 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
+using PPExtraEventHelper;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;

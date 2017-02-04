@@ -6,11 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+using PPExtraEventHelper;
+
 using Font = System.Drawing.Font;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Point = System.Drawing.Point;

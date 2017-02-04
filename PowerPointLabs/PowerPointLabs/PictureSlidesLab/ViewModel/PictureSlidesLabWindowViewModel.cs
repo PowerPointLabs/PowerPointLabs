@@ -22,9 +22,9 @@ using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
+using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
-using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 
 using Fonts = System.Windows.Media.Fonts;
 

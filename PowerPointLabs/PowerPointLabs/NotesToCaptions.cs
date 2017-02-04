@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using PowerPointLabs.Models;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Models;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs

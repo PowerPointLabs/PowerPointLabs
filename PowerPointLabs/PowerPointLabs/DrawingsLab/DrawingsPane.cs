@@ -8,14 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using PowerPointLabs.DataSources;
-using PowerPointLabs.Models;
-using PPExtraEventHelper;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
-using PowerPointLabs.Views;
-using Microsoft.Office.Core;
+using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
+using PowerPointLabs.Models;
+using PowerPointLabs.Views;
+using PPExtraEventHelper;
 
 using Converters = PowerPointLabs.Converters;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;

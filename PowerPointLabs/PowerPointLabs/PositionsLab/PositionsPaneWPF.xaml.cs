@@ -4,10 +4,10 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-using PPExtraEventHelper;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
-using PowerPointLabs.ActionFramework.Common.Extension;
+using PPExtraEventHelper;
 
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Media = System.Windows.Media;

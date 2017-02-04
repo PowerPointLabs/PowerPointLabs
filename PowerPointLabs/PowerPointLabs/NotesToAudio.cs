@@ -5,12 +5,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using PowerPointLabs.Models;
-using PowerPointLabs.SpeechEngine;
-using PowerPointLabs.Views;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.Models;
+using PowerPointLabs.SpeechEngine;
+using PowerPointLabs.Views;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
