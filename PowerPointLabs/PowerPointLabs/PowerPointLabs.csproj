@@ -322,12 +322,15 @@
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab\AgendaLabUtility.cs" />
     <Compile Include="AgendaLab\AgendaSection.cs" />
-    <Compile Include="AgendaLab\AgendaSectionTemplates.cs" />
+    <Compile Include="AgendaLab\Templates\AgendaSectionTemplates.cs" />
     <Compile Include="AgendaLab\AgendaShape.cs" />
     <Compile Include="AgendaLab\SlideSelectionTracker.cs" />
     <Compile Include="AgendaLab\AgendaLabMain.cs" />
     <Compile Include="AgendaLab\AgendaSlide.cs" />
     <Compile Include="AgendaLab\Enums.cs" />
+    <Compile Include="AgendaLab\Templates\BulletAgendaTemplate.cs" />
+    <Compile Include="AgendaLab\Templates\TemplateIndexTable.cs" />
+    <Compile Include="AgendaLab\Templates\VisualAgendaTemplate.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />

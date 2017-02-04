@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
