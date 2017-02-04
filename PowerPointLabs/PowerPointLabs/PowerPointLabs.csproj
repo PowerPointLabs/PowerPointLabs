@@ -346,6 +346,27 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="Converters\DrawingsLabConverters.cs" />
+    <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
+    <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousLower.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToBrightnessValue.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToComplementaryColor.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFive.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFour.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticOne.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSeven.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSix.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticThree.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticTwo.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSaturationValue.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryLower.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicOne.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicThree.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -361,7 +382,6 @@
     <Compile Include="ColorPicker\ColorPane.Designer.cs">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
     <Compile Include="DataSources\DrawingLabData.cs" />
