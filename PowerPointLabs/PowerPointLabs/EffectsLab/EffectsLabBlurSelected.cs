@@ -1,12 +1,14 @@
-﻿using ImageProcessor;
-using ImageProcessor.Imaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
+using ImageProcessor;
+using ImageProcessor.Imaging;
 
 namespace PowerPointLabs.EffectsLab
 {

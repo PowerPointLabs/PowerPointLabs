@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using TestInterface;
-using Microsoft.Office.Interop.PowerPoint;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {

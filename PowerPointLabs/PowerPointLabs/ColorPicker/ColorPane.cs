@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using PowerPointLabs.DataSources;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
-using System.Drawing.Drawing2D;
 using PPExtraEventHelper;
 using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;

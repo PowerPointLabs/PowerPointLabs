@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+
 using PPExtraEventHelper;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -9,8 +12,6 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using Graphics = PowerPointLabs.Utils.Graphics;
-using System.Windows.Input;
-using System.Windows.Controls.Primitives;
 using Media = System.Windows.Media;
 
 namespace PowerPointLabs.PositionsLab

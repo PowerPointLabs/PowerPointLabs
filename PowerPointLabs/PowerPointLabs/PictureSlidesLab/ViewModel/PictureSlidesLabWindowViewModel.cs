@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+
+using Fonts = System.Windows.Media.Fonts;
+
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
@@ -20,10 +26,6 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
-using Fonts = System.Windows.Media.Fonts;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
 using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
