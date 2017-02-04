@@ -366,9 +366,9 @@
         public class CropToSameText
         {
             //------------ Msg -------------
-            public const string ErrorMessageForSelectionCountZero = "'Crop To Same' requires at least one shape to be selected.";
-            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same' only supports picture objects.";
-            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same'.";
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Same Dimensions' requires at least two shapes to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same Dimensions' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same Dimensions'.";
         }
 
         # endregion

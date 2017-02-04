@@ -21,9 +21,9 @@ namespace PowerPointLabs
         private const int ErrorCodeForSelectionCountZero = 0;
         private const int ErrorCodeForSelectionNonPicture = 1;
 
-        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
-        private const string ErrorMessageForSelectionNonPicture = TextCollection.CropToSlideText.ErrorMessageForSelectionNonPicture;
-        private const string ErrorMessageForUndefined = TextCollection.CropToSlideText.ErrorMessageForUndefined;
+        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSameText.ErrorMessageForSelectionCountZero;
+        private const string ErrorMessageForSelectionNonPicture = TextCollection.CropToSameText.ErrorMessageForSelectionNonPicture;
+        private const string ErrorMessageForUndefined = TextCollection.CropToSameText.ErrorMessageForUndefined;
 
         private const string MessageBoxTitle = "Unable to crop";
 
@@ -41,10 +41,11 @@ namespace PowerPointLabs
                 float refScaleWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(refShape);
                 float refScaleHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(refShape);
                 //MessageBox.Show(shapes[1].PictureFormat.CropTop.ToString() + " " + shapes[1].PictureFormat.CropBottom.ToString() + " " + shapes[1].Height.ToString() + " " + );
-
+                //refShape.ScaleHeight(0.5F, Microsoft.Office.Core.MsoTriState.msoFalse);
                 float epsilon = 0.001F;
                 for (int i = 2; i <= shapes.Count; i++)
                 {
+                    
                     float scaleWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(shapes[i]);
                     float scaleHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(shapes[i]);
                     float heightToCrop = shapes[i].Height - refShape.Height;
@@ -57,11 +58,12 @@ namespace PowerPointLabs
 
                     float refShapeCroppedHeight = cropTop + cropBottom;
                     float refShapeCroppedWidth = cropLeft + cropRight;
-
+                    
                     shapes[i].PictureFormat.CropTop = Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);
                     shapes[i].PictureFormat.CropLeft = Math.Max(0, widthToCrop * cropLeft / refShapeCroppedWidth / scaleWidth);
                     shapes[i].PictureFormat.CropRight = Math.Max(0, widthToCrop * cropRight / refShapeCroppedWidth / scaleWidth);
                     shapes[i].PictureFormat.CropBottom = Math.Max(0, heightToCrop * cropBottom / refShapeCroppedHeight / scaleHeight);
+                    
                 }
             }
             catch (Exception e)

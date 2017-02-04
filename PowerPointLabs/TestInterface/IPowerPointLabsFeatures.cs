@@ -15,6 +15,7 @@ namespace TestInterface
         void FitToHeight();
         void ConvertToPic();
         void CropToSlide();
+        void CropToSame();
         void DrillDown();
         void StepBack();
         void AddZoomToArea();
