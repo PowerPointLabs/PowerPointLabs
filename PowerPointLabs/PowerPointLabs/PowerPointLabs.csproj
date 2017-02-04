@@ -402,6 +402,7 @@
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\EffectData.cs" />
     <Compile Include="FunctionalTestInterface.Impl\RibbonControl.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFeatures.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
