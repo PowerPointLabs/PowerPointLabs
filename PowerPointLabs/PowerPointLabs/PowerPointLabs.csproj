@@ -364,6 +364,7 @@
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropToShape.cs" />
+    <Compile Include="DataSources\DrawingLabData.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
