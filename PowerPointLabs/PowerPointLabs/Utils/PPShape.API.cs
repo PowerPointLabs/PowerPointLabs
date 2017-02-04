@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-
 using Microsoft.Office.Core;
+
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {

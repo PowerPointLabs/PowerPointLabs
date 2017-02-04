@@ -24,10 +24,11 @@ using PowerPointLabs.Models;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
-using MessageBox = System.Windows.Forms.MessageBox;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using Office = Microsoft.Office.Core;
 using PowerPointLabs.PositionsLab;
+
+using MessageBox = System.Windows.Forms.MessageBox;
+using Office = Microsoft.Office.Core;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {

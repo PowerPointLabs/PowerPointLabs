@@ -4,11 +4,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
-using Office = Microsoft.Office.Core;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-
 using ImageProcessor;
 using ImageProcessor.Imaging;
+
+using Office = Microsoft.Office.Core;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.EffectsLab
 {

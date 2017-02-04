@@ -9,8 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-using Fonts = System.Windows.Media.Fonts;
-
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
@@ -27,6 +25,8 @@ using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
+
+using Fonts = System.Windows.Media.Fonts;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {

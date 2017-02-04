@@ -1,7 +1,9 @@
 ﻿using System.Windows.Media;
+
 using Microsoft.Office.Interop.PowerPoint;
-using Color = System.Drawing.Color;
 using PowerPointLabs.Utils;
+
+using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {

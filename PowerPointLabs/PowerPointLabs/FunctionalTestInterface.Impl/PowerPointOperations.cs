@@ -4,14 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
-
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 using TestInterface;
+
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
