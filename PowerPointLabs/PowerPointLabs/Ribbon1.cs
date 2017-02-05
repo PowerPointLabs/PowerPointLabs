@@ -302,6 +302,11 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonSupertip;
         }
 
+        public string GetCropLabMenuSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropLabMenuSupertip;
+        }
+
         public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonSupertip;
@@ -517,9 +522,9 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonLabel;
         }
 
-        public string GetCropLabGroupLabel(Office.IRibbonControl control)
+        public string GetCropLabMenuLabel(Office.IRibbonControl control)
         {
-            return TextCollection.CropLabGroupLabel;
+            return TextCollection.CropLabMenuLabel;
         }
 
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)

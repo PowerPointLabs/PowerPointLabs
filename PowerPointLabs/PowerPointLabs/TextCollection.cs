@@ -41,23 +41,28 @@
         # endregion
 
         # region Crop Lab
+        public const string CropLabMenuSupertip =
+            "Use Crop Lab to crop shapes and pictures professionally with ease.";
+
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
 
         public const string CropOutPaddingButtonSupertip =
             "Crop out transparent areas of a picture.\n\n" +
-            "To activate, select the picture, then click this button.";
+            "To activate, select the picture(s), then click this button.";
 
         public const string CropToAspectRatioButtonSupertip =
             "Crop a picture to a specified aspect ratio.\n\n" +
-            "To activate, select the picture, then click this button and enter the desired aspect ratio.";
+            "To activate, select the picture(s), then click this button and enter the desired aspect ratio.";
 
         public const string CropToSlideButtonSupertip =
-            "Crops a picture of the current slide.";
+            "Crops a picture of the current slide.\n\n" +
+            "To activate, select the shape(s), then click this button.";
 
         public const string CropToSameButtonSupertip =
-            "Crops multiple shapes to the same dimensions.";
+            "Crops multiple shapes to the same dimensions.\n\n" +
+            "To activate, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
         #endregion
 
         #region Narrations Lab
@@ -172,7 +177,7 @@
         # endregion
 
         # region Crop Lab
-        public const string CropLabGroupLabel = "Crop Lab";
+        public const string CropLabMenuLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingButtonLabel = "Crop Out Padding";
         public const string CropToAspectRatioMenuLabel = "Crop To Aspect Ratio";
