@@ -16,12 +16,38 @@ namespace Test.FunctionalTest
         public void FT_HighlightBulletsTest()
         {
             // Do tests in reverse order because added slides change slide numbers lower down.
+
+            TestRemoveHighlighting_HighlightText();
+            TestRemoveHighlighting_HighlightBackground();
+            TestRemoveHighlighting_HighlightPoints();
             TestHighlightBackground_SelectText();
             TestHighlightBackground_SelectTextBoxes();
             TestHighlightBackground_SelectSlide();
             TestHighlightPoints_SelectText();
             TestHighlightPoints_SelectTextBoxes();
             TestHighlightPoints_SelectSlide();
+        }
+
+        private void TestRemoveHighlighting_HighlightText()
+        {
+            RemoveHighlightAndCompare(28, 29);
+        }
+
+        private void TestRemoveHighlighting_HighlightBackground()
+        {
+            RemoveHighlightAndCompare(25, 26);
+        }
+
+        private void TestRemoveHighlighting_HighlightPoints()
+        {
+            RemoveHighlightAndCompare(22, 23);
+        }
+
+        private void RemoveHighlightAndCompare(int testSlideNo, int expectedSlideNo)
+        {
+            PpOperations.SelectSlide(testSlideNo);
+            PplFeatures.RemoveHighlight();
+            AssertIsSame(testSlideNo, expectedSlideNo);
         }
 
         private void TestHighlightBackground_SelectText()
