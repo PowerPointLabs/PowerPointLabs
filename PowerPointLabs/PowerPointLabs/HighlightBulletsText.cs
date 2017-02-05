@@ -206,7 +206,7 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                bool hasCarriageReturn = textRange.Paragraphs.Text.EndsWith("\r");
+                bool hasCarriageReturn = textRange.Paragraphs[i].Text.EndsWith("\r");
 
                 if (selectedText.Start + selectedText.Length < paragraph.Start ||
                     selectedText.Start > paragraph.Start + paragraph.Length - 1 + (hasCarriageReturn ? 0 : 1))
