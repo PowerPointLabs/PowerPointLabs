@@ -12,6 +12,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using PowerPointLabs.AudioMisc;
 
 namespace PowerPointLabs
 {
@@ -186,7 +187,7 @@ namespace PowerPointLabs
 
         private static string[] GetAudioFilePaths(string folderPath, string fileNameSearchPattern)
         {
-            var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
+            var filePaths = Directory.EnumerateFiles(folderPath, "*." + Audio.RecordedFormatExtension);
             var comparer = new Utils.Comparers.AtomicNumberStringCompare();
             var audioFiles =
                 filePaths.Where(path => path.Contains(fileNameSearchPattern)).OrderBy(x => new FileInfo(x).Name,

@@ -17,7 +17,11 @@ namespace PowerPointLabs.AudioMisc
         public const int GeneratedSamplingRate = 22050;
         public const int RecordedSamplingRate = 11025;
         public const int GeneratedBitRate = 16;
-        public const int RecordedBitRate = 8;
+        public const int RecordedBitRate = 16;
+        public const int GeneratedChannels = 1;
+        public const int RecordedChannels = 1;
+        public const string RecordedFormatName = "WAVE";
+        public const string RecordedFormatExtension = "wav";
 
         public string Name { get; set; }
         public int MatchScriptID { get; set; }
