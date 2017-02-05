@@ -111,6 +111,7 @@ namespace PowerPointLabs
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
         public bool MultiSlideZoomChecked = true;
+        public bool CropToSameChecked = false;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 
@@ -304,7 +305,17 @@ namespace PowerPointLabs
         {
             return TextCollection.MoveCropShapeButtonSupertip;
         }
-        
+
+        public string GetCropToSlideButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSlideButtonSupertip;
+        }
+
+        public string GetCropToSameButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSameButtonSupertip;
+        }
+
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -499,10 +510,22 @@ namespace PowerPointLabs
         {
             return TextCollection.CropLabGroupLabel;
         }
+
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonLabel;
         }
+
+        public string GetCropToSlideButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSlideButtonLabel;
+        }
+
+        public string GetCropToSameButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToSameButtonLabel;
+        }
+
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -977,6 +1000,32 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropShapeImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetCropToSlideImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropToSlide);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropToSlideImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetCropToSameImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropToSame);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropToSameImage");
                 throw;
             }
         }
@@ -1698,6 +1747,24 @@ namespace PowerPointLabs
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
             CropToShape.Crop(selection);
+        }
+
+        public void CropToSlideButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropToSlide.Crop(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
+        }
+
+        public void CropToSameButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+            
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            
+            CropToSame.StartCropToSame(selection);
+           
         }
 
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)

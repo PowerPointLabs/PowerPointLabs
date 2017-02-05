@@ -44,9 +44,13 @@
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        # endregion
+        public const string CropToSlideButtonSupertip =
+            "Crops a picture of the current slide.";
+        public const string CropToSameButtonSupertip =
+            "Crops multiple shapes to the same dimensions.";
+        #endregion
 
-        # region Narrations Lab
+        #region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -160,6 +164,8 @@
         # region Crop Lab
         public const string CropLabGroupLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        public const string CropToSlideButtonLabel = "Crop To Slide";
+        public const string CropToSameButtonLabel = "Crop To Same Dimensions";
         # endregion
 
         # region Narrations Lab
@@ -339,6 +345,30 @@
             public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
+        }
+
+        #endregion
+
+        #region CropToSlide
+
+        public class CropToSlideText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
+        }
+
+        #endregion
+
+        #region CropToSame
+
+        public class CropToSameText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Same Dimensions' requires at least two shapes to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same Dimensions' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same Dimensions'.";
         }
 
         # endregion

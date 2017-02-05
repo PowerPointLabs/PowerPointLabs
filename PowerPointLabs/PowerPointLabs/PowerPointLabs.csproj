@@ -343,6 +343,8 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="Converters\DrawingsLabConverters.cs" />
+    <Compile Include="CropsLab\CropToSame.cs" />
+    <Compile Include="CropsLab\CropToSlide.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -360,7 +362,7 @@
     </Compile>
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
-    <Compile Include="CropToShape.cs" />
+    <Compile Include="CropsLab\CropToShape.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
@@ -1441,7 +1443,13 @@
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSlide.png" />
+  </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\CropToSame.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -22,6 +22,22 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void CropToSlide()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.CropToSlideButtonClick(new RibbonControl("CropToSlide"));
+            });
+        }
+
+        public void CropToSame()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.CropToSameButtonClick(new RibbonControl("CropToSame"));
+            });
+        }
+
         public void AutoAnimate()
         {
             UIThreadExecutor.Execute(() =>
