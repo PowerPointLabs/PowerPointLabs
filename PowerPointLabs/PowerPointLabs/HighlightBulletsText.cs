@@ -99,7 +99,10 @@ namespace PowerPointLabs
                     isFirstShape = false;
                 }
 
-                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                if (currentSlide.HasAnimationForClick(1))
+                {
+                    Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                }
                 PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
@@ -202,8 +205,11 @@ namespace PowerPointLabs
                 {
                     continue;
                 }
+
+                bool hasCarriageReturn = textRange.Paragraphs.Text.EndsWith("\r");
+
                 if (selectedText.Start + selectedText.Length < paragraph.Start ||
-                    selectedText.Start > paragraph.Start + paragraph.Length - 1)
+                    selectedText.Start > paragraph.Start + paragraph.Length - 1 + (hasCarriageReturn ? 0 : 1))
                 {
                     indexList.Add(index);
                 }
