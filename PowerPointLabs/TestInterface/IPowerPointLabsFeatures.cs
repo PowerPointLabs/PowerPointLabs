@@ -21,6 +21,7 @@ namespace TestInterface
         void HighlightPoints();
         void HighlightBackground();
         void HighlightFragments();
+        void RemoveHighlight();
         void AutoNarrate();
 
         // Agenda Lab
