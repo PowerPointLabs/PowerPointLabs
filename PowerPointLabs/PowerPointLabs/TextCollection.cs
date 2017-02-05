@@ -52,6 +52,12 @@
         public const string CropToAspectRatioButtonSupertip =
             "Crop a picture to a specified aspect ratio.\n\n" +
             "To activate, select the picture, then click this button and enter the desired aspect ratio.";
+
+        public const string CropToSlideButtonSupertip =
+            "Crops a picture of the current slide.";
+
+        public const string CropToSameButtonSupertip =
+            "Crops multiple shapes to the same dimensions.";
         #endregion
 
         #region Narrations Lab
@@ -174,7 +180,9 @@
         public const string CropToAspectRatioW4H3ButtonLabel = "4:3";
         public const string CropToAspectRatioW16H9ButtonLabel = "16:9";
         public const string CropToAspectRatioCustomButtonLabel = "Custom";
-        #endregion
+        public const string CropToSlideButtonLabel = "Crop To Slide";
+        public const string CropToSameButtonLabel = "Crop To Same Dimensions";
+        # endregion
 
         # region Narrations Lab
         public const string EmbedAudioGroupLabel = "Narrations Lab";
@@ -353,6 +361,30 @@
             public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
+        }
+
+        #endregion
+
+        #region CropToSlide
+
+        public class CropToSlideText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
+        }
+
+        #endregion
+
+        #region CropToSame
+
+        public class CropToSameText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Same Dimensions' requires at least two shapes to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same Dimensions' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same Dimensions'.";
         }
 
         # endregion

@@ -409,23 +409,31 @@ namespace PowerPointLabs.Utils
 
         public static float GetScaleWidth(Shape shape)
         {
+            var isAspectRatioLocked = shape.LockAspectRatio;
+            shape.LockAspectRatio = MsoTriState.msoFalse;
+
             float oldWidth = shape.Width;
             shape.ScaleWidth(1, MsoTriState.msoCTrue);
             float scaleFactorWidth = oldWidth / shape.Width;
 
             shape.ScaleWidth(scaleFactorWidth, MsoTriState.msoCTrue);
 
+            shape.LockAspectRatio = isAspectRatioLocked;
             return scaleFactorWidth;
         }
 
         public static float GetScaleHeight(Shape shape)
         {
+            var isAspectRatioLocked = shape.LockAspectRatio;
+            shape.LockAspectRatio = MsoTriState.msoFalse;
+
             float oldHeight = shape.Height;
             shape.ScaleHeight(1, MsoTriState.msoCTrue);
             float scaleFactorHeight = oldHeight / shape.Height;
 
             shape.ScaleHeight(scaleFactorHeight, MsoTriState.msoCTrue);
 
+            shape.LockAspectRatio = isAspectRatioLocked;
             return scaleFactorHeight;
         }
 

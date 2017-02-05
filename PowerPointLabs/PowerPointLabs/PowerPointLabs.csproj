@@ -345,6 +345,8 @@
     <Compile Include="Converters\DrawingsLabConverters.cs" />
     <Compile Include="CropToAspectRatio.cs" />
     <Compile Include="CropOutPadding.cs" />
+    <Compile Include="CropsLab\CropToSame.cs" />
+    <Compile Include="CropsLab\CropToSlide.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -362,7 +364,7 @@
     </Compile>
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
-    <Compile Include="CropToShape.cs" />
+    <Compile Include="CropsLab\CropToShape.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
@@ -1457,6 +1459,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CropToAspectRatio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSame.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

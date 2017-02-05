@@ -29,11 +29,28 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 Ribbon.CropOutPaddingButtonClick(new RibbonControl("CropOutPadding"));
             });
         }
+
         public void CropToAspectRatioW1H10()
         {
             UIThreadExecutor.Execute(() =>
             {
                 Ribbon.CropToAspectRatioInput("1", "10");
+            });
+        }
+
+        public void CropToSlide()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.CropToSlideButtonClick(new RibbonControl("CropToSlide"));
+            });
+        }
+
+        public void CropToSame()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                Ribbon.CropToSameButtonClick(new RibbonControl("CropToSame"));
             });
         }
 
