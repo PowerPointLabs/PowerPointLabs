@@ -345,7 +345,6 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
-    <Compile Include="Converters\DrawingsLabConverters.cs" />
     <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
     <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
@@ -367,6 +366,10 @@
     <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
+    <Compile Include="Converters\DrawingsLab\ColorToBackgroundConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\EnumMatchToBooleanConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\FloatToStringConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\IntToStringConverter.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
