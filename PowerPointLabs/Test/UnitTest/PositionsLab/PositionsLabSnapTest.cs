@@ -101,7 +101,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -170,7 +170,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -216,7 +216,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -239,7 +239,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -262,7 +262,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -285,7 +285,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -308,7 +308,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -331,7 +331,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -355,7 +355,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -380,7 +380,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -406,7 +406,7 @@ namespace Test.UnitTest.PositionsLab
 
             CheckShapes(expectedShapes, actualShapes);
 
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
+            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
     }
 }
