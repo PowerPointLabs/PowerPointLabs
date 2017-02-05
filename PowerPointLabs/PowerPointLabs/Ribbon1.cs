@@ -247,6 +247,21 @@ namespace PowerPointLabs
             }
         }
 
+        public void RemoveHighlightButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+                RemoveHighlighting.RemoveAllHighlighting();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "RemoveHighlightButtonClick");
+                throw;
+            }
+        }
+
         public void AddInSlideAnimationButtonClick(Office.IRibbonControl control)
         {
             try
@@ -359,7 +374,12 @@ namespace PowerPointLabs
         {
             return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
-        
+
+        public string GetRemoveHighlightButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveHighlightButtonSupertip;
+        }
+
         public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonSupertip;
@@ -569,7 +589,11 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonLabel;
-        }        
+        }
+        public string GetRemoveHighlightButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.RemoveHighlightButtonLabel;
+        }
         public string GetLabsGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.LabsGroupLabel;
@@ -916,6 +940,19 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetHighlightBulletsBackgroundContextImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetRemoveHighlightImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.RemoveHighlighting);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetRemoveHighlightImage");
                 throw;
             }
         }

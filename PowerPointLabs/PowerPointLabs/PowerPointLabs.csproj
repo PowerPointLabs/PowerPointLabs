@@ -432,6 +432,7 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
+    <Compile Include="RemoveHighlighting.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassTextBoxStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassBannerStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\BannerStyleOptions.cs" />
@@ -1473,7 +1474,12 @@
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-up - Copy.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
