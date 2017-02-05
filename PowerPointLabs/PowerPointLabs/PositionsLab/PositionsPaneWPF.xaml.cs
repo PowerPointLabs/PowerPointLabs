@@ -24,6 +24,7 @@ namespace PowerPointLabs.PositionsLab
     {
         private PositionsDistributeGridDialog _positionsDistributeGridDialog;
 
+        #pragma warning disable 0618
         private static LMouseUpListener _leftMouseUpListener;
         private static LMouseDownListener _leftMouseDownListener;
         private static System.Windows.Threading.DispatcherTimer _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
