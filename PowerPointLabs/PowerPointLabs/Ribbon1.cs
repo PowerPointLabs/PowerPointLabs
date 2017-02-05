@@ -2198,7 +2198,15 @@ namespace PowerPointLabs
 
                 if (dupSlide != null)
                 {
-                    dupSlide.Delete();
+                    if (generateOnRemainder)
+                    {
+                        dupSlide.Delete();
+                    }
+                    else
+                    {
+                        dupSlide.MoveTo(curSlide.Index);
+                        curSlide.Delete();
+                    }
                 }
                 
                 PowerPointPresentation.Current.AddAckSlide();
