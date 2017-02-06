@@ -206,10 +206,14 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                bool hasCarriageReturn = textRange.Paragraphs[i].Text.EndsWith("\r");
+                int actualParagraphLength = paragraph.Length;
+                if (!paragraph.Text.EndsWith("\r"))
+                {
+                    actualParagraphLength++;
+                }
 
                 if (selectedText.Start + selectedText.Length < paragraph.Start ||
-                    selectedText.Start > paragraph.Start + paragraph.Length - 1 + (hasCarriageReturn ? 0 : 1))
+                    selectedText.Start > paragraph.Start + actualParagraphLength - 1)
                 {
                     indexList.Add(index);
                 }
