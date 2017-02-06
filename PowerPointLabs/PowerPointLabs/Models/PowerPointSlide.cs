@@ -218,10 +218,10 @@ namespace PowerPointLabs.Models
             return FromSlideFactory(duplicatedSlide);
         }
 
-        public bool HasAnimationForClick(int click)
+        public bool HasAnimationForClick(int clickNumber)
         {
             var mainSequence = _slide.TimeLine.MainSequence;
-            var effect = mainSequence.FindFirstAnimationForClick(click);
+            var effect = mainSequence.FindFirstAnimationForClick(clickNumber);
 
             return effect != null;
         }

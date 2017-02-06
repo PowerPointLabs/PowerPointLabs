@@ -99,7 +99,7 @@ namespace PowerPointLabs
                     isFirstShape = false;
                 }
 
-                if (currentSlide.HasAnimationForClick(1))
+                if (currentSlide.HasAnimationForClick(clickNumber: 1))
                 {
                     Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
                 }
