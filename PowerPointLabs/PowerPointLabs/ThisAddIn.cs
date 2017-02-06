@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Diagnostics;
-using Microsoft.Office.Tools;
-using PowerPointLabs.AutoUpdate;
-using PPExtraEventHelper;
-using System.IO.Compression;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+
+using Microsoft.Office.Tools;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
+using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+using PPExtraEventHelper;
+
 using MessageBox = System.Windows.Forms.MessageBox;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
-using PowerPointLabs.PositionsLab;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {

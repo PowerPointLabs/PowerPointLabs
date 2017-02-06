@@ -3,12 +3,13 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Threading;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.ImageAdjustment;
 using PowerPointLabs.WPF.Observable;
 using Color = System.Windows.Media.Color;
-using System.Windows.Threading;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {

@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using PowerPointLabs.DataSources;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
-using System.Drawing.Drawing2D;
-using PPExtraEventHelper;
-using Converters = PowerPointLabs.Converters;
+
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
+using PowerPointLabs.DataSources;
+using PowerPointLabs.Models;
 using PowerPointLabs.Views;
-using Microsoft.Office.Core;
+using PPExtraEventHelper;
+
+using ColorPaneConverters = PowerPointLabs.Converters.ColorPane;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
 
 namespace PowerPointLabs
 {
@@ -180,217 +183,217 @@ namespace PowerPointLabs
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorOne",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel2.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTwo",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel3.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorThree",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel4.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFour",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel5.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFive",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel6.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSix",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel7.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSeven",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel8.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorEight",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel9.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorNine",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel10.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTen",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.analogousSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.analogousLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToAnalogousLower()));
+                new ColorPaneConverters.SelectedColorToAnalogousLower()));
 
             this.analogousDarker.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToAnalogousHigher()));
+                new ColorPaneConverters.SelectedColorToAnalogousHigher()));
 
             this.complementarySelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToComplementaryColor()));
+                new ColorPaneConverters.SelectedColorToComplementaryColor()));
 
             this.complementaryLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToSplitComplementaryLower()));
+                new ColorPaneConverters.SelectedColorToSplitComplementaryLower()));
 
             this.complementaryDarker.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToSplitComplementaryHigher()));
+                new ColorPaneConverters.SelectedColorToSplitComplementaryHigher()));
 
             this.triadicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.triadicLower.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToTriadicLower()));
+                new ColorPaneConverters.SelectedColorToTriadicLower()));
 
             this.triadicHigher.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToTriadicHigher()));
+                new ColorPaneConverters.SelectedColorToTriadicHigher()));
 
             this.tetradicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.tetradic1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToTetradicOne()));
+                new ColorPaneConverters.SelectedColorToTetradicOne()));
 
             this.tetradic2.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToTetradicTwo()));
+                            new ColorPaneConverters.SelectedColorToTetradicTwo()));
 
             this.tetradic3.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToTetradicThree()));
+                            new ColorPaneConverters.SelectedColorToTetradicThree()));
 
             this.monoPanel1.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticOne()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticOne()));
 
             this.monoPanel2.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticTwo()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticTwo()));
 
             this.monoPanel3.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticThree()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticThree()));
 
             this.monoPanel4.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticFour()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticFour()));
 
             this.monoPanel5.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticFive()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticFive()));
 
             this.monoPanel6.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticSix()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticSix()));
 
             this.monoPanel7.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticSeven()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticSeven()));
 
             brightnessBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToBrightnessValue()));
+                            new ColorPaneConverters.SelectedColorToBrightnessValue()));
 
             saturationBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToSaturationValue()));
+                            new ColorPaneConverters.SelectedColorToSaturationValue()));
 
             fillButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isFillColorSelected",
-                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+                        new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
             
             lineButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isLineColorSelected",
-                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+                        new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
             
             fontButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isFontColorSelected",
-                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+                        new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
         }
 
         #endregion
