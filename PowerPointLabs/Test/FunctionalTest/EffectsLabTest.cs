@@ -17,6 +17,8 @@ namespace Test.FunctionalTest
         public void FT_EffectsLabTest()
         {
             PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", true);
+            TestRemainderEffect(46, PplFeatures.SepiaBackgroundEffect);
+            TestRemainderEffect(43, PplFeatures.BlurBackgroundEffect);
             TestRemainderEffect(40, PplFeatures.BlurBackgroundEffect);
             PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", true);
             TestRemainderEffect(37, PplFeatures.BlurRemainderEffect);
