@@ -9,12 +9,12 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Models;
 using PowerPointLabs.SpeechEngine;
 using PowerPointLabs.Views;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using PowerPointLabs.AudioMisc;
 
 namespace PowerPointLabs
 {
