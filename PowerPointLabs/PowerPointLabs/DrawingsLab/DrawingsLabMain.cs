@@ -12,8 +12,9 @@ using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+
 using Graphics = PowerPointLabs.Utils.Graphics;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.DrawingsLab
 {
