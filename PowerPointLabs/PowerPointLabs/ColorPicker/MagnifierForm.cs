@@ -56,7 +56,6 @@ namespace PowerPointLabs.ColorPicker
                 isMagInitialized = false;
                 return;
             }
-            magFilteredWindows = new List<IntPtr>();
 
             timer = new Timer();
             timer.Interval = 1000 / TIMER_FRAMES_PER_SECOND;
@@ -136,10 +135,7 @@ namespace PowerPointLabs.ColorPicker
         
         private void MagnifierForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (isMagInitialized)
-            {
-                TeardownMagnifier();
-            }
+            TeardownMagnifier();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -151,6 +147,7 @@ namespace PowerPointLabs.ColorPicker
         #region Magnifier methods
         private void SetupMagnifier()
         {
+            magFilteredWindows = new List<IntPtr>();
             IntPtr hInst = Native.GetModuleHandle(null);
 
             // Create Magnifier window
