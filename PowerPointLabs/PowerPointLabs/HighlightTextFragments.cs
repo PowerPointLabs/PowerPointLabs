@@ -98,6 +98,7 @@ namespace PowerPointLabs
             AnimateInSlide.isHighlightBullets = false;
             AnimateInSlide.isHighlightTextFragments = true;
             AnimateInSlide.AddAnimationInSlide();
+            AnimateInSlide.isHighlightTextFragments = false;
             AnimateInSlide.frameAnimationChecked = oldFrameAnimationChecked;
         }
 
