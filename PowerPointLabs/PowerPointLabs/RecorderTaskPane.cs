@@ -415,31 +415,13 @@ namespace PowerPointLabs
             // iterate through all shapes, skip audios that are not generated speech
             foreach (var shape in shapes)
             {
-                var audio = new Audio();
-
-                // detect audio type
-                switch (shape.MediaFormat.AudioSamplingRate)
+                var saveName = _tempFullPath + xmlParser.GetCorrespondingAudio(shape.Name);
+                var audio = new Audio(shape, saveName);
+                
+                if (audio.Type == Audio.AudioType.Unrecognized)
                 {
-                    case Audio.GeneratedSamplingRate:
-                        audio.Type = Audio.AudioType.Auto;
-                        break;
-                    case Audio.RecordedSamplingRate:
-                        audio.Type = Audio.AudioType.Record;
-                        break;
-                    default:
-                        MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);
-                        break;
+                    MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);
                 }
-
-                // derive matched id from shape name
-                var temp = shape.Name.Split(new[] { ' ' });
-                audio.MatchScriptID = Int32.Parse(temp[2]);
-
-                // get corresponding audio
-                audio.Name = shape.Name;
-                audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
-                audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
-                audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
 
                 // maintain a sorted audio list
                 // Note: here relativeID == slide.Index - 1

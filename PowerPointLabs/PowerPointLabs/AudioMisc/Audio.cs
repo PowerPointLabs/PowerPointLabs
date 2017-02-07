@@ -8,10 +8,14 @@ namespace PowerPointLabs.AudioMisc
 {
     internal class Audio
     {
+        // Tag key to store audio type in shape
+        private const string AudioTypeTagName = "AUDIO_TAG";
+
         public enum AudioType
         {
             Record,
-            Auto
+            Auto,
+            Unrecognized
         }
 
         public const int GeneratedSamplingRate = 22050;
@@ -39,6 +43,28 @@ namespace PowerPointLabs.AudioMisc
             LengthMillis = AudioHelper.GetAudioLength(saveName);
             Length = AudioHelper.ConvertMillisToTime(LengthMillis);
             Type = AudioHelper.GetAudioType(saveName);
+        }
+
+        public Audio(Shape shape, string saveName)
+        {
+            // detect audio type from shape tag
+            AudioType audioType;
+            MessageBox.Show(shape.Tags[AudioTypeTagName]);
+            if (!Enum.TryParse<AudioType>(shape.Tags[AudioTypeTagName], out audioType))
+            {
+                audioType = AudioType.Unrecognized;
+            }
+            this.Type = audioType;
+
+            // derive matched id from shape name
+            var temp = shape.Name.Split(new[] { ' ' });
+            this.MatchScriptID = Int32.Parse(temp[2]);
+
+            // get corresponding audio
+            this.Name = shape.Name;
+            this.SaveName = saveName;
+            this.Length = AudioHelper.GetAudioLengthString(saveName);
+            this.LengthMillis = AudioHelper.GetAudioLength(saveName);
         }
 
         // before we embed we need to check if we have any old shape on the slide. If
@@ -74,6 +100,9 @@ namespace PowerPointLabs.AudioMisc
                     slide.DeleteShapesWithPrefixTimelineInvariant(Name);
 
                     audioShape.Name = shapeName;
+                    
+                    // tag item with type
+                    audioShape.Tags.Add(AudioTypeTagName, Type.ToString());
                 }
                 catch (COMException)
                 {
