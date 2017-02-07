@@ -397,7 +397,9 @@ namespace PowerPointLabs
 
         private int _timerCounter = 0;
         private const int TIMER_COUNTER_THRESHOLD = 2;
+        private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
+        private MagnifierForm magnifier = new MagnifierForm(MAGNIFICATION_FACTOR);
 
         private void BeginEyedropping()
         {
@@ -406,6 +408,7 @@ namespace PowerPointLabs
             _timerCounter = 0;
             timer1.Start();
             PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
+            magnifier.Show();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -583,6 +586,7 @@ namespace PowerPointLabs
         void LeftMouseButtonUpEventHandler()
         {
             PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
+            magnifier.Hide();
             timer1.Stop();
             //this is to ensure that EyeDropper tool feature doesn't
             //affect Color Dialog tool feature
