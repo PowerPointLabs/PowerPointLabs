@@ -49,7 +49,6 @@ namespace PowerPointLabs.AudioMisc
         {
             // detect audio type from shape tag
             AudioType audioType;
-            MessageBox.Show(shape.Tags[AudioTypeTagName]);
             if (!Enum.TryParse<AudioType>(shape.Tags[AudioTypeTagName], out audioType))
             {
                 audioType = AudioType.Unrecognized;
