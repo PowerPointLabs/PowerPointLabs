@@ -418,7 +418,8 @@ namespace PowerPointLabs
                 var saveName = _tempFullPath + xmlParser.GetCorrespondingAudio(shape.Name);
                 Audio audio = null;
 
-                try {
+                try
+                {
                     audio = new Audio(shape, saveName);
                 }
                 catch (FormatException ex)
