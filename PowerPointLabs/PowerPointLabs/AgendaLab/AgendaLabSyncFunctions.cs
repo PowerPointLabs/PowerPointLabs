@@ -249,9 +249,10 @@ namespace PowerPointLabs.AgendaLab
 
             DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
-            candidate.CopyBackgroundColourFrom(refSlide);
             candidate.Layout = refSlide.Layout;
-            candidate.Design = refSlide.Design;
+            
+            candidate.Design = Graphics.GetDesign("Agenda Template");
+            candidate.GetNativeSlide().FollowMasterBackground = MsoTriState.msoTrue;
 
             // synchronize extra shapes other than visual items in reference slide
             var candidateSlideShapes = candidate.GetNameToShapeDictionary();
