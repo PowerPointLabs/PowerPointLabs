@@ -794,12 +794,12 @@ namespace PowerPointLabs.Utils
 
         public static Design CreateDesign(string designName)
         {
-            return Globals.ThisAddIn.Application.ActivePresentation.Designs.Add(designName);
+            return PowerPointPresentation.Current.Presentation.Designs.Add(designName);
         }
 
         public static Design GetDesign(string designName)
         {
-            foreach (Design design in Globals.ThisAddIn.Application.ActivePresentation.Designs)
+            foreach (Design design in PowerPointPresentation.Current.Presentation.Designs)
             {
                 if (design.Name.Equals(designName))
                 {
