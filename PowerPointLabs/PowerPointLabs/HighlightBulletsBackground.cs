@@ -61,7 +61,9 @@ namespace PowerPointLabs
                     bool oldValue = AnimateInSlide.frameAnimationChecked;
                     AnimateInSlide.frameAnimationChecked = false;
                     AnimateInSlide.isHighlightBullets = true;
+                    AnimateInSlide.isHighlightTextFragments = false;
                     AnimateInSlide.AddAnimationInSlide();
+                    AnimateInSlide.isHighlightBullets = false;
                     AnimateInSlide.frameAnimationChecked = oldValue;
                     PowerPointPresentation.Current.AddAckSlide();
                 }
