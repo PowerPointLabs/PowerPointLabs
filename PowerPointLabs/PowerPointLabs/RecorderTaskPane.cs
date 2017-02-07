@@ -416,8 +416,17 @@ namespace PowerPointLabs
             foreach (var shape in shapes)
             {
                 var saveName = _tempFullPath + xmlParser.GetCorrespondingAudio(shape.Name);
-                var audio = new Audio(shape, saveName);
-                
+                Audio audio = null;
+
+                try {
+                    audio = new Audio(shape, saveName);
+                }
+                catch (FormatException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    continue;
+                }
+
                 if (audio.Type == Audio.AudioType.Unrecognized)
                 {
                     MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);

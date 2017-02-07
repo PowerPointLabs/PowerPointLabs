@@ -70,6 +70,10 @@ namespace PowerPointLabs.AudioMisc
 
             // derive matched id from shape name
             var temp = shape.Name.Split(new[] { ' ' });
+            if (temp.Length < 3)
+            {
+                throw new FormatException(TextCollection.RecorderUnrecognizeAudio);
+            }
             this.MatchScriptID = Int32.Parse(temp[2]);
 
             // get corresponding audio
