@@ -677,7 +677,7 @@ namespace PowerPointLabs.Utils
 
 
                 slide.DeleteIndicator();
-                var newShapeRange = firstSlide.CopyShapesToSlide(slide.Shapes.Range());
+                var newShapeRange = firstSlide.CopyShapesToSlideWithoutOffset(slide.Shapes.Range());
                 newShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
 
 
