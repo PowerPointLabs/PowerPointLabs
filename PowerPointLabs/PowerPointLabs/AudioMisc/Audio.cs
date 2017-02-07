@@ -51,7 +51,20 @@ namespace PowerPointLabs.AudioMisc
             AudioType audioType;
             if (!Enum.TryParse<AudioType>(shape.Tags[AudioTypeTagName], out audioType))
             {
-                audioType = AudioType.Unrecognized;
+                // Maintain backwards compatibility with old audio shapes
+                // which still use sampling rate to store
+                switch (shape.MediaFormat.AudioSamplingRate)
+                {
+                    case GeneratedSamplingRate:
+                        audioType = AudioType.Auto;
+                        break;
+                    case RecordedSamplingRate:
+                        audioType = AudioType.Record;
+                        break;
+                    default:
+                        audioType = AudioType.Unrecognized;
+                        break;
+                }
             }
             this.Type = audioType;
 
