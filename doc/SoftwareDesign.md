@@ -3,8 +3,8 @@
 ![Architecture](https://raw.githubusercontent.com/PowerPointLabs/PowerPointLabs/master/doc/DesignAndConventions.png)  
 PowerPointLabs is an add-in for PowerPoint. Given above is an overview of the main components.
 
-* **Add-in Ribbon**: The UI seen by users in the PowerPoint Ribbon tabs or context menu. It consists in [`ThisAddIn.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/ThisAddIn.cs), [`Ribbon1.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.cs), and [`Ribbon1.xml`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.xml). `ThisAddIn.cs` is in charge of add-in's lifecycle and other important events. `Ribbon1.xml` defines the styles of add-in ribbon and context menu, and `Ribbon1.cs` is the entry point that routes the user requests to the UI and Logic through the Action Framework. Any changes made in `Ribbon1.cs` or `ThisAddIn.cs` should be generic enough to be used by every feature.
-* **UI**: The UI seen by users as a sidebar (AKA task pane) or window. [`WPF`](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.110).aspx) and <span style="color:gray">`Winform (deprecated)`</span> techniques are used to build the UI, and [`MVVM pattern`](https://msdn.microsoft.com/en-us/library/hh848246.aspx) is preferred to implement UI-related features. Not all features require a UI.
+* **Add-in Ribbon**: The UI seen by users in the PowerPoint Ribbon tabs or context menu. It consists in [`ThisAddIn.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/ThisAddIn.cs), [`Ribbon1.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.cs), and [`Ribbon1.xml`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.xml). `ThisAddIn.cs` is in charge of add-in's lifecycle and other important events. `Ribbon1.xml` defines the styles of add-in ribbon and context menu, and `Ribbon1.cs` is the entry point that routes the user requests to the UI and Logic through the Action Framework. **Any changes made in `Ribbon1.cs` or `ThisAddIn.cs` should be generic enough to be used by every feature**.
+* **UI**: The UI seen by users as a sidebar (AKA task pane) or window. [`WPF`](https://msdn.microsoft.com/en-us/library/mt149842(v=vs.110).aspx) and Winform (***deprecated***) techniques are used to build the UI, and [`MVVM pattern`](https://msdn.microsoft.com/en-us/library/hh848246.aspx) is preferred to implement UI-related features. Not all features require a UI.
 * **Logic**: The main part of the add-in that implements features logic.
 * **Test Driver**: PowerPointLabs relies on the test automation to prevent regression. [`Functional Test`](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/PowerPointLabs/Test) and [`Unit Test`](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/PowerPointLabs/Test) is used to automate testing against UI and Logic. [`Test data`](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/doc/test) is accessed during testing. 
 * **Storage**: PowerPointLabs generally uses `Temp` folder to store temporary data and `Documents` folder to save user data and settings.
@@ -21,6 +21,7 @@ When a request (e.g. click a button) comes to the `Ribbon`, `HandlerFactory` wil
 
 ###To create a new feature
 
+- **All new features are required to use [Action Framework](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/PowerPointLabs/PowerPointLabs/ActionFramework)**, instead of keeping putting non-generic new codes into `Ribbon1.cs`.
 - Set up [ribbon.xml](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Ribbon1.xml#L394). Provide a unique id for the ribbon control.
 ```xml
 <button id="fitToWidthShape"
@@ -45,13 +46,15 @@ The diagram below shows the structure of backend.
 
 ![Backend](https://raw.githubusercontent.com/PowerPointLabs/PowerPointLabs/master/doc/Backend.png)
 
-UI and ActionHandler can call feature logic to process the request. Test component (unit test and functional test) can call feature logic to do test-automation. Feature logic is built upon `PowerPoint Object Model`, [`other model classes`](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/PowerPointLabs/PowerPointLabs/Models), and some other components. 
+UI and ActionHandler can call feature logic to process the request. Test component (unit test and functional test) can call feature logic to do test-automation. Feature logic is built upon `PowerPoint Object Model`, [`other model classes`](https://github.com/PowerPointLabs/PowerPointLabs/tree/master/PowerPointLabs/PowerPointLabs/Models), and some other components.
+
+**For any new logic, try not to use any obsolete classes**, which may undermine the testability.
 
 ###Notes
 
 - The feature logic should be [`SOLID`](http://www.codeproject.com/Articles/703634/SOLID-architecture-principles-using-simple-Csharp) and [`testable`](http://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters), and be organized into its own package/folder.
 - For testable logic, it can be tested by `Unit Test (UT)`. For untestable/legacy/UI logic, it can be tested by `Functional Test (FT)`. Instructions of testing can be found [here](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/Test/README.md).
-- It's highly recommended to use [Logger](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/ActionFramework/Common/Log/Logger.cs) to capture significant events in features.
+- It's highly recommended to use [Logger](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/ActionFramework/Common/Log/Logger.cs) to capture significant events in features. For example, **all exceptions must be logged**.
 - It's highly recommended to model slide-level or presentation-level behaviours by extending [`PowerPointSlide.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Models/PowerPointSlide.cs) and [`PowerPointPresentation.cs`](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/PowerPointLabs/PowerPointLabs/Models/PowerPointPresentation.cs).
 
 ## Conventions
