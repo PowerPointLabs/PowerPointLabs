@@ -359,7 +359,7 @@ namespace PowerPointLabs
         {
             return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
-
+        
         public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.CustomeShapeButtonSupertip;
