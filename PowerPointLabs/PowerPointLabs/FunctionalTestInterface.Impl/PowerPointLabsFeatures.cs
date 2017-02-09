@@ -311,5 +311,10 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             get { return PositionsLabController.Instance; }
         }
+
+        public IHighlightLabController HighlightLab
+        {
+            get { return HighlightLabController.Instance; }
+        }
     }
 }

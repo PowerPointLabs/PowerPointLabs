@@ -46,5 +46,6 @@ namespace TestInterface
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }
         IPositionsLabController PositionsLab { get; }
+        IHighlightLabController HighlightLab { get; }
     }
 }
