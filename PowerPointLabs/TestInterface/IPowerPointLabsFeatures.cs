@@ -21,7 +21,6 @@ namespace TestInterface
         void HighlightPoints();
         void HighlightBackground();
         void HighlightFragments();
-        void RemoveHighlight();
         void AutoNarrate();
 
         // Agenda Lab
@@ -47,5 +46,6 @@ namespace TestInterface
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }
         IPositionsLabController PositionsLab { get; }
+        IHighlightLabController HighlightLab { get; }
     }
 }

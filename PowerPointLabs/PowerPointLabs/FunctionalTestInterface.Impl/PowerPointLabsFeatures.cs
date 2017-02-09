@@ -143,14 +143,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void RemoveHighlight()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.RemoveHighlightButtonClick(new RibbonControl("RemoveHighlight"));
-            });
-        }
-
         public void HighlightFragments()
         {
             UIThreadExecutor.Execute(() =>
@@ -318,6 +310,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public IPositionsLabController PositionsLab
         {
             get { return PositionsLabController.Instance; }
+        }
+
+        public IHighlightLabController HighlightLab
+        {
+            get { return HighlightLabController.Instance; }
         }
     }
 }

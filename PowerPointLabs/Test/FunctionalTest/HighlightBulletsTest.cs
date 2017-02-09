@@ -55,7 +55,8 @@ namespace Test.FunctionalTest
         private void RemoveHighlightAndCompare(int testSlideNo, int expectedSlideNo)
         {
             PpOperations.SelectSlide(testSlideNo);
-            PplFeatures.RemoveHighlight();
+            var highlightLab = PplFeatures.HighlightLab;
+            highlightLab.RemoveHighlighting();
             AssertIsSame(testSlideNo, expectedSlideNo);
         }
 

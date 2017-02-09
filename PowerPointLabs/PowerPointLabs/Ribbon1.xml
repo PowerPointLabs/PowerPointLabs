@@ -179,11 +179,11 @@
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>
           <button id="RemoveHighlightButton"
-                  getLabel="GetRemoveHighlightButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getImage="GetRemoveHighlightImage"
-                  getSupertip="GetRemoveHighlightButtonSupertip"
-                  onAction="RemoveHighlightButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>
