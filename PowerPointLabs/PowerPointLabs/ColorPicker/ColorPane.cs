@@ -410,6 +410,7 @@ namespace PowerPointLabs
 
             _timerCounter = 0;
             timer1.Start();
+            Cursor.Current = eyeDropperCursor;
             PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
             magnifier.Show();
         }
@@ -424,8 +425,7 @@ namespace PowerPointLabs
                 return;
             }
             _timerCounter++;
-
-            Cursor.Current = eyeDropperCursor;
+            
             System.Drawing.Point mousePos = Control.MousePosition;
             IntPtr deviceContext = Native.GetDC(IntPtr.Zero);
             if (currMode == MODE.NONE)
@@ -789,12 +789,7 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseEnter(object sender, EventArgs e)
         {
-            if (sender is Button)
-            {
-                Button button = sender as Button;
-                button.Cursor = openHandCursor;
-            }
-            else if (sender is Panel)
+            if (sender is Panel)
             {
                 Panel panel = sender as Panel;
                 panel.Cursor = openHandCursor;
@@ -1028,11 +1023,7 @@ namespace PowerPointLabs
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
         {
             string buttonName = "";
-            if (sender is Button)
-            {
-                buttonName = ((Button)sender).Name;
-            }
-            else if (sender is Panel)
+            if (sender is Panel)
             {
                 buttonName = ((Panel)sender).Name;
             }
@@ -1163,11 +1154,7 @@ namespace PowerPointLabs
             if (e.Button != MouseButtons.Left) return;
 
             string buttonName = "";
-            if (sender is Button)
-            {
-                buttonName = ((Button)sender).Name;
-            } 
-            else if (sender is Panel)
+            if (sender is Panel)
             {
                 buttonName = ((Panel)sender).Name;
             }
@@ -1203,17 +1190,17 @@ namespace PowerPointLabs
             return panel1;
         }
 
-        public Button GetFontColorButton()
+        public Panel GetFontColorButton()
         {
             return fontButton;
         }
 
-        public Button GetLineColorButton()
+        public Panel GetLineColorButton()
         {
             return lineButton;
         }
 
-        public Button GetFillCollorButton()
+        public Panel GetFillColorButton()
         {
             return fillButton;
         }

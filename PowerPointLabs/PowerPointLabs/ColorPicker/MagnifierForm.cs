@@ -10,7 +10,6 @@ namespace PowerPointLabs.ColorPicker
 {
     public partial class MagnifierForm : Form
     {
-        private const int TIMER_FRAMES_PER_SECOND = 50;
         private const int OVERLAY_OUTLINE_SIZE = 2;
 
         private MagnifierOverlay overlay;
@@ -58,7 +57,7 @@ namespace PowerPointLabs.ColorPicker
             }
 
             timer = new Timer();
-            timer.Interval = 1000 / TIMER_FRAMES_PER_SECOND;
+            timer.Interval = 100;
             timer.Tick += new EventHandler(Timer_Tick);
 
             overlay = new MagnifierOverlay(Width, Height);
