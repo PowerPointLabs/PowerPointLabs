@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace PowerPointLabs.CropsLab
+namespace PowerPointLabs.CropLab
 {
     /// <summary>
     /// Interaction logic for CustomAspectRatioDialog.xaml

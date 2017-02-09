@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.CropLab
 {
     public class CropOutPadding
     {

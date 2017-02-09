@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using System.Text.RegularExpressions;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -1869,7 +1872,7 @@ namespace PowerPointLabs
 
         public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
         {
-            var dialog = new CropsLab.CustomAspectRatioDialog();
+            var dialog = new CustomAspectRatioDialog();
             dialog.ShowDialog();
         }
 
