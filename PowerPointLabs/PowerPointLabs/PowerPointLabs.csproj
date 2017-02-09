@@ -635,6 +635,7 @@
     <Compile Include="PPExtraEventHelper\LMouseUpListener.cs" />
     <Compile Include="PPExtraEventHelper\SysMouseEventInfo.cs" />
     <Compile Include="PPExtraEventHelper\PPMouseLegacy.cs" />
+    <Compile Include="RemoveHighlighting.cs" />
     <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
       <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
     </Compile>

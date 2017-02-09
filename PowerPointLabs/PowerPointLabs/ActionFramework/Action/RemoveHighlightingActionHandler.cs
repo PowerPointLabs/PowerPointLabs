@@ -11,17 +11,7 @@ namespace PowerPointLabs.ActionFramework.Action
         protected override void ExecuteAction(string ribbonId)
         {
             this.GetApplication().StartNewUndoEntry();
-            var currentSlide = this.GetCurrentSlide();
-            currentSlide.DeleteIndicator();
-            currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
-            currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightTextFragmentsShape");
-            foreach (Shape sh in currentSlide.Shapes)
-            {
-                if (sh.Name.Contains("HighlightTextShape"))
-                {
-                    currentSlide.DeleteShapeAnimations(sh);
-                }
-            }
+            RemoveHighlighting.RemoveHighlight(this.GetCurrentSlide());
         }
     }
 }
