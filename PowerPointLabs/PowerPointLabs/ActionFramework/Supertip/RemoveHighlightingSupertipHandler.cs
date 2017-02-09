@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Supertip
 {
     [ExportSupertipRibbonId("RemoveHighlightButton")]
-    class RemoveHighlightSupertipHandler : SupertipHandler
+    class RemoveHighlightingSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {

@@ -313,7 +313,7 @@
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\RemoveHighlightSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
@@ -437,7 +437,6 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
-    <Compile Include="RemoveHighlighting.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassTextBoxStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassBannerStyleOptions.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\BannerStyleOptions.cs" />
