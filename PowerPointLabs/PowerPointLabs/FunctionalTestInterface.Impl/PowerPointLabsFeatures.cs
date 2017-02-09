@@ -143,14 +143,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void RemoveHighlight()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.RemoveHighlightButtonClick(new RibbonControl("RemoveHighlight"));
-            });
-        }
-
         public void HighlightFragments()
         {
             UIThreadExecutor.Execute(() =>
