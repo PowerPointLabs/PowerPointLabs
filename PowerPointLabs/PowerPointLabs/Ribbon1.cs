@@ -1869,7 +1869,7 @@ namespace PowerPointLabs
 
         public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
         {
-            var dialog = new CropToAspectRatioDialogBox();
+            var dialog = new CropsLab.CustomAspectRatioDialog();
             dialog.ShowDialog();
         }
 
