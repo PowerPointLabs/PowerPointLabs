@@ -569,7 +569,7 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonLabel;
-        }
+        }        
         public string GetLabsGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.LabsGroupLabel;
@@ -919,6 +919,7 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
         public Bitmap GetZoomInImage(Office.IRibbonControl control)
         {
             try
