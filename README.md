@@ -53,18 +53,18 @@ AgendaLab | Syed |  | Shunhao, Huang Da
 AnimationLab (d) | Ian |  | Raunak
 CaptionsLab | Kenneth |  | Jerome
 ColorsLab | Ian |  | Karan
-CropLab | Jamos |  | Raunak
+CropLab | Jamos | Heng Le | Raunak
 EffectsLab | Heng Le |  | Fiona
 HighlightLab | Syed |  | Karan
-NarrationsLab | Ken |  | Jerome
+NarrationsLab | Kenneth |  | Jerome
 PasteLab | Syed |  |
 PictureSlideLab | Shi Ya |  | Xie Kai
-PositionsLab | Jamos |  | Oswell
+PositionsLab | Jamos |  | Oswell, Victor
 ResizeLab | Min Oo | Yu Ting |  
-ShapesLab (d) | Heng Le |  | Huang Da
+ShapesLab (d) | Ian | Kenneth | Huang Da
 ShortcutsLab |  |  | Raunak
-SyncLab | Kenneth |  |
-ZoomLab |  |  | Raunak
+SyncLab | Kenneth | Ian |
+ZoomLab | Shi Ya |  | Raunak
 
 Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
 
