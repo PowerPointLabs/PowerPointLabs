@@ -49,21 +49,21 @@ UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
 
 Feature  | Lead | Co-Lead | Past Leads
 -----|------|---------|-----|
-AgendaLab |  |  | Shunhao, Huang Da
-AnimationLab (d) |  |  | Raunak
-CaptionsLab |  |  | Jerome
-ColorsLab |  |  | Karan
-CropLab |  |  | Raunak
-EffectsLab |  |  | Fiona
-HighlightLab |  |  | Karan
-NarrationsLab |  |  | Jerome
-PasteLab |  |  |
-PictureSlideLab |  |  | Xie Kai
-PositionsLab | Victor |  | Oswell
+AgendaLab | Syed |  | Shunhao, Huang Da
+AnimationLab (d) | Ian |  | Raunak
+CaptionsLab | Kenneth |  | Jerome
+ColorsLab | Ian |  | Karan
+CropLab | Jamos |  | Raunak
+EffectsLab | Heng Le |  | Fiona
+HighlightLab | Syed |  | Karan
+NarrationsLab | Ken |  | Jerome
+PasteLab | Syed |  |
+PictureSlideLab | Shi Ya |  | Xie Kai
+PositionsLab | Jamos |  | Oswell
 ResizeLab | Min Oo | Yu Ting |  
-ShapesLab (d) |  |  | Huang Da
+ShapesLab (d) | Heng Le |  | Huang Da
 ShortcutsLab |  |  | Raunak
-SyncLab |  |  |
+SyncLab | Kenneth |  |
 ZoomLab |  |  | Raunak
 
 Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
