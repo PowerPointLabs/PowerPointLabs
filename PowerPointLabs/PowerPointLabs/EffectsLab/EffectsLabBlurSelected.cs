@@ -88,6 +88,61 @@ namespace PowerPointLabs.EffectsLab
             }
         }
 
+        public static void BlurImage(string imageFile, int percentage)
+        {
+            if (percentage != 0)
+            {
+                var degree = 50 + (percentage / 2);
+
+                using (var imageFactory = new ImageFactory())
+                {
+                    var loadedImageFactory = imageFactory.Load(imageFile);
+                    var image = loadedImageFactory.Image;
+                    var originalWidth = image.Width;
+                    var originalHeight = image.Height;
+
+                    var ratio = (float)originalWidth / originalHeight;
+                    var targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * degree);
+                    var targetWidth = Math.Round(targetHeight * ratio);
+
+                    loadedImageFactory
+                        .Resize(new Size((int)targetWidth, (int)targetHeight))
+                        .GaussianBlur(5)
+                        .Resize(new ResizeLayer(new Size(originalWidth, originalHeight), resizeMode: ResizeMode.Stretch))
+                        .Save(imageFile);
+                }
+            }
+        }
+
+        public static PowerPoint.Shape GenerateOverlayShape(Models.PowerPointSlide slide, PowerPoint.Shape blurShape)
+        {
+            PowerPoint.Shape overlayShape = null;
+
+            if (blurShape.Type == Office.MsoShapeType.msoPicture)
+            {
+                overlayShape = slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, blurShape.Left, blurShape.Top, blurShape.Width,
+                    blurShape.Height);
+                overlayShape.Rotation = blurShape.Rotation;
+            }
+            else
+            {
+                overlayShape = DuplicateShapeInPlace(blurShape);
+            }
+
+            Utils.Graphics.MoveZToJustInFront(overlayShape, blurShape);
+
+            var rgb = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
+
+            overlayShape.Fill.Solid();
+            overlayShape.Fill.ForeColor.RGB = rgb;
+            overlayShape.Fill.Transparency = Transparency;
+            overlayShape.Line.ForeColor.RGB = rgb;
+            overlayShape.Line.Transparency = Transparency;
+            overlayShape.Line.Visible = Office.MsoTriState.msoFalse;
+
+            return overlayShape;
+        }
+
         public static bool IsValidSelection(PowerPoint.Selection selection)
         {
             if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
@@ -243,61 +298,6 @@ namespace PowerPointLabs.EffectsLab
             }
 
             return shapeNames[0];
-        }
-
-        public static void BlurImage(string imageFile, int percentage)
-        {
-            if (percentage != 0)
-            {
-                var degree = 50 + (percentage / 2);
-
-                using (var imageFactory = new ImageFactory())
-                {
-                    var loadedImageFactory = imageFactory.Load(imageFile);
-                    var image = loadedImageFactory.Image;
-                    var originalWidth = image.Width;
-                    var originalHeight = image.Height;
-
-                    var ratio = (float)originalWidth / originalHeight;
-                    var targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * degree);
-                    var targetWidth = Math.Round(targetHeight * ratio);
-
-                    loadedImageFactory
-                        .Resize(new Size((int)targetWidth, (int)targetHeight))
-                        .GaussianBlur(5)
-                        .Resize(new ResizeLayer(new Size(originalWidth, originalHeight), resizeMode: ResizeMode.Stretch))
-                        .Save(imageFile);
-                }
-            }
-        }
-
-        public static PowerPoint.Shape GenerateOverlayShape(Models.PowerPointSlide slide, PowerPoint.Shape blurShape)
-        {
-            PowerPoint.Shape overlayShape = null;
-            
-            if (blurShape.Type == Office.MsoShapeType.msoPicture)
-            {
-                overlayShape = slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, blurShape.Left, blurShape.Top, blurShape.Width,
-                    blurShape.Height);
-                overlayShape.Rotation = blurShape.Rotation;
-            }
-            else
-            {
-                overlayShape = DuplicateShapeInPlace(blurShape);
-            }
-
-            Utils.Graphics.MoveZToJustInFront(overlayShape, blurShape);
-
-            var rgb = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
-
-            overlayShape.Fill.Solid();
-            overlayShape.Fill.ForeColor.RGB = rgb;
-            overlayShape.Fill.Transparency = Transparency;
-            overlayShape.Line.ForeColor.RGB = rgb;
-            overlayShape.Line.Transparency = Transparency;
-            overlayShape.Line.Visible = Office.MsoTriState.msoFalse;
-
-            return overlayShape;
         }
 
         private static PowerPoint.Shape DuplicateShapeInPlace(PowerPoint.Shape shape)
