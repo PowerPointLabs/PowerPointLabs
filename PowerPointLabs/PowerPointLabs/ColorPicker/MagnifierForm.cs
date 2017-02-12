@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
+using PowerPointLabs.ActionFramework.Common.Log;
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.ColorPicker
@@ -48,9 +49,10 @@ namespace PowerPointLabs.ColorPicker
                     SetupMagnifier();
                 }
             }
-            catch
+            catch (Exception e)
             {
                 // Windows XP does not support Magnifier
+                Logger.LogException(e, "MagnifierForm");
                 TeardownMagnifier();
                 isMagInitialized = false;
                 return;
@@ -161,7 +163,8 @@ namespace PowerPointLabs.ColorPicker
 
             if (hwndMag == IntPtr.Zero)
             {
-                throw new Exception();
+                string errorMsg = "Create MagnifierWindow failed. Insufficient heap or handle table entries.";
+                throw new OutOfMemoryException(errorMsg);
             }
 
             // Set the magnification factor
