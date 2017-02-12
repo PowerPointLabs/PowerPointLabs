@@ -103,119 +103,6 @@ namespace PowerPointLabs
             return audioList;
         }
 
-        /// <summary>
-        /// This function will embed the auto generated speech to the current slide.
-        /// File names of generated audios will be returned.
-        /// </summary>
-        /// <param name="slide">Current slide reference.</param>
-        /// <returns>An array of auto generated audios' name.</returns>
-        private static string[] EmbedSlideNotes(PowerPointSlide slide)
-        {
-            String folderPath = Path.GetTempPath() + TempFolderName;
-            String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
-            
-            Directory.CreateDirectory(folderPath);
-            
-            // TODO:
-            // obviously deleting all audios in current slide may not a good idea, some lines of script
-            // may still be the same. Check the line first before deleting, if the line has not been
-            // changed, leave the audio.
-
-            // to avoid duplicate records, delete all old audios in the current slide
-            var audiosInCurrentSlide = Directory.GetFiles(folderPath);
-            foreach (var audio in audiosInCurrentSlide)
-            {
-                if (audio.Contains(fileNameSearchPattern))
-                {
-                    try
-                    {
-                        File.Delete(audio);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogException(e, "Failed to delete audio, it may be still playing. " + e.Message);
-                    }
-                }
-            }
-
-            bool isSaveSuccessful = OutputSlideNotesToFiles(slide, folderPath);
-            string[] audioFiles = null;
-            
-            if (isSaveSuccessful)
-            {
-                slide.DeleteShapesWithPrefix(SpeechShapePrefix);
-
-                audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
-
-                for (int i = 0; i < audioFiles.Length; i++)
-                {
-                    String fileName = audioFiles[i];
-                    bool isOnClick = fileName.Contains("OnClick");
-
-                    try
-                    {
-                        Shape audioShape = InsertAudioFileOnSlide(slide, fileName);
-                        audioShape.Name = String.Format("PowerPointLabs Speech {0}", i);
-                        slide.RemoveAnimationsForShape(audioShape);
-
-                        if (isOnClick)
-                        {
-                            slide.SetShapeAsClickTriggered(audioShape, i, MsoAnimEffect.msoAnimEffectMediaPlay);
-                        }
-                        else
-                        {
-                            slide.SetAudioAsAutoplay(audioShape);
-                        }
-                    }
-                    catch (COMException)
-                    {
-                        // Adding the file failed for one reason or another - probably cancelled by the user.
-                    }
-                }
-            }
-
-            return audioFiles;
-        }
-
-        private static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
-        {
-            float slideWidth = PowerPointPresentation.Current.SlideWidth;
-
-            Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
-            slide.RemoveAnimationsForShape(audioShape);
-
-            return audioShape;
-        }
-
-        private static string[] GetAudioFilePaths(string folderPath, string fileNameSearchPattern)
-        {
-            var filePaths = Directory.EnumerateFiles(folderPath, "*." + Audio.RecordedFormatExtension);
-            var comparer = new Utils.Comparers.AtomicNumberStringCompare();
-            var audioFiles =
-                filePaths.Where(path => path.Contains(fileNameSearchPattern)).OrderBy(x => new FileInfo(x).Name,
-                                                                                      comparer).ToArray();
-            
-            return audioFiles;
-        }
-
-        private static void SpeakText(string textToSpeak)
-        {
-            try
-            {
-                TextToSpeech.SpeakString(textToSpeak);
-            }
-            catch (InvalidOperationException)
-            {
-                ErrorParsingText();
-            }
-        }
-
-        private static void ErrorParsingText()
-        {
-            MessageBox.Show("Have you added the correct closing tags? \n(Speed and Gender text ranges can't overlap.)", "Couldn't Parse Text",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
         public static bool OutputSlideNotesToFiles(PowerPointSlide slide, String folderPath)
         {
             try
@@ -297,6 +184,120 @@ namespace PowerPointLabs
                 
                 selectedShape.Delete();
             }
+        }
+
+
+        /// <summary>
+        /// This function will embed the auto generated speech to the current slide.
+        /// File names of generated audios will be returned.
+        /// </summary>
+        /// <param name="slide">Current slide reference.</param>
+        /// <returns>An array of auto generated audios' name.</returns>
+        private static string[] EmbedSlideNotes(PowerPointSlide slide)
+        {
+            String folderPath = Path.GetTempPath() + TempFolderName;
+            String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
+
+            Directory.CreateDirectory(folderPath);
+
+            // TODO:
+            // obviously deleting all audios in current slide may not a good idea, some lines of script
+            // may still be the same. Check the line first before deleting, if the line has not been
+            // changed, leave the audio.
+
+            // to avoid duplicate records, delete all old audios in the current slide
+            var audiosInCurrentSlide = Directory.GetFiles(folderPath);
+            foreach (var audio in audiosInCurrentSlide)
+            {
+                if (audio.Contains(fileNameSearchPattern))
+                {
+                    try
+                    {
+                        File.Delete(audio);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogException(e, "Failed to delete audio, it may be still playing. " + e.Message);
+                    }
+                }
+            }
+
+            bool isSaveSuccessful = OutputSlideNotesToFiles(slide, folderPath);
+            string[] audioFiles = null;
+
+            if (isSaveSuccessful)
+            {
+                slide.DeleteShapesWithPrefix(SpeechShapePrefix);
+
+                audioFiles = GetAudioFilePaths(folderPath, fileNameSearchPattern);
+
+                for (int i = 0; i < audioFiles.Length; i++)
+                {
+                    String fileName = audioFiles[i];
+                    bool isOnClick = fileName.Contains("OnClick");
+
+                    try
+                    {
+                        Shape audioShape = InsertAudioFileOnSlide(slide, fileName);
+                        audioShape.Name = String.Format("PowerPointLabs Speech {0}", i);
+                        slide.RemoveAnimationsForShape(audioShape);
+
+                        if (isOnClick)
+                        {
+                            slide.SetShapeAsClickTriggered(audioShape, i, MsoAnimEffect.msoAnimEffectMediaPlay);
+                        }
+                        else
+                        {
+                            slide.SetAudioAsAutoplay(audioShape);
+                        }
+                    }
+                    catch (COMException)
+                    {
+                        // Adding the file failed for one reason or another - probably cancelled by the user.
+                    }
+                }
+            }
+
+            return audioFiles;
+        }
+
+        private static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
+        {
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+
+            Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
+            slide.RemoveAnimationsForShape(audioShape);
+
+            return audioShape;
+        }
+
+        private static string[] GetAudioFilePaths(string folderPath, string fileNameSearchPattern)
+        {
+            var filePaths = Directory.EnumerateFiles(folderPath, "*." + Audio.RecordedFormatExtension);
+            var comparer = new Utils.Comparers.AtomicNumberStringCompare();
+            var audioFiles =
+                filePaths.Where(path => path.Contains(fileNameSearchPattern)).OrderBy(x => new FileInfo(x).Name,
+                                                                                      comparer).ToArray();
+
+            return audioFiles;
+        }
+
+        private static void SpeakText(string textToSpeak)
+        {
+            try
+            {
+                TextToSpeech.SpeakString(textToSpeak);
+            }
+            catch (InvalidOperationException)
+            {
+                ErrorParsingText();
+            }
+        }
+
+        private static void ErrorParsingText()
+        {
+            MessageBox.Show("Have you added the correct closing tags? \n(Speed and Gender text ranges can't overlap.)", "Couldn't Parse Text",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
