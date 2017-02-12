@@ -276,11 +276,13 @@
     <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
     <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\EnabledHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\BaseActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\CheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\EnabledHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Interface\ContentHandler.cs" />
@@ -289,6 +291,7 @@
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
