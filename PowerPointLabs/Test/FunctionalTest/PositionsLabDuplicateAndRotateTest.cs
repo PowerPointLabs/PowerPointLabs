@@ -37,7 +37,7 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_PositionsLabDuplcateAndRotateTest()
+        public void FT_PositionsLabDuplicateAndRotateTest()
         {
             PpOperations.MaximizeWindow();
             var positionsLab = PplFeatures.PositionsLab;
