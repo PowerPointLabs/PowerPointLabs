@@ -503,6 +503,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap CropLab {
+            get {
+                object obj = ResourceManager.GetObject("CropLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap CropOutPadding {
             get {
                 object obj = ResourceManager.GetObject("CropOutPadding", resourceCulture);
@@ -513,9 +523,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CropToSame {
+        public static System.Drawing.Bitmap CropToAspectRatio {
             get {
-                object obj = ResourceManager.GetObject("CropToSame", resourceCulture);
+                object obj = ResourceManager.GetObject("CropToAspectRatio", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -523,9 +533,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CropToAspectRatio {
+        public static System.Drawing.Bitmap CropToSame {
             get {
-                object obj = ResourceManager.GetObject("CropToAspectRatio", resourceCulture);
+                object obj = ResourceManager.GetObject("CropToSame", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -546,16 +556,6 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap CutOutShape {
             get {
                 object obj = ResourceManager.GetObject("CutOutShape", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap CutOutShapeMenu {
-            get {
-                object obj = ResourceManager.GetObject("CutOutShapeMenu", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

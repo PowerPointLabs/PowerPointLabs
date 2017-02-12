@@ -1035,6 +1035,20 @@ namespace PowerPointLabs
                 throw;
             }
         }
+
+        public Bitmap GetCropLabMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropLabMenuImage");
+                throw;
+            }
+        }
+
         public Bitmap GetCropShapeImage(Office.IRibbonControl control)
         {
             try
@@ -1837,9 +1851,9 @@ namespace PowerPointLabs
            
         }
 
-        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        public Bitmap GetCutOutShapeImage(Office.IRibbonControl control)
         {
-            return CropToShape.GetCutOutShapeMenuImage(control);
+            return CropToShape.GetCutOutShapeImage(control);
         }
 
         #endregion

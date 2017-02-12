@@ -340,11 +340,11 @@ namespace PowerPointLabs.CropLab
             }
         }
 
-        public static Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        public static Bitmap GetCutOutShapeImage(Office.IRibbonControl control)
         {
             try
             {
-                return new Bitmap(Properties.Resources.CutOutShapeMenu);
+                return new Bitmap(Properties.Resources.CutOutShape);
             }
             catch (Exception e)
             {
