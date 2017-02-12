@@ -17,6 +17,7 @@ using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.HighlightLab;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
