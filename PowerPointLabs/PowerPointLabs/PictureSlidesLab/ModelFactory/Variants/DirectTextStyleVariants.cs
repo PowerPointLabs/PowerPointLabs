@@ -9,17 +9,17 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
     [Export(typeof(IStyleVariants))]
     class DirectTextStyleVariants : BaseStyleVariants
     {
+        public override string GetStyleName()
+        {
+            return TextCollection.PictureSlidesLabText.StyleNameDirectText;
+        }
+
         protected override IList<IVariantWorker> GetRequiredVariantWorkers()
         {
             return new List<IVariantWorker>
             {
                 new BrightnessVariantWorker()
             };
-        }
-
-        public override string GetStyleName()
-        {
-            return TextCollection.PictureSlidesLabText.StyleNameDirectText;
         }
     }
 }

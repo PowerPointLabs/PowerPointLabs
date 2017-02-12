@@ -16,15 +16,15 @@ namespace PowerPointLabs.DataSources
             None,
         }
 
+        public Action sourcePropertyChangeEvent = () => { };
+        public Action targetPropertyChangeEvent = () => { };
+
         private const float Max = 100;
         private const float Mid = 50;
         private const float Min = 0;
 
         private float sourceAnchor = Mid; // between 0 and 100
         private float targetAnchor = Mid; // between 0 and 100
-
-        public Action sourcePropertyChangeEvent = () => { };
-        public Action targetPropertyChangeEvent = () => { };
 
         public float SourceAnchor
         {
@@ -71,6 +71,15 @@ namespace PowerPointLabs.DataSources
                 TargetOnPropertyChanged();
             }
         }
+
+        #region Event Implementation
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+        # endregion
 
         #region Helper Functions
         private void PositionEnumToAnchor(Position value, ref float anchor)
@@ -120,14 +129,5 @@ namespace PowerPointLabs.DataSources
             targetPropertyChangeEvent();
         }
         #endregion
-
-        # region Event Implementation
-        public event PropertyChangedEventHandler PropertyChanged = delegate {};
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-        # endregion
     }
 }
