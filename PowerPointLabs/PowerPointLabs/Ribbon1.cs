@@ -12,12 +12,13 @@ using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
+using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.HighlightLab;
 
 // Follow these steps to enable the Ribbon (XML) item:
 

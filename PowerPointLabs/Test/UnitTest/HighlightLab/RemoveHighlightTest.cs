@@ -6,7 +6,7 @@ using PowerPointLabs.Models;
 namespace Test.UnitTest.HighlightLab
 {
     [TestClass]
-    public class RemoveHighlightTest : BaseHighlightLabTest
+    public class RemoveHighlightTest : BaseUnitTest
     {
         protected override string GetTestingSlideName()
         {
