@@ -37,7 +37,7 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_PositionsLabDuplcateAndRotateTest()
+        public void FT_PositionsLabDuplicateAndRotateTest()
         {
             PpOperations.MaximizeWindow();
             var positionsLab = PplFeatures.PositionsLab;
@@ -133,8 +133,10 @@ namespace Test.FunctionalTest
                 PpOperations.PointsToScreenPixelsY(to.Top + to.Height/2));
             DragAndDrop(startPt, endPt);
 
-            //Need to click away to end rotate
-            MouseUtil.SendMouseLeftClick(0, 0);
+            //Need to click away to end rotate. A safe place is the top left of slide.
+            int slideTopLeftX = PpOperations.PointsToScreenPixelsX(0);
+            int slideTopLeftY = PpOperations.PointsToScreenPixelsY(0);
+            MouseUtil.SendMouseLeftClick(slideTopLeftX, slideTopLeftY);
         }
 
         private void DragAndDrop(Point startPt, Point endPt)
