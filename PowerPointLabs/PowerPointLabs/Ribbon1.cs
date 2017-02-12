@@ -45,6 +45,8 @@ namespace PowerPointLabs
         #region Action Framework Factory
         private ActionHandlerFactory ActionHandlerFactory { get; set; }
 
+        private EnabledHandlerFactory EnabledHandlerFactory { get; set; }
+
         private LabelHandlerFactory LabelHandlerFactory { get; set; }
 
         private ImageHandlerFactory ImageHandlerFactory { get; set; }
@@ -64,6 +66,12 @@ namespace PowerPointLabs
         {
             var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             actionHandler.Execute(control.Id);
+        }
+
+        public bool GetEnabled(Office.IRibbonControl control)
+        {
+            var enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return enabledHandler.Get(control.Id);
         }
 
         public string GetLabel(Office.IRibbonControl control)
@@ -151,6 +159,7 @@ namespace PowerPointLabs
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
             ActionHandlerFactory = new ActionHandlerFactory();
+            EnabledHandlerFactory = new EnabledHandlerFactory();
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
