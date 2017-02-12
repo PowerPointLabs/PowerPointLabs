@@ -22,6 +22,28 @@ namespace PowerPointLabs.ColorPicker
             SetUpUI();
         }
 
+        #region Functional Test method
+        public string GetHslText()
+        {
+            return hslTextBox.Text;
+        }
+
+        public string GetRgbText()
+        {
+            return rgbTextBox.Text;
+        }
+
+        public string GetHexText()
+        {
+            return hexTextBox.Text;
+        }
+
+        public void TearDown()
+        {
+            Close();
+        }
+        # endregion
+
         private void TextBox_Enter(object sender, EventArgs e)
         {
             var textBox = (TextBox) sender;
@@ -82,27 +104,5 @@ namespace PowerPointLabs.ColorPicker
             string hex = BitConverter.ToString(ba);
             return hex.Replace("-", "");
         }
-
-        #region Functional Test method
-        public string GetHslText()
-        {
-            return hslTextBox.Text;
-        }
-
-        public string GetRgbText()
-        {
-            return rgbTextBox.Text;
-        }
-
-        public string GetHexText()
-        {
-            return hexTextBox.Text;
-        }
-
-        public void TearDown()
-        {
-            Close();
-        }
-        # endregion
     }
 }

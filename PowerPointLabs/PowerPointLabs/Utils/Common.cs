@@ -90,21 +90,6 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Works like a hashcode function, but returns a digit string.
-        /// Except that hashcode isn't consistent across all platforms / implementations. This is.
-        /// </summary>
-        private static string ComputeCheckSum(string s)
-        {
-            uint x = 0;
-            foreach (var c in s)
-            {
-                x += c;
-                x *= 565325351;
-            }
-            return x.ToString();
-        }
-
-        /// <summary>
         /// Generates a unique string of digits to be used in slide names.
         /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
         /// DateTimeNow.ToString guaranteed to be unique across different powerpoint sessions.
@@ -138,6 +123,33 @@ namespace PowerPointLabs.Utils
             return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
         }
 
+        #region Math
+        /// <summary>
+        /// Computes ceil(dividend / divisor)
+        /// </summary>
+        public static int CeilingDivide(int dividend, int divisor)
+        {
+            return (dividend + divisor - 1) / divisor;
+        }
+
+
+        # endregion
+
+        /// <summary>
+        /// Works like a hashcode function, but returns a digit string.
+        /// Except that hashcode isn't consistent across all platforms / implementations. This is.
+        /// </summary>
+        private static string ComputeCheckSum(string s)
+        {
+            uint x = 0;
+            foreach (var c in s)
+            {
+                x += c;
+                x *= 565325351;
+            }
+            return x.ToString();
+        }
+
         # region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
@@ -163,19 +175,6 @@ namespace PowerPointLabs.Utils
 
             return min + 1;
         }
-        # endregion
-
-
-        # region Math
-        /// <summary>
-        /// Computes ceil(dividend / divisor)
-        /// </summary>
-        public static int CeilingDivide(int dividend, int divisor)
-        {
-            return (dividend + divisor - 1)/divisor;
-        }
-
-
         # endregion
     }
 }

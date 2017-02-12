@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -18,10 +19,9 @@ using PPExtraEventHelper;
 using ColorPaneConverters = PowerPointLabs.Converters.ColorPane;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-
 namespace PowerPointLabs
 {
-
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     public partial class ColorPane : UserControl
     {
 #pragma warning disable 0618
