@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
-using PowerPointLabs;
+using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 
 namespace Test.UnitTest.HighlightLab

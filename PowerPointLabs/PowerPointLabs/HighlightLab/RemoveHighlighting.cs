@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.HighlightLab
 {
     public class RemoveHighlighting
     {
