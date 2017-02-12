@@ -28,6 +28,32 @@ namespace PPExtraEventHelper
             }
         }
 
+        public void Close()
+        {
+            if (_hook != IntPtr.Zero)
+            {
+                Native.UnhookWindowsHookEx(_hook);
+            }
+        }
+        public static string GetWindowTextRaw(IntPtr hwnd)
+        {
+            // Allocate correct string length first
+            int length = (int)Native.SendMessage(
+                hwnd,
+                (int)Native.Message.WM_GETTEXTLENGTH,
+                IntPtr.Zero,
+                IntPtr.Zero);
+
+            StringBuilder sb = new StringBuilder(length);
+            Native.SendMessage(
+                hwnd,
+                (int)Native.Message.WM_GETTEXT,
+                (IntPtr)sb.Capacity,
+                sb);
+
+            return sb.ToString();
+        }
+
         int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
@@ -55,32 +81,6 @@ namespace PPExtraEventHelper
                 }
             }
             return Native.CallNextHookEx(_hook, code, wParam, lParam);
-        }
-
-        public void Close()
-        {
-            if (_hook != IntPtr.Zero)
-            {
-                Native.UnhookWindowsHookEx(_hook);
-            }
-        }
-        public static string GetWindowTextRaw(IntPtr hwnd)
-        {
-            // Allocate correct string length first
-            int length = (int)Native.SendMessage(
-                hwnd,
-                (int)Native.Message.WM_GETTEXTLENGTH,
-                IntPtr.Zero,
-                IntPtr.Zero);
-
-            StringBuilder sb = new StringBuilder(length);
-            Native.SendMessage(
-                hwnd,
-                (int)Native.Message.WM_GETTEXT,
-                (IntPtr)sb.Capacity,
-                sb);
-
-            return sb.ToString();
         }
     }
 }
