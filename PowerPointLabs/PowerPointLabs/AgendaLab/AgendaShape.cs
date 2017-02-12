@@ -13,11 +13,11 @@ namespace PowerPointLabs.AgendaLab
     /// </summary>
     internal class AgendaShape
     {
-        private static readonly string[] Delim = {"_&^@"};
-        private const string Prefix = "PptLabsAgenda";
-
         public readonly ShapePurpose ShapePurpose;
         public readonly AgendaSection Section;
+
+        private static readonly string[] Delim = { "_&^@" };
+        private const string Prefix = "PptLabsAgenda";
 
         private AgendaShape(ShapePurpose shapePurpose, AgendaSection section)
         {
