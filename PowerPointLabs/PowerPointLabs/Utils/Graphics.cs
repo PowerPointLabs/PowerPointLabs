@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -21,6 +22,7 @@ using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 
 namespace PowerPointLabs.Utils
 {
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     public static class Graphics
     {
 #pragma warning disable 0618
