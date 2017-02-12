@@ -503,9 +503,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap CropOutPadding {
+            get {
+                object obj = ResourceManager.GetObject("CropOutPadding", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap CropToSame {
             get {
                 object obj = ResourceManager.GetObject("CropToSame", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CropToAspectRatio {
+            get {
+                object obj = ResourceManager.GetObject("CropToAspectRatio", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

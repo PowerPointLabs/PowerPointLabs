@@ -109,7 +109,7 @@ namespace Test.FunctionalTest
         private void CropOnShapeObjectUnsuccessfully()
         {
             PpOperations.SelectSlide(25);
-            PpOperations.SelectShape("selectMe");
+            PpOperations.SelectShape("selectMe1");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to crop",

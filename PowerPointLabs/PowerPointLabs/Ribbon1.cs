@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -300,10 +304,25 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonSupertip;
         }
-        
+
+        public string GetCropLabMenuSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropLabMenuSupertip;
+        }
+
         public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonSupertip;
+        }
+
+        public string GetCropOutPaddingButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropOutPaddingButtonSupertip;
+        }
+
+        public string GetCropToAspectRatioButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioButtonSupertip;
         }
 
         public string GetCropToSlideButtonSupertip(Office.IRibbonControl control)
@@ -506,14 +525,39 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonLabel;
         }
 
-        public string GetCropLabGroupLabel(Office.IRibbonControl control)
+        public string GetCropLabMenuLabel(Office.IRibbonControl control)
         {
-            return TextCollection.CropLabGroupLabel;
+            return TextCollection.CropLabMenuLabel;
         }
 
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonLabel;
+        }
+
+        public string GetCropOutPaddingButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropOutPaddingButtonLabel;
+        }
+        public string GetCropToAspectRatioMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioMenuLabel;
+        }
+        public string GetCropToAspectRatioW1H1ButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioW1H1ButtonLabel;
+        }
+        public string GetCropToAspectRatioW4H3ButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioW4H3ButtonLabel;
+        }
+        public string GetCropToAspectRatioW16H9ButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioW16H9ButtonLabel;
+        }
+        public string GetCropToAspectRatioCustomButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.CropToAspectRatioCustomButtonLabel;
         }
 
         public string GetCropToSlideButtonLabel(Office.IRibbonControl control)
@@ -1004,6 +1048,19 @@ namespace PowerPointLabs
             }
         }
 
+        public Bitmap GetCropOutPaddingImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropOutPadding);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropOutPaddingImage");
+                throw;
+            }
+        }
+        
         public Bitmap GetCropToSlideImage(Office.IRibbonControl control)
         {
             try
@@ -1017,6 +1074,19 @@ namespace PowerPointLabs
             }
         }
 
+        public Bitmap GetCropToAspectRatioImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CropToAspectRatio);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCropToAspectRatioImage");
+                throw;
+            }
+        }
+        
         public Bitmap GetCropToSameImage(Office.IRibbonControl control)
         {
             try
@@ -1770,6 +1840,58 @@ namespace PowerPointLabs
         public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
         {
             return CropToShape.GetCutOutShapeMenuImage(control);
+        }
+
+        #endregion
+
+        #region Feature: Crop Out Padding
+
+        public void CropOutPaddingButtonClick(Office.IRibbonControl control)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropOutPadding.Crop(selection);
+        }
+
+        #endregion
+
+        #region Feature: Crop To Aspect Ratio
+
+        public void CropToAspectRatioButtonClick(Office.IRibbonControl control)
+        {
+            string pattern = @"(\d+):(\d+)";
+            Match matches = Regex.Match(control.Tag, pattern);
+            if (!matches.Success)
+            {
+                MessageBox.Show("An unexpected error occurred in CropToAspectRatioButtonClick.");
+                return;
+            }
+            CropToAspectRatioInput(matches.Groups[1].Value, matches.Groups[2].Value);
+        }
+
+        public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
+        {
+            var dialog = new CustomAspectRatioDialog();
+            dialog.ShowDialog();
+        }
+
+        public void CropToAspectRatioInput(string widthText, string heightText)
+        {
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
+
+            float aspectRatioWidth = 0.0f;
+            float aspectRatioHeight = 0.0f;
+
+            if (!float.TryParse(widthText, out aspectRatioWidth) ||
+                !float.TryParse(heightText, out aspectRatioHeight))
+            {
+                MessageBox.Show("The given aspect ratio is invalid.");
+                return;
+            }
+
+            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+            CropToAspectRatio.Crop(selection, aspectRatioWidth, aspectRatioHeight);
         }
 
         #endregion

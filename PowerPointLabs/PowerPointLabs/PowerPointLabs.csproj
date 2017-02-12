@@ -343,8 +343,13 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="Converters\DrawingsLabConverters.cs" />
-    <Compile Include="CropsLab\CropToSame.cs" />
-    <Compile Include="CropsLab\CropToSlide.cs" />
+    <Compile Include="CropLab\CropToAspectRatio.cs" />
+    <Compile Include="CropLab\CropOutPadding.cs" />
+    <Compile Include="CropLab\CropToSame.cs" />
+    <Compile Include="CropLab\CropToSlide.cs" />
+    <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
+      <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -362,7 +367,7 @@
     </Compile>
     <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
-    <Compile Include="CropsLab\CropToShape.cs" />
+    <Compile Include="CropLab\CropToShape.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
@@ -1114,6 +1119,10 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CropLab\CustomAspectRatioDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DrawingsLab\AlignmentDialogBoth.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1444,9 +1453,14 @@
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\CropOutPadding.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToAspectRatio.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\CropToSlide.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\CropToSame.png" />
   </ItemGroup>
