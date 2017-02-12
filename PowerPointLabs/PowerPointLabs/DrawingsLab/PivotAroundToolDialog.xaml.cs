@@ -23,6 +23,143 @@ namespace PowerPointLabs.DrawingsLab
     /// </summary>
     public partial class PivotAroundToolDialog : Window
     {
+        #region Properties
+        public double StartAngle
+        {
+            get { return dataSource.StartAngle; }
+        }
+
+        public double AngleDifference
+        {
+            get { return dataSource.AngleDifference; }
+        }
+
+        public int Copies
+        {
+            get
+            {
+                if (dataSource.Copies < 1) return 1;
+                return dataSource.Copies;
+            }
+        }
+
+        public bool IsExtend
+        {
+            get { return dataSource.IsExtend; }
+        }
+
+        public bool RotateShape
+        {
+            get { return dataSource.RotateShape; }
+        }
+
+        public bool FixOriginalLocation
+        {
+            get { return dataSource.FixOriginalLocation; }
+        }
+
+        public DrawingsLabPivotAroundDataSource.Alignment PivotAnchor
+        {
+            get { return dataSource.PivotAnchor; }
+        }
+
+        public double PivotAnchorFractionX
+        {
+            get { return ToAnchorFractionX(dataSource.PivotAnchor); }
+        }
+
+        public double PivotAnchorFractionY
+        {
+            get { return ToAnchorFractionY(dataSource.PivotAnchor); }
+        }
+
+        public double PivotCenterX
+        {
+            get
+            {
+                double p = PivotAnchorFractionX;
+                return _pivotLeft * (1 - p) + _pivotRight * p;
+            }
+        }
+
+        public double PivotCenterY
+        {
+            get
+            {
+                double p = PivotAnchorFractionY;
+                return _pivotTop * (1 - p) + _pivotBottom * p;
+            }
+        }
+
+        public double SourceAnchorFractionX
+        {
+            get { return ToAnchorFractionX(dataSource.SourceAnchor); }
+        }
+
+        public double SourceAnchorFractionY
+        {
+            get { return ToAnchorFractionY(dataSource.SourceAnchor); }
+        }
+
+        public double SourceCenterX
+        {
+            get
+            {
+                double p = SourceAnchorFractionX;
+                return _sourceLeft * (1 - p) + _sourceRight * p;
+            }
+        }
+
+        public double SourceCenterY
+        {
+            get
+            {
+                double p = SourceAnchorFractionY;
+                return _sourceTop * (1 - p) + _sourceBottom * p;
+            }
+        }
+
+        private static double ToAnchorFractionX(DrawingsLabPivotAroundDataSource.Alignment anchor)
+        {
+            switch (anchor)
+            {
+                case DrawingsLabPivotAroundDataSource.Alignment.TopLeft:
+                case DrawingsLabPivotAroundDataSource.Alignment.MiddleLeft:
+                case DrawingsLabPivotAroundDataSource.Alignment.BottomLeft:
+                    return 0;
+                case DrawingsLabPivotAroundDataSource.Alignment.TopCenter:
+                case DrawingsLabPivotAroundDataSource.Alignment.MiddleCenter:
+                case DrawingsLabPivotAroundDataSource.Alignment.BottomCenter:
+                    return 0.5;
+                case DrawingsLabPivotAroundDataSource.Alignment.TopRight:
+                case DrawingsLabPivotAroundDataSource.Alignment.MiddleRight:
+                case DrawingsLabPivotAroundDataSource.Alignment.BottomRight:
+                    return 1;
+            }
+            return 0.5;
+        }
+
+        private static double ToAnchorFractionY(DrawingsLabPivotAroundDataSource.Alignment anchor)
+        {
+            switch (anchor)
+            {
+                case DrawingsLabPivotAroundDataSource.Alignment.TopLeft:
+                case DrawingsLabPivotAroundDataSource.Alignment.TopCenter:
+                case DrawingsLabPivotAroundDataSource.Alignment.TopRight:
+                    return 0;
+                case DrawingsLabPivotAroundDataSource.Alignment.MiddleLeft:
+                case DrawingsLabPivotAroundDataSource.Alignment.MiddleCenter:
+                case DrawingsLabPivotAroundDataSource.Alignment.MiddleRight:
+                    return 0.5;
+                case DrawingsLabPivotAroundDataSource.Alignment.BottomLeft:
+                case DrawingsLabPivotAroundDataSource.Alignment.BottomCenter:
+                case DrawingsLabPivotAroundDataSource.Alignment.BottomRight:
+                    return 1;
+            }
+            return 0.5;
+        }
+        #endregion
+
         private DrawingsLabPivotAroundDataSource dataSource;
         private readonly double _sourceLeft;
         private readonly double _sourceTop;
@@ -317,143 +454,5 @@ namespace PowerPointLabs.DrawingsLab
         {
             this.DialogResult = true;
         }
-
-
-        #region Properties
-        public double StartAngle
-        {
-            get { return dataSource.StartAngle; }
-        }
-
-        public double AngleDifference
-        {
-            get { return dataSource.AngleDifference; }
-        }
-
-        public int Copies
-        {
-            get
-            {
-                if (dataSource.Copies < 1) return 1;
-                return dataSource.Copies;
-            }
-        }
-
-        public bool IsExtend
-        {
-            get { return dataSource.IsExtend; }
-        }
-
-        public bool RotateShape
-        {
-            get { return dataSource.RotateShape; }
-        }
-
-        public bool FixOriginalLocation
-        {
-            get { return dataSource.FixOriginalLocation; }
-        }
-
-        public DrawingsLabPivotAroundDataSource.Alignment PivotAnchor
-        {
-            get { return dataSource.PivotAnchor; }
-        }
-
-        public double PivotAnchorFractionX
-        {
-            get { return ToAnchorFractionX(dataSource.PivotAnchor); }
-        }
-
-        public double PivotAnchorFractionY
-        {
-            get { return ToAnchorFractionY(dataSource.PivotAnchor); }
-        }
-
-        public double SourceAnchorFractionX
-        {
-            get { return ToAnchorFractionX(dataSource.SourceAnchor); }
-        }
-
-        public double SourceAnchorFractionY
-        {
-            get { return ToAnchorFractionY(dataSource.SourceAnchor); }
-        }
-
-        private static double ToAnchorFractionX(DrawingsLabPivotAroundDataSource.Alignment anchor)
-        {
-            switch (anchor)
-            {
-                case DrawingsLabPivotAroundDataSource.Alignment.TopLeft:
-                case DrawingsLabPivotAroundDataSource.Alignment.MiddleLeft:
-                case DrawingsLabPivotAroundDataSource.Alignment.BottomLeft:
-                    return 0;
-                case DrawingsLabPivotAroundDataSource.Alignment.TopCenter:
-                case DrawingsLabPivotAroundDataSource.Alignment.MiddleCenter:
-                case DrawingsLabPivotAroundDataSource.Alignment.BottomCenter:
-                    return 0.5;
-                case DrawingsLabPivotAroundDataSource.Alignment.TopRight:
-                case DrawingsLabPivotAroundDataSource.Alignment.MiddleRight:
-                case DrawingsLabPivotAroundDataSource.Alignment.BottomRight:
-                    return 1;
-            }
-            return 0.5;
-        }
-
-        private static double ToAnchorFractionY(DrawingsLabPivotAroundDataSource.Alignment anchor)
-        {
-            switch (anchor)
-            {
-                case DrawingsLabPivotAroundDataSource.Alignment.TopLeft:
-                case DrawingsLabPivotAroundDataSource.Alignment.TopCenter:
-                case DrawingsLabPivotAroundDataSource.Alignment.TopRight:
-                    return 0;
-                case DrawingsLabPivotAroundDataSource.Alignment.MiddleLeft:
-                case DrawingsLabPivotAroundDataSource.Alignment.MiddleCenter:
-                case DrawingsLabPivotAroundDataSource.Alignment.MiddleRight:
-                    return 0.5;
-                case DrawingsLabPivotAroundDataSource.Alignment.BottomLeft:
-                case DrawingsLabPivotAroundDataSource.Alignment.BottomCenter:
-                case DrawingsLabPivotAroundDataSource.Alignment.BottomRight:
-                    return 1;
-            }
-            return 0.5;
-        }
-
-        public double SourceCenterX
-        {
-            get
-            {
-                double p = SourceAnchorFractionX;
-                return _sourceLeft * (1 - p) + _sourceRight * p;
-            }
-        }
-
-        public double SourceCenterY
-        {
-            get
-            {
-                double p = SourceAnchorFractionY;
-                return _sourceTop * (1 - p) + _sourceBottom * p;
-            }
-        }
-
-        public double PivotCenterX
-        {
-            get
-            {
-                double p = PivotAnchorFractionX;
-                return _pivotLeft * (1 - p) + _pivotRight * p;
-            }
-        }
-
-        public double PivotCenterY
-        {
-            get
-            {
-                double p = PivotAnchorFractionY;
-                return _pivotTop * (1 - p) + _pivotBottom * p;
-            }
-        }
-        #endregion
     }
 }

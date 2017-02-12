@@ -49,11 +49,6 @@ namespace PowerPointLabs.Models
             return new PowerPointAckSlide(slide);
         }
 
-        private static bool IsAckSlide(string slideName)
-        {
-            return slideName == PptLabsAckSlideName;
-        }
-
         public static bool IsAckSlide(PowerPointSlide slide)
         {
             if (slide == null) return false;
@@ -64,6 +59,11 @@ namespace PowerPointLabs.Models
         {
             if (slide == null) return false;
             return IsAckSlide(slide.Name);
+        }
+
+        private static bool IsAckSlide(string slideName)
+        {
+            return slideName == PptLabsAckSlideName;
         }
     }
 }

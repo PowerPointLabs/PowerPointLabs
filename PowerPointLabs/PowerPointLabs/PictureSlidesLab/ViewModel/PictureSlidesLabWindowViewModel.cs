@@ -136,104 +136,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("Init PSL View Model done");
         }
 
-        private void InitFontFamilies()
-        {
-            FontFamilies = new ObservableCollection<string>();
-            foreach (var fontFamily in Fonts.SystemFontFamilies)
-            {
-                FontFamilies.Add(fontFamily.Source);
-            }
-
-            // add font family not in Fonts.SystemFontFamilies
-            FontFamilies.Add("Segoe UI Light");
-            FontFamilies.Add("Calibri Light");
-            FontFamilies.Add("Arial Black");
-            FontFamilies.Add("Times New Roman Italic");
-
-            FontFamilies = new ObservableCollection<string>(FontFamilies.OrderBy(i => i));
-        }
-
-        private void CleanUnusedPersistentData()
-        {
-            var imageFilesInUse = new HashSet<string>();
-            foreach (var imageItem in ImageSelectionList)
-            {
-                imageFilesInUse.Add(imageItem.ImageFile);
-                imageFilesInUse.Add(imageItem.FullSizeImageFile);
-                if (imageItem.CroppedImageFile != null)
-                {
-                    imageFilesInUse.Add(imageItem.CroppedImageFile);
-                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
-                }
-            }
-            StoragePath.CleanPersistentFolder(imageFilesInUse);
-        }
-
-        private void InitUiModels()
-        {
-            StylesVariationList = new ObservableCollection<ImageItem>();
-            StylesVariationListSelectedId = new ObservableInt {Number = -1};
-            StylesVariationListSelectedItem = new ObservableImageItem();
-            CurrentVariantCategory = new ObservableString();
-            CurrentVariantCategoryId = new ObservableInt {Number = -1};
-            VariantsCategory = new ObservableCollection<string>();
-            SelectedFontId = new ObservableInt();
-            SelectedFontFamily = new ObservableFont();
-            SelectedSliderValue = new ObservableInt();
-            IsSliderValueChanged = new ObservableBoolean { Flag = false };
-            SelectedSliderMaximum = new ObservableInt();
-            SelectedSliderTickFrequency = new ObservableInt();
-
-            StylesPreviewList = new ObservableCollection<ImageItem>();
-            StylesPreviewListSelectedId = new ObservableInt {Number = -1};
-            StylesPreviewListSelectedItem = new ObservableImageItem();
-
-            ImageSelectionList = new ObservableCollection<ImageItem>();
-            ImageSelectionList.Add(CreateChoosePicturesItem());
-
-            Settings = StoragePath.LoadSettings();
-
-            if (StoragePath.IsFirstTimeUsage())
-            {
-                Logger.Log("First time use PSL");
-                ImageSelectionList.Add(CreateSamplePic1Item());
-                ImageSelectionList.Add(CreateSamplePic2Item());
-            }
-            else
-            {
-                var loadedImageSelectionList = StoragePath.LoadPictures();
-                foreach (var item in loadedImageSelectionList)
-                {
-                    if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile != null)
-                    {
-                        item.FullSizeImageFile = item.BackupFullSizeImageFile;
-                    }
-                    else if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile == null)
-                    {
-                        Logger.Log("Corrupted picture found. To be removed");
-                        continue;
-                    }
-                    ImageSelectionList.Add(item);
-                }
-            }
-
-            ImageSelectionListSelectedId = new ObservableInt {Number = -1};
-            ImageSelectionListSelectedItem = new ObservableImageItem();
-            IsActiveDownloadProgressRing = new ObservableBoolean {Flag = false};
-        }
-
-        private void InitStorage()
-        {
-            var isTempPathInit = Util.TempPath.InitTempFolder();
-            var isStoragePathInit = StoragePath.InitPersistentFolder();
-            if (!isTempPathInit || !isStoragePathInit)
-            {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
-                Logger.Log("Failed to init storage");
-            }
-            Logger.Log("Init storage done");
-        }
-
         public void CleanUp()
         {
             if (Designer != null)
@@ -811,6 +713,21 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             _8PicturesInPictureVariation = GetLast8Pictures(selectedIdOfVariationList);
         }
 
+        #endregion
+
+        #endregion
+
+        #region Add Picture Citation Slide
+
+        public void AddPictureCitationSlide(Slide slide, List<PowerPointSlide> allSlides)
+        {
+            new PictureCitationSlide(slide, allSlides).CreatePictureCitations();
+        }
+
+        #endregion
+
+        #region Helper funcs
+
         private List<ImageItem> GetLast8Pictures(int selectedIdOfVariationList)
         {
             if (!IsInPictureVariation()) return new List<ImageItem>();
@@ -841,7 +758,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     result[selectedIdOfVariationList] = View.CreateDefaultPictureItem();
                 }
                 else if (selectedIdOfVariationList >= 0)
-                    // contains selected item, need swap to selected index
+                // contains selected item, need swap to selected index
                 {
                     var indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
                     var tempItem = result[selectedIdOfVariationList];
@@ -857,21 +774,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return new List<ImageItem>();
             }
         }
-
-        #endregion
-
-        #endregion
-
-        #region Add Picture Citation Slide
-
-        public void AddPictureCitationSlide(Slide slide, List<PowerPointSlide> allSlides)
-        {
-            new PictureCitationSlide(slide, allSlides).CreatePictureCitations();
-        }
-
-        #endregion
-
-        #region Helper funcs
 
         private static IList<object> LoadClipboardPicture()
         {
@@ -1158,6 +1060,106 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 ContextLink = "https://flic.kr/p/5fKBTq",
                 Source = "https://flic.kr/p/5fKBTq"
             };
+        }
+        #endregion
+
+        #region Private Lifecycle
+        private void InitFontFamilies()
+        {
+            FontFamilies = new ObservableCollection<string>();
+            foreach (var fontFamily in Fonts.SystemFontFamilies)
+            {
+                FontFamilies.Add(fontFamily.Source);
+            }
+
+            // add font family not in Fonts.SystemFontFamilies
+            FontFamilies.Add("Segoe UI Light");
+            FontFamilies.Add("Calibri Light");
+            FontFamilies.Add("Arial Black");
+            FontFamilies.Add("Times New Roman Italic");
+
+            FontFamilies = new ObservableCollection<string>(FontFamilies.OrderBy(i => i));
+        }
+
+        private void CleanUnusedPersistentData()
+        {
+            var imageFilesInUse = new HashSet<string>();
+            foreach (var imageItem in ImageSelectionList)
+            {
+                imageFilesInUse.Add(imageItem.ImageFile);
+                imageFilesInUse.Add(imageItem.FullSizeImageFile);
+                if (imageItem.CroppedImageFile != null)
+                {
+                    imageFilesInUse.Add(imageItem.CroppedImageFile);
+                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
+                }
+            }
+            StoragePath.CleanPersistentFolder(imageFilesInUse);
+        }
+
+        private void InitUiModels()
+        {
+            StylesVariationList = new ObservableCollection<ImageItem>();
+            StylesVariationListSelectedId = new ObservableInt { Number = -1 };
+            StylesVariationListSelectedItem = new ObservableImageItem();
+            CurrentVariantCategory = new ObservableString();
+            CurrentVariantCategoryId = new ObservableInt { Number = -1 };
+            VariantsCategory = new ObservableCollection<string>();
+            SelectedFontId = new ObservableInt();
+            SelectedFontFamily = new ObservableFont();
+            SelectedSliderValue = new ObservableInt();
+            IsSliderValueChanged = new ObservableBoolean { Flag = false };
+            SelectedSliderMaximum = new ObservableInt();
+            SelectedSliderTickFrequency = new ObservableInt();
+
+            StylesPreviewList = new ObservableCollection<ImageItem>();
+            StylesPreviewListSelectedId = new ObservableInt { Number = -1 };
+            StylesPreviewListSelectedItem = new ObservableImageItem();
+
+            ImageSelectionList = new ObservableCollection<ImageItem>();
+            ImageSelectionList.Add(CreateChoosePicturesItem());
+
+            Settings = StoragePath.LoadSettings();
+
+            if (StoragePath.IsFirstTimeUsage())
+            {
+                Logger.Log("First time use PSL");
+                ImageSelectionList.Add(CreateSamplePic1Item());
+                ImageSelectionList.Add(CreateSamplePic2Item());
+            }
+            else
+            {
+                var loadedImageSelectionList = StoragePath.LoadPictures();
+                foreach (var item in loadedImageSelectionList)
+                {
+                    if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile != null)
+                    {
+                        item.FullSizeImageFile = item.BackupFullSizeImageFile;
+                    }
+                    else if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile == null)
+                    {
+                        Logger.Log("Corrupted picture found. To be removed");
+                        continue;
+                    }
+                    ImageSelectionList.Add(item);
+                }
+            }
+
+            ImageSelectionListSelectedId = new ObservableInt { Number = -1 };
+            ImageSelectionListSelectedItem = new ObservableImageItem();
+            IsActiveDownloadProgressRing = new ObservableBoolean { Flag = false };
+        }
+
+        private void InitStorage()
+        {
+            var isTempPathInit = Util.TempPath.InitTempFolder();
+            var isStoragePathInit = StoragePath.InitPersistentFolder();
+            if (!isTempPathInit || !isStoragePathInit)
+            {
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
+                Logger.Log("Failed to init storage");
+            }
+            Logger.Log("Init storage done");
         }
         #endregion
     }
