@@ -9,6 +9,11 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
     [Export(typeof(IStyleVariants))]
     class SpecialEffectStyleVariants : BaseStyleVariants
     {
+        public override string GetStyleName()
+        {
+            return TextCollection.PictureSlidesLabText.StyleNameSpecialEffect;
+        }
+
         protected override IList<IVariantWorker> GetRequiredVariantWorkers()
         {
             return new List<IVariantWorker>
@@ -17,11 +22,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
                 new BlurVariantWorker(),
                 new BrightnessVariantWorker()
             };
-        }
-
-        public override string GetStyleName()
-        {
-            return TextCollection.PictureSlidesLabText.StyleNameSpecialEffect;
         }
     }
 }
