@@ -825,7 +825,12 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuFrame">
 	    <menuSeparator id="separatorFrame" />
-	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="true">
+        <button id="pasteToFillSlide"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuGraphicOleClassic">

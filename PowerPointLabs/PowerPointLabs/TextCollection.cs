@@ -625,6 +625,13 @@
         }
         #endregion
 
+        #region Paste Lab
+        public class PasteLabText
+        {
+            public const string PasteToFillSlide = "Paste (Fill Slide)";
+        }
+        #endregion
+
         #region Task Pane - Resize Lab
 
         public class ResizeLabText
