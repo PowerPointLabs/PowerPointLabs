@@ -651,6 +651,7 @@
     <Compile Include="PPExtraEventHelper\LMouseUpListener.cs" />
     <Compile Include="PPExtraEventHelper\SysMouseEventInfo.cs" />
     <Compile Include="PPExtraEventHelper\PPMouseLegacy.cs" />
+    <Compile Include="HighlightLab\RemoveHighlighting.cs" />
     <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
       <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -734,7 +735,7 @@
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
-    <Compile Include="HighlightTextFragments.cs" />
+    <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -777,8 +778,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
-    <Compile Include="HighlightBulletsBackground.cs" />
-    <Compile Include="HighlightBulletsText.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsText.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="Views\HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>
