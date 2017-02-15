@@ -961,58 +961,6 @@ namespace PowerPointLabs
             }
         }
 
-        public Bitmap GetCropLabMenuImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CropLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropLabMenuImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetCropShapeImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CutOutShape);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropShapeImage");
-                throw;
-            }
-        }
-        
-        public Bitmap GetCropToSlideImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CropToSlide);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropToSlideImage");
-                throw;
-            }
-        }
-        
-        public Bitmap GetCropToSameImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CropToSame);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropToSameImage");
-                throw;
-            }
-        }
-
         public Bitmap GetShapesLabImage(Office.IRibbonControl control)
         {
             try
