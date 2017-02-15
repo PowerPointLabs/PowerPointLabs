@@ -305,26 +305,6 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonSupertip;
         }
 
-        public string GetCropLabMenuSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CropLabMenuSupertip;
-        }
-
-        public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonSupertip;
-        }
-        
-        public string GetCropToSlideButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToSlideButtonSupertip;
-        }
-
-        public string GetCropToSameButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToSameButtonSupertip;
-        }
-
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -514,27 +494,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonLabel;
         }
-
-        public string GetCropLabMenuLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropLabMenuLabel;
-        }
-
-        public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonLabel;
-        }
-
-        public string GetCropToSlideButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToSlideButtonLabel;
-        }
-
-        public string GetCropToSameButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToSameButtonLabel;
-        }
-
+        
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -1760,41 +1720,6 @@ namespace PowerPointLabs
             return TextCollection.PictureSlidesLabText.PictureSlidesLabSupertip;
         }
         
-        #endregion
-
-        #region Feature: Crop to Shape
-
-        public void CropShapeButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
-        }
-
-        public void CropToSlideButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToSlide.Crop(selection, PowerPointPresentation.Current.SlideWidth, PowerPointPresentation.Current.SlideHeight);
-        }
-
-        public void CropToSameButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-            
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            
-            CropToSame.StartCropToSame(selection);
-           
-        }
-
-        public Bitmap GetCutOutShapeImage(Office.IRibbonControl control)
-        {
-            return CropToShape.GetCutOutShapeImage(control);
-        }
-
         #endregion
 
         #region Feature: Convert to Picture
