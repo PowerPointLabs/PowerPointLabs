@@ -324,7 +324,7 @@
                   onAction="OnAction"/>
           <menu id="CropLabsMenu"
                   getLabel="GetCropLabMenuLabel"
-                  getImage="GetCropShapeImage"
+                  getImage="GetCropLabMenuImage"
                   getSupertip="GetCropLabMenuSupertip"
                   size="large">
                 <button id="MoveCropShapeButton"
@@ -443,7 +443,7 @@
                onAction="AddShapeButtonClick"/>
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
+                getImage="GetCutOutShapeImage"
                 onAction="CropShapeButtonClick"/>
         <button id="fitToWidthShape"
                 getLabel="GetLabel"
