@@ -7,7 +7,8 @@ namespace PowerPointLabs.CropLab
     /// </summary>
     public partial class CustomAspectRatioDialog
     {
-#pragma warning disable 0618
+        public delegate void UpdateSettingsDelegate(string aspectRatioRawString);
+        public UpdateSettingsDelegate SettingsHandler;
 
         public CustomAspectRatioDialog()
         {
@@ -16,10 +17,7 @@ namespace PowerPointLabs.CropLab
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            string widthText = textBoxWidthInput.Text;
-            string heightText = textBoxHeightInput.Text;
-
-            Globals.ThisAddIn.Ribbon.CropToAspectRatioInput(widthText, heightText);
+            SettingsHandler(textBoxWidthInput.Text + ":" + textBoxHeightInput.Text);
             Close();
         }
 
