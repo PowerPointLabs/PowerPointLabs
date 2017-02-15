@@ -980,9 +980,6 @@
     <None Include="Resources\Feedback.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CutOutShape.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Bullets.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1453,9 +1450,6 @@
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CropOutPadding.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CropToAspectRatio.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1468,7 +1462,10 @@
     <None Include="Resources\CropLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CropToShape.png" />
+    <None Include="Resources\CutOutShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropOutPadding.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
