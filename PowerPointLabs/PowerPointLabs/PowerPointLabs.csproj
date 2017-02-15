@@ -1462,9 +1462,6 @@
     <None Include="Resources\CropLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CropToShape.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CutOutShape.png" />
   </ItemGroup>
   <ItemGroup>
