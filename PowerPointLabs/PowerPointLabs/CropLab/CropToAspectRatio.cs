@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Office = Microsoft.Office.Core;
@@ -21,12 +22,14 @@ namespace PowerPointLabs.CropLab
 
         private const string MessageBoxTitle = "Unable to crop";
 
-        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, float aspectRatioWidth, float aspectRatioHeight, 
-                                                 bool handleError = true)
+        private static float aspectRatioWidth = 0.0f;
+        private static float aspectRatioHeight = 0.0f;
+
+        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, string aspectRatioRawString, bool handleError = true)
         {
             try
             {
-                VerifyIsAspectRatioValid(aspectRatioWidth, aspectRatioHeight);
+                VerifyIsAspectRatioValid(aspectRatioRawString);
                 VerifyIsSelectionValid(selection);
             }
             catch (Exception e)
@@ -131,9 +134,22 @@ namespace PowerPointLabs.CropLab
             }
         }
 
-        private static void VerifyIsAspectRatioValid(float aspectRatioWidth, float aspectRatioHeight)
+        private static void VerifyIsAspectRatioValid(string aspectRatioString)
         {
-            if (aspectRatioWidth <= 0 || aspectRatioHeight <= 0)
+            string pattern = @"(\d+):(\d+)";
+            Match matches = Regex.Match(aspectRatioString, pattern);
+            if (!matches.Success)
+            {
+                ThrowErrorCode(ErrorCodeForAspectRatioInvalid);
+            }
+
+            if (!float.TryParse(matches.Groups[1].Value, out aspectRatioWidth) ||
+                !float.TryParse(matches.Groups[2].Value, out aspectRatioHeight))
+            {
+                ThrowErrorCode(ErrorCodeForAspectRatioInvalid);
+            }
+            
+            if (aspectRatioWidth <= 0.0f || aspectRatioHeight <= 0.0f)
             {
                 ThrowErrorCode(ErrorCodeForAspectRatioInvalid);
             }

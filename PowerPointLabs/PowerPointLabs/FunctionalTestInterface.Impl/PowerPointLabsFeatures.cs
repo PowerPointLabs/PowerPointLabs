@@ -26,7 +26,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.CropOutPaddingButtonClick(new RibbonControl("CropOutPadding"));
+                var control = new RibbonControl("CropOutPaddingButton");
+                Ribbon.OnAction(control);
             });
         }
 
@@ -34,7 +35,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.CropToAspectRatioInput("1", "10");
+                var control = new RibbonControl("CropToAspectRatioOption1_10");
+                control.Tag = "CropToAspectRatio";
+                Ribbon.OnAction(control);
             });
         }
 

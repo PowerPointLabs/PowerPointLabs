@@ -314,17 +314,7 @@ namespace PowerPointLabs
         {
             return TextCollection.MoveCropShapeButtonSupertip;
         }
-
-        public string GetCropOutPaddingButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CropOutPaddingButtonSupertip;
-        }
-
-        public string GetCropToAspectRatioButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToAspectRatioButtonSupertip;
-        }
-
+        
         public string GetCropToSlideButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.CropToSlideButtonSupertip;
@@ -533,31 +523,6 @@ namespace PowerPointLabs
         public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.MoveCropShapeButtonLabel;
-        }
-
-        public string GetCropOutPaddingButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropOutPaddingButtonLabel;
-        }
-        public string GetCropToAspectRatioMenuLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToAspectRatioMenuLabel;
-        }
-        public string GetCropToAspectRatioW1H1ButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToAspectRatioW1H1ButtonLabel;
-        }
-        public string GetCropToAspectRatioW4H3ButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToAspectRatioW4H3ButtonLabel;
-        }
-        public string GetCropToAspectRatioW16H9ButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToAspectRatioW16H9ButtonLabel;
-        }
-        public string GetCropToAspectRatioCustomButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropToAspectRatioCustomButtonLabel;
         }
 
         public string GetCropToSlideButtonLabel(Office.IRibbonControl control)
@@ -1061,19 +1026,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-
-        public Bitmap GetCropOutPaddingImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CropOutPadding);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropOutPaddingImage");
-                throw;
-            }
-        }
         
         public Bitmap GetCropToSlideImage(Office.IRibbonControl control)
         {
@@ -1084,19 +1036,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropToSlideImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetCropToAspectRatioImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CropToAspectRatio);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropToAspectRatioImage");
                 throw;
             }
         }
@@ -1854,58 +1793,6 @@ namespace PowerPointLabs
         public Bitmap GetCutOutShapeImage(Office.IRibbonControl control)
         {
             return CropToShape.GetCutOutShapeImage(control);
-        }
-
-        #endregion
-
-        #region Feature: Crop Out Padding
-
-        public void CropOutPaddingButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropOutPadding.Crop(selection);
-        }
-
-        #endregion
-
-        #region Feature: Crop To Aspect Ratio
-
-        public void CropToAspectRatioButtonClick(Office.IRibbonControl control)
-        {
-            string pattern = @"(\d+):(\d+)";
-            Match matches = Regex.Match(control.Tag, pattern);
-            if (!matches.Success)
-            {
-                MessageBox.Show("An unexpected error occurred in CropToAspectRatioButtonClick.");
-                return;
-            }
-            CropToAspectRatioInput(matches.Groups[1].Value, matches.Groups[2].Value);
-        }
-
-        public void CropToAspectRatioCustomButtonClick(Office.IRibbonControl control)
-        {
-            var dialog = new CustomAspectRatioDialog();
-            dialog.ShowDialog();
-        }
-
-        public void CropToAspectRatioInput(string widthText, string heightText)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            float aspectRatioWidth = 0.0f;
-            float aspectRatioHeight = 0.0f;
-
-            if (!float.TryParse(widthText, out aspectRatioWidth) ||
-                !float.TryParse(heightText, out aspectRatioHeight))
-            {
-                MessageBox.Show("The given aspect ratio is invalid.");
-                return;
-            }
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToAspectRatio.Crop(selection, aspectRatioWidth, aspectRatioHeight);
         }
 
         #endregion

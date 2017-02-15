@@ -48,11 +48,11 @@
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
 
-        public const string CropOutPaddingButtonSupertip =
+        public const string CropOutPaddingSupertip =
             "Crop out transparent areas of a picture.\n\n" +
             "To activate, select the picture(s), then click this button.";
 
-        public const string CropToAspectRatioButtonSupertip =
+        public const string CropToAspectRatioSupertip =
             "Crop a picture to a specified aspect ratio.\n\n" +
             "To activate, select the picture(s), then click this button and enter the desired aspect ratio.";
 
@@ -179,12 +179,9 @@
         # region Crop Lab
         public const string CropLabMenuLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
-        public const string CropOutPaddingButtonLabel = "Crop Out Padding";
-        public const string CropToAspectRatioMenuLabel = "Crop To Aspect Ratio";
-        public const string CropToAspectRatioW1H1ButtonLabel = "1:1";
-        public const string CropToAspectRatioW4H3ButtonLabel = "4:3";
-        public const string CropToAspectRatioW16H9ButtonLabel = "16:9";
-        public const string CropToAspectRatioCustomButtonLabel = "Custom";
+        public const string CropOutPaddingLabel = "Crop Out Padding";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
         public const string CropToSlideButtonLabel = "Crop To Slide";
         public const string CropToSameButtonLabel = "Crop To Same Dimensions";
         # endregion
