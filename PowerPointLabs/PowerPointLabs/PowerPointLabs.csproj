@@ -754,6 +754,12 @@
     <Compile Include="SyncLab\SyncLabPane.Designer.cs">
       <DependentUpon>SyncLabPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="SyncLab\View\SyncLabCheckFormat.xaml.cs">
+      <DependentUpon>SyncLabCheckFormat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncLabCopyDialog.xaml.cs">
+      <DependentUpon>SyncLabCopyDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -1315,6 +1321,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SlightAdjustSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SyncLab\View\SyncLabCheckFormat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SyncLab\View\SyncLabCopyDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
