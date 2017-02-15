@@ -35,6 +35,10 @@ namespace PowerPointLabs.AudioMisc
         /// </summary>
         public Audio() {}
 
+
+        /// <summary>
+        /// Initialize Audio from sound file
+        /// </summary>
         public Audio(string name, string saveName, int matchScriptID)
         {
             Name = name;
@@ -45,6 +49,9 @@ namespace PowerPointLabs.AudioMisc
             Type = AudioHelper.GetAudioType(saveName);
         }
 
+        /// <summary>
+        /// Initialize Audio from a sound shape
+        /// </summary>
         public Audio(Shape shape, string saveName)
         {
             // detect audio type from shape tag
