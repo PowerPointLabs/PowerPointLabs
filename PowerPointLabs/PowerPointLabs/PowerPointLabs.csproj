@@ -255,6 +255,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
@@ -291,6 +294,10 @@
     <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToSameImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\MoveCropShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
@@ -302,6 +309,10 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\CropToSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\MoveCropShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToSameLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropToAspectRatioLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
@@ -318,6 +329,10 @@
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToSameSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\MoveCropShapeSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
