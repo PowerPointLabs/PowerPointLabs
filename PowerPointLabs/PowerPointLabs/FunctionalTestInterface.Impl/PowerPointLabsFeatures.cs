@@ -18,7 +18,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.CropShapeButtonClick(new RibbonControl("AutoCrop"));
+                var control = new RibbonControl("MoveCropShapeButton");
+                Ribbon.OnAction(control);
             });
         }
 
@@ -43,18 +44,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public void CropToSlide()
         {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.CropToSlideButtonClick(new RibbonControl("CropToSlide"));
-            });
+            var control = new RibbonControl("CropToSlideButton");
+            Ribbon.OnAction(control);
         }
 
         public void CropToSame()
         {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.CropToSameButtonClick(new RibbonControl("CropToSame"));
-            });
+            var control = new RibbonControl("CropToSameButton");
+            Ribbon.OnAction(control);
         }
 
         public void AutoAnimate()
