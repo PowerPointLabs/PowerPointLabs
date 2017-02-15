@@ -16,6 +16,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Views;
 using PowerPointLabs.XMLMisc;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs
 {
@@ -424,12 +425,14 @@ namespace PowerPointLabs
                 }
                 catch (FormatException ex)
                 {
+                    Logger.LogException(ex, "MapShapesWithAudio");
                     MessageBox.Show(ex.Message);
                     continue;
                 }
 
                 if (audio.Type == Audio.AudioType.Unrecognized)
                 {
+                    Logger.Log(String.Format("{0} in MapShapesWithAudio", TextCollection.RecorderUnrecognizeAudio));
                     MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);
                 }
 
