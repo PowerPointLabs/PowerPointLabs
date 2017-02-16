@@ -16,6 +16,7 @@ using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.SyncLab.View;
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -2470,20 +2471,20 @@ namespace PowerPointLabs
             InitSyncLabPane();
         }
 
-        private static SyncLabPane InitSyncLabPane()
+        private static SyncPane InitSyncLabPane()
         {
             var prensentation = PowerPointPresentation.Current.Presentation;
 
             Globals.ThisAddIn.RegisterSyncLabPane(prensentation);
 
-            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncLabPane));
+            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncPane));
 
-            if (syncLabPane == null || !(syncLabPane.Control is SyncLabPane))
+            if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
             {
                 return null;
             }
 
-            var syncLab = syncLabPane.Control as SyncLabPane;
+            var syncLab = syncLabPane.Control as SyncPane;
 
             Trace.TraceInformation(
                 "Before Visible: " +

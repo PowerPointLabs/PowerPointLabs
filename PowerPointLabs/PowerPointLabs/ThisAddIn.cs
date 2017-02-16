@@ -25,6 +25,7 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
 using PowerPointLabs.PositionsLab;
+using PowerPointLabs.SyncLab.View;
 
 namespace PowerPointLabs
 {
@@ -653,7 +654,7 @@ namespace PowerPointLabs
             var activeWindow = presentation.Application.ActiveWindow;
 
             RegisterTaskPane(
-                new SyncLabPane(),
+                new SyncPane(),
                 TextCollection.SyncLabTaskPanelTitle, activeWindow, null, null);
         }
 
