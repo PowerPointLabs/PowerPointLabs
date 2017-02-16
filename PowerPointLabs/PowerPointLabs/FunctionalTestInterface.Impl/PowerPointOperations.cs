@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using TestInterface;
-using Microsoft.Office.Interop.PowerPoint;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
+using TestInterface;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 

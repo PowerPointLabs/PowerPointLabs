@@ -41,10 +41,10 @@
     </NuGetPackageImportStamp>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\Giki\Desktop\pptlabsPublish\</PublishUrl>
+    <PublishUrl>D:\PPTLabs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.7.10</ApplicationVersion>
+    <ApplicationVersion>2.8.7.12</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -260,6 +260,7 @@
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\RemoveHighlightingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
@@ -270,6 +271,7 @@
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportContentRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportEnabledRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportPressedRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
@@ -280,11 +282,13 @@
     <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
     <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\EnabledHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\BaseActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\CheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\EnabledHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Interface\ContentHandler.cs" />
@@ -300,6 +304,8 @@
     <Compile Include="ActionFramework\Image\MoveCropShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
@@ -316,6 +322,7 @@
     <Compile Include="ActionFramework\Label\CropToAspectRatioLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
@@ -335,6 +342,7 @@
     <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
@@ -347,12 +355,15 @@
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab\AgendaLabUtility.cs" />
     <Compile Include="AgendaLab\AgendaSection.cs" />
-    <Compile Include="AgendaLab\AgendaSectionTemplates.cs" />
+    <Compile Include="AgendaLab\Templates\AgendaSectionTemplates.cs" />
     <Compile Include="AgendaLab\AgendaShape.cs" />
     <Compile Include="AgendaLab\SlideSelectionTracker.cs" />
     <Compile Include="AgendaLab\AgendaLabMain.cs" />
     <Compile Include="AgendaLab\AgendaSlide.cs" />
     <Compile Include="AgendaLab\Enums.cs" />
+    <Compile Include="AgendaLab\Templates\BulletAgendaTemplate.cs" />
+    <Compile Include="AgendaLab\Templates\TemplateIndexTable.cs" />
+    <Compile Include="AgendaLab\Templates\VisualAgendaTemplate.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AutoAnimate.cs" />
@@ -367,7 +378,6 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
-    <Compile Include="Converters\DrawingsLabConverters.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />
     <Compile Include="CropLab\CropOutPadding.cs" />
     <Compile Include="CropLab\CropToSame.cs" />
@@ -375,6 +385,43 @@
     <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
       <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ColorPicker\Magnifier.xaml.cs">
+      <DependentUpon>Magnifier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierForm.Designer.cs">
+      <DependentUpon>MagnifierForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+      <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
+    <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousLower.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToBrightnessValue.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToComplementaryColor.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFive.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFour.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticOne.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSeven.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSix.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticThree.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticTwo.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSaturationValue.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryLower.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicOne.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicThree.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
+    <Compile Include="Converters\DrawingsLab\ColorToBackgroundConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\EnumMatchToBooleanConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\FloatToStringConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\IntToStringConverter.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>
@@ -390,9 +437,9 @@
     <Compile Include="ColorPicker\ColorPane.Designer.cs">
       <DependentUpon>ColorPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ColorPaneConverters.cs" />
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropLab\CropToShape.cs" />
+    <Compile Include="DataSources\DrawingLabData.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
@@ -425,11 +472,14 @@
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="EffectsLab\EffectsLabBlurSelected.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\HighlightLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\PositionsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\EffectData.cs" />
     <Compile Include="FunctionalTestInterface.Impl\RibbonControl.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFeatures.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
@@ -629,7 +679,11 @@
     <Compile Include="PositionsLab\ReorderSettingsDialog.xaml.cs">
       <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PPMouseLegacy.cs" />
+    <Compile Include="PPExtraEventHelper\LMouseDownListener.cs" />
+    <Compile Include="PPExtraEventHelper\LMouseUpListener.cs" />
+    <Compile Include="PPExtraEventHelper\SysMouseEventInfo.cs" />
+    <Compile Include="PPExtraEventHelper\PPMouseLegacy.cs" />
+    <Compile Include="HighlightLab\RemoveHighlighting.cs" />
     <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
       <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -713,7 +767,7 @@
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
-    <Compile Include="HighlightTextFragments.cs" />
+    <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -756,8 +810,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
-    <Compile Include="HighlightBulletsBackground.cs" />
-    <Compile Include="HighlightBulletsText.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsText.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="Views\HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>
@@ -878,6 +932,9 @@
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker\MagnifierForm.resx">
+      <DependentUpon>MagnifierForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
       <DependentUpon>DrawingsPane.cs</DependentUpon>
@@ -1142,6 +1199,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CropLab\CustomAspectRatioDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker\Magnifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker\MagnifierOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1491,6 +1556,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CropOutPadding.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveHighlighting.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

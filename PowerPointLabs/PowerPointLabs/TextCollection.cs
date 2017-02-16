@@ -99,6 +99,9 @@
         public const string HighlightTextFragmentsButtonSupertip =
             "Highlights the selected text fragments.\n\n" +
             "To activate, select the text to highlight, then click this button.";
+        public const string RemoveHighlightButtonSupertip =
+            "Removes all Highlighting from the current slide.";
+        
         # endregion
 
         # region More Labs
@@ -209,6 +212,7 @@
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
+        public const string RemoveHighlightButtonLabel = "Remove Highlighting";
         # endregion
 
         # region Labs
