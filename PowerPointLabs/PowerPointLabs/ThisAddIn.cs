@@ -20,6 +20,7 @@ using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
@@ -27,6 +28,7 @@ using PPExtraEventHelper;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
 
 namespace PowerPointLabs
 {
@@ -655,7 +657,7 @@ namespace PowerPointLabs
             var activeWindow = presentation.Application.ActiveWindow;
 
             RegisterTaskPane(
-                new SyncLabPane(),
+                new SyncPane(),
                 TextCollection.SyncLabTaskPanelTitle, activeWindow, null, null);
         }
 
