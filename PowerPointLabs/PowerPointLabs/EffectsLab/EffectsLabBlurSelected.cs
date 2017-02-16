@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using ImageProcessor;
 using ImageProcessor.Imaging;
 
+using PowerPointLabs.CropLab;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
