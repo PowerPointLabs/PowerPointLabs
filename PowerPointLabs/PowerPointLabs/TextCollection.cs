@@ -412,6 +412,7 @@
         public class CropToAspectRatioText
         {
             //------------ Msg -------------
+            public const string ErrorMessageForAspectRatioInvalid = "The given aspect ratio is invalid. Please enter numbers for the width to height ratio.";
             public const string ErrorMessageForSelectionCountZero = "'Crop To Aspect Ratio' requires at least one picture to be selected.";
             public const string ErrorMessageForSelectionNonPicture = "'Crop To Aspect Ratio' only supports picture objects.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Aspect Ratio'.";

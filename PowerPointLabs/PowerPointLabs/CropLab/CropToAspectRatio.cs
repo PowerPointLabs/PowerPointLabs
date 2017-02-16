@@ -16,6 +16,7 @@ namespace PowerPointLabs.CropLab
         private const int ErrorCodeForSelectionNonPicture = 1;
         private const int ErrorCodeForAspectRatioInvalid = 2;
 
+        private const string ErrorMessageForAspectRatioInvalid = TextCollection.CropToAspectRatioText.ErrorMessageForAspectRatioInvalid;
         private const string ErrorMessageForSelectionCountZero = TextCollection.CropToAspectRatioText.ErrorMessageForSelectionCountZero;
         private const string ErrorMessageForSelectionNonPicture = TextCollection.CropToAspectRatioText.ErrorMessageForSelectionNonPicture;
         private const string ErrorMessageForUndefined = TextCollection.CropToAspectRatioText.ErrorMessageForUndefined;
@@ -197,6 +198,8 @@ namespace PowerPointLabs.CropLab
                     return ErrorMessageForSelectionCountZero;
                 case ErrorCodeForSelectionNonPicture:
                     return ErrorMessageForSelectionNonPicture;
+                case ErrorCodeForAspectRatioInvalid:
+                    return ErrorMessageForAspectRatioInvalid;
                 default:
                     return ErrorMessageForUndefined;
             }
