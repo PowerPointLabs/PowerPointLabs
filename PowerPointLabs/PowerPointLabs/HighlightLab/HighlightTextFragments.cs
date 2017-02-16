@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.HighlightLab
 {
     class HighlightTextFragments
     {
@@ -96,6 +98,7 @@ namespace PowerPointLabs
             AnimateInSlide.isHighlightBullets = false;
             AnimateInSlide.isHighlightTextFragments = true;
             AnimateInSlide.AddAnimationInSlide();
+            AnimateInSlide.isHighlightTextFragments = false;
             AnimateInSlide.frameAnimationChecked = oldFrameAnimationChecked;
         }
 

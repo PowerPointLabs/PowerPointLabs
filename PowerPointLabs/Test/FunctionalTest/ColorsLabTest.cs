@@ -86,7 +86,7 @@ namespace Test.FunctionalTest
 
             // mono panel7's color will become main color now
             Click(colorsLab.GetMonoPanel7());
-            ApplyColor(colorsLab.GetFillCollorButton(), colorsLab.GetDropletPanel());
+            ApplyColor(colorsLab.GetFillColorButton(), colorsLab.GetDropletPanel());
 
             var expSlide = PpOperations.SelectSlide(5);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -114,7 +114,7 @@ namespace Test.FunctionalTest
             // get main color from fillColorShape
             // then apply main color to fill color of target shape
             ApplyColor(dropletPanel, fillColorShape);
-            ApplyColor(colorsLab.GetFillCollorButton(), dropletPanel);
+            ApplyColor(colorsLab.GetFillColorButton(), dropletPanel);
 
             var expSlide = PpOperations.SelectSlide(4);
             SlideUtil.IsSameLooking(expSlide, actualSlide);

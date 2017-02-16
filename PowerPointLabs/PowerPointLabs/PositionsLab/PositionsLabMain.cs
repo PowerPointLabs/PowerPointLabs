@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
 using Microsoft.Office.Core;
 using PowerPointLabs.Utils;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
-using Office = Microsoft.Office.Core;
-using System.Diagnostics;
 using Drawing = System.Drawing;
-using System.Linq;
+using Office = Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.PositionsLab
 {

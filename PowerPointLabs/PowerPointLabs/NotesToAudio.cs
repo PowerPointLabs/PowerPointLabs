@@ -5,12 +5,15 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using PowerPointLabs.Models;
-using PowerPointLabs.SpeechEngine;
-using PowerPointLabs.Views;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AudioMisc;
+using PowerPointLabs.Models;
+using PowerPointLabs.SpeechEngine;
+using PowerPointLabs.Views;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
@@ -186,7 +189,7 @@ namespace PowerPointLabs
 
         private static string[] GetAudioFilePaths(string folderPath, string fileNameSearchPattern)
         {
-            var filePaths = Directory.EnumerateFiles(folderPath, "*.wav");
+            var filePaths = Directory.EnumerateFiles(folderPath, "*." + Audio.RecordedFormatExtension);
             var comparer = new Utils.Comparers.AtomicNumberStringCompare();
             var audioFiles =
                 filePaths.Where(path => path.Contains(fileNameSearchPattern)).OrderBy(x => new FileInfo(x).Name,

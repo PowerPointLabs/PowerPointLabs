@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+
 using Office = Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.Models
 {
@@ -218,10 +220,10 @@ namespace PowerPointLabs.Models
             return FromSlideFactory(duplicatedSlide);
         }
 
-        public bool HasAnimationForClick(int click)
+        public bool HasAnimationForClick(int clickNumber)
         {
             var mainSequence = _slide.TimeLine.MainSequence;
-            var effect = mainSequence.FindFirstAnimationForClick(click);
+            var effect = mainSequence.FindFirstAnimationForClick(clickNumber);
 
             return effect != null;
         }
@@ -609,7 +611,7 @@ namespace PowerPointLabs.Models
                 InsertAnimationAtIndex(destination, entryDetails.Index, entryDetails.EffectType, entryDetails.Timing.TriggerType);
             }
 
-            Effect exitDetails = enumerableSequence.Last(effect => effect.Shape.Equals(source));
+            Effect exitDetails = enumerableSequence.LastOrDefault(effect => effect.Shape.Equals(source));
             if (exitDetails != null && !exitDetails.Equals(entryDetails))
             {
                 InsertAnimationAtIndex(destination, exitDetails.Index, exitDetails.EffectType,

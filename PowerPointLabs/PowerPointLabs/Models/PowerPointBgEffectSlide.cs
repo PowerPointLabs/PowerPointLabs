@@ -5,10 +5,11 @@ using System.Linq;
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
 
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.CropLab;
 
 using Core = Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Models
 {

@@ -15,11 +15,40 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_AgendaLabTextSyncTest()
         {
+            HideUnvisitedSyncSuccessful();
             TextSyncSuccessful();
             NoContentShapeUnsuccessful();
             NoRefSlideUnsuccessful();
             NoAgendaUnsuccessful();
         }
+
+        public void HideUnvisitedSyncSuccessful()
+        {
+            PplFeatures.SynchronizeAgenda();
+
+            // Duplicate template slide and delete original template slide. It should use the duplicate as the new template slide.
+            var firstSlide = PpOperations.SelectSlide(1);
+
+            PpOperations.SelectShape("PptLabsAgenda_&^@ContentShape_&^@2015061916283877850").TextFrame2.TextRange.Paragraphs[3].Text = " ";
+
+            PplFeatures.SynchronizeAgenda();
+
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSyncHideUnvisited.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+
+            PpOperations.SelectShape("PptLabsAgenda_&^@ContentShape_&^@2015061916283877850").TextFrame2.TextRange.Paragraphs[3].Text = "Readd bullet format";
+
+            PplFeatures.SynchronizeAgenda();
+
+            actualSlides = PpOperations.FetchCurrentPresentationData();
+            expectedSlides = PpOperations.FetchPresentationData(
+                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSyncUnhideUnvisited.pptx"));
+            PresentationUtil.AssertEqual(expectedSlides, actualSlides);
+
+        }
+
 
         public void TextSyncSuccessful()
         {

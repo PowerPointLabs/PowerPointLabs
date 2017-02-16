@@ -36,26 +36,29 @@
             // 
             // categoryNameBox
             // 
-            this.categoryNameBox.Location = new System.Drawing.Point(115, 24);
+            this.categoryNameBox.Location = new System.Drawing.Point(364, 74);
+            this.categoryNameBox.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.categoryNameBox.Name = "categoryNameBox";
-            this.categoryNameBox.Size = new System.Drawing.Size(181, 21);
+            this.categoryNameBox.Size = new System.Drawing.Size(565, 44);
             this.categoryNameBox.TabIndex = 0;
             this.categoryNameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CategoryNameBoxKeyDown);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 27);
+            this.label1.Location = new System.Drawing.Point(44, 83);
+            this.label1.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 12);
+            this.label1.Size = new System.Drawing.Size(241, 37);
             this.label1.TabIndex = 1;
             this.label1.Text = "Category Name";
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(139, 62);
+            this.okButton.Location = new System.Drawing.Point(440, 191);
+            this.okButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.Size = new System.Drawing.Size(238, 71);
             this.okButton.TabIndex = 2;
             this.okButton.Text = "Ok";
             this.okButton.UseVisualStyleBackColor = true;
@@ -63,9 +66,10 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(221, 62);
+            this.cancelButton.Location = new System.Drawing.Point(700, 191);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(238, 71);
             this.cancelButton.TabIndex = 3;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -73,16 +77,19 @@
             // 
             // ShapesLabCategoryInfoForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 113);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1029, 348);
             this.ControlBox = false;
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.categoryNameBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.Name = "ShapesLabCategoryInfoForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Category Information";
             this.ResumeLayout(false);

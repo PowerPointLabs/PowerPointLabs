@@ -1203,6 +1203,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap RemoveHighlighting {
+            get {
+                object obj = ResourceManager.GetObject("RemoveHighlighting", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap ResizeDecreaseHeight {
             get {
                 object obj = ResourceManager.GetObject("ResizeDecreaseHeight", resourceCulture);
