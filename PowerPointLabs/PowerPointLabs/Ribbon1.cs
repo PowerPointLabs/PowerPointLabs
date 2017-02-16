@@ -17,6 +17,7 @@ using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
+using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Views;
 
 using Office = Microsoft.Office.Core;
@@ -375,7 +376,7 @@ namespace PowerPointLabs
         
         public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.CustomeShapeButtonSupertip;
+            return TextCollection.CustomShapeButtonSupertip;
         }
 
         public string GetSyncLabButtonSupertip(Office.IRibbonControl control)
@@ -2354,20 +2355,20 @@ namespace PowerPointLabs
             InitSyncLabPane();
         }
 
-        private static SyncLabPane InitSyncLabPane()
+        private static SyncPane InitSyncLabPane()
         {
             var prensentation = PowerPointPresentation.Current.Presentation;
 
             Globals.ThisAddIn.RegisterSyncLabPane(prensentation);
 
-            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncLabPane));
+            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncPane));
 
-            if (syncLabPane == null || !(syncLabPane.Control is SyncLabPane))
+            if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
             {
                 return null;
             }
 
-            var syncLab = syncLabPane.Control as SyncLabPane;
+            var syncLab = syncLabPane.Control as SyncPane;
 
             Trace.TraceInformation(
                 "Before Visible: " +
