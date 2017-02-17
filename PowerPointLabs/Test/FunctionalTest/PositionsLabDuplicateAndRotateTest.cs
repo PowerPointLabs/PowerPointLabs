@@ -45,7 +45,7 @@ namespace Test.FunctionalTest
 
             TestOneShapeFixed(positionsLab);
             TestOneShapeDynamic(positionsLab);
-            TestMultipleShapesDynamic(positionsLab);
+            TestMultipleShapesFixed(positionsLab);
             TestMultipleShapesDynamic(positionsLab);
         }
 
