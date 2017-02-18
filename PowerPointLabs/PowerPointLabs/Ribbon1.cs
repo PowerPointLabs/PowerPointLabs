@@ -1919,7 +1919,7 @@ namespace PowerPointLabs
         # region Feature: Shapes Lab
         public void CustomShapeButtonClick(Office.IRibbonControl control)
         {
-            InitCustomShapePane();
+            InitCustomShapePane(toggle: true);
         }
 
         public void AddShapeButtonClick(Office.IRibbonControl control)
@@ -1949,7 +1949,7 @@ namespace PowerPointLabs
             customShape.AddCustomShape(shapeName, shapeFullName, true);
         }
 
-        private static CustomShapePane InitCustomShapePane()
+        private static CustomShapePane InitCustomShapePane(bool toggle = false)
         {
             var prensentation = PowerPointPresentation.Current.Presentation;
 
@@ -1978,6 +1978,10 @@ namespace PowerPointLabs
 
                 customShape.Width = customShapePane.Width - 16;
                 customShape.PaneReload();
+            }
+            else if (toggle)
+            {
+                customShapePane.Visible = false;
             }
 
             return customShape;
