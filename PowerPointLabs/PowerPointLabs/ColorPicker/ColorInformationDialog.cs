@@ -1,11 +1,12 @@
-﻿using PPExtraEventHelper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
+using PPExtraEventHelper;
 using TestInterface;
 
 namespace PowerPointLabs.ColorPicker

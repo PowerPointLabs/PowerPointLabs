@@ -1,10 +1,11 @@
-﻿using PowerPointLabs.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows;
-using PowerPointLabs.ActionFramework.Common.Extension;
-using Microsoft.Office.Interop.PowerPoint;
 using System.Diagnostics;
+using System.Windows;
+
+using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PositionsLab
 {

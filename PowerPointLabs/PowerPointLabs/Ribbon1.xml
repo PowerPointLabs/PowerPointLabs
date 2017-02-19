@@ -178,6 +178,12 @@
                   getSupertip="GetHighlightTextFragmentsButtonSupertip"
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>
+          <button id="RemoveHighlightButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>
@@ -319,14 +325,14 @@
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
           <button id="PositionsLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
           <button id="ResizeLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"

@@ -9,13 +9,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
 using NAudio.Wave;
-using PPExtraEventHelper;
-using PowerPointLabs.Models;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using PowerPointLabs.XMLMisc;
+using PPExtraEventHelper;
 
 namespace PowerPointLabs
 {
@@ -205,7 +206,8 @@ namespace PowerPointLabs
                         {
                             if (!reader.WaveFormat.Equals(writer.WaveFormat))
                             {
-                                throw new InvalidOperationException("Can't concatenate WAV Files that don't share the same format");
+                                throw new InvalidOperationException(
+                                    String.Format("Can't concatenate {0} files that don't share the same format", Audio.RecordedFormatName));
                             }
                         }
 
@@ -233,7 +235,7 @@ namespace PowerPointLabs
 
         private void NMergeAudios(string path, string baseName, string outputName)
         {
-            var audioFiles = Directory.EnumerateFiles(path, "*.wav");
+            var audioFiles = Directory.EnumerateFiles(path, String.Format("*.{0}", Audio.RecordedFormatExtension));
             var audios = audioFiles.Where(audio => audio.Contains(baseName)).ToArray();
 
             NMergeAudios(audios, outputName);
@@ -535,6 +537,7 @@ namespace PowerPointLabs
 
         private void UpdateRecordList(int relativeSlideId)
         {
+            ResetTimer();
             ClearRecordDisplayList();
 
             for (int index = 0; index < _audioList[relativeSlideId].Count; index++)
@@ -794,7 +797,7 @@ namespace PowerPointLabs
 
         private void DeleteTempAudioFiles()
         {
-            var audioFiles = Directory.EnumerateFiles(_tempFullPath, "*.wav");
+            var audioFiles = Directory.EnumerateFiles(_tempFullPath, String.Format("*.{0}", Audio.RecordedFormatExtension));
             var tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
 
             foreach (var audio in tempAudios)
@@ -1129,7 +1132,7 @@ namespace PowerPointLabs
             var tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
 
             // start recording
-            NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
+            NStartRecordAudio(tempSaveName, Audio.RecordedSamplingRate, Audio.RecordedBitRate, Audio.RecordedChannels, true);
 
             // start the timer
             _timerCnt = 0;
@@ -1182,7 +1185,7 @@ namespace PowerPointLabs
 
             // start a new recording, name it after clip counter and restart the timer
             var tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
-            NStartRecordAudio(tempSaveName, 11025, 16, 1, true);
+            NStartRecordAudio(tempSaveName, Audio.RecordedSamplingRate, Audio.RecordedBitRate, Audio.RecordedChannels, true);
             _timer = new System.Threading.Timer(TimerEvent, null, _resumeWaitingTime, 1000);
         }
 
@@ -1282,7 +1285,7 @@ namespace PowerPointLabs
                     // script, we can do the replacement;
                     if (currentPlayback != null)
                     {
-                        saveName = currentPlayback.SaveName.Replace(".wav", " rec.wav");
+                        saveName = currentPlayback.SaveName.Replace("." + Audio.RecordedFormatExtension, " rec." + Audio.RecordedFormatExtension);
                         displayName = currentPlayback.Name;
                         var matchId = currentPlayback.MatchScriptID;
                         
@@ -1314,7 +1317,7 @@ namespace PowerPointLabs
                     // script, we need to construct the new record and insert it to a proper
                     // position
                     {
-                        var saveNameSuffix = " " + scriptIndex + " rec.wav";
+                        var saveNameSuffix = String.Format(" {0} rec.{1}", scriptIndex, Audio.RecordedFormatExtension);
                         saveName = _tempFullPath + String.Format(SaveNameFormat, relativeSlideId) + saveNameSuffix;
                         
                         // the display name -> which script it corresponds to
@@ -1792,7 +1795,7 @@ namespace PowerPointLabs
             _slideRelativeMapper = new Dictionary<int, int>();
 
             _tempFullPath = tempFullPath;
-            _tempWaveFileNameFormat = _tempFullPath + "temp{0}.wav";
+            _tempWaveFileNameFormat = String.Format("{0}temp{{0}}.{1}", _tempFullPath, Audio.RecordedFormatExtension);
             _tempShapAudioXmlFormat = _tempFullPath + "slide{0}.xml";
 
             _relativeSlideCounter = 0;

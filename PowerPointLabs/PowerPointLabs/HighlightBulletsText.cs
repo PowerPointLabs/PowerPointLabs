@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -99,7 +101,10 @@ namespace PowerPointLabs
                     isFirstShape = false;
                 }
 
-                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                if (currentSlide.HasAnimationForClick(clickNumber: 1))
+                {
+                    Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                }
                 PowerPointPresentation.Current.AddAckSlide();
             }
             catch (Exception e)
@@ -202,8 +207,15 @@ namespace PowerPointLabs
                 {
                     continue;
                 }
+
+                int actualParagraphLength = paragraph.Length;
+                if (!paragraph.Text.EndsWith("\r"))
+                {
+                    actualParagraphLength++;
+                }
+
                 if (selectedText.Start + selectedText.Length < paragraph.Start ||
-                    selectedText.Start > paragraph.Start + paragraph.Length - 1)
+                    selectedText.Start > paragraph.Start + actualParagraphLength - 1)
                 {
                     indexList.Add(index);
                 }

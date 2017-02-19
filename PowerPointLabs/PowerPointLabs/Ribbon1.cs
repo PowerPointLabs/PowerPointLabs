@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.DataSources;
@@ -2198,7 +2199,15 @@ namespace PowerPointLabs
 
                 if (dupSlide != null)
                 {
-                    dupSlide.Delete();
+                    if (generateOnRemainder)
+                    {
+                        dupSlide.Delete();
+                    }
+                    else
+                    {
+                        dupSlide.MoveTo(curSlide.Index);
+                        curSlide.Delete();
+                    }
                 }
                 
                 PowerPointPresentation.Current.AddAckSlide();

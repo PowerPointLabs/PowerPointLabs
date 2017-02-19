@@ -8,14 +8,16 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
+using PPExtraEventHelper;
+
+using Drawing = System.Drawing;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
-using Drawing = System.Drawing;
 
 namespace PowerPointLabs.Utils
 {
@@ -24,6 +26,17 @@ namespace PowerPointLabs.Utils
 #pragma warning disable 0618
         #region Const
         public const float PictureExportingRatio = 96.0f / 72.0f;
+        private const float TargetDpi = 96.0f;
+        private static float dpiScale = 1.0f;
+
+        // Static initializer to retrieve dpi scale once
+        static Graphics()
+        {
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            {
+                dpiScale = g.DpiX / TargetDpi;
+            }
+        }
         # endregion
 
         # region API
@@ -72,6 +85,14 @@ namespace PowerPointLabs.Utils
             {
                 return true;
             }
+        }
+
+        public static bool IsStraightLine(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoLine ||
+                    (shape.Type == MsoShapeType.msoAutoShape &&
+                     shape.AutoShapeType == MsoAutoShapeType.msoShapeMixed &&
+                     shape.ConnectorFormat.Type == MsoConnectorType.msoConnectorStraight);
         }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
@@ -278,6 +299,11 @@ namespace PowerPointLabs.Utils
                 {
                     candidateTextRange.Text = candidateTextRange.Text + "\r";
                 }
+            }
+            
+            if (refTextRange.Text.Trim().Equals(""))
+            {
+                candidateTextRange.Text = " ";
             }
         }
 
@@ -771,6 +797,38 @@ namespace PowerPointLabs.Utils
         }
         # endregion
 
+        # region Design
+
+        public static Design CreateDesign(string designName)
+        {
+            return PowerPointPresentation.Current.Presentation.Designs.Add(designName);
+        }
+
+        public static Design GetDesign(string designName)
+        {
+            foreach (Design design in PowerPointPresentation.Current.Presentation.Designs)
+            {
+                if (design.Name.Equals(designName))
+                {
+                    return design;
+                }
+            }
+            return null;
+        }
+
+        public static void CopyToDesign(string designName, PowerPointSlide refSlide)
+        {
+            var design = GetDesign(designName);
+            if (design == null)
+            {
+                design = CreateDesign(designName);
+            }
+            design.SlideMaster.Background.Fill.ForeColor = refSlide.GetNativeSlide().Background.Fill.ForeColor;
+            design.SlideMaster.Background.Fill.BackColor = refSlide.GetNativeSlide().Background.Fill.BackColor;
+        }
+
+        # endregion
+
         # region Color
         public static int ConvertColorToRgb(Drawing.Color argb)
         {
@@ -882,6 +940,11 @@ namespace PowerPointLabs.Utils
             {
                 bitmap.UnlockBits(bitmapData);
             }
+        }
+
+        public static float GetDpiScale()
+        {
+            return dpiScale;
         }
         # endregion
     }
