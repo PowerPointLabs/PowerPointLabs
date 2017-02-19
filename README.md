@@ -47,7 +47,6 @@ Quality | code quality, design quality | Ong Heng Le | Jamos | Kai|
 Testing | test coverage, test automation | Ian Teo | Syed | Kai|
 UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
 
-
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
 

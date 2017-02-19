@@ -37,9 +37,10 @@
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(167, 74);
+            this.okButton.Location = new System.Drawing.Point(529, 228);
+            this.okButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.Size = new System.Drawing.Size(238, 71);
             this.okButton.TabIndex = 0;
             this.okButton.Text = "Ok";
             this.okButton.UseVisualStyleBackColor = true;
@@ -47,9 +48,10 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(248, 74);
+            this.cancelButton.Location = new System.Drawing.Point(785, 228);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(238, 71);
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -58,17 +60,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 18);
+            this.label1.Location = new System.Drawing.Point(38, 55);
+            this.label1.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(161, 12);
+            this.label1.Size = new System.Drawing.Size(409, 37);
             this.label1.TabIndex = 2;
             this.label1.Text = "Default Shape Saving Path:";
             // 
             // pathBox
             // 
-            this.pathBox.Location = new System.Drawing.Point(13, 38);
+            this.pathBox.Location = new System.Drawing.Point(41, 117);
+            this.pathBox.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.pathBox.Name = "pathBox";
-            this.pathBox.Size = new System.Drawing.Size(276, 21);
+            this.pathBox.Size = new System.Drawing.Size(865, 44);
             this.pathBox.TabIndex = 3;
             // 
             // browseButton
@@ -76,18 +80,20 @@
             this.browseButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.Load_icon;
             this.browseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.browseButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.browseButton.Location = new System.Drawing.Point(295, 35);
+            this.browseButton.Location = new System.Drawing.Point(934, 108);
+            this.browseButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.browseButton.Name = "browseButton";
-            this.browseButton.Size = new System.Drawing.Size(28, 27);
+            this.browseButton.Size = new System.Drawing.Size(89, 83);
             this.browseButton.TabIndex = 4;
             this.browseButton.UseVisualStyleBackColor = true;
             this.browseButton.Click += new System.EventHandler(this.BrowseButtonClick);
             // 
             // ShapesLabSetting
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(341, 137);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1080, 422);
             this.ControlBox = false;
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.pathBox);
@@ -95,7 +101,9 @@
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.Name = "ShapesLabSetting";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Setting";
             this.ResumeLayout(false);

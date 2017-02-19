@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Drawing;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
-using TestInterface;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
+using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -18,8 +19,40 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.CropShapeButtonClick(new RibbonControl("AutoCrop"));
+                var control = new RibbonControl("MoveCropShapeButton");
+                Ribbon.OnAction(control);
             });
+        }
+
+        public void CropOutPadding()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("CropOutPaddingButton");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void CropToAspectRatioW1H10()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("CropToAspectRatioOption1_10");
+                control.Tag = "CropToAspectRatio";
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void CropToSlide()
+        {
+            var control = new RibbonControl("CropToSlideButton");
+            Ribbon.OnAction(control);
+        }
+
+        public void CropToSame()
+        {
+            var control = new RibbonControl("CropToSameButton");
+            Ribbon.OnAction(control);
         }
 
         public void AutoAnimate()
@@ -304,6 +337,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public IShapesLabController ShapesLab
         {
             get { return ShapesLabController.Instance; }
+        }
+
+        public IPositionsLabController PositionsLab
+        {
+            get { return PositionsLabController.Instance; }
+        }
+
+        public IHighlightLabController HighlightLab
+        {
+            get { return HighlightLabController.Instance; }
         }
     }
 }

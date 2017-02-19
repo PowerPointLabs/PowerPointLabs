@@ -102,8 +102,12 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\PositionsLabDuplicateAndRotateTest.cs" />
     <Compile Include="FunctionalTest\ColorsLabTest.cs" />
     <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
+    <Compile Include="FunctionalTest\CropToAspectRatioTest.cs" />
+    <Compile Include="FunctionalTest\CropOutPaddingTest.cs" />
+    <Compile Include="FunctionalTest\CropToSameDimTest.cs" />
     <Compile Include="FunctionalTest\EffectsLabTest.cs" />
     <Compile Include="FunctionalTest\FitToSlideTest.cs" />
     <Compile Include="FunctionalTest\HighlightBulletsTest.cs" />
@@ -111,10 +115,12 @@
     <Compile Include="FunctionalTest\ShapesLabTest.cs" />
     <Compile Include="FunctionalTest\SpotlightTest.cs" />
     <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
+    <Compile Include="FunctionalTest\CropToSlideTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
+    <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />

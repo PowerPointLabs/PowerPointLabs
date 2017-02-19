@@ -139,9 +139,6 @@
   <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CutOutShapeMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CutOutShapeMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="EditNameContext" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EditNameContext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,9 +147,6 @@
   </data>
   <data name="AddAudio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AddAudio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CutOutShape" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CutOutShape.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Zoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Zoom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -597,5 +591,26 @@
   </data>
   <data name="RadialShapeOrientationFixedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PositionsLab\RadialShapeOrientationFixedIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CropOutPadding" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropOutPadding.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CropToAspectRatio" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropToAspectRatio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CropToSlide" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropToSlide.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CropToSame" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropToSame.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CropLab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CropLab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CutOutShape" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CutOutShape.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RemoveHighlighting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RemoveHighlighting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

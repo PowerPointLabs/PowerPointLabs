@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
+using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -44,6 +49,8 @@ namespace PowerPointLabs
         #region Action Framework Factory
         private ActionHandlerFactory ActionHandlerFactory { get; set; }
 
+        private EnabledHandlerFactory EnabledHandlerFactory { get; set; }
+
         private LabelHandlerFactory LabelHandlerFactory { get; set; }
 
         private ImageHandlerFactory ImageHandlerFactory { get; set; }
@@ -63,6 +70,12 @@ namespace PowerPointLabs
         {
             var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             actionHandler.Execute(control.Id);
+        }
+
+        public bool GetEnabled(Office.IRibbonControl control)
+        {
+            var enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return enabledHandler.Get(control.Id);
         }
 
         public string GetLabel(Office.IRibbonControl control)
@@ -111,6 +124,7 @@ namespace PowerPointLabs
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
         public bool MultiSlideZoomChecked = true;
+        public bool CropToSameChecked = false;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 
@@ -150,6 +164,7 @@ namespace PowerPointLabs
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
             ActionHandlerFactory = new ActionHandlerFactory();
+            EnabledHandlerFactory = new EnabledHandlerFactory();
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
@@ -299,12 +314,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonSupertip;
         }
-        
-        public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonSupertip;
-        }
-        
+
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -494,15 +504,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonLabel;
         }
-
-        public string GetCropLabGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropLabGroupLabel;
-        }
-        public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonLabel;
-        }
+        
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -965,18 +967,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetZoomToAreaContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetCropShapeImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CutOutShape);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropShapeImage");
                 throw;
             }
         }
@@ -1690,23 +1680,6 @@ namespace PowerPointLabs
         
         #endregion
 
-        #region Feature: Crop to Shape
-
-        public void CropShapeButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
-        }
-
-        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
-        {
-            return CropToShape.GetCutOutShapeMenuImage(control);
-        }
-
-        #endregion
-
         #region Feature: Convert to Picture
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
@@ -2198,7 +2171,15 @@ namespace PowerPointLabs
 
                 if (dupSlide != null)
                 {
-                    dupSlide.Delete();
+                    if (generateOnRemainder)
+                    {
+                        dupSlide.Delete();
+                    }
+                    else
+                    {
+                        dupSlide.MoveTo(curSlide.Index);
+                        curSlide.Delete();
+                    }
                 }
                 
                 PowerPointPresentation.Current.AddAckSlide();

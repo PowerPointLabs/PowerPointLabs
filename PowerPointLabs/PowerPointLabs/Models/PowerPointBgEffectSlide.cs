@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
-using Core = Microsoft.Office.Core;
+
 using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.CropLab;
+
+using Core = Microsoft.Office.Core;
 
 namespace PowerPointLabs.Models
 {
