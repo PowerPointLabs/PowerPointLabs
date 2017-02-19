@@ -103,6 +103,8 @@ namespace PowerPointLabs.AgendaLab
             {
                 var slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
 
+                currentWindow.ViewType = PpViewType.ppViewSlideMaster;
+
                 if (AgendaPresent())
                 {
                     var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
