@@ -41,12 +41,31 @@
         # endregion
 
         # region Crop Lab
+        public const string CropLabMenuSupertip =
+            "Use Crop Lab to crop shapes and pictures professionally with ease.";
+
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        # endregion
 
-        # region Narrations Lab
+        public const string CropOutPaddingSupertip =
+            "Crop out transparent areas of a picture.\n\n" +
+            "To activate, select the picture(s), then click this button.";
+
+        public const string CropToAspectRatioSupertip =
+            "Crop a picture to a specified aspect ratio.\n\n" +
+            "To activate, select the picture(s), then click this button and enter the desired aspect ratio.";
+
+        public const string CropToSlideButtonSupertip =
+            "Crops a picture of the current slide.\n\n" +
+            "To activate, select the shape(s), then click this button.";
+
+        public const string CropToSameButtonSupertip =
+            "Crops multiple shapes to the same dimensions.\n\n" +
+            "To activate, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
+        #endregion
+
+        #region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -161,8 +180,13 @@
         # endregion
 
         # region Crop Lab
-        public const string CropLabGroupLabel = "Crop Lab";
+        public const string CropLabMenuLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        public const string CropOutPaddingLabel = "Crop Out Padding";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
+        public const string CropToSlideButtonLabel = "Crop To Slide";
+        public const string CropToSameButtonLabel = "Crop To Same Dimensions";
         # endregion
 
         # region Narrations Lab
@@ -343,6 +367,55 @@
             public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
             public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
+        }
+
+        #endregion
+
+        #region CropToSlide
+
+        public class CropToSlideText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
+        }
+
+        #endregion
+
+        #region CropToSame
+
+        public class CropToSameText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Same Dimensions' requires at least two shapes to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same Dimensions' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same Dimensions'.";
+        }
+
+        # endregion
+
+        # region CropOutPadding
+
+        public class CropOutPaddingText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop Out Padding' requires at least one picture to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop Out Padding' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop Out Padding'.";
+        }
+
+        # endregion
+
+        # region CropToAspectRatio
+
+        public class CropToAspectRatioText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForAspectRatioInvalid = "The given aspect ratio is invalid. Please enter numbers for the width to height ratio.";
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Aspect Ratio' requires at least one picture to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Aspect Ratio' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Aspect Ratio'.";
         }
 
         # endregion

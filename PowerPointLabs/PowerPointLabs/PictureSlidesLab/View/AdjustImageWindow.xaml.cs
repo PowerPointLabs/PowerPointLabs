@@ -6,9 +6,11 @@ using System.Windows.Media;
 using System.Windows.Threading;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.ImageAdjustment;
 using PowerPointLabs.WPF.Observable;
+
 using Color = System.Windows.Media.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.View

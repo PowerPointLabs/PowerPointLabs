@@ -44,7 +44,7 @@
     <PublishUrl>D:\PPTLabs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.7.11</ApplicationVersion>
+    <ApplicationVersion>2.8.7.12</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -255,6 +255,11 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\RemoveHighlightingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
@@ -290,8 +295,15 @@
     <Compile Include="ActionFramework\Common\Interface\PressedHandler.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToSameImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\MoveCropShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
@@ -303,6 +315,13 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\CropToSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\MoveCropShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToSameLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToAspectRatioLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
@@ -317,6 +336,12 @@
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToSameSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\MoveCropShapeSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
@@ -353,6 +378,25 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="CropLab\CropToAspectRatio.cs" />
+    <Compile Include="CropLab\CropOutPadding.cs" />
+    <Compile Include="CropLab\CropToSame.cs" />
+    <Compile Include="CropLab\CropToSlide.cs" />
+    <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
+      <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\Magnifier.xaml.cs">
+      <DependentUpon>Magnifier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierForm.Designer.cs">
+      <DependentUpon>MagnifierForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+      <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
     <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
@@ -394,7 +438,7 @@
       <DependentUpon>ColorPane.cs</DependentUpon>
     </Compile>
     <Compile Include="ConvertToPicture.cs" />
-    <Compile Include="CropToShape.cs" />
+    <Compile Include="CropLab\CropToShape.cs" />
     <Compile Include="DataSources\DrawingLabData.cs" />
     <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
     <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
@@ -639,6 +683,7 @@
     <Compile Include="PPExtraEventHelper\LMouseUpListener.cs" />
     <Compile Include="PPExtraEventHelper\SysMouseEventInfo.cs" />
     <Compile Include="PPExtraEventHelper\PPMouseLegacy.cs" />
+    <Compile Include="HighlightLab\RemoveHighlighting.cs" />
     <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
       <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -722,7 +767,7 @@
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
-    <Compile Include="HighlightTextFragments.cs" />
+    <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -765,8 +810,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
-    <Compile Include="HighlightBulletsBackground.cs" />
-    <Compile Include="HighlightBulletsText.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsText.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="Views\HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>
@@ -887,6 +932,9 @@
     <EmbeddedResource Include="ColorPicker\ColorPane.resx">
       <DependentUpon>ColorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker\MagnifierForm.resx">
+      <DependentUpon>MagnifierForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
       <DependentUpon>DrawingsPane.cs</DependentUpon>
@@ -1012,9 +1060,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Feedback.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CutOutShape.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Bullets.png" />
@@ -1153,6 +1198,18 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CropLab\CustomAspectRatioDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker\Magnifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker\MagnifierOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DrawingsLab\AlignmentDialogBoth.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1481,6 +1538,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToAspectRatio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CutOutShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropOutPadding.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveHighlighting.png" />
