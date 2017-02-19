@@ -278,6 +278,11 @@ namespace PowerPointLabs
         {
             try
             {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    return;
+                }
+
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 Spotlight.AddSpotlightEffect();
