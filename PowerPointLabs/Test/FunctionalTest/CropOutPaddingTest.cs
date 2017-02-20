@@ -109,8 +109,8 @@ namespace Test.FunctionalTest
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
-                "'Crop Out Padding' requires at least one picture to be selected.",
+                "Error",
+                "You need to select at least 1 picture before applying 'Crop Out Padding'.",
                 PplFeatures.CropOutPadding);
         }
 
@@ -120,7 +120,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShapesByPrefix("text");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
+                "Error",
                 "'Crop Out Padding' only supports picture objects.",
                 PplFeatures.CropOutPadding);
         }

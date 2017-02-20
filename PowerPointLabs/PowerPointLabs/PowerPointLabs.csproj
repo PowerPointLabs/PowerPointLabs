@@ -379,6 +379,7 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CropLab\CropLabOperationException.cs" />
+    <Compile Include="CropLab\CropLabUIControl.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />
     <Compile Include="CropLab\CropOutPadding.cs" />
     <Compile Include="CropLab\CropToSame.cs" />
@@ -423,6 +424,7 @@
     <Compile Include="Converters\DrawingsLab\EnumMatchToBooleanConverter.cs" />
     <Compile Include="Converters\DrawingsLab\FloatToStringConverter.cs" />
     <Compile Include="Converters\DrawingsLab\IntToStringConverter.cs" />
+    <Compile Include="CropLab\CropLabErrorHandler.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
       <SubType>Component</SubType>

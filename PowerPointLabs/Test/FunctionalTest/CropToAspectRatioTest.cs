@@ -109,8 +109,8 @@ namespace Test.FunctionalTest
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
-                "'Crop To Aspect Ratio' requires at least one picture to be selected.",
+                "Error",
+                "You need to select at least 1 picture before applying 'Crop To Aspect Ratio'.",
                 PplFeatures.CropToAspectRatioW1H10);
         }
 
@@ -120,7 +120,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShapesByPrefix("text");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
+                "Error",
                 "'Crop To Aspect Ratio' only supports picture objects.",
                 PplFeatures.CropToAspectRatioW1H10);
         }

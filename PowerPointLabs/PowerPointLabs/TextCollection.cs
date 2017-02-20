@@ -395,32 +395,20 @@
 
         # endregion
 
-        # region CropOutPadding
+        #region CropLab
 
-        public class CropOutPaddingText
+        public class CropLabText
         {
-            //------------ Msg -------------
-            public const string ErrorMessageForSelectionCountZero = "'Crop Out Padding' requires at least one picture to be selected.";
-            public const string ErrorMessageForSelectionNonPicture = "'Crop Out Padding' only supports picture objects.";
-            public const string ErrorMessageForUndefined = "Undefined error in 'Crop Out Padding'.";
+            public const string ErrorSelectionIsInvalid = "You need to select at least {1} {2} before applying '{0}'.";
+            public const string ErrorSelectionMustBeShape = "'{0}' only supports shape objects.";
+            public const string ErrorSelectionMustBePicture = "'{0}' only supports picture objects.";
+            public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
+            public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
         }
 
-        # endregion
+        #endregion
 
-        # region CropToAspectRatio
-
-        public class CropToAspectRatioText
-        {
-            //------------ Msg -------------
-            public const string ErrorMessageForAspectRatioInvalid = "The given aspect ratio is invalid. Please enter numbers for the width to height ratio.";
-            public const string ErrorMessageForSelectionCountZero = "'Crop To Aspect Ratio' requires at least one picture to be selected.";
-            public const string ErrorMessageForSelectionNonPicture = "'Crop To Aspect Ratio' only supports picture objects.";
-            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Aspect Ratio'.";
-        }
-
-        # endregion
-
-        # region ConvertToPicture
+        #region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
