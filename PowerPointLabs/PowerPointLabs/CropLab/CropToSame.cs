@@ -11,7 +11,6 @@ namespace PowerPointLabs.CropLab
 {
     public class CropToSame
     {
-#pragma warning disable 0618
         private const int ErrorCodeForSelectionCountZero = 0;
         private const int ErrorCodeForSelectionNonPicture = 1;
 
@@ -122,7 +121,7 @@ namespace PowerPointLabs.CropLab
 
         private static void ThrowErrorCode(int typeOfError)
         {
-            throw new Exception(typeOfError.ToString(CultureInfo.InvariantCulture));
+            throw new CropLabOperationException(typeOfError.ToString(CultureInfo.InvariantCulture));
         }
 
         private static void IgnoreExceptionThrown() { }
