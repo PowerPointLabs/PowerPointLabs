@@ -378,6 +378,7 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="CropLab\CropLabOperationException.cs" />
     <Compile Include="CropLab\CropLabUIControl.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />
     <Compile Include="CropLab\CropOutPadding.cs" />
