@@ -2,6 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
@@ -30,7 +31,7 @@ namespace PowerPointLabs.ActionFramework.Action
 
             var customShape = customShapePane.Control as CustomShapePane;
 
-            Trace.TraceInformation(
+            Logger.Log(
                 "Before Visible: " +
                 string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
                               customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
