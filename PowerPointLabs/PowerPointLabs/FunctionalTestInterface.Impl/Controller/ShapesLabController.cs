@@ -23,8 +23,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             UIThreadExecutor.Execute(() =>
             {
-                FunctionalTestExtensions.GetRibbonUi().CustomShapeButtonClick(
-                    new RibbonControl("ShapesLab"));
+                FunctionalTestExtensions.GetRibbonUi().OnAction(
+                    new RibbonControl("ShapesLabButton"));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(CustomShapePane)).Control as CustomShapePane;
             });
@@ -34,8 +34,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             UIThreadExecutor.Execute(() =>
             {
-                FunctionalTestExtensions.GetRibbonUi().AddShapeButtonClick(
-                    new RibbonControl("AddShapeToShapesLab"));
+                FunctionalTestExtensions.GetRibbonUi().OnAction(
+                    new RibbonControl("AddCustomShape"));
             });
         }
 

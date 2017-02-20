@@ -371,11 +371,6 @@ namespace PowerPointLabs
             return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
         
-        public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CustomeShapeButtonSupertip;
-        }
-
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMenuSupertip;
@@ -585,10 +580,6 @@ namespace PowerPointLabs
         {
             return TextCollection.LabsGroupLabel;
         }
-        public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CustomeShapeButtonLabel;
-        }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
         {
@@ -714,10 +705,6 @@ namespace PowerPointLabs
         public string GetConvertToPictureShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.ConvertToPictureShapeLabel;
-        }
-        public string GetAddCustomShapeShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddCustomShapeShapeLabel;
         }
         public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
         {
@@ -989,19 +976,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropShapeImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetShapesLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ShapesLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetShapesLabImage");
                 throw;
             }
         }
@@ -1351,18 +1325,6 @@ namespace PowerPointLabs
             try
             {
                 return new Bitmap(Properties.Resources.ZoomOutContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomOutContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetAddToCustomShapeContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddToCustomShapes);
             }
             catch (Exception e)
             {
@@ -1912,110 +1874,6 @@ namespace PowerPointLabs
             foreach (var slide in PowerPointCurrentPresentationInfo.SelectedSlides)
             {
                 slide.NotesPageText = string.Empty;
-            }
-        }
-        # endregion
-
-        # region Feature: Shapes Lab
-        public void CustomShapeButtonClick(Office.IRibbonControl control)
-        {
-            InitCustomShapePane();
-            TogglePaneVisibility();
-        }
-
-        public void AddShapeButtonClick(Office.IRibbonControl control)
-        {
-            var customShape = InitCustomShapePane();
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-            // first of all we check if the shape gallery has been opened correctly
-            if (!Globals.ThisAddIn.ShapePresentation.Opened)
-            {
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
-                return;
-            }
-
-            // add shape into shape gallery first to reduce flicker
-            var shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(selection,
-                                                                         TextCollection.CustomShapeDefaultShapeName);
-
-            // add the selection into pane and save it as .png locally
-            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName + ".png");
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
-
-            // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
-
-            // finally, add the shape into the panel and waiting for name editing
-            customShape.AddCustomShape(shapeName, shapeFullName, true);
-
-            SetPaneVisibility(true);
-        }
-
-        private static CustomShapePane InitCustomShapePane()
-        {
-            var prensentation = PowerPointPresentation.Current.Presentation;
-
-            Globals.ThisAddIn.InitializeShapesLabConfig();
-            Globals.ThisAddIn.InitializeShapeGallery();
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
-
-            var customShapePane = GetShapesLabPane();
-
-            if (customShapePane == null)
-            {
-                return null;
-            }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            Trace.TraceInformation(
-                "Before Visible: " +
-                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
-                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
-
-            return customShape;
-        }
-
-        private static Microsoft.Office.Tools.CustomTaskPane GetShapesLabPane()
-        {
-            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
-
-            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
-            {
-                return null;
-            }
-            return customShapePane;
-        }
-
-        private static void TogglePaneVisibility()
-        {
-            var customShapePane = GetShapesLabPane();
-
-            if (customShapePane == null)
-            {
-                return;
-            }
-
-            SetPaneVisibility(!customShapePane.Visible);
-        }
-
-        private static void SetPaneVisibility(bool visibility)
-        {
-            var customShapePane = GetShapesLabPane();
-
-            if (customShapePane == null)
-            {
-                return;
-            }
-
-            customShapePane.Visible = visibility;
-
-            if (customShapePane.Visible)
-            {
-                var customShape = customShapePane.Control as CustomShapePane;
-                customShape.Width = customShapePane.Width - 16;
-                customShape.PaneReload();
             }
         }
         # endregion
