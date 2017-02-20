@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.CropLab;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
@@ -11,7 +12,8 @@ namespace PowerPointLabs.ActionFramework.Action
         {
             this.StartNewUndoEntry();
             var selection = this.GetCurrentSelection();
-            CropLab.CropOutPadding.Crop(selection);
+            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
+            CropOutPadding.Crop(selection, errorHandler);
         }
     }
 }
