@@ -110,7 +110,7 @@
         # endregion
 
         # region Shapes Lab
-        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes.";
+        public const string CustomShapeButtonSupertip = @"Manage your custom shapes.";
         # endregion
 
         # region Effects Lab

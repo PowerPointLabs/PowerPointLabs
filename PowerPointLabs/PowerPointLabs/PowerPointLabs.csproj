@@ -260,6 +260,9 @@
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\AddShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShapeMenuActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\RemoveHighlightingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
@@ -305,6 +308,8 @@
     <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
@@ -322,6 +327,8 @@
     <Compile Include="ActionFramework\Label\CropToAspectRatioLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\AddShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
@@ -342,6 +349,7 @@
     <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />

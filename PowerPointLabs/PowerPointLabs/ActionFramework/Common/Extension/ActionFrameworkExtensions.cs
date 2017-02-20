@@ -49,6 +49,11 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             return Globals.ThisAddIn.Ribbon;
         }
 
+        public static ThisAddIn GetAddIn()
+        {
+            return Globals.ThisAddIn;
+        }
+
         /// <summary>
         /// Go to a slide
         /// </summary>
