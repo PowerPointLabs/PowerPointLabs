@@ -49,6 +49,11 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             return ActionFrameworkExtensions.GetRibbonUi();
         }
 
+        public static ThisAddIn GetAddIn(this BaseActionHandler handler)
+        {
+            return ActionFrameworkExtensions.GetAddIn();
+        }
+
         /// <summary>
         /// Go to a slide
         /// </summary>
