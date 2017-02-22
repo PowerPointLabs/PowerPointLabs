@@ -26,7 +26,7 @@ namespace PowerPointLabs.AgendaLab
 
         public static AgendaSection FromSectionName(string name, int index)
         {
-            return new AgendaSection(RemoveDelimiters(name), index, level: ParseSectionLevelFromName(name));
+            return new AgendaSection(FormatSectionName(name), index, level: ParseSectionLevelFromName(name));
         }
 
         /// <summary>
@@ -69,9 +69,10 @@ namespace PowerPointLabs.AgendaLab
             return Math.Min(MaximumBulletIndent, level + 1);
         }
 
-        private static string RemoveDelimiters(string originalName)
+        private static string FormatSectionName(string originalName)
         {
-            return originalName.TrimStart(Delimiters);
+            var noDelimiters = originalName.TrimStart(Delimiters);
+            return noDelimiters.Trim();
         }
     }
 }
