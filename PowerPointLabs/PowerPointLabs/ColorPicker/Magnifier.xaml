@@ -13,13 +13,4 @@
         WindowStartupLocation="Manual"
         ShowInTaskbar="False"
         AllowsTransparency="True">
-    <Window.Background>
-        <SolidColorBrush Opacity="0"/>
-    </Window.Background>
-    <Grid>
-        <Ellipse 
-            Fill="Yellow"
-            StrokeThickness="2"
-                 Stroke="Black"/>
-    </Grid>
 </Window>

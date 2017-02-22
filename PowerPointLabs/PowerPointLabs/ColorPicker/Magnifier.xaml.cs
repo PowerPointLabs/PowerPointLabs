@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Interop;
 
+using PowerPointLabs.ActionFramework.Common.Log;
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.ColorPicker
@@ -12,8 +13,6 @@ namespace PowerPointLabs.ColorPicker
     /// </summary>
     public partial class Magnifier : Window
     {
-        private const int OVERLAY_OUTLINE_SIZE = 2;
-
         private MagnifierOverlay magnifierOverlay;
         private System.Windows.Forms.Timer timer;
         private IntPtr hwndMag;
@@ -48,6 +47,7 @@ namespace PowerPointLabs.ColorPicker
         }
 
         #region Public API
+
         public new void Show()
         {
             if (isMagInitialized)
@@ -65,6 +65,7 @@ namespace PowerPointLabs.ColorPicker
             magnifierOverlay.Hide();
             Visibility = Visibility.Collapsed;
         }
+
         #endregion
 
         #region Handled events
@@ -78,9 +79,10 @@ namespace PowerPointLabs.ColorPicker
                     SetupMagnifier();
                 }
             }
-            catch
+            catch (Exception exception)
             {
                 // Windows XP does not support Magnifier
+                Logger.LogException(exception, "Magnifier_Window_Loaded");
                 TeardownMagnifier();
                 isMagInitialized = false;
                 return;
@@ -103,9 +105,11 @@ namespace PowerPointLabs.ColorPicker
         {
             UpdateMagnifier();
         }
+
         #endregion
 
         #region Magnifier methods
+
         private void SetupMagnifier()
         {
             magFilteredWindows = new List<IntPtr>();
@@ -114,7 +118,7 @@ namespace PowerPointLabs.ColorPicker
 
             // Create Magnifier window
             hwndMag = Native.CreateWindowEx(
-                (int)Native.ExtendedWindowStyles.WS_EX_LEFT,
+                (int)Native.ExtendedWindowStyles.WS_EX_CLIENTEDGE,
                 Native.WC_MAGNIFIER, "MagnifierWindow",
                 (int)Native.WindowStyles.WS_CHILD |
                 (int)Native.WindowStyles.WS_VISIBLE |
@@ -124,7 +128,8 @@ namespace PowerPointLabs.ColorPicker
 
             if (hwndMag == IntPtr.Zero)
             {
-                throw new Exception();
+                string errorMsg = "Create MagnifierWindow failed. Insufficient heap or handle table entries.";
+                throw new OutOfMemoryException(errorMsg);
             }
 
             // Set the magnification factor
@@ -145,18 +150,21 @@ namespace PowerPointLabs.ColorPicker
         private void UpdateMagnifier()
         {
             System.Drawing.Point mousePosition = System.Windows.Forms.Control.MousePosition;
+            mousePosition.X = (int)(mousePosition.X / Utils.Graphics.GetDpiScale());
+            mousePosition.Y = (int)(mousePosition.Y / Utils.Graphics.GetDpiScale());
+            
+            // Set the source rectangle for the magnifier control
             Native.RECT sourceRect = new Native.RECT();
-            sourceRect.Left = mousePosition.X - (int)sourceHalfSize.Width;
-            sourceRect.Top = mousePosition.Y - (int)sourceHalfSize.Height;
+            sourceRect.Left = (int)(mousePosition.X - sourceHalfSize.Width);
+            sourceRect.Top = (int)(mousePosition.Y - sourceHalfSize.Height);
             sourceRect.Right = sourceRect.Left + (int)sourceSize.Width;
             sourceRect.Bottom = sourceRect.Top + (int)sourceSize.Height;
-
-            // Set the source rectangle for the magnifier control
             Native.MagSetWindowSource(hwndMag, sourceRect);
 
             // Force redraw
             Native.InvalidateRect(hwndMag, IntPtr.Zero, true);
 
+            // Update position
             Left = mousePosition.X - actualHalfSize.Width;
             Top = mousePosition.Y - actualHalfSize.Height;
             magnifierOverlay.Left = mousePosition.X - magnifierOverlay.HalfSize.X;
@@ -170,6 +178,7 @@ namespace PowerPointLabs.ColorPicker
                 Native.MagUninitialize();
             }
         }
+
         #endregion
     }
 }

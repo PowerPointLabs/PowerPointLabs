@@ -402,7 +402,7 @@ namespace PowerPointLabs
         private const int TIMER_COUNTER_THRESHOLD = 2;
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
-        private MagnifierForm magnifier = new MagnifierForm(MAGNIFICATION_FACTOR);
+        private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
 
         private void BeginEyedropping()
         {
