@@ -10,11 +10,23 @@ namespace PowerPointLabs.AgendaLab
     {
         public readonly string Name;
         public readonly int Index;
+        public readonly int Level;
 
-        public AgendaSection(string name, int index)
+        private readonly static char LevelDelimiter = '-';
+        private readonly static char[] Delimiters = { LevelDelimiter };
+
+        private readonly static int MaximumBulletIndent = 9;
+
+        public AgendaSection(string name, int index, int level = 1)
         {
             Name = name;
             Index = index;
+            Level = level;
+        }
+
+        public static AgendaSection FromSectionName(string name, int index)
+        {
+            return new AgendaSection(RemoveDelimiters(name), index, level: ParseSectionLevelFromName(name));
         }
 
         /// <summary>
@@ -48,6 +60,18 @@ namespace PowerPointLabs.AgendaLab
         public static AgendaSection None
         {
             get { return new AgendaSection(); }
+        }
+
+        private static int ParseSectionLevelFromName(string section)
+        {
+            string newName = section.TrimStart(LevelDelimiter);
+            int level = section.Length - newName.Length;
+            return Math.Min(MaximumBulletIndent, level + 1);
+        }
+
+        private static string RemoveDelimiters(string originalName)
+        {
+            return originalName.TrimStart(Delimiters);
         }
     }
 }

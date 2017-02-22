@@ -92,6 +92,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void ApplyBulletFormats(TextRange2 textRange, BulletFormats bulletFormats, AgendaSection currentSection)
         {
+            var section = Sections;
             // - 1 because first section in agenda is at index 2 (exclude first section)
             int focusIndex = currentSection.IsNone() ? int.MaxValue : currentSection.Index - 1;
 
@@ -113,6 +114,8 @@ namespace PowerPointLabs.AgendaLab
                 {
                     Graphics.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
                 }
+
+                currentParagraph.ParagraphFormat.IndentLevel = section[i].Level;
             }
         }
 
