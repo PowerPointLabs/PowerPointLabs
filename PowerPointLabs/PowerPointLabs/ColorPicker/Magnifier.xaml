@@ -4,13 +4,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:PowerPointLabs.ColorPicker"
-        mc:Ignorable="d" 
-        d:DesignHeight="250" d:DesignWidth="250"
-        Width="250" Height="250"
+        Name="MagnifierMainWindow"
+        AllowsTransparency="True"
         Loaded="Window_Loaded"
         Unloaded="Window_Unloaded"
-        WindowStyle="None"
-        WindowStartupLocation="Manual"
         ShowInTaskbar="False"
-        AllowsTransparency="True">
+        Topmost="True"
+        WindowStartupLocation="Manual"
+        WindowStyle="None"
+        Width="200" 
+        Height="200">
+    <Window.Background>
+        <SolidColorBrush Color="White" Opacity="0"/>
+    </Window.Background>
+    <Grid>
+        <Border Name="OutlineWidth" Width="2" Visibility="Hidden"/>
+        <Border Name="OutlineElement" Background="Black" CornerRadius="200"/>
+        <Border Name="MagnificationHostElement"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"/>
+    </Grid>
 </Window>
