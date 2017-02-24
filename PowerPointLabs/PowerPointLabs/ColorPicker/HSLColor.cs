@@ -71,7 +71,7 @@ namespace PowerPointLabs
                     b = GetColorComponent(temp1, temp2, hslColor.hue - 1.0 / 3.0);
                 }
             }
-            return Color.FromArgb((int)(255 * r), (int)(255 * g), (int)(255 * b));
+            return Color.FromArgb((int)Math.Round(255 * r), (int)Math.Round(255 * g), (int)Math.Round(255 * b));
         }
 
         private static double GetColorComponent(double temp1, double temp2, double temp3)
