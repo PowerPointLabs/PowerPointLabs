@@ -16,7 +16,7 @@
             <ColumnDefinition Width="173*"/>
             <ColumnDefinition Width="119*"/>
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="treeView" Margin="10,10,10,35" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <TreeView x:Name="treeView" Margin="10,10,10,35" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalContentAlignment="Stretch"/>
         <Button x:Name="okButton" IsDefault="True" Content="OK" Margin="0,0,90,10" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Click="OkButton_Click" Grid.Row="1"/>
         <Button x:Name="cancelButton" IsCancel="True" Content="Cancel" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1"/>
     </Grid>
