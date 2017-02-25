@@ -41,12 +41,11 @@ namespace PowerPointLabs.ColorPicker
 
         private class MagnificationControlHost : HwndHost
         {
-            IntPtr hwndControl;
-            IntPtr hwndHost;
-            int hostWidth, hostHeight;
-
-            internal const int HOST_ID = 0x00000002;
             internal const string WC_MAGNIFIER = "Magnifier";
+
+            private IntPtr hwndControl;
+            private IntPtr hwndHost;
+            private int hostWidth, hostHeight;
 
             public MagnificationControlHost(double width, double height)
             {
@@ -67,7 +66,7 @@ namespace PowerPointLabs.ColorPicker
                                                 0, 0,
                                                 hostWidth, hostHeight,
                                                 hwndParent.Handle,
-                                                (IntPtr)HOST_ID,
+                                                IntPtr.Zero,
                                                 IntPtr.Zero,
                                                 0);
                 Native.SetLayeredWindowAttributes(hwndHost, 0, 255, Native.LayeredWindowAttributeFlags.LWA_ALPHA);
@@ -79,7 +78,7 @@ namespace PowerPointLabs.ColorPicker
                                                 (int)Native.MagnifierStyle.MS_CLIPAROUNDCURSOR,
                                                 0, 0,
                                                 hostWidth, hostHeight,
-                                                hwndHost, 
+                                                hwndHost,
                                                 IntPtr.Zero, 
                                                 IntPtr.Zero, 
                                                 0);
