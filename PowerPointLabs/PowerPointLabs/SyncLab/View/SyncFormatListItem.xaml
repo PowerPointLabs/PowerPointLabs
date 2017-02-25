@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:PowerPointLabs.SyncLab.View"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
-    <Grid>
+    <Grid x:Name="grid">
         <CheckBox x:Name="checkBox" HorizontalAlignment="Left" Margin="5,17,0,18" VerticalAlignment="Center"/>
         <Image x:Name="imageBox" Margin="30,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
-        <Label x:Name="label" Margin="65,7,29,7" VerticalAlignment="Center" Height="36" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label x:Name="label" Margin="65,7,10,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
 
     </Grid>
 </UserControl>
