@@ -737,17 +737,20 @@
     <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
       <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SyncLab\View\FormatTreeNode.cs" />
     <Compile Include="SyncLab\ObjectFormats\FillFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\FontFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\ObjectFormat.cs" />
+    <Compile Include="SyncLab\SyncFormatConstants.cs" />
     <Compile Include="SyncLab\SyncFormatUtil.cs" />
+    <Compile Include="SyncLab\View\SyncFormatDialogItem.cs" />
     <Compile Include="SyncLab\View\SyncFormatListItem.xaml.cs">
       <DependentUpon>SyncFormatListItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="SyncLab\View\SyncFormatDialog.xaml.cs">
       <DependentUpon>SyncFormatDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SyncLab\View\SyncFormatPaneItem.cs" />
     <Compile Include="SyncLab\View\SyncPane.cs">
       <SubType>UserControl</SubType>
     </Compile>

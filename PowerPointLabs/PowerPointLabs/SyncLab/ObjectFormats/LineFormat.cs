@@ -1,22 +1,24 @@
-﻿using System;
-using System.Diagnostics;
+using System.Drawing;
 
-using Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class LineFormat : ObjectFormat
+    class LineFormat
     {
-        public LineFormat(Microsoft.Office.Interop.PowerPoint.Shape shape)
+        public static bool CanCopy(Shape formatShape)
         {
-            this.displayText = "Line";
-            this.displayImage = Utils.Graphics.ShapeToImage(shape);
-            this.formatShape = shape;
-    }
+            return true;
+        }
 
-        public override void ApplyTo(Microsoft.Office.Interop.PowerPoint.Shape shape)
+        public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            SyncFormatUtil.SyncLineFormat(shape.Line, formatShape.Line);
+
+        }
+
+        public static Bitmap DisplayImage(Shape formatShape)
+        {
+            return null;
         }
     }
 }
