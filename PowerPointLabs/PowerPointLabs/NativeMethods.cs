@@ -214,15 +214,15 @@ namespace PPExtraEventHelper
         [StructLayout(LayoutKind.Sequential)]
         internal struct MAGTRANSFORM
         {
-            public float m00;
-            public float m10;
-            public float m20;
-            public float m01;
-            public float m11;
-            public float m21;
-            public float m02;
-            public float m12;
-            public float m22;
+            internal float m00;
+            internal float m10;
+            internal float m20;
+            internal float m01;
+            internal float m11;
+            internal float m21;
+            internal float m02;
+            internal float m12;
+            internal float m22;
         }
 
         [StructLayout(LayoutKind.Sequential)]

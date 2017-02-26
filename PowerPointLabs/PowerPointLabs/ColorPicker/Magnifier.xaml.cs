@@ -24,9 +24,9 @@ namespace PowerPointLabs.ColorPicker
         private bool isMagInitialized;
         
         private float magnificationFactor;
-        private Size magnifierHalfSize;
-        private Size sourceSize;
-        private Size sourceHalfSize;
+        private Size actualHalfSize;
+        private Size sourceRectSize;
+        private Size sourceRectHalfSize;
 
         public Magnifier(float magnificationFactor)
         {
@@ -118,9 +118,20 @@ namespace PowerPointLabs.ColorPicker
                 Native.DestroyWindow(hwnd.Handle);
             }
 
-            public IntPtr HwndMagnification
+            public IntPtr HwndControl
             {
                 get { return hwndControl; }
+            }
+
+            public int HostWidth
+            {
+                get { return hostWidth; }
+            }
+
+            public int HostHeight
+            {
+                get { return hostHeight; }
+                
             }
         }
 
@@ -188,23 +199,23 @@ namespace PowerPointLabs.ColorPicker
 
         private void SetupMagnifier()
         {
-            // Calculate dimensions once
-            magnifierHalfSize.Width = Width / 2;
-            magnifierHalfSize.Height = ActualHeight / 2;
-            sourceSize.Width = (int)(Width / magnificationFactor);
-            sourceSize.Height = (int)(Height / magnificationFactor);
-            sourceHalfSize.Width = sourceSize.Width / 2;
-            sourceHalfSize.Height = sourceSize.Height / 2;
-            
             magnificationControl = new MagnificationControlHost(Width - OutlineWidth.Width, Height - OutlineWidth.Width);
             MagnificationHostElement.Child = magnificationControl;
-            hwndMag = magnificationControl.HwndMagnification;
+            hwndMag = magnificationControl.HwndControl;
 
             if (hwndMag == IntPtr.Zero)
             {
                 string errorMsg = "Create MagnifierWindow failed. Insufficient heap or handle table entries.";
                 throw new OutOfMemoryException(errorMsg);
             }
+
+            // Calculate dimensions once
+            actualHalfSize.Width = ActualWidth / 2;
+            actualHalfSize.Height = ActualHeight / 2;
+            sourceRectSize.Width = magnificationControl.HostWidth / magnificationFactor;
+            sourceRectSize.Height = magnificationControl.HostHeight / magnificationFactor;
+            sourceRectHalfSize.Width = sourceRectSize.Width / 2;
+            sourceRectHalfSize.Height = sourceRectSize.Height / 2;
 
             // Set the magnification factor
             Native.MAGTRANSFORM magTransformMatrix = new Native.MAGTRANSFORM();
@@ -226,24 +237,20 @@ namespace PowerPointLabs.ColorPicker
         {
             System.Drawing.Point mousePosition = System.Windows.Forms.Control.MousePosition;
 
-            // Set the source rectangle for the magnifier control
+            // Set the source rectangle for the magnification
             Native.RECT sourceRect = new Native.RECT();
-            sourceRect.Left = (int)(mousePosition.X - sourceSize.Width);
-            sourceRect.Top = (int)(mousePosition.Y - sourceSize.Height);
-            sourceRect.Right = sourceRect.Left + (int)sourceSize.Width;
-            sourceRect.Bottom = sourceRect.Top + (int)sourceSize.Height;
+            sourceRect.Left = mousePosition.X - (int)sourceRectHalfSize.Width;
+            sourceRect.Top = mousePosition.Y - (int)sourceRectHalfSize.Height;
+            sourceRect.Right = sourceRect.Left + (int)sourceRectSize.Width;
+            sourceRect.Bottom = sourceRect.Top + (int)sourceRectSize.Height;
             Native.MagSetWindowSource(hwndMag, sourceRect);
 
-            // Force redraw
+            // Force magnification redraw
             Native.InvalidateRect(hwndMag, IntPtr.Zero, true);
 
-            // WPF units are affected by monitor's DPI
-            mousePosition.X = (int)(mousePosition.X / Utils.Graphics.GetDpiScale());
-            mousePosition.Y = (int)(mousePosition.Y / Utils.Graphics.GetDpiScale());
-
-            // Update position
-            Left = mousePosition.X - magnifierHalfSize.Width;
-            Top = mousePosition.Y - magnifierHalfSize.Height;
+            // Update position, WPF units are affected by monitor's DPI
+            Left = (mousePosition.X / Utils.Graphics.GetDpiScale()) - actualHalfSize.Width;
+            Top = (mousePosition.Y / Utils.Graphics.GetDpiScale()) - actualHalfSize.Height;
         }
 
         #endregion
