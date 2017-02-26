@@ -34,12 +34,17 @@ namespace PPExtraEventHelper
                 application.WindowSelectionChange += (selection) =>
                 {
                     selectedRange = selection;
-                    if (!IsHookSuccessful())
-                    {
-                        IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
-                        StartHook(PPHandle);
-                    }
+                    TryStartHook();
                 };
+            }
+        }
+
+        public static void TryStartHook()
+        {
+            if (!IsHookSuccessful())
+            {
+                IntPtr ppHandle = Process.GetCurrentProcess().MainWindowHandle;
+                StartHook(ppHandle);
             }
         }
 

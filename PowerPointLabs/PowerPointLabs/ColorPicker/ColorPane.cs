@@ -71,6 +71,9 @@ namespace PowerPointLabs
             SetDefaultColor(Color.CornflowerBlue);
 
             EnableScrolling();
+
+            // Hook the mouse process if it has not
+            PPMouse.TryStartHook();
         }
 
         private void EnableScrolling()
