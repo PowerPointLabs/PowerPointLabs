@@ -392,8 +392,6 @@
     <Compile Include="CropLab\CropLabUIControl.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />
     <Compile Include="CropLab\CropOutPadding.cs" />
-    <Compile Include="CropLab\CropToSame.cs" />
-    <Compile Include="CropLab\CropToSlide.cs" />
     <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
       <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
     </Compile>
