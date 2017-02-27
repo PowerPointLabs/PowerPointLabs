@@ -1,4 +1,6 @@
-﻿namespace PowerPointLabs.CropLab
+﻿using System;
+
+namespace PowerPointLabs.CropLab
 {
     internal class CropLabErrorHandler
     {
@@ -55,6 +57,15 @@
                     ShowErrorMessage(errorCode);
                     break;
             }
+        }
+
+        public void ProcessException(Exception e, string message)
+        {
+            if (View == null) // Nothing to display on
+            {
+                return;
+            }
+            View.ShowErrorMessageBox(message, e);
         }
 
         /// <summary>
