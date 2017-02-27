@@ -6,49 +6,39 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
+using PowerPointLabs.ActionFramework.Common.Attribute;
+using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-
 namespace PowerPointLabs.CropLab
 {
     public class CropToShape
     {
-#pragma warning disable 0618
-        private const int ErrorCodeForSelectionCountZero = 0;
-        private const int ErrorCodeForSelectionNonShape = 1;
-
-        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToShapeText.ErrorMessageForSelectionCountZero;
-        private const string ErrorMessageForSelectionNonShape = TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape;
-        private const string ErrorMessageForUndefined = TextCollection.CropToShapeText.ErrorMessageForUndefined;
-
         private const string MessageBoxTitle = "Unable to crop";
 
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape Crop(PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
+        private static void CheckSelectionValid(PowerPoint.Selection selection)
+        {
+            if (selection.ShapeRange.Count < 1)
+            {
+                throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForSelectionCountZero);
+            }
+            if (!IsShapeForSelection(selection.ShapeRange))
+            {
+                throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape);
+            }
+        }
+
+        public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
                                             bool handleError = true)
         {
-            try
-            {
-                VerifyIsSelectionValid(selection);
-            }
-            catch (Exception e)
-            {
-                if (handleError)
-                {
-                    ProcessErrorMessage(e);
-                    return null;
-                }
-
-                throw;
-            }
-
-            var croppedShape = Crop(selection.ShapeRange, isInPlace: isInPlace, handleError: handleError);
+            var croppedShape = Crop(currentSlide, selection.ShapeRange, isInPlace: isInPlace, handleError: handleError);
             if (croppedShape != null)
             {
                 croppedShape.Select();
@@ -57,19 +47,17 @@ namespace PowerPointLabs.CropLab
             return croppedShape;
         }
 
-        public static PowerPoint.Shape Crop(PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
+        public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
             bool handleError = true)
         {
             try
             {
-                if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
-
                 var hasManyShapes = shapeRange.Count > 1;
                 var shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
                 var left = shape.Left;
                 var top = shape.Top;
                 shape.Cut();
-                shapeRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste();
+                shapeRange = currentSlide.Shapes.Paste();
                 shapeRange.Left = left;
                 shapeRange.Top = top;
                 if (hasManyShapes)
@@ -77,72 +65,29 @@ namespace PowerPointLabs.CropLab
                     shapeRange = shapeRange.Ungroup();
                 }
 
-                TakeScreenshotProxy(shapeRange);
+                TakeScreenshotProxy(currentSlide, shapeRange);
 
-                var ungroupedRange = UngroupAllForShapeRange(shapeRange);
+                var ungroupedRange = UngroupAllForShapeRange(currentSlide, shapeRange);
                 var shapeNames = new string[ungroupedRange.Count];
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
-                    var filledShape = FillInShapeWithImage(SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
+                    var filledShape = FillInShapeWithImage(currentSlide, SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
                     shapeNames[i - 1] = filledShape.Name;
                 }
-                
-                var croppedRange = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(shapeNames);
+
+                var croppedRange = currentSlide.Shapes.Range(shapeNames);
                 var croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
-                
+
                 return croppedShape;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                if (handleError)
-                {
-                    ProcessErrorMessage(e);
-                    return null;
-                }
-
-                throw;
+                throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForUndefined);
             }
         }
 
-
-        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
-        {
-            try
-            {
-                if (shapeRange.Count < 1)
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
-                }
-
-                if (!IsShapeForSelection(shapeRange))
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                if (handleError)
-                {
-                    ProcessErrorMessage(e);
-                    return false;
-                }
-
-                throw;
-            }
-        }
-
-        private static void VerifyIsSelectionValid(PowerPoint.Selection selection)
-        {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ThrowErrorCode(ErrorCodeForSelectionCountZero);
-            }
-        }
-
-        public static PowerPoint.Shape FillInShapeWithImage(string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0,
+        public static PowerPoint.Shape FillInShapeWithImage(PowerPointSlide currentSlide, string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0,
             bool isInPlace = false)
         {
             CreateFillInBackgroundForShape(imageFile, shape, magnifyRatio);
@@ -156,7 +101,7 @@ namespace PowerPointLabs.CropLab
             }
 
             shape.Copy();
-            var shapeToReturn = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
+            var shapeToReturn = currentSlide.Shapes.Paste()[1];
             shape.Delete();
             return shapeToReturn;
         }
@@ -244,14 +189,14 @@ namespace PowerPointLabs.CropLab
             }
         }
 
-        private static void TakeScreenshotProxy(PowerPoint.ShapeRange shapeRange)
+        private static void TakeScreenshotProxy(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange)
         {
             shapeRange.Visible = Office.MsoTriState.msoFalse;
-            Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, SlidePicture);
+            Utils.Graphics.ExportSlide(currentSlide, SlidePicture);
             shapeRange.Visible = Office.MsoTriState.msoTrue;
         }
 
-        private static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range)
+        private static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPointSlide currentSlide, PowerPoint.ShapeRange range)
         {
             var ungroupedShapeNames = new List<string>();
             var queue = new Queue<PowerPoint.Shape>();
@@ -273,14 +218,14 @@ namespace PowerPointLabs.CropLab
                 }
                 else if (!IsShape(shape))
                 {
-                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
+                    throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape);
                 }
                 else
                 {
                     ungroupedShapeNames.Add(shape.Name);
                 }
             }
-            return PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Range(ungroupedShapeNames.ToArray());
+            return currentSlide.Shapes.Range(ungroupedShapeNames.ToArray());
         }
 
         private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
@@ -293,64 +238,6 @@ namespace PowerPointLabs.CropLab
             return shape.Type == Office.MsoShapeType.msoAutoShape 
                 || shape.Type == Office.MsoShapeType.msoFreeform 
                 || shape.Type == Office.MsoShapeType.msoGroup;
-        }
-
-        private static void ThrowErrorCode(int typeOfError)
-        {
-            throw new Exception(typeOfError.ToString(CultureInfo.InvariantCulture));
-        }
-
-        private static void IgnoreExceptionThrown(){}
-
-        public static string GetErrorMessageForErrorCode(string errorCode)
-        {
-            var errorCodeInteger = -1;
-            try
-            {
-                errorCodeInteger = Int32.Parse(errorCode);
-            }
-            catch
-            {
-                IgnoreExceptionThrown();
-            }
-            switch (errorCodeInteger)
-            {
-                case ErrorCodeForSelectionCountZero:
-                    return ErrorMessageForSelectionCountZero;
-                case ErrorCodeForSelectionNonShape:
-                    return ErrorMessageForSelectionNonShape;
-                default:
-                    return ErrorMessageForUndefined;
-            }
-        }
-
-        private static void ProcessErrorMessage(Exception e)
-        {
-            //This method prompts the error message to user. If it has an unrecognised error code,
-            //an alternative message window with erro trace stack pops up and prompts the user to
-            //send the trace stack to the developer team.
-            var errMessage = GetErrorMessageForErrorCode(e.Message);
-            if (!string.Equals(errMessage, ErrorMessageForUndefined, StringComparison.Ordinal))
-            {
-                MessageBox.Show(errMessage, MessageBoxTitle);
-            }
-            else
-            {
-                Views.ErrorDialogWrapper.ShowDialog(MessageBoxTitle, e.Message, e);
-            }
-        }
-
-        public static Bitmap GetCutOutShapeImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CutOutShape);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCutOutShapeMenuImage");
-                throw;
-            }
         }
     }
 }

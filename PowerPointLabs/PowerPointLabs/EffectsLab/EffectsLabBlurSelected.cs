@@ -190,7 +190,7 @@ namespace PowerPointLabs.EffectsLab
                         textBox.Height);
             blurShape.Rotation = textBox.Rotation;
             Utils.Graphics.MoveZToJustBehind(blurShape, textBox);
-            CropToShape.FillInShapeWithImage(imageFile, blurShape, isInPlace: true);
+            CropToShape.FillInShapeWithImage(_slide, imageFile, blurShape, isInPlace: true);
             shapeNames.Add(blurShape.Name);
             
             if (IsTintSelected)
@@ -228,7 +228,7 @@ namespace PowerPointLabs.EffectsLab
             }
 
             shape.TextFrame2.DeleteText();
-            CropToShape.FillInShapeWithImage(imageFile, shape, isInPlace: true);
+            CropToShape.FillInShapeWithImage(_slide, imageFile, shape, isInPlace: true);
 
             if (IsTintSelected)
             {

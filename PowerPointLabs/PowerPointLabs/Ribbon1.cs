@@ -124,7 +124,6 @@ namespace PowerPointLabs
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
         public bool MultiSlideZoomChecked = true;
-        public bool CropToSameChecked = false;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 
@@ -1873,13 +1872,13 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
+                var croppedShape = CropToShape.Crop(PowerPointCurrentPresentationInfo.CurrentSlide, selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
             catch (Exception e)
             {
-                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                var errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
 
                 MessageBox.Show(errorMessage);

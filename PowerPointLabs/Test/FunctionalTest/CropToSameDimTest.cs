@@ -101,18 +101,18 @@ namespace Test.FunctionalTest
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
-                "'Crop To Same Dimensions' requires at least two shapes to be selected.",
+                "Error",
+                "You need to select at least 2 pictures before applying 'Crop To Same Dimensions'.",
                 PplFeatures.CropToSame);
         }
 
         private void CropOnShapeObjectUnsuccessfully()
         {
             PpOperations.SelectSlide(25);
-            PpOperations.SelectShape("selectMe1");
+            PpOperations.SelectShapesByPrefix("selectMe");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
+                "Error",
                 "'Crop To Same Dimensions' only supports picture objects.",
                 PplFeatures.CropToSame);
         }

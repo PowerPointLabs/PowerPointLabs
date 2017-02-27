@@ -132,7 +132,7 @@ namespace PowerPointLabs.Models
             PowerPoint.Shape cropShape = zoomSlideCopy.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, PowerPointPresentation.Current.SlideWidth - 0.01f, PowerPointPresentation.Current.SlideHeight - 0.01f);
             cropShape.Select();
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            PowerPoint.Shape croppedShape = CropToShape.Crop(sel);
+            PowerPoint.Shape croppedShape = CropToShape.Crop(PowerPointSlide.FromSlideFactory(_slide), sel);
             croppedShape.Cut();
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];

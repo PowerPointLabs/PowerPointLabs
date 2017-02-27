@@ -12,12 +12,15 @@
         public const int ErrorCodeSelectionMustBeShape = 1;
         public const int ErrorCodeSelectionMustBePicture = 2;
         public const int ErrorCodeAspectRatioIsInvalid = 3;
+        public const int ErrorCodeSelectionCountZero = 4;
+        public const int ErrorCodeUndefined = 5;
 
         private const string ErrorMessageSelectionIsInvalid = TextCollection.CropLabText.ErrorSelectionIsInvalid;
         private const string ErrorMessageSelectionMustBeShape = TextCollection.CropLabText.ErrorSelectionMustBeShape;
         private const string ErrorMessageSelectionMustBePicture = TextCollection.CropLabText.ErrorSelectionMustBePicture;
         private const string ErrorMessageAspectRatioIsInvalid = TextCollection.CropLabText.ErrorAspectRatioIsInvalid;
         private const string ErrorMessageUndefined = TextCollection.CropLabText.ErrorUndefined;
+        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
 
         private CropLabErrorHandler(CropLabUIControl view = null)
         {
@@ -37,17 +40,22 @@
             return _errorHandler;
         }
 
-        public void ProcessErrorCode(int errorCode, string featureName, string validSelectionType, int validSelectionMinCount)
+        public void ProcessErrorCode(int errorCode, string featureName, string validSelectionType = "", int validSelectionMinCount = -1)
         {
             switch (errorCode)
             {
                 case ErrorCodeSelectionIsInvalid:
+                    if (validSelectionMinCount != 1)
+                    {
+                        validSelectionType += "s";
+                    }
                     ShowErrorMessage(errorCode, featureName, validSelectionMinCount.ToString(), validSelectionType);
                     break;
                 case ErrorCodeSelectionMustBePicture:
                 case ErrorCodeSelectionMustBeShape:
                     ShowErrorMessage(errorCode, featureName);
                     break;
+                case ErrorCodeSelectionCountZero:
                 case ErrorCodeAspectRatioIsInvalid:
                     ShowErrorMessage(errorCode);
                     break;
@@ -89,6 +97,8 @@
                     return ErrorMessageSelectionMustBePicture;
                 case ErrorCodeAspectRatioIsInvalid:
                     return ErrorMessageAspectRatioIsInvalid;
+                case ErrorCodeSelectionCountZero:
+                    return ErrorMessageForSelectionCountZero;
                 default:
                     return ErrorMessageUndefined;
             }

@@ -255,6 +255,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\CropLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
@@ -386,6 +387,7 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="CropLab\CropLabException.cs" />
     <Compile Include="CropLab\CropLabOperationException.cs" />
     <Compile Include="CropLab\CropLabUIControl.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />

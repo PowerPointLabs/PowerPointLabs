@@ -101,8 +101,8 @@ namespace Test.FunctionalTest
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
-                "'Crop To Slide' requires at least one shape to be selected.",
+                "Error",
+                "You need to select at least 1 picture before applying 'Crop To Slide'.",
                 PplFeatures.CropToSlide);
         }
 
@@ -112,7 +112,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShape("selectMe");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
+                "Error",
                 "'Crop To Slide' only supports picture objects.",
                 PplFeatures.CropToSlide);
         }
