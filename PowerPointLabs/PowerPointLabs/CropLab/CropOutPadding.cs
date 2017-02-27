@@ -166,7 +166,7 @@ namespace PowerPointLabs.CropLab
         {
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
                 return false;
             }
 
@@ -177,13 +177,13 @@ namespace PowerPointLabs.CropLab
         {
             if (shapeRange.Count < 1)
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
                 return false;
             }
 
             if (!IsPictureForSelection(shapeRange))
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, errorHandler);
                 return false;
             }
 
@@ -200,25 +200,13 @@ namespace PowerPointLabs.CropLab
             return shape.Type == Office.MsoShapeType.msoPicture;
         }
 
-        private static void HandleErrorCode(int errorCode, CropLabErrorHandler errorHandler)
+        private static void HandleErrorCodeIfRequired(int errorCode, CropLabErrorHandler errorHandler)
         {
             if (errorHandler == null)
             {
                 return;
             }
-
-            switch (errorCode)
-            {
-                case CropLabErrorHandler.ErrorCodeSelectionIsInvalid:
-                    errorHandler.ProcessErrorCode(errorCode, "Crop Out Padding", "1", "picture");
-                    break;
-                case CropLabErrorHandler.ErrorCodeSelectionMustBePicture:
-                    errorHandler.ProcessErrorCode(errorCode, "Crop Out Padding");
-                    break;
-                default:
-                    errorHandler.ProcessErrorCode(errorCode);
-                    break;
-            }
+            errorHandler.ProcessErrorCode(errorCode, "Crop Out Padding", CropLabErrorHandler.SelectionTypePicture, 1);
         }
     }
 }

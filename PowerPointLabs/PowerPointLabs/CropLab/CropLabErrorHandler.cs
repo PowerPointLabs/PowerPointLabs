@@ -5,6 +5,9 @@
         private CropLabUIControl View { get; set; }
         private static CropLabErrorHandler _errorHandler;
         
+        public const string SelectionTypeShape = "shape";
+        public const string SelectionTypePicture = "picture";
+
         public const int ErrorCodeSelectionIsInvalid = 0;
         public const int ErrorCodeSelectionMustBeShape = 1;
         public const int ErrorCodeSelectionMustBePicture = 2;
@@ -34,12 +37,32 @@
             return _errorHandler;
         }
 
+        public void ProcessErrorCode(int errorCode, string featureName, string validSelectionType, int validSelectionMinCount)
+        {
+            switch (errorCode)
+            {
+                case ErrorCodeSelectionIsInvalid:
+                    ShowErrorMessage(errorCode, featureName, validSelectionMinCount.ToString(), validSelectionType);
+                    break;
+                case ErrorCodeSelectionMustBePicture:
+                case ErrorCodeSelectionMustBeShape:
+                    ShowErrorMessage(errorCode, featureName);
+                    break;
+                case ErrorCodeAspectRatioIsInvalid:
+                    ShowErrorMessage(errorCode);
+                    break;
+                default:
+                    ShowErrorMessage(errorCode);
+                    break;
+            }
+        }
+
         /// <summary>
         /// Store error code in the culture info.
         /// </summary>
         /// <param name="errorType"></param>
         /// <param name="optionalParameters"></param>
-        public void ProcessErrorCode(int errorType, params string[] optionalParameters)
+        private void ShowErrorMessage(int errorType, params string[] optionalParameters)
         {
             if (View == null) // Nothing to display on
             {
