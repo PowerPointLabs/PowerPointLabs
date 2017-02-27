@@ -76,7 +76,7 @@ namespace PowerPointLabs.CropLab
         {
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
                 return false;
             }
 
@@ -87,13 +87,13 @@ namespace PowerPointLabs.CropLab
         {
             if (shapeRange.Count < 1)
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
                 return false;
             }
 
             if (!IsPictureForSelection(shapeRange))
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, errorHandler);
                 return false;
             }
 
@@ -106,20 +106,20 @@ namespace PowerPointLabs.CropLab
             Match matches = Regex.Match(aspectRatioString, pattern);
             if (!matches.Success)
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
                 return false;
             }
 
             if (!float.TryParse(matches.Groups[1].Value, out aspectRatioWidth) ||
                 !float.TryParse(matches.Groups[2].Value, out aspectRatioHeight))
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
                 return false;
             }
             
             if (aspectRatioWidth <= 0.0f || aspectRatioHeight <= 0.0f)
             {
-                HandleErrorCode(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
                 return false;
             }
 
@@ -136,28 +136,13 @@ namespace PowerPointLabs.CropLab
             return shape.Type == Office.MsoShapeType.msoPicture;
         }
 
-        private static void HandleErrorCode(int errorCode, CropLabErrorHandler errorHandler)
+        private static void HandleErrorCodeIfRequired(int errorCode, CropLabErrorHandler errorHandler)
         {
             if (errorHandler == null)
             {
                 return;
             }
-
-            switch (errorCode)
-            {
-                case CropLabErrorHandler.ErrorCodeSelectionIsInvalid:
-                    errorHandler.ProcessErrorCode(errorCode, "Crop To Aspect Ratio", "1", "picture");
-                    break;
-                case CropLabErrorHandler.ErrorCodeSelectionMustBePicture:
-                    errorHandler.ProcessErrorCode(errorCode, "Crop To Aspect Ratio");
-                    break;
-                case CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid:
-                    errorHandler.ProcessErrorCode(errorCode);
-                    break;
-                default:
-                    errorHandler.ProcessErrorCode(errorCode);
-                    break;
-            }
+            errorHandler.ProcessErrorCode(errorCode, "Crop To Aspect Ratio", CropLabErrorHandler.SelectionTypePicture, 1);
         }
     }
 }
