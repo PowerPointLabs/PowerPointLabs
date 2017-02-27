@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.Globalization;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -38,45 +37,69 @@ namespace PowerPointLabs.CropLab
 
             for (int i = 1; i <= shapeRange.Count; i++)
             {
+                // Store initial properties
                 float currentRotation = shapeRange[i].Rotation;
                 float cropLeft = shapeRange[i].PictureFormat.CropLeft;
                 float cropRight = shapeRange[i].PictureFormat.CropRight;
                 float cropTop = shapeRange[i].PictureFormat.CropTop;
                 float cropBottom = shapeRange[i].PictureFormat.CropBottom;
 
+                // Set properties to zero to do proper calculations
                 shapeRange[i].PictureFormat.CropLeft = 0;
                 shapeRange[i].PictureFormat.CropRight = 0;
                 shapeRange[i].PictureFormat.CropTop = 0;
                 shapeRange[i].PictureFormat.CropBottom = 0;
                 shapeRange[i].Rotation = 0;
 
+                // Get unscaled dimensions
+                PowerPoint.ShapeRange origShape = shapeRange[i].Duplicate();
+                origShape.ScaleWidth(1, Office.MsoTriState.msoTrue);
+                origShape.ScaleHeight(1, Office.MsoTriState.msoTrue);
+                float origWidth = origShape.Width;
+                float origHeight = origShape.Height;
+                origShape.Delete();
+
+                Rectangle origImageRect = new Rectangle();
+                Rectangle croppedImageRect = new Rectangle();
+
                 Utils.Graphics.ExportShape(shapeRange[i], TempPngFileExportPath);
-                using (Bitmap shapeImage = new Bitmap(TempPngFileExportPath))
+                using (Bitmap shapeBitmap = new Bitmap(TempPngFileExportPath))
                 {
-                    PowerPoint.ShapeRange origShape = shapeRange[i].Duplicate();
-                    origShape.ScaleWidth(1, Office.MsoTriState.msoTrue);
-                    origShape.ScaleHeight(1, Office.MsoTriState.msoTrue);
-                    float origWidth = origShape.Width;
-                    float origHeight = origShape.Height;
-                    origShape.Delete();
-
-                    Rectangle cropRect = GetImageBoundingRect(shapeImage);
-                    float cropRatioLeft = cropRect.Left / (float)shapeImage.Width;
-                    float cropRatioRight = (shapeImage.Width - cropRect.Width) / (float)shapeImage.Width;
-                    float cropRatioTop = cropRect.Top / (float)shapeImage.Height;
-                    float cropRatioBottom = (shapeImage.Height - cropRect.Height) / (float)shapeImage.Height;
-
-                    float newCropLeft = origWidth * cropRatioLeft;
-                    float newCropRight = origWidth * cropRatioRight;
-                    float newCropTop = origHeight * cropRatioTop;
-                    float newCropBottom = origHeight * cropRatioBottom;
-
-                    cropLeft = cropLeft < newCropLeft ? newCropLeft : cropLeft;
-                    cropRight = cropRight < newCropRight ? newCropRight : cropRight;
-                    cropTop = cropTop < newCropTop ? newCropTop : cropTop;
-                    cropBottom = cropBottom < newCropBottom ? newCropBottom : cropBottom;
+                    origImageRect = new Rectangle(0, 0, shapeBitmap.Width, shapeBitmap.Height);
+                    try
+                    {
+                        croppedImageRect = GetImageBoundingRect(shapeBitmap);
+                    }
+                    catch (NotSupportedException e)
+                    {
+                        if (errorHandler != null)
+                        {
+                            string errorMsg = "An unexpected error occurred in Crop Out Padding for " + 
+                                              shapeRange[i].Name + ". " +
+                                              "Exported bitmap data should be in Format32bppArgb PNG format.";
+                            errorHandler.ProcessException(e, errorMsg);
+                        }
+                        return null;
+                    }    
                 }
 
+                float cropRatioLeft = croppedImageRect.Left / (float)origImageRect.Width;
+                float cropRatioRight = (origImageRect.Width - croppedImageRect.Width) / (float)origImageRect.Width;
+                float cropRatioTop = croppedImageRect.Top / (float)origImageRect.Height;
+                float cropRatioBottom = (origImageRect.Height - croppedImageRect.Height) / (float)origImageRect.Height;
+
+                float newCropLeft = origWidth * cropRatioLeft;
+                float newCropRight = origWidth * cropRatioRight;
+                float newCropTop = origHeight * cropRatioTop;
+                float newCropBottom = origHeight * cropRatioBottom;
+
+                // Crop if it is more than current crop
+                cropLeft = cropLeft < newCropLeft ? newCropLeft : cropLeft;
+                cropRight = cropRight < newCropRight ? newCropRight : cropRight;
+                cropTop = cropTop < newCropTop ? newCropTop : cropTop;
+                cropBottom = cropBottom < newCropBottom ? newCropBottom : cropBottom;
+
+                // Restore original properties
                 shapeRange[i].Rotation = currentRotation;
                 shapeRange[i].PictureFormat.CropLeft = cropLeft;
                 shapeRange[i].PictureFormat.CropRight = cropRight;
@@ -87,11 +110,12 @@ namespace PowerPointLabs.CropLab
             return shapeRange;
         }
 
-        private static bool IsImageRowTransparent(Bitmap image, int y)
+        private static bool IsImageRowTransparent(BitmapData bmpData, byte[] argbBuffer, int y)
         {
-            for (int x = 0; x < image.Width; x++)
+            for (int x = 0; x < bmpData.Width; x++)
             {
-                if (image.GetPixel(x, y).A > 0)
+                byte alpha = argbBuffer[y * bmpData.Stride + 4 * x + 3];
+                if (alpha != 0)
                 {
                     return false;
                 }
@@ -99,11 +123,12 @@ namespace PowerPointLabs.CropLab
             return true;
         }
 
-        private static bool IsImageColumnTransparent(Bitmap image, int x)
+        private static bool IsImageColumnTransparent(BitmapData bmpData, byte[] argbBuffer, int x)
         {
-            for (int y = 0; y < image.Height; y++)
+            for (int y = 0; y < bmpData.Height; y++)
             {
-                if (image.GetPixel(x, y).A > 0)
+                byte alpha = argbBuffer[y * bmpData.Stride + 4 * x + 3];
+                if (alpha != 0)
                 {
                     return false;
                 }
@@ -111,27 +136,45 @@ namespace PowerPointLabs.CropLab
             return true;
         }
 
-        private static Rectangle GetImageBoundingRect(Bitmap image)
+        private static Rectangle GetImageBoundingRect(Bitmap bmp)
         {
-            int left = 0;
-            int top = 0;
-            int right = 0;
-            int bottom = 0;
+            if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
+            {
+                throw new NotSupportedException("Non-Format32bppArgb bitmaps are not supported.");
+            }
+            
+            int left = -1;
+            int top = -1;
+            int right = -1;
+            int bottom = -1;
+
+            // Lock the bitmap data into system memory for faster read/write
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+            int bytesCount = Math.Abs(bmpData.Stride) * bmp.Height;
+            byte[] argbBuffer = new byte[bytesCount];
+            System.Runtime.InteropServices.Marshal.Copy(bmpData.Scan0, argbBuffer, 0, bytesCount);
 
             // Get left boundary
-            for (int x = 0; x < image.Width; x++)
+            for (int x = 0; x < bmpData.Width; x++)
             {
-                if (!IsImageColumnTransparent(image, x))
+                if (!IsImageColumnTransparent(bmpData, argbBuffer, x))
                 {
                     left = x;
                     break;
                 }
             }
 
-            // Get right boundary
-            for (int x = image.Width - 1; x >= 0; x--)
+            // Return immediately if entire image is transparent
+            if (left == -1)
             {
-                if (!IsImageColumnTransparent(image, x))
+                bmp.UnlockBits(bmpData);
+                return new Rectangle(0, 0, 0, 0);
+            }
+
+            // Get right boundary
+            for (int x = bmpData.Width - 1; x >= left; x--)
+            {
+                if (!IsImageColumnTransparent(bmpData, argbBuffer, x))
                 {
                     right = x;
                     break;
@@ -139,9 +182,9 @@ namespace PowerPointLabs.CropLab
             }
 
             // Get top boundary
-            for (int y = 0; y < image.Height; y++)
+            for (int y = 0; y < bmpData.Height; y++)
             {
-                if (!IsImageRowTransparent(image, y))
+                if (!IsImageRowTransparent(bmpData, argbBuffer, y))
                 {
                     top = y;
                     break;
@@ -149,9 +192,9 @@ namespace PowerPointLabs.CropLab
             }
 
             // Get bottom boundary
-            for (int y = image.Height - 1; y >= 0; y--)
+            for (int y = bmpData.Height - 1; y >= top; y--)
             {
-                if (!IsImageRowTransparent(image, y))
+                if (!IsImageRowTransparent(bmpData, argbBuffer, y))
                 {
                     bottom = y;
                     break;
@@ -159,6 +202,7 @@ namespace PowerPointLabs.CropLab
             }
 
             Rectangle boundingRect = new Rectangle(left, top, right, bottom);
+            bmp.UnlockBits(bmpData);
             return boundingRect;
         }
 
