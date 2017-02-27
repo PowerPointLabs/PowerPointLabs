@@ -17,13 +17,13 @@ namespace PowerPointLabs.ActionFramework.Action
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
             if (!VerifyIsSelectionValid(this.GetCurrentSelection()))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, errorHandler);
+                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypeShape, 1, errorHandler);
                 return;
             }
             ShapeRange shapeRange = this.GetCurrentSelection().ShapeRange;
             if (shapeRange.Count < 1)
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionCountZero, FeatureName, errorHandler);
+                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypeShape, 1, errorHandler);
                 return;
             }
             if (!IsShapeForSelection(shapeRange))
