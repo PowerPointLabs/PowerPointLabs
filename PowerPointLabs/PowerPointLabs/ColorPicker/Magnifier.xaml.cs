@@ -15,8 +15,6 @@ namespace PowerPointLabs.ColorPicker
     /// </summary>
     public partial class Magnifier : Window
     {
-        internal const string VersionOffice2010 = "14.0";
-
         private MagnificationControlHost magnificationControl;
         private System.Windows.Forms.Timer timer;
 
@@ -31,13 +29,6 @@ namespace PowerPointLabs.ColorPicker
         public Magnifier(float magnificationFactor)
         {
             InitializeComponent();
-
-            // Magnifier is temporarily disabled for Office 2010 until bug is fixed! 
-            if (IsVersionOffice2010())
-            {
-                Visibility = Visibility.Collapsed;
-                return;
-            }
 
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 100;
@@ -141,7 +132,7 @@ namespace PowerPointLabs.ColorPicker
 
         public new void Show()
         {
-            if (isMagInitialized && !IsVersionOffice2010())
+            if (isMagInitialized)
             {
                 UpdateMagnifier();
                 timer.Start();
@@ -251,15 +242,6 @@ namespace PowerPointLabs.ColorPicker
             // Update position, WPF units are affected by monitor's DPI
             Left = (mousePosition.X / Utils.Graphics.GetDpiScale()) - actualHalfSize.Width;
             Top = (mousePosition.Y / Utils.Graphics.GetDpiScale()) - actualHalfSize.Height;
-        }
-
-        #endregion
-
-        #region Helper methods
-
-        private bool IsVersionOffice2010()
-        {
-            return this.GetApplication().Version == VersionOffice2010;
         }
 
         #endregion
