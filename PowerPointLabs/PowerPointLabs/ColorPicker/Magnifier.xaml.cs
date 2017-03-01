@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 
 using PPExtraEventHelper;
@@ -15,12 +15,14 @@ namespace PowerPointLabs.ColorPicker
     /// </summary>
     public partial class Magnifier : Window
     {
+        private MagnifierOverlay magnifierOverlay;
         private MagnificationControlHost magnificationControl;
         private System.Windows.Forms.Timer timer;
 
         private IntPtr hwndMag;
         private bool isMagInitialized;
-        
+        private List<IntPtr> magFilteredWindows;
+
         private float magnificationFactor;
         private Size actualHalfSize;
         private Size sourceRectSize;
@@ -33,6 +35,10 @@ namespace PowerPointLabs.ColorPicker
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 100;
             timer.Tick += new EventHandler(Timer_Tick);
+            
+            magnifierOverlay = new MagnifierOverlay();
+            magnifierOverlay.Visibility = Visibility.Collapsed;
+            magnifierOverlay.Loaded += MagnifierOverlay_Loaded;
 
             this.magnificationFactor = magnificationFactor;
             Visibility = Visibility.Visible;
@@ -60,6 +66,7 @@ namespace PowerPointLabs.ColorPicker
                 // Make window click-through
                 int extendedStyle = Native.GetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE);
                 Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE,
+                                     extendedStyle |
                                      (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT |
                                      (int)Native.ExtendedWindowStyles.WS_EX_LAYERED);
                 Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_STYLE, (int)Native.WindowStyles.WS_POPUP);
@@ -112,7 +119,6 @@ namespace PowerPointLabs.ColorPicker
             public int HostHeight
             {
                 get { return hostHeight; }
-                
             }
         }
 
@@ -127,6 +133,7 @@ namespace PowerPointLabs.ColorPicker
                 UpdateMagnifier();
                 timer.Start();
                 Visibility = Visibility.Visible;
+                magnifierOverlay.Visibility = Visibility;
             }
         }
 
@@ -134,12 +141,13 @@ namespace PowerPointLabs.ColorPicker
         {
             timer.Stop();
             Visibility = Visibility.Collapsed;
+            magnifierOverlay.Visibility = Visibility;
         }
 
         #endregion
 
         #region Handled events
-
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -164,6 +172,12 @@ namespace PowerPointLabs.ColorPicker
             }
         }
 
+        private void MagnifierOverlay_Loaded(object sender, RoutedEventArgs e)
+        {
+            IntPtr overlayHwnd = new WindowInteropHelper(magnifierOverlay).Handle;
+            AddMagnifierFilteredWindow(overlayHwnd);
+        }
+
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             TeardownMagnifier();
@@ -180,7 +194,9 @@ namespace PowerPointLabs.ColorPicker
 
         private void SetupMagnifier()
         {
-            magnificationControl = new MagnificationControlHost(Width - OutlineWidth.Width, Height - OutlineWidth.Width);
+            magFilteredWindows = new List<IntPtr>();
+
+            magnificationControl = new MagnificationControlHost(Width, Height);
             MagnificationHostElement.Child = magnificationControl;
             hwndMag = magnificationControl.HwndControl;
 
@@ -204,6 +220,13 @@ namespace PowerPointLabs.ColorPicker
             magTransformMatrix.m11 = magnificationFactor;
             magTransformMatrix.m22 = 1.0f;
             Native.MagSetWindowTransform(hwndMag, ref magTransformMatrix);
+        }
+
+        private void AddMagnifierFilteredWindow(IntPtr handle)
+        {
+            magFilteredWindows.Add(handle);
+            Native.MagSetWindowFilterList(hwndMag, (int)Native.MagnifierFilterMode.MW_FILTERMODE_EXCLUDE,
+                                          magFilteredWindows.Count, magFilteredWindows.ToArray());
         }
 
         private void TeardownMagnifier()
@@ -232,6 +255,8 @@ namespace PowerPointLabs.ColorPicker
             // Update position, WPF units are affected by monitor's DPI
             Left = (mousePosition.X / Utils.Graphics.GetDpiScale()) - actualHalfSize.Width;
             Top = (mousePosition.Y / Utils.Graphics.GetDpiScale()) - actualHalfSize.Height;
+            magnifierOverlay.Left = Left;
+            magnifierOverlay.Top = Top;
         }
 
         #endregion

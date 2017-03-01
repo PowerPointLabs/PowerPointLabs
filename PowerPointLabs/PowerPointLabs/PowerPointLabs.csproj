@@ -356,6 +356,9 @@
     <Compile Include="ColorPicker\Magnifier.xaml.cs">
       <DependentUpon>Magnifier.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+      <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
     <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
@@ -1158,6 +1161,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ColorPicker\Magnifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker\MagnifierOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

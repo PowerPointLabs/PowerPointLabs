@@ -14,12 +14,7 @@
         WindowStyle="None"
         Width="200" 
         Height="200">
-    <Window.Background>
-        <SolidColorBrush Color="White" Opacity="0"/>
-    </Window.Background>
     <Grid>
-        <Border Name="OutlineWidth" Width="2" Visibility="Hidden"/>
-        <Border Name="OutlineElement" Background="Black" CornerRadius="200"/>
         <Border Name="MagnificationHostElement"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>

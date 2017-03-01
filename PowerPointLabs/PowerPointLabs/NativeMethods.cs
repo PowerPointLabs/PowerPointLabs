@@ -173,6 +173,11 @@ namespace PPExtraEventHelper
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool MagSetWindowSource(IntPtr hwnd, RECT rect);
 
+        // Minimum supported client: Vista 
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)] 
+        [return: MarshalAs(UnmanagedType.Bool)] 
+        internal static extern bool MagSetWindowFilterList(IntPtr hwnd, int dwFilterMode, int count, IntPtr[] pHWND);
+
         [DllImport("winmm.dll")]
         internal static extern int mciSendString(string mciCommand,
                                                  StringBuilder mciRetInfo,
