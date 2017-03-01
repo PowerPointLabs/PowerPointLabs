@@ -44,7 +44,6 @@ namespace PowerPointLabs.ColorPicker
         {
             internal const string WC_MAGNIFIER = "Magnifier";
 
-            private IntPtr hwndControl;
             private IntPtr hwndHost;
             private int hostWidth, hostHeight;
 
@@ -56,30 +55,26 @@ namespace PowerPointLabs.ColorPicker
 
             protected override HandleRef BuildWindowCore(HandleRef hwndParent)
             {
-                hwndControl = IntPtr.Zero;
                 hwndHost = IntPtr.Zero;
 
-                hwndHost = Native.CreateWindowEx((int)Native.ExtendedWindowStyles.WS_EX_LAYERED |
-                                                (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT, 
-                                                "static", "",
-                                                (int)Native.WindowStyles.WS_CHILD |
-                                                (int)Native.WindowStyles.WS_VISIBLE,
-                                                0, 0,
-                                                hostWidth, hostHeight,
-                                                hwndParent.Handle,
-                                                IntPtr.Zero,
-                                                IntPtr.Zero,
-                                                0);
-                Native.SetLayeredWindowAttributes(hwndHost, 0, 255, Native.LayeredWindowAttributeFlags.LWA_ALPHA);
+                // Make window click-through
+                int extendedStyle = Native.GetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE);
+                Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE,
+                                     (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT |
+                                     (int)Native.ExtendedWindowStyles.WS_EX_LAYERED);
+                Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_STYLE, (int)Native.WindowStyles.WS_POPUP);
 
-                // Create Magnification control
-                hwndControl = Native.CreateWindowEx(0, WC_MAGNIFIER, "MagnificationControl",
+                // Must be transparent for Magnification to work
+                Native.SetLayeredWindowAttributes(hwndParent.Handle, 0, 255, Native.LayeredWindowAttributeFlags.LWA_ALPHA);
+
+                // Create Magnification control host
+                hwndHost = Native.CreateWindowEx(0, WC_MAGNIFIER, "MagnificationControl",
                                                 (int)Native.WindowStyles.WS_CHILD |
                                                 (int)Native.WindowStyles.WS_VISIBLE |
                                                 (int)Native.MagnifierStyle.MS_CLIPAROUNDCURSOR,
                                                 0, 0,
                                                 hostWidth, hostHeight,
-                                                hwndHost,
+                                                hwndParent.Handle,
                                                 IntPtr.Zero, 
                                                 IntPtr.Zero, 
                                                 0);
@@ -89,11 +84,6 @@ namespace PowerPointLabs.ColorPicker
                                                 hostWidth, hostHeight,
                                                 hostWidth, hostHeight);
                 Native.SetWindowRgn(hwndHost, ellipseRegion, true);
-
-                // Make window click-through
-                int extendedStyle = Native.GetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE);
-                Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE, 
-                                                extendedStyle | (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT);
 
                 return new HandleRef(this, hwndHost);
             }
@@ -111,7 +101,7 @@ namespace PowerPointLabs.ColorPicker
 
             public IntPtr HwndControl
             {
-                get { return hwndControl; }
+                get { return hwndHost; }
             }
 
             public int HostWidth
