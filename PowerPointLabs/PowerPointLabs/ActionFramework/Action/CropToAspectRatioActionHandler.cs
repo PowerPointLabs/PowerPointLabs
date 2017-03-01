@@ -1,18 +1,41 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.CropLab;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId(TextCollection.CropToAspectRatioTag)]
-    class CropToAspectRatioActionHandler : ActionHandler
+    class CropToAspectRatioActionHandler : CropLabActionHandler
     {
+        private static readonly string FeatureName = "Crop To Aspect Ratio";
+
         protected override void ExecuteAction(string ribbonId)
         {
+            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
+            var selection = this.GetCurrentSelection();
+
+            if (!VerifyIsSelectionValid(selection))
+            {
+                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
+                return;
+            }
+            ShapeRange shapeRange = selection.ShapeRange;
+            if (shapeRange.Count < 1)
+            {
+                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
+                return;
+            }
+            if (!IsPictureForSelection(shapeRange))
+            {
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
+                return;
+            }
+
             if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
             {
-                var dialog = new CropLab.CustomAspectRatioDialog();
+                var dialog = new CustomAspectRatioDialog();
                 dialog.SettingsHandler += ExecuteCropToAspectRatio;
                 dialog.ShowDialog();
             }
@@ -27,10 +50,19 @@ namespace PowerPointLabs.ActionFramework.Action
 
         private void ExecuteCropToAspectRatio(string aspectRatioRawString)
         {
-            this.StartNewUndoEntry();
-            var selection = this.GetCurrentSelection();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
-            CropToAspectRatio.Crop(selection, aspectRatioRawString, errorHandler);
+            var selection = this.GetCurrentSelection();
+
+            float aspectRatioWidth = 0.0f;
+            float aspectRatioHeight = 0.0f;
+            if (!TryParseAspectRatio(aspectRatioRawString, out aspectRatioWidth, out aspectRatioHeight))
+            {
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, FeatureName, errorHandler);
+                return;
+            }
+            float aspectRatio = aspectRatioWidth / aspectRatioHeight;
+
+            CropToAspectRatio.Crop(selection, aspectRatio);
         }
     }
 }

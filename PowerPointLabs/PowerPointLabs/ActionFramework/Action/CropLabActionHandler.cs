@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
+
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Attribute;
-using PowerPointLabs.ActionFramework.Common.Extension;
+
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.CropLab;
 
@@ -56,6 +57,32 @@ namespace PowerPointLabs.ActionFramework.Action
                 return;
             }
             errorHandler.ProcessErrorCode(errorCode, featureName, validSelectionType, validSelectionMinCount);
+        }
+
+        protected static bool TryParseAspectRatio(string aspectRatioString, out float aspectRatioWidth, out float aspectRatioHeight)
+        {
+            aspectRatioWidth = 0.0f;
+            aspectRatioHeight = 0.0f;
+
+            string pattern = @"(\d+):(\d+)";
+            Match matches = Regex.Match(aspectRatioString, pattern);
+            if (!matches.Success)
+            {
+                return false;
+            }
+
+            if (!float.TryParse(matches.Groups[1].Value, out aspectRatioWidth) ||
+                !float.TryParse(matches.Groups[2].Value, out aspectRatioHeight))
+            {
+                return false;
+            }
+
+            if (aspectRatioWidth <= 0.0f || aspectRatioHeight <= 0.0f)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -13,14 +13,9 @@ namespace PowerPointLabs.CropLab
     {
         private static readonly string TempPngFileExportPath = Path.GetTempPath() + @"\cropoutpaddingtemp.png";
 
-        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, CropLabErrorHandler errorHandler = null)
+        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection)
         {
-            if (!VerifyIsSelectionValid(selection, errorHandler))
-            {
-                return null;
-            }
-
-            var croppedShape = Crop(selection.ShapeRange, errorHandler);
+            var croppedShape = Crop(selection.ShapeRange);
             if (croppedShape != null)
             {
                 croppedShape.Select();
@@ -28,31 +23,28 @@ namespace PowerPointLabs.CropLab
             return croppedShape;
         }
 
-        public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange, CropLabErrorHandler errorHandler = null)
+        public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange)
         {
-            if (!VerifyIsShapeRangeValid(shapeRange, errorHandler))
-            {
-                return null;
-            }
-
             for (int i = 1; i <= shapeRange.Count; i++)
             {
+                PowerPoint.Shape shape = shapeRange[i];
+
                 // Store initial properties
-                float currentRotation = shapeRange[i].Rotation;
-                float cropLeft = shapeRange[i].PictureFormat.CropLeft;
-                float cropRight = shapeRange[i].PictureFormat.CropRight;
-                float cropTop = shapeRange[i].PictureFormat.CropTop;
-                float cropBottom = shapeRange[i].PictureFormat.CropBottom;
+                float currentRotation = shape.Rotation;
+                float cropLeft = shape.PictureFormat.CropLeft;
+                float cropRight = shape.PictureFormat.CropRight;
+                float cropTop = shape.PictureFormat.CropTop;
+                float cropBottom = shape.PictureFormat.CropBottom;
 
                 // Set properties to zero to do proper calculations
-                shapeRange[i].PictureFormat.CropLeft = 0;
-                shapeRange[i].PictureFormat.CropRight = 0;
-                shapeRange[i].PictureFormat.CropTop = 0;
-                shapeRange[i].PictureFormat.CropBottom = 0;
-                shapeRange[i].Rotation = 0;
+                shape.PictureFormat.CropLeft = 0;
+                shape.PictureFormat.CropRight = 0;
+                shape.PictureFormat.CropTop = 0;
+                shape.PictureFormat.CropBottom = 0;
+                shape.Rotation = 0;
 
                 // Get unscaled dimensions
-                PowerPoint.ShapeRange origShape = shapeRange[i].Duplicate();
+                PowerPoint.ShapeRange origShape = shape.Duplicate();
                 origShape.ScaleWidth(1, Office.MsoTriState.msoTrue);
                 origShape.ScaleHeight(1, Office.MsoTriState.msoTrue);
                 float origWidth = origShape.Width;
@@ -62,25 +54,18 @@ namespace PowerPointLabs.CropLab
                 Rectangle origImageRect = new Rectangle();
                 Rectangle croppedImageRect = new Rectangle();
 
-                Utils.Graphics.ExportShape(shapeRange[i], TempPngFileExportPath);
+                Utils.Graphics.ExportShape(shape, TempPngFileExportPath);
                 using (Bitmap shapeBitmap = new Bitmap(TempPngFileExportPath))
                 {
                     origImageRect = new Rectangle(0, 0, shapeBitmap.Width, shapeBitmap.Height);
                     try
                     {
-                        croppedImageRect = GetImageBoundingRect(shapeBitmap);
+                        croppedImageRect = GetImageBoundingRect(shapeBitmap, shape.Name);
                     }
                     catch (NotSupportedException e)
                     {
-                        if (errorHandler != null)
-                        {
-                            string errorMsg = "An unexpected error occurred in Crop Out Padding for " + 
-                                              shapeRange[i].Name + ". " +
-                                              "Exported bitmap data should be in Format32bppArgb PNG format.";
-                            errorHandler.ProcessException(e, errorMsg);
-                        }
-                        return null;
-                    }    
+                        throw e;
+                    }
                 }
 
                 float cropRatioLeft = croppedImageRect.Left / (float)origImageRect.Width;
@@ -100,11 +85,11 @@ namespace PowerPointLabs.CropLab
                 cropBottom = cropBottom < newCropBottom ? newCropBottom : cropBottom;
 
                 // Restore original properties
-                shapeRange[i].Rotation = currentRotation;
-                shapeRange[i].PictureFormat.CropLeft = cropLeft;
-                shapeRange[i].PictureFormat.CropRight = cropRight;
-                shapeRange[i].PictureFormat.CropTop = cropTop;
-                shapeRange[i].PictureFormat.CropBottom = cropBottom;
+                shape.Rotation = currentRotation;
+                shape.PictureFormat.CropLeft = cropLeft;
+                shape.PictureFormat.CropRight = cropRight;
+                shape.PictureFormat.CropTop = cropTop;
+                shape.PictureFormat.CropBottom = cropBottom;
             }
 
             return shapeRange;
@@ -136,11 +121,12 @@ namespace PowerPointLabs.CropLab
             return true;
         }
 
-        private static Rectangle GetImageBoundingRect(Bitmap bmp)
+        private static Rectangle GetImageBoundingRect(Bitmap bmp, string shapeName)
         {
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
-                throw new NotSupportedException("Non-Format32bppArgb bitmaps are not supported.");
+                string errorMsg = "Non-Format32bppArgb bitmap for " + shapeName + " is not supported.";
+                throw new NotSupportedException(errorMsg);
             }
             
             int left = -1;
@@ -204,53 +190,6 @@ namespace PowerPointLabs.CropLab
             Rectangle boundingRect = new Rectangle(left, top, right, bottom);
             bmp.UnlockBits(bmpData);
             return boundingRect;
-        }
-
-        private static bool VerifyIsSelectionValid(PowerPoint.Selection selection, CropLabErrorHandler errorHandler)
-        {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, CropLabErrorHandler errorHandler)
-        {
-            if (shapeRange.Count < 1)
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
-                return false;
-            }
-
-            if (!IsPictureForSelection(shapeRange))
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, errorHandler);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool IsPictureForSelection(PowerPoint.ShapeRange shapeRange)
-        {
-            return (from PowerPoint.Shape shape in shapeRange select shape).All(IsPicture);
-        }
-
-        private static bool IsPicture(PowerPoint.Shape shape)
-        {
-            return shape.Type == Office.MsoShapeType.msoPicture;
-        }
-
-        private static void HandleErrorCodeIfRequired(int errorCode, CropLabErrorHandler errorHandler)
-        {
-            if (errorHandler == null)
-            {
-                return;
-            }
-            errorHandler.ProcessErrorCode(errorCode, "Crop Out Padding", CropLabErrorHandler.SelectionTypePicture, 1);
         }
     }
 }
