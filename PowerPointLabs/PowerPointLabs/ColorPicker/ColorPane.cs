@@ -1162,6 +1162,7 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
         }
 
         private Boolean VerifyIsShapeSelected()
