@@ -598,7 +598,6 @@ namespace PowerPointLabs
             //affect Color Dialog tool feature
             if (_timerCounter >= TIMER_COUNTER_THRESHOLD)
             {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
                 UpdateUIForNewColor();
                 if (currMode != MODE.NONE)
                 {
