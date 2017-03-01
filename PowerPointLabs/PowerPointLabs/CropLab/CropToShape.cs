@@ -23,18 +23,6 @@ namespace PowerPointLabs.CropLab
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        private static void CheckSelectionValid(PowerPoint.Selection selection)
-        {
-            if (selection.ShapeRange.Count < 1)
-            {
-                throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForSelectionCountZero);
-            }
-            if (!IsShapeForSelection(selection.ShapeRange))
-            {
-                throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape);
-            }
-        }
-
         public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
                                             bool handleError = true)
         {

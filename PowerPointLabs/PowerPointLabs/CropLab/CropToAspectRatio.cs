@@ -8,20 +8,9 @@ namespace PowerPointLabs.CropLab
 {
     internal class CropToAspectRatio
     {
-        private static float aspectRatioWidth = 0.0f;
-        private static float aspectRatioHeight = 0.0f;
-
-        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, string aspectRatioRawString, 
-                                                          CropLabErrorHandler errorHandler = null)
+        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, float aspectRatio)
         {
-            if (!VerifyIsAspectRatioValid(aspectRatioRawString, errorHandler) ||
-                !VerifyIsSelectionValid(selection, errorHandler))
-            {
-                return null;
-            }
-
-            float aspectRatio = aspectRatioWidth / aspectRatioHeight;
-            var croppedShape = Crop(selection.ShapeRange, aspectRatio, errorHandler);
+            var croppedShape = Crop(selection.ShapeRange, aspectRatio);
             if (croppedShape != null)
             {
                 croppedShape.Select();
@@ -29,13 +18,8 @@ namespace PowerPointLabs.CropLab
             return croppedShape;
         }
 
-        public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange, float aspectRatio, CropLabErrorHandler errorHandler = null)
+        public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange, float aspectRatio)
         {
-            if (!VerifyIsShapeRangeValid(shapeRange, errorHandler))
-            {
-                return null;
-            }
-
             for (int i = 1; i <= shapeRange.Count; i++)
             {
                 PowerPoint.ShapeRange origShape = shapeRange[i].Duplicate();
@@ -70,79 +54,6 @@ namespace PowerPointLabs.CropLab
             }
 
             return shapeRange;
-        }
-
-        private static bool VerifyIsSelectionValid(PowerPoint.Selection selection, CropLabErrorHandler errorHandler)
-        {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, CropLabErrorHandler errorHandler)
-        {
-            if (shapeRange.Count < 1)
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, errorHandler);
-                return false;
-            }
-
-            if (!IsPictureForSelection(shapeRange))
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, errorHandler);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool VerifyIsAspectRatioValid(string aspectRatioString, CropLabErrorHandler errorHandler)
-        {
-            string pattern = @"(\d+):(\d+)";
-            Match matches = Regex.Match(aspectRatioString, pattern);
-            if (!matches.Success)
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
-                return false;
-            }
-
-            if (!float.TryParse(matches.Groups[1].Value, out aspectRatioWidth) ||
-                !float.TryParse(matches.Groups[2].Value, out aspectRatioHeight))
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
-                return false;
-            }
-            
-            if (aspectRatioWidth <= 0.0f || aspectRatioHeight <= 0.0f)
-            {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, errorHandler);
-                return false;
-            }
-
-            return true;
-        }
-
-        private static bool IsPictureForSelection(PowerPoint.ShapeRange shapeRange)
-        {
-            return (from PowerPoint.Shape shape in shapeRange select shape).All(IsPicture);
-        }
-
-        private static bool IsPicture(PowerPoint.Shape shape)
-        {
-            return shape.Type == Office.MsoShapeType.msoPicture;
-        }
-
-        private static void HandleErrorCodeIfRequired(int errorCode, CropLabErrorHandler errorHandler)
-        {
-            if (errorHandler == null)
-            {
-                return;
-            }
-            errorHandler.ProcessErrorCode(errorCode, "Crop To Aspect Ratio", CropLabErrorHandler.SelectionTypePicture, 1);
         }
     }
 }
