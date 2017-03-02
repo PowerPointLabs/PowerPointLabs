@@ -3,6 +3,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
+using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
@@ -13,7 +14,8 @@ namespace PowerPointLabs.ActionFramework.Action
 
         protected override void ExecuteAction(string ribbonId)
         {
-            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
+            IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
+            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             var selection = this.GetCurrentSelection();
 
             if (!VerifyIsSelectionValid(selection))
@@ -50,7 +52,8 @@ namespace PowerPointLabs.ActionFramework.Action
 
         private void ExecuteCropToAspectRatio(string aspectRatioRawString)
         {
-            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
+            IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
+            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             var selection = this.GetCurrentSelection();
 
             float aspectRatioWidth = 0.0f;

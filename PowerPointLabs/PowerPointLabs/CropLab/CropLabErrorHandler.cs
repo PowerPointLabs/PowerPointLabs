@@ -1,10 +1,12 @@
 ﻿using System;
 
+using PowerPointLabs.CustomControls;
+
 namespace PowerPointLabs.CropLab
 {
     internal class CropLabErrorHandler
     {
-        private CropLabUIControl View { get; set; }
+        private IMessageService View { get; set; }
         private static CropLabErrorHandler _errorHandler;
         
         public const string SelectionTypeShape = "shape";
@@ -24,12 +26,12 @@ namespace PowerPointLabs.CropLab
         private const string ErrorMessageUndefined = TextCollection.CropLabText.ErrorUndefined;
         private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
 
-        private CropLabErrorHandler(CropLabUIControl view = null)
+        private CropLabErrorHandler(IMessageService view = null)
         {
             View = view;
         }
 
-        public static CropLabErrorHandler InitializeErrorHandler(CropLabUIControl view = null)
+        public static CropLabErrorHandler InitializeErrorHandler(IMessageService view = null)
         {
             if (_errorHandler == null)
             {
