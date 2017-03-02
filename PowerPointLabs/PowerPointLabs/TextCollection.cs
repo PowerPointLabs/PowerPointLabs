@@ -9,8 +9,8 @@
         # endregion
 
         # region URLs
-        public const string FeedbackUrl = "http://powerpointlabs.info/contact.html";
-        public const string HelpDocumentUrl = "http://powerpointlabs.info/docs.html";
+        public const string FeedbackUrl = "http://www.comp.nus.edu.sg/~pptlabs/contact.html";
+        public const string HelpDocumentUrl = "http://www.comp.nus.edu.sg/~pptlabs/docs/";
         public const string PowerPointLabsWebsiteUrl = "http://PowerPointLabs.info";
         public const string SingleShapeDownloadUrl = "http://www.comp.nus.edu.sg/~pptlabs/gallery.html";
         # endregion
