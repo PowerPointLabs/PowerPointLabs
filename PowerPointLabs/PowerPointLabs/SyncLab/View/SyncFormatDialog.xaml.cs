@@ -76,6 +76,10 @@ namespace PowerPointLabs.SyncLab.View
                         {
                             children.Add((SyncFormatDialogItem)((TreeViewItem)treeItem).Header);
                         }
+                        else
+                        {
+                            throw new Exception("");
+                        }
                         result.Items.Add(treeItem);
                     }
                 }
