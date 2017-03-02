@@ -1,22 +1,21 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.CropLab;
+using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId("CropToSameButton")]
     class CropToSameActionHandler : CropLabActionHandler
     {
-        private static readonly string ShapePicture = Path.GetTempPath() + @"\shape.png";
         private static readonly string FeatureName = "Crop To Same Dimensions";
 
         protected override void ExecuteAction(string ribbonId)
         {
-            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
+            IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
+            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             if (!VerifyIsSelectionValid(this.GetCurrentSelection()))
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 2, errorHandler);

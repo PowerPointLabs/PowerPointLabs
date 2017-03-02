@@ -389,8 +389,9 @@
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
     <Compile Include="CropLab\CropLabException.cs" />
+    <Compile Include="CropLab\CropLabDummyMessageService.cs" />
     <Compile Include="CropLab\CropLabOperationException.cs" />
-    <Compile Include="CropLab\CropLabUIControl.cs" />
+    <Compile Include="CropLab\CropLabMessageService.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />
     <Compile Include="CropLab\CropOutPadding.cs" />
     <Compile Include="CropLab\CropToSlide.cs" />
@@ -443,6 +444,7 @@
     <Compile Include="CustomControls\BufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomControls\MessageService.cs" />
     <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
     <Compile Include="ColorPicker\ColorPane.cs">

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.CropLab;
+using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
@@ -15,7 +14,8 @@ namespace PowerPointLabs.ActionFramework.Action
 
         protected override void ExecuteAction(string ribbonId)
         {
-            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(CropLabUIControl.GetSharedInstance());
+            IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
+            CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             if (!VerifyIsSelectionValid(this.GetCurrentSelection()))
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
