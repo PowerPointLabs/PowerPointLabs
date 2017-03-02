@@ -14,13 +14,16 @@ namespace PowerPointLabs.SyncLab.View
 
         public SyncFormatDialogItem(FormatTreeNode node) : base()
         {
+            this.node = node;
+            checkBox.IsChecked = node.IsChecked;
             checkBox.Checked += new RoutedEventHandler(CheckBoxCheckChange);
             checkBox.Unchecked += new RoutedEventHandler(CheckBoxCheckChange);
-            this.node = node;
+            checkBox.Indeterminate += new RoutedEventHandler(CheckBoxCheckChange);
         }
 
         private void CheckBoxCheckChange(object sender, RoutedEventArgs e)
         {
+            node.IsChecked = checkBox.IsChecked;
             UpdateChecked();
         }
 
