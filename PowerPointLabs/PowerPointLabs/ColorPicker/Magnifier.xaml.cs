@@ -40,6 +40,7 @@ namespace PowerPointLabs.ColorPicker
             magnifierOverlay.Visibility = Visibility.Collapsed;
             magnifierOverlay.Loaded += MagnifierOverlay_Loaded;
 
+            isMagInitialized = false;
             this.magnificationFactor = magnificationFactor;
             Visibility = Visibility.Visible;
         }
@@ -66,9 +67,9 @@ namespace PowerPointLabs.ColorPicker
                 // Make window click-through
                 int extendedStyle = Native.GetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE);
                 Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE,
-                                     extendedStyle |
-                                     (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT |
-                                     (int)Native.ExtendedWindowStyles.WS_EX_LAYERED);
+                                                extendedStyle |
+                                                (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT |
+                                                (int)Native.ExtendedWindowStyles.WS_EX_LAYERED);
                 Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_STYLE, (int)Native.WindowStyles.WS_POPUP);
 
                 // Must be transparent for Magnification to work
@@ -152,7 +153,12 @@ namespace PowerPointLabs.ColorPicker
         {
             try
             {
-                isMagInitialized = Native.MagInitialize();
+                // Magnification is disabled on some environments
+                if (IsMagnificationApiAvailable())
+                {
+                    isMagInitialized = Native.MagInitialize();
+                }
+
                 if (isMagInitialized)
                 {
                     SetupMagnifier();
@@ -257,6 +263,31 @@ namespace PowerPointLabs.ColorPicker
             Top = (mousePosition.Y / Utils.Graphics.GetDpiScale()) - actualHalfSize.Height;
             magnifierOverlay.Left = Left;
             magnifierOverlay.Top = Top;
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        private bool IsMagnificationApiAvailable()
+        {
+            // Magnification API has a bug with window handle sign-extension
+            // on Windows 7 64-bit with 32-bit applications (i.e. Win7 WoW64)
+            if (IsOSWindows7() &&
+                Environment.Is64BitOperatingSystem &&
+                !Environment.Is64BitProcess)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool IsOSWindows7()
+        {
+            // Major and minor version
+            return Environment.OSVersion.Platform == PlatformID.Win32NT &&
+                    Environment.OSVersion.Version.Major == 6 &&
+                    Environment.OSVersion.Version.Minor == 1;
         }
 
         #endregion
