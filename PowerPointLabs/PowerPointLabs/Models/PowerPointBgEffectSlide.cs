@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
+
 using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.CropLab;
 
 using Core = Microsoft.Office.Core;
 
@@ -144,14 +146,14 @@ namespace PowerPointLabs.Models
             }
         }
 
-        private static Shape MakeFrontImage(ShapeRange shapeRange)
+        private static Shape MakeFrontImage(Slide refSlide, ShapeRange shapeRange)
         {
             foreach (Shape shape in shapeRange)
             {
                 shape.SoftEdge.Radius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
             }
 
-            var croppedShape = CropToShape.Crop(shapeRange, handleError: false);
+            var croppedShape = CropToShape.Crop(FromSlideFactory(refSlide), shapeRange, handleError: false);
 
             return croppedShape;
         }
@@ -189,7 +191,7 @@ namespace PowerPointLabs.Models
             try
             {
                 // crop in the original slide and put into clipboard
-                var croppedShape = MakeFrontImage(oriShapeRange);
+                var croppedShape = MakeFrontImage(refSlide, oriShapeRange);
 
                 croppedShape.Cut();
 
@@ -226,7 +228,7 @@ namespace PowerPointLabs.Models
             }
             catch (Exception e)
             {
-                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                var errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Blur/Recolor Remainder");
 
                 newSlide.Delete();
