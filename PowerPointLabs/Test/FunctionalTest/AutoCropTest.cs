@@ -115,8 +115,8 @@ namespace Test.FunctionalTest
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop",
-                "'Crop To Shape' requires at least one shape to be selected.",
+                "Error",
+                "You need to select at least 1 shape before applying 'Crop To Shape'.",
                 PplFeatures.AutoCrop);
         }
 
@@ -126,7 +126,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShapes(new List<string> {"selectMe", "pic"});
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Unable to crop", 
+                "Error", 
                 "'Crop To Shape' only supports shape objects.",
                 PplFeatures.AutoCrop);
         }

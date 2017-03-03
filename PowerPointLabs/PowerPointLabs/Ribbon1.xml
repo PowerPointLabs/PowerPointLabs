@@ -70,16 +70,6 @@
                     onAction="ZoomLabDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="CropLabGroup"
-               getLabel="GetCropLabGroupLabel"
-               visible="true">
-          <button id="MoveCropShapeButton"
-                  getLabel ="GetMoveCropShapeButtonLabel"
-                  size ="large"
-                  getImage="GetCropShapeImage"
-                  getSupertip="GetMoveCropShapeButtonSupertip"
-                  onAction="CropShapeButtonClick"/>
-        </group>
         <group id="embedAudio"
                getLabel="GetEmbedAudioGroupLabel">
           <splitButton id="addAudioSplit" size="large">
@@ -338,6 +328,37 @@
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
+          <menu id="CropLabMenu"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  size="large">
+                <button id="MoveCropShapeButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <button id="CropToSlideButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <button id="CropToSameButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <dynamicMenu id="CropToAspectRatioDynamicMenu"
+                        getContent="GetContent"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"/>
+                <button id="CropOutPaddingButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+            </menu>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
@@ -413,7 +434,7 @@
                onAction="OnAction"/>
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
+                getImage="GetCutOutShapeImage"
                 onAction="CropShapeButtonClick"/>
         <button id="fitToWidthShape"
                 getLabel="GetLabel"

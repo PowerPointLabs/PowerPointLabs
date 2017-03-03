@@ -6,10 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.HighlightLab;
@@ -316,12 +318,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonSupertip;
         }
-        
-        public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonSupertip;
-        }
-        
+
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -506,15 +503,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonLabel;
         }
-
-        public string GetCropLabGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropLabGroupLabel;
-        }
-        public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonLabel;
-        }
+        
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -969,18 +958,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetZoomToAreaContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetCropShapeImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CutOutShape);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropShapeImage");
                 throw;
             }
         }
@@ -1669,23 +1646,6 @@ namespace PowerPointLabs
         
         #endregion
 
-        #region Feature: Crop to Shape
-
-        public void CropShapeButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
-        }
-
-        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
-        {
-            return CropToShape.GetCutOutShapeMenuImage(control);
-        }
-
-        #endregion
-
         #region Feature: Convert to Picture
 
         public void ConvertToPictureButtonClick(Office.IRibbonControl control)
@@ -1912,13 +1872,13 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
+                var croppedShape = CropToShape.Crop(PowerPointCurrentPresentationInfo.CurrentSlide, selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
             catch (Exception e)
             {
-                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                var errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
 
                 MessageBox.Show(errorMessage);
