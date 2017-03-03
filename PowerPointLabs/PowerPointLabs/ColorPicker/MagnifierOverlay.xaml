@@ -1,21 +1,21 @@
 ﻿<Window x:Class="PowerPointLabs.ColorPicker.MagnifierOverlay"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:local="clr-namespace:PowerPointLabs.ColorPicker"
-        mc:Ignorable="d" 
-        d:DesignHeight="250" d:DesignWidth="250"
-        Width="250" Height="250"
-        WindowStyle="None"
-        WindowStartupLocation="Manual"
-        ShowInTaskbar="False"
-        AllowsTransparency="True">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerPointLabs.ColorPicker"
+             Name="MagnifierMainWindow"
+             AllowsTransparency="True"
+             ShowInTaskbar="False"
+             Topmost="True"
+             WindowStartupLocation="Manual"
+             WindowStyle="None"
+             Width="200" 
+             Height="200">
     <Window.Background>
-        <SolidColorBrush Opacity="0"/>
+        <SolidColorBrush Color="White" Opacity="0"/>
     </Window.Background>
     <Grid>
-        <Ellipse StrokeThickness="2"
-                 Stroke="Black"/>
+        <Ellipse Stroke="Black" StrokeThickness="3"/>
     </Grid>
 </Window>

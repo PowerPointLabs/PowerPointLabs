@@ -84,9 +84,25 @@ namespace PPExtraEventHelper
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+        
+        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode)]
+        internal static extern IntPtr CreateWindowEx(int dwExStyle,
+                                                      string lpszClassName,
+                                                      string lpszWindowName,
+                                                      int style,
+                                                      int x, int y,
+                                                      int width, int height,
+                                                      IntPtr hwndParent,
+                                                      IntPtr hMenu,
+                                                      IntPtr hInst,
+                                                      [MarshalAs(UnmanagedType.AsAny)] object pvParam);
 
-        [DllImport("user32.dll", EntryPoint = "CreateWindowExW", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
-        internal static extern IntPtr CreateWindowEx(int dwExStyle, string lpClassName, string lpWindowName, int dwStyle, int x, int y, int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance, IntPtr lpParam);
+        [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
+        internal static extern bool DestroyWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool SetLayeredWindowAttributes(IntPtr hwnd, int crKey, byte bAlpha, LayeredWindowAttributeFlags dwFlags);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -125,6 +141,18 @@ namespace PPExtraEventHelper
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool InvalidateRect(IntPtr hWnd, IntPtr rect, [MarshalAs(UnmanagedType.Bool)] bool erase);
 
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
+        [DllImport("gdi32.dll")]
+        internal static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowLong(IntPtr hwnd, int index);
+
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+
         // Minimum supported client: Vista
         [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -145,9 +173,9 @@ namespace PPExtraEventHelper
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool MagSetWindowSource(IntPtr hwnd, RECT rect);
 
-        // Minimum supported client: Vista
-        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)]
-        [return: MarshalAs(UnmanagedType.Bool)]
+        // Minimum supported client: Vista 
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)] 
+        [return: MarshalAs(UnmanagedType.Bool)] 
         internal static extern bool MagSetWindowFilterList(IntPtr hwnd, int dwFilterMode, int count, IntPtr[] pHWND);
 
         [DllImport("winmm.dll")]
@@ -191,15 +219,15 @@ namespace PPExtraEventHelper
         [StructLayout(LayoutKind.Sequential)]
         internal struct MAGTRANSFORM
         {
-            public float m00;
-            public float m10;
-            public float m20;
-            public float m01;
-            public float m11;
-            public float m21;
-            public float m02;
-            public float m12;
-            public float m22;
+            internal float m00;
+            internal float m10;
+            internal float m20;
+            internal float m01;
+            internal float m11;
+            internal float m21;
+            internal float m02;
+            internal float m12;
+            internal float m22;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -329,8 +357,7 @@ namespace PPExtraEventHelper
             EVENT_SYSTEM_MENUEND = 0x5,
             EVENT_OBJECT_CREATE = 0x8000,
         }
-
-        internal const string WC_MAGNIFIER = "Magnifier";
+        
         internal enum MagnifierStyle : int
         {
             MS_SHOWMAGNIFIEDCURSOR = 0x0001,
@@ -342,6 +369,17 @@ namespace PPExtraEventHelper
         {
             MW_FILTERMODE_EXCLUDE = 0,
             MW_FILTERMODE_INCLUDE = 1
+        }
+
+        internal enum WindowLong : int
+        {
+            GWL_WNDPROC = -4,
+            GWL_HINSTANCE = -6,
+            GWL_HWNDPARENT = -8,
+            GWL_ID = -12,
+            GWL_STYLE = -16,
+            GWL_EXSTYLE = -20,
+            GWL_USERDATA = -21
         }
 
         internal enum WindowStyles : int
@@ -394,6 +432,12 @@ namespace PPExtraEventHelper
             WS_EX_LAYOUTRTL = 0x00400000,
             WS_EX_COMPOSITED = 0x02000000,
             WS_EX_NOACTIVATE = 0x08000000
+        }
+        
+        internal enum LayeredWindowAttributeFlags : int
+        {
+            LWA_COLORKEY = 0x00000001,
+            LWA_ALPHA = 0x00000002
         }
 
         [StructLayout(LayoutKind.Sequential)]

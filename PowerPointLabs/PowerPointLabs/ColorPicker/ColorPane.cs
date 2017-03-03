@@ -71,6 +71,9 @@ namespace PowerPointLabs
             SetDefaultColor(Color.CornflowerBlue);
 
             EnableScrolling();
+
+            // Hook the mouse process if it has not
+            PPMouse.TryStartHook();
         }
 
         private void EnableScrolling()
@@ -402,7 +405,7 @@ namespace PowerPointLabs
         private const int TIMER_COUNTER_THRESHOLD = 2;
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
-        private MagnifierForm magnifier = new MagnifierForm(MAGNIFICATION_FACTOR);
+        private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
 
         private void BeginEyedropping()
         {
@@ -595,7 +598,6 @@ namespace PowerPointLabs
             //affect Color Dialog tool feature
             if (_timerCounter >= TIMER_COUNTER_THRESHOLD)
             {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
                 UpdateUIForNewColor();
                 if (currMode != MODE.NONE)
                 {
@@ -1160,6 +1162,7 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
         }
 
         private Boolean VerifyIsShapeSelected()
