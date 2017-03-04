@@ -89,7 +89,9 @@ namespace PowerPointLabs
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-            
+
+            caption = UpdateCaptions(caption);
+
             Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
                 slideWidth, 100);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
@@ -104,6 +106,64 @@ namespace PowerPointLabs
             textBox.Top = slideHeight - textBox.Height;
             return textBox;
         }
+
+        private static string UpdateCaptions(string caption)
+        {
+            string space = " ";
+            var textToSpeakList = caption.Split(space.ToCharArray()[0]);
+            string newTextCaption = "";
+            bool isSpell = false;
+            bool isEnd = false;
+
+            for (int i = 0; i < textToSpeakList.Length; i++)
+            {
+                var thisWord = textToSpeakList[i];
+                var charList = thisWord.ToCharArray();
+
+                if (thisWord.StartsWith("[spell]") && (!thisWord.Equals("[spell]")))
+                {
+                    if (!thisWord.Contains("[/]"))
+                    {
+                        thisWord = thisWord.Substring(7);
+                        charList = thisWord.ToCharArray();
+                    }
+                }
+
+                if (thisWord.StartsWith("[/]"))
+                {
+                    thisWord = thisWord.Substring(3);
+                    isEnd = true;
+                }
+                else if (thisWord.Contains("[/]"))
+                {
+                    if (thisWord.StartsWith("[spell]"))
+                    {
+                        thisWord = thisWord.Substring(7);
+                    }
+                    string endS = "[/]";
+                    thisWord = thisWord.Replace(endS, "");
+                }
+
+                if (thisWord.Equals("[spell]"))
+                {
+                    thisWord = "";
+                    isSpell = true;
+                }
+
+                if (isSpell || isEnd)
+                {
+                    newTextCaption = newTextCaption + thisWord;
+                    isSpell = false;
+                    isEnd = false;
+                }
+                else
+                {
+                    newTextCaption = newTextCaption + " " + thisWord;
+                }
+            }
+
+            return newTextCaption;
+        } 
 
         public static void EmbedCaptionsOnCurrentSlide()
         {
