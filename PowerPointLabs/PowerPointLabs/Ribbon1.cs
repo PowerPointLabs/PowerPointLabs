@@ -1912,9 +1912,10 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
+                var magnifyRatio = 1.4f;
 
-                MagnifyGlassEffect(croppedShape, 1.4f);
+                var croppedShape = CropToShape.Crop(selection, magnifyRatio, isInPlace: true, handleError: false);
+                MagnifyGlassEffect(croppedShape, magnifyRatio);
             }
             catch (Exception e)
             {
