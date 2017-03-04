@@ -78,6 +78,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public Settings Settings { get; set; }
 
+        public List<StyleOption> CustomStyles { get; set; }
+
         #endregion
 
         #region Dependency
@@ -192,6 +194,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList.Add(CreateChoosePicturesItem());
 
             Settings = StoragePath.LoadSettings();
+            CustomStyles = StoragePath.LoadCustomStyles();
 
             if (StoragePath.IsFirstTimeUsage())
             {
@@ -243,6 +246,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList.RemoveAt(0);
             StoragePath.Save(ImageSelectionList);
             StoragePath.Save(Settings);
+            StoragePath.Save(CustomStyles);
             Logger.Log("ViewModel clean up done");
         }
         #endregion
@@ -1095,6 +1099,22 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             SaveClipboardPicture(copiedPicture);
             Logger.Log("UpdateStylesVariationImages done");
+        }
+
+        public StyleOption GetStyleOption(int index)
+        {
+            return _styleOptions[index];
+        }
+
+        public ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, StyleOption styleOption)
+        {
+            var previewInfo = Designer.PreviewApplyStyle(source, contentSlide, slideWidth, slideHeight, styleOption);
+
+            return new ImageItem
+            {
+                ImageFile = previewInfo.PreviewApplyStyleImagePath,
+                Tooltip = styleOption.OptionName
+            };
         }
 
         private ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isMockPreviewImages,
