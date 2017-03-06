@@ -632,17 +632,17 @@ namespace PowerPointLabs.Utils
         # endregion
 
         # region Slide
-        public static void ExportSlide(Slide slide, string exportPath)
+        public static void ExportSlide(Slide slide, string exportPath, float magnifyRatio = 1.0f)
         {
             slide.Export(exportPath,
                          "PNG",
-                         (int) GetDesiredExportWidth(),
-                         (int) GetDesiredExportHeight());
+                         (int)(GetDesiredExportWidth() * magnifyRatio),
+                         (int)(GetDesiredExportHeight() * magnifyRatio));
         }
 
-        public static void ExportSlide(PowerPointSlide slide, string exportPath)
+        public static void ExportSlide(PowerPointSlide slide, string exportPath, float magnifyRatio = 1.0f)
         {
-            ExportSlide(slide.GetNativeSlide(), exportPath);
+            ExportSlide(slide.GetNativeSlide(), exportPath, magnifyRatio);
         }
 
         /// <summary>

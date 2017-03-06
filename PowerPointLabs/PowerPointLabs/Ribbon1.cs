@@ -13,9 +13,11 @@ using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
+using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -47,6 +49,8 @@ namespace PowerPointLabs
         #region Action Framework Factory
         private ActionHandlerFactory ActionHandlerFactory { get; set; }
 
+        private EnabledHandlerFactory EnabledHandlerFactory { get; set; }
+
         private LabelHandlerFactory LabelHandlerFactory { get; set; }
 
         private ImageHandlerFactory ImageHandlerFactory { get; set; }
@@ -66,6 +70,12 @@ namespace PowerPointLabs
         {
             var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             actionHandler.Execute(control.Id);
+        }
+
+        public bool GetEnabled(Office.IRibbonControl control)
+        {
+            var enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return enabledHandler.Get(control.Id);
         }
 
         public string GetLabel(Office.IRibbonControl control)
@@ -153,6 +163,7 @@ namespace PowerPointLabs
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
             ActionHandlerFactory = new ActionHandlerFactory();
+            EnabledHandlerFactory = new EnabledHandlerFactory();
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
@@ -269,6 +280,11 @@ namespace PowerPointLabs
         {
             try
             {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    return;
+                }
+
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 Spotlight.AddSpotlightEffect();
@@ -362,11 +378,6 @@ namespace PowerPointLabs
             return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
         
-        public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CustomeShapeButtonSupertip;
-        }
-
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMenuSupertip;
@@ -576,10 +587,6 @@ namespace PowerPointLabs
         {
             return TextCollection.LabsGroupLabel;
         }
-        public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CustomeShapeButtonLabel;
-        }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
         {
@@ -705,10 +712,6 @@ namespace PowerPointLabs
         public string GetConvertToPictureShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.ConvertToPictureShapeLabel;
-        }
-        public string GetAddCustomShapeShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddCustomShapeShapeLabel;
         }
         public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
         {
@@ -980,19 +983,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetCropShapeImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetShapesLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ShapesLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetShapesLabImage");
                 throw;
             }
         }
@@ -1342,18 +1332,6 @@ namespace PowerPointLabs
             try
             {
                 return new Bitmap(Properties.Resources.ZoomOutContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomOutContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetAddToCustomShapeContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddToCustomShapes);
             }
             catch (Exception e)
             {
@@ -1907,74 +1885,6 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region Feature: Shapes Lab
-        public void CustomShapeButtonClick(Office.IRibbonControl control)
-        {
-            InitCustomShapePane();
-        }
-
-        public void AddShapeButtonClick(Office.IRibbonControl control)
-        {
-            var customShape = InitCustomShapePane();
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-            // first of all we check if the shape gallery has been opened correctly
-            if (!Globals.ThisAddIn.ShapePresentation.Opened)
-            {
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
-                return;
-            }
-
-            // add shape into shape gallery first to reduce flicker
-            var shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(selection,
-                                                                         TextCollection.CustomShapeDefaultShapeName);
-
-            // add the selection into pane and save it as .png locally
-            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName + ".png");
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
-
-            // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
-
-            // finally, add the shape into the panel and waiting for name editing
-            customShape.AddCustomShape(shapeName, shapeFullName, true);
-        }
-
-        private static CustomShapePane InitCustomShapePane()
-        {
-            var prensentation = PowerPointPresentation.Current.Presentation;
-
-            Globals.ThisAddIn.InitializeShapesLabConfig();
-            Globals.ThisAddIn.InitializeShapeGallery();
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
-
-            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
-
-            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
-            {
-                return null;
-            }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            Trace.TraceInformation(
-                "Before Visible: " +
-                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
-                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
-
-            // if currently the pane is hidden, show the pane
-            if (!customShapePane.Visible)
-            {
-                customShapePane.Visible = true;
-
-                customShape.Width = customShapePane.Width - 16;
-                customShape.PaneReload();
-            }
-
-            return customShape;
-        }
-        # endregion
-
         # region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
@@ -2004,9 +1914,10 @@ namespace PowerPointLabs
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
+                var magnifyRatio = 1.4f;
 
-                MagnifyGlassEffect(croppedShape, 1.4f);
+                var croppedShape = CropToShape.Crop(selection, magnifyRatio, isInPlace: true, handleError: false);
+                MagnifyGlassEffect(croppedShape, magnifyRatio);
             }
             catch (Exception e)
             {

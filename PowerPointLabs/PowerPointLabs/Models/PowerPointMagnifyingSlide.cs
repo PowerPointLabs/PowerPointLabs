@@ -63,7 +63,8 @@ namespace PowerPointLabs.Models
             foreach (PowerPoint.Shape s in matchingShapes)
                 s.Delete();
 
-            AddZoomSlideCroppedPicture();
+            float magnifyRatio = PowerPointPresentation.Current.SlideWidth / zoomShape.Width;
+            AddZoomSlideCroppedPicture(magnifyRatio);
 
             DeleteSlideNotes();
             DeleteSlideMedia();
@@ -122,7 +123,7 @@ namespace PowerPointLabs.Models
         }
 
         //Stores slide-size crop of the current slide as a global variable
-        private void AddZoomSlideCroppedPicture()
+        private void AddZoomSlideCroppedPicture(float magnifyRatio = 1.0f)
         {
             PowerPointSlide zoomSlideCopy = this.Duplicate();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(zoomSlideCopy.Index);
@@ -130,7 +131,7 @@ namespace PowerPointLabs.Models
             PowerPoint.Shape cropShape = zoomSlideCopy.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, PowerPointPresentation.Current.SlideWidth - 0.01f, PowerPointPresentation.Current.SlideHeight - 0.01f);
             cropShape.Select();
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            PowerPoint.Shape croppedShape = CropToShape.Crop(sel);
+            PowerPoint.Shape croppedShape = CropToShape.Crop(sel, magnifyRatio: magnifyRatio);
             croppedShape.Cut();
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];

@@ -34,11 +34,7 @@ namespace PPExtraEventHelper
                 application.WindowSelectionChange += (selection) =>
                 {
                     selectedRange = selection;
-                    if (!IsHookSuccessful())
-                    {
-                        IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
-                        StartHook(PPHandle);
-                    }
+                    TryStartHook();
                 };
             }
         }
@@ -54,6 +50,15 @@ namespace PPExtraEventHelper
         public static bool StopHook()
         {
             return Native.UnhookWindowsHookEx(hook);
+        }
+
+        public static void TryStartHook()
+        {
+            if (!IsHookSuccessful())
+            {
+                IntPtr ppHandle = Process.GetCurrentProcess().MainWindowHandle;
+                StartHook(ppHandle);
+            }
         }
 
         private static bool IsHookSuccessful()

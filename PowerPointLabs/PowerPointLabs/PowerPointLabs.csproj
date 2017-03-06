@@ -44,7 +44,7 @@
     <PublishUrl>D:\PPTLabs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.8.7.11</ApplicationVersion>
+    <ApplicationVersion>2.8.7.13</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -255,6 +255,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\AddShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShapeMenuActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\RemoveHighlightingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
@@ -266,6 +269,7 @@
     <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportContentRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportEnabledRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportPressedRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
@@ -276,11 +280,13 @@
     <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
     <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\EnabledHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\BaseActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\CheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\EnabledHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Interface\ContentHandler.cs" />
@@ -289,6 +295,9 @@
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
@@ -299,6 +308,8 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\AddShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
@@ -313,6 +324,7 @@
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
@@ -349,6 +361,12 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="ColorPicker\Magnifier.xaml.cs">
+      <DependentUpon>Magnifier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+      <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
     <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
@@ -635,6 +653,7 @@
     <Compile Include="PPExtraEventHelper\LMouseUpListener.cs" />
     <Compile Include="PPExtraEventHelper\SysMouseEventInfo.cs" />
     <Compile Include="PPExtraEventHelper\PPMouseLegacy.cs" />
+    <Compile Include="HighlightLab\RemoveHighlighting.cs" />
     <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
       <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
     </Compile>
@@ -718,7 +737,7 @@
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
-    <Compile Include="HighlightTextFragments.cs" />
+    <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
     <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointDrillDownSlide.cs" />
@@ -761,8 +780,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
-    <Compile Include="HighlightBulletsBackground.cs" />
-    <Compile Include="HighlightBulletsText.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsText.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
     <Compile Include="Views\HighlightBulletsDialogBox.cs">
       <SubType>Form</SubType>
@@ -1149,6 +1168,14 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ColorPicker\Magnifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPicker\MagnifierOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DrawingsLab\AlignmentDialogBoth.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
