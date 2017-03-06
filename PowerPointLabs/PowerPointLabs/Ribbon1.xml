@@ -43,6 +43,7 @@
         </group>
         <group id="ZoomLabGroup"
                getLabel="GetZoomLabGroupLabel"
+               getImage="GetImage"
                visible ="true">
           <button id="AddZoomInButton"
                  getLabel ="GetAddZoomInButtonLabel"
@@ -81,7 +82,8 @@
                   onAction="CropShapeButtonClick"/>
         </group>
         <group id="embedAudio"
-               getLabel="GetEmbedAudioGroupLabel">
+               getLabel="GetEmbedAudioGroupLabel"
+               getImage="GetImage">
           <splitButton id="addAudioSplit" size="large">
             <button id="AddAudioButton"
                   getLabel="GetAddAudioButtonLabel"
@@ -116,7 +118,8 @@
           </dialogBoxLauncher>
         </group>
         <group id="embedCaptions"
-               getLabel="GetEmbedCaptionGroupLabel">
+               getLabel="GetEmbedCaptionGroupLabel"
+               getImage="GetImage">
           <button id="AddCaptionsButton"
                   getLabel="GetAddCaptionsButtonLabel"
                   keytip="CA"
@@ -142,6 +145,7 @@
         </group>
         <group id="HighlightBullets"
                getLabel="GetHighlightLabGroupLabel"
+               getImage="GetImage"
                visible="true">
           <splitButton id ="addSpotlight" size ="large">  
             <button id="AddSpotlightButton"
@@ -191,6 +195,7 @@
         </group>
         <group id="Labs"
                getLabel="GetLabsGroupLabel"
+               getImage="GetImage"
                visible="true">
           <button id="ColorsLabButton"
                   getLabel="GetLabel"
@@ -341,6 +346,7 @@
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
+               getImage="GetImage"
                visible="true">
           <button id="HelpButton"
                   getLabel="GetHelpButtonLabel"
