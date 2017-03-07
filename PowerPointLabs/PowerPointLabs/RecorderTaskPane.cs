@@ -9,14 +9,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
 using NAudio.Wave;
-using PPExtraEventHelper;
-using PowerPointLabs.Models;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 using PowerPointLabs.XMLMisc;
-using PowerPointLabs.ActionFramework.Common.Log;
+using PPExtraEventHelper;
 
 namespace PowerPointLabs
 {

@@ -6,10 +6,8 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.AudioMisc
 {
-    internal class Audio
+    public class Audio
     {
-        // Tag key to store audio type in shape
-        private const string AudioTypeTagName = "AUDIO_TAG";
 
         public enum AudioType
         {
@@ -29,6 +27,9 @@ namespace PowerPointLabs.AudioMisc
         public string Length { get; set; }
         public int LengthMillis { get; set; }
         public AudioType Type { get; set; }
+
+        // Tag key to store audio type in shape
+        private const string AudioTypeTagName = "AUDIO_TAG";
 
         /// <summary>
         /// Default constructor.
@@ -55,7 +56,27 @@ namespace PowerPointLabs.AudioMisc
         public Audio(Shape shape, string saveName)
         {
             // detect audio type from shape tag
-            AudioType audioType;
+            AudioType audioType = GetShapeAudioType(shape);
+            this.Type = audioType;
+
+            // derive matched id from shape name
+            var temp = shape.Name.Split(new[] { ' ' });
+            if (temp.Length < 3)
+            {
+                throw new FormatException(TextCollection.RecorderUnrecognizeAudio);
+            }
+            this.MatchScriptID = Int32.Parse(temp[2]);
+
+            // get corresponding audio
+            this.Name = shape.Name;
+            this.SaveName = saveName;
+            this.Length = AudioHelper.GetAudioLengthString(saveName);
+            this.LengthMillis = AudioHelper.GetAudioLength(saveName);
+        }
+
+        public static AudioType GetShapeAudioType(Shape shape)
+        {
+            AudioType audioType = AudioType.Unrecognized;
             if (!Enum.TryParse<AudioType>(shape.Tags[AudioTypeTagName], out audioType))
             {
                 // Maintain backwards compatibility with old audio shapes
@@ -73,21 +94,7 @@ namespace PowerPointLabs.AudioMisc
                         break;
                 }
             }
-            this.Type = audioType;
-
-            // derive matched id from shape name
-            var temp = shape.Name.Split(new[] { ' ' });
-            if (temp.Length < 3)
-            {
-                throw new FormatException(TextCollection.RecorderUnrecognizeAudio);
-            }
-            this.MatchScriptID = Int32.Parse(temp[2]);
-
-            // get corresponding audio
-            this.Name = shape.Name;
-            this.SaveName = saveName;
-            this.Length = AudioHelper.GetAudioLengthString(saveName);
-            this.LengthMillis = AudioHelper.GetAudioLength(saveName);
+            return audioType;
         }
 
         // before we embed we need to check if we have any old shape on the slide. If
