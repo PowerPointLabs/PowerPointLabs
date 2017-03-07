@@ -86,7 +86,7 @@ namespace PowerPointLabs.SyncLab.View
         }
 
         private void UpdateChildrenChecked()
-        {
+        { // update the current item's checked value based on the checked state of children
             if (this.ItemChildren != null)
             {
                 bool allFalse = true;

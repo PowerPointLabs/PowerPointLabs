@@ -87,5 +87,10 @@ namespace PowerPointLabs.SyncLab.View
             }
             this.formats = dialog.Formats;
         }
+
+        public void Dispose()
+        {
+            shape.Delete();
+        }
     }
 }

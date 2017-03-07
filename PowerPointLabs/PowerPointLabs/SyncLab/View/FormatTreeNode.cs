@@ -86,7 +86,7 @@ namespace PowerPointLabs.SyncLab
         }
 
         public FormatTreeNode Clone(FormatTreeNode parent)
-        {
+        { // recursively clone the nodes
             FormatTreeNode cloned = null;
             if (this.format != null)
             {
