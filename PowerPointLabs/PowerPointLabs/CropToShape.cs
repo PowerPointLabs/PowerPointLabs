@@ -109,58 +109,6 @@ namespace PowerPointLabs
             }
         }
 
-        private static void SetMagnifyRatio(float magnifyRatio)
-        {
-            if (magnifyRatio > MaxMagnifyRatio)
-            {
-                currentMagnifyRatio = MaxMagnifyRatio;
-            }
-            else if (magnifyRatio < MinMagnifyRatio)
-            {
-                currentMagnifyRatio = MinMagnifyRatio;
-            }
-            else
-            {
-                currentMagnifyRatio = magnifyRatio;
-            }
-        }
-
-        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
-        {
-            try
-            {
-                if (shapeRange.Count < 1)
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
-                }
-
-                if (!IsShapeForSelection(shapeRange))
-                {
-                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                if (handleError)
-                {
-                    ProcessErrorMessage(e);
-                    return false;
-                }
-
-                throw;
-            }
-        }
-
-        private static void VerifyIsSelectionValid(PowerPoint.Selection selection)
-        {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                ThrowErrorCode(ErrorCodeForSelectionCountZero);
-            }
-        }
-
         public static PowerPoint.Shape FillInShapeWithImage(string imageFile, PowerPoint.Shape shape, bool isInPlace = false)
         {
             CreateFillInBackgroundForShape(imageFile, shape);
@@ -177,6 +125,69 @@ namespace PowerPointLabs
             var shapeToReturn = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
             shape.Delete();
             return shapeToReturn;
+        }
+
+        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
+                            float magnifyRatio = 1.0f)
+        {
+            if (original == null) return null;
+            try
+            {
+                var newX = startX * magnifyRatio;
+                var newY = startY * magnifyRatio;
+                var newWidth = width * magnifyRatio;
+                var newHeight = height * magnifyRatio;
+
+                var outputImage = new Bitmap((int)newWidth, (int)newHeight, PixelFormat.Format32bppArgb);
+
+                var inputGraphics = Graphics.FromImage(outputImage);
+                inputGraphics.DrawImage(original,
+                    new Rectangle(0, 0, (int)newWidth, (int)newHeight),
+                    new Rectangle((int)newX, (int)newY, (int)newWidth, (int)newHeight),
+                    GraphicsUnit.Pixel);
+                inputGraphics.Dispose();
+
+                return outputImage;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static string GetErrorMessageForErrorCode(string errorCode)
+        {
+            var errorCodeInteger = -1;
+            try
+            {
+                errorCodeInteger = Int32.Parse(errorCode);
+            }
+            catch
+            {
+                IgnoreExceptionThrown();
+            }
+            switch (errorCodeInteger)
+            {
+                case ErrorCodeForSelectionCountZero:
+                    return ErrorMessageForSelectionCountZero;
+                case ErrorCodeForSelectionNonShape:
+                    return ErrorMessageForSelectionNonShape;
+                default:
+                    return ErrorMessageForUndefined;
+            }
+        }
+
+        public static Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.CutOutShapeMenu);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetCutOutShapeMenuImage");
+                throw;
+            }
         }
 
         private static void CreateFillInBackgroundForShape(string imageFile, PowerPoint.Shape shape)
@@ -234,39 +245,27 @@ namespace PowerPointLabs
             magnifiedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
-                                    float magnifyRatio = 1.0f)
-        {
-            if (original == null) return null;
-            try
-            {
-                var newX = startX * magnifyRatio;
-                var newY = startY * magnifyRatio;
-                var newWidth = width * magnifyRatio;
-                var newHeight = height * magnifyRatio;
-
-                var outputImage = new Bitmap((int)newWidth, (int)newHeight, PixelFormat.Format32bppArgb);
-
-                var inputGraphics = Graphics.FromImage(outputImage);
-                inputGraphics.DrawImage(original,
-                    new Rectangle(0, 0, (int)newWidth, (int)newHeight),
-                    new Rectangle((int)newX, (int)newY, (int)newWidth, (int)newHeight),
-                    GraphicsUnit.Pixel);
-                inputGraphics.Dispose();
-
-                return outputImage;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         private static void TakeScreenshotProxy(PowerPoint.ShapeRange shapeRange)
         {
             shapeRange.Visible = Office.MsoTriState.msoFalse;
             Utils.Graphics.ExportSlide(PowerPointCurrentPresentationInfo.CurrentSlide, SlidePicture, currentMagnifyRatio);
             shapeRange.Visible = Office.MsoTriState.msoTrue;
+        }
+
+        private static void SetMagnifyRatio(float magnifyRatio)
+        {
+            if (magnifyRatio > MaxMagnifyRatio)
+            {
+                currentMagnifyRatio = MaxMagnifyRatio;
+            }
+            else if (magnifyRatio < MinMagnifyRatio)
+            {
+                currentMagnifyRatio = MinMagnifyRatio;
+            }
+            else
+            {
+                currentMagnifyRatio = magnifyRatio;
+            }
         }
 
         private static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPoint.ShapeRange range)
@@ -308,8 +307,8 @@ namespace PowerPointLabs
 
         private static bool IsShape(PowerPoint.Shape shape)
         {
-            return shape.Type == Office.MsoShapeType.msoAutoShape 
-                || shape.Type == Office.MsoShapeType.msoFreeform 
+            return shape.Type == Office.MsoShapeType.msoAutoShape
+                || shape.Type == Office.MsoShapeType.msoFreeform
                 || shape.Type == Office.MsoShapeType.msoGroup;
         }
 
@@ -318,29 +317,7 @@ namespace PowerPointLabs
             throw new Exception(typeOfError.ToString(CultureInfo.InvariantCulture));
         }
 
-        private static void IgnoreExceptionThrown(){}
-
-        public static string GetErrorMessageForErrorCode(string errorCode)
-        {
-            var errorCodeInteger = -1;
-            try
-            {
-                errorCodeInteger = Int32.Parse(errorCode);
-            }
-            catch
-            {
-                IgnoreExceptionThrown();
-            }
-            switch (errorCodeInteger)
-            {
-                case ErrorCodeForSelectionCountZero:
-                    return ErrorMessageForSelectionCountZero;
-                case ErrorCodeForSelectionNonShape:
-                    return ErrorMessageForSelectionNonShape;
-                default:
-                    return ErrorMessageForUndefined;
-            }
-        }
+        private static void IgnoreExceptionThrown() { }
 
         private static void ProcessErrorMessage(Exception e)
         {
@@ -358,16 +335,39 @@ namespace PowerPointLabs
             }
         }
 
-        public static Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
+        private static bool VerifyIsShapeRangeValid(PowerPoint.ShapeRange shapeRange, bool handleError)
         {
             try
             {
-                return new Bitmap(Properties.Resources.CutOutShapeMenu);
+                if (shapeRange.Count < 1)
+                {
+                    ThrowErrorCode(ErrorCodeForSelectionCountZero);
+                }
+
+                if (!IsShapeForSelection(shapeRange))
+                {
+                    ThrowErrorCode(ErrorCodeForSelectionNonShape);
+                }
+
+                return true;
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "GetCutOutShapeMenuImage");
+                if (handleError)
+                {
+                    ProcessErrorMessage(e);
+                    return false;
+                }
+
                 throw;
+            }
+        }
+
+        private static void VerifyIsSelectionValid(PowerPoint.Selection selection)
+        {
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                ThrowErrorCode(ErrorCodeForSelectionCountZero);
             }
         }
     }

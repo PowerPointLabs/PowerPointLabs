@@ -40,6 +40,10 @@ namespace PowerPointLabs.AgendaLab.Templates
             get { return !_configured; }
         }
 
+        public abstract void ConfigHead();
+        public abstract void ConfigMiddle();
+        public abstract void ConfigEnd();
+
         /// <exception cref="InvalidOperationException">Template already configured</exception>
         protected void AddConfiguration(AgendaSlideConfig[] frontSlides, AgendaSlideConfig[] backSlides)
         {
@@ -52,10 +56,6 @@ namespace PowerPointLabs.AgendaLab.Templates
 
             _configured = true;
         }
-
-        public abstract void ConfigHead();
-        public abstract void ConfigMiddle();
-        public abstract void ConfigEnd();
     }
 
     struct AgendaSlideConfig

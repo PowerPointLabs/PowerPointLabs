@@ -38,9 +38,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
     public partial class PictureSlidesLabWindow : IPictureSlidesLabWindowView
     {
         # region Props & States
-        // View model that contains the presenting logic
-        private PictureSlidesLabWindowViewModel ViewModel { set; get; }
-
         // UI model used to adjust image offset
         public AdjustImageWindow CropWindow { get; set; }
 
@@ -51,10 +48,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         // indicate to add-in that whether the window is open
         public bool IsOpen { get; set; }
 
+        public bool IsVariationsFlyoutOpen { get; private set; }
+
         // indicate that whether the window is closing
         private bool IsClosing { get; set; }
 
-        public bool IsVariationsFlyoutOpen { get; private set; }
+        // View model that contains the presenting logic
+        private PictureSlidesLabWindowViewModel ViewModel { set; get; }
 
         // used to indicate right-click item
         private int _clickedImageSelectionItemIndex = -1;

@@ -42,6 +42,19 @@ namespace PPExtraEventHelper
             }
         }
 
+        public static void StartHook(IntPtr handle)
+        {
+            FindSlideViewWindowHandle(handle);
+            hookProcedure = HookProcedureCallback;
+            hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE, hookProcedure, 0,
+                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
+        }
+
+        public static bool StopHook()
+        {
+            return Native.UnhookWindowsHookEx(hook);
+        }
+
         private static bool IsHookSuccessful()
         {
             return hook != 0;
@@ -97,19 +110,6 @@ namespace PPExtraEventHelper
                 && x < slideViewWindowRectangle.X + slideViewWindowRectangle.Width
                 && y > slideViewWindowRectangle.Y
                 && y < slideViewWindowRectangle.Y + slideViewWindowRectangle.Height;
-        }
-
-        public static void StartHook(IntPtr handle)
-        {
-            FindSlideViewWindowHandle(handle);
-            hookProcedure = HookProcedureCallback;
-            hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE, hookProcedure, 0,
-                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
-        }
-
-        public static bool StopHook()
-        {
-            return Native.UnhookWindowsHookEx(hook);
         }
 
         //for Office 2010, its window structure is like MDIClient --> mdiClass --> paneClassDC (SlideView)

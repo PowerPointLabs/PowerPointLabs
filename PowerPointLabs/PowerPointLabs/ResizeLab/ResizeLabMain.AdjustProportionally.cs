@@ -16,6 +16,8 @@ namespace PowerPointLabs.ResizeLab
     /// </summary>
     partial class ResizeLabMain
     {
+        public List<float> AdjustProportionallyProportionList;
+
         // To be used for error handling
         internal const int AdjustProportionally_MinNoOfShapesRequired = 2;
         internal const string AdjustProportionally_FeatureName = "Adjust Proportionally";
@@ -26,8 +28,6 @@ namespace PowerPointLabs.ResizeLab
             AdjustProportionally_MinNoOfShapesRequired.ToString(),
             AdjustProportionally_ShapeSupport
         };
-
-        public List<float> AdjustProportionallyProportionList;
 
         /// <summary>
         /// Adjust the width of the specified shapes to the resize factor of first

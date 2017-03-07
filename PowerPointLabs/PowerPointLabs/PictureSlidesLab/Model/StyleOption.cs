@@ -20,21 +20,6 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             Init();
         }
 
-        #region Initialization
-        private void Init()
-        {
-            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(this))
-            {
-                var myAttribute = (DefaultValueAttribute) property
-                    .Attributes[typeof(DefaultValueAttribute)];
-                if (myAttribute != null)
-                {
-                    property.SetValue(this, myAttribute.Value);
-                }
-            }
-        }
-        #endregion
-
         #region IO serialization
 
         // TODO move these to StorageUtil
@@ -86,6 +71,20 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         }
 
         # endregion
-        
+
+        #region Initialization
+        private void Init()
+        {
+            foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(this))
+            {
+                var myAttribute = (DefaultValueAttribute) property
+                    .Attributes[typeof(DefaultValueAttribute)];
+                if (myAttribute != null)
+                {
+                    property.SetValue(this, myAttribute.Value);
+                }
+            }
+        }
+        #endregion     
     }
 }

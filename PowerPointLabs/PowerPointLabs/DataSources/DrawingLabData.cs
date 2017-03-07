@@ -7,8 +7,6 @@ namespace PowerPointLabs.DataSources
 {
     internal class DrawingLabData
     {
-        private readonly List<Action<string>> _propertyChangedHandlers = new List<Action<string>>();
-
         public void AddPropertyChangedHandler(Action<string> callPropertyChanged)
         {
             _propertyChangedHandlers.Add(callPropertyChanged);
@@ -90,5 +88,7 @@ namespace PowerPointLabs.DataSources
         // Properties - Anchor
         public DrawingsLabDataSource.Horizontal AnchorHorizontal = DrawingsLabDataSource.Horizontal.Center;
         public DrawingsLabDataSource.Vertical AnchorVertical = DrawingsLabDataSource.Vertical.Middle;
+
+        private readonly List<Action<string>> _propertyChangedHandlers = new List<Action<string>>();
     }
 }

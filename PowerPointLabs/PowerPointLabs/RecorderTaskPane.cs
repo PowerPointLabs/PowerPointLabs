@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -20,9 +21,12 @@ using PPExtraEventHelper;
 
 namespace PowerPointLabs
 {
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     internal partial class RecorderTaskPane : UserControl
     {
 #pragma warning disable 0618
+        // a collection of audio buffer, for buffering slide show time recording
+        public List<List<Tuple<Audio, int>>> AudioBuffer;
         // map slide id to relative index
         private readonly Dictionary<int, int> _slideRelativeMapper;
         // this offset is used to map a slide id to relative slide id
@@ -31,8 +35,6 @@ namespace PowerPointLabs
         private readonly List<List<Audio>> _audioList;
         // a collection of slides, each slide has a list of script
         private readonly List<List<string>> _scriptList;
-        // a collection of audio buffer, for buffering slide show time recording
-        public List<List<Tuple<Audio, int>>> AudioBuffer;
         // a buffer to store the audio that has been replaced
         private Audio _undoAudioBuffer;
 

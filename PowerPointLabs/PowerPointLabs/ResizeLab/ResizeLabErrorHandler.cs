@@ -2,12 +2,12 @@
 {
     internal class ResizeLabErrorHandler
     {
-        private IResizeLabPane View { get; set; }
-        private static ResizeLabErrorHandler _errorHandler;
-
         public const int ErrorCodeInvalidSelection = 0;
         public const int ErrorCodeNotSameShapes = 1;
         public const int ErrorCodeGroupShapeNotSupported = 2;
+
+        private IResizeLabPane View { get; set; }
+        private static ResizeLabErrorHandler _errorHandler;
 
         private const string ErrorMessageInvalidSelection = TextCollection.ResizeLabText.ErrorInvalidSelection;
         private const string ErrorMessageNotSameShapes = TextCollection.ResizeLabText.ErrorNotSameShapes;

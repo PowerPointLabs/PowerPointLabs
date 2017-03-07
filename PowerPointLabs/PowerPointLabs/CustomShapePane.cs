@@ -257,6 +257,30 @@ namespace PowerPointLabs
 
             _firstTimeLoading = false;
         }
+        #endregion
+
+        #region Functional Test APIs
+
+        public LabeledThumbnail GetLabeledThumbnail(string labelName)
+        {
+            return FindLabeledThumbnail(labelName);
+        }
+
+        public void ImportLibrary(string pathToLibrary)
+        {
+            ImportShapes(pathToLibrary, fromLibrary: true);
+        }
+
+        public void ImportShape(string pathToShape)
+        {
+            ImportShapes(pathToShape, fromLibrary: false);
+        }
+
+        public Presentation GetShapeGallery()
+        {
+            return Globals.ThisAddIn.ShapePresentation.Presentation;
+        }
+
         # endregion
 
         # region Helper Functions
@@ -1534,30 +1558,6 @@ namespace PowerPointLabs
             }
         }
         */
-        # endregion
-
-        # region Functional Test APIs
-
-        public LabeledThumbnail GetLabeledThumbnail(string labelName)
-        {
-            return FindLabeledThumbnail(labelName);
-        }
-
-        public void ImportLibrary(string pathToLibrary)
-        {
-            ImportShapes(pathToLibrary, fromLibrary: true);
-        }
-
-        public void ImportShape(string pathToShape)
-        {
-            ImportShapes(pathToShape, fromLibrary: false);
-        }
-
-        public Presentation GetShapeGallery()
-        {
-            return Globals.ThisAddIn.ShapePresentation.Presentation;
-        }
-
         # endregion
     }
 }

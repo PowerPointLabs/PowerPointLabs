@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Office.Core;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.DataSources
 {
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     public class DrawingsLabDataSource : INotifyPropertyChanged
     {
         internal DrawingLabData Data { get; private set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -9,6 +10,7 @@ using System.Windows.Shapes;
 
 namespace PowerPointLabs.PictureSlidesLab.View.ImageAdjustment
 {
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     /// <summary>
     /// Taken from
     /// http://www.codeproject.com/Articles/23158/A-Photoshop-like-Cropping-Adorner-for-WPF
