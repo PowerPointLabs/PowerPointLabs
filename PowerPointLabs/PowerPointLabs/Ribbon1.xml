@@ -178,6 +178,12 @@
                   getSupertip="GetHighlightTextFragmentsButtonSupertip"
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>
+          <button id="RemoveHighlightButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>
@@ -200,11 +206,11 @@
                   onAction="PictureSlidesLabButtonClick"
                   />
           <button id="ShapesLabButton"
-                  getLabel="GetCustomeShapeButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getImage="GetShapesLabImage"
-                  getSupertip="GetCustomeShapeButtonSupertip"
-                  onAction="CustomShapeButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <menu id="EffectLabsMenu"
                 getLabel="GetEffectsLabButtonLabel"
                 getImage="GetEffectsLabImage"
@@ -401,10 +407,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeShape"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShape"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetCutOutShapeMenuImage"

@@ -109,6 +109,22 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsOpen = false;
         }
 
+
+        public SlideSelectionDialog CustomizeGotoSlideButton(string content, string tooltip)
+        {
+            GotoSlideButton.Content = content;
+            GotoSlideButton.ToolTip = tooltip;
+            return this;
+        }
+
+        public SlideSelectionDialog CustomizeAdditionalButton(string content, string tooltip)
+        {
+            AdditionalButton.Content = content;
+            AdditionalButton.ToolTip = tooltip;
+            AdditionalButton.Visibility = Visibility.Visible;
+            return this;
+        }
+
         private void SelectCurrentSlide()
         {
             foreach (var slide in SlideList)
@@ -169,21 +185,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 OnGotoSlide();
             }
-        }
-
-        public SlideSelectionDialog CustomizeGotoSlideButton(string content, string tooltip)
-        {
-            GotoSlideButton.Content = content;
-            GotoSlideButton.ToolTip = tooltip;
-            return this;
-        }
-
-        public SlideSelectionDialog CustomizeAdditionalButton(string content, string tooltip)
-        {
-            AdditionalButton.Content = content;
-            AdditionalButton.ToolTip = tooltip;
-            AdditionalButton.Visibility = Visibility.Visible;
-            return this;
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)

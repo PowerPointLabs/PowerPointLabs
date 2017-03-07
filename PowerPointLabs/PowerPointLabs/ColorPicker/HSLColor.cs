@@ -33,15 +33,6 @@ namespace PowerPointLabs
             set { luminosity = CheckRange(value / scale); }
         }
 
-        private double CheckRange(double value)
-        {
-            if (value < 0.0)
-                value = 0.0;
-            else if (value > 1.0)
-                value = 1.0;
-            return value;
-        }
-
         public override string ToString()
         {
             return String.Format("H: {0:#0.##} S: {1:#0.##} L: {2:#0.##}", Hue, Saturation, Luminosity);
@@ -51,6 +42,30 @@ namespace PowerPointLabs
         {
             Color color = (Color)this;
             return String.Format("R: {0:#0.##} G: {1:#0.##} B: {2:#0.##}", color.R, color.G, color.B);
+        }
+
+        public void SetRGB(int red, int green, int blue)
+        {
+            HSLColor hslColor = (HSLColor)Color.FromArgb(red, green, blue);
+            this.hue = hslColor.hue;
+            this.saturation = hslColor.saturation;
+            this.luminosity = hslColor.luminosity;
+        }
+
+        public HSLColor() { }
+        public HSLColor(Color color)
+        {
+            SetRGB(color.R, color.G, color.B);
+        }
+        public HSLColor(int red, int green, int blue)
+        {
+            SetRGB(red, green, blue);
+        }
+        public HSLColor(double hue, double saturation, double luminosity)
+        {
+            this.Hue = hue;
+            this.Saturation = saturation;
+            this.Luminosity = luminosity;
         }
 
         #region Casts to/from System.Drawing.Color
@@ -71,7 +86,7 @@ namespace PowerPointLabs
                     b = GetColorComponent(temp1, temp2, hslColor.hue - 1.0 / 3.0);
                 }
             }
-            return Color.FromArgb((int)(255 * r), (int)(255 * g), (int)(255 * b));
+            return Color.FromArgb((int)Math.Round(255 * r), (int)Math.Round(255 * g), (int)Math.Round(255 * b));
         }
 
         private static double GetColorComponent(double temp1, double temp2, double temp3)
@@ -114,29 +129,13 @@ namespace PowerPointLabs
         }
         #endregion
 
-        public void SetRGB(int red, int green, int blue)
+        private double CheckRange(double value)
         {
-            HSLColor hslColor = (HSLColor)Color.FromArgb(red, green, blue);
-            this.hue = hslColor.hue;
-            this.saturation = hslColor.saturation;
-            this.luminosity = hslColor.luminosity;
+            if (value < 0.0)
+                value = 0.0;
+            else if (value > 1.0)
+                value = 1.0;
+            return value;
         }
-
-        public HSLColor() { }
-        public HSLColor(Color color)
-        {
-            SetRGB(color.R, color.G, color.B);
-        }
-        public HSLColor(int red, int green, int blue)
-        {
-            SetRGB(red, green, blue);
-        }
-        public HSLColor(double hue, double saturation, double luminosity)
-        {
-            this.Hue = hue;
-            this.Saturation = saturation;
-            this.Luminosity = luminosity;
-        }
-
     }
 }

@@ -182,9 +182,16 @@ namespace PowerPointLabs.Models
             newRange.Select();
 
             PowerPoint.Selection currentSelection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+
+            // Save the original dimensions because ppPastePNG is resized in PowerPoint 2016
+            float originalWidth = currentSelection.ShapeRange[1].Width;
+            float originalHeight = currentSelection.ShapeRange[1].Height;
             currentSelection.Cut();
 
             PowerPoint.Shape spotlightPicture = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            spotlightPicture.Width = originalWidth;
+            spotlightPicture.Height = originalHeight;
+
             return spotlightPicture;
         }
 

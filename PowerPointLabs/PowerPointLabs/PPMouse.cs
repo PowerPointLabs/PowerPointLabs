@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+
 using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using System.Text;
 
 namespace PPExtraEventHelper
 {
@@ -33,12 +34,30 @@ namespace PPExtraEventHelper
                 application.WindowSelectionChange += (selection) =>
                 {
                     selectedRange = selection;
-                    if (!IsHookSuccessful())
-                    {
-                        IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
-                        StartHook(PPHandle);
-                    }
+                    TryStartHook();
                 };
+            }
+        }
+
+        public static void StartHook(IntPtr handle)
+        {
+            FindSlideViewWindowHandle(handle);
+            hookProcedure = HookProcedureCallback;
+            hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE, hookProcedure, 0,
+                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
+        }
+
+        public static bool StopHook()
+        {
+            return Native.UnhookWindowsHookEx(hook);
+        }
+
+        public static void TryStartHook()
+        {
+            if (!IsHookSuccessful())
+            {
+                IntPtr ppHandle = Process.GetCurrentProcess().MainWindowHandle;
+                StartHook(ppHandle);
             }
         }
 
@@ -109,19 +128,6 @@ namespace PPExtraEventHelper
                 && x < slideViewWindowRectangle.X + slideViewWindowRectangle.Width 
                 && y > slideViewWindowRectangle.Y 
                 && y < slideViewWindowRectangle.Y + slideViewWindowRectangle.Height;
-        }
-
-        public static void StartHook(IntPtr handle)
-        {
-            FindSlideViewWindowHandle(handle);
-            hookProcedure = HookProcedureCallback;
-            hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE, hookProcedure, 0, 
-                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
-        }
-
-        public static bool StopHook()
-        {
-            return Native.UnhookWindowsHookEx(hook);
         }
 
         //for Office 2010, its window structure is like MDIClient --> mdiClass --> paneClassDC (SlideView)

@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using PPExtraEventHelper;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using Office = Microsoft.Office.Core;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
-using PowerPointLabs.ActionFramework.Common.Extension;
+using PPExtraEventHelper;
+
 using Graphics = PowerPointLabs.Utils.Graphics;
-using System.Windows.Input;
-using System.Windows.Controls.Primitives;
 using Media = System.Windows.Media;
+using Office = Microsoft.Office.Core;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PositionsLab
 {
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     /// <summary>
     /// Interaction logic for PositionsPaneWPF.xaml
     /// </summary>
@@ -22,6 +26,7 @@ namespace PowerPointLabs.PositionsLab
     {
         private PositionsDistributeGridDialog _positionsDistributeGridDialog;
 
+        #pragma warning disable 0618
         private static LMouseUpListener _leftMouseUpListener;
         private static LMouseDownListener _leftMouseDownListener;
         private static System.Windows.Threading.DispatcherTimer _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();

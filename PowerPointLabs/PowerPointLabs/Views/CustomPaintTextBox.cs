@@ -26,6 +26,23 @@ namespace PowerPointLabs.Views
             ReleaseHandle();
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case (int)Native.Message.WM_PAINT:
+                    base.WndProc(ref m);
+                    if (_parentTextBox.Enabled == false)
+                    {
+                        CustomPaint();
+                    }
+                    break;
+                default:
+                    base.WndProc(ref m);
+                    break;
+            }
+        }
+
         private void CustomPaint()
         {
             _bufferGraphics.Clear(_parentTextBox.BackColor);
@@ -45,23 +62,6 @@ namespace PowerPointLabs.Views
             TextFormatFlags.EndEllipsis);
 
             _textBoxGraphics.DrawImageUnscaled(_bitmap, 0, 0);
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            switch (m.Msg)
-            {
-                case (int)Native.Message.WM_PAINT:
-                    base.WndProc(ref m);
-                    if (_parentTextBox.Enabled == false)
-                    {
-                        CustomPaint();
-                    }
-                    break;
-                default:
-                    base.WndProc(ref m);
-                    break;
-            }
         }
     }
 }

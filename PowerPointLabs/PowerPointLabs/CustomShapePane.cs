@@ -6,11 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+using PPExtraEventHelper;
+
 using Font = System.Drawing.Font;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Point = System.Drawing.Point;
@@ -255,6 +257,30 @@ namespace PowerPointLabs
 
             _firstTimeLoading = false;
         }
+        #endregion
+
+        #region Functional Test APIs
+
+        public LabeledThumbnail GetLabeledThumbnail(string labelName)
+        {
+            return FindLabeledThumbnail(labelName);
+        }
+
+        public void ImportLibrary(string pathToLibrary)
+        {
+            ImportShapes(pathToLibrary, fromLibrary: true);
+        }
+
+        public void ImportShape(string pathToShape)
+        {
+            ImportShapes(pathToShape, fromLibrary: false);
+        }
+
+        public Presentation GetShapeGallery()
+        {
+            return Globals.ThisAddIn.ShapePresentation.Presentation;
+        }
+
         # endregion
 
         # region Helper Functions
@@ -1532,30 +1558,6 @@ namespace PowerPointLabs
             }
         }
         */
-        # endregion
-
-        # region Functional Test APIs
-
-        public LabeledThumbnail GetLabeledThumbnail(string labelName)
-        {
-            return FindLabeledThumbnail(labelName);
-        }
-
-        public void ImportLibrary(string pathToLibrary)
-        {
-            ImportShapes(pathToLibrary, fromLibrary: true);
-        }
-
-        public void ImportShape(string pathToShape)
-        {
-            ImportShapes(pathToShape, fromLibrary: false);
-        }
-
-        public Presentation GetShapeGallery()
-        {
-            return Globals.ThisAddIn.ShapePresentation.Presentation;
-        }
-
         # endregion
     }
 }

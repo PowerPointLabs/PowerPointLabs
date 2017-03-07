@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TestInterface;
+
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
@@ -22,8 +23,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             UIThreadExecutor.Execute(() =>
             {
-                FunctionalTestExtensions.GetRibbonUi().CustomShapeButtonClick(
-                    new RibbonControl("ShapesLab"));
+                FunctionalTestExtensions.GetRibbonUi().OnAction(
+                    new RibbonControl("ShapesLabButton"));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(CustomShapePane)).Control as CustomShapePane;
             });
@@ -33,8 +34,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             UIThreadExecutor.Execute(() =>
             {
-                FunctionalTestExtensions.GetRibbonUi().AddShapeButtonClick(
-                    new RibbonControl("AddShapeToShapesLab"));
+                FunctionalTestExtensions.GetRibbonUi().OnAction(
+                    new RibbonControl("AddCustomShape"));
             });
         }
 

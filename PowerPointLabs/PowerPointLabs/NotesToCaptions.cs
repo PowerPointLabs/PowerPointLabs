@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using PowerPointLabs.Models;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Models;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs
@@ -16,6 +18,49 @@ namespace PowerPointLabs
             {
                 RemoveCaptionsFromSlide(slide);
                 EmbedCaptionsOnSlide(slide);
+            }
+        }
+
+        public static void EmbedCaptionsOnCurrentSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide != null)
+            {
+                RemoveCaptionsFromSlide(currentSlide);
+                EmbedCaptionsOnSlide(currentSlide);
+            }
+        }
+
+        public static void RemoveCaptionsFromCurrentSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide != null)
+            {
+                RemoveCaptionsFromSlide(currentSlide);
+            }
+        }
+
+        public static void RemoveCaptionsFromSelectedSlides()
+        {
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
+            {
+                RemoveCaptionsFromSlide(slide);   
+            }
+        }
+
+        public static void RemoveCaptionsFromAllSlides()
+        {
+            foreach (PowerPointSlide s in PowerPointPresentation.Current.Slides)
+            {
+                RemoveCaptionsFromSlide(s);
+            }
+        }
+
+        private static void RemoveCaptionsFromSlide(PowerPointSlide slide)
+        {
+            if (slide != null)
+            {
+                slide.DeleteShapesWithPrefixTimelineInvariant("PowerPointLabs Caption ");
             }
         }
 
@@ -87,7 +132,7 @@ namespace PowerPointLabs
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-            
+
             Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
                 slideWidth, 100);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
@@ -101,49 +146,6 @@ namespace PowerPointLabs
 
             textBox.Top = slideHeight - textBox.Height;
             return textBox;
-        }
-
-        public static void EmbedCaptionsOnCurrentSlide()
-        {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide != null)
-            {
-                RemoveCaptionsFromSlide(currentSlide);
-                EmbedCaptionsOnSlide(currentSlide);
-            }
-        }
-
-        public static void RemoveCaptionsFromCurrentSlide()
-        {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide != null)
-            {
-                RemoveCaptionsFromSlide(currentSlide);
-            }
-        }
-
-        public static void RemoveCaptionsFromSelectedSlides()
-        {
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-            {
-                RemoveCaptionsFromSlide(slide);   
-            }
-        }
-
-        public static void RemoveCaptionsFromAllSlides()
-        {
-            foreach (PowerPointSlide s in PowerPointPresentation.Current.Slides)
-            {
-                RemoveCaptionsFromSlide(s);
-            }
-        }
-
-        private static void RemoveCaptionsFromSlide(PowerPointSlide slide)
-        {
-            if (slide != null)
-            {
-                slide.DeleteShapesWithPrefixTimelineInvariant("PowerPointLabs Caption ");
-            }
         }
     }
 }

@@ -8,6 +8,9 @@ namespace PowerPointLabs.Views
 {
     public partial class SpotlightDialogBox : Form
     {
+        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge, Color newColor);
+        public UpdateSettingsDelegate SettingsHandler;
+
         private Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
@@ -20,8 +23,6 @@ namespace PowerPointLabs.Views
         };
         private float lastTransparency;
 
-        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge, Color newColor);
-        public UpdateSettingsDelegate SettingsHandler;
         public SpotlightDialogBox()
         {
             InitializeComponent();

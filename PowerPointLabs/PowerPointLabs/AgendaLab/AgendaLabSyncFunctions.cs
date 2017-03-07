@@ -4,9 +4,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
+
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
@@ -246,9 +249,10 @@ namespace PowerPointLabs.AgendaLab
 
             DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
-            candidate.CopyBackgroundColourFrom(refSlide);
             candidate.Layout = refSlide.Layout;
-            candidate.Design = refSlide.Design;
+            
+            candidate.Design = Graphics.GetDesign("Agenda Template");
+            candidate.GetNativeSlide().FollowMasterBackground = MsoTriState.msoTrue;
 
             // synchronize extra shapes other than visual items in reference slide
             var candidateSlideShapes = candidate.GetNameToShapeDictionary();

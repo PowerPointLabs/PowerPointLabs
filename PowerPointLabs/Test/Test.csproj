@@ -103,6 +103,7 @@
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
     <Compile Include="FunctionalTest\NarrationsLabTest.cs" />
+    <Compile Include="FunctionalTest\PositionsLabDuplicateAndRotateTest.cs" />
     <Compile Include="FunctionalTest\ColorsLabTest.cs" />
     <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
     <Compile Include="FunctionalTest\EffectsLabTest.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
+    <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />

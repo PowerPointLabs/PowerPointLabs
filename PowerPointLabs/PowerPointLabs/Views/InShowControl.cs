@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
+using PPExtraEventHelper;
+
 using Point = System.Drawing.Point;
 
 namespace PowerPointLabs.Views

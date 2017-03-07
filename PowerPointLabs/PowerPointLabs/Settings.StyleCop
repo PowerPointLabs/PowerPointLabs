@@ -229,7 +229,7 @@
         </Rule>
         <Rule Name="ElementsMustBeOrderedByAccess">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
         <Rule Name="ConstantsMustAppearBeforeFields">
@@ -274,22 +274,22 @@
         </Rule>
         <Rule Name="SystemUsingDirectivesMustBePlacedBeforeOtherUsingDirectives">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
         <Rule Name="UsingAliasDirectivesMustBePlacedAfterOtherUsingDirectives">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
         <Rule Name="UsingDirectivesMustBeOrderedAlphabeticallyByNamespace">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
         <Rule Name="UsingAliasDirectivesMustBeOrderedAlphabeticallyByAliasName">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
       </Rules>
@@ -474,12 +474,12 @@
         </Rule>
         <Rule Name="FileMayOnlyContainASingleClass">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
         <Rule Name="FileMayOnlyContainASingleNamespace">
           <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
+            <BooleanProperty Name="Enabled">True</BooleanProperty>
           </RuleSettings>
         </Rule>
         <Rule Name="FieldsMustBePrivate">

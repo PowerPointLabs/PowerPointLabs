@@ -9,8 +9,8 @@
         # endregion
 
         # region URLs
-        public const string FeedbackUrl = "http://powerpointlabs.info/contact.html";
-        public const string HelpDocumentUrl = "http://powerpointlabs.info/docs.html";
+        public const string FeedbackUrl = "http://www.comp.nus.edu.sg/~pptlabs/contact.html";
+        public const string HelpDocumentUrl = "http://www.comp.nus.edu.sg/~pptlabs/docs/";
         public const string PowerPointLabsWebsiteUrl = "http://PowerPointLabs.info";
         public const string SingleShapeDownloadUrl = "http://www.comp.nus.edu.sg/~pptlabs/gallery.html";
         # endregion
@@ -80,6 +80,9 @@
         public const string HighlightTextFragmentsButtonSupertip =
             "Highlights the selected text fragments.\n\n" +
             "To activate, select the text to highlight, then click this button.";
+        public const string RemoveHighlightButtonSupertip =
+            "Removes all Highlighting from the current slide.";
+        
         # endregion
 
         # region More Labs
@@ -88,7 +91,7 @@
         # endregion
 
         # region Shapes Lab
-        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes.";
+        public const string CustomShapeButtonSupertip = @"Manage your custom shapes.";
         # endregion
 
         # region Effects Lab
@@ -185,6 +188,7 @@
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
+        public const string RemoveHighlightButtonLabel = "Remove Highlighting";
         # endregion
 
         # region Labs
