@@ -20,6 +20,7 @@ using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
@@ -643,6 +644,20 @@ namespace PowerPointLabs
             RegisterTaskPane(
                 new CustomShapePane(ShapesLabConfigs.ShapeRootFolder, ShapesLabConfigs.DefaultCategory),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
+        }
+
+        public void RegisterSyncLabPane(PowerPoint.Presentation presentation)
+        {
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                return;
+            }
+
+            var activeWindow = presentation.Application.ActiveWindow;
+
+            RegisterTaskPane(
+                new SyncPane(),
+                TextCollection.SyncLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)

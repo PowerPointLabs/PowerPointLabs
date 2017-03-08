@@ -737,6 +737,40 @@
     <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
       <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SyncLab\ObjectFormats\FillFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontStyleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineArrowFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineFillFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineStyleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineWeightFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionHeightFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionWidthFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionXFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionYFormat.cs" />
+    <Compile Include="SyncLab\SyncFormatConstants.cs" />
+    <Compile Include="SyncLab\SyncFormatUtil.cs" />
+    <Compile Include="SyncLab\View\FormatTreeNode.cs" />
+    <Compile Include="SyncLab\View\SyncFormatDialog.xaml.cs">
+      <DependentUpon>SyncFormatDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncFormatDialogItem.cs" />
+    <Compile Include="SyncLab\View\SyncFormatListItem.xaml.cs">
+      <DependentUpon>SyncFormatListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncFormatPaneItem.cs" />
+    <Compile Include="SyncLab\View\SyncPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncPane.Designer.cs">
+      <DependentUpon>SyncPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncPaneWPF.xaml.cs">
+      <DependentUpon>SyncPaneWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
     <Compile Include="Utils\Assumption.cs" />
@@ -966,6 +1000,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyncLab\View\SyncPane.resx">
+      <DependentUpon>SyncPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -1295,6 +1332,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SyncLab\View\SyncFormatDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SyncLab\View\SyncFormatListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SyncLab\View\SyncPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestInterface\TestInterface.csproj">
@@ -1580,6 +1629,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLab.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
