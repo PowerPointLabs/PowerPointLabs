@@ -52,7 +52,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download/dev/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download/alpha/")]
         public string DevAddr {
             get {
                 return ((string)(this["DevAddr"]));
@@ -61,7 +61,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2.8.7.13")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2017.3.8.1")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -70,7 +70,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1 March 2017")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8 March 2017")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));
