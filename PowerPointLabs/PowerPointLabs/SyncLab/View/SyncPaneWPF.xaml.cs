@@ -109,6 +109,7 @@ namespace PowerPointLabs.SyncLab.View
             return newShapeRange[1];
         }
 
+
         private void ClearStorageTemplate()
         {
             Design design = Graphics.GetDesign(StorageTemplateName);

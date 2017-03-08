@@ -1599,6 +1599,9 @@
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SyncLab.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\CropToAspectRatio.png" />
   </ItemGroup>
   <ItemGroup>
