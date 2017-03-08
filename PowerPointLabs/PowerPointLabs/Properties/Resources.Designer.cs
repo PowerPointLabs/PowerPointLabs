@@ -503,9 +503,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CutOutShape {
+        public static System.Drawing.Bitmap CropLab {
             get {
-                object obj = ResourceManager.GetObject("CutOutShape", resourceCulture);
+                object obj = ResourceManager.GetObject("CropLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -513,9 +513,49 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CutOutShapeMenu {
+        public static System.Drawing.Bitmap CropOutPadding {
             get {
-                object obj = ResourceManager.GetObject("CutOutShapeMenu", resourceCulture);
+                object obj = ResourceManager.GetObject("CropOutPadding", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CropToAspectRatio {
+            get {
+                object obj = ResourceManager.GetObject("CropToAspectRatio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CropToSame {
+            get {
+                object obj = ResourceManager.GetObject("CropToSame", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CropToSlide {
+            get {
+                object obj = ResourceManager.GetObject("CropToSlide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CutOutShape {
+            get {
+                object obj = ResourceManager.GetObject("CutOutShape", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1156,6 +1196,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap RemoveCaption {
             get {
                 object obj = ResourceManager.GetObject("RemoveCaption", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RemoveHighlighting {
+            get {
+                object obj = ResourceManager.GetObject("RemoveHighlighting", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs
 {
@@ -237,7 +238,8 @@ namespace PowerPointLabs
                 new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point,
                          0),
             ForeColor = SystemColors.ButtonShadow,
-            Location = new Point(81, 11),
+            Location = new Point((int)(81 * Utils.Graphics.GetDpiScale()), 
+                                 (int)(11 * Utils.Graphics.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(212, 24),
             Text = TextCollection.CustomShapeNoShapeTextFirstLine
@@ -250,7 +252,8 @@ namespace PowerPointLabs
                 new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point,
                          0),
             ForeColor = SystemColors.ButtonShadow,
-            Location = new Point(11, 41),
+            Location = new Point((int)(11 * Utils.Graphics.GetDpiScale()),
+                                 (int)(41 * Utils.Graphics.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(242, 24),
             Text = TextCollection.CustomShapeNoShapeTextSecondLine
@@ -258,6 +261,7 @@ namespace PowerPointLabs
 
         private readonly Panel _noShapePanel = new Panel
         {
+            AutoSize = true,
             Name = "noShapePanel",
             Size = new Size(392, 100),
             Margin = new Padding(0, 0, 0, 0)

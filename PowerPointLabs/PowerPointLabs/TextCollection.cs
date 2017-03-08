@@ -41,12 +41,31 @@
         # endregion
 
         # region Crop Lab
+        public const string CropLabMenuSupertip =
+            "Use Crop Lab to crop shapes and pictures professionally with ease.";
+
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        # endregion
 
-        # region Narrations Lab
+        public const string CropOutPaddingSupertip =
+            "Crop out transparent areas of a picture.\n\n" +
+            "To activate, select the picture(s), then click this button.";
+
+        public const string CropToAspectRatioSupertip =
+            "Crop a picture to a specified aspect ratio.\n\n" +
+            "To activate, select the picture(s), then click this button and enter the desired aspect ratio.";
+
+        public const string CropToSlideButtonSupertip =
+            "Crops a picture of the current slide.\n\n" +
+            "To activate, select the shape(s), then click this button.";
+
+        public const string CropToSameButtonSupertip =
+            "Crops multiple shapes to the same dimensions.\n\n" +
+            "To activate, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
+        #endregion
+
+        #region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -80,6 +99,9 @@
         public const string HighlightTextFragmentsButtonSupertip =
             "Highlights the selected text fragments.\n\n" +
             "To activate, select the text to highlight, then click this button.";
+        public const string RemoveHighlightButtonSupertip =
+            "Removes all Highlighting from the current slide.";
+        
         # endregion
 
         # region More Labs
@@ -88,7 +110,7 @@
         # endregion
 
         # region Shapes Lab
-        public const string CustomeShapeButtonSupertip = @"Manage your custom shapes.";
+        public const string CustomShapeButtonSupertip = @"Manage your custom shapes.";
         # endregion
 
         # region Effects Lab
@@ -162,8 +184,13 @@
         # endregion
 
         # region Crop Lab
-        public const string CropLabGroupLabel = "Crop Lab";
+        public const string CropLabMenuLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        public const string CropOutPaddingLabel = "Crop Out Padding";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
+        public const string CropToSlideButtonLabel = "Crop To Slide";
+        public const string CropToSameButtonLabel = "Crop To Same Dimensions";
         # endregion
 
         # region Narrations Lab
@@ -189,6 +216,7 @@
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
+        public const string RemoveHighlightButtonLabel = "Remove Highlighting";
         # endregion
 
         # region Labs
@@ -351,9 +379,46 @@
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
         }
 
+        #endregion
+
+        #region CropToSlide
+
+        public class CropToSlideText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
+        }
+
+        #endregion
+
+        #region CropToSame
+
+        public class CropToSameText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Same Dimensions' requires at least two shapes to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same Dimensions' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same Dimensions'.";
+        }
+
         # endregion
 
-        # region ConvertToPicture
+        #region CropLab
+
+        public class CropLabText
+        {
+            public const string ErrorSelectionIsInvalid = "You need to select at least {1} {2} before applying '{0}'.";
+            public const string ErrorSelectionMustBeShape = "'{0}' only supports shape objects.";
+            public const string ErrorSelectionMustBePicture = "'{0}' only supports picture objects.";
+            public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
+            public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
+        }
+
+        #endregion
+
+        #region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
@@ -628,6 +693,13 @@
             public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
             public const string ErrorFunctionNotSupportedForOverlapRefShapeCenter = "This function is not supported for shapes that overlap the center of the reference shape.";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
+        }
+        #endregion
+
+        #region Paste Lab
+        public class PasteLabText
+        {
+            public const string PasteToFillSlide = "Paste (Fill Slide)";
         }
         #endregion
 

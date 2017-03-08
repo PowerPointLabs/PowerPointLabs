@@ -5,6 +5,8 @@ namespace TestInterface
     public interface IPowerPointLabsFeatures
     {
         void AutoCrop();
+        void CropOutPadding();
+        void CropToAspectRatioW1H10();
         void AutoAnimate();
         void AnimateInSlide();
         void AutoCaptions();
@@ -14,6 +16,8 @@ namespace TestInterface
         void FitToWidth();
         void FitToHeight();
         void ConvertToPic();
+        void CropToSlide();
+        void CropToSame();
         void DrillDown();
         void StepBack();
         void AddZoomToArea();
@@ -45,5 +49,7 @@ namespace TestInterface
 
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }
+        IPositionsLabController PositionsLab { get; }
+        IHighlightLabController HighlightLab { get; }
     }
 }

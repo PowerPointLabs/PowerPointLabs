@@ -70,16 +70,6 @@
                     onAction="ZoomLabDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="CropLabGroup"
-               getLabel="GetCropLabGroupLabel"
-               visible="true">
-          <button id="MoveCropShapeButton"
-                  getLabel ="GetMoveCropShapeButtonLabel"
-                  size ="large"
-                  getImage="GetCropShapeImage"
-                  getSupertip="GetMoveCropShapeButtonSupertip"
-                  onAction="CropShapeButtonClick"/>
-        </group>
         <group id="embedAudio"
                getLabel="GetEmbedAudioGroupLabel">
           <splitButton id="addAudioSplit" size="large">
@@ -178,6 +168,12 @@
                   getSupertip="GetHighlightTextFragmentsButtonSupertip"
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>
+          <button id="RemoveHighlightButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>
@@ -200,11 +196,11 @@
                   onAction="PictureSlidesLabButtonClick"
                   />
           <button id="ShapesLabButton"
-                  getLabel="GetCustomeShapeButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getImage="GetShapesLabImage"
-                  getSupertip="GetCustomeShapeButtonSupertip"
-                  onAction="CustomShapeButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <menu id="EffectLabsMenu"
                 getLabel="GetEffectsLabButtonLabel"
                 getImage="GetEffectsLabImage"
@@ -325,19 +321,50 @@
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
           <button id="PositionsLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
           <button id="ResizeLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
+          <menu id="CropLabMenu"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  size="large">
+                <button id="MoveCropShapeButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <button id="CropToSlideButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <button id="CropToSameButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <dynamicMenu id="CropToAspectRatioDynamicMenu"
+                        getContent="GetContent"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"/>
+                <button id="CropOutPaddingButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+            </menu>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
@@ -407,13 +434,13 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeShape"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShape"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
+                getImage="GetCutOutShapeImage"
                 onAction="CropShapeButtonClick"/>
         <button id="fitToWidthShape"
                 getLabel="GetLabel"
@@ -825,7 +852,12 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuFrame">
 	    <menuSeparator id="separatorFrame" />
-	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="true">
+        <button id="pasteToFillSlide"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuGraphicOleClassic">

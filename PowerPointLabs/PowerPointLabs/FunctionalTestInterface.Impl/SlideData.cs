@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using TestInterface;
+
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
+using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
@@ -32,36 +33,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public static ISlideData FromSlide(Slide slide)
         {
             return new SlideData(slide);
-        }
-    }
-
-    [Serializable]
-    public class EffectData : IEffectData
-    {
-        public int EffectType { get; private set; }
-        public int ShapeType { get; private set; }
-        public float ShapeRotation { get; private set; }
-        public float ShapeWidth { get; private set; }
-        public float ShapeHeight { get; private set; }
-        public float ShapeLeft { get; private set; }
-        public float ShapeTop { get; private set; }
-        public float TimingTriggerDelayTime { get; private set; }
-
-        private EffectData(Effect effect)
-        {
-            EffectType = effect.EffectType.GetHashCode();
-            ShapeType = effect.Shape.Type.GetHashCode();
-            ShapeRotation = effect.Shape.Rotation;
-            ShapeWidth = effect.Shape.Width;
-            ShapeHeight = effect.Shape.Height;
-            ShapeLeft = effect.Shape.Left;
-            ShapeTop = effect.Shape.Top;
-            TimingTriggerDelayTime = effect.Timing.TriggerDelayTime;
-        }
-
-        public static IEffectData FromEffect(Effect effect)
-        {
-            return new EffectData(effect);
         }
     }
 }
