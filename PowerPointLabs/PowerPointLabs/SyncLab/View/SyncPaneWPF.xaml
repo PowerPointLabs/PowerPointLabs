@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="PowerPointLabs.SyncLab.View.SyncPaneWPF"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerPointLabs.SyncLab.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="833" d:DesignWidth="300">
+    <Grid>
+        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Click="CopyButton_Click">
+            <Image x:Name="copyImage" Source="pack://siteoforigin:,,,/Resources/LineColor_icon.png" Stretch="Fill"/>
+        </Button>
+        <Label x:Name="copyLabel" Content="Copy" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <Button x:Name="pasteButton" HorizontalAlignment="Left" Height="45" Margin="60,10,0,0" VerticalAlignment="Top" Width="45" Click="PasteButton_Click">
+            <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/FillColor_icon.png" Stretch="Fill"/>
+        </Button>
+        <Label x:Name="pasteLabel" Content="Paste" HorizontalAlignment="Left" Margin="60,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <ListBox x:Name="formatListBox" Margin="10,86,10,10" HorizontalContentAlignment="Stretch"/>
+    </Grid>
+</UserControl>
