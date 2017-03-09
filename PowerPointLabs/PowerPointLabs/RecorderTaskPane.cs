@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 using NAudio.Wave;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
@@ -419,31 +420,25 @@ namespace PowerPointLabs
             // iterate through all shapes, skip audios that are not generated speech
             foreach (var shape in shapes)
             {
-                var audio = new Audio();
+                var saveName = _tempFullPath + xmlParser.GetCorrespondingAudio(shape.Name);
+                Audio audio = null;
 
-                // detect audio type
-                switch (shape.MediaFormat.AudioSamplingRate)
+                try
                 {
-                    case Audio.GeneratedSamplingRate:
-                        audio.Type = Audio.AudioType.Auto;
-                        break;
-                    case Audio.RecordedSamplingRate:
-                        audio.Type = Audio.AudioType.Record;
-                        break;
-                    default:
-                        MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);
-                        break;
+                    audio = new Audio(shape, saveName);
+                }
+                catch (FormatException ex)
+                {
+                    Logger.LogException(ex, "MapShapesWithAudio");
+                    MessageBox.Show(ex.Message);
+                    continue;
                 }
 
-                // derive matched id from shape name
-                var temp = shape.Name.Split(new[] { ' ' });
-                audio.MatchScriptID = Int32.Parse(temp[2]);
-
-                // get corresponding audio
-                audio.Name = shape.Name;
-                audio.SaveName = _tempFullPath + xmlParser.GetCorrespondingAudio(audio.Name);
-                audio.Length = AudioHelper.GetAudioLengthString(audio.SaveName);
-                audio.LengthMillis = AudioHelper.GetAudioLength(audio.SaveName);
+                if (audio.Type == Audio.AudioType.Unrecognized)
+                {
+                    Logger.Log(String.Format("{0} in MapShapesWithAudio", TextCollection.RecorderUnrecognizeAudio));
+                    MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);
+                }
 
                 // maintain a sorted audio list
                 // Note: here relativeID == slide.Index - 1
