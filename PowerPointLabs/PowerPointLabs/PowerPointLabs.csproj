@@ -1014,7 +1014,9 @@
     <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TimerLab\TimerPane.resx">
       <DependentUpon>TimerPane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SyncLab\View\SyncPane.resx">
       <DependentUpon>SyncPane.cs</DependentUpon>
     </EmbeddedResource>
