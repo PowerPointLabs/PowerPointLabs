@@ -325,6 +325,7 @@
     <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
     <Compile Include="ActionFramework\Label\CropToSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\MoveCropShapeLabelHandler.cs" />
@@ -1599,6 +1600,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TimerLab.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
