@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -66,6 +67,17 @@ namespace PowerPointLabs.Utils
 
             shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                               slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static Image ShapeToImage(Shape shape)
+        {
+            string fileName = "temp_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".png";
+            string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
+            ExportShape(shape, tempPicPath);
+            Image tempImage = Image.FromFile(tempPicPath);
+            Image image = (Image)tempImage.Clone(); // free up the original file to be deleted
+            tempImage.Dispose();
+            return image;
         }
 
         public static void FitShapeToSlide(ref Shape shapeToMove)
