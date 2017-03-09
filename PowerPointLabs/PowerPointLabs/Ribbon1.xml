@@ -334,6 +334,12 @@
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
+          <button id="SyncLabButton"
+                  getLabel="GetSyncButtonLabel"
+                  size="large"
+                  getImage="GetSyncLabImage"
+                  getSupertip="GetSyncLabButtonSupertip"
+                  onAction="SyncLabButtonClick"/>
           <menu id="CropLabMenu"
                   getLabel="GetLabel"
                   getImage="GetImage"

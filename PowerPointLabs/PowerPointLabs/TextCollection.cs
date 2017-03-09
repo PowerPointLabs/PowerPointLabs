@@ -152,6 +152,10 @@
         #region Timer Lab
         public const string TimerLabButtonSupertip = "Opens the Timer Lab Interface";
         #endregion
+          
+        #region Sync Lab
+        public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
+        #endregion
 
         #endregion
 
@@ -262,6 +266,10 @@
 
         # region Resize Lab
         public const string ResizeLabButtonLabel = "Resize Lab";
+        #endregion
+
+        #region Sync Lab
+        public const string SyncLabButtonLabel = "Sync Lab";
         # endregion
 
         # region Timer Lab
@@ -362,6 +370,7 @@
         public const string PositionsLabTaskPanelTitle = "Positions Lab";
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         public const string TimerLabTaskPaneTitle = "Timer Lab";
+        public const string SyncLabTaskPanelTitle = "Sync Lab";
         # endregion 
 
         # region ShapeGalleryPresentation
