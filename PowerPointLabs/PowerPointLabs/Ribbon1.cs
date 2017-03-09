@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Factory;
@@ -17,10 +16,12 @@ using PowerPointLabs.DrawingsLab;
 using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
+using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Views;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -372,7 +373,12 @@ namespace PowerPointLabs
         {
             return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
-        
+
+        public string GetSyncLabButtonSupertip(Office.IRibbonControl control)
+        {
+            return TextCollection.SyncLabButtonSupertip;
+        }
+
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabMenuSupertip;
@@ -578,6 +584,10 @@ namespace PowerPointLabs
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.EffectsLabButtonLabel;
+        }
+        public string GetSyncButtonLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SyncLabButtonLabel;
         }
         public string GetEffectsLabMakeTransparentButtonLabel(Office.IRibbonControl control)
         {
@@ -1323,6 +1333,19 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetHideShapeImage");
+                throw;
+            }
+        }
+
+        public Bitmap GetSyncLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.SyncLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetSyncLabImage");
                 throw;
             }
         }
@@ -2318,6 +2341,45 @@ namespace PowerPointLabs
                 Logger.LogException(e, "DrawingsLabButtonClicked");
                 throw;
             }
+        }
+        #endregion
+
+        #region Feature: Sync Lab
+        public void SyncLabButtonClick(Office.IRibbonControl control)
+        {
+            InitSyncLabPane();
+        }
+
+        private static SyncPane InitSyncLabPane()
+        {
+            var prensentation = PowerPointPresentation.Current.Presentation;
+
+            Globals.ThisAddIn.RegisterSyncLabPane(prensentation);
+
+            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncPane));
+
+            if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
+            {
+                return null;
+            }
+
+            var syncLab = syncLabPane.Control as SyncPane;
+
+            Trace.TraceInformation(
+                "Before Visible: " +
+                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
+                              syncLabPane.Width, syncLabPane.Height, syncLab.Width, syncLab.Height));
+
+            // if currently the pane is hidden, show the pane
+            if (!syncLabPane.Visible)
+            {
+                syncLabPane.Visible = true;
+
+                syncLab.Width = syncLabPane.Width - 16;
+                syncLab.PaneReload();
+            }
+
+            return syncLab;
         }
         #endregion
 

@@ -1623,6 +1623,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap SyncLab {
+            get {
+                object obj = ResourceManager.GetObject("SyncLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap TextColor_icon {
             get {
                 object obj = ResourceManager.GetObject("TextColor_icon", resourceCulture);
