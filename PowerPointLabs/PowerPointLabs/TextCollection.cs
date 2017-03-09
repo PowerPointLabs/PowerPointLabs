@@ -149,6 +149,10 @@
         public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
         #endregion
 
+        #region Timer Lab
+        public const string TimerLabButtonSupertip = "Opens the Timer Lab Interface";
+        #endregion
+          
         #region Sync Lab
         public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
         #endregion
@@ -267,6 +271,11 @@
         #region Sync Lab
         public const string SyncLabButtonLabel = "Sync Lab";
         # endregion
+
+        # region Timer Lab
+        public const string TimerLabButtonLabel = "Timer Lab";
+        # endregion
+
         # endregion
 
         # region Help
@@ -360,6 +369,7 @@
         public const string RecManagementPanelTitle = "Record Management";
         public const string PositionsLabTaskPanelTitle = "Positions Lab";
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
+        public const string TimerLabTaskPaneTitle = "Timer Lab";
         public const string SyncLabTaskPanelTitle = "Sync Lab";
         # endregion 
 
@@ -575,9 +585,9 @@
         public const string EffectsLabBlurSelectedErrorNoSelection = "'Blur Selected'  requires at least one shape or text box to be selected.";
         public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
-        # endregion
+        #endregion
 
-        # region Task Pane - Recorder
+        #region Task Pane - Recorder
         public const string RecorderInitialTimer = "00:00:00";
         public const string RecorderReadyStatusLabel = "Ready.";
         public const string RecorderRecordingStatusLabel = "Recording...";
