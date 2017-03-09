@@ -307,6 +307,12 @@
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
           </menu>
+          <button id="TimerLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <button id="DrawingsLabButton"
                   visible="false"
                   getLabel="GetDrawingsLabButtonLabel"
