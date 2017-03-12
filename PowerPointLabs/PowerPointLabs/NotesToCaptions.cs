@@ -44,6 +44,46 @@ namespace PowerPointLabs
             }
         }
 
+        public static void EmbedCaptionsOnCurrentSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide != null)
+            {
+                EmbedCaptionsOnSlides(
+                    new List<PowerPointSlide>(new PowerPointSlide[] { currentSlide }));
+            }
+            else
+            {
+                Logger.Log(String.Format("{0} in EmbedCaptionsOnCurrentSlide", TextCollection.CaptionsLabErrorNoCurrentSlideLog));
+                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection);
+            }
+        }
+
+        public static void RemoveCaptionsFromCurrentSlide()
+        {
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            if (currentSlide != null)
+            {
+                RemoveCaptionsFromSlide(currentSlide);
+            }
+        }
+
+        public static void RemoveCaptionsFromSelectedSlides()
+        {
+            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
+            {
+                RemoveCaptionsFromSlide(slide);
+            }
+        }
+
+        public static void RemoveCaptionsFromAllSlides()
+        {
+            foreach (PowerPointSlide s in PowerPointPresentation.Current.Slides)
+            {
+                RemoveCaptionsFromSlide(s);
+            }
+        }
+
         // Returns true if the captions are successfully added
         private static bool EmbedCaptionsOnSlide(PowerPointSlide s)
         {
@@ -128,46 +168,6 @@ namespace PowerPointLabs
 
             textBox.Top = slideHeight - textBox.Height;
             return textBox;
-        }
-
-        public static void EmbedCaptionsOnCurrentSlide()
-        {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide != null)
-            {
-                EmbedCaptionsOnSlides(
-                    new List<PowerPointSlide>(new PowerPointSlide[] { currentSlide }));
-            }
-            else
-            {
-                Logger.Log(String.Format("{0} in EmbedCaptionsOnCurrentSlide", TextCollection.CaptionsLabErrorNoCurrentSlideLog));
-                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection);
-            }
-        }
-
-        public static void RemoveCaptionsFromCurrentSlide()
-        {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide != null)
-            {
-                RemoveCaptionsFromSlide(currentSlide);
-            }
-        }
-
-        public static void RemoveCaptionsFromSelectedSlides()
-        {
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-            {
-                RemoveCaptionsFromSlide(slide);   
-            }
-        }
-
-        public static void RemoveCaptionsFromAllSlides()
-        {
-            foreach (PowerPointSlide s in PowerPointPresentation.Current.Slides)
-            {
-                RemoveCaptionsFromSlide(s);
-            }
         }
 
         private static void RemoveCaptionsFromSlide(PowerPointSlide slide)
