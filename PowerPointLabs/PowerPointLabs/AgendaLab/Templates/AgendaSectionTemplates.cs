@@ -47,7 +47,10 @@ namespace PowerPointLabs.AgendaLab.Templates
         /// <exception cref="InvalidOperationException">Template already configured</exception>
         protected void AddConfiguration(AgendaSlideConfig[] frontSlides, AgendaSlideConfig[] backSlides)
         {
-            if (_configured) throw new InvalidOperationException("Template already configured");
+            if (_configured)
+            {
+                throw new InvalidOperationException("Template already configured");
+            }
 
             FrontSlidesCount = frontSlides.Length;
             BackSlidesCount = backSlides.Length;

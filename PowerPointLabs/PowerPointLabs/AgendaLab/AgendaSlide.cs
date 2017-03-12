@@ -43,13 +43,28 @@ namespace PowerPointLabs.AgendaLab
         {
             string[] parameters = slide.Split(Delim, StringSplitOptions.None);
 
-            if (parameters.Length != 4) return null;
-            if (parameters[0] != Prefix) return null;
+            if (parameters.Length != 4)
+            {
+                return null;
+            }
+
+            if (parameters[0] != Prefix)
+            {
+                return null;
+            }
 
             Type type;
             SlidePurpose slidePurpose;
-            if (!Enum.TryParse(parameters[1], out type)) return null;
-            if (!Enum.TryParse(parameters[2], out slidePurpose)) return null;
+            if (!Enum.TryParse(parameters[1], out type))
+            {
+                return null;
+            }
+
+            if (!Enum.TryParse(parameters[2], out slidePurpose))
+            {
+                return null;
+            }
+
             AgendaSection section = AgendaSection.Decode(parameters[3]);
 
             return new AgendaSlide(type, slidePurpose, section);
@@ -57,7 +72,11 @@ namespace PowerPointLabs.AgendaLab
 
         public static AgendaSlide Decode(PowerPointSlide slide)
         {
-            if (slide == null) return null;
+            if (slide == null)
+            {
+                return null;
+            }
+
             try
             {
                 return Decode(slide.Name);
@@ -72,7 +91,11 @@ namespace PowerPointLabs.AgendaLab
 
         public static AgendaSlide Decode(Slide slide)
         {
-            if (slide == null) return null;
+            if (slide == null)
+            {
+                return null;
+            }
+
             try
             {
                 return Decode(slide.Name);
@@ -114,7 +137,10 @@ namespace PowerPointLabs.AgendaLab
         public static bool IsReferenceslide(PowerPointSlide slide)
         {
             var agendaSlide = Decode(slide);
-            if (agendaSlide == null) return false;
+            if (agendaSlide == null)
+            {
+                return false;
+            }
 
             return agendaSlide.SlidePurpose == SlidePurpose.Reference;
         }
@@ -122,7 +148,10 @@ namespace PowerPointLabs.AgendaLab
         public static bool IsReferenceslide(Slide slide)
         {
             var agendaSlide = Decode(slide);
-            if (agendaSlide == null) return false;
+            if (agendaSlide == null)
+            {
+                return false;
+            }
 
             return agendaSlide.SlidePurpose == SlidePurpose.Reference;
         }
@@ -158,7 +187,11 @@ namespace PowerPointLabs.AgendaLab
             return slide =>
             {
                 var agendaSlide = Decode(slide);
-                if (agendaSlide == null) return false;
+                if (agendaSlide == null)
+                {
+                    return false;
+                }
+
                 return condition(agendaSlide);
             };
         }
@@ -173,7 +206,11 @@ namespace PowerPointLabs.AgendaLab
             return slide =>
             {
                 var agendaSlide = Decode(slide);
-                if (agendaSlide == null) return false;
+                if (agendaSlide == null)
+                {
+                    return false;
+                }
+
                 return condition(agendaSlide);
             };
         }
@@ -181,7 +218,11 @@ namespace PowerPointLabs.AgendaLab
         public static bool MatchesPurpose(PowerPointSlide slide, SlidePurpose purpose)
         {
             var agendaSlide = Decode(slide);
-            if (agendaSlide == null) return false;
+            if (agendaSlide == null)
+            {
+                return false;
+            }
+
             return agendaSlide.SlidePurpose == purpose;
         }
 
