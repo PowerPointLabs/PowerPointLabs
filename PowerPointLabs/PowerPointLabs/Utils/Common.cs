@@ -77,12 +77,18 @@ namespace PowerPointLabs.Utils
         public static List<string> UnserializeCollection(string dataString)
         {
             var lastDelim = dataString.LastIndexOf('@');
-            if (lastDelim == -1) return null;
+            if (lastDelim == -1)
+            {
+                return null;
+            }
 
             // Verify checksum
             var hashCode = dataString.Substring(lastDelim + 1);
             var serialized = dataString.Substring(0, lastDelim);
-            if (ComputeCheckSum(serialized).ToString() != hashCode) return null;
+            if (ComputeCheckSum(serialized).ToString() != hashCode)
+            {
+                return null;
+            }
 
             return serialized.Split(new[] {'@'}, StringSplitOptions.None)
                              .Select(Base64Decode)
