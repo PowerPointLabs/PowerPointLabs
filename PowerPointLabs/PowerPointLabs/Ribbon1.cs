@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -42,6 +43,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs
 {
     [ComVisible(true)]
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "Migration to Action Framework")]
     public class Ribbon1 : Office.IRibbonExtensibility
     {
         #region Action Framework Factory

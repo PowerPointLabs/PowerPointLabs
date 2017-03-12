@@ -10,6 +10,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointLabsFeatures : MarshalByRefObject, IPowerPointLabsFeatures
     {
+        public IColorsLabController ColorsLab
+        {
+            get { return ColorsLabController.Instance; }
+        }
+
+        public IShapesLabController ShapesLab
+        {
+            get { return ShapesLabController.Instance; }
+        }
+
+        public IPositionsLabController PositionsLab
+        {
+            get { return PositionsLabController.Instance; }
+        }
+
+        public IHighlightLabController HighlightLab
+        {
+            get { return HighlightLabController.Instance; }
+        }
+
         private Ribbon1 Ribbon
         {
             get { return FunctionalTestExtensions.GetRibbonUi(); }
@@ -295,26 +315,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             {
                 Ribbon.SepiaBackgroundEffectClick(new RibbonControl("SepiaEffect"));
             });
-        }
-
-        public IColorsLabController ColorsLab
-        {
-            get { return ColorsLabController.Instance; }
-        }
-
-        public IShapesLabController ShapesLab
-        {
-            get { return ShapesLabController.Instance; }
-        }
-
-        public IPositionsLabController PositionsLab
-        {
-            get { return PositionsLabController.Instance; }
-        }
-
-        public IHighlightLabController HighlightLab
-        {
-            get { return HighlightLabController.Instance; }
         }
     }
 }

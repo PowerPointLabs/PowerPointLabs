@@ -9,12 +9,6 @@ namespace PowerPointLabs.ActionFramework.Action
 
     class ShapesLabActionHandler : ActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
-        {
-            InitCustomShapePane();
-            TogglePaneVisibility();
-        }
-
         public CustomShapePane InitCustomShapePane()
         {
             ThisAddIn addIn = this.GetAddIn();
@@ -80,6 +74,12 @@ namespace PowerPointLabs.ActionFramework.Action
                 customShape.Width = customShapePane.Width - 16;
                 customShape.PaneReload();
             }
+        }
+
+        protected override void ExecuteAction(string ribbonId)
+        {
+            InitCustomShapePane();
+            TogglePaneVisibility();
         }
     }
 }

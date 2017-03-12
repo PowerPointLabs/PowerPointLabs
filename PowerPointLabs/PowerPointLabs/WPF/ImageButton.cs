@@ -10,13 +10,13 @@ namespace PowerPointLabs.WPF
 {
     public class ImageButton : Button
     {
-        private static int _nextId = 0;
         public readonly int ImageButtonUniqueId;
         
         private readonly Image _image = null;
         private readonly Panel _panel = null;
         private bool _hasImage = false;
         private string _text = null;
+        private static int _nextId = 0;
 
 
         public ImageButton()

@@ -21,37 +21,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             UpdateInsertCitationControlsVisibility();
         }
 
-        private void ColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            var panel = sender as Border;
-            if (panel == null) return;
-
-            var colorDialog = new ColorDialog
-            {
-                Color = GetColor(panel.Background as SolidColorBrush),
-                FullOpen = true
-            };
-            if (colorDialog.ShowDialog() != DialogResult.OK) return;
-
-            var hexString = StringUtil.GetHexValue(colorDialog.Color);
-            var settings = DataContext as Settings;
-            if (settings == null) return;
-
-            if (panel.Name == "CitationTextBoxColorPanel")
-            {
-                settings.CitationTextBoxColor = hexString;
-            }
-            else if (panel.Name == "CitationFontColorPanel")
-            {
-                settings.CitationFontColor = hexString;
-            }
-        }
-
-        private Color GetColor(SolidColorBrush brush)
-        {
-            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
-        }
-
         public void UpdateInsertCitationControlsVisibility()
         {
             if (InsertCitationToggleSwitch.IsChecked != null
@@ -89,6 +58,37 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 CitationTextBoxColorLabel.Visibility = Visibility.Collapsed;
                 CitationTextBoxColorPanel.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void ColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var panel = sender as Border;
+            if (panel == null) return;
+
+            var colorDialog = new ColorDialog
+            {
+                Color = GetColor(panel.Background as SolidColorBrush),
+                FullOpen = true
+            };
+            if (colorDialog.ShowDialog() != DialogResult.OK) return;
+
+            var hexString = StringUtil.GetHexValue(colorDialog.Color);
+            var settings = DataContext as Settings;
+            if (settings == null) return;
+
+            if (panel.Name == "CitationTextBoxColorPanel")
+            {
+                settings.CitationTextBoxColor = hexString;
+            }
+            else if (panel.Name == "CitationFontColorPanel")
+            {
+                settings.CitationFontColor = hexString;
+            }
+        }
+
+        private Color GetColor(SolidColorBrush brush)
+        {
+            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
         }
 
         private void InsertCitationToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)

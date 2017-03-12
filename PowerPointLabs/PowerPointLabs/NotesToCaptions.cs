@@ -114,7 +114,7 @@ namespace PowerPointLabs
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-            
+
             Shape textBox = s.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, slideHeight - 100,
                 slideWidth, 100);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;

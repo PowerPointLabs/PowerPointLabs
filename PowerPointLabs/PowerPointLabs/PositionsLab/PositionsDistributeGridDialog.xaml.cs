@@ -31,6 +31,50 @@ namespace PowerPointLabs.PositionsLab
         private int _rowLength;
         private int _colLength;
 
+        #region Error Handling
+        public void ShowErrorMessageBox(string content, Exception exception = null)
+        {
+
+            if (exception == null)
+            {
+                MessageBox.Show(content, "Error");
+                return;
+            }
+
+            var errorMessage = GetErrorMessage(exception.Message);
+            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
+            {
+                MessageBox.Show(content, "Error");
+            }
+            else
+            {
+                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+            }
+        }
+
+        private string GetErrorMessage(string errorMsg)
+        {
+            switch (errorMsg)
+            {
+                case ErrorMessageNoSelection:
+                    return ErrorMessageNoSelection;
+                case ErrorMessageFewerThanTwoSelection:
+                    return ErrorMessageFewerThanTwoSelection;
+                case ErrorMessageFewerThanThreeSelection:
+                    return ErrorMessageFewerThanThreeSelection;
+                case ErrorMessageFunctionNotSupportedForExtremeShapes:
+                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
+                case ErrorMessageFunctionNotSupportedForSlide:
+                    return ErrorMessageFunctionNotSupportedForSlide;
+                default:
+                    return ErrorMessageUndefined;
+            }
+        }
+
+        private void IgnoreExceptionThrown() { }
+
+        #endregion
+
         internal PositionsDistributeGridDialog(ShapeRange selectedShapes, int rowLength, int colLength)
         {
             IsOpen = true;
@@ -257,49 +301,5 @@ namespace PowerPointLabs.PositionsLab
 
             return shapes;
         }
-        #region Error Handling
-        public void ShowErrorMessageBox(string content, Exception exception = null)
-        {
-
-            if (exception == null)
-            {
-                MessageBox.Show(content, "Error");
-                return;
-            }
-
-            var errorMessage = GetErrorMessage(exception.Message);
-            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
-            {
-                MessageBox.Show(content, "Error");
-            }
-            else
-            {
-                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
-            }
-        }
-
-        private string GetErrorMessage(string errorMsg)
-        {
-            switch (errorMsg)
-            {
-                case ErrorMessageNoSelection:
-                    return ErrorMessageNoSelection;
-                case ErrorMessageFewerThanTwoSelection:
-                    return ErrorMessageFewerThanTwoSelection;
-                case ErrorMessageFewerThanThreeSelection:
-                    return ErrorMessageFewerThanThreeSelection;
-                case ErrorMessageFunctionNotSupportedForExtremeShapes:
-                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
-                case ErrorMessageFunctionNotSupportedForSlide:
-                    return ErrorMessageFunctionNotSupportedForSlide;
-                default:
-                    return ErrorMessageUndefined;
-            }
-        }
-
-        private void IgnoreExceptionThrown() { }
-
-        #endregion
-
     }
 }

@@ -12,9 +12,6 @@ namespace PowerPointLabs.PictureSlidesLab.Util
 {
     public class StoragePath
     {
-        private const string PictureSlidesLabImagesList = "PictureSlidesLabImagesList";
-        private const string PictureSlidesLabSettings = "PictureSlidesLabSettings";
-
         public static string AggregatedFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + "pptlabs_pictureSlidesLab" + @"\";
 
         public static readonly string LoadingImgPath = AggregatedFolder + "loading";
@@ -22,6 +19,9 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         public static readonly string NoPicturePlaceholderImgPath = AggregatedFolder + "noPicturePlaceholder";
         public static readonly string SampleImg1Path = AggregatedFolder + "sample1";
         public static readonly string SampleImg2Path = AggregatedFolder + "sample2";
+
+        private const string PictureSlidesLabImagesList = "PictureSlidesLabImagesList";
+        private const string PictureSlidesLabSettings = "PictureSlidesLabSettings";
 
         private static bool _isInit;
         private static bool _isFirstTimeUsage;
@@ -60,56 +60,6 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             catch (Exception e)
             {
                 ErrorDialogWrapper.ShowDialog("Failed to remove unused images.", e.Message, e);
-            }
-        }
-
-        private static void Empty(DirectoryInfo directory, ICollection<string> filesInUse)
-        {
-            if (!directory.Exists) return;
-
-            try
-            {
-                filesInUse.Add(AggregatedFolder + PictureSlidesLabImagesList);
-                filesInUse.Add(AggregatedFolder + PictureSlidesLabSettings);
-                filesInUse.Add(LoadingImgPath);
-                filesInUse.Add(ChoosePicturesImgPath);
-                filesInUse.Add(NoPicturePlaceholderImgPath);
-                filesInUse.Add(SampleImg1Path);
-                filesInUse.Add(SampleImg2Path);
-                foreach (var file in directory.GetFiles())
-                {
-                    if (!filesInUse.Contains(file.FullName))
-                    {
-                        try
-                        {
-                            file.Delete();
-                        }
-                        catch
-                        {
-                            // may be still in use, which is fine
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // ignore ex, if cannot delete trash
-            }
-        }
-
-        private static void InitResources()
-        {
-            try
-            {
-                Resources.Loading.Save(LoadingImgPath);
-                Resources.ChoosePicturesIcon.Save(ChoosePicturesImgPath);
-                Resources.DefaultPicture.Save(NoPicturePlaceholderImgPath);
-                Resources.PslSample1.Save(SampleImg1Path);
-                Resources.PslSample2.Save(SampleImg2Path);
-            }
-            catch
-            {
-                // may fail to save it, which is fine
             }
         }
 
@@ -207,6 +157,56 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 Logger.LogException(e, "Failed to load Picture Slides Lab settings");
                 return new Model.Settings();
+            }
+        }
+
+        private static void Empty(DirectoryInfo directory, ICollection<string> filesInUse)
+        {
+            if (!directory.Exists) return;
+
+            try
+            {
+                filesInUse.Add(AggregatedFolder + PictureSlidesLabImagesList);
+                filesInUse.Add(AggregatedFolder + PictureSlidesLabSettings);
+                filesInUse.Add(LoadingImgPath);
+                filesInUse.Add(ChoosePicturesImgPath);
+                filesInUse.Add(NoPicturePlaceholderImgPath);
+                filesInUse.Add(SampleImg1Path);
+                filesInUse.Add(SampleImg2Path);
+                foreach (var file in directory.GetFiles())
+                {
+                    if (!filesInUse.Contains(file.FullName))
+                    {
+                        try
+                        {
+                            file.Delete();
+                        }
+                        catch
+                        {
+                            // may be still in use, which is fine
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // ignore ex, if cannot delete trash
+            }
+        }
+
+        private static void InitResources()
+        {
+            try
+            {
+                Resources.Loading.Save(LoadingImgPath);
+                Resources.ChoosePicturesIcon.Save(ChoosePicturesImgPath);
+                Resources.DefaultPicture.Save(NoPicturePlaceholderImgPath);
+                Resources.PslSample1.Save(SampleImg1Path);
+                Resources.PslSample2.Save(SampleImg2Path);
+            }
+            catch
+            {
+                // may fail to save it, which is fine
             }
         }
     }
