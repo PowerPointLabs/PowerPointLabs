@@ -17,6 +17,11 @@ namespace PowerPointLabs.ActionFramework.Util
             return selection.Type == PpSelectionType.ppSelectionShapes;
         }
 
+        protected static bool IsPictureOrShapeForSelection(ShapeRange shapeRange)
+        {
+            return (from Shape shape in shapeRange select shape).All(IsPictureOrShape);
+        }
+
         protected static bool IsPictureForSelection(ShapeRange shapeRange)
         {
             return (from Shape shape in shapeRange select shape).All(IsPicture);
@@ -25,6 +30,11 @@ namespace PowerPointLabs.ActionFramework.Util
         protected static bool IsShapeForSelection(ShapeRange shapeRange)
         {
             return (from Shape shape in shapeRange select shape).All(IsShape);
+        }
+
+        protected static bool IsPictureOrShape(Shape shape)
+        {
+            return IsPicture(shape) || IsShape(shape);
         }
 
         protected static bool IsPicture(Shape shape)
