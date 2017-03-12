@@ -21,6 +21,7 @@
            getLabel="GetPowerPointLabsAddInsTabLabel">
         <group id="AutoMotionGroup"
                getLabel="GetAnimationLabGroupLabel"
+               getImage="GetImage"
                visible ="true">
           <button id="AddAnimationButton"
                   getLabel="GetAddAnimationButtonLabel"

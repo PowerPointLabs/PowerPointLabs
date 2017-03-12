@@ -297,6 +297,7 @@
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\AnimationLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\Group\SmallHelpImageHandler.cs" />
     <Compile Include="ActionFramework\Image\Group\ZoomLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\Group\CaptionLabImageHandler.cs" />
@@ -1531,6 +1532,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HelpSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AnimationLabSmall.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
