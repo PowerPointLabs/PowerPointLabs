@@ -402,18 +402,6 @@
 
         #endregion
 
-        #region CropToSame
-
-        public class CropToSameText
-        {
-            //------------ Msg -------------
-            public const string ErrorMessageForSelectionCountZero = "'Crop To Same Dimensions' requires at least two shapes to be selected.";
-            public const string ErrorMessageForSelectionNonPicture = "'Crop To Same Dimensions' only supports picture objects.";
-            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Same Dimensions'.";
-        }
-
-        # endregion
-
         #region CropLab
 
         public class CropLabText
@@ -421,6 +409,7 @@
             public const string ErrorSelectionIsInvalid = "You need to select at least {1} {2} before applying '{0}'.";
             public const string ErrorSelectionMustBeShape = "'{0}' only supports shape objects.";
             public const string ErrorSelectionMustBePicture = "'{0}' only supports picture objects.";
+            public const string ErrorSelectionMustBeShapeOrPicture = "'{0}' only supports shape or picture objects.";
             public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
             public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
         }

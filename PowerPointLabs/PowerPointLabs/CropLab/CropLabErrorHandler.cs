@@ -11,6 +11,7 @@ namespace PowerPointLabs.CropLab
         
         public const string SelectionTypeShape = "shape";
         public const string SelectionTypePicture = "picture";
+        public const string SelectionTypeShapeOrPicture = "shape or picture";
 
         public const int ErrorCodeSelectionIsInvalid = 0;
         public const int ErrorCodeSelectionMustBeShape = 1;
@@ -18,13 +19,14 @@ namespace PowerPointLabs.CropLab
         public const int ErrorCodeAspectRatioIsInvalid = 3;
         public const int ErrorCodeSelectionCountZero = 4;
         public const int ErrorCodeUndefined = 5;
+        public const int ErrorCodeSelectionMustBeShapeOrPicture = 6;
 
         private const string ErrorMessageSelectionIsInvalid = TextCollection.CropLabText.ErrorSelectionIsInvalid;
         private const string ErrorMessageSelectionMustBeShape = TextCollection.CropLabText.ErrorSelectionMustBeShape;
         private const string ErrorMessageSelectionMustBePicture = TextCollection.CropLabText.ErrorSelectionMustBePicture;
+        private const string ErrorMessageSelectionMustBeShapeOrPicture = TextCollection.CropLabText.ErrorSelectionMustBeShapeOrPicture;
         private const string ErrorMessageAspectRatioIsInvalid = TextCollection.CropLabText.ErrorAspectRatioIsInvalid;
         private const string ErrorMessageUndefined = TextCollection.CropLabText.ErrorUndefined;
-        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
 
         private CropLabErrorHandler(IMessageService view = null)
         {
@@ -55,6 +57,7 @@ namespace PowerPointLabs.CropLab
                     }
                     ShowErrorMessage(errorCode, featureName, validSelectionMinCount.ToString(), validSelectionType);
                     break;
+                case ErrorCodeSelectionMustBeShapeOrPicture:
                 case ErrorCodeSelectionMustBePicture:
                 case ErrorCodeSelectionMustBeShape:
                     ShowErrorMessage(errorCode, featureName);
@@ -106,12 +109,12 @@ namespace PowerPointLabs.CropLab
                     return ErrorMessageSelectionIsInvalid;
                 case ErrorCodeSelectionMustBeShape:
                     return ErrorMessageSelectionMustBeShape;
+                case ErrorCodeSelectionMustBeShapeOrPicture:
+                    return ErrorMessageSelectionMustBeShapeOrPicture;
                 case ErrorCodeSelectionMustBePicture:
                     return ErrorMessageSelectionMustBePicture;
                 case ErrorCodeAspectRatioIsInvalid:
                     return ErrorMessageAspectRatioIsInvalid;
-                case ErrorCodeSelectionCountZero:
-                    return ErrorMessageForSelectionCountZero;
                 default:
                     return ErrorMessageUndefined;
             }
