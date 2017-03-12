@@ -23,6 +23,7 @@ namespace Test.FunctionalTest
             CropSmallerRefImgSuccessfully();
             CropLargerRefImgSuccessfully();
             CropUnevenScaledImgSuccessfully();
+            CropCroppedImgSuccessfully();
         }
 
         [TestMethod]
@@ -70,6 +71,11 @@ namespace Test.FunctionalTest
             CropAndCompare(22, 23);
         }
 
+        public void CropCroppedImgSuccessfully()
+        {
+            CropAndCompare(25, 26);
+        }
+
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
         {
             var actualSlide = PpOperations.SelectSlide(testSlideNo);
@@ -97,7 +103,7 @@ namespace Test.FunctionalTest
 
         private void CropOnNothingUnsuccessfully()
         {
-            PpOperations.SelectSlide(27);
+            PpOperations.SelectSlide(30);
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -108,7 +114,7 @@ namespace Test.FunctionalTest
 
         private void CropOnShapeObjectUnsuccessfully()
         {
-            PpOperations.SelectSlide(25);
+            PpOperations.SelectSlide(28);
             PpOperations.SelectShapesByPrefix("selectMe");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
