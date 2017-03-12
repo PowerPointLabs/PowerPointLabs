@@ -15,8 +15,8 @@ namespace PowerPointLabs.CropLab
         {
             foreach (PowerPoint.Shape shape in shapeRange)
             {
-                PowerPoint.Shape toRotate = shape;
-                if (shape.Rotation != 0)
+                PowerPoint.Shape toCrop = shape;
+                if (IsShape(shape) || shape.Rotation != 0)
                 {
                     RectangleF location = GetAbsoluteBounds(shape);
                     Utils.Graphics.ExportShape(shape, ShapePicture);
@@ -24,16 +24,16 @@ namespace PowerPointLabs.CropLab
                         Office.MsoTriState.msoFalse,
                         Office.MsoTriState.msoTrue,
                         location.Left, location.Top, location.Width, location.Height);
-                    toRotate = newShape;
-                    toRotate.Name = shape.Name;
+                    toCrop = newShape;
+                    toCrop.Name = shape.Name;
                     shape.Delete();
 
                 }
-                RectangleF cropArea = GetCropArea(toRotate, slideWidth, slideHeight);
-                toRotate.PictureFormat.Crop.ShapeHeight = cropArea.Height;
-                toRotate.PictureFormat.Crop.ShapeWidth = cropArea.Width;
-                toRotate.PictureFormat.Crop.ShapeLeft = cropArea.Left;
-                toRotate.PictureFormat.Crop.ShapeTop = cropArea.Top;
+                RectangleF cropArea = GetCropArea(toCrop, slideWidth, slideHeight);
+                toCrop.PictureFormat.Crop.ShapeHeight = cropArea.Height;
+                toCrop.PictureFormat.Crop.ShapeWidth = cropArea.Width;
+                toCrop.PictureFormat.Crop.ShapeLeft = cropArea.Left;
+                toCrop.PictureFormat.Crop.ShapeTop = cropArea.Top;
             }
         }
 
@@ -80,6 +80,13 @@ namespace PowerPointLabs.CropLab
             cropWidth = Math.Min(slideWidth - cropLeft, cropWidth);
 
             return new RectangleF(cropLeft, cropTop, cropWidth, cropHeight);
+        }
+
+        protected static bool IsShape(PowerPoint.Shape shape)
+        {
+            return shape.Type == Office.MsoShapeType.msoAutoShape
+                || shape.Type == Office.MsoShapeType.msoFreeform
+                || shape.Type == Office.MsoShapeType.msoGroup;
         }
     }
 }
