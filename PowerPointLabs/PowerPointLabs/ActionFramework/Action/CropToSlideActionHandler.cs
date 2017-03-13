@@ -34,7 +34,12 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
-            CropToSlide.CropSelection(shapeRange, this.GetCurrentSlide(), slideWidth, slideHeight);
+            bool hasChange = CropToSlide.CropSelection(shapeRange, this.GetCurrentSlide(), slideWidth, slideHeight);
+            if (!hasChange)
+            {
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeNoShapeOverBoundary, FeatureName, errorHandler);
+                return;
+            }
         }
         
 

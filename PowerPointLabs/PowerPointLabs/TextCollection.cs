@@ -423,6 +423,7 @@
             public const string ErrorSelectionMustBePicture = "'{0}' only supports picture objects.";
             public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
             public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
+            public const string ErrorMessageNoShapeOverBoundary = "Can't find any shapes crossing a boundary. No cropping was done.";
         }
 
         #endregion

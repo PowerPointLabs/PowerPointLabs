@@ -18,6 +18,7 @@ namespace PowerPointLabs.CropLab
         public const int ErrorCodeAspectRatioIsInvalid = 3;
         public const int ErrorCodeSelectionCountZero = 4;
         public const int ErrorCodeUndefined = 5;
+        public const int ErrorCodeNoShapeOverBoundary = 5;
 
         private const string ErrorMessageSelectionIsInvalid = TextCollection.CropLabText.ErrorSelectionIsInvalid;
         private const string ErrorMessageSelectionMustBeShape = TextCollection.CropLabText.ErrorSelectionMustBeShape;
@@ -25,6 +26,7 @@ namespace PowerPointLabs.CropLab
         private const string ErrorMessageAspectRatioIsInvalid = TextCollection.CropLabText.ErrorAspectRatioIsInvalid;
         private const string ErrorMessageUndefined = TextCollection.CropLabText.ErrorUndefined;
         private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
+        private const string ErrorMessageNoShapeOverBoundary = TextCollection.CropLabText.ErrorMessageNoShapeOverBoundary;
 
         private CropLabErrorHandler(IMessageService view = null)
         {
@@ -61,6 +63,7 @@ namespace PowerPointLabs.CropLab
                     break;
                 case ErrorCodeSelectionCountZero:
                 case ErrorCodeAspectRatioIsInvalid:
+                case ErrorCodeNoShapeOverBoundary:
                     ShowErrorMessage(errorCode);
                     break;
                 default:
@@ -112,6 +115,8 @@ namespace PowerPointLabs.CropLab
                     return ErrorMessageAspectRatioIsInvalid;
                 case ErrorCodeSelectionCountZero:
                     return ErrorMessageForSelectionCountZero;
+                case ErrorCodeNoShapeOverBoundary:
+                    return ErrorMessageNoShapeOverBoundary;
                 default:
                     return ErrorMessageUndefined;
             }
