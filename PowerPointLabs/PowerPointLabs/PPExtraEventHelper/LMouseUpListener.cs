@@ -57,7 +57,9 @@ namespace PPExtraEventHelper
         int MouseEvents(int code, IntPtr wParam, IntPtr lParam)
         {
             if (code < 0)
+            {
                 return Native.CallNextHookEx(_hook, code, wParam, lParam);
+            }
 
             if (code == this.hcAction)
             {
