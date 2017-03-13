@@ -123,7 +123,10 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var text = DrawingsLabDialogs.ShowInsertTextDialog();
-            if (text == null) return;
+            if (text == null)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             foreach (var shape in shapes)
@@ -337,7 +340,10 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog();
-            if (clones <= 0) return;
+            if (clones <= 0)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             int midpoint = shapes.Count / 2;
@@ -384,7 +390,10 @@ namespace PowerPointLabs.DrawingsLab
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             int clones = DrawingsLabDialogs.ShowMultiCloneNumericDialog();
-            if (clones <= 0) return;
+            if (clones <= 0)
+            {
+                return;
+            }
 
             int divisions = clones + 1;
 
@@ -442,8 +451,15 @@ namespace PowerPointLabs.DrawingsLab
             var targetShape = shapes[1];
 
             var dialog = new MultiCloneGridDialog(sourceShape.Left, sourceShape.Top, targetShape.Left, targetShape.Top);
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             // Clone shapes in a grid.
@@ -466,8 +482,15 @@ namespace PowerPointLabs.DrawingsLab
             {
                 for (int x = 0; x < dialog.XCopies; ++x)
                 {
-                    if (x == 0 && y == 0) continue;
-                    if (x == skipIndexX && y == skipIndexY) continue;
+                    if (x == 0 && y == 0)
+                    {
+                        continue;
+                    }
+
+                    if (x == skipIndexX && y == skipIndexY)
+                    {
+                        continue;
+                    }
 
                     var newShape = sourceShape.Duplicate()[1];
                     newShape.Left = sourceShape.Left + dx*x;
@@ -547,8 +570,15 @@ namespace PowerPointLabs.DrawingsLab
             var pivotShape = shapes[1];
 
             var dialog = new PivotAroundToolDialog(sourceShape, pivotShape);
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             double dx = dialog.SourceCenterX - dialog.PivotCenterX;
             double dy = dialog.SourceCenterY - dialog.PivotCenterY;
@@ -566,11 +596,17 @@ namespace PowerPointLabs.DrawingsLab
                 
                 Graphics.SetShapeX(sourceShape, cx, anchorX);
                 Graphics.SetShapeY(sourceShape, cy, anchorY);
-                if (dialog.RotateShape) Graphics.RotateShapeAboutPivot(sourceShape, angleDifference, anchorX, anchorY);
+                if (dialog.RotateShape)
+                {
+                    Graphics.RotateShapeAboutPivot(sourceShape, angleDifference, anchorX, anchorY);
+                }
             }
 
             double angleStep = dialog.AngleDifference;
-            if (!dialog.IsExtend) angleStep /= (dialog.Copies - 1);
+            if (!dialog.IsExtend)
+            {
+                angleStep /= (dialog.Copies - 1);
+            }
 
             for (int i = 1; i < dialog.Copies; ++i)
             {
@@ -586,7 +622,10 @@ namespace PowerPointLabs.DrawingsLab
 
                 Graphics.SetShapeX(newShape, cx, anchorX);
                 Graphics.SetShapeY(newShape, cy, anchorY);
-                if (dialog.RotateShape) Graphics.RotateShapeAboutPivot(newShape, angleDifference, anchorX, anchorY);
+                if (dialog.RotateShape)
+                {
+                    Graphics.RotateShapeAboutPivot(newShape, angleDifference, anchorX, anchorY);
+                }
             }
         }
 
@@ -837,8 +876,15 @@ namespace PowerPointLabs.DrawingsLab
 
             Action<bool, bool, Action> apply = (isDefaultSetting, condition, action) =>
             {
-                if (applyAllSettings && !isDefaultSetting) return;
-                if (!applyAllSettings && !condition) return;
+                if (applyAllSettings && !isDefaultSetting)
+                {
+                    return;
+                }
+
+                if (!applyAllSettings && !condition)
+                {
+                    return;
+                }
 
                 try
                 {
@@ -894,14 +940,21 @@ namespace PowerPointLabs.DrawingsLab
 
         public void SetControlGroup(Native.VirtualKey key, bool appendToGroup = false)
         {
-            if (!Native.IsNumberKey(key)) return;
+            if (!Native.IsNumberKey(key))
+            {
+                return;
+            }
+
             if (appendToGroup)
             {
                 SelectControlGroup(key, true);
             }
 
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
 
             var shapes = new HashSet<int>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.Id));
             var slideId = PowerPointCurrentPresentationInfo.CurrentSlide.ID;
@@ -911,17 +964,29 @@ namespace PowerPointLabs.DrawingsLab
 
         public void SelectControlGroup(Native.VirtualKey key, bool appendToSelection = false)
         {
-            if (!Native.IsNumberKey(key)) return;
+            if (!Native.IsNumberKey(key))
+            {
+                return;
+            }
 
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type == PpSelectionType.ppSelectionSlides) return;
+            if (selection.Type == PpSelectionType.ppSelectionSlides)
+            {
+                return;
+            }
 
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (!_controlGroups.ContainsKey(key)) return;
+            if (!_controlGroups.ContainsKey(key))
+            {
+                return;
+            }
 
             var controlGroup = _controlGroups[key];
             var targetSlide = PowerPointPresentation.Current.Slides.FirstOrDefault(slide => slide.ID == controlGroup.SlideId);
-            if (targetSlide == null) return;
+            if (targetSlide == null)
+            {
+                return;
+            }
 
 
             targetSlide.GetNativeSlide().Select();
@@ -945,7 +1010,10 @@ namespace PowerPointLabs.DrawingsLab
         public void SelectAllOfType()
         {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes) return;
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return;
+            }
 
             var selectedShapeTypes = new HashSet<MsoAutoShapeType>(selection.ShapeRange.Cast<Shape>().Select(shape => shape.AutoShapeType));
 
@@ -965,8 +1033,15 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var dialog = new AlignmentDialogHorizontal();
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
@@ -992,8 +1067,15 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var dialog = new AlignmentDialogVertical();
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
@@ -1019,8 +1101,15 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var dialog = new AlignmentDialogBoth();
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             double sourceAnchorX = dialog.SourceAnchorVertical / 100;
@@ -1051,8 +1140,15 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var dialog = new AlignmentDialogHorizontal();
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
@@ -1075,8 +1171,15 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var dialog = new AlignmentDialogVertical();
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             double sourceAnchor = dialog.SourceAnchor / 100;
@@ -1100,8 +1203,15 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var dialog = new AlignmentDialogBoth();
-            if (dialog.ShowDialog() != true) return;
-            if (dialog.DialogResult != true) return;
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            if (dialog.DialogResult != true)
+            {
+                return;
+            }
 
             Globals.ThisAddIn.Application.StartNewUndoEntry();
             double sourceAnchorX = dialog.SourceAnchorVertical / 100;
