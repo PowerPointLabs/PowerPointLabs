@@ -17,7 +17,9 @@ namespace PowerPointLabs.Models
         public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
+            {
                 return null;
+            }
 
             return new PowerPointAutoAnimateSlide(slide);
         }
@@ -63,7 +65,9 @@ namespace PowerPointLabs.Models
                             FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration);
                         }
                         else
+                        {
                             DefaultMotionAnimation.AddDefaultMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration, trigger);
+                        }
                     }
                 }
             }

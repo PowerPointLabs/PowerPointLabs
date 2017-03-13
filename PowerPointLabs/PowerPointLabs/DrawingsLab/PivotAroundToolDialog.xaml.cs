@@ -38,7 +38,11 @@ namespace PowerPointLabs.DrawingsLab
         {
             get
             {
-                if (dataSource.Copies < 1) return 1;
+                if (dataSource.Copies < 1)
+                {
+                    return 1;
+                }
+
                 return dataSource.Copies;
             }
         }
@@ -261,7 +265,10 @@ namespace PowerPointLabs.DrawingsLab
         private void DrawAlignmentCanvas()
         {
             PivotCanvas.Children.Clear();
-            if (Copies > 1000) return; // Don't draw anything if too many rectangles.
+            if (Copies > 1000)
+            {
+                return; // Don't draw anything if too many rectangles.
+            }
 
             if (Copies > 1)
             {

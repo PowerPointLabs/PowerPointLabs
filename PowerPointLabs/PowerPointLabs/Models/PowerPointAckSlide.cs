@@ -51,13 +51,21 @@ namespace PowerPointLabs.Models
 
         public static bool IsAckSlide(PowerPointSlide slide)
         {
-            if (slide == null) return false;
+            if (slide == null)
+            {
+                return false;
+            }
+
             return IsAckSlide(slide.Name);
         }
 
         public static bool IsAckSlide(PowerPoint.Slide slide)
         {
-            if (slide == null) return false;
+            if (slide == null)
+            {
+                return false;
+            }
+
             return IsAckSlide(slide.Name);
         }
 
