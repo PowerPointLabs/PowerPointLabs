@@ -16,7 +16,6 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_CropToSlideTest()
         {
-            CropOnePicInSlideSuccessfully();
             CropOnePicOneEdgeSuccessfully();
             CropOnePicMultipleEdgesSuccessfully();
             CropOneRotatedPicOneEdgeSuccessfully();
@@ -30,50 +29,46 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_CropToSlideNegativeTest()
         {
+            CropInSlideUnsuccessfully();
             CropOnNothingUnsuccessfully();
             CropOnTextObjectUnsuccessfully();
         }
 
         #region Positive Test Cases
 
-        public void CropOnePicInSlideSuccessfully()
+        public void CropOnePicOneEdgeSuccessfully()
         {
             CropAndCompare(4, 5);
         }
 
-        public void CropOnePicOneEdgeSuccessfully()
+        public void CropOnePicMultipleEdgesSuccessfully()
         {
             CropAndCompare(7, 8);
         }
 
-        public void CropOnePicMultipleEdgesSuccessfully()
+        public void CropOneRotatedPicOneEdgeSuccessfully()
         {
             CropAndCompare(10, 11);
         }
 
-        public void CropOneRotatedPicOneEdgeSuccessfully()
+        public void CropOneRotatedPicMultipleEdgesSuccessfully()
         {
             CropAndCompare(13, 14);
         }
 
-        public void CropOneRotatedPicMultipleEdgesSuccessfully()
+        public void CropMultiplePicsSuccessfully()
         {
             CropAndCompare(16, 17);
         }
 
-        public void CropMultiplePicsSuccessfully()
+        public void CropMultipleRotatedPicsSuccessfully()
         {
             CropAndCompare(19, 20);
         }
 
-        public void CropMultipleRotatedPicsSuccessfully()
-        {
-            CropAndCompare(22, 23);
-        }
-
         public void CropMultipleRotatedShapesSuccessfully()
         {
-            CropAndCompare(25, 26);
+            CropAndCompare(22, 23);
         }
 
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
@@ -101,9 +96,20 @@ namespace Test.FunctionalTest
         #endregion
         #region Negative Test Cases
 
+        private void CropInSlideUnsuccessfully()
+        {
+            PpOperations.SelectSlide(29);
+            PpOperations.SelectShape("selectMe");
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Error",
+                "Can't find any shapes crossing a boundary. No cropping was done.",
+                PplFeatures.CropToSlide);
+        }
+
         private void CropOnNothingUnsuccessfully()
         {
-            PpOperations.SelectSlide(30);
+            PpOperations.SelectSlide(27);
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -114,7 +120,7 @@ namespace Test.FunctionalTest
 
         private void CropOnTextObjectUnsuccessfully()
         {
-            PpOperations.SelectSlide(28);
+            PpOperations.SelectSlide(25);
             PpOperations.SelectShape("selectMe");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
