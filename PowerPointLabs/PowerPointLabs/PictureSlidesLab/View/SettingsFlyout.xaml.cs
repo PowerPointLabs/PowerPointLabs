@@ -63,18 +63,27 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void ColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var panel = sender as Border;
-            if (panel == null) return;
+            if (panel == null)
+            {
+                return;
+            }
 
             var colorDialog = new ColorDialog
             {
                 Color = GetColor(panel.Background as SolidColorBrush),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() != DialogResult.OK) return;
+            if (colorDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
             var hexString = StringUtil.GetHexValue(colorDialog.Color);
             var settings = DataContext as Settings;
-            if (settings == null) return;
+            if (settings == null)
+            {
+                return;
+            }
 
             if (panel.Name == "CitationTextBoxColorPanel")
             {
