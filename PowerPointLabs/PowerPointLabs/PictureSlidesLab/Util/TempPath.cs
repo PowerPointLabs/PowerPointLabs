@@ -78,12 +78,22 @@ namespace PowerPointLabs.PictureSlidesLab.Util
 
         private static void Empty(DirectoryInfo directory)
         {
-            if (!directory.Exists) return;
+            if (!directory.Exists)
+            {
+                return;
+            }
 
             try
             {
-                foreach (FileInfo file in directory.GetFiles()) file.Delete();
-                foreach (DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    file.Delete();
+                }
+
+                foreach (DirectoryInfo subDirectory in directory.GetDirectories())
+                {
+                    subDirectory.Delete(true);
+                }
             }
             catch (Exception)
             {

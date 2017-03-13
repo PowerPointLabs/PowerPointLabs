@@ -58,12 +58,10 @@ namespace PowerPointLabs
         private bool isResizePaneVisible;
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
-            List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow,
-                List<CustomTaskPane>>();
+            List<CustomTaskPane>> _documentPaneMapper = new Dictionary<PowerPoint.DocumentWindow, List<CustomTaskPane>>();
 
         private readonly Dictionary<PowerPoint.DocumentWindow,
-            string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow,
-                string>();
+            string> _documentHashcodeMapper = new Dictionary<PowerPoint.DocumentWindow, string>();
 
         /// <summary>
         /// The channel for .NET Remoting calls.
@@ -137,7 +135,10 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null && ShapePresentation.Opened) return;
+            if (ShapePresentation != null && ShapePresentation.Opened)
+            {
+                return;
+            }
 
             var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
 
@@ -168,7 +169,10 @@ namespace PowerPointLabs
         public void InitializeShapesLabConfig()
         {
             // if ShapesLabConfig has already been intialized, do nothing
-            if (ShapesLabConfigs != null) return;
+            if (ShapesLabConfigs != null)
+            {
+                return;
+            }
 
             ShapesLabConfigs = new ShapesLabConfig(AppDataFolder);
 
@@ -312,7 +316,10 @@ namespace PowerPointLabs
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
-                if (window == Application.ActiveWindow) continue;
+                if (window == Application.ActiveWindow)
+                {
+                    continue;
+                }
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
@@ -328,7 +335,10 @@ namespace PowerPointLabs
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
-                if (window == Application.ActiveWindow) continue;
+                if (window == Application.ActiveWindow)
+                {
+                    continue;
+                }
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
@@ -344,7 +354,10 @@ namespace PowerPointLabs
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
             {
-                if (window == Application.ActiveWindow) continue;
+                if (window == Application.ActiveWindow)
+                {
+                    continue;
+                }
 
                 var shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
@@ -429,7 +442,9 @@ namespace PowerPointLabs
         {
             // Check if folder exists and if not, create it
             if (!Directory.Exists(AppDataFolder))
+            {
                 Directory.CreateDirectory(AppDataFolder);
+            }
 
             var fileName = DateTime.Now.ToString("yyyy-MM-dd") + AppLogName;
             var logPath = Path.Combine(AppDataFolder, fileName);
@@ -453,10 +468,16 @@ namespace PowerPointLabs
         {
             var colorPane = GetActivePane(typeof(ColorPane));
 
-            if (colorPane == null) return;
+            if (colorPane == null)
+            {
+                return;
+            }
 
             var colorLabs = colorPane.Control as ColorPane;
-            if (colorLabs != null) colorLabs.SaveDefaultColorPaneThemeColors();
+            if (colorLabs != null)
+            {
+                colorLabs.SaveDefaultColorPaneThemeColors();
+            }
         }
 
         private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)
@@ -486,7 +507,11 @@ namespace PowerPointLabs
             for (var i = activePanes.Count - 1; i >= 0; i--)
             {
                 var pane = activePanes[i];
-                if (pane.Control.GetType() != paneType) continue;
+                if (pane.Control.GetType() != paneType)
+                {
+                    continue;
+                }
+
                 CustomTaskPanes.Remove(pane);
                 activePanes.RemoveAt(i);
             }
@@ -610,13 +635,19 @@ namespace PowerPointLabs
 
                 for (var i = 0; i < recorder.AudioBuffer.Count; i++)
                 {
-                    if (recorder.AudioBuffer[i].Count == 0) continue;
+                    if (recorder.AudioBuffer[i].Count == 0)
+                    {
+                        continue;
+                    }
 
                     foreach (var audio in recorder.AudioBuffer[i])
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled) continue;
+                        if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
+                        {
+                            continue;
+                        }
 
                         Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
                         Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
@@ -717,7 +748,10 @@ namespace PowerPointLabs
                 {
                     var name = Path.GetFileName(entry.FilenameInZip);
 
-                    if (name == null) continue;
+                    if (name == null)
+                    {
+                        continue;
+                    }
 
                     if (name.Contains(".wav") ||
                         regex.IsMatch(name))
@@ -887,9 +921,15 @@ namespace PowerPointLabs
                 PowerPoint.Slide prev = tmp;
 
                 if (slideIndex < presentation.Slides.Count)
+                {
                     next = presentation.Slides[slideIndex + 1];
+                }
+
                 if (slideIndex > 1)
+                {
                     prev = presentation.Slides[slideIndex - 1];
+                }
+
                 if (!((tmp.Name.StartsWith("PPSlideAnimated"))
                       || ((tmp.Name.StartsWith("PPSlideStart"))
                           && (next.Name.StartsWith("PPSlideAnimated")))
@@ -898,9 +938,14 @@ namespace PowerPointLabs
                       || ((tmp.Name.StartsWith("PPSlideMulti"))
                           && ((prev.Name.StartsWith("PPSlideAnimated"))
                               || (next.Name.StartsWith("PPSlideAnimated"))))))
+                {
                     Ribbon.ReloadAutoMotionEnabled = false;
+                }
+
                 if (!(tmp.Name.Contains("PPTLabsSpotlight")))
+                {
                     Ribbon.ReloadSpotlight = false;
+                }
             }
 
             Ribbon.RefreshRibbonControl("AddAnimationButton");
@@ -1422,7 +1467,10 @@ namespace PowerPointLabs
 
         private void TrySelectTransparentShape()
         {
-            if (PowerPointCurrentPresentationInfo.CurrentSlide == null) return;
+            if (PowerPointCurrentPresentationInfo.CurrentSlide == null)
+            {
+                return;
+            }
 
             PowerPoint.Shape overlappingShape = null;
             int overlappingShapeZIndex = -1;
@@ -1438,7 +1486,9 @@ namespace PowerPointLabs
                 }
             }
             if (overlappingShape != null)
+            {
                 overlappingShape.Select();
+            }
         }
 
         private bool IsMouseWithinShape(PowerPoint.Shape sh)
@@ -1467,8 +1517,7 @@ namespace PowerPointLabs
                     Process.GetCurrentProcess().MainWindowHandle,
                     (uint)Native.Message.WM_COMMAND,
                     new IntPtr(CommandOpenBackgroundFormat),
-                    IntPtr.Zero
-                    );
+                    IntPtr.Zero);
                 selectedShapes.Select();
             }
         }
