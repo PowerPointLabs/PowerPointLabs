@@ -42,8 +42,15 @@ namespace PowerPointLabs.HighlightLab
                     default:
                         return;
                 }
-                if (selectedText.Length <= 0) return;
-                if (selectedShapes.Count != 1) return;
+                if (selectedText.Length <= 0)
+                {
+                    return;
+                }
+
+                if (selectedShapes.Count != 1)
+                {
+                    return;
+                }
 
                 List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
                 GroupShapesForAnimation(selectionToAnimate);
