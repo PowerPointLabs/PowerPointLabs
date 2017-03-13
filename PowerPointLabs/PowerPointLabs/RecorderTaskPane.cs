@@ -1003,7 +1003,10 @@ namespace PowerPointLabs
             else
             {
                 var temp = (int) (value / (double) _playbackLenMillis * bar.Maximum);
-                if (temp > bar.Maximum) temp = bar.Maximum;
+                if (temp > bar.Maximum)
+                {
+                    temp = bar.Maximum;
+                }
 
                 bar.Value = temp;
             }

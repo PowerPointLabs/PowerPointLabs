@@ -203,11 +203,17 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
+                }
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kTextSelected;
+                }
                 else
+                {
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kNoneSelected;
+                }
 
                 HighlightBulletsBackground.AddHighlightBulletsBackground();
             }
@@ -224,11 +230,17 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
+                }
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kTextSelected;
+                }
                 else
+                {
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kNoneSelected;
+                }
 
                 HighlightBulletsText.AddHighlightBulletsText();
             }
@@ -245,11 +257,17 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
+                }
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
+                }
                 else
+                {
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
+                }
 
                 HighlightTextFragments.AddHighlightedTextFragments();
             }
@@ -1728,11 +1746,17 @@ namespace PowerPointLabs
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
 
-            if (recorderPane == null) return;
+            if (recorderPane == null)
+            {
+                return;
+            }
 
             var recorder = recorderPane.Control as RecorderTaskPane;
 
-            if (recorder == null) return;
+            if (recorder == null)
+            {
+                return;
+            }
 
             // initialize selected slides' audio
             recorder.InitializeAudioAndScript(PowerPointCurrentPresentationInfo.SelectedSlides.ToList(),
@@ -1827,7 +1851,10 @@ namespace PowerPointLabs
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
 
-            if (recorderPane == null) return;
+            if (recorderPane == null)
+            {
+                return;
+            }
 
             var recorder = recorderPane.Control as RecorderTaskPane;
             recorder.ClearRecordDataListForSelectedSlides();
@@ -1934,7 +1961,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintRemainder);
             effectSlide.GetNativeSlide().Select();
@@ -1946,7 +1976,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GreyScaleBackground();
             effectSlide.GetNativeSlide().Select();
@@ -1958,7 +1991,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlackWhiteBackground();
             effectSlide.GetNativeSlide().Select();
@@ -1970,7 +2006,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GothamBackground();
             effectSlide.GetNativeSlide().Select();
@@ -1982,7 +2021,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.SepiaBackground();
             effectSlide.GetNativeSlide().Select();
@@ -1994,7 +2036,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintBackground);
             effectSlide.GetNativeSlide().Select();
@@ -2006,7 +2051,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GreyScaleBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2018,7 +2066,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlackWhiteBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2030,7 +2081,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GothamBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2042,7 +2096,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.SepiaBackground();
             effectSlide.GetNativeSlide().Select();

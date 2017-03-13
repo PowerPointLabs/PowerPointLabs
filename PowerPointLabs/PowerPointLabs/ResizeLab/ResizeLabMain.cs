@@ -78,7 +78,11 @@ namespace PowerPointLabs.ResizeLab
         /// <returns></returns>
         private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
         {
-            if (selectedShapes.Count <= 0) return -1;
+            if (selectedShapes.Count <= 0)
+            {
+                return -1;
+            }
+
             switch (ResizeType)
             {
                 case ResizeBy.Visual:
@@ -96,7 +100,11 @@ namespace PowerPointLabs.ResizeLab
         /// <returns></returns>
         private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            if (selectedShapes.Count <= 0) return -1;
+            if (selectedShapes.Count <= 0)
+            {
+                return -1;
+            }
+
             switch (ResizeType)
             {
                 case ResizeBy.Visual:
