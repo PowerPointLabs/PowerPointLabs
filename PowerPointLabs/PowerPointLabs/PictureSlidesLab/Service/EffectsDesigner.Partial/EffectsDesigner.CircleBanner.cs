@@ -34,7 +34,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
+            {
                 return null;
+            }
+
             TextBoxes.AddMargin(tbInfo, margin);
 
             var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,

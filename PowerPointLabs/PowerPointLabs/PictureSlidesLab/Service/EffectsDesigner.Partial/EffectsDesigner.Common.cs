@@ -23,7 +23,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private int CalculateTextBoxMargin(int fontSizeToIncrease)
         {
             if (fontSizeToIncrease == -1 || fontSizeToIncrease == 0)
+            {
                 return 10;
+            }
 
             return (int) (fontSizeToIncrease * 0.25 + 10);
         }
