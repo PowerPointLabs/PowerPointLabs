@@ -161,7 +161,7 @@ namespace PowerPointLabs.CropLab
             {
                 if (!IsImageColumnTransparent(bmpData, argbBuffer, x))
                 {
-                    right = x;
+                    right = x + 1;
                     break;
                 }
             }
@@ -181,7 +181,7 @@ namespace PowerPointLabs.CropLab
             {
                 if (!IsImageRowTransparent(bmpData, argbBuffer, y))
                 {
-                    bottom = y;
+                    bottom = y + 1;
                     break;
                 }
             }
