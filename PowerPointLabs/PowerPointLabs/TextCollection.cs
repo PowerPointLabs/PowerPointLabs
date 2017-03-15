@@ -708,7 +708,7 @@
         #region Paste Lab
         public class PasteLabText
         {
-            public const string PasteToFillSlide = "Paste (Fill Slide)";
+            public const string PasteToFillSlide = "Paste To Fill Slide";
         }
         #endregion
 
