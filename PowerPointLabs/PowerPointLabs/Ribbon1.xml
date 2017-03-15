@@ -624,6 +624,11 @@
                  getImage="GetHighlightBulletsBackgroundContextImage"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
         </menu>
+        <button id="pasteIntoGroup"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getEnabled="GetEnabled"
+                onAction="OnAction"/>
         <button id="ConvertToPictureGroup"
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"

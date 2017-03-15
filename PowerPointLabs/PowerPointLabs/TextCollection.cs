@@ -710,6 +710,7 @@
         {
             public const string PasteToFillSlide = "Paste To Fill Slide";
             public const string PasteAndReplace = "Replace with Clipboard";
+            public const string PasteIntoGroup = "Paste Into Group";
         }
         #endregion
 

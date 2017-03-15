@@ -263,6 +263,7 @@
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\AddShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabGroupActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteLabReplaceActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ShapeMenuActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ShapesLabActionHandler.cs" />
@@ -306,6 +307,7 @@
     <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabReplaceEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLabSettingsImageHandler.cs" />
@@ -317,6 +319,7 @@
     <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabReplaceImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabFillEnabledHandler.cs" />
@@ -341,6 +344,7 @@
     <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\AddShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabReplaceLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabFillLabelHandler.cs" />

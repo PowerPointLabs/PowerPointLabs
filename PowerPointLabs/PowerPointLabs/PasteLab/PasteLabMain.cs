@@ -1,4 +1,7 @@
-﻿using PowerPointLabs.ActionFramework.Common.Log;
+﻿using System;
+using System.Collections.Generic;
+
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -67,6 +70,83 @@ namespace PowerPointLabs.PasteLab
 
             Logger.Log(string.Format("PasteAndReplace: Replaced {0} with {1}", shapeToReplace.Name, newShape.Name));
             shapeToReplace.Delete();
+        }
+
+        public static void PasteIntoGroup(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
+                                          bool clipboardIsEmpty, PowerPoint.Selection selection)
+        {
+            var newSlide = presentation.AddSlide();
+            var selectedShapes = selection.ShapeRange;
+
+            PowerPoint.ShapeRange pastedShapes = slide.Shapes.Paste();
+
+            selection.Copy();
+            newSlide.Shapes.Paste();
+            pastedShapes.Copy();
+
+            List<int> order = new List<int>();
+
+            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            {
+                if (eff.Shape.Equals(selectedShapes[1]))
+                {
+                    order.Add(eff.Index);
+                }
+            }
+
+            selectedShapes = selectedShapes.Ungroup();
+
+
+            List<String> newShapeNames = new List<String>();
+
+            foreach (PowerPoint.Shape shape in selectedShapes)
+            {
+                newShapeNames.Add(shape.Name);
+            }
+
+            foreach (PowerPoint.Shape shape in pastedShapes)
+            {
+                newShapeNames.Add(shape.Name);
+            }
+
+            PowerPoint.ShapeRange newShapeRange = slide.Shapes.Range(newShapeNames.ToArray());
+            PowerPoint.Shape newGroupedShape = newShapeRange.Group();
+
+            TransferEffects(order, newGroupedShape, slide, newSlide);
+
+            newSlide.Delete();
+        }
+
+        private static void TransferEffects(List<int> effOrder, PowerPoint.Shape newGroupedShape,
+                                            Models.PowerPointSlide curSlide, Models.PowerPointSlide newSlide)
+        {
+            foreach (int curo in effOrder)
+            {
+                PowerPoint.Effect eff = newSlide.TimeLine.MainSequence[1];
+                eff.Shape = newGroupedShape;
+
+                if (curSlide.TimeLine.MainSequence.Count == 0)
+                {
+                    PowerPoint.Shape tempShape = curSlide.Shapes.AddLine(0, 0, 1, 1);
+                    PowerPoint.Effect tempEff = curSlide.TimeLine.MainSequence.AddEffect(tempShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear);
+                    eff.MoveAfter(tempEff);
+                    tempEff.Delete();
+                }
+                else if (curSlide.TimeLine.MainSequence.Count + 1 < curo)
+                {
+                    // out of range, assumed to be last
+                    eff.MoveAfter(curSlide.TimeLine.MainSequence[curSlide.TimeLine.MainSequence.Count]);
+                }
+                else if (curo == 1)
+                {
+                    // first item!
+                    eff.MoveBefore(curSlide.TimeLine.MainSequence[1]);
+                }
+                else
+                {
+                    eff.MoveAfter(curSlide.TimeLine.MainSequence[curo - 1]);
+                }
+            }
         }
     }
 }
