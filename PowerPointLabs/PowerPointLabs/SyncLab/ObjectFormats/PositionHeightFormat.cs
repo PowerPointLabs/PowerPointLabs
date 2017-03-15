@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿
+using System;
+using System.Drawing;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -17,10 +19,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
-            Bitmap b = new Bitmap(200, 200);
-            Graphics g = Graphics.FromImage(b);
-            g.FillRectangle(Brushes.DarkBlue, 0, 0, 200, 200);
-            return b;
+            return SyncFormatUtil.GetTextDisplay(
+                Math.Round(formatShape.Height).ToString(),
+                SyncFormatConstants.DisplayImageFont,
+                SyncFormatConstants.DisplayImageSize);
         }
     }
 }
