@@ -430,6 +430,11 @@
                getImage="GetZoomToAreaContextImage"
                getEnabled="OnGetEnabledZoomButton"
                onAction="ZoomBtnClick"/>
+        <button id="pasteAndReplace"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
         <menu id="HighlightBulletsMenuShape"
               getLabel="GetHighlightBulletsMenuShapeLabel"
               getImage="GetHighlightBulletsBackgroundContextImage">

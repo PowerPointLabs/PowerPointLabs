@@ -31,5 +31,42 @@ namespace PowerPointLabs.PasteLab
                 shape.VisualCenter = new System.Drawing.PointF(width / 2, height / 2);
             }
         }
+
+        public static void PasteAndReplace(Models.PowerPointSlide slide, bool clipboardIsEmpty, PowerPoint.Selection selection)
+        {
+            if (clipboardIsEmpty)
+            {
+                Logger.Log("PasteAndReplace encountered an empty clipboard");
+                return;
+            }
+
+            if (selection.ShapeRange.Count == 0)
+            {
+                Logger.Log("PasteAndReplace found no shapes selected");
+                return;
+            }
+
+            var shapeToReplace = selection.ShapeRange[1];
+
+            PowerPoint.Shape newShape = slide.Shapes.Paste()[1];
+            newShape.Left = shapeToReplace.Left;
+            newShape.Top = shapeToReplace.Top;
+
+            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            {
+                if (eff.Shape == shapeToReplace)
+                {
+                    PowerPoint.Effect newEff = slide.TimeLine.MainSequence.Clone(eff);
+                    newEff.Shape = newShape;
+                    eff.Delete();
+                }
+            }
+
+            shapeToReplace.PickUp();
+            newShape.Apply();
+
+            Logger.Log(string.Format("PasteAndReplace: Replaced {0} with {1}", shapeToReplace.Name, newShape.Name));
+            shapeToReplace.Delete();
+        }
     }
 }
