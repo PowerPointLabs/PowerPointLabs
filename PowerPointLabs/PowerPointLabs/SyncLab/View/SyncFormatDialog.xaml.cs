@@ -98,73 +98,9 @@ namespace PowerPointLabs.SyncLab.View
         {
             if (treeView.Items.IsEmpty)
             {
+                // Todo: fix
                 treeView.Items.MoveCurrentToFirst();
-                //(treeView.Items[0] as TreeViewItem).BringIntoView();
-            } 
-            
-            /*
-            ScrollViewer scrollViewer = GetScrollViewer(treeView);
-            if (scrollViewer != null)
-            {
-                scrollViewer.ScrollToTop();
             }
-            scrollViewer = (ScrollViewer)this.FindVisualChildElement(treeView, typeof(ScrollViewer));
-            if (scrollViewer != null)
-            {
-                scrollViewer.ScrollToTop();
-            }*/
-        }
-        
-            private FrameworkElement FindVisualChildElement(DependencyObject element, Type childType)
-            {
-                int count = VisualTreeHelper.GetChildrenCount(element);
-
-                for (int i = 0; i < count; i++)
-                {
-                var dependencyObject = VisualTreeHelper.GetChild(element, i);
-                var fe = (FrameworkElement)dependencyObject;
-
-                if (fe.GetType() == childType)
-                {
-                    return fe;
-                }
-
-                FrameworkElement ret = null;
-
-                if (fe.GetType().Equals(typeof(ScrollViewer)))
-                {
-                    ret = FindVisualChildElement((fe as ScrollViewer).Content as FrameworkElement, childType);
-                }
-                else
-                {
-                    ret = FindVisualChildElement(fe, childType);
-                }
-
-                if (ret != null)
-                {
-                    return ret;
-                }
-            }
-
-            return null;
-        }
-
-        private ScrollViewer GetScrollViewer(DependencyObject obj)
-        {
-            if (obj is ScrollViewer)
-            {
-                return (ScrollViewer)obj;
-            }
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                ScrollViewer scrollViewer = GetScrollViewer(child);
-                if (scrollViewer != null)
-                {
-                    return scrollViewer;
-                }
-            }
-            return null;
         }
 
         public FormatTreeNode[] Formats

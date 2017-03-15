@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Reflection;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.SyncLab;
 using PowerPointLabs.SyncLab.ObjectFormats;
-using System.Reflection;
 
 namespace Test.UnitTest.SyncLab
 {
@@ -31,7 +32,8 @@ namespace Test.UnitTest.SyncLab
             if (node.IsFormatNode)
             {
                 AssertValidFormatType(node.Format.FormatType);
-            } else
+            }
+            else
             {
                 AssertValidFormat(node.ChildrenNodes);
             }

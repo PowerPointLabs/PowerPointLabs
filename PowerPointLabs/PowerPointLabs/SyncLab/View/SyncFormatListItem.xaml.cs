@@ -56,7 +56,8 @@ namespace PowerPointLabs.SyncLab.View
         }
 
         private void UpdateImage()
-        { // if image isn't set, fill the control with the text box
+        {
+            // if image isn't set, fill the control with the text box
             if (image == null)
             {
                 imageBox.Visibility = Visibility.Hidden;
@@ -67,10 +68,10 @@ namespace PowerPointLabs.SyncLab.View
             else
             {
                 BitmapSource source = Imaging.CreateBitmapSourceFromHBitmap(
-                image.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                                        image.GetHbitmap(),
+                                        IntPtr.Zero,
+                                        Int32Rect.Empty,
+                                        BitmapSizeOptions.FromEmptyOptions());
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 label.Margin = new Thickness(65, label.Margin.Top,

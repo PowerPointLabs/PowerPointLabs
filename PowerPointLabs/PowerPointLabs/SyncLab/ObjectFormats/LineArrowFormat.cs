@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
