@@ -11,6 +11,27 @@ namespace PowerPointLabs.TimerLab
     /// </summary>
     public partial class TimerLabPaneWPF : UserControl
     {
+        public const int DefaultDenomination = 10;
+        public const float DefaultTimerWidth = 500;
+        public const float DefaultTimerHeight = 50;
+        public const float DefaultMinutesLineMarkerWidth = 4;
+        public const float DefaultSecondsLineMarkerWidth = 2;
+        public const float DefaultTimeMarkerHeight = 50;
+        public const float DefaultTimeMarkerWidth = 50;
+        public const float DefaultSliderBodyWidth = 4;
+        public const float DefaultSliderHeadSize = 20;
+
+        public const int TransparencyTranparent = 1;
+        public const int Rotate180Degrees = 180;
+        public const float ColorChangeDuration = 0.001f;
+
+        public const int SecondsInMinute = 60;
+        public const int StartTime = 0;
+        public const double FractionalDecrementOffset = 0.60;
+        public const double FractionalDecrementLowerBound = 0.00;
+        public const double FractionalIncrementOffset = 0.99;
+        public const double FractionalIncrementUpperBound = 0.59;
+
         public TimerLabPaneWPF()
         {
             InitializeComponent();
@@ -24,7 +45,7 @@ namespace PowerPointLabs.TimerLab
 
             // Functionality
             int duration = Duration();
-            int denomination = 10;
+            int denomination = DefaultDenomination;
 
             // Aesthetics
             // Main
@@ -32,12 +53,12 @@ namespace PowerPointLabs.TimerLab
             float timerHeight = TimerHeight();
             int timerBodyColor = System.Drawing.Color.FromArgb(106, 84, 68).ToArgb();
             // Markers
-            float lineMarkerWidth = 2;
-            float timeMarkerWidth = 50;
-            float timeMarkerHeight = 50;
+            float lineMarkerWidth = DefaultSecondsLineMarkerWidth;
+            float timeMarkerWidth = DefaultTimeMarkerWidth;
+            float timeMarkerHeight = DefaultTimeMarkerHeight;
             // Slider
-            var sliderHeadSize = 20;
-            var sliderBodyWidth = 4;
+            var sliderHeadSize = DefaultSliderHeadSize;
+            var sliderBodyWidth = DefaultSliderBodyWidth;
             int sliderColor = System.Drawing.Color.FromArgb(70, 150, 247).ToArgb();
 
             // Position
@@ -45,13 +66,14 @@ namespace PowerPointLabs.TimerLab
             float timerTop = (slideHeight - timerHeight) / 2;         
 
             // Create timer
-            var timerBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, timerLeft, timerTop, timerWidth, timerHeight);
+            var timerBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
+                timerLeft, timerTop, timerWidth, timerHeight);
             timerBody.Name = "timerBody";
             timerBody.Fill.ForeColor.RGB = timerBodyColor;
             timerBody.Line.ForeColor.RGB = timerBodyColor;
             
             // Add markers
-            if (duration <= 60)
+            if (duration <= SecondsInMinute)
             {
                 AddSecondsMarker(duration, denomination, timerWidth, timerHeight, timerLeft, timerTop,
                     lineMarkerWidth, timeMarkerWidth, timeMarkerHeight);
@@ -63,42 +85,45 @@ namespace PowerPointLabs.TimerLab
             }
 
             // Add slider components
-            var sliderHead = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeIsoscelesTriangle, 
+            var sliderHead = this.GetCurrentSlide().Shapes.AddShape(
+                Microsoft.Office.Core.MsoAutoShapeType.msoShapeIsoscelesTriangle, 
                 timerLeft - (sliderHeadSize / 2), timerTop - (sliderHeadSize / 2), sliderHeadSize, sliderHeadSize);
             sliderHead.Name = "timerSliderHead";
-            sliderHead.Rotation = 180;
+            sliderHead.Rotation = Rotate180Degrees;
             sliderHead.Fill.ForeColor.RGB = sliderColor;
-            sliderHead.Line.Transparency = 1;
+            sliderHead.Line.Transparency = TransparencyTranparent;
 
             var sliderBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
                 timerLeft - (sliderBodyWidth / 2), timerTop, sliderBodyWidth, timerHeight);
             sliderBody.Name = "timerSliderBody";
             sliderBody.Fill.ForeColor.RGB = sliderColor;
-            sliderBody.Line.Transparency = 1;
+            sliderBody.Line.Transparency = TransparencyTranparent;
 
             // Add slider animations
-            AddSliderMotionEffect(sliderHead, duration, timerWidth, slideWidth, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-            AddSliderMotionEffect(sliderBody, duration, timerWidth, slideWidth, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            AddSliderMotionEffect(sliderHead, duration, timerWidth, slideWidth, 
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            AddSliderMotionEffect(sliderBody, duration, timerWidth, slideWidth, 
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             AddSliderEndEffect(sliderHead, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
             AddSliderEndEffect(sliderBody, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
         }
 
         private int Duration()
         {
-            int duration = 60; // default value
+            int duration = SecondsInMinute;
             if (DurationTextBox.Value != null)
             {
                 double value = Math.Round(DurationTextBox.Value.Value, 2);
                 int minutes = (int)value;
                 int seconds = (int)((value - minutes) * 100);
-                duration = (minutes * 60) + seconds;
+                duration = (minutes * SecondsInMinute) + seconds;
             }
             return duration;
         }
 
         private float TimerWidth()
         {
-            float width = 500; // default value
+            float width = DefaultTimerWidth;
             if (!string.IsNullOrEmpty(WidthTextBox.Text))
             {
                 width = float.Parse(WidthTextBox.Text);
@@ -108,7 +133,7 @@ namespace PowerPointLabs.TimerLab
 
         private float TimerHeight()
         {
-            float height = 50; // default value
+            float height = DefaultTimerHeight;
             if (!string.IsNullOrEmpty(HeightTextBox.Text))
             {
                 height = float.Parse(HeightTextBox.Text);
@@ -116,30 +141,33 @@ namespace PowerPointLabs.TimerLab
             return height;
         }
 
-        private void AddSecondsMarker(int duration, int denomination, float timerWidth, float timerHeight, float timerLeft, float timerTop, 
-            float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight)
+        private void AddSecondsMarker(int duration, int denomination, float timerWidth, float timerHeight, float timerLeft, 
+            float timerTop, float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight)
         {
             float widthPerSec = timerWidth / duration;
 
-            var currentMarker = 0;
+            var currentMarker = StartTime;
             while (currentMarker <= duration)
             {
                 // Add time marker
-                var timeMarker = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
-                    (timerLeft + (currentMarker * widthPerSec)) - (timeMarkerWidth / 2), timerTop + timerHeight, timeMarkerWidth, timeMarkerHeight);
+                var timeMarker = this.GetCurrentSlide().Shapes.AddShape(
+                    Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
+                    (timerLeft + (currentMarker * widthPerSec)) - (timeMarkerWidth / 2), timerTop + timerHeight, 
+                    timeMarkerWidth, timeMarkerHeight);
                 timeMarker.Name = "timerTimeMarker";
-                timeMarker.Fill.Transparency = 1;
-                timeMarker.Line.Transparency = 1;
+                timeMarker.Fill.Transparency = TransparencyTranparent;
+                timeMarker.Line.Transparency = TransparencyTranparent;
                 timeMarker.TextFrame.TextRange.Font.Color.RGB = 0;
                 timeMarker.TextFrame.TextRange.Text = currentMarker.ToString();
 
                 // Add line marker if it is not the start or end
-                if (currentMarker != 0 && currentMarker != duration)
+                if (currentMarker != StartTime && currentMarker != duration)
                 {
-                    var lineMarker = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
+                    var lineMarker = this.GetCurrentSlide().Shapes.AddShape
+                        (Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
                         timerLeft + (currentMarker * widthPerSec), timerTop, lineMarkerWidth, timerHeight);
                     lineMarker.Name = "timerLineMarker";
-                    lineMarker.Line.Transparency = 1;
+                    lineMarker.Line.Transparency = TransparencyTranparent;
                 }
 
                 if (currentMarker == duration)
@@ -155,48 +183,51 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
-        private void AddMinutesMarker(int duration, int denomination, float timerWidth, float timerHeight, float timerLeft, float timerTop,
-                                        float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight)
+        private void AddMinutesMarker(int duration, int denomination, float timerWidth, float timerHeight, float timerLeft, 
+            float timerTop, float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight)
         {
             float widthPerSec = timerWidth / duration;
 
-            var currentMarker = 0;
+            var currentMarker = StartTime;
             while (currentMarker <= duration)
             {
                 // Add time markers for start, end and every minute
-                if (currentMarker % 60 == 0 || currentMarker == duration)
+                if (currentMarker % SecondsInMinute == 0 || currentMarker == duration)
                 {
-                    var timeMarker = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
-                        (timerLeft + (currentMarker * widthPerSec)) - (timeMarkerWidth / 2), timerTop + timerHeight, timeMarkerWidth, timeMarkerHeight);
+                    var timeMarker = this.GetCurrentSlide().Shapes.AddShape(
+                        Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
+                        (timerLeft + (currentMarker * widthPerSec)) - (timeMarkerWidth / 2), timerTop + timerHeight, 
+                        timeMarkerWidth, timeMarkerHeight);
                     timeMarker.Name = "timerTimeMarker";
-                    timeMarker.Fill.Transparency = 1;
-                    timeMarker.Line.Transparency = 1;
+                    timeMarker.Fill.Transparency = TransparencyTranparent;
+                    timeMarker.Line.Transparency = TransparencyTranparent;
                     timeMarker.TextFrame.TextRange.Font.Color.RGB = 0;
 
-                    int remainingSeconds = currentMarker % 60;
+                    int remainingSeconds = currentMarker % SecondsInMinute;
                     if (currentMarker == duration && remainingSeconds != 0)
                     {
-                        timeMarker.TextFrame.TextRange.Text = (currentMarker / 60).ToString() + ":" + remainingSeconds.ToString();
+                        timeMarker.TextFrame.TextRange.Text = (currentMarker / SecondsInMinute).ToString() + ":" + remainingSeconds.ToString();
                     }
                     else
                     {
-                        timeMarker.TextFrame.TextRange.Text = (currentMarker / 60).ToString();
+                        timeMarker.TextFrame.TextRange.Text = (currentMarker / SecondsInMinute).ToString();
                     }
                 }
 
                 // Add line marker if it is not the start or end
-                if (currentMarker != 0 && currentMarker != duration)
+                if (currentMarker != StartTime && currentMarker != duration)
                 {
                     //Thicken the line if it is a minute marker
-                    if (currentMarker % 60 == 0)
+                    if (currentMarker % SecondsInMinute == 0)
                     {
-                        lineMarkerWidth = 4;
+                        lineMarkerWidth = DefaultMinutesLineMarkerWidth;
                     }
-                    var lineMarker = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
+                    var lineMarker = this.GetCurrentSlide().Shapes.AddShape(
+                        Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
                         timerLeft + (currentMarker * widthPerSec), timerTop, lineMarkerWidth, timerHeight);
                     lineMarker.Name = "timerLineMarker";
-                    lineMarker.Line.Transparency = 1;
-                    lineMarkerWidth = 1;
+                    lineMarker.Line.Transparency = TransparencyTranparent;
+                    lineMarkerWidth = DefaultSecondsLineMarkerWidth;
                 }
 
                 if (currentMarker == duration)
@@ -212,7 +243,8 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
-        private void AddSliderMotionEffect(PowerPoint.Shape shape, int duration, float timerWidth, float slideWidth, PowerPoint.MsoAnimTriggerType trigger)
+        private void AddSliderMotionEffect(PowerPoint.Shape shape, int duration, float timerWidth, float slideWidth, 
+            PowerPoint.MsoAnimTriggerType trigger)
         {
             PowerPoint.Effect sliderMotionEffect = this.GetCurrentSlide().TimeLine.MainSequence.AddEffect(shape,
                 PowerPoint.MsoAnimEffect.msoAnimEffectPathRight, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, trigger);
@@ -229,11 +261,12 @@ namespace PowerPointLabs.TimerLab
             PowerPoint.Effect sliderEndEffect = this.GetCurrentSlide().TimeLine.MainSequence.AddEffect(shape,
                 PowerPoint.MsoAnimEffect.msoAnimEffectDarken, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
                 PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
-            sliderEndEffect.Timing.Duration = 0.001f;
+            sliderEndEffect.Timing.Duration = ColorChangeDuration;
         }
 
         # region NumericUpDown Control Customisation
-        private void DurationTextBox_ValueDecremented(object sender, MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
+        private void DurationTextBox_ValueDecremented(object sender, 
+            MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
         {
             if (DurationTextBox.Value == null)
             {
@@ -244,13 +277,14 @@ namespace PowerPointLabs.TimerLab
             int integerPart = (int)value;
             double fractionalPart = value - integerPart;
 
-            if (Math.Round(fractionalPart, 2) == 0.00)
+            if (Math.Round(fractionalPart, 2) == FractionalDecrementLowerBound)
             {
-                DurationTextBox.Value = (integerPart - 1) + 0.6;
+                DurationTextBox.Value = (integerPart - 1) + FractionalDecrementOffset;
             }
         }
 
-        private void DurationTextBox_ValueIncremented(object sender, MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
+        private void DurationTextBox_ValueIncremented(object sender, 
+            MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
         {
             if (DurationTextBox.Value == null)
             {
@@ -261,10 +295,9 @@ namespace PowerPointLabs.TimerLab
             int integerPart = (int)value;
             double fractionalPart = value - integerPart;
 
-            if (Math.Round(fractionalPart, 2) == 0.59)
+            if (Math.Round(fractionalPart, 2) == FractionalIncrementUpperBound)
             {
-                //0.99 because it will get incremented by 0.01 afterwards.
-                DurationTextBox.Value = integerPart + 0.99;
+                DurationTextBox.Value = integerPart + FractionalIncrementOffset;
             }
         }
 
@@ -279,7 +312,7 @@ namespace PowerPointLabs.TimerLab
             int integerPart = (int)value;
             double fractionalPart = value - integerPart;
 
-            if (Math.Round(fractionalPart, 2) > 0.59)
+            if (Math.Round(fractionalPart, 2) > FractionalIncrementUpperBound)
             {
                 DurationTextBox.Value = integerPart + 1;
             }
