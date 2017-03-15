@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.SyncLab.ObjectFormats;
@@ -32,7 +33,8 @@ namespace PowerPointLabs.SyncLab.View
                 {
                     treeView.Items.Add(treeItem);
                 }
-            }   
+            }
+            ScrollToTop();
         }
 
         private Object DialogItemFromFormatTree(Shape shape, FormatTreeNode node)
@@ -70,10 +72,6 @@ namespace PowerPointLabs.SyncLab.View
                         {
                             children.Add((SyncFormatDialogItem)((TreeViewItem)treeItem).Header);
                         }
-                        else
-                        {
-                            throw new Exception("");
-                        }
                         result.Items.Add(treeItem);
                     }
                 }
@@ -94,6 +92,15 @@ namespace PowerPointLabs.SyncLab.View
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+        }
+
+        private void ScrollToTop()
+        {
+            if (treeView.Items.IsEmpty)
+            {
+                // Todo: fix
+                treeView.Items.MoveCurrentToFirst();
+            }
         }
 
         public FormatTreeNode[] Formats

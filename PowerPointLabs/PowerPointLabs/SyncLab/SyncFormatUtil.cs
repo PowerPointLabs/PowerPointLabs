@@ -1,85 +1,45 @@
 ﻿using System;
+using System.Drawing;
+
 using Microsoft.Office.Interop.PowerPoint;
+
+using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab
 {
-    class SyncFormatUtil
+    public class SyncFormatUtil
     {
+        #region Display Image Utils
 
-        public static void SyncColorFormat(ColorFormat formatToApplyOn, ColorFormat formatToApply)
+        public static Shapes GetTemplateShapes()
         {
-            try
+            Design design = Graphics.GetDesign(TextCollection.StorageTemplateName);
+            if (design == null)
             {
-                formatToApplyOn.ObjectThemeColor = formatToApply.ObjectThemeColor;
+                design = Graphics.CreateDesign(TextCollection.StorageTemplateName);
             }
-            catch (ArgumentException)
-            {
-            }
-            try
-            {
-                formatToApplyOn.SchemeColor = formatToApply.SchemeColor;
-            }
-            catch (ArgumentException)
-            {
-            }
-            formatToApplyOn.RGB = formatToApply.RGB;
-            formatToApplyOn.Brightness = formatToApply.Brightness;
-            formatToApplyOn.TintAndShade = formatToApply.TintAndShade;
+            return design.TitleMaster.Shapes;
         }
 
-        public static void SyncFillFormat(FillFormat formatToApplyOn, FillFormat formatToApply)
+        public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size size)
         {
-            
+            Bitmap image = new Bitmap(size.Width, size.Height);
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(image);
+            SizeF textSize = g.MeasureString(text, font);
+            Bitmap textImage = new Bitmap((int)Math.Ceiling(textSize.Width), (int)Math.Ceiling(textSize.Height));
+            System.Drawing.Graphics g2 = System.Drawing.Graphics.FromImage(textImage);
+            g2.DrawString(text, font, Brushes.Black, 0, 0);
+
+            double scale = Math.Min(size.Width / textSize.Width, size.Height / textSize.Height);
+            double newWidth = textSize.Width * scale;
+            double newHeight = textSize.Height * scale;
+            double newX = (size.Width - newWidth) / 2;
+            double newY = (size.Height - newHeight) / 2;
+            g.DrawImage(textImage, Convert.ToSingle(newX), Convert.ToSingle(newY),
+                Convert.ToSingle(newWidth), Convert.ToSingle(newHeight));
+            return image;
         }
 
-        public static void SyncFontFormat(Font formatToApplyOn, Font formatToApply)
-        {
-            formatToApplyOn.AutoRotateNumbers = formatToApply.AutoRotateNumbers;
-            formatToApplyOn.BaselineOffset = formatToApply.BaselineOffset;
-            formatToApplyOn.Bold = formatToApply.Bold;
-            formatToApplyOn.Emboss = formatToApply.Emboss;
-            formatToApplyOn.Italic = formatToApply.Italic;
-            formatToApplyOn.Name = formatToApply.Name;
-            formatToApplyOn.NameAscii = formatToApply.NameAscii;
-            formatToApplyOn.NameComplexScript = formatToApply.NameComplexScript;
-            formatToApplyOn.NameFarEast = formatToApply.NameFarEast;
-            formatToApplyOn.NameOther = formatToApply.NameOther;
-            formatToApplyOn.Shadow = formatToApply.Shadow;
-            formatToApplyOn.Size = formatToApply.Size;
-            formatToApplyOn.Subscript = formatToApply.Subscript;
-            formatToApplyOn.Superscript = formatToApply.Superscript;
-            formatToApplyOn.Underline = formatToApply.Underline;
-            SyncColorFormat(formatToApplyOn.Color, formatToApply.Color);
-        }
-
-        public static void SyncLineFormat(LineFormat formatToApplyOn, LineFormat formatToApply)
-        {
-            try
-            {
-                formatToApplyOn.BeginArrowheadLength = formatToApply.BeginArrowheadLength;
-                formatToApplyOn.BeginArrowheadStyle = formatToApply.BeginArrowheadStyle;
-                formatToApplyOn.BeginArrowheadWidth = formatToApply.BeginArrowheadWidth;
-                formatToApplyOn.EndArrowheadLength = formatToApply.EndArrowheadLength;
-                formatToApplyOn.EndArrowheadStyle = formatToApply.EndArrowheadStyle;
-                formatToApplyOn.EndArrowheadWidth = formatToApply.EndArrowheadWidth;
-            }
-            catch (ArgumentException)
-            {
-            }
-            formatToApplyOn.DashStyle = formatToApply.DashStyle;
-            SyncColorFormat(formatToApplyOn.ForeColor, formatToApply.ForeColor);
-            formatToApplyOn.InsetPen = formatToApply.InsetPen;
-            try
-            {
-                formatToApplyOn.Pattern = formatToApply.Pattern;
-            }
-            catch (ArgumentException)
-            {
-            }
-            formatToApplyOn.Style = formatToApply.Style;
-            formatToApplyOn.Transparency = formatToApply.Transparency;
-            formatToApplyOn.Weight = formatToApply.Weight;
-        }
-
+        #endregion
     }
 }

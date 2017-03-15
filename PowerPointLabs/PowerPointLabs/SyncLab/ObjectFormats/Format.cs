@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Reflection;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -13,6 +14,14 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public Format(Type format)
         {
             this.format = format;
+        }
+
+        public Type FormatType
+        {
+            get
+            {
+                return format;
+            }
         }
 
         public bool CanCopy(Shape formatShape)

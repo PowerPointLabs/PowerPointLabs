@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Microsoft.Office.Interop.PowerPoint;
+using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -7,6 +9,14 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
+            try
+            {
+                SyncFormat(formatShape, formatShape);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -19,10 +29,16 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
-            Bitmap b = new Bitmap(200, 200);
-            Graphics g = Graphics.FromImage(b);
-            g.FillRectangle(Brushes.DarkBlue, 0, 0, 200, 200);
-            return b;
+            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
+            Shape shape = shapes.AddShape(
+                    Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0,
+                    SyncFormatConstants.DisplayImageSize.Width,
+                    SyncFormatConstants.DisplayImageSize.Height);
+            shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
+            SyncFormat(formatShape, shape);
+            Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
+            shape.Delete();
+            return image;
         }
     }
 }

@@ -76,6 +76,22 @@ namespace PowerPointLabs.SyncLab
             }
         }
 
+        public bool IsCategoryNode
+        {
+            get
+            {
+                return childrenNodes != null;
+            }
+        }
+
+        public bool IsFormatNode
+        {
+            get
+            {
+                return format != null;
+            }
+        }
+
         public FormatTreeNode Clone()
         {
             return Clone(null);
@@ -84,7 +100,7 @@ namespace PowerPointLabs.SyncLab
         public FormatTreeNode Clone(FormatTreeNode parent)
         {
             FormatTreeNode cloned = null;
-            if (this.format != null)
+            if (this.IsFormatNode)
             {
                 cloned = new FormatTreeNode(name, format);
             }
