@@ -15,10 +15,10 @@ namespace PowerPointLabs.CropLab
             float refScaleWidth = Graphics.GetScaleWidth(refShape);
             float refScaleHeight = Graphics.GetScaleHeight(refShape);
 
-            float cropTop = Math.Max(shapeRange[1].PictureFormat.CropTop, Epsilon);
-            float cropBottom = Math.Max(shapeRange[1].PictureFormat.CropBottom, Epsilon);
-            float cropLeft = Math.Max(shapeRange[1].PictureFormat.CropLeft, Epsilon);
-            float cropRight = Math.Max(shapeRange[1].PictureFormat.CropRight, Epsilon);
+            float cropTop = Math.Max(refShape.PictureFormat.CropTop, Epsilon);
+            float cropBottom = Math.Max(refShape.PictureFormat.CropBottom, Epsilon);
+            float cropLeft = Math.Max(refShape.PictureFormat.CropLeft, Epsilon);
+            float cropRight = Math.Max(refShape.PictureFormat.CropRight, Epsilon);
 
             float refShapeCroppedHeight = cropTop + cropBottom;
             float refShapeCroppedWidth = cropLeft + cropRight;
