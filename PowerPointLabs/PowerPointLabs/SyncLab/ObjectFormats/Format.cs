@@ -15,6 +15,14 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             this.format = format;
         }
 
+        public Type FormatType
+        {
+            get
+            {
+                return format;
+            }
+        }
+
         public bool CanCopy(Shape formatShape)
         {
             MethodInfo method = format.GetMethod("CanCopy", BindingFlags.Public | BindingFlags.Static);

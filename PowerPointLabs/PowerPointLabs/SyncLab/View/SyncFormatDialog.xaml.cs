@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.SyncLab.ObjectFormats;
@@ -32,7 +33,8 @@ namespace PowerPointLabs.SyncLab.View
                 {
                     treeView.Items.Add(treeItem);
                 }
-            }   
+            }
+            ScrollToTop();
         }
 
         private Object DialogItemFromFormatTree(Shape shape, FormatTreeNode node)
@@ -70,10 +72,6 @@ namespace PowerPointLabs.SyncLab.View
                         {
                             children.Add((SyncFormatDialogItem)((TreeViewItem)treeItem).Header);
                         }
-                        else
-                        {
-                            throw new Exception("");
-                        }
                         result.Items.Add(treeItem);
                     }
                 }
@@ -94,6 +92,79 @@ namespace PowerPointLabs.SyncLab.View
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+        }
+
+        private void ScrollToTop()
+        {
+            if (treeView.Items.IsEmpty)
+            {
+                treeView.Items.MoveCurrentToFirst();
+                //(treeView.Items[0] as TreeViewItem).BringIntoView();
+            } 
+            
+            /*
+            ScrollViewer scrollViewer = GetScrollViewer(treeView);
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToTop();
+            }
+            scrollViewer = (ScrollViewer)this.FindVisualChildElement(treeView, typeof(ScrollViewer));
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToTop();
+            }*/
+        }
+        
+            private FrameworkElement FindVisualChildElement(DependencyObject element, Type childType)
+            {
+                int count = VisualTreeHelper.GetChildrenCount(element);
+
+                for (int i = 0; i < count; i++)
+                {
+                var dependencyObject = VisualTreeHelper.GetChild(element, i);
+                var fe = (FrameworkElement)dependencyObject;
+
+                if (fe.GetType() == childType)
+                {
+                    return fe;
+                }
+
+                FrameworkElement ret = null;
+
+                if (fe.GetType().Equals(typeof(ScrollViewer)))
+                {
+                    ret = FindVisualChildElement((fe as ScrollViewer).Content as FrameworkElement, childType);
+                }
+                else
+                {
+                    ret = FindVisualChildElement(fe, childType);
+                }
+
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+
+            return null;
+        }
+
+        private ScrollViewer GetScrollViewer(DependencyObject obj)
+        {
+            if (obj is ScrollViewer)
+            {
+                return (ScrollViewer)obj;
+            }
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                ScrollViewer scrollViewer = GetScrollViewer(child);
+                if (scrollViewer != null)
+                {
+                    return scrollViewer;
+                }
+            }
+            return null;
         }
 
         public FormatTreeNode[] Formats

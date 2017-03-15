@@ -18,10 +18,23 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
-            Bitmap b = new Bitmap(200, 200);
-            Graphics g = Graphics.FromImage(b);
-            g.FillRectangle(Brushes.DarkBlue, 0, 0, 200, 200);
-            return b;
+            System.Drawing.Font font = SyncFormatConstants.DisplayImageFont;
+            Microsoft.Office.Interop.PowerPoint.Font formatFont = formatShape.TextFrame.TextRange.Font;
+            FontStyle style = 0;
+            if (formatFont.Underline == Microsoft.Office.Core.MsoTriState.msoTrue)
+            {
+                style |= FontStyle.Underline;
+            }
+            if (formatFont.Bold == Microsoft.Office.Core.MsoTriState.msoTrue)
+            {
+                style |= FontStyle.Bold;
+            }
+            if (formatFont.Italic == Microsoft.Office.Core.MsoTriState.msoTrue)
+            {
+                style |= FontStyle.Italic;
+            }
+            font = new System.Drawing.Font(font.FontFamily, font.Size, style);
+            return SyncFormatUtil.GetTextDisplay( "T", font, SyncFormatConstants.DisplayImageSize);
         }
 
         private static void SyncTextRange(TextRange formatTextRange, TextRange newTextRange)

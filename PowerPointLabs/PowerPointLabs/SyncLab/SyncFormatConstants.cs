@@ -1,19 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class SyncFormatConstants
+    public class SyncFormatConstants
     {
+
+        public static readonly Size DisplayImageSize = new Size(30, 30);
+
+        public static readonly int DisplayImageFontSize = DisplayImageSize.Height;
+        public static readonly Font DisplayImageFont = new Font("Arial", DisplayImageFontSize);
+
+        private static FormatTreeNode[] formatCategories = InitFormatCategories();
 
         public static FormatTreeNode[] FormatCategories
         {
             get
             {
-                return new FormatTreeNode[]
+                FormatTreeNode[] result = new FormatTreeNode[formatCategories.Length];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = formatCategories[i].Clone();
+                }
+                return result;
+            }
+        }
+
+        private static FormatTreeNode[] InitFormatCategories()
+        {
+            FormatTreeNode[] formats = new FormatTreeNode[]
                 {
                     new FormatTreeNode(
                             "Text",
@@ -57,65 +71,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Y", new Format(typeof(PositionYFormat)))
                         )
                 };
-                /*
-                KeyValuePair<String, Type>[] types = new KeyValuePair<String, Type>[]
-                {
-                    new KeyValuePair<string, Type>("Fill\\Fill Style", typeof(FillFormat)),
-                    new KeyValuePair<string, Type>("Fill\\Fill Style 2", typeof(FillFormat)),
-                    new KeyValuePair<string, Type>("Fill\\Fill Style 3", typeof(FillFormat)),
-                    new KeyValuePair<string, Type>("Fill\\Fill Style 4", typeof(FillFormat)),
-                    new KeyValuePair<string, Type>("Line\\Line Fill", typeof(LineFormat))
-                };
-                KeyValuePair<String, Format>[] categories =
-                        new KeyValuePair<String, Format>[types.Length];
-                HashSet<String> seenCategories = new HashSet<String>();
-                for (int i = 0; i < categories.Length; i++)
-                {
-                    string category = types[i].Key;
-                    Type formatType = types[i].Value;
-                    Debug.Assert(!seenCategories.Contains(types[i].Key), "Duplicate key");
-                    seenCategories.Add(types[i].Key);
-                    categories[i] = new KeyValuePair<string, Format>(
-                            types[i].Key,
-                            new Format(types[i].Value)
-                        );
-                }
-                return categories;
-                */
-                /*
-                FormatCategory[] categories = new FormatCategory[]
-                {
-                    new FormatCategory(
-                        "Text",
-                        new Type[] {
-                        }
-                    ),
-                    new FormatCategory(
-                        "Fill",
-                        new Type[] {
-                            typeof(FillFormat)
-                        }
-                    ),
-                    new FormatCategory(
-                        "Line",
-                        new Type[] {
-                            typeof(LineFormat)
-                        }
-                    ),
-                    new FormatCategory(
-                        "Effect",
-                        new Type[] {
-                        }
-                    ),
-                    new FormatCategory(
-                        "Size/Position",
-                        new Type[] {
-                        }
-                    )
-                };
-                return categories;
-                */
-            }
+            return formats;
         }
     }
 }

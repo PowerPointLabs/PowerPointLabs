@@ -151,6 +151,9 @@
 
         #region Sync Lab
         public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
+        public const string SyncLabCopySelectError = "Please select one item to copy.";
+        public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
+        public const string StorageTemplateName = "Sync Labs - Do not edit";
         #endregion
 
         #endregion

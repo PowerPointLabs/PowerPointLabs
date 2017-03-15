@@ -17,10 +17,11 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
-            Bitmap b = new Bitmap(200, 200);
-            Graphics g = Graphics.FromImage(b);
-            g.FillRectangle(Brushes.DarkBlue, 0, 0, 200, 200);
-            return b;
+            return SyncFormatUtil.GetTextDisplay(
+                "T",
+                new System.Drawing.Font(formatShape.TextEffect.FontName,
+                                        SyncFormatConstants.DisplayImageFontSize),
+                SyncFormatConstants.DisplayImageSize);
         }
     }
 }

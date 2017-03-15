@@ -27,6 +27,7 @@ namespace PowerPointLabs.SyncLab.View
         public SyncFormatListItem()
         {
             InitializeComponent();
+            UpdateImage();
         }
 
         public bool? IsChecked
@@ -50,12 +51,30 @@ namespace PowerPointLabs.SyncLab.View
             set
             {
                 image = value;
+                UpdateImage();
+            }
+        }
+
+        private void UpdateImage()
+        { // if image isn't set, fill the control with the text box
+            if (image == null)
+            {
+                imageBox.Visibility = Visibility.Hidden;
+                label.Margin = new Thickness(30, label.Margin.Top,
+                            label.Margin.Right, label.Margin.Bottom);
+                return;
+            }
+            else
+            {
                 BitmapSource source = Imaging.CreateBitmapSourceFromHBitmap(
-                        image.GetHbitmap(),
-                        IntPtr.Zero,
-                        Int32Rect.Empty,
-                        BitmapSizeOptions.FromEmptyOptions());
+                image.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
                 imageBox.Source = source;
+                imageBox.Visibility = Visibility.Visible;
+                label.Margin = new Thickness(65, label.Margin.Top,
+                            label.Margin.Right, label.Margin.Bottom);
             }
         }
 
