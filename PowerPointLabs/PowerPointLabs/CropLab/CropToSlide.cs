@@ -82,7 +82,7 @@ namespace PowerPointLabs.CropLab
             return new RectangleF(cropLeft, cropTop, cropWidth, cropHeight);
         }
 
-        protected static bool IsShape(PowerPoint.Shape shape)
+        private static bool IsShape(PowerPoint.Shape shape)
         {
             return shape.Type == Office.MsoShapeType.msoAutoShape
                 || shape.Type == Office.MsoShapeType.msoFreeform
