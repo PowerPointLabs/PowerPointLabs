@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -10,14 +11,22 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return true;
+            return SyncFormat(formatShape, formatShape);
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public static bool SyncFormat(Shape formatShape, Shape newShape)
         {
-            newShape.Fill.ForeColor = formatShape.Fill.ForeColor;
-            newShape.Fill.BackColor = formatShape.Fill.BackColor;
-            newShape.Fill.Solid();
+            try
+            {
+                newShape.Fill.ForeColor = formatShape.Fill.ForeColor;
+                newShape.Fill.BackColor = formatShape.Fill.BackColor;
+                newShape.Fill.Solid();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)

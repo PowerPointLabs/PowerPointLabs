@@ -11,26 +11,26 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
+            return SyncFormat(formatShape, formatShape);
+        }
+
+        public static bool SyncFormat(Shape formatShape, Shape newShape)
+        {
             try
             {
-                SyncFormat(formatShape, formatShape);
+                newShape.Line.BeginArrowheadLength = formatShape.Line.BeginArrowheadLength;
+                newShape.Line.BeginArrowheadStyle = formatShape.Line.BeginArrowheadStyle;
+                newShape.Line.BeginArrowheadWidth = formatShape.Line.BeginArrowheadWidth;
+
+                newShape.Line.EndArrowheadLength = formatShape.Line.EndArrowheadLength;
+                newShape.Line.EndArrowheadStyle = formatShape.Line.EndArrowheadStyle;
+                newShape.Line.EndArrowheadWidth = formatShape.Line.EndArrowheadWidth;
             }
             catch (Exception)
             {
                 return false;
             }
             return true;
-        }
-
-        public static void SyncFormat(Shape formatShape, Shape newShape)
-        {
-            newShape.Line.BeginArrowheadLength = formatShape.Line.BeginArrowheadLength;
-            newShape.Line.BeginArrowheadStyle = formatShape.Line.BeginArrowheadStyle;
-            newShape.Line.BeginArrowheadWidth = formatShape.Line.BeginArrowheadWidth;
-
-            newShape.Line.EndArrowheadLength = formatShape.Line.EndArrowheadLength;
-            newShape.Line.EndArrowheadStyle = formatShape.Line.EndArrowheadStyle;
-            newShape.Line.EndArrowheadWidth = formatShape.Line.EndArrowheadWidth;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)

@@ -11,21 +11,21 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
+            return SyncFormat(formatShape, formatShape);
+        }
+
+        public static bool SyncFormat(Shape formatShape, Shape newShape)
+        {
             try
             {
-                SyncFormat(formatShape, formatShape);
+                newShape.Line.Style = formatShape.Line.Style;
+                //missing dashstyle?
             }
             catch (Exception)
             {
                 return false;
             }
             return true;
-        }
-
-        public static void SyncFormat(Shape formatShape, Shape newShape)
-        {
-            newShape.Line.Style = formatShape.Line.Style;
-            //missing dashstyle?
         }
 
         public static Bitmap DisplayImage(Shape formatShape)

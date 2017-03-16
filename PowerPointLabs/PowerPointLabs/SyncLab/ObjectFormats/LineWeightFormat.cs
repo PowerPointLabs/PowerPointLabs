@@ -9,12 +9,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return true;
+            return SyncFormat(formatShape, formatShape);
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public static bool SyncFormat(Shape formatShape, Shape newShape)
         {
-            newShape.Line.Weight = formatShape.Line.Weight;
+            try
+            {
+                newShape.Line.Weight = formatShape.Line.Weight;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)

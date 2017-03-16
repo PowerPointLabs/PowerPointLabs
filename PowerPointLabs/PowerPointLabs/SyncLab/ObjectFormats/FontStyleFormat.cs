@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -8,13 +9,21 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return true;
+            return SyncFormat(formatShape, formatShape);
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public static bool SyncFormat(Shape formatShape, Shape newShape)
         {
-            //What is the difference between TextFrame and TextFrame2?
-            SyncTextRange(formatShape.TextFrame.TextRange, newShape.TextFrame.TextRange);
+            try
+            {
+                //What is the difference between TextFrame and TextFrame2?
+                SyncTextRange(formatShape.TextFrame.TextRange, newShape.TextFrame.TextRange);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)

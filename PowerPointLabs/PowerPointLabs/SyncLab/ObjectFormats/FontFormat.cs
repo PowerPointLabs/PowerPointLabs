@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -8,12 +9,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return true;
+            return SyncFormat(formatShape, formatShape);
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public static bool SyncFormat(Shape formatShape, Shape newShape)
         {
-            newShape.TextEffect.FontName = formatShape.TextEffect.FontName;
+            try
+            {
+                newShape.TextEffect.FontName = formatShape.TextEffect.FontName;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
