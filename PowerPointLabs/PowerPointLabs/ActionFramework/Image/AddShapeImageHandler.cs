@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image
 {
-    [ExportImageRibbonId("AddCustomShape")]
+    [ExportImageRibbonId("AddCustomShape", "addCustomShapePictureGroup")]
     class AddShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

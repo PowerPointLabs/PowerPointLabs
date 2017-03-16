@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
-    [ExportActionRibbonId("AddCustomShape")]
+    [ExportActionRibbonId("AddCustomShape", "addCustomShapePictureGroup")]
     class AddShapeActionHandler : ShapesLabActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
