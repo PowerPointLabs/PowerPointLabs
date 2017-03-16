@@ -22,8 +22,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            //TODO not working
-            newShape.Line.ForeColor = newShape.Line.ForeColor;
+            newShape.Line.ForeColor = formatShape.Line.ForeColor;
             newShape.Line.BackColor = formatShape.Line.BackColor;
         }
 
