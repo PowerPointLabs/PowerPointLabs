@@ -305,11 +305,12 @@
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropShapeMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropToSameImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropToSlideImageHandler.cs" />
     <Compile Include="ActionFramework\Image\MoveCropShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
@@ -1201,9 +1202,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FitToHeight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CutOutShapeMenu.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Magnify.png" />
