@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 using Graphics = PowerPointLabs.Utils.Graphics;
 
@@ -11,10 +12,15 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return SyncFormat(formatShape, formatShape);
+            return Sync(formatShape, formatShape);
         }
 
-        public static bool SyncFormat(Shape formatShape, Shape newShape)
+        public static void SyncFormat(Shape formatShape, Shape newShape)
+        {
+            Sync(formatShape, newShape);
+        }
+
+        public static bool Sync(Shape formatShape, Shape newShape)
         {
             try
             {
@@ -23,6 +29,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
             catch (Exception)
             {
+                Logger.Log(newShape.Type + " unable to sync Line Style");
                 return false;
             }
             return true;
