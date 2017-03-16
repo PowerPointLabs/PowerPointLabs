@@ -771,6 +771,7 @@
     </Compile>
     <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
     <Compile Include="Tags\NoEffectTag.cs" />
+    <Compile Include="TimerLab\TimerLabConstants.cs" />
     <Compile Include="TimerLab\TimerLabPaneWPF.xaml.cs">
       <DependentUpon>TimerLabPaneWPF.xaml</DependentUpon>
     </Compile>
