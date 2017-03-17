@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
@@ -111,6 +112,38 @@ namespace PowerPointLabs.PasteLab
 
             PowerPoint.ShapeRange newShapeRange = slide.Shapes.Range(newShapeNames.ToArray());
             PowerPoint.Shape newGroupedShape = newShapeRange.Group();
+
+            TransferEffects(order, newGroupedShape, slide, newSlide);
+
+            newSlide.Delete();
+        }
+
+        public static void GroupSelectedShapes(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
+                                               PowerPoint.Selection selection)
+        {
+            if (selection.ShapeRange.Count < 2)
+            {
+                MessageBox.Show("Please select more than one shape.", "Error");
+                return;
+            }
+
+            var newSlide = presentation.AddSlide();
+            var selectedShapes = selection.ShapeRange;
+
+            selectedShapes[1].Copy();
+            newSlide.Shapes.Paste();
+
+            List<int> order = new List<int>();
+
+            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            {
+                if (eff.Shape.Equals(selectedShapes[1]))
+                {
+                    order.Add(eff.Index);
+                }
+            }
+
+            PowerPoint.Shape newGroupedShape = selectedShapes.Group();
 
             TransferEffects(order, newGroupedShape, slide, newSlide);
 

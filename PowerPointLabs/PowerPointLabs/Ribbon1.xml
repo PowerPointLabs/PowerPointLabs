@@ -629,6 +629,11 @@
                 getImage="GetImage"
                 getEnabled="GetEnabled"
                 onAction="OnAction"/>
+        <button id="mergeSelection"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getEnabled="GetEnabled"
+                onAction="OnAction"/>
         <button id="ConvertToPictureGroup"
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
