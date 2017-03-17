@@ -150,6 +150,30 @@ namespace PowerPointLabs.PasteLab
             newSlide.Delete();
         }
 
+        public static void PasteToOriginalPosition(Models.PowerPointPresentation presentation,
+                                                   Models.PowerPointSlide slide, bool clipboardIsEmpty)
+        {
+            if (clipboardIsEmpty)
+            {
+                Logger.Log("PasteToOriginalPosition encountered an empty clipboard");
+                return;
+            }
+
+            var newSlide = presentation.AddSlide();
+
+            PowerPoint.ShapeRange correctShapes = newSlide.Shapes.Paste();
+
+            foreach (PowerPoint.Shape shape in correctShapes)
+            {
+                shape.Copy();
+                PowerPoint.Shape pastedShape = slide.Shapes.Paste()[1];
+                pastedShape.Top = shape.Top;
+                pastedShape.Left = shape.Left;
+            }
+
+            newSlide.Delete();
+        }
+
         private static void TransferEffects(List<int> effOrder, PowerPoint.Shape newGroupedShape,
                                             Models.PowerPointSlide curSlide, Models.PowerPointSlide newSlide)
         {

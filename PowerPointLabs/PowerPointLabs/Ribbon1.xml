@@ -885,6 +885,11 @@
                 getImage="GetImage"
                 getLabel="GetLabel"
                 onAction="OnAction"/>
+        <button id="pasteToOriginalPosition"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuGraphicOleClassic">
