@@ -13,7 +13,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
+            {
                 return null;
+            }
 
             TextBoxes.AddMargin(tbInfo);
 
@@ -42,7 +44,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private BannerDirection HandleAutoDirection(BannerDirection dir, Position textPos)
         {
-            if (dir != BannerDirection.Auto) return dir;
+            if (dir != BannerDirection.Auto)
+            {
+                return dir;
+            }
+
             switch (textPos)
             {
                 case Position.Left:

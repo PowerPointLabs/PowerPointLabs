@@ -44,8 +44,10 @@ namespace PowerPointLabs.AutoUpdate
 
         public void TryUpdate()
         {
-            if (IsInstallerTypeOnline()) 
+            if (IsInstallerTypeOnline())
+            {
                 return;
+            }
 
             new Downloader()
                 .Get(_vstoAddress, _destVstoAddress)
@@ -63,7 +65,9 @@ namespace PowerPointLabs.AutoUpdate
         {
             var version = GetVstoVersion(_destVstoAddress);
             if (IsTheNewestVersion(version))
+            {
                 return;
+            }
 
             new Downloader()
                 .Get(_offlineInstallerAddress, _destOfflineInstallerAddress)

@@ -195,7 +195,10 @@ namespace PowerPointLabs.Utils
             {
                 succeeded = false;
             }
-            if (succeeded) return;
+            if (succeeded)
+            {
+                return;
+            }
 
             candidateShape.Delete();
             refShape.Copy();
@@ -269,7 +272,10 @@ namespace PowerPointLabs.Utils
                                                                                                  false, 15) &&
                                                                                   IsSameSize(item, candidateShape));
 
-                if (candidateShape == null || refShape == null) continue;
+                if (candidateShape == null || refShape == null)
+                {
+                    continue;
+                }
 
                 candidateShape.Name = refShape.Name;
             }
@@ -549,7 +555,10 @@ namespace PowerPointLabs.Utils
         {
             try
             {
-                if (shape.Line.Visible != MsoTriState.msoTrue) return false;
+                if (shape.Line.Visible != MsoTriState.msoTrue)
+                {
+                    return false;
+                }
                 shape.Line.BeginArrowheadStyle = shape.Line.BeginArrowheadStyle;
                 return true;
             }
@@ -623,7 +632,10 @@ namespace PowerPointLabs.Utils
         {
             var textFrame2 = textRange2.Parent as TextFrame2;
 
-            if (textFrame2 == null) return null;
+            if (textFrame2 == null)
+            {
+                return null;
+            }
 
             var shape = textFrame2.Parent as Shape;
 
@@ -738,7 +750,10 @@ namespace PowerPointLabs.Utils
 
         private static void AddDisappearAnimation(Shape shape, PowerPointSlide inSlide, int effectStartIndex)
         {
-            if (inSlide.HasExitAnimation(shape)) return;
+            if (inSlide.HasExitAnimation(shape))
+            {
+                return;
+            }
 
             var effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious, effectStartIndex);
@@ -747,7 +762,10 @@ namespace PowerPointLabs.Utils
 
         private static void AddAppearAnimation(Shape shape, PowerPointSlide inSlide, int effectStartIndex)
         {
-            if (inSlide.HasEntryAnimation(shape)) return;
+            if (inSlide.HasEntryAnimation(shape))
+            {
+                return;
+            }
 
             var effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious, effectStartIndex);

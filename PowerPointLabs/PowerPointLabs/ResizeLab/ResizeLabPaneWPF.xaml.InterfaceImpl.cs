@@ -24,7 +24,10 @@ namespace PowerPointLabs.ResizeLab
 
         public void Preview(PowerPoint.ShapeRange selectedShapes, Action<PowerPoint.ShapeRange> previewAction, int minNumberofSelectedShapes)
         {
-            if (selectedShapes == null || selectedShapes.Count < minNumberofSelectedShapes) return;
+            if (selectedShapes == null || selectedShapes.Count < minNumberofSelectedShapes)
+            {
+                return;
+            }
 
             _isPreview = true;
             this.StartNewUndoEntry();
@@ -33,7 +36,10 @@ namespace PowerPointLabs.ResizeLab
 
         public void Preview(PowerPoint.ShapeRange selectedShapes, float referenceWidth, float referenceHeight, Action<PowerPoint.ShapeRange, float, float, bool> previewAction)
         {
-            if (selectedShapes == null) return;
+            if (selectedShapes == null)
+            {
+                return;
+            }
 
             _isPreview = true;
             this.StartNewUndoEntry();
@@ -54,7 +60,10 @@ namespace PowerPointLabs.ResizeLab
 
         public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, Action<PowerPoint.ShapeRange> resizeAction)
         {
-            if (selectedShapes == null) return;
+            if (selectedShapes == null)
+            {
+                return;
+            }
 
             Reset();
             this.StartNewUndoEntry();
@@ -64,7 +73,10 @@ namespace PowerPointLabs.ResizeLab
 
         public void ExecuteResizeAction(PowerPoint.ShapeRange selectedShapes, float slideWidth, float slideHeight, Action<PowerPoint.ShapeRange, float, float, bool> resizeAction)
         {
-            if (selectedShapes == null) return;
+            if (selectedShapes == null)
+            {
+                return;
+            }
 
             Reset();
             this.StartNewUndoEntry();

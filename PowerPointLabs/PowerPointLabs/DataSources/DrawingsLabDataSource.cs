@@ -642,8 +642,16 @@ namespace PowerPointLabs.DataSources
                 Func<MsoLineDashStyle, string> extractName = (style) =>
                 {
                     var s = style.ToString();
-                    if (s.ToLower().StartsWith("mso")) s = s.Substring(3);
-                    if (s.ToLower().StartsWith("line")) s = s.Substring(4);
+                    if (s.ToLower().StartsWith("mso"))
+                    {
+                        s = s.Substring(3);
+                    }
+
+                    if (s.ToLower().StartsWith("line"))
+                    {
+                        s = s.Substring(4);
+                    }
+
                     return Common.SplitCamelCase(s);
                 };
 

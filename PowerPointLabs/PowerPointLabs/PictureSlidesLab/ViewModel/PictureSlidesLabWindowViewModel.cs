@@ -366,7 +366,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             StylesVariationList.Clear();
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
+            {
                 return;
+            }
 
             InitStylesVariationCategories(givenOptions, givenVariants, targetStyleItem.Tooltip);
             if (Settings.GetDefaultAspectWhenCustomize() == Aspect.PictureAspect)
@@ -405,7 +407,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
+            {
                 return;
+            }
 
             StylesVariationListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
 
@@ -432,7 +436,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("current variation list selected id is " + StylesVariationListSelectedId.Number);
             Logger.Log("variants category count is " + VariantsCategory.Count);
             if (StylesVariationListSelectedId.Number < 0
-                || VariantsCategory.Count == 0) return;
+                || VariantsCategory.Count == 0)
+            {
+                return;
+            }
 
             Logger.Log("Step by step preview begins");
             var targetVariationSelectedIndex = StylesVariationListSelectedId.Number;
@@ -655,9 +662,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("Check for update selected picture in picture aspect");
             Logger.Log("is in picture aspect: " + IsInPictureVariation());
             Logger.Log("variation list selectedId is: " + StylesVariationListSelectedId.Number);
-            if (!IsInPictureVariation() 
+            if (!IsInPictureVariation()
                 || StylesVariationListSelectedId.Number == -1)
+            {
                 return;
+            }
 
             try
             {
@@ -677,7 +686,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("is in picture aspect: " + IsInPictureVariation());
             Logger.Log("new pic is null: " + (newPicture == null));
             if (!IsInPictureVariation() || newPicture == null)
+            {
                 return;
+            }
 
             for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
             {
@@ -695,7 +706,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("Check for update picture in picture aspect when deleted some");
             Logger.Log("is in picture aspect: " + IsInPictureVariation());
             if (!IsInPictureVariation())
+            {
                 return;
+            }
 
             for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
             {
@@ -730,7 +743,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private List<ImageItem> GetLast8Pictures(int selectedIdOfVariationList)
         {
-            if (!IsInPictureVariation()) return new List<ImageItem>();
+            if (!IsInPictureVariation())
+            {
+                return new List<ImageItem>();
+            }
 
             try
             {
@@ -811,7 +827,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 Logger.Log("Save clipboard begins.");
                 foreach (var copiedObj in copiedObjs)
                 {
-                    if (copiedObj == null) continue;
+                    if (copiedObj == null)
+                    {
+                        continue;
+                    }
 
                     if (copiedObj is Image)
                     {
@@ -850,7 +869,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             StylesPreviewList.Clear();
 
             if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
+            {
                 return;
+            }
 
             var copiedPicture = LoadClipboardPicture();
             try

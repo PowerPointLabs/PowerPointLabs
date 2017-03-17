@@ -409,7 +409,10 @@ namespace PowerPointLabs
 
         private void BeginEyedropping()
         {
-            if (!VerifyIsShapeSelected()) return;
+            if (!VerifyIsShapeSelected())
+            {
+                return;
+            }
 
             _timerCounter = 0;
             timer1.Start();
@@ -449,7 +452,10 @@ namespace PowerPointLabs
             try
             {
                 var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-                if (selection == null) return;
+                if (selection == null)
+                {
+                    return;
+                }
 
                 if (selection.Type == PpSelectionType.ppSelectionShapes &&
                     selection.HasChildShapeRange)
@@ -812,7 +818,10 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
             _mouseDownLocation = e.Location;
             Panel panel = sender as Panel;
             panel.Cursor = closedHandCursor;
@@ -891,7 +900,10 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
 
             int dx = e.X - _mouseDownLocation.X;
             int dy = e.Y - _mouseDownLocation.Y;
@@ -1031,7 +1043,10 @@ namespace PowerPointLabs
             }
             SetModeForSenderName(buttonName);
 
-            if (!VerifyIsShapeSelected()) return;
+            if (!VerifyIsShapeSelected())
+            {
+                return;
+            }
 
             colorDialog1.Color = GetSelectedShapeColor();
 
@@ -1058,7 +1073,9 @@ namespace PowerPointLabs
         {
             SelectShapes();
             if (_selectedShapes == null && _selectedText == null)
+            {
                 return dataSource.SelectedColor;
+            }
 
             if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
@@ -1153,7 +1170,10 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
 
             string buttonName = "";
             if (sender is Panel)

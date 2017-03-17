@@ -493,7 +493,10 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public void ResetNodes()
         {
-            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1) return;
+            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1)
+            {
+                return;
+            }
 
             var isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
                                          (_originalRotation >= 270 && _originalRotation < 360);

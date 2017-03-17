@@ -70,7 +70,9 @@ namespace PowerPointLabs
             
             //Change color of text on shapes to white
             if (spotShape.HasTextFrame == Office.MsoTriState.msoTrue && spotShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+            {
                 spotShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+            }
 
             //Deal with text on grouped shapes
             if (spotShape.Type == Office.MsoShapeType.msoGroup)
@@ -79,7 +81,9 @@ namespace PowerPointLabs
                 foreach (PowerPoint.Shape sh in shRange)
                 {
                     if (sh.HasTextFrame == Office.MsoTriState.msoTrue && sh.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                    {
                         sh.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+                    }
                 }
             }
         }

@@ -57,11 +57,18 @@ namespace PowerPointLabs.Models
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {
-                        if (hasAckSlide) AddAckSlide();
+                        if (hasAckSlide)
+                        {
+                            AddAckSlide();
+                        }
+
                         return true;
                     }
                 }
-                if (hasAckSlide) AddAckSlide();
+                if (hasAckSlide)
+                {
+                    AddAckSlide();
+                }
 
                 return false;
             }
@@ -249,7 +256,10 @@ namespace PowerPointLabs.Models
         public void GotoNextSlide()
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide == null) return;
+            if (currentSlide == null)
+            {
+                return;
+            }
 
             var index = currentSlide.Index;
             if (index < Slides.Count)
@@ -261,7 +271,10 @@ namespace PowerPointLabs.Models
         public bool IsLastSlide()
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide == null) return false;
+            if (currentSlide == null)
+            {
+                return false;
+            }
 
             var index = currentSlide.Index;
             return index == Slides.Count;

@@ -22,7 +22,9 @@ namespace PowerPointLabs.Models
         public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
+            {
                 return null;
+            }
 
             return new PowerPointMagnifyingSlide(slide);
         }
@@ -61,7 +63,9 @@ namespace PowerPointLabs.Models
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             var matchingShapes = shapes.Where(current => (HasExitAnimation(current) || current.Equals(zoomShape)));
             foreach (PowerPoint.Shape s in matchingShapes)
+            {
                 s.Delete();
+            }
 
             float magnifyRatio = PowerPointPresentation.Current.SlideWidth / zoomShape.Width;
             AddZoomSlideCroppedPicture(magnifyRatio);
@@ -84,7 +88,9 @@ namespace PowerPointLabs.Models
                     effectFade.Timing.Duration = 0.25f;
                 }
                 else
+                {
                     s.Visible = Office.MsoTriState.msoFalse;
+                }
             }
         }
 
@@ -96,9 +102,13 @@ namespace PowerPointLabs.Models
             PowerPoint.Shape referenceShape = _slide.Shapes.Paste()[1];
             referenceShape.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (referenceShape.Width > referenceShape.Height)
+            {
                 referenceShape.Width = PowerPointPresentation.Current.SlideWidth;
+            }
             else
+            {
                 referenceShape.Height = PowerPointPresentation.Current.SlideHeight;
+            }
 
             referenceShape.Left = (PowerPointPresentation.Current.SlideWidth / 2) - (referenceShape.Width / 2);
             referenceShape.Top = (PowerPointPresentation.Current.SlideHeight / 2) - (referenceShape.Height / 2);

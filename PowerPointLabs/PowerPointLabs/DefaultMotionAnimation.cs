@@ -202,9 +202,20 @@ namespace PowerPointLabs
 
             int firstEffectIndex = animationSlide.IndexOfFirstEffect(shape);
             // Move the animations to just before the index of the first effect.
-            if (effectDisappear != null) effectDisappear.MoveTo(firstEffectIndex);
-            if (effectResize != null) effectResize.MoveTo(firstEffectIndex);
-            if (effectMotion != null) effectMotion.MoveTo(firstEffectIndex);
+            if (effectDisappear != null)
+            {
+                effectDisappear.MoveTo(firstEffectIndex);
+            }
+
+            if (effectResize != null)
+            {
+                effectResize.MoveTo(firstEffectIndex);
+            }
+
+            if (effectMotion != null)
+            {
+                effectMotion.MoveTo(firstEffectIndex);
+            }
         }
 
         /// <summary>

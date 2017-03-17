@@ -62,7 +62,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         public void StartBoxing()
         {
-            if (_pos == Position.NoEffect) return;
+            if (_pos == Position.NoEffect)
+            {
+                return;
+            }
 
             // do positioning twice to fix a bug:
             // if only do positioning once,
@@ -160,7 +163,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private void SetupTextBoxesAlignment()
         {
-            if (_align == Alignment.NoEffect) return;
+            if (_align == Alignment.NoEffect)
+            {
+                return;
+            }
 
             HandleAutoAlignment();
             switch (_align)
@@ -179,7 +185,11 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private void HandleAutoAlignment()
         {
-            if (_align != Alignment.Auto) return;
+            if (_align != Alignment.Auto)
+            {
+                return;
+            }
+
             switch (_pos)
             {
                 case Position.TopLeft:

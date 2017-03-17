@@ -51,10 +51,14 @@ namespace PowerPointLabs.HighlightLab
                 }
                 
                 if (currentSlide.Name.Contains("PPTLabsHighlightBulletsSlide"))
+                {
                     ProcessExistingHighlightSlide(currentSlide, shapesToUse);
+                }
 
                 if (shapesToUse == null || shapesToUse.Count == 0)
+                {
                     return;
+                }
 
                 currentSlide.Name = "PPTLabsHighlightBulletsSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -64,7 +68,9 @@ namespace PowerPointLabs.HighlightLab
                 foreach (PowerPoint.Shape sh in shapesToUse)
                 {
                     if (!sh.Name.Contains("HighlightTextShape"))
+                    {
                         sh.Name = "HighlightTextShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                    }
 
                     //Add Font Appear effect for all paragraphs within shape
                     int currentIndex = sequence.Count;
@@ -134,9 +140,15 @@ namespace PowerPointLabs.HighlightLab
             currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
 
             foreach (PowerPoint.Shape tmp in currentSlide.Shapes)
+            {
                 if (shapesToUse.Contains(tmp))
+                {
                     if (userSelection != HighlightTextSelection.kTextSelected)
+                    {
                         currentSlide.DeleteShapeAnimations(tmp);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -291,7 +303,9 @@ namespace PowerPointLabs.HighlightLab
             {
                 isFirstShape = (sequence[sequence.Count].EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor) ? false : true;
                 if (sequence[1].EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor)
+                {
                     sequence[1].Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                }
             }
             return isFirstShape;
         }

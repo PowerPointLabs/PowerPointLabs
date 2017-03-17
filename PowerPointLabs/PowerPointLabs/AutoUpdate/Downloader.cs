@@ -60,19 +60,27 @@ namespace PowerPointLabs.AutoUpdate
         private void CallAfterDownloadDelegate()
         {
             var handler = AfterDownload;
-            if (handler != null) handler();
+            if (handler != null)
+            {
+                handler();
+            }
         }
 
         private void CallWhenErrorDelegate(Exception e)
         {
             var handler = WhenError;
-            if (handler != null) handler(e);
+            if (handler != null)
+            {
+                handler(e);
+            }
         }
 
         private void StartDownload()
         {
-            if (_downloadAddress == "" || _destAddress == "") 
+            if (_downloadAddress == "" || _destAddress == "")
+            {
                 return;
+            }
 
             try
             {

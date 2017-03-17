@@ -51,7 +51,9 @@ namespace PowerPointLabs.HighlightLab
                 Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
 
                 if (shapesToUse == null || shapesToUse.Count == 0)
+                {
                     return;
+                }
 
                 SelectOldShapesToAnimate(currentSlide, shapesToUse);
                 bool newShapesAdded = AddNewShapesToAnimate(currentSlide, shapesToUse, selectedText);
@@ -183,12 +185,18 @@ namespace PowerPointLabs.HighlightLab
                 }
                 //Remove existing animations for highlight text as well
                 if (sh.Name.Contains("HighlightTextShape"))
+                {
                     currentSlide.DeleteShapeAnimations(sh);
+                }
             }
 
             if (shapesToDelete.Count > 0)
+            {
                 foreach (PowerPoint.Shape sh in shapesToDelete)
+                {
                     sh.Delete();
+                }
+            }
         }
 
         /// <summary>

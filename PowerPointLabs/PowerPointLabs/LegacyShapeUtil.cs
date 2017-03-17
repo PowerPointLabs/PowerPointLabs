@@ -36,9 +36,13 @@ namespace PowerPointLabs
             float rotation2 = rotation1 == 0.0f ? 0.0f : Math.Abs(360.0f - Math.Abs(rotation1)) * (rotation1 / Math.Abs(rotation1)) * -1.0f;
 
             if (Math.Abs(rotation1) < Math.Abs(rotation2))
+            {
                 return rotation1;
+            }
             else
+            {
                 return rotation2;
+            }
         }
 
         private static float Normalize(float i)
@@ -47,9 +51,13 @@ namespace PowerPointLabs
             float d = Math.Abs(i) % 360.0f;
 
             if (i < 0)
+            {
                 return 360.0f - d; //return positive equivalent
+            }
             else
+            {
                 return d;
+            }
         }
     }
 }

@@ -86,7 +86,10 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
+                {
+                    return;
+                }
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
@@ -117,7 +120,10 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceHeight = GetReferenceHeight(selectedShapes);
 
-                if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+                if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
+                {
+                    return;
+                }
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
@@ -148,7 +154,10 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceWidth = GetReferenceWidth(selectedShapes);
 
-                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+                if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
+                {
+                    return;
+                }
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
@@ -179,7 +188,10 @@ namespace PowerPointLabs.ResizeLab
             {
                 var referenceHeight = GetReferenceHeight(selectedShapes);
 
-                if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+                if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
+                {
+                    return;
+                }
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
@@ -213,7 +225,10 @@ namespace PowerPointLabs.ResizeLab
                 var referenceArea = (double)referenceWidth * referenceHeight;
                 var referenceRatio = (double)referenceHeight / referenceWidth;
 
-                if (referenceWidth <= 0 || referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count) return;
+                if (referenceWidth <= 0 || referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
+                {
+                    return;
+                }
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {

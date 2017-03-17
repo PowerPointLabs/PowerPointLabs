@@ -308,14 +308,20 @@ namespace PowerPointLabs.AgendaLab
 
         private static void DeleteShapesMarkedForDeletion(PowerPointSlide candidate, List<string> markedForDeletion)
         {
-            if (markedForDeletion.Count == 0) return;
+            if (markedForDeletion.Count == 0)
+            {
+                return;
+            }
             
             var candidateSlideShapes = candidate.GetNameToShapeDictionary();
             foreach (var shapeName in markedForDeletion)
             {
                 Shape shapeInSlide;
                 bool shapeExists = candidateSlideShapes.TryGetValue(shapeName, out shapeInSlide);
-                if (!shapeExists || shapeInSlide == null) continue;
+                if (!shapeExists || shapeInSlide == null)
+                {
+                    continue;
+                }
                 
                 shapeInSlide.Delete();
                 candidateSlideShapes[shapeName] = null;

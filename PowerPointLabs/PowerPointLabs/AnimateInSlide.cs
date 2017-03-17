@@ -91,7 +91,9 @@ namespace PowerPointLabs
                 PowerPoint.Shape shape2 = shapesToAnimate[num + 1];
 
                 if (shape1 == null || shape2 == null)
+                {
                     return;
+                }
 
                 if (!isHighlightTextFragments)
                 {
