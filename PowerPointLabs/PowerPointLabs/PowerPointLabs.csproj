@@ -297,6 +297,13 @@
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\AnimationLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\SmallHelpImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\ZoomLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\CaptionLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\HighlightLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\NarrationsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\MoreLabsImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
@@ -1507,6 +1514,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MoreLabs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CaptionLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NarrationsLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HelpSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AnimationLabSmall.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
