@@ -22,7 +22,7 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 1. Turn off *Office Version Upgrading*: Open the solution `PowerPointLabs\PowerPointLabs.sln` >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’.
 2. Set up *External Office Program*: Open ‘PowerPointLabs’ Properties >> Debug >> select ‘Start external program’ and choose `POWERPNT.exe` in the Office folder. Ensure that both **Debug** and **Release** configurations have set up this.
 3. Run the solution by pressing F5 and then PowerPointLabs tab will appear in the PowerPoint ribbon. If you have installed PowerPointLabs add-in, you may have to uninstall it first and rebuild the solution.
-4. If failed to build PowerPointLabs solution, try to install `VSTO for PowerPoint` from the link inside [this file](https://github.com/PowerPointLabs/PowerPointLabs-Website/blob/master/vsto-redirect.html).
+4. If failed to build PowerPointLabs solution, try to install `VSTO for PowerPoint` from [this link](http://powerpointlabs.info/vsto-redirect.html).
 
 ### Testing
 0. Click Build (menu) >> Rebuild Solution.
