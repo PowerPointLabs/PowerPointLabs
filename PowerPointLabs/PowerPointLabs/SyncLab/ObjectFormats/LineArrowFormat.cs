@@ -17,10 +17,25 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            Sync(formatShape, newShape);
+            if (!Sync(formatShape, newShape))
+            {
+                Logger.Log(newShape.Type + " unable to sync Line Arrow");
+            }
         }
 
-        public static bool Sync(Shape formatShape, Shape newShape)
+        public static Bitmap DisplayImage(Shape formatShape)
+        {
+            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
+            Shape shape = shapes.AddLine(
+                0, SyncFormatConstants.DisplayImageSize.Height,
+                SyncFormatConstants.DisplayImageSize.Width, 0);
+            SyncFormat(formatShape, shape);
+            Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
+            shape.Delete();
+            return image;
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
         {
             try
             {
@@ -34,22 +49,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
             catch (Exception)
             {
-                Logger.Log(newShape.Type + " unable to sync Line Arrow");
                 return false;
             }
             return true;
-        }
-
-        public static Bitmap DisplayImage(Shape formatShape)
-        {
-            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
-            Shape shape = shapes.AddLine(
-                0, SyncFormatConstants.DisplayImageSize.Height,
-                SyncFormatConstants.DisplayImageSize.Width, 0);
-            SyncFormat(formatShape, shape);
-            Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
-            shape.Delete();
-            return image;
         }
     }
 }

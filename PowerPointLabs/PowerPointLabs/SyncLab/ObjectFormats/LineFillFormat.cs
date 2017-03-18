@@ -17,22 +17,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            Sync(formatShape, newShape);
-        }
-
-        public static bool Sync(Shape formatShape, Shape newShape)
-        {
-            try
-            {
-                newShape.Line.ForeColor = formatShape.Line.ForeColor;
-                newShape.Line.BackColor = formatShape.Line.BackColor;
-            }
-            catch (Exception)
+            if (!Sync(formatShape, newShape))
             {
                 Logger.Log(newShape.Type + " unable to sync Line Fill");
-                return false;
             }
-            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -47,6 +35,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.Line.ForeColor = formatShape.Line.ForeColor;
+                newShape.Line.BackColor = formatShape.Line.BackColor;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

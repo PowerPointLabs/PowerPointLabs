@@ -15,22 +15,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            Sync(formatShape, newShape);
-        }
-
-        public static bool Sync(Shape formatShape, Shape newShape)
-        {
-            try
-            {
-                //What is the difference between TextFrame and TextFrame2?
-                SyncTextRange(formatShape.TextFrame.TextRange, newShape.TextFrame.TextRange);
-            }
-            catch (Exception)
+            if (!Sync(formatShape, newShape))
             {
                 Logger.Log(newShape.Type + " unable to sync Font Style");
-                return false;
             }
-            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -52,6 +40,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
             font = new System.Drawing.Font(font.FontFamily, font.Size, style);
             return SyncFormatUtil.GetTextDisplay( "T", font, SyncFormatConstants.DisplayImageSize);
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                //What is the difference between TextFrame and TextFrame2?
+                SyncTextRange(formatShape.TextFrame.TextRange, newShape.TextFrame.TextRange);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static void SyncTextRange(TextRange formatTextRange, TextRange newTextRange)

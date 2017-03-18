@@ -15,21 +15,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            Sync(formatShape, newShape);
-        }
-
-        public static bool Sync(Shape formatShape, Shape newShape)
-        {
-            try
-            {
-                newShape.TextEffect.FontName = formatShape.TextEffect.FontName;
-            }
-            catch (Exception)
+            if (Sync(formatShape, newShape))
             {
                 Logger.Log(newShape.Type + " unable to sync Font Format");
-                return false;
             }
-            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -39,6 +28,19 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 new System.Drawing.Font(formatShape.TextEffect.FontName,
                                         SyncFormatConstants.DisplayImageFontSize),
                 SyncFormatConstants.DisplayImageSize);
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.TextEffect.FontName = formatShape.TextEffect.FontName;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

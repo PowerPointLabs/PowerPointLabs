@@ -15,21 +15,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            Sync(formatShape, newShape);
-        }
-
-        public static bool Sync(Shape formatShape, Shape newShape)
-        {
-            try
-            {
-                newShape.Line.Weight = formatShape.Line.Weight;
-            }
-            catch (Exception)
+            if (!Sync(formatShape, newShape))
             {
                 Logger.Log(newShape.Type + " unable to sync Line Weight");
-                return false;
             }
-            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -38,6 +27,19 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 Math.Round(Math.Max(formatShape.Line.Weight, 0)).ToString(),
                 SyncFormatConstants.DisplayImageFont,
                 SyncFormatConstants.DisplayImageSize);
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.Line.Weight = formatShape.Line.Weight;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

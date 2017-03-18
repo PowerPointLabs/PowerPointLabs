@@ -17,21 +17,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            Sync(formatShape, newShape);
-        }
-
-        public static bool Sync(Shape formatShape, Shape newShape)
-        {
-            try
-            {
-                newShape.TextFrame.TextRange.Font.Color.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
-            }
-            catch (Exception)
+            if (!Sync(formatShape, newShape))
             {
                 Logger.Log(newShape.Type + " unable to sync Font Color");
-                return false;
             }
-            return true;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -48,6 +37,19 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.TextFrame.TextRange.Font.Color.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
