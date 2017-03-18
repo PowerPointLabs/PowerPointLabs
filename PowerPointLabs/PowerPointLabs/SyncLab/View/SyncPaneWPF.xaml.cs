@@ -31,46 +31,33 @@ namespace PowerPointLabs.SyncLab.View
                     BitmapSizeOptions.FromEmptyOptions());
         }
 
-        #region GUI Handles
-        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        #region GUI API
+        public int FormatCount
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes ||
-                selection.ShapeRange.Count != 1)
+            get
             {
-                MessageBox.Show(TextCollection.SyncLabCopySelectError);
-                return;
+                return formatListBox.Items.Count;
             }
-            var shape = selection.ShapeRange[1];
-            SyncFormatDialog dialog = new SyncFormatDialog(shape);
-            bool? result = dialog.ShowDialog();
-            if (!result.HasValue || !(bool)result)
-            {
-                return;
-            }
-            AddFormatToList(shape, dialog.Formats);
         }
 
-        private void PasteButton_Click(object sender, RoutedEventArgs e)
+        public bool? IsFormatChecked(int index)
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes ||
-                selection.ShapeRange.Count == 0)
-            {
-                MessageBox.Show(TextCollection.SyncLabPasteSelectError);
-                return;
-            }
-            SyncFormatPaneItem selectedItem = null;
-            foreach (Object obj in formatListBox.Items)
-            {
-                SyncFormatPaneItem item = obj as SyncFormatPaneItem;
-                if (item.IsChecked.HasValue && item.IsChecked.Value)
-                {
-                    selectedItem = item;
-                    break;
-                }
-            }
-            ApplyFormats(selectedItem.Formats, selectedItem.FormatShape, selection.ShapeRange);
+            return (formatListBox.Items[index] as SyncFormatPaneItem).IsChecked;
+        }
+
+        public FormatTreeNode[] GetFormats(int index)
+        {
+            return (formatListBox.Items[index] as SyncFormatPaneItem).Formats;
+        }
+
+        public string GetFormatText(int index)
+        {
+            return (formatListBox.Items[index] as SyncFormatPaneItem).Text;
+        }
+
+        public void SetFormatText(int index, string text)
+        {
+            (formatListBox.Items[index] as SyncFormatPaneItem).Text = text;
         }
         #endregion
 
@@ -117,33 +104,46 @@ namespace PowerPointLabs.SyncLab.View
         }
         #endregion
 
-        #region GUI API
-        public int FormatCount
+        #region GUI Handles
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            get
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes ||
+                selection.ShapeRange.Count != 1)
             {
-                return formatListBox.Items.Count;
+                MessageBox.Show(TextCollection.SyncLabCopySelectError);
+                return;
             }
+            var shape = selection.ShapeRange[1];
+            SyncFormatDialog dialog = new SyncFormatDialog(shape);
+            bool? result = dialog.ShowDialog();
+            if (!result.HasValue || !(bool)result)
+            {
+                return;
+            }
+            AddFormatToList(shape, dialog.Formats);
         }
 
-        public bool? IsFormatChecked(int index)
+        private void PasteButton_Click(object sender, RoutedEventArgs e)
         {
-            return (formatListBox.Items[index] as SyncFormatPaneItem).IsChecked;
-        }
-
-        public FormatTreeNode[] GetFormats(int index)
-        {
-            return (formatListBox.Items[index] as SyncFormatPaneItem).Formats;
-        }
-
-        public string GetFormatText(int index)
-        {
-            return (formatListBox.Items[index] as SyncFormatPaneItem).Text;
-        }
-
-        public void SetFormatText(int index, string text)
-        {
-            (formatListBox.Items[index] as SyncFormatPaneItem).Text = text;
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes ||
+                selection.ShapeRange.Count == 0)
+            {
+                MessageBox.Show(TextCollection.SyncLabPasteSelectError);
+                return;
+            }
+            SyncFormatPaneItem selectedItem = null;
+            foreach (Object obj in formatListBox.Items)
+            {
+                SyncFormatPaneItem item = obj as SyncFormatPaneItem;
+                if (item.IsChecked.HasValue && item.IsChecked.Value)
+                {
+                    selectedItem = item;
+                    break;
+                }
+            }
+            ApplyFormats(selectedItem.Formats, selectedItem.FormatShape, selection.ShapeRange);
         }
         #endregion
 
