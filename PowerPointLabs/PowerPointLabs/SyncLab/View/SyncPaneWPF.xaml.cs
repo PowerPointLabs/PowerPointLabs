@@ -31,6 +31,79 @@ namespace PowerPointLabs.SyncLab.View
                     BitmapSizeOptions.FromEmptyOptions());
         }
 
+        #region GUI API
+        public int FormatCount
+        {
+            get
+            {
+                return formatListBox.Items.Count;
+            }
+        }
+
+        public bool? IsFormatChecked(int index)
+        {
+            return (formatListBox.Items[index] as SyncFormatPaneItem).IsChecked;
+        }
+
+        public FormatTreeNode[] GetFormats(int index)
+        {
+            return (formatListBox.Items[index] as SyncFormatPaneItem).Formats;
+        }
+
+        public string GetFormatText(int index)
+        {
+            return (formatListBox.Items[index] as SyncFormatPaneItem).Text;
+        }
+
+        public void SetFormatText(int index, string text)
+        {
+            (formatListBox.Items[index] as SyncFormatPaneItem).Text = text;
+        }
+        #endregion
+
+        #region Sync API
+        public void AddFormatToList(Shape shape, FormatTreeNode[] formats)
+        {
+            SyncFormatPaneItem item = new SyncFormatPaneItem(formatListBox, CopyShape(shape), formats);
+            item.Text = shape.Name;
+            item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToImage(shape));
+            formatListBox.Items.Insert(0, item);
+            item.IsChecked = true;
+        }
+
+        public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)
+        {
+            foreach (Shape newShape in newShapes)
+            {
+                ApplyFormats(nodes, formatShape, newShape);
+            }
+        }
+
+        public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, Shape newShape)
+        {
+            foreach (FormatTreeNode node in nodes)
+            {
+                ApplyFormats(node, formatShape, newShape);
+            }
+        }
+
+        public void ApplyFormats(FormatTreeNode node, Shape formatShape, Shape newShape)
+        {
+            if (node.Format != null)
+            {
+                if (!node.IsChecked.HasValue || !node.IsChecked.Value)
+                {
+                    return;
+                }
+                node.Format.SyncFormat(formatShape, newShape);
+            }
+            else
+            {
+                ApplyFormats(node.ChildrenNodes, formatShape, newShape);
+            }
+        }
+        #endregion
+
         #region GUI Handles
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
@@ -48,11 +121,7 @@ namespace PowerPointLabs.SyncLab.View
             {
                 return;
             }
-            SyncFormatPaneItem item = new SyncFormatPaneItem(formatListBox, CopyShape(shape), dialog.Formats);
-            item.Text = shape.Name;
-            item.IsChecked = true;
-            item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToImage(shape));
-            formatListBox.Items.Insert(0, item);
+            AddFormatToList(shape, dialog.Formats);
         }
 
         private void PasteButton_Click(object sender, RoutedEventArgs e)
@@ -64,44 +133,19 @@ namespace PowerPointLabs.SyncLab.View
                 MessageBox.Show(TextCollection.SyncLabPasteSelectError);
                 return;
             }
+            SyncFormatPaneItem selectedItem = null;
             foreach (Object obj in formatListBox.Items)
             {
-                SyncFormatPaneItem item = (SyncFormatPaneItem)obj;
+                SyncFormatPaneItem item = obj as SyncFormatPaneItem;
                 if (item.IsChecked.HasValue && item.IsChecked.Value)
                 {
-                    foreach (Shape shape in Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange)
-                    {
-                        ApplyFormats(item.Formats, item.FormatShape, shape);
-                    }
+                    selectedItem = item;
                     break;
                 }
             }
+            ApplyFormats(selectedItem.Formats, selectedItem.FormatShape, selection.ShapeRange);
         }
         #endregion
-
-        private void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, Shape newShape)
-        {
-            foreach (FormatTreeNode node in nodes)
-            {
-                ApplyFormats(node, formatShape, newShape);
-            }
-        }
-
-        private void ApplyFormats(FormatTreeNode node, Shape formatShape, Shape newShape)
-        {
-            if (node.Format != null)
-            {
-                if (!node.IsChecked.HasValue || !node.IsChecked.Value)
-                {
-                    return;
-                }
-                node.Format.SyncFormat(formatShape, newShape);
-            }
-            else
-            {
-                ApplyFormats(node.ChildrenNodes, formatShape, newShape);
-            }
-        }
 
         #region Shape Saving
 
