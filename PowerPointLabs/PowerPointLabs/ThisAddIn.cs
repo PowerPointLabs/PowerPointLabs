@@ -797,6 +797,7 @@ namespace PowerPointLabs
 
             // Priority Mid: Window Actions
             Application.WindowActivate += ThisAddInApplicationOnWindowActivate;
+            Application.WindowBeforeRightClick += ThisAddInApplicationOnWindowBeforeRightClick;
             Application.WindowDeactivate += ThisAddInApplicationOnWindowDeactivate;
             Application.WindowSelectionChange += ThisAddInSelectionChanged;
             Application.SlideShowBegin += SlideShowBeginHandler;
@@ -829,6 +830,11 @@ namespace PowerPointLabs
                 ShapePresentation.Close();
                 Trace.TraceInformation("Shape Gallery terminated.");
             }
+        }
+
+        private void ThisAddInApplicationOnWindowBeforeRightClick(PowerPoint.Selection sel, ref bool cancel)
+        {
+            PPMouse.RightClickCallback(Cursor.Position.X, Cursor.Position.Y);
         }
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
