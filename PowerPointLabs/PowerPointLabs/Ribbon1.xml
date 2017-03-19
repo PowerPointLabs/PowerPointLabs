@@ -446,7 +446,7 @@
                onAction="OnAction"/>
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeImage"
+                getImage="GetImage"
                 onAction="CropShapeButtonClick"/>
         <button id="fitToWidthShape"
                 getLabel="GetLabel"
@@ -483,7 +483,7 @@
                onAction="AddShapeButtonClick"/>
         <button id="cutOutShapeFreeform"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
+                getImage="GetImage"
                 onAction="CropShapeButtonClick"/>
         <button id="fitToWidthFreeform"
                 getLabel="GetLabel"
@@ -623,7 +623,7 @@
                onAction="AddShapeButtonClick"/>
         <button id="cutOutShapeGroup"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
+                getImage="GetImage"
                 onAction="CropShapeButtonClick"/>
         <button id="hideShapeGroup"
               getLabel ="GetHideSelectedShapeLabel"
