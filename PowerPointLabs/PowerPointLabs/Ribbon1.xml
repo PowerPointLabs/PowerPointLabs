@@ -618,9 +618,9 @@
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
         <button id="addCustomShapePictureGroup"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeGroup"
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetImage"
