@@ -16,7 +16,7 @@ namespace PowerPointLabs.CropLab
             foreach (PowerPoint.Shape shape in shapeRange)
             {
                 PowerPoint.Shape toCrop = shape;
-                if (IsShape(shape) || shape.Rotation != 0)
+                if (Utils.Graphics.IsShape(shape) || shape.Rotation != 0)
                 {
                     RectangleF location = GetAbsoluteBounds(shape);
                     Utils.Graphics.ExportShape(shape, ShapePicture);
@@ -80,13 +80,6 @@ namespace PowerPointLabs.CropLab
             cropWidth = Math.Min(slideWidth - cropLeft, cropWidth);
 
             return new RectangleF(cropLeft, cropTop, cropWidth, cropHeight);
-        }
-
-        private static bool IsShape(PowerPoint.Shape shape)
-        {
-            return shape.Type == Office.MsoShapeType.msoAutoShape
-                || shape.Type == Office.MsoShapeType.msoFreeform
-                || shape.Type == Office.MsoShapeType.msoGroup;
         }
     }
 }
