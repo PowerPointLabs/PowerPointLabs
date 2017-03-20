@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -9,12 +10,15 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return true;
+            return Sync(formatShape, formatShape);
         }
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            newShape.TextEffect.FontSize = formatShape.TextEffect.FontSize;
+            if (!Sync(formatShape, newShape))
+            {
+                Logger.Log(newShape.Type + " unable to sync Font Size");
+            }
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -23,6 +27,19 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 Math.Round(formatShape.TextEffect.FontSize).ToString(),
                 SyncFormatConstants.DisplayImageFont,
                 SyncFormatConstants.DisplayImageSize);
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.TextEffect.FontSize = formatShape.TextEffect.FontSize;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

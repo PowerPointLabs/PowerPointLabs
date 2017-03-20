@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 using Graphics = PowerPointLabs.Utils.Graphics;
 
@@ -11,26 +12,15 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            try
-            {
-                SyncFormat(formatShape, formatShape);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            return Sync(formatShape, formatShape);
         }
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            newShape.Line.BeginArrowheadLength = formatShape.Line.BeginArrowheadLength;
-            newShape.Line.BeginArrowheadStyle = formatShape.Line.BeginArrowheadStyle;
-            newShape.Line.BeginArrowheadWidth = formatShape.Line.BeginArrowheadWidth;
-
-            newShape.Line.EndArrowheadLength = formatShape.Line.EndArrowheadLength;
-            newShape.Line.EndArrowheadStyle = formatShape.Line.EndArrowheadStyle;
-            newShape.Line.EndArrowheadWidth = formatShape.Line.EndArrowheadWidth;
+            if (!Sync(formatShape, newShape))
+            {
+                Logger.Log(newShape.Type + " unable to sync Line Arrow");
+            }
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -43,6 +33,25 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.Line.BeginArrowheadLength = formatShape.Line.BeginArrowheadLength;
+                newShape.Line.BeginArrowheadStyle = formatShape.Line.BeginArrowheadStyle;
+                newShape.Line.BeginArrowheadWidth = formatShape.Line.BeginArrowheadWidth;
+
+                newShape.Line.EndArrowheadLength = formatShape.Line.EndArrowheadLength;
+                newShape.Line.EndArrowheadStyle = formatShape.Line.EndArrowheadStyle;
+                newShape.Line.EndArrowheadWidth = formatShape.Line.EndArrowheadWidth;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Log;
+
 using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -9,21 +12,15 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            try
-            {
-                SyncFormat(formatShape, formatShape);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            return Sync(formatShape, formatShape);
         }
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            newShape.Line.ForeColor = formatShape.Line.ForeColor;
-            newShape.Line.BackColor = formatShape.Line.BackColor;
+            if (!Sync(formatShape, newShape))
+            {
+                Logger.Log(newShape.Type + " unable to sync Line Fill");
+            }
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
@@ -38,6 +35,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
+        }
+
+        private static bool Sync(Shape formatShape, Shape newShape)
+        {
+            try
+            {
+                newShape.Line.ForeColor = formatShape.Line.ForeColor;
+                newShape.Line.BackColor = formatShape.Line.BackColor;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
