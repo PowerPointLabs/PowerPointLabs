@@ -52,6 +52,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Weight", new Format(typeof(LineWeightFormat))),
                             new FormatTreeNode("Compound Type", new Format(typeof(LineCompoundTypeFormat))),
                             new FormatTreeNode("Dash Type", new Format(typeof(LineDashTypeFormat))),
+                            new FormatTreeNode("Transparency", new Format(typeof(LineTransparencyFormat))),
                             new FormatTreeNode("Fill", new Format(typeof(LineFillFormat)))
                         ),
                     //not easy
