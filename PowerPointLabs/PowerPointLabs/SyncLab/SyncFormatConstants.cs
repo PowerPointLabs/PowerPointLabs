@@ -43,17 +43,16 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                         ),
                     new FormatTreeNode(
                             "Fill",
-                            new FormatTreeNode("Fill", new Format(typeof(FillFormat)))
+                            new FormatTreeNode("Color", new Format(typeof(FillFormat)))
                         ),
                     new FormatTreeNode(
-                            "Line",
-                            //missing dash style
-                            new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat))),
-                            new FormatTreeNode("Weight", new Format(typeof(LineWeightFormat))),
+                            "Line",                        
+                            new FormatTreeNode("Color", new Format(typeof(LineFillFormat))),
+                            new FormatTreeNode("Transparency", new Format(typeof(LineTransparencyFormat))),
+                            new FormatTreeNode("Width", new Format(typeof(LineWeightFormat))),
                             new FormatTreeNode("Compound Type", new Format(typeof(LineCompoundTypeFormat))),
                             new FormatTreeNode("Dash Type", new Format(typeof(LineDashTypeFormat))),
-                            new FormatTreeNode("Transparency", new Format(typeof(LineTransparencyFormat))),
-                            new FormatTreeNode("Fill", new Format(typeof(LineFillFormat)))
+                            new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat)))
                         ),
                     //not easy
                     /*new FormatTreeNode(
