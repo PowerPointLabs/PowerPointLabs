@@ -1,0 +1,1506 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    This section defines project-level properties.
+
+    AssemblyName
+      Name of the output assembly.
+    Configuration
+      Specifies a default value for debug.
+    OutputType
+      Must be "Library" for VSTO.
+    Platform
+      Specifies what CPU the output of this project can run on.
+    NoStandardLibraries
+      Set to "false" for VSTO.
+    RootNamespace
+      In C#, this specifies the namespace given to new files. In VB, all objects are
+      wrapped in this namespace at runtime.
+  -->
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E0696DF3-9906-4E0E-906E-F9D47F41EF80}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <RootNamespace>PowerPointLabs</RootNamespace>
+    <AssemblyName>PowerPointLabs</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <DefineConstants>VSTO40</DefineConstants>
+    <IsWebBootstrapper>True</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
+    <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <PublishUrl>D:\PPTLabs\</PublishUrl>
+    <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/alpha/</InstallUrl>
+    <TargetCulture>en</TargetCulture>
+    <ApplicationVersion>2017.3.16.1</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>0</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <ProductName>PowerPointLabs</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>PowerPointLabs</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
+  </PropertyGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Office.PIARedist.2007">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Office 2007 Primary Interop Assemblies</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <PropertyGroup>
+    <!--
+      OfficeApplication
+        Add-in host application
+    -->
+    <OfficeApplication>PowerPoint</OfficeApplication>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Debug" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+  </PropertyGroup>
+  <!--
+    This section defines properties that are set when the "Release" configuration is selected.
+
+    DebugSymbols
+      If "true", create symbols (.pdb). If "false", do not create symbols.
+    DefineConstants
+      Constants defined for the preprocessor.
+    EnableUnmanagedDebugging
+      If "true", starting the debugger will attach both managed and unmanaged debuggers.
+    Optimize
+      If "true", optimize the build output. If "false", do not optimize.
+    OutputPath
+      Output path of project relative to the project file.
+    WarningLevel
+      Warning level for the compiler.
+  -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>618</NoWarn>
+  </PropertyGroup>
+  <!--
+    This section enables pre- and post-build steps. However, in VSTO use
+    MSBuild tasks instead of these properties.
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>B200334E7EFE8551DB3F9CF5B7674D388B3D4A53</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <!--
+    This section specifies references for the project.
+  -->
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <!--
+    This section defines the user source files that are part of the project.
+
+    A "Compile" element specifies a source file to compile.
+    An "EmbeddedResource" element specifies an .resx file for embedded resources.
+    A "None" element specifies a file that is not to be passed to the compiler (for instance,
+    a text file or XML file).
+    The "AppDesigner" element specifies the directory where the application properties files
+    can be found.
+  -->
+  <ItemGroup>
+    <Compile Include="ActionFramework\Action\CropLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\AddShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShapeMenuActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShapesLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabFillActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\RemoveHighlightingActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\TimerLabActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Action\ColorsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\EmptyActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportContentRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportEnabledRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportPressedRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ActionFrameworkExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\FunctionalTestExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\CheckBoxActionHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Extension\BaseActionHandlerExtensions.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\EnabledHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\BaseActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\CheckBoxActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ActionHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\BaseHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\EnabledHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\IRibbonIdMetadata.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportImageRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ContentHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\PressedHandler.cs" />
+    <Compile Include="ActionFramework\Common\Log\Logger.cs" />
+    <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
+    <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
+    <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropShapeMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToSameImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\MoveCropShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabFillEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabFillImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RemoveHighlightingImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Image\FitToHeightImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\MoveCropShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToSameLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToAspectRatioLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\AddShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabFillLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Label\FitToHeightLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
+    <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\Label\TimerLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
+    <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToSameSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\MoveCropShapeSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\EmptySupertipHandler.cs" />
+    <Compile Include="ActionFramework\Common\Factory\SupertipHandlerFactory.cs" />
+    <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ResizeLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\TimerLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Util\BaseUtilActionHandler.cs" />
+    <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
+    <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
+    <Compile Include="AgendaLab\AgendaLabUtility.cs" />
+    <Compile Include="AgendaLab\AgendaSection.cs" />
+    <Compile Include="AgendaLab\Templates\AgendaSectionTemplates.cs" />
+    <Compile Include="AgendaLab\AgendaShape.cs" />
+    <Compile Include="AgendaLab\SlideSelectionTracker.cs" />
+    <Compile Include="AgendaLab\AgendaLabMain.cs" />
+    <Compile Include="AgendaLab\AgendaSlide.cs" />
+    <Compile Include="AgendaLab\Enums.cs" />
+    <Compile Include="AgendaLab\Templates\BulletAgendaTemplate.cs" />
+    <Compile Include="AgendaLab\Templates\TemplateIndexTable.cs" />
+    <Compile Include="AgendaLab\Templates\VisualAgendaTemplate.cs" />
+    <Compile Include="AudioMisc\Audio.cs" />
+    <Compile Include="AudioMisc\AudioHelper.cs" />
+    <Compile Include="AutoAnimate.cs" />
+    <Compile Include="AutoUpdate\Downloader.cs" />
+    <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
+    <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="AutoZoom.cs" />
+    <Compile Include="ColorPicker\ColorInformationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorInformationDialog.Designer.cs">
+      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="CropLab\CropLabException.cs" />
+    <Compile Include="CropLab\CropLabDummyMessageService.cs" />
+    <Compile Include="CropLab\CropLabOperationException.cs" />
+    <Compile Include="CropLab\CropLabMessageService.cs" />
+    <Compile Include="CropLab\CropToAspectRatio.cs" />
+    <Compile Include="CropLab\CropOutPadding.cs" />
+    <Compile Include="CropLab\CropToSlide.cs" />
+    <Compile Include="CropLab\CropToSame.cs" />
+    <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
+      <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\Magnifier.xaml.cs">
+      <DependentUpon>Magnifier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+      <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
+    <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousLower.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToBrightnessValue.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToComplementaryColor.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFive.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFour.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticOne.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSeven.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSix.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticThree.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticTwo.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSaturationValue.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryLower.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicOne.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicThree.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
+    <Compile Include="Converters\DrawingsLab\ColorToBackgroundConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\EnumMatchToBooleanConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\FloatToStringConverter.cs" />
+    <Compile Include="Converters\DrawingsLab\IntToStringConverter.cs" />
+    <Compile Include="CropLab\CropLabErrorHandler.cs" />
+    <Compile Include="CustomBinding.cs" />
+    <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomControls\BufferedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomControls\MessageService.cs" />
+    <Compile Include="DataSources\ColorDataSource.cs" />
+    <Compile Include="ColorPicker\ColorHelper.cs" />
+    <Compile Include="ColorPicker\ColorPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorPicker\ColorPane.Designer.cs">
+      <DependentUpon>ColorPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConvertToPicture.cs" />
+    <Compile Include="CropLab\CropToShape.cs" />
+    <Compile Include="DataSources\DrawingLabData.cs" />
+    <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
+    <Compile Include="DataSources\DrawingsLabDataSource.cs" />
+    <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
+    <Compile Include="DrawingsLab\AlignmentDialogBoth.xaml.cs">
+      <DependentUpon>AlignmentDialogBoth.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
+      <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\PivotAroundToolDialog.xaml.cs">
+      <DependentUpon>PivotAroundToolDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\MultiCloneGridDialog.xaml.cs">
+      <DependentUpon>MultiCloneGridDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\AlignmentDialogHorizontal.xaml.cs">
+      <DependentUpon>AlignmentDialogHorizontal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsLabDialogs.cs" />
+    <Compile Include="DrawingsLab\DrawingsLabMain.cs" />
+    <Compile Include="DrawingsLab\DrawingsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsPane.Designer.cs">
+      <DependentUpon>DrawingsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
+      <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EffectsLab\EffectsLabBlurSelected.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\HighlightLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\PositionsLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\ColorsLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\ShapesLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\UIThreadExecutor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\EffectData.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\RibbonControl.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFeatures.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
+    <Compile Include="PasteLab\PasteLabMain.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassTextBoxStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassBannerStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\BannerStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\BaseStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\BlurStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\CircleStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\DirectTextStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\FrameStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\Interface\IStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\Interface\IStyleOrderMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\OutlineStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\OverlayStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\SpecialEffectStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\TextBoxStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Options\TriangleStyleOptions.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\BannerStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\BaseStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\BlurStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\CircleStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\DirectTextStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrameStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassBannerStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\FrostedGlassTextBoxStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IGeneralVariantWorkerOrderMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\Interface\IStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\OutlineStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\OverlayStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\SpecialEffectStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\TextBoxStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\Variants\TriangleStyleVariants.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BannerTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BannerVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BlurVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\BrightnessVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\CircleTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\CircleVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontColorVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontFamilyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextPositionVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FontSizeIncreaseVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrameVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\GeneralSpecialEffectsVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\Interface\IVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OutlineColorVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OverlayTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\OverlayVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\PictureVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\SpecialEffectsVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassBannerVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\FrostedGlassTextBoxVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextBoxVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TextGlowVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleTransparencyVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\VariantWorker\TriangleVariantWorker.cs" />
+    <Compile Include="PictureSlidesLab\Model\Settings.cs" />
+    <Compile Include="PictureSlidesLab\Model\ObservableFont.cs" />
+    <Compile Include="PictureSlidesLab\Model\ObservableImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrostedGlassBanner.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrostedGlassTextBoxStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.PictureVariation.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.AlbumFrame.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Background.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.CircleBanner.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Blur.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Common.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.EmbedStyleOption.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.FrostedGlass.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Outline.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Overlay.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.PictureCitation.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.BannerStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.BlurStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.CircleStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.FrameStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.Metadata.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.OutlineStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.OverlayStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.PictureCitation.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.SpecialEffects.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.Text.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.TextBoxStyle.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.TextGlow.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.Partial\StyleOption.TriangleStyle.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.RectangleBanner.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.SpecialEffects.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.Text.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TextBox.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.Partial\EffectsDesigner.TriangleBanner.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Aspect.cs" />
+    <Compile Include="PictureSlidesLab\Service\EveryDayPhraseService.cs" />
+    <Compile Include="PictureSlidesLab\Service\Interface\IStylesDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Service\PictureCitationSlide.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\BannerStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\BlurStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\CircleStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Factory\StyleWorkerFactory.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\FrameStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\FrostedGlassBannerStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\FrostedGlassTextBoxStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\Interface\IWorkerOrderMetadata.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\OutlineStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\OverlayStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\PictureCitationStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\StyleEmbeddingWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\TextBoxStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\TextStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesWorker\TriangleStyleWorker.cs" />
+    <Compile Include="PictureSlidesLab\Thread\ContextDownloader.cs" />
+    <Compile Include="PictureSlidesLab\Thread\ThreadContext.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModel.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BlurrinessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\BrightnessSliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Factory\SliderPropHandlerFactory.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\ISliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\Interface\IPropHandlerNameMetadata.cs" />
+    <Compile Include="PictureSlidesLab\ViewModel\SliderPropHandler\TransparencySliderPropHandler.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.ErrorDialog.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.VariationStageControls.cs" />
+    <Compile Include="PictureSlidesLab\View\Interface\IPictureSlidesLabWindowView.cs" />
+    <Compile Include="PictureSlidesLab\View\ImageAdjustment\CroppingAdorner.cs" />
+    <Compile Include="PictureSlidesLab\View\AdjustImageWindow.xaml.cs">
+      <DependentUpon>AdjustImageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\View\ImageAdjustment\PuncturedRect.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\StyleOptionsFactory.cs" />
+    <Compile Include="PictureSlidesLab\ModelFactory\StyleVariantsFactory.cs" />
+    <Compile Include="PictureSlidesLab\Model\ImageItem.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleOption.cs" />
+    <Compile Include="PictureSlidesLab\Model\StyleVariant.cs" />
+    <Compile Include="PictureSlidesLab\Thread\Interface\IThreadContext.cs" />
+    <Compile Include="PictureSlidesLab\View\SettingsFlyout.xaml.cs">
+      <DependentUpon>SettingsFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\View\TextBlockDialog.xaml.cs">
+      <DependentUpon>TextBlockDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\View\SlideSelectionDialog.xaml.cs">
+      <DependentUpon>SlideSelectionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\Service\Effect\Alignment.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Banner.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Position.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\TextBoxes.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\TextBoxInfo.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.InterfaceImpl.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\EffectName.cs" />
+    <Compile Include="PictureSlidesLab\Service\Preview\PreviewInfo.cs" />
+    <Compile Include="PictureSlidesLab\Service\Effect\Tag.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.cs">
+      <DependentUpon>PictureSlidesLabWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.GotoSlide.cs" />
+    <Compile Include="PictureSlidesLab\View\PictureSlidesLabWindow.xaml.LoadStyle.cs" />
+    <Compile Include="PictureSlidesLab\View\QuickDropDialog.xaml.cs">
+      <DependentUpon>QuickDropDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PictureSlidesLab\Util\ImageUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\ListBoxUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\TwoColumnsListBoxImageWidthConverter.cs" />
+    <Compile Include="PictureSlidesLab\Util\ShapeUtil.cs" />
+    <Compile Include="PictureSlidesLab\Util\StyleVariationWidthConverter.cs" />
+    <Compile Include="PictureSlidesLab\Util\UrlUtil.cs" />
+    <Compile Include="PositionsLab\AlignSettingsDialog.xaml.cs">
+      <DependentUpon>AlignSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\ReorientSettingsDialog.xaml.cs">
+      <DependentUpon>ReorientSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\DistributeSettingsDialog.xaml.cs">
+      <DependentUpon>DistributeSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsDistributeGridDialog.xaml.cs">
+    </Compile>
+    <Compile Include="PositionsLab\PositionShapeProperties.cs" />
+    <Compile Include="PositionsLab\PositionsLabMain.cs" />
+    <Compile Include="PositionsLab\PositionsPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsPane.Designer.cs">
+      <DependentUpon>PositionsPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\PositionsPaneWPF.xaml.cs">
+      <DependentUpon>PositionsPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionsLab\ReorderSettingsDialog.xaml.cs">
+      <DependentUpon>ReorderSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PPExtraEventHelper\LMouseDownListener.cs" />
+    <Compile Include="PPExtraEventHelper\LMouseUpListener.cs" />
+    <Compile Include="PPExtraEventHelper\SysMouseEventInfo.cs" />
+    <Compile Include="PPExtraEventHelper\PPMouseLegacy.cs" />
+    <Compile Include="HighlightLab\RemoveHighlighting.cs" />
+    <Compile Include="ResizeLab\AdjustProportionallySettingsDialog.xaml.cs">
+      <DependentUpon>AdjustProportionallySettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabErrorHandler.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.AdjustProportionally.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Match.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.SlightAdjust.cs" />
+    <Compile Include="ResizeLab\ResizeLabTooltip.cs" />
+    <Compile Include="ResizeLab\ResizeLabUtil.cs" />
+    <Compile Include="ResizeLab\Symmetric.cs" />
+    <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.InterfaceImpl.cs" />
+    <Compile Include="ResizeLab\IResizeLabPane.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.MainSettings.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.FitToSlide.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.cs" />
+    <Compile Include="ResizeLab\ResizeLabMain.Equalize.cs" />
+    <Compile Include="ResizeLab\ResizeLabPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabPane.Designer.cs">
+      <DependentUpon>ResizeLabPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabPaneWPF.xaml.cs">
+      <DependentUpon>ResizeLabPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResizeLab\ResizeLabMain.ShrinkStretch.cs" />
+    <Compile Include="ResizeLab\StretchSettingsDialog.xaml.cs">
+      <DependentUpon>StretchSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SlightAdjustSettingsDialog.xaml.cs">
+      <DependentUpon>SlightAdjustSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\ObjectFormats\FillFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\FontStyleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineArrowFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineDashTypeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineFillFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineCompoundTypeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineWeightFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionHeightFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionWidthFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionXFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PositionYFormat.cs" />
+    <Compile Include="SyncLab\SyncFormatConstants.cs" />
+    <Compile Include="SyncLab\SyncFormatUtil.cs" />
+    <Compile Include="SyncLab\View\FormatTreeNode.cs" />
+    <Compile Include="SyncLab\View\SyncFormatDialog.xaml.cs">
+      <DependentUpon>SyncFormatDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncFormatDialogItem.cs" />
+    <Compile Include="SyncLab\View\SyncFormatListItem.xaml.cs">
+      <DependentUpon>SyncFormatListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncFormatPaneItem.cs" />
+    <Compile Include="SyncLab\View\SyncPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncPane.Designer.cs">
+      <DependentUpon>SyncPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SyncLab\View\SyncPaneWPF.xaml.cs">
+      <DependentUpon>SyncPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TagMatchers\NoEffectTagMatcher.cs" />
+    <Compile Include="Tags\NoEffectTag.cs" />
+    <Compile Include="TimerLab\TimerLabConstants.cs" />
+    <Compile Include="TimerLab\TimerLabPaneWPF.xaml.cs">
+      <DependentUpon>TimerLabPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimerLab\TimerPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimerLab\TimerPane.Designer.cs">
+      <DependentUpon>TimerPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\Assumption.cs" />
+    <Compile Include="Utils\CultureUtil.cs" />
+    <Compile Include="Utils\Exceptions\AssumptionFailedException.cs" />
+    <Compile Include="PictureSlidesLab\Service\StylesDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Service\EffectsDesigner.cs" />
+    <Compile Include="PictureSlidesLab\Util\StoragePath.cs" />
+    <Compile Include="PictureSlidesLab\Util\TempPath.cs" />
+    <Compile Include="Models\PowerPointBgEffectSlide.cs" />
+    <Compile Include="LabeledThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabeledThumbnail.Designer.cs">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomShapePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomShapePane.Designer.cs">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PowerPointPresentation.cs" />
+    <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
+    <Compile Include="PPKeyboard.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="ShapesLabConfig.cs" />
+    <Compile Include="TextCollection.cs" />
+    <Compile Include="Utils\BoolUtil.cs" />
+    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\Comparers.cs" />
+    <Compile Include="Utils\FileDir.cs" />
+    <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\PPShape.API.cs" />
+    <Compile Include="Utils\PPShape.Helper.cs" />
+    <Compile Include="Utils\TempPath.cs" />
+    <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomPaintTextBox.cs" />
+    <Compile Include="Views\ErrorDialogWrapper.cs" />
+    <Compile Include="FitToSlide.cs" />
+    <Compile Include="HighlightLab\HighlightTextFragments.cs" />
+    <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
+    <Compile Include="Models\PowerPointDeMagnifyingSlide.cs" />
+    <Compile Include="Models\PowerPointDrillDownSlide.cs" />
+    <Compile Include="Models\PowerPointMagnifiedPanSlide.cs" />
+    <Compile Include="Models\PowerPointMagnifiedSlide.cs" />
+    <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
+    <Compile Include="Models\PowerPointStepBackSlide.cs" />
+    <Compile Include="LegacyShapeUtil.cs" />
+    <Compile Include="RecorderTaskPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RecorderTaskPane.Designer.cs">
+      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AnimateInSlide.cs" />
+    <Compile Include="Views\AnimationLabDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AnimationLabDialogBox.Designer.cs">
+      <DependentUpon>AnimationLabDialogBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ZoomLabDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ZoomLabDialogBox.Designer.cs">
+      <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultMotionAnimation.cs" />
+    <Compile Include="Views\FolderDialogLauncher.cs" />
+    <Compile Include="Views\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrameMotionAnimation.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
+    <Compile Include="HighlightLab\HighlightBulletsText.cs" />
+    <Compile Include="Models\PowerPointAckSlide.cs" />
+    <Compile Include="Views\HighlightBulletsDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\HighlightBulletsDialogBox.Designer.cs">
+      <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PowerPointCurrentPresentationInfo.cs" />
+    <Compile Include="Models\PowerPointSlide.cs" />
+    <Compile Include="Models\PowerPointSpotlightSlide.cs" />
+    <Compile Include="Models\TaggedText.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="NotesToAudio.cs" />
+    <Compile Include="NotesToCaptions.cs" />
+    <Compile Include="PostInstall.cs" />
+    <Compile Include="PPCopy.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PPMouse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpeechEngine\PromptToAudio.cs" />
+    <Compile Include="SpeechEngine\SynthesisState.cs" />
+    <Compile Include="SpeechEngine\TextToSpeech.cs" />
+    <Compile Include="Spotlight.cs" />
+    <Compile Include="Views\InShowControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\InShowControl.Designer.cs">
+      <DependentUpon>InShowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectionRectangle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SelectionRectangle.Designer.cs">
+      <DependentUpon>SelectionRectangle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabCategoryInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ShapesLabCategoryInfoForm.Designer.cs">
+      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ShapesLabSetting.Designer.cs">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpotlightDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SpotlightDialogBox.Designer.cs">
+      <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NarrationsLabDialogBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\NarrationsLabDialogBox.Designer.cs">
+      <DependentUpon>NarrationsLabDialogBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProcessingStatusForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ProcessingStatusForm.Designer.cs" />
+    <Compile Include="Views\SpeechPlayingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
+    <Compile Include="Views\LoadingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LoadingDialog.Designer.cs">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\ClickSelectTextBox.cs" />
+    <Compile Include="WPF\ImageButton.cs" />
+    <Compile Include="WPF\Observable\Model.cs" />
+    <Compile Include="WPF\Observable\ObservableBoolean.cs" />
+    <Compile Include="WPF\Observable\ObservableInt.cs" />
+    <Compile Include="WPF\Observable\ObservableString.cs" />
+    <Compile Include="WPF\WindowSettings.cs" />
+    <Compile Include="XMLMisc\XMLParser.cs" />
+    <Compile Include="ZipStorer.cs" />
+    <Compile Include="ZoomToArea.cs" />
+    <None Include="app.config" />
+    <None Include="PowerPointLabs.dev.pfx" />
+    <None Include="Resources\AddToCustomShapes.png" />
+    <None Include="Resources\ClosedHand.cur" />
+    <None Include="Resources\OpenHand.cur" />
+    <None Include="Resources\EyeDropper.cur" />
+    <None Include="Resources\HighlightWords.png" />
+    <None Include="Resources\Saturation-icon_18x18.png" />
+    <None Include="Resources\Brightness-icon_25x25.png" />
+    <None Include="Resources\Load_icon.png" />
+    <None Include="Resources\Clear_icon.png" />
+    <None Include="Resources\Apply_icon.png" />
+    <None Include="Resources\Reload_icon.png" />
+    <None Include="Resources\Save_icon.png" />
+    <None Include="Resources\FillColor_icon.png" />
+    <None Include="Resources\LineColor_icon.png" />
+    <None Include="Resources\TextColor_icon.png" />
+    <None Include="Resources\refresh-icon.png" />
+    <None Include="Resources\ShapesLab.png" />
+    <None Include="Resources\ColorsLab.png" />
+    <None Include="Resources\Eyedropper-icon.png" />
+    <None Include="Resources\delete-icon.png" />
+    <None Include="Resources\down-icon.png" />
+    <None Include="Resources\Palette-icon.png" />
+    <None Include="Resources\Paint-icon.png" />
+    <None Include="Resources\Technical-Pen-icon.png" />
+    <None Include="Resources\Type-icon.png" />
+    <EmbeddedResource Include="ColorPicker\ColorInformationDialog.resx">
+      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorPicker\ColorPane.resx">
+      <DependentUpon>ColorPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
+      <DependentUpon>DrawingsPane.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
+      <DependentUpon>PositionsPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
+      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimerLab\TimerPane.resx">
+      <DependentUpon>TimerPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SyncLab\View\SyncPane.resx">
+      <DependentUpon>SyncPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LoadingDialog.resx">
+      <DependentUpon>LoadingDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\ColorDataSource.datasource" />
+    <None Include="Properties\DataSources\ColorPane.datasource" />
+    <None Include="Resources\Record.png" />
+    <None Include="Resources\Stop.png" />
+    <None Include="Resources\Play.png" />
+    <None Include="Resources\Pause.png" />
+    <EmbeddedResource Include="LabeledThumbnail.resx">
+      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomShapePane.resx">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RecorderTaskPane.resx">
+      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AnimationLabDialogBox.resx">
+      <DependentUpon>AnimationLabDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ZoomLabDialogBox.resx">
+      <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\HighlightBulletsDialogBox.resx">
+      <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\InShowControl.resx">
+      <DependentUpon>InShowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SelectionRectangle.resx">
+      <DependentUpon>SelectionRectangle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ShapesLabCategoryInfoForm.resx">
+      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ShapesLabSetting.resx">
+      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
+      <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\NarrationsLabDialogBox.resx">
+      <DependentUpon>NarrationsLabDialogBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
+    <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Ribbon1.cs" />
+    <Compile Include="TagMatchers\EndSpeedTagMatcher.cs" />
+    <Compile Include="TagMatchers\EndVoiceTagMatcher.cs" />
+    <Compile Include="TagMatchers\ITagMatcher.cs" />
+    <Compile Include="TagMatchers\Matchers.cs" />
+    <Compile Include="TagMatchers\PauseTagMatcher.cs" />
+    <Compile Include="TagMatchers\PronounceTagMatcher.cs" />
+    <Compile Include="TagMatchers\StartSpeedTagMatcher.cs" />
+    <Compile Include="TagMatchers\StartVoiceTagMatcher.cs" />
+    <Compile Include="Tags\EndSpeedTag.cs" />
+    <Compile Include="Tags\EndVoiceTag.cs" />
+    <Compile Include="Tags\ITag.cs" />
+    <Compile Include="Tags\PauseTag.cs" />
+    <Compile Include="Tags\PronounceTag.cs" />
+    <Compile Include="Tags\StartSpeedTag.cs" />
+    <Compile Include="Tags\StartVoiceTag.cs" />
+    <Compile Include="Tags\Tag.cs" />
+    <Compile Include="ThisAddIn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="ThisAddIn.Designer.xml">
+      <DependentUpon>ThisAddIn.cs</DependentUpon>
+    </None>
+    <Compile Include="ThisAddIn.Designer.cs">
+      <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Ribbon1.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zoom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Spotlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReloadAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Feedback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bullets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Indicator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Acknowledgement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReloadSpotlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveCaption.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveAudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddCaption.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddNarrationContext.png" />
+    <None Include="Resources\SpeakTextContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReloadAnimationContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EditNameContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddSpotlightContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAnimationContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOutContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomInContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FitToWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FitToHeight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Magnify.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToAreaContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToArea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ConvertToPicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightTextContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightBackgroundContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EffectsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlurRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecolorRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MakeTransparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaRemove.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSidebar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaVisual.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestInterface\TestInterface.csproj">
+      <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
+      <Name>TestInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loadMore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DrawingLabTest.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PptlabsContextMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ImagesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-fit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon-up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChoosePicturesIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectAPicturePlaceholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DefaultPicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cbd.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\closed_business.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSettings1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaSync1.png" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LeftRotate.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToAspectRatio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CutOutShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropOutPadding.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TimerLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLab.png" />
+  </ItemGroup>
+  <!-- Include the build rules for a C# project. -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Include additional build rules for an Office application add-in. -->
+  <Import Project="$(VSToolsPath)\OfficeTools\Microsoft.VisualStudio.Tools.Office.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- This section defines VSTO properties that describe the host-changeable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="3C479C724DD0B888FEB05B76BDA06F4F1DCC10ED" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        </Host>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets" Condition="Exists('..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Visual-StyleCop.MSBuild.4.7.58.3\build\Visual-StyleCop.MSBuild.Targets'))" />
+  </Target>
+  <ItemGroup>
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\Accessibility.dll" />
+    <ReferencePath Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll" />
+    <ReferencePath Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\packages\MahApps.Metro.1.2.4.0\lib\net40\MahApps.Metro.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Visual Studio Tools for Office\PIA\Office15\Microsoft.Office.Interop.PowerPoint.dll">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </ReferencePath>
+    <ReferencePath Include="C:\Program Files\Reference Assemblies\Microsoft\VSTO40\v4.0.Framework\Microsoft.Office.Tools.Common.dll">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </ReferencePath>
+    <ReferencePath Include="C:\Program Files\Reference Assemblies\Microsoft\VSTO40\v4.0.Framework\Microsoft.Office.Tools.Common.v4.0.Utilities.dll" />
+    <ReferencePath Include="C:\Program Files\Reference Assemblies\Microsoft\VSTO40\v4.0.Framework\Microsoft.Office.Tools.dll">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </ReferencePath>
+    <ReferencePath Include="C:\Program Files\Reference Assemblies\Microsoft\VSTO40\v4.0.Framework\Microsoft.Office.Tools.v4.0.Framework.dll" />
+    <ReferencePath Include="C:\Program Files\Reference Assemblies\Microsoft\VSTO40\v4.0.Framework\Microsoft.VisualStudio.Tools.Applications.Runtime.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\mscorlib.dll" />
+    <ReferencePath Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\packages\NAudio.1.7.1\lib\net35\NAudio.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Visual Studio Tools for Office\PIA\Office15\Office.dll">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </ReferencePath>
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\packages\RestSharp.105.1.0\lib\net4-client\RestSharp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Microsoft Visual Studio 14.0\Visual Studio Tools for Office\PIA\Common\stdole.dll">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </ReferencePath>
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.ComponentModel.Composition.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Deployment.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Drawing.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Runtime.Remoting.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Speech.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Windows.Forms.DataVisualization.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Windows.Forms.dll" />
+    <ReferencePath Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\packages\MahApps.Metro.1.2.4.0\lib\net40\System.Windows.Interactivity.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\TestInterface\bin\Debug\TestInterface.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\WindowsBase.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\WindowsFormsIntegration.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\CropLab\CustomAspectRatioDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\ColorPicker\Magnifier.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\ColorPicker\MagnifierOverlay.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\DrawingsLab\AlignmentDialogBoth.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\DrawingsLab\AlignmentDialogVertical.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\DrawingsLab\PivotAroundToolDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\DrawingsLab\MultiCloneGridDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\DrawingsLab\AlignmentDialogHorizontal.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\DrawingsLab\DrawingsPaneWPF.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PositionsLab\AlignSettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PositionsLab\ReorientSettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PositionsLab\DistributeSettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PositionsLab\PositionsDistributeGridDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PositionsLab\PositionsPaneWPF.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PositionsLab\ReorderSettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\ResizeLab\AdjustProportionallySettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\ResizeLab\ResizeLabPaneWPF.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\ResizeLab\StretchSettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\SlightAdjustSettingsDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\TimerLab\TimerLabPaneWPF.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\SyncLab\View\SyncFormatDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\SyncLab\View\SyncFormatListItem.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\SyncLab\View\SyncPaneWPF.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PictureSlidesLab\View\AdjustImageWindow.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PictureSlidesLab\View\SettingsFlyout.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PictureSlidesLab\View\TextBlockDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PictureSlidesLab\View\SlideSelectionDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PictureSlidesLab\View\PictureSlidesLabWindow.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\PictureSlidesLab\View\QuickDropDialog.g.cs" />
+    <Compile Include="C:\Users\Ian\Documents\PowerPointLabs\PowerPointLabs\PowerPointLabs\obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>
