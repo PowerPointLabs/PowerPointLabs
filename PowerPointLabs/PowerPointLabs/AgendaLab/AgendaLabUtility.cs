@@ -141,6 +141,18 @@ namespace PowerPointLabs.AgendaLab
             get { return PowerPointPresentation.Current.Sections.Count; }
         }
 
+        private static int MaximumSubsectionLevel
+        {
+            get
+            {
+                var section = Sections;
+                return section.Max<AgendaSection>((current) =>
+                {
+                    return current.Level;
+                });
+            }
+        }
+
         private static PowerPointSlide FindSectionFirstNonAgendaSlide(int sectionIndex)
         {
             var presentation = PowerPointPresentation.Current;
