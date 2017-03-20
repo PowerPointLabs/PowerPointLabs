@@ -16,12 +16,10 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_CropToSameTest()
         {
-            CropSameSizeSuccessfully();
             CropOneSideSuccessfully();
             CropTwoSidesSuccessfully();
             CropFourSidesSuccessfully();
             CropSmallerRefImgSuccessfully();
-            CropLargerRefImgSuccessfully();
             CropUnevenScaledImgSuccessfully();
             CropCroppedImgSuccessfully();
         }
@@ -30,50 +28,42 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_CropToSameNegativeTest()
         {
+            CropLargerRefImgUnsuccessfully();
+            CropSameSizeUnsuccessfully();
             CropOnNothingUnsuccessfully();
             CropOnShapeObjectUnsuccessfully();
         }
 
         #region Positive Test Cases
 
-        public void CropSameSizeSuccessfully()
+        public void CropOneSideSuccessfully()
         {
             CropAndCompare(4, 5);
         }
 
-        public void CropOneSideSuccessfully()
+        public void CropTwoSidesSuccessfully()
         {
             CropAndCompare(7, 8);
         }
 
-        public void CropTwoSidesSuccessfully()
+        public void CropFourSidesSuccessfully()
         {
             CropAndCompare(10, 11);
         }
 
-        public void CropFourSidesSuccessfully()
+        public void CropSmallerRefImgSuccessfully()
         {
             CropAndCompare(13, 14);
         }
-
-        public void CropSmallerRefImgSuccessfully()
+        
+        public void CropUnevenScaledImgSuccessfully()
         {
             CropAndCompare(16, 17);
         }
 
-        public void CropLargerRefImgSuccessfully()
-        {
-            CropAndCompare(19, 20);
-        }
-
-        public void CropUnevenScaledImgSuccessfully()
-        {
-            CropAndCompare(22, 23);
-        }
-
         public void CropCroppedImgSuccessfully()
         {
-            CropAndCompare(25, 26);
+            CropAndCompare(19, 20);
         }
 
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
@@ -100,10 +90,32 @@ namespace Test.FunctionalTest
         }
         #endregion
         #region Negative Test Cases
+        
+        public void CropLargerRefImgUnsuccessfully()
+        {
+            PpOperations.SelectSlide(28);
+            PpOperations.SelectShapesByPrefix("selectMe");
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Error",
+                "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.",
+                PplFeatures.CropToSame);
+        }
+
+        public void CropSameSizeUnsuccessfully()
+        {
+            PpOperations.SelectSlide(26);
+            PpOperations.SelectShapesByPrefix("selectMe");
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                "Error",
+                "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.",
+                PplFeatures.CropToSame);
+        }
 
         private void CropOnNothingUnsuccessfully()
         {
-            PpOperations.SelectSlide(30);
+            PpOperations.SelectSlide(24);
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -114,7 +126,7 @@ namespace Test.FunctionalTest
 
         private void CropOnShapeObjectUnsuccessfully()
         {
-            PpOperations.SelectSlide(28);
+            PpOperations.SelectSlide(22);
             PpOperations.SelectShapesByPrefix("selectMe");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -122,7 +134,7 @@ namespace Test.FunctionalTest
                 "'Crop To Same Dimensions' only supports picture objects.",
                 PplFeatures.CropToSame);
         }
-        
+
         #endregion
     }
 }
