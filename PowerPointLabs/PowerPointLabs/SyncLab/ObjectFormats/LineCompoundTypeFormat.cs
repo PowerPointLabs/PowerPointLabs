@@ -8,7 +8,7 @@ using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class LineStyleFormat
+    class LineCompoundTypeFormat
     {
         public static bool CanCopy(Shape formatShape)
         {

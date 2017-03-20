@@ -50,7 +50,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             //missing dash style
                             new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat))),
                             new FormatTreeNode("Weight", new Format(typeof(LineWeightFormat))),
-                            new FormatTreeNode("Style", new Format(typeof(LineStyleFormat))),
+                            new FormatTreeNode("Compound Type", new Format(typeof(LineCompoundTypeFormat))),
                             new FormatTreeNode("Fill", new Format(typeof(LineFillFormat)))
                         ),
                     //not easy
