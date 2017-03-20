@@ -23,6 +23,7 @@ namespace Test.FunctionalTest
             CropOneRotatedPicMultipleEdgesSuccessfully();
             CropMultiplePicsSuccessfully();
             CropMultipleRotatedPicsSuccessfully();
+            CropMultipleRotatedShapesSuccessfully();
         }
 
         [TestMethod]
@@ -30,7 +31,7 @@ namespace Test.FunctionalTest
         public void FT_CropToSlideNegativeTest()
         {
             CropOnNothingUnsuccessfully();
-            CropOnShapeObjectUnsuccessfully();
+            CropOnTextObjectUnsuccessfully();
         }
 
         #region Positive Test Cases
@@ -70,6 +71,11 @@ namespace Test.FunctionalTest
             CropAndCompare(22, 23);
         }
 
+        public void CropMultipleRotatedShapesSuccessfully()
+        {
+            CropAndCompare(25, 26);
+        }
+
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
         {
             var actualSlide = PpOperations.SelectSlide(testSlideNo);
@@ -97,23 +103,23 @@ namespace Test.FunctionalTest
 
         private void CropOnNothingUnsuccessfully()
         {
-            PpOperations.SelectSlide(27);
+            PpOperations.SelectSlide(30);
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Error",
-                "You need to select at least 1 picture before applying 'Crop To Slide'.",
+                "You need to select at least 1 shape or picture before applying 'Crop To Slide'.",
                 PplFeatures.CropToSlide);
         }
 
-        private void CropOnShapeObjectUnsuccessfully()
+        private void CropOnTextObjectUnsuccessfully()
         {
-            PpOperations.SelectSlide(25);
+            PpOperations.SelectSlide(28);
             PpOperations.SelectShape("selectMe");
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Error",
-                "'Crop To Slide' only supports picture objects.",
+                "'Crop To Slide' only supports shape or picture objects.",
                 PplFeatures.CropToSlide);
         }
         

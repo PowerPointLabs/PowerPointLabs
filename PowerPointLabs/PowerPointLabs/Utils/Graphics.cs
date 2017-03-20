@@ -109,6 +109,13 @@ namespace PowerPointLabs.Utils
                      shape.ConnectorFormat.Type == MsoConnectorType.msoConnectorStraight);
         }
 
+        public static bool IsShape(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoAutoShape
+                || shape.Type == MsoShapeType.msoFreeform
+                || shape.Type == MsoShapeType.msoGroup;
+        }
+
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
                                           bool exactMatch = true, float blurRadius = float.Epsilon)
         {
