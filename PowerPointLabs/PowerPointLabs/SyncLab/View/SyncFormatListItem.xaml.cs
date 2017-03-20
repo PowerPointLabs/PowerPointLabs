@@ -57,7 +57,7 @@ namespace PowerPointLabs.SyncLab.View
 
         private void UpdateImage()
         {
-            // if image isn't set, fill the control with the text box
+            // if image isn't set, fill the control with the label
             if (image == null)
             {
                 imageBox.Visibility = Visibility.Hidden;

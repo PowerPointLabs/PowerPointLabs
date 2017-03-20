@@ -96,10 +96,9 @@ namespace PowerPointLabs.SyncLab.View
 
         private void ScrollToTop()
         {
-            if (treeView.Items.IsEmpty)
+            if (!treeView.Items.IsEmpty)
             {
-                // Todo: fix
-                treeView.Items.MoveCurrentToFirst();
+                (treeView.Items[0] as TreeViewItem).BringIntoView();
             }
         }
 
