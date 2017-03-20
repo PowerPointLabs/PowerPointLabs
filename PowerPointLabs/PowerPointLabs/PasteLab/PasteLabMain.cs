@@ -22,9 +22,13 @@ namespace PowerPointLabs.PasteLab
             {
                 var shape = new PPShape(pastedObject[i]);
                 shape.AbsoluteHeight = height;
-                shape.AbsoluteWidth = width;
-                shape.VisualTop = 0;
-                shape.VisualLeft = 0;
+
+                if (shape.AbsoluteWidth < width)
+                {
+                    shape.AbsoluteWidth = width;
+                }
+
+                shape.VisualCenter = new System.Drawing.PointF(width / 2, height / 2);
             }
         }
     }
