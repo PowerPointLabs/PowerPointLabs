@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -102,21 +103,13 @@ namespace PowerPointLabs.TimerLab
 
         private float TimerWidth()
         {
-            float width = TimerLabConstants.DefaultTimerWidth;
-            if (!string.IsNullOrEmpty(WidthTextBox.Text))
-            {
-                width = float.Parse(WidthTextBox.Text);
-            }
+            float width = (float)WidthSlider.Value;
             return width;
         }
 
         private float TimerHeight()
         {
-            float height = TimerLabConstants.DefaultTimerHeight;
-            if (!string.IsNullOrEmpty(HeightTextBox.Text))
-            {
-                height = float.Parse(HeightTextBox.Text);
-            }
+            float height = (float)HeightSlider.Value;
             return height;
         }
 
@@ -298,6 +291,86 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
+        #endregion
+
+        #region Width Control
+        private void WidthSlider_Loaded(object sender, RoutedEventArgs e)
+        {
+            WidthSlider.Value = TimerLabConstants.DefaultTimerWidth;
+            WidthSlider.Minimum = TimerLabConstants.MinTimerWidth;
+            WidthSlider.Maximum = this.GetCurrentPresentation().SlideWidth;
+           
+        } 
+
+        private void WidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            float value = (float)WidthSlider.Value;
+            WidthTextBox.Text = ((int)value).ToString();
+        }
+
+        private void WidthTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            WidthTextBox.Text = TimerLabConstants.DefaultTimerWidth.ToString();
+        }
+
+        private void WidthTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            int value = Convert.ToInt32(WidthTextBox.Text);
+            if (value < TimerLabConstants.MinTimerWidth)
+            {
+                value = (int)TimerLabConstants.MinTimerWidth;
+            }
+            else if (value > this.GetCurrentPresentation().SlideWidth)
+            {
+                value = (int)this.GetCurrentPresentation().SlideWidth;
+            }
+            WidthTextBox.Text = value.ToString();
+            WidthSlider.Value = value;
+        }
+        #endregion
+
+        #region Height Control
+        private void HeightSlider_Loaded(object sender, RoutedEventArgs e)
+        {
+            HeightSlider.Minimum = TimerLabConstants.MinTimerHeight;
+            HeightSlider.Maximum = this.GetCurrentPresentation().SlideHeight;
+            HeightSlider.Value = TimerLabConstants.DefaultTimerHeight;
+        }
+
+        private void HeightSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            float value = (float)HeightSlider.Value;
+            HeightTextBox.Text = ((int)value).ToString();        
+        }
+
+        private void HeightTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            HeightTextBox.Text = TimerLabConstants.DefaultTimerHeight.ToString();
+        }
+
+        private void HeightTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string text = HeightTextBox.Text;
+            if (text.Length > TimerLabConstants.SizeStringLimit)
+            {
+                HeightTextBox.Text = text.Substring(0, text.Length - 1);
+            }
+        }
+
+        private void HeightTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            int value = Convert.ToInt32(HeightTextBox.Text);
+            if (value < TimerLabConstants.MinTimerHeight)
+            {
+                value = (int)TimerLabConstants.MinTimerHeight;
+            }
+            else if (value > this.GetCurrentPresentation().SlideHeight)
+            {
+                value = (int)this.GetCurrentPresentation().SlideHeight;
+            }
+            HeightTextBox.Text = value.ToString();
+            HeightSlider.Value = value;
+        }
         #endregion
     }
 }
