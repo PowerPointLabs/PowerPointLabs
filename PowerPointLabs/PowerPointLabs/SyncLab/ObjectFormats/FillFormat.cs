@@ -56,14 +56,6 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     newShape.Fill.Solid();
                     newShape.Fill.ForeColor = formatShape.Fill.ForeColor;
                 }
-                else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillTextured)
-                {
-                    newShape.Fill.PresetTextured(formatShape.Fill.PresetTexture);
-                }
-                else
-                {
-                    //Unable to set no fill
-                }
             }
             catch (Exception)
             {
