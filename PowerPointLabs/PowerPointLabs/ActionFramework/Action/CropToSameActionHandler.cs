@@ -36,9 +36,7 @@ namespace PowerPointLabs.ActionFramework.Action
             if (!hasChange)
             {
                 HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeNoDimensionCroppingDone, FeatureName, errorHandler);
-                return;
             }
-            
         }
     }
 }

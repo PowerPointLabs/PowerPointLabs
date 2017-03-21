@@ -38,7 +38,6 @@ namespace PowerPointLabs.ActionFramework.Action
             if (!hasChange)
             {
                 HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeNoShapeOverBoundary, FeatureName, errorHandler);
-                return;
             }
         }
         
