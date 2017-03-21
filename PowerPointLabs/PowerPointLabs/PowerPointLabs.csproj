@@ -1642,6 +1642,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\TimerLab.png" />
+    <Resource Include="Resources\TimerLab\HalfHeight.png" />
+    <Resource Include="Resources\TimerLab\HalfWidth.png" />
+    <Resource Include="Resources\TimerLab\MaxHeight.png" />
+    <Resource Include="Resources\TimerLab\MaxWidth.png" />
+    <Resource Include="Resources\TimerLab\MinHeight.png" />
+    <Resource Include="Resources\TimerLab\MinWidth.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SyncLab.png" />
