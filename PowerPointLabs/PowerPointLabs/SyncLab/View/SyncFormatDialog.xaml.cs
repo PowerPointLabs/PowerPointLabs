@@ -109,5 +109,17 @@ namespace PowerPointLabs.SyncLab.View
                 return formats;
             }
         }
+
+        public string ObjectName
+        {
+            get
+            {
+                return nameTextBox.Text;
+            }
+            set
+            {
+                nameTextBox.Text = value;
+            }
+        }
     }
 }

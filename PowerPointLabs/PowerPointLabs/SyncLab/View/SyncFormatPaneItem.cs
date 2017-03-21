@@ -77,12 +77,14 @@ namespace PowerPointLabs.SyncLab.View
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             SyncFormatDialog dialog = new SyncFormatDialog(shape, this.formats);
+            dialog.ObjectName = this.Text;
             bool? result = dialog.ShowDialog();
             if (!result.HasValue || !(bool)result)
             {
                 return;
             }
             this.formats = dialog.Formats;
+            this.Text = dialog.ObjectName;
         }
     }
 }
