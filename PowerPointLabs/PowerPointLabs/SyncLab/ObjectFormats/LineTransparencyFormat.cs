@@ -25,14 +25,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
-            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
-            Shape shape = shapes.AddLine(
-                0, SyncFormatConstants.DisplayImageSize.Height,
-                SyncFormatConstants.DisplayImageSize.Width, 0);
-            SyncFormat(formatShape, shape);
-            Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
-            shape.Delete();
-            return image;
+            return SyncFormatUtil.GetTextDisplay(
+                Math.Round(formatShape.Line.Transparency * 100).ToString() + "%",
+                SyncFormatConstants.DisplayImageFont,
+                SyncFormatConstants.DisplayImageSize);
         }
 
         private static bool Sync(Shape formatShape, Shape newShape)
