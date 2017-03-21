@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -237,7 +238,7 @@ namespace PowerPointLabs.TimerLab
             sliderEndEffect.Timing.Duration = TimerLabConstants.ColorChangeDuration;
         }
 
-        # region NumericUpDown Control Customisation
+        # region NumericUpDown Control
         private void DurationTextBox_ValueDecremented(object sender, 
             MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
         {
@@ -313,8 +314,19 @@ namespace PowerPointLabs.TimerLab
             WidthTextBox.Text = TimerLabConstants.DefaultTimerWidth.ToString();
         }
 
+        private void WidthTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = IsNumbersOnly(e.Text);
+        }
+
         private void WidthTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(WidthTextBox.Text))
+            {
+                WidthTextBox.Text = ((int)WidthSlider.Value).ToString();
+                return;
+            }
+
             int value = Convert.ToInt32(WidthTextBox.Text);
             if (value < TimerLabConstants.MinTimerWidth)
             {
@@ -348,17 +360,19 @@ namespace PowerPointLabs.TimerLab
             HeightTextBox.Text = TimerLabConstants.DefaultTimerHeight.ToString();
         }
 
-        private void HeightTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void HeightTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            string text = HeightTextBox.Text;
-            if (text.Length > TimerLabConstants.SizeStringLimit)
-            {
-                HeightTextBox.Text = text.Substring(0, text.Length - 1);
-            }
+            e.Handled = IsNumbersOnly(e.Text);
         }
 
         private void HeightTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(HeightTextBox.Text))
+            {
+                HeightTextBox.Text = ((int)HeightSlider.Value).ToString();
+                return;
+            }
+
             int value = Convert.ToInt32(HeightTextBox.Text);
             if (value < TimerLabConstants.MinTimerHeight)
             {
@@ -370,6 +384,14 @@ namespace PowerPointLabs.TimerLab
             }
             HeightTextBox.Text = value.ToString();
             HeightSlider.Value = value;
+        }
+        #endregion
+
+        #region Validation helper
+        private bool IsNumbersOnly(string text)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            return regex.IsMatch(text);
         }
         #endregion
     }
