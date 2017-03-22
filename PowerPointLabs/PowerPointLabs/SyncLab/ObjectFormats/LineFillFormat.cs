@@ -31,7 +31,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     SyncFormatConstants.DisplayImageSize.Width,
                     SyncFormatConstants.DisplayImageSize.Height);
             shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
-            SyncFormat(formatShape, shape);
+            shape.Fill.ForeColor = formatShape.Line.ForeColor;
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
