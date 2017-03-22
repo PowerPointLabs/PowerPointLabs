@@ -8,7 +8,7 @@ using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class LineFillFormat
+    class LineTransparencyFormat
     {
         public static bool CanCopy(Shape formatShape)
         {
@@ -19,30 +19,23 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             if (!Sync(formatShape, newShape))
             {
-                Logger.Log(newShape.Type + " unable to sync Line Fill");
+                Logger.Log(newShape.Type + " unable to sync Transparency");
             }
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
-            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
-            Shape shape = shapes.AddShape(
-                    Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0,
-                    SyncFormatConstants.DisplayImageSize.Width,
-                    SyncFormatConstants.DisplayImageSize.Height);
-            shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
-            shape.Fill.ForeColor = formatShape.Line.ForeColor;
-            Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
-            shape.Delete();
-            return image;
+            return SyncFormatUtil.GetTextDisplay(
+                Math.Round(formatShape.Line.Transparency * 100).ToString() + "%",
+                SyncFormatConstants.DisplayImageFont,
+                SyncFormatConstants.DisplayImageSize);
         }
 
         private static bool Sync(Shape formatShape, Shape newShape)
         {
             try
             {
-                newShape.Line.ForeColor = formatShape.Line.ForeColor;
-                newShape.Line.BackColor = formatShape.Line.BackColor;
+                newShape.Line.Transparency = formatShape.Line.Transparency;
             }
             catch (Exception)
             {

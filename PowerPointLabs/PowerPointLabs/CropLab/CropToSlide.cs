@@ -11,30 +11,36 @@ namespace PowerPointLabs.CropLab
     {
         private static readonly string ShapePicture = Path.GetTempPath() + @"\shape.png";
 
-        public static void CropSelection(PowerPoint.ShapeRange shapeRange, PowerPointSlide currentSlide, float slideWidth, float slideHeight)
+        public static bool CropSelection(PowerPoint.ShapeRange shapeRange, PowerPointSlide currentSlide, float slideWidth, float slideHeight)
         {
+            bool hasChange = false;
             foreach (PowerPoint.Shape shape in shapeRange)
             {
-                PowerPoint.Shape toRotate = shape;
-                if (shape.Rotation != 0)
+                PowerPoint.Shape toCrop = shape;
+                RectangleF shapeBounds = GetAbsoluteBounds(shape);
+                if (!CrossesSlideBoundary(shapeBounds, slideWidth, slideHeight))
                 {
-                    RectangleF location = GetAbsoluteBounds(shape);
+                    continue;
+                }
+                hasChange = true;
+                if (Utils.Graphics.IsShape(shape) || shape.Rotation != 0)
+                {
                     Utils.Graphics.ExportShape(shape, ShapePicture);
                     var newShape = currentSlide.Shapes.AddPicture(ShapePicture,
                         Office.MsoTriState.msoFalse,
                         Office.MsoTriState.msoTrue,
-                        location.Left, location.Top, location.Width, location.Height);
-                    toRotate = newShape;
-                    toRotate.Name = shape.Name;
+                        shapeBounds.Left, shapeBounds.Top, shapeBounds.Width, shapeBounds.Height);
+                    toCrop = newShape;
+                    toCrop.Name = shape.Name;
                     shape.Delete();
-
                 }
-                RectangleF cropArea = GetCropArea(toRotate, slideWidth, slideHeight);
-                toRotate.PictureFormat.Crop.ShapeHeight = cropArea.Height;
-                toRotate.PictureFormat.Crop.ShapeWidth = cropArea.Width;
-                toRotate.PictureFormat.Crop.ShapeLeft = cropArea.Left;
-                toRotate.PictureFormat.Crop.ShapeTop = cropArea.Top;
+                RectangleF cropArea = GetCropArea(toCrop, slideWidth, slideHeight);
+                toCrop.PictureFormat.Crop.ShapeHeight = cropArea.Height;
+                toCrop.PictureFormat.Crop.ShapeWidth = cropArea.Width;
+                toCrop.PictureFormat.Crop.ShapeLeft = cropArea.Left;
+                toCrop.PictureFormat.Crop.ShapeTop = cropArea.Top;
             }
+            return hasChange;
         }
 
         private static RectangleF GetAbsoluteBounds(PowerPoint.Shape shape)
@@ -80,6 +86,14 @@ namespace PowerPointLabs.CropLab
             cropWidth = Math.Min(slideWidth - cropLeft, cropWidth);
 
             return new RectangleF(cropLeft, cropTop, cropWidth, cropHeight);
+        }
+
+        private static bool CrossesSlideBoundary(RectangleF shape, float slideWidth, float slideHeight)
+        {
+            return shape.Top < 0 
+                || shape.Left < 0 
+                || shape.Top + shape.Height > slideHeight 
+                || shape.Left + shape.Width > slideWidth;
         }
     }
 }

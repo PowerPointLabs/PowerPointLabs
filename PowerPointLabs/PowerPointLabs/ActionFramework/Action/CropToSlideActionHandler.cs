@@ -18,23 +18,27 @@ namespace PowerPointLabs.ActionFramework.Action
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             if (!VerifyIsSelectionValid(this.GetCurrentSelection()))
             {
-                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
+                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypeShapeOrPicture, 1, errorHandler);
                 return;
             }
             ShapeRange shapeRange = this.GetCurrentSelection().ShapeRange;
             if (shapeRange.Count < 1)
             {
-                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
+                HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypeShapeOrPicture, 1, errorHandler);
                 return;
             }
-            if (!IsPictureForSelection(shapeRange))
+            if (!IsPictureOrShapeForSelection(shapeRange))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBeShapeOrPicture, FeatureName, errorHandler);
                 return;
             }
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
-            CropToSlide.CropSelection(shapeRange, this.GetCurrentSlide(), slideWidth, slideHeight);
+            bool hasChange = CropToSlide.CropSelection(shapeRange, this.GetCurrentSlide(), slideWidth, slideHeight);
+            if (!hasChange)
+            {
+                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeNoShapeOverBoundary, FeatureName, errorHandler);
+            }
         }
         
 

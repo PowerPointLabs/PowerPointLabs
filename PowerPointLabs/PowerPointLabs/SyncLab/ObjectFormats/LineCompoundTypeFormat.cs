@@ -8,7 +8,7 @@ using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class LineStyleFormat
+    class LineCompoundTypeFormat
     {
         public static bool CanCopy(Shape formatShape)
         {
@@ -40,7 +40,6 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.Line.Style = formatShape.Line.Style;
-                //missing dashstyle?
             }
             catch (Exception)
             {

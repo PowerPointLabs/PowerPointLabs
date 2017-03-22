@@ -744,8 +744,10 @@
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineArrowFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FillTransparencyFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineTransparencyFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineDashTypeFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineFillFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\LineStyleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LineCompoundTypeFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineWeightFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\PositionHeightFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\PositionWidthFormat.cs" />
