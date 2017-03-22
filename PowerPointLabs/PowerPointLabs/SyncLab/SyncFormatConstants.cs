@@ -43,7 +43,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                         ),
                     new FormatTreeNode(
                             "Fill",
-                            new FormatTreeNode("Color", new Format(typeof(FillFormat)))
+                            new FormatTreeNode("Color", new Format(typeof(FillFormat))),
+                            new FormatTreeNode("Transparency", new Format(typeof(FillTransparencyFormat)))
                         ),
                     new FormatTreeNode(
                             "Line",                        
