@@ -53,9 +53,19 @@ namespace PowerPointLabs.Utils
 
         public static void ExportShape(Shape shape, string exportPath)
         {
-            var slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
-            var slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
-
+            int slideWidth = 0;
+            int slideHeight = 0;
+            try
+            {
+                slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
+                slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
+            }
+            catch (NullReferenceException)
+            {
+                // Getting Presentation.Current may throw NullReferenceException during unit testing
+                shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, ExportMode: PpExportMode.ppScaleToFit);
+            }
+            
             shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                          slideHeight, PpExportMode.ppScaleToFit);
         }
