@@ -10,6 +10,7 @@ namespace PowerPointLabs.CropLab
 {
     internal class CropOutPadding
     {
+        private const float Epsilon = 0.05f;
         private static readonly string TempPngFileExportPath = Path.GetTempPath() + @"\cropoutpaddingtemp.png";
 
         public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection)
@@ -79,8 +80,11 @@ namespace PowerPointLabs.CropLab
                 float newCropTop = Math.Max(origHeight * cropRatioTop, cropTop);
                 float newCropBottom = Math.Max(origHeight * cropRatioBottom, cropBottom);
 
-                if (!hasChange && (newCropLeft != cropLeft || newCropRight != cropRight || 
-                                    newCropTop != cropTop || newCropBottom != cropBottom))
+                if (!hasChange && 
+                    (!IsApproximatelySame(newCropLeft, cropLeft) || 
+                    !IsApproximatelySame(newCropRight, cropRight) ||
+                    !IsApproximatelySame(newCropTop, cropTop) ||
+                    !IsApproximatelySame(newCropBottom, cropBottom)))
                 {
                     hasChange = true;
                 }
@@ -98,6 +102,11 @@ namespace PowerPointLabs.CropLab
             }
 
             return shapeRange;
+        }
+
+        private static bool IsApproximatelySame(float a, float b)
+        {
+            return Math.Abs(a - b) < Epsilon;
         }
 
         private static bool IsImageRowTransparent(BitmapData bmpData, byte[] argbBuffer, int y)
