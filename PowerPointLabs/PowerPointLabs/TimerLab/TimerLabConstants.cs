@@ -45,6 +45,10 @@ namespace PowerPointLabs.TimerLab
         public const string TimerSliderHead = "TimerSliderHead";
         public const string TimerSliderBody = "TimerSliderBody";
 
+<<<<<<< HEAD
         public const string ErrorMessageOneTimerOnly = "Only one timer is allowed per slide.";
+=======
+        public const string ErrorMessageOneTimerOnly = "Only one timer allowed per slide.";
+>>>>>>> 4e0904502ba576eb3ca533b135627da6da57a72c
     }
 }
