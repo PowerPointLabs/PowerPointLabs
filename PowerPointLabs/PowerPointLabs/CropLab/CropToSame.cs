@@ -9,8 +9,9 @@ namespace PowerPointLabs.CropLab
 
         private const float Epsilon = 0.00001F; // Prevents divide by zero
 
-        public static void CropSelection(PowerPoint.ShapeRange shapeRange)
+        public static bool CropSelection(PowerPoint.ShapeRange shapeRange)
         {
+            bool hasChange = false;
             var refShape = shapeRange[1];
             float refScaleWidth = Graphics.GetScaleWidth(refShape);
             float refScaleHeight = Graphics.GetScaleHeight(refShape);
@@ -25,16 +26,22 @@ namespace PowerPointLabs.CropLab
 
             for (int i = 2; i <= shapeRange.Count; i++)
             {
-                float scaleWidth = Graphics.GetScaleWidth(shapeRange[i]);
-                float scaleHeight = Graphics.GetScaleHeight(shapeRange[i]);
                 float heightToCrop = shapeRange[i].Height - refShape.Height;
                 float widthToCrop = shapeRange[i].Width - refShape.Width;
+                if (heightToCrop <= 0 && widthToCrop <= 0)
+                {
+                    continue;
+                }
+                hasChange = true;
 
+                float scaleWidth = Graphics.GetScaleWidth(shapeRange[i]);
+                float scaleHeight = Graphics.GetScaleHeight(shapeRange[i]);
                 shapeRange[i].PictureFormat.CropTop += Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);
                 shapeRange[i].PictureFormat.CropLeft += Math.Max(0, widthToCrop * cropLeft / refShapeCroppedWidth / scaleWidth);
                 shapeRange[i].PictureFormat.CropRight += Math.Max(0, widthToCrop * cropRight / refShapeCroppedWidth / scaleWidth);
                 shapeRange[i].PictureFormat.CropBottom += Math.Max(0, heightToCrop * cropBottom / refShapeCroppedHeight / scaleHeight);
             }
+            return hasChange;
         }
     }
 }
