@@ -62,7 +62,7 @@ namespace PowerPointLabs.Utils
             }
             catch (NullReferenceException)
             {
-                // Presentation may be null during Unit Tests
+                // Getting Presentation.Current may throw NullReferenceException during unit testing
                 shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, ExportMode: PpExportMode.ppScaleToFit);
             }
             
