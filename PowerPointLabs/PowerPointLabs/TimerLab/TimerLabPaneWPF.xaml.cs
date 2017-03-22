@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -102,21 +104,13 @@ namespace PowerPointLabs.TimerLab
 
         private float TimerWidth()
         {
-            float width = TimerLabConstants.DefaultTimerWidth;
-            if (!string.IsNullOrEmpty(WidthTextBox.Text))
-            {
-                width = float.Parse(WidthTextBox.Text);
-            }
+            float width = (float)WidthSlider.Value;
             return width;
         }
 
         private float TimerHeight()
         {
-            float height = TimerLabConstants.DefaultTimerHeight;
-            if (!string.IsNullOrEmpty(HeightTextBox.Text))
-            {
-                height = float.Parse(HeightTextBox.Text);
-            }
+            float height = (float)HeightSlider.Value;
             return height;
         }
 
@@ -244,7 +238,7 @@ namespace PowerPointLabs.TimerLab
             sliderEndEffect.Timing.Duration = TimerLabConstants.ColorChangeDuration;
         }
 
-        # region NumericUpDown Control Customisation
+        # region NumericUpDown Control
         private void DurationTextBox_ValueDecremented(object sender, 
             MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
         {
@@ -298,6 +292,107 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
+        #endregion
+
+        #region Width Control
+        private void WidthSlider_Loaded(object sender, RoutedEventArgs e)
+        {
+            WidthSlider.Value = TimerLabConstants.DefaultTimerWidth;
+            WidthSlider.Minimum = TimerLabConstants.MinTimerWidth;
+            WidthSlider.Maximum = this.GetCurrentPresentation().SlideWidth;
+           
+        } 
+
+        private void WidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            float value = (float)WidthSlider.Value;
+            WidthTextBox.Text = ((int)value).ToString();
+        }
+
+        private void WidthTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            WidthTextBox.Text = TimerLabConstants.DefaultTimerWidth.ToString();
+        }
+
+        private void WidthTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = IsNumbersOnly(e.Text);
+        }
+
+        private void WidthTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(WidthTextBox.Text))
+            {
+                WidthTextBox.Text = ((int)WidthSlider.Value).ToString();
+                return;
+            }
+
+            int value = Convert.ToInt32(WidthTextBox.Text);
+            if (value < TimerLabConstants.MinTimerWidth)
+            {
+                value = (int)TimerLabConstants.MinTimerWidth;
+            }
+            else if (value > this.GetCurrentPresentation().SlideWidth)
+            {
+                value = (int)this.GetCurrentPresentation().SlideWidth;
+            }
+            WidthTextBox.Text = value.ToString();
+            WidthSlider.Value = value;
+        }
+        #endregion
+
+        #region Height Control
+        private void HeightSlider_Loaded(object sender, RoutedEventArgs e)
+        {
+            HeightSlider.Minimum = TimerLabConstants.MinTimerHeight;
+            HeightSlider.Maximum = this.GetCurrentPresentation().SlideHeight;
+            HeightSlider.Value = TimerLabConstants.DefaultTimerHeight;
+        }
+
+        private void HeightSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            float value = (float)HeightSlider.Value;
+            HeightTextBox.Text = ((int)value).ToString();        
+        }
+
+        private void HeightTextBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            HeightTextBox.Text = TimerLabConstants.DefaultTimerHeight.ToString();
+        }
+
+        private void HeightTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = IsNumbersOnly(e.Text);
+        }
+
+        private void HeightTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(HeightTextBox.Text))
+            {
+                HeightTextBox.Text = ((int)HeightSlider.Value).ToString();
+                return;
+            }
+
+            int value = Convert.ToInt32(HeightTextBox.Text);
+            if (value < TimerLabConstants.MinTimerHeight)
+            {
+                value = (int)TimerLabConstants.MinTimerHeight;
+            }
+            else if (value > this.GetCurrentPresentation().SlideHeight)
+            {
+                value = (int)this.GetCurrentPresentation().SlideHeight;
+            }
+            HeightTextBox.Text = value.ToString();
+            HeightSlider.Value = value;
+        }
+        #endregion
+
+        #region Validation helper
+        private bool IsNumbersOnly(string text)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            return regex.IsMatch(text);
+        }
         #endregion
     }
 }
