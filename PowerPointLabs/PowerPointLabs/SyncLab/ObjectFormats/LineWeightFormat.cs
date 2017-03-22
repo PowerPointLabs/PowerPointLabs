@@ -24,7 +24,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public static Bitmap DisplayImage(Shape formatShape)
         {
             return SyncFormatUtil.GetTextDisplay(
-                Math.Round(Math.Max(formatShape.Line.Weight, 0)).ToString(),
+                Math.Max(formatShape.Line.Weight, 0).ToString(".#"),
                 SyncFormatConstants.DisplayImageFont,
                 SyncFormatConstants.DisplayImageSize);
         }

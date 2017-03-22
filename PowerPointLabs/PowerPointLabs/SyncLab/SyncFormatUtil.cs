@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Text;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -21,22 +22,28 @@ namespace PowerPointLabs.SyncLab
             return design.TitleMaster.Shapes;
         }
 
-        public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size size)
+        public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size imageSize)
         {
-            Bitmap image = new Bitmap(size.Width, size.Height);
+            Bitmap image = new Bitmap(imageSize.Width, imageSize.Height);
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(image);
+            g.TextRenderingHint = TextRenderingHint.AntiAlias;
             SizeF textSize = g.MeasureString(text, font);
-            Bitmap textImage = new Bitmap((int)Math.Ceiling(textSize.Width), (int)Math.Ceiling(textSize.Height));
-            System.Drawing.Graphics g2 = System.Drawing.Graphics.FromImage(textImage);
-            g2.DrawString(text, font, Brushes.Black, 0, 0);
-
-            double scale = Math.Min(size.Width / textSize.Width, size.Height / textSize.Height);
-            double newWidth = textSize.Width * scale;
-            double newHeight = textSize.Height * scale;
-            double newX = (size.Width - newWidth) / 2;
-            double newY = (size.Height - newHeight) / 2;
-            g.DrawImage(textImage, Convert.ToSingle(newX), Convert.ToSingle(newY),
-                Convert.ToSingle(newWidth), Convert.ToSingle(newHeight));
+            if (textSize.Width == 0 || textSize.Height == 0)
+            {
+                // nothing to print
+                return image;
+            }
+            if (textSize.Width > imageSize.Width || textSize.Height > imageSize.Height)
+            {
+                double scale = Math.Min(imageSize.Width / textSize.Width, imageSize.Height / textSize.Height);
+                font = new System.Drawing.Font(font.FontFamily, Convert.ToSingle(font.Size * scale),
+                                                            font.Style, font.Unit, font.GdiCharSet, font.GdiVerticalFont);
+                textSize = g.MeasureString(text, font);
+            }
+            float xPos = Convert.ToSingle((imageSize.Width - textSize.Width) / 2);
+            float yPos = Convert.ToSingle((imageSize.Height - textSize.Height) / 2);
+            g.DrawString(text, font, Brushes.Black, xPos, yPos);
+            g.Dispose();
             return image;
         }
 
