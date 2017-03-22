@@ -36,5 +36,15 @@ namespace PowerPointLabs.TimerLab
         public const double FractionalDecrementLowerBound = 0.00;
         public const double FractionalIncrementOffset = 0.99;
         public const double FractionalIncrementUpperBound = 0.59;
+
+        public const string TimerBody = "TimerBody";
+        public const string TimerLineMarker = "TimerLineMarker";
+        public const string TimerLineMarkerGroup = "TimerLineMarkers";
+        public const string TimerTimeMarker = "TimerTimeMarker";
+        public const string TimerTimeMarkerGroup = "TimerTimeMarkers";
+        public const string TimerSliderHead = "TimerSliderHead";
+        public const string TimerSliderBody = "TimerSliderBody";
+
+        public const string ErrorMessageOneTimerOnly = "Only one timer allowed per slide.";
     }
 }
