@@ -29,7 +29,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             if (!IsShapeForSelection(shapeRange))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBeShape, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBeShape, FeatureName, errorHandler);
                 return;
             }
             try
@@ -38,7 +38,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             catch (CropLabException)
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeUndefined, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeUndefined, FeatureName, errorHandler);
             }
         }
     }

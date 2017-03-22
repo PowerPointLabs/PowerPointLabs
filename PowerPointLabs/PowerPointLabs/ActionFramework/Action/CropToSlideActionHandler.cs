@@ -29,7 +29,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             if (!IsPictureOrShapeForSelection(shapeRange))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBeShapeOrPicture, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBeShapeOrPicture, FeatureName, errorHandler);
                 return;
             }
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
@@ -37,7 +37,7 @@ namespace PowerPointLabs.ActionFramework.Action
             bool hasChange = CropToSlide.CropSelection(shapeRange, this.GetCurrentSlide(), slideWidth, slideHeight);
             if (!hasChange)
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeNoShapeOverBoundary, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeNoShapeOverBoundary, FeatureName, errorHandler);
             }
         }
         

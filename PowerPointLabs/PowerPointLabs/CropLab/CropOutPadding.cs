@@ -24,6 +24,8 @@ namespace PowerPointLabs.CropLab
 
         public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange)
         {
+            bool hasChange = false;
+
             for (int i = 1; i <= shapeRange.Count; i++)
             {
                 PowerPoint.Shape shape = shapeRange[i];
@@ -72,23 +74,29 @@ namespace PowerPointLabs.CropLab
                 float cropRatioTop = croppedImageRect.Top / (float)origImageRect.Height;
                 float cropRatioBottom = (origImageRect.Height - croppedImageRect.Height) / (float)origImageRect.Height;
 
-                float newCropLeft = origWidth * cropRatioLeft;
-                float newCropRight = origWidth * cropRatioRight;
-                float newCropTop = origHeight * cropRatioTop;
-                float newCropBottom = origHeight * cropRatioBottom;
+                float newCropLeft = Math.Max(origWidth * cropRatioLeft, cropLeft);
+                float newCropRight = Math.Max(origWidth * cropRatioRight, cropRight);
+                float newCropTop = Math.Max(origHeight * cropRatioTop, cropTop);
+                float newCropBottom = Math.Max(origHeight * cropRatioBottom, cropBottom);
 
-                // Crop if it is more than current crop
-                cropLeft = cropLeft < newCropLeft ? newCropLeft : cropLeft;
-                cropRight = cropRight < newCropRight ? newCropRight : cropRight;
-                cropTop = cropTop < newCropTop ? newCropTop : cropTop;
-                cropBottom = cropBottom < newCropBottom ? newCropBottom : cropBottom;
+                if (!hasChange && (newCropLeft != cropLeft || newCropRight != cropRight || 
+                                    newCropTop != cropTop || newCropBottom != cropBottom))
+                {
+                    hasChange = true;
+                }
+
+                shape.PictureFormat.CropLeft = newCropLeft;
+                shape.PictureFormat.CropRight = newCropRight;
+                shape.PictureFormat.CropTop = newCropTop;
+                shape.PictureFormat.CropBottom = newCropBottom;
 
                 // Restore original properties
                 shape.Rotation = currentRotation;
-                shape.PictureFormat.CropLeft = cropLeft;
-                shape.PictureFormat.CropRight = cropRight;
-                shape.PictureFormat.CropTop = cropTop;
-                shape.PictureFormat.CropBottom = cropBottom;
+            }
+
+            if (!hasChange)
+            {
+                throw new CropLabException(CropLabErrorHandler.ErrorCodeNoPaddingCropped.ToString());
             }
 
             return shapeRange;

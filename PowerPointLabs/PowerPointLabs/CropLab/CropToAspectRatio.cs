@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
-
+﻿using System;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -8,6 +6,8 @@ namespace PowerPointLabs.CropLab
 {
     internal class CropToAspectRatio
     {
+        private const float Epsilon = 0.05f;
+
         public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, float aspectRatio)
         {
             var croppedShape = Crop(selection.ShapeRange, aspectRatio);
@@ -20,6 +20,8 @@ namespace PowerPointLabs.CropLab
 
         public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange, float aspectRatio)
         {
+            bool hasChange = false;
+
             for (int i = 1; i <= shapeRange.Count; i++)
             {
                 PowerPoint.ShapeRange origShape = shapeRange[i].Duplicate();
@@ -33,7 +35,11 @@ namespace PowerPointLabs.CropLab
                 float currentHeight = shapeRange[i].Height - (shapeRange[i].PictureFormat.CropTop + shapeRange[i].PictureFormat.CropBottom) / origHeight;
                 float currentProportions = currentWidth / currentHeight;
 
-                if (currentProportions > aspectRatio)
+                if (IsApproximatelyEquals(currentProportions, aspectRatio))
+                {
+                    continue;
+                }
+                else if (currentProportions > aspectRatio)
                 {
                     // Crop the width
                     float desiredWidth = currentHeight * aspectRatio;
@@ -41,6 +47,7 @@ namespace PowerPointLabs.CropLab
                     float widthToCropEachSideRatio = widthToCropEachSide / currentWidth;
                     shapeRange[i].PictureFormat.CropLeft += origWidth * widthToCropEachSideRatio;
                     shapeRange[i].PictureFormat.CropRight += origWidth * widthToCropEachSideRatio;
+                    hasChange = true;
                 }
                 else if (currentProportions < aspectRatio)
                 {
@@ -50,10 +57,21 @@ namespace PowerPointLabs.CropLab
                     float heightToCropEachSideRatio = heightToCropEachSide / currentHeight;
                     shapeRange[i].PictureFormat.CropTop += origHeight * heightToCropEachSideRatio;
                     shapeRange[i].PictureFormat.CropBottom += origHeight * heightToCropEachSideRatio;
+                    hasChange = true;
                 }
             }
 
+            if (!hasChange)
+            {
+                throw new CropLabException(CropLabErrorHandler.ErrorCodeNoAspectRatioCropped.ToString());
+            }
+
             return shapeRange;
+        }
+
+        private static bool IsApproximatelyEquals(float a, float b)
+        {
+            return Math.Abs(a - b) < Epsilon;
         }
     }
 }

@@ -18,7 +18,9 @@ namespace PowerPointLabs.CropLab
         public const int ErrorCodeUndefined = 5;
         public const int ErrorCodeSelectionMustBeShapeOrPicture = 6;
         public const int ErrorCodeNoShapeOverBoundary = 7;
-        public const int ErrorCodeNoDimensionCroppingDone = 8;
+        public const int ErrorCodeNoDimensionCropped = 8;
+        public const int ErrorCodeNoPaddingCropped = 9;
+        public const int ErrorCodeNoAspectRatioCropped = 10;
 
         private IMessageService View { get; set; }
         private static CropLabErrorHandler _errorHandler;
@@ -31,7 +33,9 @@ namespace PowerPointLabs.CropLab
         private const string ErrorMessageUndefined = TextCollection.CropLabText.ErrorUndefined;
         private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
         private const string ErrorMessageNoShapeOverBoundary = TextCollection.CropLabText.ErrorMessageNoShapeOverBoundary;
-        private const string ErrorMessageNoDimensionCroppingDone = TextCollection.CropLabText.ErrorMessageNoDimensionCroppingDone;
+        private const string ErrorMessageNoDimensionCropped = TextCollection.CropLabText.ErrorMessageNoDimensionCropped;
+        private const string ErrorMessageNoPaddingCropped = TextCollection.CropLabText.ErrorMessageNoPaddingCropped;
+        private const string ErrorMessageNoAspectRatioCropped = TextCollection.CropLabText.ErrorMessageNoAspectRatioCropped;
 
         private CropLabErrorHandler(IMessageService view = null)
         {
@@ -70,7 +74,9 @@ namespace PowerPointLabs.CropLab
                 case ErrorCodeSelectionCountZero:
                 case ErrorCodeAspectRatioIsInvalid:
                 case ErrorCodeNoShapeOverBoundary:
-                case ErrorCodeNoDimensionCroppingDone:
+                case ErrorCodeNoDimensionCropped:
+                case ErrorCodeNoPaddingCropped:
+                case ErrorCodeNoAspectRatioCropped:
                     ShowErrorMessage(errorCode);
                     break;
                 default:
@@ -126,8 +132,12 @@ namespace PowerPointLabs.CropLab
                     return ErrorMessageForSelectionCountZero;
                 case ErrorCodeNoShapeOverBoundary:
                     return ErrorMessageNoShapeOverBoundary;
-                case ErrorCodeNoDimensionCroppingDone:
-                    return ErrorMessageNoDimensionCroppingDone;
+                case ErrorCodeNoDimensionCropped:
+                    return ErrorMessageNoDimensionCropped;
+                case ErrorCodeNoPaddingCropped:
+                    return ErrorMessageNoPaddingCropped;
+                case ErrorCodeNoAspectRatioCropped:
+                    return ErrorMessageNoAspectRatioCropped;
                 default:
                     return ErrorMessageUndefined;
             }
