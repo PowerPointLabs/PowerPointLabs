@@ -8,7 +8,7 @@ using Graphics = PowerPointLabs.Utils.Graphics;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class LineFillFormat
+    class LineDashTypeFormat
     {
         public static bool CanCopy(Shape formatShape)
         {
@@ -19,19 +19,17 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             if (!Sync(formatShape, newShape))
             {
-                Logger.Log(newShape.Type + " unable to sync Line Fill");
+                Logger.Log(newShape.Type + " unable to sync Dash Style");
             }
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
         {
             Shapes shapes = SyncFormatUtil.GetTemplateShapes();
-            Shape shape = shapes.AddShape(
-                    Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0,
-                    SyncFormatConstants.DisplayImageSize.Width,
-                    SyncFormatConstants.DisplayImageSize.Height);
-            shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
-            shape.Fill.ForeColor = formatShape.Line.ForeColor;
+            Shape shape = shapes.AddLine(
+                0, SyncFormatConstants.DisplayImageSize.Height,
+                SyncFormatConstants.DisplayImageSize.Width, 0);
+            SyncFormat(formatShape, shape);
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
@@ -41,8 +39,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             try
             {
-                newShape.Line.ForeColor = formatShape.Line.ForeColor;
-                newShape.Line.BackColor = formatShape.Line.BackColor;
+                newShape.Line.DashStyle = formatShape.Line.DashStyle;
             }
             catch (Exception)
             {
