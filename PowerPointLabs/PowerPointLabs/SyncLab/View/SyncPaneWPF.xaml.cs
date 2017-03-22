@@ -62,10 +62,10 @@ namespace PowerPointLabs.SyncLab.View
         #endregion
 
         #region Sync API
-        public void AddFormatToList(Shape shape, FormatTreeNode[] formats)
+        public void AddFormatToList(Shape shape, string name, FormatTreeNode[] formats)
         {
             SyncFormatPaneItem item = new SyncFormatPaneItem(formatListBox, CopyShape(shape), formats);
-            item.Text = shape.Name;
+            item.Text = name;
             item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToImage(shape));
             formatListBox.Items.Insert(0, item);
             item.IsChecked = true;
@@ -116,12 +116,13 @@ namespace PowerPointLabs.SyncLab.View
             }
             var shape = selection.ShapeRange[1];
             SyncFormatDialog dialog = new SyncFormatDialog(shape);
+            dialog.ObjectName = shape.Name;
             bool? result = dialog.ShowDialog();
             if (!result.HasValue || !(bool)result)
             {
                 return;
             }
-            AddFormatToList(shape, dialog.Formats);
+            AddFormatToList(shape, dialog.ObjectName, dialog.Formats);
         }
 
         private void PasteButton_Click(object sender, RoutedEventArgs e)
