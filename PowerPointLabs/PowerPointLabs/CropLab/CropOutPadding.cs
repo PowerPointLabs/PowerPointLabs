@@ -84,14 +84,12 @@ namespace PowerPointLabs.CropLab
                 {
                     hasChange = true;
                 }
-
+                
+                shape.Rotation = currentRotation;
                 shape.PictureFormat.CropLeft = newCropLeft;
                 shape.PictureFormat.CropRight = newCropRight;
                 shape.PictureFormat.CropTop = newCropTop;
                 shape.PictureFormat.CropBottom = newCropBottom;
-
-                // Restore original properties
-                shape.Rotation = currentRotation;
             }
 
             if (!hasChange)
