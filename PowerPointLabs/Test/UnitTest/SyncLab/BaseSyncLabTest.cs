@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
-namespace Test.UnitTest.ResizeLab
+namespace Test.UnitTest.SyncLab
 {
     [TestClass]
-    public class BaseSyncLabTest : BaseUnitTest
+    public class BaseSyncLabTest :BaseUnitTest
     {
         private readonly Dictionary<string, string> _originalShapeName = new Dictionary<string, string>();
 
@@ -16,19 +16,10 @@ namespace Test.UnitTest.ResizeLab
             return "SyncLab.pptx";
         }
 
-        protected void InitOriginalShapes(int slideNumber, List<string> shapeNames)
+        protected PowerPoint.Shape GetShape(int slideNumber, string shapeName)
         {
-            var shapes = GetShapes(slideNumber, shapeNames);
-
-            _originalShapeName.Clear();
-            foreach(PowerPoint.Shape shape in shapes)
-            {
-                var duplicateShape = shape.Duplicate()[1];
-                duplicateShape.Top = shape.Top;
-                duplicateShape.Left = shape.Left;
-                duplicateShape.Name = Guid.NewGuid().ToString();
-                _originalShapeName.Add(duplicateShape.Name, shape.Name);
-            }
+            PpOperations.SelectSlide(slideNumber);
+            return PpOperations.SelectShape(shapeName)[1];
         }
 
         protected PowerPoint.ShapeRange GetShapes(int slideNumber, IEnumerable<string> shapeNames)
@@ -37,28 +28,17 @@ namespace Test.UnitTest.ResizeLab
             return PpOperations.SelectShapes(shapeNames);
         }
 
-        protected void RestoreShapes(int slideNumber, IEnumerable<string> shapeNames)
+        protected void CheckShapes(int actualShapesSlideNo, int expectedShapesSlideNo, IEnumerable<string> shapeNames)
         {
-            try
-            {
-                var duplicatedShapeNames = new List<string>(_originalShapeName.Keys);
-                var executedShapes = GetShapes(slideNumber, shapeNames);
-                var shapes = GetShapes(slideNumber, duplicatedShapeNames);
-                executedShapes.Delete();
+          
+            var actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
+            var expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
 
-                foreach (PowerPoint.Shape shape in shapes)
-                {
-                    shape.Name = _originalShapeName[shape.Name];
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-        }
+            SlideUtil.IsSameLooking(actualSlide, expectedSlide);
+            
+            /*var actualShapes = GetShapes(actualShapesSlideNo, shapeNames);
+            var expectedShapes = GetShapes(expectedShapesSlideNo, shapeNames);
 
-        protected void CheckShapes(PowerPoint.ShapeRange expectedShapes, PowerPoint.ShapeRange actualShapes)
-        {
             foreach (PowerPoint.Shape actualShape in actualShapes)
             {
                 var isFound = false;
@@ -75,7 +55,7 @@ namespace Test.UnitTest.ResizeLab
                 {
                     Assert.Fail("Unable to find corresponding actual shape");
                 }
-            }
+            }*/
         }
     }
 }
