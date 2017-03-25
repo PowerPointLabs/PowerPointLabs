@@ -328,6 +328,7 @@ namespace PowerPointLabs.TimerLab
                 DurationTextBox.Value = integerPart + 1;
             }
 
+            // remove current marker and add with new markers
             int duration = Duration();
             Shape lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
             lineMarkerGroup.Delete();
@@ -348,6 +349,23 @@ namespace PowerPointLabs.TimerLab
                     timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
                     TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
                     TimerLabConstants.DefaultTimeMarkerHeight);
+            }
+
+            // adjust slider
+            Shape sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
+            sliderHead.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            Shape sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
+            sliderBody.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            foreach (PowerPoint.Effect effect in this.GetCurrentSlide().TimeLine.MainSequence)
+            {
+                if (effect.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectPathRight)
+                {
+                    if (effect.Shape.Name.Equals(TimerLabConstants.TimerSliderBody) ||
+                        effect.Shape.Name.Equals(TimerLabConstants.TimerSliderHead))
+                    {
+                        effect.Timing.Duration = duration;
+                    }
+                }
             }
         }
 
