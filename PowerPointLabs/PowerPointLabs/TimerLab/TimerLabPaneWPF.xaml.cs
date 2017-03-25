@@ -327,6 +327,28 @@ namespace PowerPointLabs.TimerLab
             {
                 DurationTextBox.Value = integerPart + 1;
             }
+
+            int duration = Duration();
+            Shape lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
+            lineMarkerGroup.Delete();
+            Shape timerMarkeGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroup);
+            timerMarkeGroup.Delete();
+            if (duration <= TimerLabConstants.SecondsInMinute)
+            {
+                Shape timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+                AddSecondsMarker(duration, TimerLabConstants.DefaultDenomination,
+                    timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
+                    TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
+                    TimerLabConstants.DefaultTimeMarkerHeight);
+            }
+            else
+            {
+                Shape timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+                AddMinutesMarker(duration, TimerLabConstants.DefaultDenomination,
+                    timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
+                    TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
+                    TimerLabConstants.DefaultTimeMarkerHeight);
+            }
         }
 
         #endregion
