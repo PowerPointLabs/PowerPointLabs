@@ -15,12 +15,6 @@
 
     internal static class CropLabSettings
     {
-        private static AnchorPosition anchorPosition = AnchorPosition.Middle;
-
-        public static AnchorPosition AnchorPosition
-        {
-            get { return anchorPosition; }
-            set { anchorPosition = value; }
-        }
+        public static AnchorPosition AnchorPosition = AnchorPosition.Middle;
     }
 }

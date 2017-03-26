@@ -7,23 +7,17 @@ namespace PowerPointLabs.CropLab
     /// </summary>
     public partial class CropLabSettingsDialog
     {
-        private AnchorPosition selectedAnchor;
-
         public CropLabSettingsDialog()
         {
-            selectedAnchor = CropLabSettings.AnchorPosition;
+            SelectedAnchor = CropLabSettings.AnchorPosition;
             InitializeComponent();
         }
 
-        public AnchorPosition SelectedAnchor
-        {
-            get { return selectedAnchor; }
-            set { selectedAnchor = value; }
-        }
+        public AnchorPosition SelectedAnchor { get; set; }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            CropLabSettings.AnchorPosition = selectedAnchor;
+            CropLabSettings.AnchorPosition = SelectedAnchor;
             Close();
         }
 
