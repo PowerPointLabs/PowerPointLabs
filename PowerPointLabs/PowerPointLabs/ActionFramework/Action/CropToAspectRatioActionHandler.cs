@@ -31,7 +31,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             if (!IsPictureForSelection(shapeRange))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;
             }
 
@@ -60,12 +60,19 @@ namespace PowerPointLabs.ActionFramework.Action
             float aspectRatioHeight = 0.0f;
             if (!TryParseAspectRatio(aspectRatioRawString, out aspectRatioWidth, out aspectRatioHeight))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeAspectRatioIsInvalid, FeatureName, errorHandler);
                 return;
             }
             float aspectRatio = aspectRatioWidth / aspectRatioHeight;
 
-            CropToAspectRatio.Crop(selection, aspectRatio);
+            try
+            {
+                CropToAspectRatio.Crop(selection, aspectRatio);
+            }
+            catch (CropLabException e)
+            {
+                HandleCropLabException(e, FeatureName, errorHandler);
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             if (!IsPictureForSelection(shapeRange))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             catch (CropLabException e)
             {
-                errorHandler.ProcessException(e, e.Message);
+                HandleCropLabException(e, FeatureName, errorHandler);
             }
         }
     }

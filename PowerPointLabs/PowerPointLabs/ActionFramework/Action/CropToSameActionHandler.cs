@@ -29,13 +29,13 @@ namespace PowerPointLabs.ActionFramework.Action
             }
             if (!IsPictureForSelection(shapeRange))
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;
             }
             bool hasChange = CropToSame.CropSelection(shapeRange);
             if (!hasChange)
             {
-                HandleErrorCodeIfRequired(CropLabErrorHandler.ErrorCodeNoDimensionCroppingDone, FeatureName, errorHandler);
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeNoDimensionCropped, FeatureName, errorHandler);
             }
         }
     }

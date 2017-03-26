@@ -416,7 +416,9 @@
             public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
             public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
             public const string ErrorMessageNoShapeOverBoundary = "Can't find any shapes crossing a boundary. No cropping was done.";
-            public const string ErrorMessageNoDimensionCroppingDone = "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.";
+            public const string ErrorMessageNoDimensionCropped = "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.";
+            public const string ErrorMessageNoPaddingCropped = "The selected pictures have no transparent padding. No cropping was done.";
+            public const string ErrorMessageNoAspectRatioCropped = "The selected pictures are already in the given aspect ratio. No cropping was done.";
         }
 
         #endregion
