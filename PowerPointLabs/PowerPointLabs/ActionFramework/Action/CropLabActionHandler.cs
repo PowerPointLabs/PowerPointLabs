@@ -8,7 +8,7 @@ namespace PowerPointLabs.ActionFramework.Action
 {
     abstract class CropLabActionHandler : BaseUtilActionHandler
     {
-        protected static void HandleErrorCodeIfRequired(int errorCode, string featureName, CropLabErrorHandler errorHandler)
+        protected static void HandleErrorCode(int errorCode, string featureName, CropLabErrorHandler errorHandler)
         {
             if (errorHandler == null)
             {
@@ -24,6 +24,23 @@ namespace PowerPointLabs.ActionFramework.Action
                 return;
             }
             errorHandler.ProcessErrorCode(errorCode, featureName, validSelectionType, validSelectionMinCount);
+        }
+
+        protected static void HandleCropLabException(CropLabException e, string featureName, CropLabErrorHandler errorHandler)
+        {
+            if (errorHandler == null)
+            {
+                return;
+            }
+
+            if (e.Message.Equals(CropLabErrorHandler.ErrorCodeNoAspectRatioCropped.ToString()))
+            {
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeNoAspectRatioCropped, featureName, errorHandler);
+            }
+            else if (e.Message.Equals(CropLabErrorHandler.ErrorCodeNoPaddingCropped.ToString()))
+            {
+                HandleErrorCode(CropLabErrorHandler.ErrorCodeNoPaddingCropped, featureName, errorHandler);
+            }
         }
 
         protected static bool TryParseAspectRatio(string aspectRatioString, out float aspectRatioWidth, out float aspectRatioHeight)
