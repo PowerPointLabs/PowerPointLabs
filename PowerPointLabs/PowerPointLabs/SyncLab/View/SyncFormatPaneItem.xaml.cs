@@ -17,11 +17,11 @@ namespace PowerPointLabs.SyncLab.View
     {
 
         
-        Bitmap image;
+        private Bitmap image;
 
-        SyncPaneWPF parent;
-        Shape shape = null;
-        FormatTreeNode[] formats = null;
+        private SyncPaneWPF parent;
+        private Shape shape = null;
+        private FormatTreeNode[] formats = null;
 
         public SyncFormatPaneItem(SyncPaneWPF parent, Shape shape, FormatTreeNode[] formats)
         {
