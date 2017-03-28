@@ -7,17 +7,18 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabLineTest : BaseSyncLabTest
     {
-        private const int OriginalShapesSlideNo = 22;
+        private const int OriginalShapesSlideNo = 23;
         private const string CopyFromShape = "CopyFrom";
         private const string StraightLine = "Straight Connector 2";
         private const string Arrow = "Right Arrow 5";
 
         //Results of Operations
-        private const int SyncLineFillSlideNo = 23;
-        private const int SyncLineWidthSlideNo = 24;
-        private const int SyncLineCompoundTypeSlideNo = 25;
-        private const int SyncLineDashTypeSlideNo = 26;
-        private const int SyncLineArrowSlideNo = 27;
+        private const int SyncLineFillSlideNo = 24;
+        private const int SyncLineWidthSlideNo = 25;
+        private const int SyncLineCompoundTypeSlideNo = 26;
+        private const int SyncLineDashTypeSlideNo = 27;
+        private const int SyncLineArrowSlideNo = 28;
+        private const int SyncLineTransparencySlideNo = 29;
 
         [TestMethod]
         [TestCategory("UT")]
@@ -84,11 +85,31 @@ namespace Test.UnitTest.SyncLab
             CheckLineStyle(StraightLine, OriginalShapesSlideNo, SyncLineArrowSlideNo);
         }
 
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncLineTransparency()
+        {
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+
+            var newShape = GetShape(OriginalShapesSlideNo, Arrow);
+            LineTransparencyFormat.SyncFormat(formatShape, newShape);
+
+            CompareSlides(OriginalShapesSlideNo, SyncLineTransparencySlideNo);
+            CheckLineStyle(Arrow, OriginalShapesSlideNo, SyncLineTransparencySlideNo);
+        }
+
+        //Changes in line style are too minute for CompareSlide to detect so we need to check them manually
         protected void CheckLineStyle(string shape, int actualShapesSlideNo, int expectedShapesSlideNo)
         {
             var actualShape = GetShape(actualShapesSlideNo, shape);
             var expectedShape = GetShape(expectedShapesSlideNo, shape);
 
+            //Check transparency style
+            Assert.IsTrue(actualShape.Line.Transparency == expectedShape.Line.Transparency,
+                "different transparency. exp:{0}, actual:{1}",
+                expectedShape.Line.Transparency, actualShape.Line.Transparency);
+
+            //Check line style
             Assert.IsTrue(actualShape.Line.Style == expectedShape.Line.Style,
                 "different compound type. exp:{0}, actual:{1}",
                 expectedShape.Line.Style, actualShape.Line.Style);
@@ -96,6 +117,7 @@ namespace Test.UnitTest.SyncLab
                 "different dash type. exp:{0}, actual:{1}",
                 expectedShape.Line.DashStyle, actualShape.Line.DashStyle);
 
+            //Check arrow style
             Assert.IsTrue(actualShape.Line.BeginArrowheadLength == expectedShape.Line.BeginArrowheadLength,
                 "different begin arrowhead length. exp:{0}, actual:{1}",
                 expectedShape.Line.BeginArrowheadLength, actualShape.Line.BeginArrowheadLength);
@@ -114,7 +136,6 @@ namespace Test.UnitTest.SyncLab
             Assert.IsTrue(actualShape.Line.EndArrowheadWidth == expectedShape.Line.EndArrowheadWidth,
                 "different end arrowhead width. exp:{0}, actual:{1}",
                 expectedShape.Line.EndArrowheadWidth, actualShape.Line.EndArrowheadWidth);
-
         }
     }
 }

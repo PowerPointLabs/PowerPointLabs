@@ -17,6 +17,7 @@ namespace Test.UnitTest.SyncLab
         private const int SyncPatternFillSlideNo = 11;
         private const int SyncSolidFillSlideNo = 12;
         private const int SyncBackgroundFillSlideNo = 13;
+        private const int SyncTransparencySlideNo = 14;
 
         [TestMethod]
         [TestCategory("UT")]
@@ -39,6 +40,19 @@ namespace Test.UnitTest.SyncLab
             syncFill(BackgroundFill, SyncBackgroundFillSlideNo);
         }
 
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncTransparency()
+        {
+            var formatShape = GetShape(OriginalShapesSlideNo, SolidFill);
+
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            FillTransparencyFormat.SyncFormat(formatShape, newShape);
+
+            CompareSlides(OriginalShapesSlideNo, SyncTransparencySlideNo);
+            CheckTransparency(CopyToShape, OriginalShapesSlideNo, SyncTransparencySlideNo);
+        }
+
         protected void syncFill(string shapeToCopy, int expectedSlideNo)
         {
             var formatShape = GetShape(OriginalShapesSlideNo, shapeToCopy);
@@ -47,6 +61,18 @@ namespace Test.UnitTest.SyncLab
             FillFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, expectedSlideNo);
+            CheckTransparency(CopyToShape, OriginalShapesSlideNo, expectedSlideNo);
+        }
+
+        //Changes in transparency are too minute for CompareSlide to detect so we need to check them manually
+        protected void CheckTransparency(string shape, int actualShapesSlideNo, int expectedShapesSlideNo)
+        {
+            var actualShape = GetShape(actualShapesSlideNo, shape);
+            var expectedShape = GetShape(expectedShapesSlideNo, shape);
+
+            Assert.IsTrue(actualShape.Fill.Transparency == expectedShape.Fill.Transparency,
+                "different transparency. exp:{0}, actual:{1}",
+                expectedShape.Fill.Transparency, actualShape.Fill.Transparency);
         }
     }
 }

@@ -7,17 +7,17 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabFontTest : BaseSyncLabTest
     {
-        private const int OriginalShapesSlideNo = 15;
+        private const int OriginalShapesSlideNo = 16;
         private const string CopyFromSmallShape = "CopyFromSmall";
         private const string CopyFromLargeShape = "CopyFromLarge";
         private const string CopyToShape = "Rectangle 3";
 
         //Results of Operations
-        private const int SyncFontFamilySlideNo = 16;
-        private const int SyncFontSizeSlideNo = 17;
-        private const int SyncFontFillSlideNo = 18;
-        private const int SyncOneFontStyleSlideNo = 19;
-        private const int SyncAllFontStyleSlideNo = 20;
+        private const int SyncFontFamilySlideNo = 17;
+        private const int SyncFontSizeSlideNo = 18;
+        private const int SyncFontFillSlideNo = 19;
+        private const int SyncOneFontStyleSlideNo = 20;
+        private const int SyncAllFontStyleSlideNo = 21;
 
         [TestMethod]
         [TestCategory("UT")]
@@ -82,7 +82,7 @@ namespace Test.UnitTest.SyncLab
             CheckFontStyle(OriginalShapesSlideNo, SyncAllFontStyleSlideNo);
         }
 
-        //Changes in font style are too minute for CompareSlide to detect so we need to chek them manually
+        //Changes in font style are too minute for CompareSlide to detect so we need to check them manually
         protected void CheckFontStyle(int actualShapesSlideNo, int expectedShapesSlideNo)
         {
             var actualShape = GetShape(actualShapesSlideNo, CopyToShape);
