@@ -12,7 +12,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return Sync(formatShape, formatShape);
+            var duplicateShape = formatShape.Duplicate()[1];
+            bool canCopy = Sync(formatShape, duplicateShape);
+            duplicateShape.Delete();
+            return canCopy;
         }
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
@@ -56,12 +59,75 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     newShape.Fill.Solid();
                     newShape.Fill.ForeColor = formatShape.Fill.ForeColor;
                 }
+                else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillGradient)
+                {
+                    SyncGradient(formatShape, newShape);
+                }
             }
             catch (Exception)
             {
                 return false;
             }
             return true;
+        }
+
+        private static void SyncGradient(Shape formatShape, Shape newShape) //should return bool?
+        {
+            var gradientColorType = formatShape.Fill.GradientColorType;
+
+            if (gradientColorType == Microsoft.Office.Core.MsoGradientColorType.msoGradientOneColor)
+            {
+                newShape.Fill.OneColorGradient(formatShape.Fill.GradientStyle, formatShape.Fill.GradientVariant, formatShape.Fill.GradientDegree);
+                SyncInitialGradientStops(formatShape, newShape);
+            }
+            else if (gradientColorType == Microsoft.Office.Core.MsoGradientColorType.msoGradientTwoColors)
+            {
+                newShape.Fill.TwoColorGradient(formatShape.Fill.GradientStyle, formatShape.Fill.GradientVariant);
+                SyncInitialGradientStops(formatShape, newShape);
+            }
+            else if (gradientColorType == Microsoft.Office.Core.MsoGradientColorType.msoGradientPresetColors)
+            {
+                newShape.Fill.PresetGradient(formatShape.Fill.GradientStyle, formatShape.Fill.GradientVariant, formatShape.Fill.PresetGradientType);
+            }
+            else if (gradientColorType == Microsoft.Office.Core.MsoGradientColorType.msoGradientMultiColor)
+            {
+                int formatGradientVarient = 1;
+                try
+                {
+                    formatGradientVarient = formatShape.Fill.GradientVariant;
+                }
+                catch
+                {
+                    formatGradientVarient = 1;
+                }
+                newShape.Fill.OneColorGradient(formatShape.Fill.GradientStyle, formatGradientVarient, 0);
+                SyncInitialGradientStops(formatShape, newShape);
+                for (int i = 3; i <= formatShape.Fill.GradientStops.Count; i++)
+                {
+                    newShape.Fill.GradientStops.Insert(formatShape.Fill.GradientStops[i].Color.RGB,
+                        formatShape.Fill.GradientStops[i].Position, formatShape.Fill.GradientStops[i].Transparency);
+                }
+
+                try
+                {
+                    newShape.Fill.GradientAngle = formatShape.Fill.GradientAngle;
+                }
+                catch (Exception)
+                {
+                    //gradient has no angle
+                }
+            }
+        }
+
+        private static void SyncInitialGradientStops(Shape formatShape, Shape newShape)
+        {
+            newShape.Fill.GradientStops[1].Color.RGB = formatShape.Fill.GradientStops[1].Color.RGB;
+            newShape.Fill.GradientStops[1].Position = formatShape.Fill.GradientStops[1].Position;
+
+            newShape.Fill.GradientStops[2].Color.RGB = formatShape.Fill.GradientStops[2].Color.RGB;
+            newShape.Fill.GradientStops[2].Position = formatShape.Fill.GradientStops[2].Position;
+
+            newShape.Fill.RotateWithObject = formatShape.Fill.RotateWithObject;
         }
     }
 }
