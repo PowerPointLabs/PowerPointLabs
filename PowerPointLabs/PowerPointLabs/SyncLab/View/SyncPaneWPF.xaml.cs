@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.View
@@ -134,6 +135,7 @@ namespace PowerPointLabs.SyncLab.View
                 MessageBox.Show(TextCollection.SyncLabPasteSelectError);
                 return;
             }
+            this.StartNewUndoEntry();
             SyncFormatPaneItem selectedItem = null;
             foreach (Object obj in formatListBox.Items)
             {
