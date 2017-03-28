@@ -16,15 +16,26 @@ namespace PowerPointLabs.SyncLab.View
     public partial class SyncFormatDialog : Window
     {
 
+        string originalName;
         FormatTreeNode[] formats = null;
 
-        public SyncFormatDialog(Shape shape) : this(shape, SyncFormatConstants.FormatCategories)
+        public SyncFormatDialog(Shape shape) : this(shape, shape.Name, SyncFormatConstants.FormatCategories)
         {
         }
 
-        public SyncFormatDialog(Shape shape, FormatTreeNode[] formats)
+        public SyncFormatDialog(Shape shape, string formatName, FormatTreeNode[] formats)
         {
             InitializeComponent();
+            formatName = formatName.Trim();
+            if (SyncFormatUtil.IsValidFormatName(formatName))
+            {
+                this.originalName = formatName;
+            }
+            else
+            {
+                this.originalName = TextCollection.SyncLabDefaultFormatName;
+            }
+            this.originalName = formatName;
             this.formats = formats;
             foreach (FormatTreeNode format in formats)
             {
@@ -114,7 +125,14 @@ namespace PowerPointLabs.SyncLab.View
         {
             get
             {
-                return nameTextBox.Text;
+                if (SyncFormatUtil.IsValidFormatName(nameTextBox.Text))
+                {
+                    return nameTextBox.Text.Trim();
+                }
+                else
+                {
+                    return this.originalName;
+                }
             }
             set
             {
