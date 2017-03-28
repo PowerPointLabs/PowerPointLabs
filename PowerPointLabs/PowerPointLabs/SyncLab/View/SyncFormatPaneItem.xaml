@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="PowerPointLabs.SyncLab.View.SyncFormatPaneItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerPointLabs.SyncLab.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="300"
+             MouseDoubleClick="OnMouseDoubleClick">
+    <Grid x:Name="grid">
+        <Image x:Name="imageBox" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
+        <Label x:Name="label" Margin="45,7,60,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Button x:Name="pasteButton" Content="P" Margin="0,15,35,15" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20"/>
+        <Button x:Name="editButton" Content="E" Margin="0,15,10,15" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20"/>
+    </Grid>
+</UserControl>

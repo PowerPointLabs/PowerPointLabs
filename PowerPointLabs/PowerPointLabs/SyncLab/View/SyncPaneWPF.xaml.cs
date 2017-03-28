@@ -24,11 +24,6 @@ namespace PowerPointLabs.SyncLab.View
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
-            pasteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.FillColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
         }
 
         #region GUI API
@@ -38,11 +33,6 @@ namespace PowerPointLabs.SyncLab.View
             {
                 return formatListBox.Items.Count;
             }
-        }
-
-        public bool? IsFormatChecked(int index)
-        {
-            return (formatListBox.Items[index] as SyncFormatPaneItem).IsChecked;
         }
 
         public FormatTreeNode[] GetFormats(int index)
@@ -64,11 +54,22 @@ namespace PowerPointLabs.SyncLab.View
         #region Sync API
         public void AddFormatToList(Shape shape, string name, FormatTreeNode[] formats)
         {
-            SyncFormatPaneItem item = new SyncFormatPaneItem(formatListBox, CopyShape(shape), formats);
+            SyncFormatPaneItem item = new SyncFormatPaneItem(this, CopyShape(shape), formats);
             item.Text = name;
             item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToImage(shape));
             formatListBox.Items.Insert(0, item);
-            item.IsChecked = true;
+        }
+
+        public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape)
+        {
+            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            if (selection.Type != PpSelectionType.ppSelectionShapes ||
+                selection.ShapeRange.Count == 0)
+            {
+                MessageBox.Show(TextCollection.SyncLabPasteSelectError);
+                return;
+            }
+            ApplyFormats(nodes, formatShape, selection.ShapeRange);
         }
 
         public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)
@@ -123,28 +124,6 @@ namespace PowerPointLabs.SyncLab.View
                 return;
             }
             AddFormatToList(shape, dialog.ObjectName, dialog.Formats);
-        }
-
-        private void PasteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            if (selection.Type != PpSelectionType.ppSelectionShapes ||
-                selection.ShapeRange.Count == 0)
-            {
-                MessageBox.Show(TextCollection.SyncLabPasteSelectError);
-                return;
-            }
-            SyncFormatPaneItem selectedItem = null;
-            foreach (Object obj in formatListBox.Items)
-            {
-                SyncFormatPaneItem item = obj as SyncFormatPaneItem;
-                if (item.IsChecked.HasValue && item.IsChecked.Value)
-                {
-                    selectedItem = item;
-                    break;
-                }
-            }
-            ApplyFormats(selectedItem.Formats, selectedItem.FormatShape, selection.ShapeRange);
         }
         #endregion
 

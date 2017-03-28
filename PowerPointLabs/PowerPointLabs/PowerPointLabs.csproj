@@ -760,10 +760,12 @@
       <DependentUpon>SyncFormatDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="SyncLab\View\SyncFormatDialogItem.cs" />
+    <Compile Include="SyncLab\View\SyncFormatPaneItem.xaml.cs">
+      <DependentUpon>SyncFormatPaneItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SyncLab\View\SyncFormatListItem.xaml.cs">
       <DependentUpon>SyncFormatListItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SyncLab\View\SyncFormatPaneItem.cs" />
     <Compile Include="SyncLab\View\SyncPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1340,6 +1342,10 @@
     <Page Include="SlightAdjustSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SyncLab\View\SyncFormatPaneItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="TimerLab\TimerLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
