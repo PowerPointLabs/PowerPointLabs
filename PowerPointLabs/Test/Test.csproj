@@ -156,6 +156,8 @@
     <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabPositionTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFormatTest.cs" />
