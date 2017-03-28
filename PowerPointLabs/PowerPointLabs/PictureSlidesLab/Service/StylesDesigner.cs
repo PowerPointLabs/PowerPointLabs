@@ -41,7 +41,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public StylesDesigner(Application app = null)
         {
             Path = TempPath.TempFolder;
-            Name = "PictureSlidesLabPreview" + Guid.NewGuid().ToString().Substring(0, 7);
+            Name = "PictureSlidesLabPreview" + Guid.NewGuid().ToString().Substring(0, 7) + ".pptx";
             Option = new StyleOption();
             Application = app;
             OpenInBackground();
