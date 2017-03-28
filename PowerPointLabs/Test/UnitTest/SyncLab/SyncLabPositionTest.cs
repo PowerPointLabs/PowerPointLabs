@@ -15,7 +15,6 @@ namespace Test.UnitTest.SyncLab
         private const string CopyFromShape = "CopyFrom";
 
         private Shape _formatShape;
-        private List<string> _allShapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, CopyFromShape };
 
         //Results of Operations
         private const int SyncXPositionSlideNo = 5;
@@ -36,7 +35,7 @@ namespace Test.UnitTest.SyncLab
             var newShape = GetShape(OriginalShapesSlideNo, UnrotatedRectangle);
             PositionXFormat.SyncFormat(_formatShape, newShape);
 
-            CheckShapes(OriginalShapesSlideNo, SyncXPositionSlideNo, _allShapeNames);
+            CompareSlides(OriginalShapesSlideNo, SyncXPositionSlideNo);
         }
 
         [TestMethod]
@@ -46,7 +45,7 @@ namespace Test.UnitTest.SyncLab
             var newShape = GetShape(OriginalShapesSlideNo, UnrotatedRectangle);
             PositionYFormat.SyncFormat(_formatShape, newShape);
 
-            CheckShapes(OriginalShapesSlideNo, SyncYPositionSlideNo, _allShapeNames);
+            CompareSlides(OriginalShapesSlideNo, SyncYPositionSlideNo);
         }
 
         [TestMethod]
@@ -56,7 +55,7 @@ namespace Test.UnitTest.SyncLab
             var newShape = GetShape(OriginalShapesSlideNo, Oval);
             PositionHeightFormat.SyncFormat(_formatShape, newShape);
 
-            CheckShapes(OriginalShapesSlideNo, SyncHeightSlideNo, _allShapeNames);
+            CompareSlides(OriginalShapesSlideNo, SyncHeightSlideNo);
         }
 
         [TestMethod]
@@ -66,7 +65,7 @@ namespace Test.UnitTest.SyncLab
             var newShape = GetShape(OriginalShapesSlideNo, RotatedArrow);
             PositionWidthFormat.SyncFormat(_formatShape, newShape);
 
-            CheckShapes(OriginalShapesSlideNo, SyncWidthSlideNo, _allShapeNames);
+            CompareSlides(OriginalShapesSlideNo, SyncWidthSlideNo);
         }
     }
 }

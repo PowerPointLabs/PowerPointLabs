@@ -28,34 +28,13 @@ namespace Test.UnitTest.SyncLab
             return PpOperations.SelectShapes(shapeNames);
         }
 
-        protected void CheckShapes(int actualShapesSlideNo, int expectedShapesSlideNo, IEnumerable<string> shapeNames)
+        protected void CompareSlides(int actualShapesSlideNo, int expectedShapesSlideNo)
         {
           
             var actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
             var expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
 
             SlideUtil.IsSameLooking(actualSlide, expectedSlide);
-            
-            /*var actualShapes = GetShapes(actualShapesSlideNo, shapeNames);
-            var expectedShapes = GetShapes(expectedShapesSlideNo, shapeNames);
-
-            foreach (PowerPoint.Shape actualShape in actualShapes)
-            {
-                var isFound = false;
-
-                foreach (PowerPoint.Shape expectedShape in expectedShapes)
-                {
-                    if (!actualShape.Name.Equals(expectedShape.Name)) continue;
-                    isFound = true;
-                    SlideUtil.IsSameShape(expectedShape, actualShape);
-                    break;
-                }
-
-                if (!isFound)
-                {
-                    Assert.Fail("Unable to find corresponding actual shape");
-                }
-            }*/
         }
     }
 }

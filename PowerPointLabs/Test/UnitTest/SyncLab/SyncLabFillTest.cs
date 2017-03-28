@@ -13,8 +13,6 @@ namespace Test.UnitTest.SyncLab
         private const string BackgroundFill = "BackgroundShape";
         private const string CopyToShape = "Rectangle 3";
 
-        private List<string> _allShapeNames = new List<string> { SolidFill, PatternFill, BackgroundFill, CopyToShape };
-
         //Results of Operations
         private const int SyncPatternFillSlideNo = 11;
         private const int SyncSolidFillSlideNo = 12;
@@ -48,7 +46,7 @@ namespace Test.UnitTest.SyncLab
             var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FillFormat.SyncFormat(formatShape, newShape);
 
-            CheckShapes(OriginalShapesSlideNo, expectedSlideNo, _allShapeNames);
+            CompareSlides(OriginalShapesSlideNo, expectedSlideNo);
         }
     }
 }
