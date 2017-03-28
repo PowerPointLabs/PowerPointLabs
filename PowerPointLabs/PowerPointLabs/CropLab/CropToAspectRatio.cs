@@ -44,20 +44,16 @@ namespace PowerPointLabs.CropLab
                 {
                     // Crop the width
                     float desiredWidth = currentHeight * aspectRatio;
-                    float widthToCropEachSide = (currentWidth - desiredWidth) / 2.0f;
-                    float widthToCropEachSideRatio = widthToCropEachSide / currentWidth;
-                    shapeRange[i].PictureFormat.CropLeft += origWidth * widthToCropEachSideRatio;
-                    shapeRange[i].PictureFormat.CropRight += origWidth * widthToCropEachSideRatio;
+                    float widthToCrop = origWidth * ((currentWidth - desiredWidth) / currentWidth);
+                    CropHorizontal(shapeRange[i], widthToCrop);
                     hasChange = true;
                 }
                 else if (currentProportions < aspectRatio)
                 {
                     // Crop the height
                     float desiredHeight = currentWidth / aspectRatio;
-                    float heightToCropEachSide = (currentHeight - desiredHeight) / 2.0f;
-                    float heightToCropEachSideRatio = heightToCropEachSide / currentHeight;
-                    shapeRange[i].PictureFormat.CropTop += origHeight * heightToCropEachSideRatio;
-                    shapeRange[i].PictureFormat.CropBottom += origHeight * heightToCropEachSideRatio;
+                    float heightToCrop = origHeight * ((currentHeight - desiredHeight) / currentHeight);
+                    CropVertical(shapeRange[i], heightToCrop);
                     hasChange = true;
                 }
             }
@@ -68,6 +64,52 @@ namespace PowerPointLabs.CropLab
             }
 
             return shapeRange;
+        }
+
+        private static void CropHorizontal(PowerPoint.Shape shape, float cropAmount)
+        {
+            switch (CropLabSettings.AnchorPosition)
+            {
+                case AnchorPosition.TopLeft:
+                case AnchorPosition.MiddleLeft:
+                case AnchorPosition.BottomLeft:
+                    shape.PictureFormat.CropRight += cropAmount;
+                    break;
+                case AnchorPosition.Top:
+                case AnchorPosition.Middle:
+                case AnchorPosition.Bottom:
+                    shape.PictureFormat.CropLeft += cropAmount / 2.0f;
+                    shape.PictureFormat.CropRight += cropAmount / 2.0f;
+                    break;
+                case AnchorPosition.TopRight:
+                case AnchorPosition.MiddleRight:
+                case AnchorPosition.BottomRight:
+                    shape.PictureFormat.CropLeft += cropAmount;
+                    break;
+            }
+        }
+
+        private static void CropVertical(PowerPoint.Shape shape, float cropAmount)
+        {
+            switch (CropLabSettings.AnchorPosition)
+            {
+                case AnchorPosition.TopLeft:
+                case AnchorPosition.Top:
+                case AnchorPosition.TopRight:
+                    shape.PictureFormat.CropBottom += cropAmount;
+                    break;
+                case AnchorPosition.MiddleLeft:
+                case AnchorPosition.Middle:
+                case AnchorPosition.MiddleRight:
+                    shape.PictureFormat.CropTop += cropAmount / 2.0f;
+                    shape.PictureFormat.CropBottom += cropAmount / 2.0f;
+                    break;
+                case AnchorPosition.BottomLeft:
+                case AnchorPosition.Bottom:
+                case AnchorPosition.BottomRight:
+                    shape.PictureFormat.CropTop += cropAmount;
+                    break;
+            }
         }
 
         private static bool IsApproximatelyEquals(float a, float b)

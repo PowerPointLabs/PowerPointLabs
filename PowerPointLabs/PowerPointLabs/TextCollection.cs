@@ -44,6 +44,9 @@
         public const string CropLabMenuSupertip =
             "Use Crop Lab to crop shapes and pictures professionally with ease.";
 
+        public const string CropLabSettingsSupertip =
+            "Configure the settings for Crop Lab features.";
+
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
@@ -198,6 +201,7 @@
         public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
         public const string CropToSlideButtonLabel = "Crop To Slide";
         public const string CropToSameButtonLabel = "Crop To Same Dimensions";
+        public const string CropLabSettingsButtonLabel = "Settings";
         # endregion
 
         # region Narrations Lab
