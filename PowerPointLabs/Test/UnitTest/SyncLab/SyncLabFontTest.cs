@@ -94,10 +94,10 @@ namespace Test.UnitTest.SyncLab
             Assert.IsTrue(actualFont.Bold == expectedFont.Bold
                 && actualFont.Italic == expectedFont.Italic
                 && actualFont.Underline == expectedFont.Underline,
-                "Font Style does not match expected font style. Expected bold: " + expectedFont.Bold
-                    + ", italic: " + expectedFont.Italic + ", underline: " + expectedFont.Underline
-                    + ". Actual bold: " + actualFont.Bold + ", italic: " + actualFont.Italic + ", underline: "
-                    + actualFont.Underline);
+                "Font Style does not match expected font style. Expected bold:{0}, italic: {1}, underline: {2}."
+                    + "Actual bold:{3}, italic:{4}, underline: {5}",
+                expectedFont.Bold, expectedFont.Italic, expectedFont.Underline,
+                actualFont.Bold, actualFont.Italic, actualFont.Underline);
         }
     }
 }
