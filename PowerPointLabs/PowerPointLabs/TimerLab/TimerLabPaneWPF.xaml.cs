@@ -105,7 +105,7 @@ namespace PowerPointLabs.TimerLab
             {
                 double value = Math.Round(DurationTextBox.Value.Value, 2);
                 int minutes = (int)value;
-                int seconds = (int)((value - minutes) * 100);
+                int seconds = (int)(Math.Round(value - minutes, 2) * 100);
                 duration = (minutes * TimerLabConstants.SecondsInMinute) + seconds;
             }
             return duration;
