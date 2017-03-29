@@ -43,8 +43,7 @@ namespace PowerPointLabs.TimerLab
 
             AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, timerBodyColor);
             AddMarkers(duration, timerWidth, timerHeight, timerLeft, timerTop);
-            AddSlider(duration, timerWidth, timerHeight, timerLeft, timerTop, sliderColor, 
-                this.GetCurrentPresentation().SlideWidth);
+            AddSlider(duration, timerWidth, timerHeight, timerLeft, timerTop, sliderColor, SlideWidth());
         }
 
         #region Slide Dimensions
@@ -150,8 +149,8 @@ namespace PowerPointLabs.TimerLab
                 // Add time marker
                 var timeMarker = this.GetCurrentSlide().Shapes.AddShape(
                     Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
-                    (timerLeft + (currentMarker * widthPerSec)) - (timeMarkerWidth / 2), timerTop + timerHeight, 
-                    timeMarkerWidth, timeMarkerHeight);
+                    (timerLeft + (currentMarker * widthPerSec)) - (timeMarkerWidth / 2), 
+                    timerTop + timerHeight, timeMarkerWidth, timeMarkerHeight);
                 timeMarker.Name = TimerLabConstants.TimerTimeMarker;
                 timeMarker.Fill.Transparency = TimerLabConstants.TransparencyTranparent;
                 timeMarker.Line.Transparency = TimerLabConstants.TransparencyTranparent;
@@ -162,12 +161,14 @@ namespace PowerPointLabs.TimerLab
                 // Add line marker if it is not the start or end
                 if (currentMarker != TimerLabConstants.StartTime && currentMarker != duration)
                 {
-                    var lineMarker = this.GetCurrentSlide().Shapes.AddShape
-                        (Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
-                        timerLeft + (currentMarker * widthPerSec), timerTop, lineMarkerWidth, timerHeight);
+                    float beginX = timerLeft + (currentMarker * widthPerSec);
+                    float beginY = timerTop;
+                    float endX = timerLeft + (currentMarker * widthPerSec);
+                    float endY = timerTop + timerHeight;
+                    var lineMarker = this.GetCurrentSlide().Shapes.AddLine(beginX, beginY, endX, endY);
                     lineMarker.Name = TimerLabConstants.TimerLineMarker;
-                    lineMarker.Line.Transparency = TimerLabConstants.TransparencyTranparent;
-                    lineMarkers.Add(timeMarker);
+                    lineMarker.Line.Weight = TimerLabConstants.DefaultSecondsLineMarkerWidth;
+                    lineMarkers.Add(lineMarker);
                 }
 
                 if (currentMarker == duration)
@@ -230,20 +231,22 @@ namespace PowerPointLabs.TimerLab
                 // Add line marker if it is not the start or end
                 if (currentMarker != TimerLabConstants.StartTime && currentMarker != duration)
                 {
+                    float beginX = timerLeft + (currentMarker * widthPerSec);
+                    float beginY = timerTop;
+                    float endX = timerLeft + (currentMarker * widthPerSec);
+                    float endY = timerTop + timerHeight;
+                    var lineMarker = this.GetCurrentSlide().Shapes.AddLine(beginX, beginY, endX, endY);
+                    lineMarker.Name = TimerLabConstants.TimerLineMarker;
                     //Thicken the line if it is a minute marker
                     if (currentMarker % TimerLabConstants.SecondsInMinute == 0)
                     {
-                        lineMarkerWidth = TimerLabConstants.DefaultMinutesLineMarkerWidth;
+                        lineMarker.Line.Weight = TimerLabConstants.DefaultMinutesLineMarkerWidth;
                     }
-                    var lineMarker = this.GetCurrentSlide().Shapes.AddShape(
-                        Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
-                        timerLeft + (currentMarker * widthPerSec), timerTop, lineMarkerWidth, timerHeight);
-                    lineMarker.Name = TimerLabConstants.TimerLineMarker;
-                    lineMarker.Line.Transparency = TimerLabConstants.TransparencyTranparent;
+                    else
+                    {
+                        lineMarker.Line.Weight = TimerLabConstants.DefaultSecondsLineMarkerWidth;
+                    }
                     lineMarkers.Add(lineMarker);
-
-                    // set line width back to normal
-                    lineMarkerWidth = TimerLabConstants.DefaultSecondsLineMarkerWidth;
                 }
 
                 if (currentMarker == duration)
@@ -357,7 +360,7 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
-        private void DurationTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void DurationTextBox_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (DurationTextBox.Value == null)
             {
@@ -388,28 +391,9 @@ namespace PowerPointLabs.TimerLab
             lineMarkerGroup.Delete();
             Shape timerMarkeGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroup);
             timerMarkeGroup.Delete();
-            if (duration <= TimerLabConstants.SecondsInMinute)
-            {
-                Shape timerBody = GetShapeByName(TimerLabConstants.TimerBody);
-                AddSecondsMarker(duration, TimerLabConstants.DefaultDenomination,
-                    timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
-                    TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
-                    TimerLabConstants.DefaultTimeMarkerHeight);
-            }
-            else
-            {
-                Shape timerBody = GetShapeByName(TimerLabConstants.TimerBody);
-                AddMinutesMarker(duration, TimerLabConstants.DefaultDenomination,
-                    timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
-                    TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
-                    TimerLabConstants.DefaultTimeMarkerHeight);
-            }
+            AddMarkers(Duration(), TimerWidth(), TimerHeight(), TimerLeft(SlideWidth(), TimerWidth()), 
+                TimerTop(SlideHeight(), TimerHeight()));
 
-            // adjust slider z-order
-            Shape sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
-            sliderHead.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
-            Shape sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
-            sliderBody.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
             foreach (PowerPoint.Effect effect in this.GetCurrentSlide().TimeLine.MainSequence)
             {
                 if (effect.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectPathRight)
@@ -421,6 +405,8 @@ namespace PowerPointLabs.TimerLab
                     }
                 }
             }
+
+            AdjustZOrder();
         }
 
         #endregion
@@ -430,8 +416,7 @@ namespace PowerPointLabs.TimerLab
         {
             WidthSlider.Value = TimerLabConstants.DefaultTimerWidth;
             WidthSlider.Minimum = TimerLabConstants.MinTimerWidth;
-            WidthSlider.Maximum = this.GetCurrentPresentation().SlideWidth;
-           
+            WidthSlider.Maximum = SlideWidth();        
         }
 
         private void WidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -473,11 +458,13 @@ namespace PowerPointLabs.TimerLab
                         if (effect.Shape.Name.Equals(TimerLabConstants.TimerSliderBody) || 
                             effect.Shape.Name.Equals(TimerLabConstants.TimerSliderHead))
                         {
-                            float end = timerBody.Width / this.GetCurrentPresentation().SlideWidth;
+                            float end = timerBody.Width / SlideWidth();
                             effect.Behaviors[1].MotionEffect.Path = "M 0 0 L " + end + " 0 E";
                         }
                     }
                 }
+
+                AdjustZOrder();
             }
         }
 
@@ -504,9 +491,9 @@ namespace PowerPointLabs.TimerLab
             {
                 value = (int)TimerLabConstants.MinTimerWidth;
             }
-            else if (value > this.GetCurrentPresentation().SlideWidth)
+            else if (value > SlideWidth())
             {
-                value = (int)this.GetCurrentPresentation().SlideWidth;
+                value = (int)SlideWidth();
             }
             WidthTextBox.Text = value.ToString();
             WidthSlider.Value = value;
@@ -517,7 +504,7 @@ namespace PowerPointLabs.TimerLab
         private void HeightSlider_Loaded(object sender, RoutedEventArgs e)
         {
             HeightSlider.Minimum = TimerLabConstants.MinTimerHeight;
-            HeightSlider.Maximum = this.GetCurrentPresentation().SlideHeight;
+            HeightSlider.Maximum = SlideHeight();
             HeightSlider.Value = TimerLabConstants.DefaultTimerHeight;
         }
 
@@ -551,6 +538,8 @@ namespace PowerPointLabs.TimerLab
 
                 var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
                 sliderHead.Top = NewPosition(sliderHead.Top, increment);
+
+                AdjustZOrder();
             }
         }
 
@@ -577,9 +566,9 @@ namespace PowerPointLabs.TimerLab
             {
                 value = (int)TimerLabConstants.MinTimerHeight;
             }
-            else if (value > this.GetCurrentPresentation().SlideHeight)
+            else if (value > SlideHeight())
             {
-                value = (int)this.GetCurrentPresentation().SlideHeight;
+                value = (int)SlideHeight();
             }
             HeightTextBox.Text = value.ToString();
             HeightSlider.Value = value;
@@ -587,75 +576,9 @@ namespace PowerPointLabs.TimerLab
         #endregion
         #endregion
 
-        #region Shapes Helper
-        private float NewPosition(float originalPosition, float objectSize)
+        #region Timer Helper
+        private void AdjustZOrder()
         {
-            return originalPosition - objectSize / 2;
-        }
-
-        private Shape GetShapeByName(string name)
-        {
-            return GetShapeByName(name, this.GetCurrentSlide().Shapes);
-        }
-
-        private Shape GetShapeByName(string name, dynamic shapes)
-        {
-            foreach (Shape shape in shapes)
-            {
-                if (shape.Name.Equals(name))
-                {
-                    return shape;
-                }
-            }
-            return null;
-        }
-
-        private void GroupShapes(string shapeName, string groupName)
-        {
-            bool firstInGroup = true;
-            foreach (Shape shape in this.GetCurrentSlide().Shapes)
-            {
-                if (shape.Name.Equals(shapeName))
-                {
-                    if (firstInGroup)
-                    {
-                        shape.Select();
-                        firstInGroup = false;
-                    }
-                    else
-                    {
-                        shape.Select(Microsoft.Office.Core.MsoTriState.msoFalse);
-                    }
-                }
-            }
-            Shape group = this.GetCurrentSelection().ShapeRange.Group();
-            group.Name = groupName;
-        }
-        #endregion
-
-        #region Validation Helper
-        private bool HasTimer()
-        {
-            var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
-            var lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
-            var timerMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroup);
-            var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
-            var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
-
-            if ((timerBody == null) && (lineMarkerGroup == null) &&
-                (timerMarkerGroup == null) && (sliderHead == null) && (sliderBody == null))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private void ReformMissingComponents()
-        {
-            ReformTimerBodyIfMissing();
-            ReformMarkersIfMissing();
-            ReformSliderIfMissing();
-
             //Adjust z-order
             var lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
             lineMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
@@ -664,7 +587,16 @@ namespace PowerPointLabs.TimerLab
             var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
             sliderHead.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
             var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
-            lineMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            sliderBody.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+        }
+
+        private void ReformMissingComponents()
+        {
+            ReformTimerBodyIfMissing();
+            ReformMarkersIfMissing();
+            ReformSliderIfMissing();
+
+            AdjustZOrder();
         }
 
         private void ReformTimerBodyIfMissing()
@@ -729,6 +661,68 @@ namespace PowerPointLabs.TimerLab
             {
                 // Do nothing
             }
+        }
+
+        private float NewPosition(float originalPosition, float objectSize)
+        {
+            return originalPosition - objectSize / 2;
+        }
+
+        private Shape GetShapeByName(string name)
+        {
+            return GetShapeByName(name, this.GetCurrentSlide().Shapes);
+        }
+
+        private Shape GetShapeByName(string name, dynamic shapes)
+        {
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Name.Equals(name))
+                {
+                    return shape;
+                }
+            }
+            return null;
+        }
+
+        private void GroupShapes(string shapeName, string groupName)
+        {
+            bool firstInGroup = true;
+            foreach (Shape shape in this.GetCurrentSlide().Shapes)
+            {
+                if (shape.Name.Equals(shapeName))
+                {
+                    if (firstInGroup)
+                    {
+                        shape.Select();
+                        firstInGroup = false;
+                    }
+                    else
+                    {
+                        shape.Select(Microsoft.Office.Core.MsoTriState.msoFalse);
+                    }
+                }
+            }
+            Shape group = this.GetCurrentSelection().ShapeRange.Group();
+            group.Name = groupName;
+        }
+        #endregion
+
+        #region Validation Helper
+        private bool HasTimer()
+        {
+            var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+            var lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
+            var timerMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroup);
+            var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
+            var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
+
+            if ((timerBody == null) && (lineMarkerGroup == null) &&
+                (timerMarkerGroup == null) && (sliderHead == null) && (sliderBody == null))
+            {
+                return false;
+            }
+            return true;
         }
 
         private bool IsNumbersOnly(string text)

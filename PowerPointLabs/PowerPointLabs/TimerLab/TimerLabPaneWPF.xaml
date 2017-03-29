@@ -60,7 +60,7 @@
                                             Minimum="0.01" Maximum="10" Interval="0.01" HorizontalContentAlignment="Left" 
                                             StringFormat="N2" ValueDecremented="DurationTextBox_ValueDecremented" 
                                             ValueIncremented="DurationTextBox_ValueIncremented"
-                                            LostFocus="DurationTextBox_LostFocus"/>
+                                            MouseLeave="DurationTextBox_MouseLeave"/>
                     <Image Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                            Width="23" Height="15" Source="../Resources/TimerLab/MinWidth.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                     <Image Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
