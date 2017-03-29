@@ -104,7 +104,7 @@
             "To activate, select the text to highlight, then click this button.";
         public const string RemoveHighlightButtonSupertip =
             "Removes all Highlighting from the current slide.";
-        
+
         # endregion
 
         # region More Labs
@@ -155,7 +155,7 @@
         #region Timer Lab
         public const string TimerLabButtonSupertip = "Opens the Timer Lab Interface";
         #endregion
-          
+
         #region Sync Lab
         public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
         public const string SyncLabCopySelectError = "Please select one item to copy.";
@@ -378,7 +378,7 @@
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         public const string TimerLabTaskPaneTitle = "Timer Lab";
         public const string SyncLabTaskPanelTitle = "Sync Lab";
-        # endregion 
+        # endregion
 
         # region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
@@ -438,10 +438,10 @@
 
             /// <summary>
             /// Styles Variation Category Name
-            /// 
+            ///
             /// Leave OptionName to be ColorNoEffect to hide color panel & picker
-            /// 
-            /// Color category's name (without spaces) should be equal to corresponding style option's 
+            ///
+            /// Color category's name (without spaces) should be equal to corresponding style option's
             /// property name, so that the color picker can work properly
             /// </summary>
             public const string NoEffect = "No Effect";
@@ -638,7 +638,7 @@
             //------------ Msg ------------
             public const string InfoHowToActivateFeature = "To use this feature, select at least one shape.";
         }
-        
+
         # endregion
 
         # region Task Pane - Shapes Lab
@@ -675,7 +675,7 @@
 
         public const string CustomShapeImportShapeFileDialogTitle = "Import Shapes";
         public const string CustomShapeImportLibraryFileDialogTitle = "Import Library";
-        
+
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
         public const string CustomShapeShapeContextStripMoveShape = "Move Shape To";
@@ -709,6 +709,11 @@
         public class PasteLabText
         {
             public const string PasteToFillSlide = "Paste To Fill Slide";
+            public const string PasteAndReplace = "Replace with Clipboard";
+            public const string PasteIntoGroup = "Paste Into Group";
+            public const string PasteToPosition = "Paste to Cursor Position";
+            public const string PasteToOriginalPosition = "Paste to Original Position";
+            public const string MergeSelection = "Merge into One Group";
         }
         #endregion
 
