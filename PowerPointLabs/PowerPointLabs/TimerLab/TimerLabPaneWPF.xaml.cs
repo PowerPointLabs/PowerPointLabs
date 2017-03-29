@@ -23,7 +23,7 @@ namespace PowerPointLabs.TimerLab
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             // check if timer is already created
-            if (IsTimerExist())
+            if (IsFullTimerExist())
             {
                 ShowErrorMessageBox(TimerLabConstants.ErrorMessageOneTimerOnly);
                 return;
@@ -33,71 +33,23 @@ namespace PowerPointLabs.TimerLab
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
 
-            // Functionality
+            // Properties
             int duration = Duration();
-            int denomination = TimerLabConstants.DefaultDenomination;
-
-            // Aesthetics
-            // Main
             float timerWidth = TimerWidth();
             float timerHeight = TimerHeight();
             int timerBodyColor = System.Drawing.Color.FromArgb(106, 84, 68).ToArgb();
-            // Markers
-            float lineMarkerWidth = TimerLabConstants.DefaultSecondsLineMarkerWidth;
-            float timeMarkerWidth = TimerLabConstants.DefaultTimeMarkerWidth;
-            float timeMarkerHeight = TimerLabConstants.DefaultTimeMarkerHeight;
-            // Slider
-            var sliderHeadSize = TimerLabConstants.DefaultSliderHeadSize;
-            var sliderBodyWidth = TimerLabConstants.DefaultSliderBodyWidth;
             int sliderColor = System.Drawing.Color.FromArgb(70, 150, 247).ToArgb();
 
             // Position
             float timerLeft = (slideWidth - timerWidth) / 2;
-            float timerTop = (slideHeight - timerHeight) / 2;         
+            float timerTop = (slideHeight - timerHeight) / 2;
 
-            // Create timer
-            var timerBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
-                timerLeft, timerTop, timerWidth, timerHeight);
-            timerBody.Name = TimerLabConstants.TimerBody;
-            timerBody.Fill.ForeColor.RGB = timerBodyColor;
-            timerBody.Line.ForeColor.RGB = timerBodyColor;
-            
-            // Add markers
-            if (duration <= TimerLabConstants.SecondsInMinute)
-            {
-                AddSecondsMarker(duration, denomination, timerWidth, timerHeight, timerLeft, timerTop,
-                    lineMarkerWidth, timeMarkerWidth, timeMarkerHeight);
-            }
-            else
-            {
-                AddMinutesMarker(duration, denomination, timerWidth, timerHeight, timerLeft, timerTop,
-                    lineMarkerWidth, timeMarkerWidth, timeMarkerHeight);
-            }
-
-            // Add slider components
-            var sliderHead = this.GetCurrentSlide().Shapes.AddShape(
-                Microsoft.Office.Core.MsoAutoShapeType.msoShapeIsoscelesTriangle, 
-                timerLeft - (sliderHeadSize / 2), timerTop - (sliderHeadSize / 2), sliderHeadSize, sliderHeadSize);
-            sliderHead.Name = TimerLabConstants.TimerSliderHead;
-            sliderHead.Rotation = TimerLabConstants.Rotate180Degrees;
-            sliderHead.Fill.ForeColor.RGB = sliderColor;
-            sliderHead.Line.Transparency = TimerLabConstants.TransparencyTranparent;
-
-            var sliderBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 
-                timerLeft - (sliderBodyWidth / 2), timerTop, sliderBodyWidth, timerHeight);
-            sliderBody.Name = TimerLabConstants.TimerSliderBody;
-            sliderBody.Fill.ForeColor.RGB = sliderColor;
-            sliderBody.Line.Transparency = TimerLabConstants.TransparencyTranparent;
-
-            // Add slider animations
-            AddSliderMotionEffect(sliderHead, duration, timerWidth, slideWidth, 
-                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-            AddSliderMotionEffect(sliderBody, duration, timerWidth, slideWidth, 
-                PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-            AddSliderEndEffect(sliderHead, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
-            AddSliderEndEffect(sliderBody, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, timerBodyColor);
+            AddMarkers(duration, timerWidth, timerHeight, timerLeft, timerTop);
+            AddSlider(duration, timerWidth, timerHeight, timerLeft, timerTop, sliderColor, slideWidth);
         }
 
+        #region Timer Properties
         private int Duration()
         {
             int duration = TimerLabConstants.SecondsInMinute;
@@ -121,6 +73,38 @@ namespace PowerPointLabs.TimerLab
         {
             float height = (float)HeightSlider.Value;
             return height;
+        }
+        #endregion
+
+        #region Timer Creation
+        #region Body
+        private void AddTimerBody(float timerWidth, float timerHeight, float timerLeft, 
+            float timerTop, int timerBodyColor)
+        {
+            // Create timer
+            var timerBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
+                timerLeft, timerTop, timerWidth, timerHeight);
+            timerBody.Name = TimerLabConstants.TimerBody;
+            timerBody.Fill.ForeColor.RGB = timerBodyColor;
+            timerBody.Line.ForeColor.RGB = timerBodyColor;
+        }
+        #endregion
+
+        #region Markers
+        private void AddMarkers(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop)
+        {
+            if (duration <= TimerLabConstants.SecondsInMinute)
+            {
+                AddSecondsMarker(duration, TimerLabConstants.DefaultDenomination, timerWidth, timerHeight, 
+                    timerLeft, timerTop, TimerLabConstants.DefaultMinutesLineMarkerWidth, 
+                    TimerLabConstants.DefaultTimeMarkerWidth, TimerLabConstants.DefaultTimeMarkerHeight);
+            }
+            else
+            {
+                AddMinutesMarker(duration, TimerLabConstants.DefaultDenomination, timerWidth, timerHeight,
+                    timerLeft, timerTop, TimerLabConstants.DefaultMinutesLineMarkerWidth,
+                    TimerLabConstants.DefaultTimeMarkerWidth, TimerLabConstants.DefaultTimeMarkerHeight);
+            }
         }
 
         private void AddSecondsMarker(int duration, int denomination, float timerWidth, float timerHeight, float timerLeft, 
@@ -253,6 +237,34 @@ namespace PowerPointLabs.TimerLab
                 GroupShapes(TimerLabConstants.TimerTimeMarker, TimerLabConstants.TimerTimeMarkerGroup);
             }
         }
+        #endregion
+
+        #region Slider
+        private void AddSlider(int duration, float timerWidth, float timerHeight, float timerLeft, 
+            float timerTop, int sliderColor, float slideWidth)
+        {
+            var sliderHead = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeIsoscelesTriangle,
+                timerLeft - (TimerLabConstants.DefaultSliderHeadSize / 2), timerTop - (TimerLabConstants.DefaultSliderHeadSize / 2),
+                TimerLabConstants.DefaultSliderHeadSize, TimerLabConstants.DefaultSliderHeadSize);
+            sliderHead.Name = TimerLabConstants.TimerSliderHead;
+            sliderHead.Rotation = TimerLabConstants.Rotate180Degrees;
+            sliderHead.Fill.ForeColor.RGB = sliderColor;
+            sliderHead.Line.Transparency = TimerLabConstants.TransparencyTranparent;
+
+            var sliderBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
+                timerLeft - (TimerLabConstants.DefaultSliderBodyWidth / 2), timerTop, TimerLabConstants.DefaultSliderBodyWidth, timerHeight);
+            sliderBody.Name = TimerLabConstants.TimerSliderBody;
+            sliderBody.Fill.ForeColor.RGB = sliderColor;
+            sliderBody.Line.Transparency = TimerLabConstants.TransparencyTranparent;
+
+            // Add slider animations
+            AddSliderMotionEffect(sliderHead, duration, timerWidth, slideWidth,
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            AddSliderMotionEffect(sliderBody, duration, timerWidth, slideWidth,
+                PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+            AddSliderEndEffect(sliderHead, PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
+            AddSliderEndEffect(sliderBody, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+        }
 
         private void AddSliderMotionEffect(Shape shape, int duration, float timerWidth, float slideWidth, 
             PowerPoint.MsoAnimTriggerType trigger)
@@ -274,8 +286,11 @@ namespace PowerPointLabs.TimerLab
                 PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
             sliderEndEffect.Timing.Duration = TimerLabConstants.ColorChangeDuration;
         }
+        #endregion
+        #endregion
 
-        # region NumericUpDown Control
+        #region Controls
+        #region NumericUpDown Control
         private void DurationTextBox_ValueDecremented(object sender, 
             MahApps.Metro.Controls.NumericUpDownChangedRoutedEventArgs args)
         {
@@ -328,7 +343,7 @@ namespace PowerPointLabs.TimerLab
                 DurationTextBox.Value = integerPart + 1;
             }
 
-            if (IsTimerExist())
+            if (IsFullTimerExist())
             {
                 // remove current marker and add with new markers
                 int duration = Duration();
@@ -390,9 +405,9 @@ namespace PowerPointLabs.TimerLab
             WidthTextBox.Text = ((int)value).ToString();
 
             // update timer dimensions
-            var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
-            if (timerBody != null)
+            if (IsFullTimerExist())
             {
+                var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
                 float increment = value - timerBody.Width;
 
                 var lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
@@ -475,9 +490,10 @@ namespace PowerPointLabs.TimerLab
             HeightTextBox.Text = ((int)value).ToString();
 
             // update timer dimensions
-            var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
-            if (timerBody != null)
+            if (IsFullTimerExist())
             {
+                var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+
                 float increment = value - timerBody.Height;
                 timerBody.Top = NewPosition(timerBody.Top, increment);
                 timerBody.Height = timerBody.Height + increment;
@@ -529,6 +545,7 @@ namespace PowerPointLabs.TimerLab
             HeightSlider.Value = value;
         }
         #endregion
+        #endregion
 
         #region Shapes Helper
         private float NewPosition(float originalPosition, float objectSize)
@@ -577,7 +594,7 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Validation Helper
-        private bool IsTimerExist()
+        private bool IsFullTimerExist()
         {
             var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
             var lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
@@ -585,11 +602,12 @@ namespace PowerPointLabs.TimerLab
             var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
             var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
 
-            return (timerBody != null) &&
-                (lineMarkerGroup != null) &&
-                (timerMarkerGroup != null) &&
-                (sliderHead != null) &&
-                (sliderBody != null);
+            if ((timerBody == null) || (lineMarkerGroup == null) || (timerMarkerGroup == null) ||
+                (sliderHead == null) || (sliderBody == null))
+            {
+                return false;
+            }
+            return true;
         }
 
         private bool IsNumbersOnly(string text)
