@@ -14,6 +14,7 @@ namespace PowerPointLabs.Models
 #pragma warning disable 0618
         #region Properties
         private string _name;
+        private const string extensionRegex = "\\.pptx?$";
 
         public static Application Application { get; set; }
 
@@ -38,7 +39,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return Path + @"\" + NameNoExtension;
+                if (Regex.IsMatch(Name, extensionRegex, RegexOptions.IgnoreCase))
+                {
+                    return Path + @"\" + Name;
+                }
+                else
+                {
+                    return Path + @"\" + Name + ".pptx";
+                }
             }
         }
 
@@ -72,7 +80,15 @@ namespace PowerPointLabs.Models
             get { return _name; }
             set
             {
-                NameNoExtension = value;
+                if (Regex.IsMatch(value, extensionRegex, RegexOptions.IgnoreCase))
+                {
+                    NameNoExtension = Regex.Replace(value, extensionRegex, "", RegexOptions.IgnoreCase);
+                }
+                else
+                {
+                    NameNoExtension = value;
+                }
+
                 _name = value + ".pptx";
             }
         }
@@ -215,12 +231,13 @@ namespace PowerPointLabs.Models
         public PowerPointPresentation(string path, string name)
         {
             Path = path;
-            Name = name;
+            Name = name + ".pptx";
         }
 
         public PowerPointPresentation(Presentation presentation)
         {
             Presentation = presentation;
+            Name = presentation.Name;
         }
         # endregion
 
