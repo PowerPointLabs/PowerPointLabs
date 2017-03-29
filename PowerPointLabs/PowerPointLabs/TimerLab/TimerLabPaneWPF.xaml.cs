@@ -105,7 +105,7 @@ namespace PowerPointLabs.TimerLab
             {
                 double value = Math.Round(DurationTextBox.Value.Value, 2);
                 int minutes = (int)value;
-                int seconds = (int)((value - minutes) * 100);
+                int seconds = (int)(Math.Round(value - minutes, 2) * 100);
                 duration = (minutes * TimerLabConstants.SecondsInMinute) + seconds;
             }
             return duration;
@@ -327,6 +327,49 @@ namespace PowerPointLabs.TimerLab
             {
                 DurationTextBox.Value = integerPart + 1;
             }
+
+            if (IsTimerExist())
+            {
+                // remove current marker and add with new markers
+                int duration = Duration();
+                Shape lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
+                lineMarkerGroup.Delete();
+                Shape timerMarkeGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroup);
+                timerMarkeGroup.Delete();
+                if (duration <= TimerLabConstants.SecondsInMinute)
+                {
+                    Shape timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+                    AddSecondsMarker(duration, TimerLabConstants.DefaultDenomination,
+                        timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
+                        TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
+                        TimerLabConstants.DefaultTimeMarkerHeight);
+                }
+                else
+                {
+                    Shape timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+                    AddMinutesMarker(duration, TimerLabConstants.DefaultDenomination,
+                        timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top,
+                        TimerLabConstants.DefaultSecondsLineMarkerWidth, TimerLabConstants.DefaultTimeMarkerWidth,
+                        TimerLabConstants.DefaultTimeMarkerHeight);
+                }
+
+                // adjust slider
+                Shape sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
+                sliderHead.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                Shape sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
+                sliderBody.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                foreach (PowerPoint.Effect effect in this.GetCurrentSlide().TimeLine.MainSequence)
+                {
+                    if (effect.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectPathRight)
+                    {
+                        if (effect.Shape.Name.Equals(TimerLabConstants.TimerSliderBody) ||
+                            effect.Shape.Name.Equals(TimerLabConstants.TimerSliderHead))
+                        {
+                            effect.Timing.Duration = duration;
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
@@ -537,7 +580,16 @@ namespace PowerPointLabs.TimerLab
         private bool IsTimerExist()
         {
             var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
-            return timerBody != null;
+            var lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroup);
+            var timerMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroup);
+            var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
+            var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
+
+            return (timerBody != null) &&
+                (lineMarkerGroup != null) &&
+                (timerMarkerGroup != null) &&
+                (sliderHead != null) &&
+                (sliderBody != null);
         }
 
         private bool IsNumbersOnly(string text)

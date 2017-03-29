@@ -44,7 +44,7 @@
     <PublishUrl>D:\PPTLabs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/alpha/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2017.3.22.1</ApplicationVersion>
+    <ApplicationVersion>2017.3.30.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -256,12 +256,18 @@
   -->
   <ItemGroup>
     <Compile Include="ActionFramework\Action\CropLabActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\CropLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
     <Compile Include="ActionFramework\Action\AddShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabPositionActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabOriginalPositionActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabMergeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabGroupActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabReplaceActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ShapeMenuActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteLabFillActionHandler.cs" />
@@ -304,7 +310,13 @@
     <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabPositionEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabOriginalPositionEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabMergeEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabGroupEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabReplaceEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropShapeMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropToSameImageHandler.cs" />
@@ -313,6 +325,11 @@
     <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabPositionImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabOriginalPositionImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabMergeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabReplaceImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabFillEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabFillImageHandler.cs" />
@@ -327,6 +344,7 @@
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropToSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\MoveCropShapeLabelHandler.cs" />
@@ -335,6 +353,11 @@
     <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\AddShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabMergeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabGroupLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabPositionLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabOriginalPositionLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabReplaceLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabFillLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
@@ -352,6 +375,7 @@
     <Compile Include="ActionFramework\Label\TimerLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropToSameSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\MoveCropShapeSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropToSlideSupertipHandler.cs" />
@@ -397,14 +421,19 @@
       <DependentUpon>ColorInformationDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="Converters\CropLab\EnumToBooleanConverter.cs" />
     <Compile Include="CropLab\CropLabException.cs" />
     <Compile Include="CropLab\CropLabDummyMessageService.cs" />
     <Compile Include="CropLab\CropLabOperationException.cs" />
     <Compile Include="CropLab\CropLabMessageService.cs" />
+    <Compile Include="CropLab\CropLabSettings.cs" />
     <Compile Include="CropLab\CropToAspectRatio.cs" />
     <Compile Include="CropLab\CropOutPadding.cs" />
     <Compile Include="CropLab\CropToSlide.cs" />
     <Compile Include="CropLab\CropToSame.cs" />
+    <Compile Include="CropLab\CropLabSettingsDialog.xaml.cs">
+      <DependentUpon>CropLabSettingsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
       <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
     </Compile>
@@ -1267,6 +1296,10 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CropLab\CropLabSettingsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CropLab\CustomAspectRatioDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
