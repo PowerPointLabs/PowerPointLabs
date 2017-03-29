@@ -154,10 +154,10 @@ namespace PowerPointLabs.SyncLab.View
 
         private Shape CopyShape(Shape shape)
         {
-            Design design = Graphics.GetDesign(TextCollection.StorageTemplateName);
+            Design design = Graphics.GetDesign(TextCollection.SyncLabStorageTemplateName);
             if (design == null)
             {
-                design = Graphics.CreateDesign(TextCollection.StorageTemplateName);
+                design = Graphics.CreateDesign(TextCollection.SyncLabStorageTemplateName);
             }
             shape.Copy();
             ShapeRange newShapeRange = design.TitleMaster.Shapes.Paste();
@@ -166,7 +166,7 @@ namespace PowerPointLabs.SyncLab.View
 
         private void ClearStorageTemplate()
         {
-            Design design = Graphics.GetDesign(TextCollection.StorageTemplateName);
+            Design design = Graphics.GetDesign(TextCollection.SyncLabStorageTemplateName);
             if (design != null)
             {
                 design.Delete();

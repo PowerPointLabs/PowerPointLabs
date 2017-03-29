@@ -14,10 +14,10 @@ namespace PowerPointLabs.SyncLab
 
         public static Shapes GetTemplateShapes()
         {
-            Design design = Graphics.GetDesign(TextCollection.StorageTemplateName);
+            Design design = Graphics.GetDesign(TextCollection.SyncLabStorageTemplateName);
             if (design == null)
             {
-                design = Graphics.CreateDesign(TextCollection.StorageTemplateName);
+                design = Graphics.CreateDesign(TextCollection.SyncLabStorageTemplateName);
             }
             return design.TitleMaster.Shapes;
         }
@@ -45,6 +45,15 @@ namespace PowerPointLabs.SyncLab
             g.DrawString(text, font, Brushes.Black, xPos, yPos);
             g.Dispose();
             return image;
+        }
+
+        #endregion
+
+        #region Shape Name Utils
+        public static bool IsValidFormatName(string name)
+        {
+            name = name.Trim();
+            return name.Length > 0;
         }
 
         #endregion
