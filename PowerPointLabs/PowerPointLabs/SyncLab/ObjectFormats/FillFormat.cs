@@ -47,8 +47,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillPatterned)
                 {
                     newShape.Fill.Patterned(formatShape.Fill.Pattern);
-                    newShape.Fill.ForeColor = formatShape.Fill.ForeColor;
-                    newShape.Fill.BackColor = formatShape.Fill.BackColor;
+                    newShape.Fill.ForeColor.RGB = formatShape.Fill.ForeColor.RGB;
+                    newShape.Fill.BackColor.RGB = formatShape.Fill.BackColor.RGB;
                 }
                 else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillBackground)
                 {
@@ -57,7 +57,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillSolid)
                 {
                     newShape.Fill.Solid();
-                    newShape.Fill.ForeColor = formatShape.Fill.ForeColor;
+                    newShape.Fill.ForeColor.RGB = formatShape.Fill.ForeColor.RGB;
                 }
                 else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillGradient)
                 {
