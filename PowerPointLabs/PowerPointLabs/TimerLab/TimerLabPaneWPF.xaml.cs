@@ -360,7 +360,7 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
-        private void DurationTextBox_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        private void DurationTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (DurationTextBox.Value == null)
             {
@@ -394,6 +394,15 @@ namespace PowerPointLabs.TimerLab
             WidthSlider.Maximum = SlideWidth();        
         }
 
+        private void WidthSlider_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // update timer dimensions
+            if (HasTimer())
+            {
+                ReformMissingComponents();
+            }
+        }
+
         private void WidthSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // update text box value
@@ -403,8 +412,6 @@ namespace PowerPointLabs.TimerLab
             // update timer dimensions
             if (HasTimer())
             {
-                ReformMissingComponents();
-
                 var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
                 float increment = value - timerBody.Width;
 
@@ -438,7 +445,7 @@ namespace PowerPointLabs.TimerLab
                 {
                     if (effect.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectPathRight)
                     {
-                        if (effect.Shape.Name.Equals(TimerLabConstants.TimerSliderBody) || 
+                        if (effect.Shape.Name.Equals(TimerLabConstants.TimerSliderBody) ||
                             effect.Shape.Name.Equals(TimerLabConstants.TimerSliderHead))
                         {
                             float end = timerBody.Width / SlideWidth();
@@ -446,7 +453,6 @@ namespace PowerPointLabs.TimerLab
                         }
                     }
                 }
-
                 AdjustZOrder();
             }
         }
@@ -480,6 +486,12 @@ namespace PowerPointLabs.TimerLab
             }
             WidthTextBox.Text = value.ToString();
             WidthSlider.Value = value;
+
+            // update timer dimensions
+            if (HasTimer())
+            {
+                ReformMissingComponents();
+            }
         }
         #endregion
 
@@ -491,6 +503,15 @@ namespace PowerPointLabs.TimerLab
             HeightSlider.Value = TimerLabConstants.DefaultTimerHeight;
         }
 
+        private void HeightSlider_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // update timer dimensions
+            if (HasTimer())
+            {
+                ReformMissingComponents();
+            }
+        }
+
         private void HeightSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // update text box value
@@ -500,8 +521,6 @@ namespace PowerPointLabs.TimerLab
             // update timer dimensions
             if (HasTimer())
             {
-                ReformMissingComponents();
-
                 var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
 
                 float increment = value - timerBody.Height;
@@ -555,6 +574,12 @@ namespace PowerPointLabs.TimerLab
             }
             HeightTextBox.Text = value.ToString();
             HeightSlider.Value = value;
+
+            // update timer dimensions
+            if (HasTimer())
+            {
+                ReformMissingComponents();
+            }
         }
         #endregion
         #endregion
@@ -572,6 +597,21 @@ namespace PowerPointLabs.TimerLab
 
             // add new markers
             AddMarkers(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top);
+        }
+
+        private void UpdateSlider()
+        {
+            // remove current Slider
+            Shape sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHead);
+            sliderHead.Delete();
+            Shape sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBody);
+            sliderBody.Delete();
+
+            var timerBody = GetShapeByName(TimerLabConstants.TimerBody);
+
+            // add new slider
+            AddSlider(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top, 
+                SliderColor(), SlideWidth());
         }
 
         private void UpdateSliderDuration()
@@ -607,7 +647,8 @@ namespace PowerPointLabs.TimerLab
             ReformTimerBodyIfMissing();
             ReformMarkersIfMissing();
             ReformSliderIfMissing();
-
+            UpdateMarkers();
+            UpdateSlider();
             AdjustZOrder();
         }
 
@@ -748,6 +789,7 @@ namespace PowerPointLabs.TimerLab
         {
             MessageBox.Show(content, "Error");
         }
+
         #endregion
     }
 }
