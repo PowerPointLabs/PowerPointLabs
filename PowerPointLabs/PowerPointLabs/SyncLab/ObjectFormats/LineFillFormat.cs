@@ -41,8 +41,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             try
             {
-                newShape.Line.ForeColor = formatShape.Line.ForeColor;
-                newShape.Line.BackColor = formatShape.Line.BackColor;
+                newShape.Line.ForeColor.RGB = formatShape.Line.ForeColor.RGB;
+                newShape.Line.BackColor.RGB = formatShape.Line.BackColor.RGB;
             }
             catch (Exception)
             {
