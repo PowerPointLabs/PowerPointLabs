@@ -36,10 +36,20 @@ namespace PowerPointLabs.CropLab
 
                 float scaleWidth = Graphics.GetScaleWidth(shapeRange[i]);
                 float scaleHeight = Graphics.GetScaleHeight(shapeRange[i]);
-                shapeRange[i].PictureFormat.CropTop += Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);
-                shapeRange[i].PictureFormat.CropLeft += Math.Max(0, widthToCrop * cropLeft / refShapeCroppedWidth / scaleWidth);
-                shapeRange[i].PictureFormat.CropRight += Math.Max(0, widthToCrop * cropRight / refShapeCroppedWidth / scaleWidth);
-                shapeRange[i].PictureFormat.CropBottom += Math.Max(0, heightToCrop * cropBottom / refShapeCroppedHeight / scaleHeight);
+                if (CropLabSettings.AnchorPosition == AnchorPosition.Reference)
+                {
+                    shapeRange[i].PictureFormat.CropTop += Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);
+                    shapeRange[i].PictureFormat.CropLeft += Math.Max(0, widthToCrop * cropLeft / refShapeCroppedWidth / scaleWidth);
+                    shapeRange[i].PictureFormat.CropRight += Math.Max(0, widthToCrop * cropRight / refShapeCroppedWidth / scaleWidth);
+                    shapeRange[i].PictureFormat.CropBottom += Math.Max(0, heightToCrop * cropBottom / refShapeCroppedHeight / scaleHeight);
+                }
+                else
+                {
+                    shapeRange[i].PictureFormat.CropTop += CropLabSettings.GetAnchorY() * heightToCrop / scaleHeight;
+                    shapeRange[i].PictureFormat.CropLeft += CropLabSettings.GetAnchorX() * widthToCrop / scaleWidth;
+                    shapeRange[i].PictureFormat.CropRight += (1 - CropLabSettings.GetAnchorX()) * widthToCrop / scaleWidth;
+                    shapeRange[i].PictureFormat.CropBottom += (1 - CropLabSettings.GetAnchorY()) * heightToCrop / scaleHeight;
+                }
             }
             return hasChange;
         }
