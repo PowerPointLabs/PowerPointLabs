@@ -78,6 +78,7 @@ namespace PowerPointLabs.CropLab
                 case AnchorPosition.Top:
                 case AnchorPosition.Middle:
                 case AnchorPosition.Bottom:
+                case AnchorPosition.Reference:
                     shape.PictureFormat.CropLeft += cropAmount / 2.0f;
                     shape.PictureFormat.CropRight += cropAmount / 2.0f;
                     break;
@@ -101,6 +102,7 @@ namespace PowerPointLabs.CropLab
                 case AnchorPosition.MiddleLeft:
                 case AnchorPosition.Middle:
                 case AnchorPosition.MiddleRight:
+                case AnchorPosition.Reference:
                     shape.PictureFormat.CropTop += cropAmount / 2.0f;
                     shape.PictureFormat.CropBottom += cropAmount / 2.0f;
                     break;
