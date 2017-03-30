@@ -98,7 +98,7 @@ namespace Test.FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Error",
-                "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.",
+                "All selected pictures are smaller than reference shape. No cropping was done.",
                 PplFeatures.CropToSame);
         }
 
@@ -109,7 +109,7 @@ namespace Test.FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Error",
-                "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.",
+                "All selected pictures are smaller than reference shape. No cropping was done.",
                 PplFeatures.CropToSame);
         }
 
