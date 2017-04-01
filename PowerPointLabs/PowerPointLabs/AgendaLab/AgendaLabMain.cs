@@ -475,13 +475,6 @@ namespace PowerPointLabs.AgendaLab
 
             List<string> placeholderList = new List<string>();
 
-            string[] placeholderTexts =
-            {
-                TextCollection.AgendaLabBulletVisitedContent,
-                TextCollection.AgendaLabBulletHighlightedContent,
-                TextCollection.AgendaLabBulletUnvisitedContent
-            };
-
             int[] placeholderColors =
             {
                 Graphics.ConvertColorToRgb(Color.Gray),
@@ -489,7 +482,7 @@ namespace PowerPointLabs.AgendaLab
                 Graphics.ConvertColorToRgb(Color.Black)
             };
 
-            foreach (string placeholder in placeholderTexts)
+            foreach (string placeholder in TextCollection.AgendaLabBulletTextStrings)
             {
                 for (int i = 0; i < maxLevel; i++)
                 {
@@ -502,7 +495,7 @@ namespace PowerPointLabs.AgendaLab
 
             var paragraphs = Graphics.GetParagraphs(contentShape);
 
-            for (int type = 0; type < placeholderTexts.Length; type++)
+            for (int type = 0; type < TextCollection.AgendaLabBulletTextStrings.Length; type++)
             {
                 for (int level = 0; level < maxLevel; level++)
                 {
@@ -697,6 +690,7 @@ namespace PowerPointLabs.AgendaLab
             int numberOfSections = NumberOfSections;
             int maxLevel = MaximumSubsectionLevel;
             int numBullets = maxLevel * 3;
+            var placeholderStrings = TextCollection.AgendaLabBulletTextStrings;
 
             // post process bullet points
             var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
@@ -710,17 +704,22 @@ namespace PowerPointLabs.AgendaLab
 
                     if (textRange.Paragraphs.Count < index)
                     {
-                        textRange.InsertAfter("\r Text");
+                        textRange.InsertAfter(String.Format("\r {0}", placeholderStrings[type]));
                         textRange.Paragraphs[index].ParagraphFormat.IndentLevel = level;
                     }
                     else if (textRange.Paragraphs[index].ParagraphFormat.IndentLevel != level)
                     {
                         if (textRange.Paragraphs.Count < numBullets)
                         {
-                            textRange.Paragraphs[index].InsertBefore("Text \r");       
+                            textRange.Paragraphs[index].InsertBefore(String.Format("{0} \r", placeholderStrings[type]));       
                         }
 
+                        textRange.Paragraphs[index].Text = placeholderStrings[type];
                         textRange.Paragraphs[index].ParagraphFormat.IndentLevel = level;
+                    }
+                    else
+                    {
+                        textRange.Paragraphs[index].Text = placeholderStrings[type];
                     }
                 }
             }

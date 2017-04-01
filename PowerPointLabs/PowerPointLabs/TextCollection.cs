@@ -474,6 +474,14 @@
         public const string AgendaLabBulletVisitedContent = "Visited bullet format";
         public const string AgendaLabBulletHighlightedContent = "Highlighted bullet format";
         public const string AgendaLabBulletUnvisitedContent = "Unvisited bullet format";
+
+        public static readonly string[] AgendaLabBulletTextStrings =
+        {
+            AgendaLabBulletVisitedContent,
+            AgendaLabBulletHighlightedContent,
+            AgendaLabBulletUnvisitedContent
+        };
+
         public const string AgendaLabBeamHighlightedText = "Highlighted";
 
         public const string AgendaLabTemplateSlideInstructions =
