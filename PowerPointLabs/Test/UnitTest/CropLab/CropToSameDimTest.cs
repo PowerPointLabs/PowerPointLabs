@@ -9,26 +9,16 @@ namespace Test.UnitTest.CropLab
     [TestClass]
     public class CropToSameDimTest : BaseCropLabTest
     {
-        private const int SlideNumberOnePictureActual = 4;
-        private const int SlideNumberOnePictureExpected = 5;
-        private const int SlideNumberMultiplePicturesActual = 7;
-        private const int SlideNumberMultiplePicturesExpected = 8;
-        private const int SlideNumberRotatedPictureActual = 10;
-        private const int SlideNumberRotatedPictureExpected = 11;
-
-        private List<string> selectOneShapeNames = new List<string> { "selectMe" };
-        private List<string> selectMultipleShapesNames = new List<string> { "selectMe1", "selectMe2" };
+        private List<string> selectMultipleShapesNames = new List<string> { "selectMe2", "selectMe1" };
 
         protected override string GetTestingSlideName()
         {
             return "CropToSame.pptx";
         }
 
-
-
         [TestMethod]
         [TestCategory("UT")]
-        public void UT_CropToSameTest()
+        public void CropToSameTest()
         {
             CropOneSideSuccessfully();
             CropTwoSidesSuccessfully();
@@ -36,18 +26,7 @@ namespace Test.UnitTest.CropLab
             CropSmallerRefImgSuccessfully();
             CropUnevenScaledImgSuccessfully();
             CropCroppedImgSuccessfully();
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void UT_CropToSameNegativeTest()
-        {
-            /*
-            CropLargerRefImgUnsuccessfully();
-            CropSameSizeUnsuccessfully();
-            CropOnNothingUnsuccessfully();
-            CropOnShapeObjectUnsuccessfully();
-            */
+            CropCustomAnchorSuccessfully();
         }
 
         #region Positive Test Cases
@@ -82,62 +61,23 @@ namespace Test.UnitTest.CropLab
             CropAndCompare(19, 20);
         }
 
+        public void CropCustomAnchorSuccessfully()
+        {
+            CropLabSettings.AnchorPosition = AnchorPosition.BottomRight;
+            CropAndCompare(22, 23);
+        }
+
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
         {
             // Execute the Crop To Same feature
             var testShapes = GetShapes(testSlideNo, selectMultipleShapesNames);
             var expShapes = GetShapes(expectedSlideNo, selectMultipleShapesNames);
             CropToSame.CropSelection(testShapes);
+
+            testShapes = GetShapes(testSlideNo, selectMultipleShapesNames);
             CheckShapes(testShapes, expShapes);
             
         }
-        #endregion
-        #region Negative Test Cases
-        /*
-        public void CropLargerRefImgUnsuccessfully()
-        {
-            PpOperations.SelectSlide(28);
-            PpOperations.SelectShapesByPrefix("selectMe");
-
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error",
-                "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.",
-                PplFeatures.CropToSame);
-        }
-
-        public void CropSameSizeUnsuccessfully()
-        {
-            PpOperations.SelectSlide(26);
-            PpOperations.SelectShapesByPrefix("selectMe");
-
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error",
-                "Target picture dimensions are equal to or smaller than reference shape. No cropping was done.",
-                PplFeatures.CropToSame);
-        }
-
-        private void CropOnNothingUnsuccessfully()
-        {
-            PpOperations.SelectSlide(24);
-            // don't select any shape here
-
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error",
-                "You need to select at least 2 pictures before applying 'Crop To Same Dimensions'.",
-                PplFeatures.CropToSame);
-        }
-
-        private void CropOnShapeObjectUnsuccessfully()
-        {
-            PpOperations.SelectSlide(22);
-            PpOperations.SelectShapesByPrefix("selectMe");
-
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error",
-                "'Crop To Same Dimensions' only supports picture objects.",
-                PplFeatures.CropToSame);
-        }
-        */
         #endregion
             
     }
