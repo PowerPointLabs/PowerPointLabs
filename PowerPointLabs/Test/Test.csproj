@@ -119,6 +119,7 @@
     <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\CropLab\BaseCropLabTest.cs" />
+    <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
     <Compile Include="UnitTest\CropLab\CropOutPaddingTest.cs" />
     <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
