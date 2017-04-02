@@ -422,7 +422,7 @@ namespace PowerPointLabs
 
         public void RegisterSyncLabPane(PowerPoint.Presentation presentation)
         {
-            if (GetActivePane(typeof(CustomShapePane)) != null)
+            if (GetActivePane(typeof(SyncPane)) != null)
             {
                 return;
             }
