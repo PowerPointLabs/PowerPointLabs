@@ -10,7 +10,7 @@ namespace PowerPointLabs.SyncLab
     {
 #pragma warning disable 0618
 
-        int nextKey = 0;
+        private int nextKey = 0;
 
         public SyncLabShapeStorage() : base()
         {
