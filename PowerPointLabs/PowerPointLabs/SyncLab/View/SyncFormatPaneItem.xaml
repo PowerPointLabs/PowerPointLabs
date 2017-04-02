@@ -10,14 +10,43 @@
     <Grid x:Name="grid">
         <Image x:Name="imageBox" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
         <Label x:Name="label" Margin="45,7,85,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-        <Button x:Name="pasteButton" Margin="0,15,60,15" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20" ToolTip="Paste format">
+        <Button x:Name="pasteButton" Margin="0,15,60,15" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
             <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabPasteButton.png" Stretch="Fill"/>
+            <Button.ToolTip>
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Sync Format</TextBlock>
+                    <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                    <TextBlock>
+                        Applies the selected formats onto selected shapes.
+                    </TextBlock>
+                </StackPanel>
+            </Button.ToolTip>
         </Button>
-        <Button x:Name="editButton" Margin="0,15,35,15" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20" ToolTip="Edit selected format">
+        <Button x:Name="editButton" Margin="0,15,35,15" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
             <Image x:Name="editImage" Source="pack://siteoforigin:,,,/Resources/SyncLabEditButton.png" Stretch="Fill"/>
+            <Button.ToolTip>
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Edit Format</TextBlock>
+                    <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                    <TextBlock>
+                        Opens a dialog box that will allow you to choose the
+                        <LineBreak/>
+                        formats to paste.
+                    </TextBlock>
+                </StackPanel>
+            </Button.ToolTip>
         </Button>
-        <Button x:Name="deleteButton" Margin="0,15,10,15" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20" ToolTip="Delete format">
+        <Button x:Name="deleteButton" Margin="0,15,10,15" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
             <Image x:Name="deleteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabDeleteButton.png" Stretch="Fill"/>
+            <Button.ToolTip>
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Delete Format</TextBlock>
+                    <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                    <TextBlock>
+                        Removes the format from the list.
+                    </TextBlock>
+                </StackPanel>
+            </Button.ToolTip>
         </Button>
     </Grid>
 </UserControl>
