@@ -9,8 +9,15 @@
              MouseDoubleClick="OnMouseDoubleClick">
     <Grid x:Name="grid">
         <Image x:Name="imageBox" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
-        <Label x:Name="label" Margin="45,7,60,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-        <Button x:Name="pasteButton" Content="P" Margin="0,15,35,15" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20"/>
-        <Button x:Name="editButton" Content="E" Margin="0,15,10,15" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20"/>
+        <Label x:Name="label" Margin="45,7,85,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Button x:Name="pasteButton" Margin="0,15,60,15" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
+            <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabPasteButton.png" Stretch="Fill"/>
+        </Button>
+        <Button x:Name="editButton" Margin="0,15,35,15" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
+            <Image x:Name="editImage" Source="pack://siteoforigin:,,,/Resources/SyncLabEditButton.png" Stretch="Fill"/>
+        </Button>
+        <Button x:Name="deleteButton" Margin="0,15,10,15" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
+            <Image x:Name="deleteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabDeleteButton.png" Stretch="Fill"/>
+        </Button>
     </Grid>
 </UserControl>

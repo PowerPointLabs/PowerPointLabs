@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="833" d:DesignWidth="300">
     <Grid>
-        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Click="CopyButton_Click">
-            <Image x:Name="copyImage" Source="pack://siteoforigin:,,,/Resources/LineColor_icon.png" Stretch="Fill"/>
+        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White">
+            <Image x:Name="copyImage" Source="pack://siteoforigin:,,,/Resources/SyncLabCopyButton.png" Stretch="Fill"/>
         </Button>
         <Label x:Name="copyLabel" Content="Copy" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
         <ListBox x:Name="formatListBox" Margin="10,86,10,10" HorizontalContentAlignment="Stretch"/>

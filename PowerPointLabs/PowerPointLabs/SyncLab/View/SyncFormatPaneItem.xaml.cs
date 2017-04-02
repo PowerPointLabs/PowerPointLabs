@@ -8,6 +8,8 @@ using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Extension;
+
 namespace PowerPointLabs.SyncLab.View
 {
     /// <summary>
@@ -16,26 +18,43 @@ namespace PowerPointLabs.SyncLab.View
     public partial class SyncFormatPaneItem : UserControl
     {
 
-        
         private Bitmap image;
 
         private SyncPaneWPF parent;
-        private Shape shape = null;
+        private string shapeKey = null;
+        private SyncLabShapeStorage shapeStorage;
         private FormatTreeNode[] formats = null;
 
-        public SyncFormatPaneItem(SyncPaneWPF parent, Shape shape, FormatTreeNode[] formats)
+        public SyncFormatPaneItem(SyncPaneWPF parent, string shapeKey,
+                    SyncLabShapeStorage shapeStorage, FormatTreeNode[] formats)
         {
             InitializeComponent();
             this.parent = parent;
-            this.shape = shape;
+            this.shapeKey = shapeKey;
+            this.shapeStorage = shapeStorage;
             this.formats = formats;
+            editImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                Properties.Resources.SyncLabEditButton.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+            pasteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                Properties.Resources.SyncLabPasteButton.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()); 
+            deleteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                Properties.Resources.SyncLabDeleteButton.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
         }
 
-        public Shape FormatShape
+        public string FormatShapeKey
         {
             get
             {
-                return shape;
+                return shapeKey;
             }
         }
 
@@ -61,6 +80,14 @@ namespace PowerPointLabs.SyncLab.View
             {
                 image = value;
                 UpdateImage();
+            }
+        }
+
+        public bool FormatShapeExists
+        {
+            get
+            {
+                return shapeStorage.GetShape(shapeKey) != null;
             }
         }
 
@@ -102,11 +129,12 @@ namespace PowerPointLabs.SyncLab.View
 
         private void PasteButton_Click(object sender, RoutedEventArgs e)
         {
-            parent.ApplyFormats(formats, shape);
+            ApplyFormatToSelected();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
+            Shape shape = shapeStorage.GetShape(shapeKey);
             SyncFormatDialog dialog = new SyncFormatDialog(shape, Text, formats);
             dialog.ObjectName = this.Text;
             bool? result = dialog.ShowDialog();
@@ -118,9 +146,26 @@ namespace PowerPointLabs.SyncLab.View
             this.Text = dialog.ObjectName;
         }
 
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            parent.RemoveFormatItem(this);
+        }
+
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            parent.ApplyFormats(formats, shape);
+            ApplyFormatToSelected();
+        }
+
+        private void ApplyFormatToSelected()
+        {
+            Shape formatShape = shapeStorage.GetShape(shapeKey);
+            if (formatShape == null)
+            {
+                MessageBox.Show(TextCollection.SyncLabShapeDeletedError);
+                parent.ClearInvalidFormats();
+            }
+            this.StartNewUndoEntry();
+            parent.ApplyFormats(formats, formatShape);
         }
     }
 }

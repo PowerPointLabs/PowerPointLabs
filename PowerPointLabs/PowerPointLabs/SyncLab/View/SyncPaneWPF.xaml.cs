@@ -4,8 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.Utils;
+
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.SyncLab.View
 {
@@ -16,12 +16,14 @@ namespace PowerPointLabs.SyncLab.View
     {
 #pragma warning disable 0618
 
+        private readonly SyncLabShapeStorage shapeStorage;
+
         public SyncPaneWPF()
         {
             InitializeComponent();
-            ClearStorageTemplate();
+            shapeStorage = new SyncLabShapeStorage();
             copyImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.LineColor_icon.GetHbitmap(),
+                    Properties.Resources.SyncLabCopyButton.GetHbitmap(),
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
@@ -55,10 +57,17 @@ namespace PowerPointLabs.SyncLab.View
         #region Sync API
         public void AddFormatToList(Shape shape, string name, FormatTreeNode[] formats)
         {
-            SyncFormatPaneItem item = new SyncFormatPaneItem(this, CopyShape(shape), formats);
+            string shapeKey = CopyShape(shape);
+            if (shapeKey == null)
+            {
+                MessageBox.Show(TextCollection.SyncLabCopyError);
+                return;
+            }
+            SyncFormatPaneItem item = new SyncFormatPaneItem(this, shapeKey, shapeStorage, formats);
             item.Text = name;
             item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToImage(shape));
             formatListBox.Items.Insert(0, item);
+            formatListBox.SelectedIndex = 0;
         }
 
         public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape)
@@ -104,6 +113,39 @@ namespace PowerPointLabs.SyncLab.View
                 ApplyFormats(node.ChildrenNodes, formatShape, newShape);
             }
         }
+
+        public void RemoveFormatItem(Object format)
+        {
+            int index = 0;
+            while (index < formatListBox.Items.Count)
+            {
+                if (formatListBox.Items[index] == format)
+                {
+                    formatListBox.Items.RemoveAt(index);
+                }
+                else
+                {
+                    index++;
+                }
+            }
+        }
+
+        public void ClearInvalidFormats()
+        {
+            int index = 0;
+            while (index < formatListBox.Items.Count)
+            {
+                SyncFormatPaneItem item = formatListBox.Items[index] as SyncFormatPaneItem;
+                if (item.FormatShapeExists)
+                {
+                    index++;
+                }
+                else
+                {
+                    formatListBox.Items.RemoveAt(index);
+                }
+            }
+        }
         #endregion
 
         #region GUI Handles
@@ -130,25 +172,40 @@ namespace PowerPointLabs.SyncLab.View
 
         #region Shape Saving
 
-        private Shape CopyShape(Shape shape)
+        // Saves shape into another powerpoint file
+        // Returns a key to find the shape by,
+        // or null if the shape cannot be copied
+        private string CopyShape(Shape shape)
         {
-            Design design = Graphics.GetDesign(TextCollection.SyncLabStorageTemplateName);
-            if (design == null)
-            {
-                design = Graphics.CreateDesign(TextCollection.SyncLabStorageTemplateName);
-            }
-            shape.Copy();
-            ShapeRange newShapeRange = design.TitleMaster.Shapes.Paste();
-            return newShapeRange[1];
+            return shapeStorage.CopyShape(shape);
         }
 
-        private void ClearStorageTemplate()
+        private void InitializeStoragePresentation()
         {
-            Design design = Graphics.GetDesign(TextCollection.SyncLabStorageTemplateName);
-            if (design != null)
+            PowerPointPresentation presentation = GetStoragePresentation();
+            while (presentation.SlideCount > 0)
             {
-                design.Delete();
+                presentation.GetSlide(1).Delete();
             }
+            presentation.AddSlide();
+            presentation.Slides[0].DeleteAllShapes();
+        }
+
+        private PowerPointPresentation storagePresentation = null;
+
+        private PowerPointPresentation GetStoragePresentation()
+        {
+            if (storagePresentation != null)
+            {
+                return storagePresentation;
+            }
+            var tempPath = Globals.ThisAddIn.PrepareTempFolder(
+                PowerPointPresentation.Current.Presentation);
+            var tempName = string.Format(TextCollection.SyncLabStorageTemplateName,
+                                         DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+            PowerPointPresentation presentation = new PowerPointPresentation(tempPath, tempName);
+            storagePresentation = presentation.OpenInBackground() ? presentation : null;
+            return storagePresentation;
         }
         #endregion
 
