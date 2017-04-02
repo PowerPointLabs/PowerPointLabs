@@ -16,7 +16,7 @@ namespace PowerPointLabs.SyncLab
         {
             Path = Globals.ThisAddIn.PrepareTempFolder(
                                          PowerPointPresentation.Current.Presentation);
-            Name = string.Format(TextCollection.SyncLabStorageTemplateName,
+            Name = string.Format(TextCollection.SyncLabStorageFileName,
                                  DateTime.Now.ToString("yyyyMMddHHmmssffff"));
             OpenInBackground();
             ClearShapes();

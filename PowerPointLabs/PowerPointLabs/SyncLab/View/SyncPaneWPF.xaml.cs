@@ -179,34 +179,6 @@ namespace PowerPointLabs.SyncLab.View
         {
             return shapeStorage.CopyShape(shape);
         }
-
-        private void InitializeStoragePresentation()
-        {
-            PowerPointPresentation presentation = GetStoragePresentation();
-            while (presentation.SlideCount > 0)
-            {
-                presentation.GetSlide(1).Delete();
-            }
-            presentation.AddSlide();
-            presentation.Slides[0].DeleteAllShapes();
-        }
-
-        private PowerPointPresentation storagePresentation = null;
-
-        private PowerPointPresentation GetStoragePresentation()
-        {
-            if (storagePresentation != null)
-            {
-                return storagePresentation;
-            }
-            var tempPath = Globals.ThisAddIn.PrepareTempFolder(
-                PowerPointPresentation.Current.Presentation);
-            var tempName = string.Format(TextCollection.SyncLabStorageTemplateName,
-                                         DateTime.Now.ToString("yyyyMMddHHmmssffff"));
-            PowerPointPresentation presentation = new PowerPointPresentation(tempPath, tempName);
-            storagePresentation = presentation.OpenInBackground() ? presentation : null;
-            return storagePresentation;
-        }
         #endregion
 
     }
