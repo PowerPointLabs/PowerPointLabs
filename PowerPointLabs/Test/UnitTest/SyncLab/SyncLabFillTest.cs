@@ -21,22 +21,10 @@ namespace Test.UnitTest.SyncLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncSolidFill()
+        public void TestSyncFill()
         {
             syncFill(SolidFill, SyncSolidFillSlideNo);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestSyncPatternFill()
-        {
             syncFill(PatternFill, SyncPatternFillSlideNo);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestSyncBackgroundFill()
-        {
             syncFill(BackgroundFill, SyncBackgroundFillSlideNo);
         }
 
