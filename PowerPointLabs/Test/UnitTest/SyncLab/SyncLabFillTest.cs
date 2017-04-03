@@ -17,7 +17,12 @@ namespace Test.UnitTest.SyncLab
         private const int SyncPatternFillSlideNo = 11;
         private const int SyncSolidFillSlideNo = 12;
         private const int SyncBackgroundFillSlideNo = 13;
-        private const int SyncTransparencySlideNo = 14;
+        private const int SyncTwoGradientFillSlideNo = 14;
+        private const int SyncDiagonalGradientFillSlideNo = 15;
+        private const int SyncRectangularGradientFillSlideNo = 16;
+        private const int SyncPathGradientFillSlideNo = 17;
+        private const int SyncMaxGradientFillSlideNo = 18;
+        private const int SyncTransparencySlideNo = 19;
 
         [TestMethod]
         [TestCategory("UT")]

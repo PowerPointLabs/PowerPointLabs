@@ -7,17 +7,17 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabFontTest : BaseSyncLabTest
     {
-        private const int OriginalShapesSlideNo = 16;
+        private const int OriginalShapesSlideNo = 21;
         private const string CopyFromSmallShape = "CopyFromSmall";
         private const string CopyFromLargeShape = "CopyFromLarge";
         private const string CopyToShape = "Rectangle 3";
 
         //Results of Operations
-        private const int SyncFontFamilySlideNo = 17;
-        private const int SyncFontSizeSlideNo = 18;
-        private const int SyncFontFillSlideNo = 19;
-        private const int SyncOneFontStyleSlideNo = 20;
-        private const int SyncAllFontStyleSlideNo = 21;
+        private const int SyncFontFamilySlideNo = 22;
+        private const int SyncFontSizeSlideNo = 23;
+        private const int SyncFontFillSlideNo = 24;
+        private const int SyncOneFontStyleSlideNo = 25;
+        private const int SyncAllFontStyleSlideNo = 26;
 
         [TestMethod]
         [TestCategory("UT")]

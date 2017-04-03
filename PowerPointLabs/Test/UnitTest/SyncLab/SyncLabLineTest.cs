@@ -7,18 +7,18 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabLineTest : BaseSyncLabTest
     {
-        private const int OriginalShapesSlideNo = 23;
+        private const int OriginalShapesSlideNo = 28;
         private const string CopyFromShape = "CopyFrom";
         private const string StraightLine = "Straight Connector 2";
         private const string Arrow = "Right Arrow 5";
 
         //Results of Operations
-        private const int SyncLineFillSlideNo = 24;
-        private const int SyncLineWidthSlideNo = 25;
-        private const int SyncLineCompoundTypeSlideNo = 26;
-        private const int SyncLineDashTypeSlideNo = 27;
-        private const int SyncLineArrowSlideNo = 28;
-        private const int SyncLineTransparencySlideNo = 29;
+        private const int SyncLineFillSlideNo = 29;
+        private const int SyncLineWidthSlideNo = 30;
+        private const int SyncLineCompoundTypeSlideNo = 31;
+        private const int SyncLineDashTypeSlideNo = 32;
+        private const int SyncLineArrowSlideNo = 33;
+        private const int SyncLineTransparencySlideNo = 34;
 
         [TestMethod]
         [TestCategory("UT")]
