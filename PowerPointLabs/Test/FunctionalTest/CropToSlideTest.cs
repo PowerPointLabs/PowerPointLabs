@@ -103,7 +103,7 @@ namespace Test.FunctionalTest
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Error",
-                "Can't find any shapes crossing a boundary. No cropping was done.",
+                "All selected objects are inside the slide boundary. No cropping was done.",
                 PplFeatures.CropToSlide);
         }
 
