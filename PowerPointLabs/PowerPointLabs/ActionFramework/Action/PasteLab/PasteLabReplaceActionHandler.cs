@@ -11,11 +11,12 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
+            var presentation = this.GetCurrentPresentation();
             var slide = this.GetCurrentSlide();
             var selection = this.GetCurrentSelection();
             bool clipboardIsEmpty = (Clipboard.GetDataObject() == null);
 
-            PowerPointLabs.PasteLab.PasteLabMain.PasteAndReplace(slide, clipboardIsEmpty, selection);
+            PowerPointLabs.PasteLab.PasteLabMain.PasteAndReplace(presentation, slide, clipboardIsEmpty, selection);
         }
     }
 }
