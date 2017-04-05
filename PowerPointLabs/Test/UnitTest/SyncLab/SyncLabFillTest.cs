@@ -8,36 +8,46 @@ namespace Test.UnitTest.SyncLab
     public class SyncLabFillTest : BaseSyncLabTest
     {
         private const int OriginalShapesSlideNo = 10;
+        private const string CopyToShape = "Rectangle 3";
         private const string SolidFill = "SolidShape";
         private const string PatternFill = "PatternShape";
         private const string BackgroundFill = "BackgroundShape";
-        private const string CopyToShape = "Rectangle 3";
+        //As of PPT2016, nine gradient stops is the maximum
+        private const string NineGradientFill = "NineGradientShape";
+        private const string TwoGradientFill = "TwoGradientShape";
+        private const string DiagonalGradientFill = "DiagonalGradientShape";
+        private const string RectangularGradientFill = "RectangularGradientShape";
+        private const string PathGradientFill = "PathGradientShape";
 
         //Results of Operations
         private const int SyncPatternFillSlideNo = 11;
         private const int SyncSolidFillSlideNo = 12;
         private const int SyncBackgroundFillSlideNo = 13;
-        private const int SyncTransparencySlideNo = 14;
+        private const int SyncTwoGradientFillSlideNo = 14;
+        private const int SyncDiagonalGradientFillSlideNo = 15;
+        private const int SyncRectangularGradientFillSlideNo = 16;
+        private const int SyncPathGradientFillSlideNo = 17;
+        private const int SyncNineGradientFillSlideNo = 18;
+        private const int SyncTransparencySlideNo = 19;
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncSolidFill()
+        public void TestSyncFill()
         {
             syncFill(SolidFill, SyncSolidFillSlideNo);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestSyncPatternFill()
-        {
             syncFill(PatternFill, SyncPatternFillSlideNo);
+            syncFill(BackgroundFill, SyncBackgroundFillSlideNo);
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncBackgroundFill()
+        public void TestSyncGradientFill()
         {
-            syncFill(BackgroundFill, SyncBackgroundFillSlideNo);
+            syncFill(TwoGradientFill, SyncTwoGradientFillSlideNo);
+            syncFill(DiagonalGradientFill, SyncDiagonalGradientFillSlideNo);
+            syncFill(RectangularGradientFill, SyncRectangularGradientFillSlideNo);
+            syncFill(PathGradientFill, SyncPathGradientFillSlideNo);
+            syncFill(NineGradientFill, SyncNineGradientFillSlideNo);
         }
 
         [TestMethod]
