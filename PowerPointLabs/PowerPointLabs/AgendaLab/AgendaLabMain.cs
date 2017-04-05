@@ -704,7 +704,7 @@ namespace PowerPointLabs.AgendaLab
 
                     if (textRange.Paragraphs.Count < index)
                     {
-                        textRange.InsertAfter(String.Format("\r {0}", placeholderStrings[type]));
+                        textRange.InsertAfter(String.Format("{0} \r", placeholderStrings[type]));
                         textRange.Paragraphs[index].ParagraphFormat.IndentLevel = level;
                     }
                     else if (textRange.Paragraphs[index].ParagraphFormat.IndentLevel != level)
@@ -724,7 +724,7 @@ namespace PowerPointLabs.AgendaLab
                 }
             }
 
-            while (textRange.Paragraphs.Count > numBullets)
+            while (textRange.Paragraphs.Count > numBullets + 1)
             {
                 textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
             }
