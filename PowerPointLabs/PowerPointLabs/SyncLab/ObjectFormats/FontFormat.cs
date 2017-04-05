@@ -24,7 +24,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public static Bitmap DisplayImage(Shape formatShape)
         {
             return SyncFormatUtil.GetTextDisplay(
-                "T",
+                SyncFormatConstants.DisplayFontString,
                 new System.Drawing.Font(formatShape.TextEffect.FontName,
                                         SyncFormatConstants.DisplayImageFontSize),
                 SyncFormatConstants.DisplayImageSize);
