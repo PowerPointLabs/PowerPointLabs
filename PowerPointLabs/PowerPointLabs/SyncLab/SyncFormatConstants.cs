@@ -10,6 +10,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public static readonly int DisplayImageFontSize = 12;
         public static readonly Font DisplayImageFont = new Font("Arial", DisplayImageFontSize);
 
+        public static readonly int ColorBlack = 0;
+        public static readonly int DisplayLineWeight = 5;
+
         private static FormatTreeNode[] formatCategories = InitFormatCategories();
 
         public static FormatTreeNode[] FormatCategories

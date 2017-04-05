@@ -30,6 +30,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 0, SyncFormatConstants.DisplayImageSize.Height,
                 SyncFormatConstants.DisplayImageSize.Width, 0);
             SyncFormat(formatShape, shape);
+            shape.Line.ForeColor.RGB = SyncFormatConstants.ColorBlack;
+            shape.Line.Weight = SyncFormatConstants.DisplayLineWeight;
             Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
             shape.Delete();
             return image;
