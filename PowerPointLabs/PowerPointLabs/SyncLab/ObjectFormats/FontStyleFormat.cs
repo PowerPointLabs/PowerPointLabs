@@ -39,7 +39,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 style |= FontStyle.Italic;
             }
             font = new System.Drawing.Font(font.FontFamily, font.Size, style);
-            return SyncFormatUtil.GetTextDisplay( "T", font, SyncFormatConstants.DisplayImageSize);
+            return SyncFormatUtil.GetTextDisplay(SyncFormatConstants.DisplayFontString, font,
+                                                SyncFormatConstants.DisplayImageSize);
         }
 
         private static bool Sync(Shape formatShape, Shape newShape)
