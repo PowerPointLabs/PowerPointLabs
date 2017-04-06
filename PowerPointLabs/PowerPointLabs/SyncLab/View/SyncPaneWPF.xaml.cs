@@ -27,7 +27,34 @@ namespace PowerPointLabs.SyncLab.View
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
+            this.Loaded += SyncPaneWPF_Loaded;
         }
+
+        public void SyncPaneWPF_Loaded(object sender, RoutedEventArgs e)
+        {
+            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncPane));
+            if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
+            {
+                MessageBox.Show("Error: SyncPane not opened.");
+                return;
+            }
+            var syncLab = syncLabPane.Control as SyncPane;
+
+            syncLab.HandleDestroyed += SyncPane_Closing;
+        }
+
+        public void SyncPane_Closing(Object sender, EventArgs e)
+        {
+            shapeStorage.Close();
+        }
+
+        /*
+        public void SyncPane_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBox.Show("Closing");
+            shapeStorage.Close();
+        }
+        */
 
         #region GUI API
         public int FormatCount

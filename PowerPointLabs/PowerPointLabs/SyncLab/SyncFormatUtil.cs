@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 
 using Microsoft.Office.Interop.PowerPoint;
 
-using Graphics = PowerPointLabs.Utils.Graphics;
+using PowerPointLabs.Models;
 
 namespace PowerPointLabs.SyncLab
 {
@@ -12,20 +13,26 @@ namespace PowerPointLabs.SyncLab
     {
         #region Display Image Utils
 
+        private static PowerPointPresentation templateShapeStorage = null;
+
         public static Shapes GetTemplateShapes()
         {
-            Design design = Graphics.GetDesign(TextCollection.SyncLabStorageTemplateName);
-            if (design == null)
+            if (templateShapeStorage == null)
             {
-                design = Graphics.CreateDesign(TextCollection.SyncLabStorageTemplateName);
+                string path = Path.GetTempPath();
+                string name = string.Format(TextCollection.SyncLabStorageFileName,
+                                 DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+                templateShapeStorage = new PowerPointPresentation(path, name);
+                templateShapeStorage.OpenInBackground();
+                templateShapeStorage.AddSlide();
             }
-            return design.TitleMaster.Shapes;
+            return templateShapeStorage.Slides[0].Shapes;
         }
 
         public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size imageSize)
         {
             Bitmap image = new Bitmap(imageSize.Width, imageSize.Height);
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(image);
+            Graphics g = Graphics.FromImage(image);
             g.TextRenderingHint = TextRenderingHint.AntiAlias;
             SizeF textSize = g.MeasureString(text, font);
             if (textSize.Width == 0 || textSize.Height == 0)

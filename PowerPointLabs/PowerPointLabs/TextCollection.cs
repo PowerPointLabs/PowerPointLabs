@@ -162,7 +162,6 @@
         public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
         public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
         public const string SyncLabCopyError = "Error: Unable to copy selected item.";
-        public const string SyncLabStorageTemplateName = "Sync Lab - Do not edit";
         public const string SyncLabStorageFileName = "Sync Lab - Do not edit - {0}";
         public const string SyncLabDefaultFormatName = "Format";
         #endregion
