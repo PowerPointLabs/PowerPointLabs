@@ -631,4 +631,16 @@
   <data name="minWidth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TimerLab\minWidth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SyncLabCopyButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SyncLabCopyButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SyncLabDeleteButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SyncLabDeleteButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SyncLabEditButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SyncLabEditButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SyncLabPasteButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SyncLabPasteButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

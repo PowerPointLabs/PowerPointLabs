@@ -784,6 +784,7 @@
     <Compile Include="SyncLab\ObjectFormats\PositionYFormat.cs" />
     <Compile Include="SyncLab\SyncFormatConstants.cs" />
     <Compile Include="SyncLab\SyncFormatUtil.cs" />
+    <Compile Include="SyncLab\SyncLabShapeStorage.cs" />
     <Compile Include="SyncLab\View\FormatTreeNode.cs" />
     <Compile Include="SyncLab\View\SyncFormatDialog.xaml.cs">
       <DependentUpon>SyncFormatDialog.xaml</DependentUpon>
@@ -1683,6 +1684,10 @@
     <None Include="Resources\RemoveHighlighting.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SyncLabCopyButton.png" />
+    <Content Include="Resources\SyncLabDeleteButton.png" />
+    <Content Include="Resources\SyncLabEditButton.png" />
+    <Content Include="Resources\SyncLabPasteButton.png" />
     <Content Include="Resources\TimerLab.png" />
     <Resource Include="Resources\TimerLab\HalfHeight.png" />
     <Resource Include="Resources\TimerLab\HalfWidth.png" />
@@ -1694,6 +1699,7 @@
   <ItemGroup>
     <None Include="Resources\SyncLab.png" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
