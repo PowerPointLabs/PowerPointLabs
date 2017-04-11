@@ -259,6 +259,7 @@
     <Compile Include="ActionFramework\Action\CropLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\SyncLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabMergeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabReplaceImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\SyncLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabFillEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabFillImageHandler.cs" />
@@ -358,6 +360,7 @@
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabPositionLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabOriginalPositionLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabReplaceLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\SyncLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabFillLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\RemoveHighlightingLabelHandler.cs" />
@@ -382,6 +385,7 @@
     <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\SyncLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />

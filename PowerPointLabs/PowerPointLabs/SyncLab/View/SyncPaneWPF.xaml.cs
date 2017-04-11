@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Interop.PowerPoint;
 
-using PowerPointLabs.Models;
+using static PowerPointLabs.ActionFramework.Common.Extension.ContentControlExtensions;
 
 namespace PowerPointLabs.SyncLab.View
 {
@@ -14,7 +14,6 @@ namespace PowerPointLabs.SyncLab.View
     /// </summary>
     public partial class SyncPaneWPF : UserControl
     {
-#pragma warning disable 0618
 
         private readonly SyncLabShapeStorage shapeStorage;
 
@@ -32,7 +31,7 @@ namespace PowerPointLabs.SyncLab.View
 
         public void SyncPaneWPF_Loaded(object sender, RoutedEventArgs e)
         {
-            var syncLabPane = Globals.ThisAddIn.GetActivePane(typeof(SyncPane));
+            var syncLabPane = this.GetAddIn().GetActivePane(typeof(SyncPane));
             if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
             {
                 MessageBox.Show("Error: SyncPane not opened.");
@@ -47,14 +46,6 @@ namespace PowerPointLabs.SyncLab.View
         {
             shapeStorage.Close();
         }
-
-        /*
-        public void SyncPane_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            MessageBox.Show("Closing");
-            shapeStorage.Close();
-        }
-        */
 
         #region GUI API
         public int FormatCount
@@ -99,7 +90,7 @@ namespace PowerPointLabs.SyncLab.View
 
         public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape)
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            var selection = this.GetCurrentSelection();
             if (selection.Type != PpSelectionType.ppSelectionShapes ||
                 selection.ShapeRange.Count == 0)
             {
@@ -178,7 +169,7 @@ namespace PowerPointLabs.SyncLab.View
         #region GUI Handles
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            var selection = this.GetCurrentSelection();
             if (selection.Type != PpSelectionType.ppSelectionShapes ||
                 selection.ShapeRange.Count != 1)
             {

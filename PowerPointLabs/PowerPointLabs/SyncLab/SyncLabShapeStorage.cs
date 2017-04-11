@@ -8,14 +8,12 @@ namespace PowerPointLabs.SyncLab
 {
     public class SyncLabShapeStorage : PowerPointPresentation
     {
-#pragma warning disable 0618
 
         private int nextKey = 0;
 
         public SyncLabShapeStorage() : base()
         {
-            Path = Globals.ThisAddIn.PrepareTempFolder(
-                                         PowerPointPresentation.Current.Presentation);
+            Path = System.IO.Path.GetTempPath();
             Name = string.Format(TextCollection.SyncLabStorageFileName,
                                  DateTime.Now.ToString("yyyyMMddHHmmssffff"));
             OpenInBackground();
