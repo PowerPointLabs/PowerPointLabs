@@ -6,7 +6,7 @@
                       xmlns:local="clr-namespace:PowerPointLabs.CropLab"
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
-                      Height="195"
+                      Height="215"
                       Width="350"
                       BorderThickness="1"
                       BorderBrush="#0070c0"
@@ -27,33 +27,40 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
-    <Grid>
+    <Grid Margin="0,0,0.4,-3.8">
         <TextBlock x:Name="anchorPointLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,5,0,0"><Run Text="Anchor Point"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,25,0,0" VerticalAlignment="Top" Width="335"/>
-        <WrapPanel HorizontalAlignment="Left" Height="78" Margin="111,35,0,0" VerticalAlignment="Top" Width="105">
+        <WrapPanel HorizontalAlignment="Left" Height="109" Margin="112,39,0,0" VerticalAlignment="Top" Width="105">
             <WrapPanel.Resources>
                 <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
             </WrapPanel.Resources>
-            <RadioButton x:Name="topLeftAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="topLeftAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.TopLeft}}" />
-            <RadioButton x:Name="topAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0"  VerticalAlignment="Top"
+            <RadioButton x:Name="topAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0"  VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.Top}}" />
-            <RadioButton x:Name="topRightAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="topRightAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.TopRight}}" />
-            <RadioButton x:Name="middleLeftAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="middleLeftAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.MiddleLeft}}" />
-            <RadioButton x:Name="middleAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="middleAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.Middle}}" />
-            <RadioButton x:Name="middleRightAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="middleRightAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.MiddleRight}}" />
-            <RadioButton x:Name="bottomLeftAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="bottomLeftAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.BottomLeft}}" />
-            <RadioButton x:Name="bottomAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="bottomAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.Bottom}}" />
-            <RadioButton x:Name="bottomRightAnchorRadioButton" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
+            <RadioButton x:Name="bottomRightAnchorRadioButton" GroupName="Anchor" Content="" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top"
                          IsChecked="{Binding Path=SelectedAnchor, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:AnchorPosition.BottomRight}}" />
         </WrapPanel>
-        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
+        <WrapPanel HorizontalAlignment="Left" Height="36" Margin="81,109,0,0" VerticalAlignment="Top" Width="166">
+            <WrapPanel.Resources>
+                <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+            </WrapPanel.Resources>
+            <RadioButton x:Name="referenceAnchorRadioButton" GroupName="Anchor" Content="Follow Reference Image" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+                         IsChecked="{Binding SelectedAnchor, ConverterParameter={x:Static local:AnchorPosition.Reference}, Converter={StaticResource EnumToBooleanConverter}}" />
+        </WrapPanel>
+        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,9.8" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,9.8" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
     </Grid>
 </controls:MetroWindow>

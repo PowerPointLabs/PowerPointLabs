@@ -20,10 +20,5 @@ namespace PowerPointLabs.CropLab
             CropLabSettings.AnchorPosition = SelectedAnchor;
             Close();
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
     }
 }
