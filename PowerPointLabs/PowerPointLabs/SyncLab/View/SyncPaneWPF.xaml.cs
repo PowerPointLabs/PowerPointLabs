@@ -48,14 +48,6 @@ namespace PowerPointLabs.SyncLab.View
             shapeStorage.Close();
         }
 
-        /*
-        public void SyncPane_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            MessageBox.Show("Closing");
-            shapeStorage.Close();
-        }
-        */
-
         #region GUI API
         public int FormatCount
         {
