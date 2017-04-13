@@ -47,7 +47,6 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             try
             {
-                //What is the difference between TextFrame and TextFrame2?
                 SyncTextRange(formatShape.TextFrame.TextRange, newShape.TextFrame.TextRange);
             }
             catch (Exception)
