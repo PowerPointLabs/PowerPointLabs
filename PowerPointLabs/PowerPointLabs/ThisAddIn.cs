@@ -420,20 +420,6 @@ namespace PowerPointLabs
             return taskPane;
         }
 
-        public void RegisterSyncLabPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(SyncPane)) != null)
-            {
-                return;
-            }
-
-            var activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(
-                new SyncPane(),
-                TextCollection.SyncLabTaskPanelTitle, activeWindow, null, null);
-        }
-
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             Ribbon = new Ribbon1();
