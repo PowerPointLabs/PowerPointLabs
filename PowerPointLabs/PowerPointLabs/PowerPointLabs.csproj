@@ -1696,6 +1696,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SyncLabCopyButton.png" />
+    <None Include="Resources\PasteLabCursorPosition.png" />
+    <None Include="Resources\PasteLabFillSlide.png" />
+    <None Include="Resources\PasteLabIntoGroup.png" />
+    <None Include="Resources\PasteLabMergeGroup.png" />
+    <None Include="Resources\PasteLabOriginalPosition.png" />
+    <None Include="Resources\PasteLabReplace.png" />
     <Content Include="Resources\SyncLabDeleteButton.png" />
     <Content Include="Resources\SyncLabEditButton.png" />
     <Content Include="Resources\SyncLabPasteButton.png" />

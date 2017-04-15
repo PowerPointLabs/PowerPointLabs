@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.ColorsLab);
+            return new Bitmap(Properties.Resources.PasteLabFillSlide);
         }
     }
 }
