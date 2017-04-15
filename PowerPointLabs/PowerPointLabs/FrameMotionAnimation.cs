@@ -133,35 +133,53 @@ namespace PowerPointLabs
             {
                 PowerPoint.Shape dupShape = initialShape.Duplicate()[1];
                 if (i != 1 && animationType != FrameMotionAnimationType.kZoomToAreaDeMagnify)
+                {
                     sequence[sequence.Count].Delete();
+                }
 
                 if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan || animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify)
+                {
                     animationSlide.DeleteShapeAnimations(dupShape);
+                }
 
                 if (animationType == FrameMotionAnimationType.kZoomToAreaPan)
+                {
                     dupShape.Name = "PPTLabsMagnifyPanAreaGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                }
 
                 dupShape.LockAspectRatio = Office.MsoTriState.msoFalse;
                 dupShape.Left = initialShape.Left;
                 dupShape.Top = initialShape.Top;
 
                 if (incrementWidth != 0.0f)
+                {
                     dupShape.ScaleWidth(Math.Abs(1.0f + (incrementWidth * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                }
 
                 if (incrementHeight != 0.0f)
+                {
                     dupShape.ScaleHeight(Math.Abs(1.0f + (incrementHeight * i)), Office.MsoTriState.msoFalse, Office.MsoScaleFrom.msoScaleFromMiddle);
+                }
 
                 if (incrementRotation != 0.0f)
+                {
                     dupShape.Rotation += (incrementRotation * i);
+                }
 
                 if (incrementLeft != 0.0f)
+                {
                     dupShape.Left += (incrementLeft * i);
+                }
 
                 if (incrementTop != 0.0f)
+                {
                     dupShape.Top += (incrementTop * i);
+                }
 
                 if (incrementFont != 0.0f)
+                {
                     dupShape.TextFrame.TextRange.Font.Size += (incrementFont * i);
+                }
 
                 if (isFlippedHorizontally && 1.0f + (incrementWidth * i) < 0)
                 {

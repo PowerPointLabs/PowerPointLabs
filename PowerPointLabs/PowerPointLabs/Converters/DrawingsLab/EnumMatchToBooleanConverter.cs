@@ -10,7 +10,9 @@ namespace PowerPointLabs.Converters.DrawingsLab
                               object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null)
+            {
                 return false;
+            }
 
             string checkValue = value.ToString();
             string targetValue = parameter.ToString();
@@ -22,12 +24,16 @@ namespace PowerPointLabs.Converters.DrawingsLab
                                   object parameter, CultureInfo culture)
         {
             if (value == null || parameter == null)
+            {
                 return null;
+            }
 
             bool useValue = (bool)value;
             string targetValue = parameter.ToString();
             if (useValue)
+            {
                 return Enum.Parse(targetType, targetValue);
+            }
 
             return null;
         }

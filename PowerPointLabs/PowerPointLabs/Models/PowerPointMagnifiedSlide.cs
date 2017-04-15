@@ -21,7 +21,9 @@ namespace PowerPointLabs.Models
         public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
+            {
                 return null;
+            }
 
             return new PowerPointMagnifiedSlide(slide);
         }
@@ -40,9 +42,13 @@ namespace PowerPointLabs.Models
 
             zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (zoomSlideCroppedShapes.Width > zoomSlideCroppedShapes.Height)
+            {
                 zoomSlideCroppedShapes.Width = PowerPointPresentation.Current.SlideWidth;
+            }
             else
+            {
                 zoomSlideCroppedShapes.Height = PowerPointPresentation.Current.SlideHeight;
+            }
 
             zoomSlideCroppedShapes.Left = (PowerPointPresentation.Current.SlideWidth / 2) - (zoomSlideCroppedShapes.Width / 2);
             zoomSlideCroppedShapes.Top = (PowerPointPresentation.Current.SlideHeight / 2) - (zoomSlideCroppedShapes.Height / 2);
@@ -61,7 +67,9 @@ namespace PowerPointLabs.Models
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             var matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
             foreach (PowerPoint.Shape s in matchingShapes)
+            {
                 s.Delete();
+            }
 
             zoomSlideCroppedShapes = GetShapesWithPrefix("PPTLabsMagnifyAreaGroup")[0];
             zoomSlideCroppedShapes.Visible = Office.MsoTriState.msoTrue;

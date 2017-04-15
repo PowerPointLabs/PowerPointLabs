@@ -589,6 +589,16 @@
         public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
         #endregion
+        
+        #region Captions Lab
+
+        public const string CaptionsLabErrorNoSelection = "Select at least one slide to apply captions.";
+        public const string CaptionsLabErrorNoNotes = "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.";
+        public const string CaptionsLabErrorNoSelectionLog = "No slide in selection";
+        public const string CaptionsLabErrorNoCurrentSlideLog = "No current slide";
+        public const string CaptionsLabErrorNoNotesLog = "No notes on slide";
+
+        # endregion
 
         #region Task Pane - Recorder
         public const string RecorderInitialTimer = "00:00:00";

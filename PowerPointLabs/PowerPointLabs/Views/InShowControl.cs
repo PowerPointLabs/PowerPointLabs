@@ -75,7 +75,10 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            if (_recorder == null) return;
+            if (_recorder == null)
+            {
+                return;
+            }
             
             int click;
             PowerPointSlide currentSlide;
@@ -135,7 +138,10 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            if (_recorder == null) return;
+            if (_recorder == null)
+            {
+                return;
+            }
 
             var temp = _recorder.AudioBuffer[_recordStartSlide.Index - 1];
 

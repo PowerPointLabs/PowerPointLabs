@@ -9,20 +9,20 @@
 //------------------------------------------------------------------------------
 
 namespace PowerPointLabs.Properties {
-    
-    
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
+
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
+
         public static Settings Default {
             get {
                 return defaultInstance;
             }
         }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("dev")]
@@ -31,7 +31,7 @@ namespace PowerPointLabs.Properties {
                 return ((string)(this["ReleaseType"]));
             }
         }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("online")]
@@ -40,7 +40,7 @@ namespace PowerPointLabs.Properties {
                 return ((string)(this["InstallerType"]));
             }
         }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download-78563/")]
@@ -49,7 +49,7 @@ namespace PowerPointLabs.Properties {
                 return ((string)(this["ReleaseAddr"]));
             }
         }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download/alpha/")]
@@ -58,19 +58,19 @@ namespace PowerPointLabs.Properties {
                 return ((string)(this["DevAddr"]));
             }
         }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2017.3.31.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.8.7.17")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
             }
         }
-        
+
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("31 March 2017")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30 March 2017")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));

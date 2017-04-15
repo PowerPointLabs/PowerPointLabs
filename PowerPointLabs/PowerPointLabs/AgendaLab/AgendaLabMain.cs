@@ -111,12 +111,18 @@ namespace PowerPointLabs.AgendaLab
                     var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
                                                   TextCollection.AgendaLabAgendaExistErrorCaption,
                                                   MessageBoxButtons.OKCancel);
-                    if (confirm != DialogResult.OK) return;
+                    if (confirm != DialogResult.OK)
+                    {
+                        return;
+                    }
 
                     RemoveAllAgendaItems(slideTracker);
                 }
 
-                if (!ValidSections()) return;
+                if (!ValidSections())
+                {
+                    return;
+                }
 
                 // The process should not abort (return) anytime past this point. Changes will start being made past this point.
 
@@ -201,8 +207,15 @@ namespace PowerPointLabs.AgendaLab
                     usingNewReferenceSlide = true;
                 }
 
-                if (!ValidAgenda(refSlide, type)) return;
-                if (!ValidSections()) return;
+                if (!ValidAgenda(refSlide, type))
+                {
+                    return;
+                }
+
+                if (!ValidSections())
+                {
+                    return;
+                }
 
                 // The process should not abort (return) anytime past this point. Changes will start being made past this point.
 
@@ -391,7 +404,11 @@ namespace PowerPointLabs.AgendaLab
 
         private static void MatchColour(Shape highlightedTextBox, Shape background)
         {
-            if (background == null) return;
+            if (background == null)
+            {
+                return;
+            }
+
             highlightedTextBox.Fill.ForeColor.RGB = background.Fill.ForeColor.RGB;
         }
 
@@ -582,7 +599,10 @@ namespace PowerPointLabs.AgendaLab
 
         private static void RemoveAllAgendaItems(SlideSelectionTracker slideTracker = null)
         {
-            if (slideTracker == null) slideTracker = SlideSelectionTracker.CreateInactiveTracker();
+            if (slideTracker == null)
+            {
+                slideTracker = SlideSelectionTracker.CreateInactiveTracker();
+            }
 
             PowerPointPresentation.Current.Slides.Where(AgendaSlide.IsAnyAgendaSlide)
                                                  .ToList()
@@ -745,7 +765,10 @@ namespace PowerPointLabs.AgendaLab
             foreach (var shape in shapes)
             {
                 var agendaShape = AgendaShape.Decode(shape);
-                if (agendaShape == null || agendaShape.ShapePurpose != ShapePurpose.VisualAgendaImage) continue;
+                if (agendaShape == null || agendaShape.ShapePurpose != ShapePurpose.VisualAgendaImage)
+                {
+                    continue;
+                }
 
                 int index = agendaShape.Section.Index;
                 if (shapeAssignment.ContainsKey(index))
@@ -769,10 +792,16 @@ namespace PowerPointLabs.AgendaLab
         /// </summary> 
         private static void PositionNewImageShapes(List<Shape> shapes, float existingImageWidth, float existingImageHeight)
         {
-            if (shapes.Count == 0) return;
+            if (shapes.Count == 0)
+            {
+                return;
+            }
 
             ArrangeInGrid(shapes);
-            if (existingImageWidth <= 0 || existingImageHeight <= 0) return;
+            if (existingImageWidth <= 0 || existingImageHeight <= 0)
+            {
+                return;
+            }
 
             foreach (var shape in shapes)
             {
@@ -834,7 +863,10 @@ namespace PowerPointLabs.AgendaLab
 
             MatchColour(highlightedTextBox, background);
 
-            if (SectionsMatch(currentSections, newSections)) return;
+            if (SectionsMatch(currentSections, newSections))
+            {
+                return;
+            }
 
 
             var confirmResult = MessageBox.Show(new Form() { TopMost = true },
@@ -932,7 +964,10 @@ namespace PowerPointLabs.AgendaLab
             for (int i = 0; i < newTextBoxes.Count; ++i)
             {
                 var referenceTextFormat = beamFormats.Regular;
-                if (i < oldTextBoxes.Count) referenceTextFormat = oldTextBoxes[i].TextFrame2.TextRange;
+                if (i < oldTextBoxes.Count)
+                {
+                    referenceTextFormat = oldTextBoxes[i].TextFrame2.TextRange;
+                }
 
                 Graphics.SyncTextRange(referenceTextFormat, newTextBoxes[i].TextFrame2.TextRange, pickupTextContent: false);
             }
@@ -947,13 +982,22 @@ namespace PowerPointLabs.AgendaLab
 
         private static bool SectionsMatch(List<AgendaSection> currentSections, List<AgendaSection> newSections)
         {
-            if (currentSections == null) return false;
-            if (currentSections.Count != newSections.Count) return false;
+            if (currentSections == null)
+            {
+                return false;
+            }
+            if (currentSections.Count != newSections.Count)
+            {
+                return false;
+            }
             for (int i = 0; i < currentSections.Count; ++i)
             {
                 var currentSection = currentSections[i];
                 var newSection = newSections[i];
-                if (currentSection.Index != newSection.Index || currentSection.Name != newSection.Name) return false;
+                if (currentSection.Index != newSection.Index || currentSection.Name != newSection.Name)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -1018,7 +1062,10 @@ namespace PowerPointLabs.AgendaLab
                                 .ToList()
                                 .ForEach(shape => shape.Delete());
 
-            if (section.Index == 1) return;
+            if (section.Index == 1)
+            {
+                return;
+            }
 
             var beamFormats = BeamFormats.ExtractFormats(refBeamShape);
             var currentSectionTextBox = beamShape.GroupItems
@@ -1192,13 +1239,23 @@ namespace PowerPointLabs.AgendaLab
         private static bool InvalidBeamAgendaReferenceSlide(PowerPointSlide refSlide)
         {
             var beamShape = FindBeamShape(refSlide);
-            if (beamShape == null) return true;
+
+            if (beamShape == null)
+            {
+                return true;
+            }
+
             try
             {
                 if (BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText) == null)
+                {
                     return true;
+                }
+
                 if (BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeText) == null)
+                {
                     return true;
+                }
             }
             catch (COMException)
             {

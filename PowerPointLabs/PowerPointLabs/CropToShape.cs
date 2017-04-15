@@ -65,7 +65,10 @@ namespace PowerPointLabs
         {
             try
             {
-                if (!VerifyIsShapeRangeValid(shapeRange, handleError)) return null;
+                if (!VerifyIsShapeRangeValid(shapeRange, handleError))
+                {
+                    return null;
+                }
                 
                 var hasManyShapes = shapeRange.Count > 1;
                 var shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
@@ -130,7 +133,11 @@ namespace PowerPointLabs
         public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
                             float magnifyRatio = 1.0f)
         {
-            if (original == null) return null;
+            if (original == null)
+            {
+                return null;
+            }
+
             try
             {
                 var newX = startX * magnifyRatio;

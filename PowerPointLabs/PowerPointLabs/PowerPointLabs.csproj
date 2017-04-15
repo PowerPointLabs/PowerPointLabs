@@ -44,7 +44,7 @@
     <PublishUrl>D:\PPTLabs\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/alpha/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2017.3.31.1</ApplicationVersion>
+    <ApplicationVersion>2.8.7.17</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -332,6 +332,13 @@
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabReplaceImageHandler.cs" />
     <Compile Include="ActionFramework\Image\SyncLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\AnimationLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\SmallHelpImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\ZoomLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\CaptionLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\HighlightLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\NarrationsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\Group\MoreLabsImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteLabFillEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabFillImageHandler.cs" />
@@ -1703,7 +1710,27 @@
   <ItemGroup>
     <None Include="Resources\SyncLab.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\MoreLabs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CaptionLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NarrationsLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomLabSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HelpSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AnimationLabSmall.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

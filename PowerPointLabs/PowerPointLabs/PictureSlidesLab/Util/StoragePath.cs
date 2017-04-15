@@ -162,7 +162,10 @@ namespace PowerPointLabs.PictureSlidesLab.Util
 
         private static void Empty(DirectoryInfo directory, ICollection<string> filesInUse)
         {
-            if (!directory.Exists) return;
+            if (!directory.Exists)
+            {
+                return;
+            }
 
             try
             {

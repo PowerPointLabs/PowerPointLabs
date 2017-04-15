@@ -75,7 +75,9 @@ namespace PowerPointLabs
             if (hslColor != null && hslColor.luminosity != 0)
             {
                 if (hslColor.saturation == 0)
+                {
                     r = g = b = hslColor.luminosity;
+                }
                 else
                 {
                     double temp2 = GetTemp2(hslColor);
@@ -93,29 +95,47 @@ namespace PowerPointLabs
         {
             temp3 = MoveIntoRange(temp3);
             if (temp3 < 1.0 / 6.0)
+            {
                 return temp1 + (temp2 - temp1) * 6.0 * temp3;
+            }
             else if (temp3 < 0.5)
+            {
                 return temp2;
+            }
             else if (temp3 < 2.0 / 3.0)
+            {
                 return temp1 + ((temp2 - temp1) * ((2.0 / 3.0) - temp3) * 6.0);
+            }
             else
+            {
                 return temp1;
+            }
         }
         private static double MoveIntoRange(double temp3)
         {
             if (temp3 < 0.0)
+            {
                 temp3 += 1.0;
+            }
             else if (temp3 > 1.0)
+            {
                 temp3 -= 1.0;
+            }
+
             return temp3;
         }
         private static double GetTemp2(HSLColor hslColor)
         {
             double temp2;
             if (hslColor.luminosity < 0.5)  //<=??
+            {
                 temp2 = hslColor.luminosity * (1.0 + hslColor.saturation);
+            }
             else
+            {
                 temp2 = hslColor.luminosity + hslColor.saturation - (hslColor.luminosity * hslColor.saturation);
+            }
+
             return temp2;
         }
 
@@ -132,9 +152,14 @@ namespace PowerPointLabs
         private double CheckRange(double value)
         {
             if (value < 0.0)
+            {
                 value = 0.0;
+            }
             else if (value > 1.0)
+            {
                 value = 1.0;
+            }
+
             return value;
         }
     }

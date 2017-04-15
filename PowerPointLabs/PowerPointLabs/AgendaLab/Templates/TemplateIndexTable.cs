@@ -29,8 +29,15 @@ namespace PowerPointLabs.AgendaLab.Templates
         {
             FrontIndexes = new int[frontSlideCount];
             BackIndexes = new int[backSlideCount];
-            for (int i = 0; i < FrontIndexes.Length; ++i) FrontIndexes[i] = NoSlide;
-            for (int i = 0; i < BackIndexes.Length; ++i) BackIndexes[i] = NoSlide;
+            for (int i = 0; i < FrontIndexes.Length; ++i)
+            {
+                FrontIndexes[i] = NoSlide;
+            }
+
+            for (int i = 0; i < BackIndexes.Length; ++i)
+            {
+                BackIndexes[i] = NoSlide;
+            }
 
             IsNewlyGeneratedFront = new bool[frontSlideCount];
             IsNewlyGeneratedBack = new bool[backSlideCount];

@@ -16,7 +16,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
+            {
                 return;
+            }
 
             // a hack to enable the textbox layout
             shape.Width = shape.Width;
@@ -57,7 +59,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
+            {
                 return;
+            }
 
             if (isUseTextGlow)
             {
@@ -89,7 +93,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 Shapes.Range(), SlideWidth, SlideHeight)
                 .IsTextShapesEmpty();
 
-            if (!isTextShapesEmpty) return;
+            if (!isTextShapesEmpty)
+            {
+                return;
+            }
 
             try
             {
@@ -138,7 +145,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             if (position == Position.NoEffect
                 || alignment == Alignment.NoEffect)
+            {
                 return;
+            }
 
             new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .RecoverTextWrapping();

@@ -514,7 +514,10 @@ namespace PowerPointLabs.PictureSlidesLab.View.ImageAdjustment
 
         private void BuildCorner(ref CropThumb crt, Cursor crs, Brush color = null)
         {
-            if (crt != null) return;
+            if (crt != null)
+            {
+                return;
+            }
 
             crt = new CropThumb(CpxThumbWidth, color);
 

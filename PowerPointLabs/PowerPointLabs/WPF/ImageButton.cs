@@ -47,9 +47,13 @@ namespace PowerPointLabs.WPF
             get
             {
                 if (_image != null)
+                {
                     return _image.Source;
+                }
                 else
+                {
                     return null;
+                }
             }
             set
             {

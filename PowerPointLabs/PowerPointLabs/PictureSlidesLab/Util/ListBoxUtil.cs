@@ -12,9 +12,16 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             for (var i = 0; i < childCount; i++)
             {
                 var elt = VisualTreeHelper.GetChild(parent, i);
-                if (elt is ScrollViewer) return (ScrollViewer)elt;
+                if (elt is ScrollViewer)
+                {
+                    return (ScrollViewer)elt;
+                }
+
                 var result = FindScrollViewer(elt);
-                if (result != null) return result;
+                if (result != null)
+                {
+                    return result;
+                }
             }
             return null;
         }

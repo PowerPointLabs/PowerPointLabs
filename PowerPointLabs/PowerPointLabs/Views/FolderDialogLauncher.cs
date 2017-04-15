@@ -54,7 +54,10 @@ namespace PowerPointLabs.Views
         {
             var timer = sender as Timer;
 
-            if (timer == null) return;
+            if (timer == null)
+            {
+                return;
+            }
 
             if (_retries > 0)
             {
