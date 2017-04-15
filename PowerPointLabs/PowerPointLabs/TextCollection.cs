@@ -721,9 +721,9 @@
         #region Paste Lab
         public class PasteLabText
         {
-            public const string PasteToFillSlide = "Paste To Fill Slide";
+            public const string PasteToFillSlide = "Paste to Fill Slide";
             public const string PasteAndReplace = "Replace with Clipboard";
-            public const string PasteIntoGroup = "Paste Into Group";
+            public const string PasteIntoGroup = "Paste into Group";
             public const string PasteToPosition = "Paste to Cursor Position";
             public const string PasteToOriginalPosition = "Paste to Original Position";
             public const string MergeSelection = "Merge into One Group";
