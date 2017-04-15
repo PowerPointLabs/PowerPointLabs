@@ -38,13 +38,11 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Font", new Format(typeof(FontFormat))),
                             new FormatTreeNode("Font Size", new Format(typeof(FontSizeFormat))),
                             new FormatTreeNode("Font Color", new Format(typeof(FontColorFormat))),
-                            new FormatTreeNode("Style", new Format(typeof(FontStyleFormat)))
-                        ),
+                            new FormatTreeNode("Style", new Format(typeof(FontStyleFormat)))),
                     new FormatTreeNode(
                             "Fill",
                             new FormatTreeNode("Color", new Format(typeof(FillFormat))),
-                            new FormatTreeNode("Transparency", new Format(typeof(FillTransparencyFormat)))
-                        ),
+                            new FormatTreeNode("Transparency", new Format(typeof(FillTransparencyFormat)))),
                     new FormatTreeNode(
                             "Line",                        
                             new FormatTreeNode("Color", new Format(typeof(LineFillFormat))),
@@ -52,15 +50,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Width", new Format(typeof(LineWeightFormat))),
                             new FormatTreeNode("Compound Type", new Format(typeof(LineCompoundTypeFormat))),
                             new FormatTreeNode("Dash Type", new Format(typeof(LineDashTypeFormat))),
-                            new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat)))
-                        ),
+                            new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat)))),
                     new FormatTreeNode(
                             "Size/Position",
                             new FormatTreeNode("Width", new Format(typeof(PositionWidthFormat))),
                             new FormatTreeNode("Height", new Format(typeof(PositionHeightFormat))),
                             new FormatTreeNode("X", new Format(typeof(PositionXFormat))),
-                            new FormatTreeNode("Y", new Format(typeof(PositionYFormat)))
-                        )
+                            new FormatTreeNode("Y", new Format(typeof(PositionYFormat))))
                 };
             return formats;
         }

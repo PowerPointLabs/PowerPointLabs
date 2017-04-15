@@ -97,7 +97,7 @@ namespace PowerPointLabs.CropLab
         public static Bitmap KiCut(Bitmap original, float startX, float startY, float width, float height,
                                     double magnifyRatio = 1.0)
         {
-            if (original == null) return null;
+            if (original == null) { return null; }
             try
             {
                 var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format32bppArgb);
