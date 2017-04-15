@@ -20,6 +20,7 @@ using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
@@ -45,7 +46,7 @@ namespace PowerPointLabs
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
-        private const string AppLogName = "PowerPointLabs.log"; 
+        private const string AppLogName = "PowerPointLabs.log";
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
@@ -521,7 +522,7 @@ namespace PowerPointLabs
             ref string presFullName)
         {
             // this function is used to handle "embed on other application" issue. In this case,
-            // all of presentation name, path and full name do not match the usual rule: name is 
+            // all of presentation name, path and full name do not match the usual rule: name is
             // "Untitled", path is empty string and full name is "slide in XX application". We need
             // to regulate these fields properly.
 
@@ -816,6 +817,7 @@ namespace PowerPointLabs
 
             // Priority Mid: Window Actions
             Application.WindowActivate += ThisAddInApplicationOnWindowActivate;
+            Application.WindowBeforeRightClick += ThisAddInApplicationOnWindowBeforeRightClick;
             Application.WindowDeactivate += ThisAddInApplicationOnWindowDeactivate;
             Application.WindowSelectionChange += ThisAddInSelectionChanged;
             Application.SlideShowBegin += SlideShowBeginHandler;
@@ -848,6 +850,11 @@ namespace PowerPointLabs
                 ShapePresentation.Close();
                 Trace.TraceInformation("Shape Gallery terminated.");
             }
+        }
+
+        private void ThisAddInApplicationOnWindowBeforeRightClick(PowerPoint.Selection sel, ref bool cancel)
+        {
+            PPMouse.RightClickCallback(Cursor.Position.X, Cursor.Position.Y);
         }
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -1254,7 +1261,7 @@ namespace PowerPointLabs
         }
 
         /// <summary>
-        /// Similar name defi: 
+        /// Similar name defi:
         /// 1. if they're not default shape name, they must be the exact same
         /// 2. if they're default shape name, the shape type in the name must be the exact same
         /// 3. otherwise not similar
@@ -1394,7 +1401,7 @@ namespace PowerPointLabs
         //if unsuccessful (Home tab is not enabled), EVENT_SYSTEM_MENUEND will be received
         //if successful   (Property window is open), EVENT_OBJECT_CREATE will be received
         //To check the events occurred, use AccEvent32.exe
-        //Refer to MSAA - Event Constants: 
+        //Refer to MSAA - Event Constants:
         //http://msdn.microsoft.com/en-us/library/windows/desktop/dd318066(v=vs.85).aspx
         void TabActivateEventHandler(IntPtr hook, uint eventType,
         IntPtr hwnd, int idObject, int child, uint thread, uint time)
@@ -1406,7 +1413,7 @@ namespace PowerPointLabs
                 _eventHook = IntPtr.Zero;
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
-            {                
+            {
                 MessageBox.Show(TextCollection.TabActivateErrorDescription, TextCollection.TabActivateErrorTitle);
             }
         }
@@ -1452,7 +1459,7 @@ namespace PowerPointLabs
                     {
                         OpenPropertyWindowForOffice10();
                     }
-                    else 
+                    else
                     {
                         OpenPropertyWindowForOffice13OrHigher(selection);
                     }

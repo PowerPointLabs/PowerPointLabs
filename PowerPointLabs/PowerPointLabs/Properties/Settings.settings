@@ -12,7 +12,7 @@
       <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download-78563/</Value>
     </Setting>
     <Setting Name="DevAddr" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download/dev/</Value>
+      <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download/alpha/</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="Application">
       <Value Profile="(Default)">2.8.7.17</Value>

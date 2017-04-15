@@ -12,6 +12,18 @@ namespace PPExtraEventHelper
 {
     internal class PPMouse
     {
+        public struct Coordinates
+        {
+            public float X;
+            public float Y;
+
+            public Coordinates(float x, float y)
+            {
+                X = x;
+                Y = y;
+            }
+        }
+
         private static int hook;
 
         private static bool isInit = false;
@@ -25,6 +37,16 @@ namespace PPExtraEventHelper
         private static Native.HookProc hookProcedure;
 
         private static double startTimeInMillisecond = CurrentMillisecond();
+
+        private static Coordinates rightClickCoordinates = new Coordinates(0, 0);
+
+        public static Coordinates RightClickCoordinates
+        {
+            get
+            {
+                return rightClickCoordinates;
+            }
+        }
 
         public static void Init(PowerPoint.Application application)
         {
@@ -59,6 +81,12 @@ namespace PPExtraEventHelper
                 IntPtr ppHandle = Process.GetCurrentProcess().MainWindowHandle;
                 StartHook(ppHandle);
             }
+        }
+
+        public static void RightClickCallback(float x, float y)
+        {
+            rightClickCoordinates.X = x;
+            rightClickCoordinates.Y = y;
         }
 
         private static bool IsHookSuccessful()

@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -52,9 +53,19 @@ namespace PowerPointLabs.Utils
 
         public static void ExportShape(Shape shape, string exportPath)
         {
-            var slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
-            var slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
-
+            int slideWidth = 0;
+            int slideHeight = 0;
+            try
+            {
+                slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
+                slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
+            }
+            catch (NullReferenceException)
+            {
+                // Getting Presentation.Current may throw NullReferenceException during unit testing
+                shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, ExportMode: PpExportMode.ppScaleToFit);
+            }
+            
             shape.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                          slideHeight, PpExportMode.ppScaleToFit);
         }
@@ -66,6 +77,17 @@ namespace PowerPointLabs.Utils
 
             shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                               slideHeight, PpExportMode.ppScaleToFit);
+        }
+
+        public static Image ShapeToImage(Shape shape)
+        {
+            string fileName = "temp_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".png";
+            string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
+            ExportShape(shape, tempPicPath);
+            Image tempImage = Image.FromFile(tempPicPath);
+            Image image = (Image)tempImage.Clone(); // free up the original file to be deleted
+            tempImage.Dispose();
+            return image;
         }
 
         public static void FitShapeToSlide(ref Shape shapeToMove)
@@ -95,6 +117,13 @@ namespace PowerPointLabs.Utils
                     (shape.Type == MsoShapeType.msoAutoShape &&
                      shape.AutoShapeType == MsoAutoShapeType.msoShapeMixed &&
                      shape.ConnectorFormat.Type == MsoConnectorType.msoConnectorStraight);
+        }
+
+        public static bool IsShape(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoAutoShape
+                || shape.Type == MsoShapeType.msoFreeform
+                || shape.Type == MsoShapeType.msoGroup;
         }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
@@ -443,23 +472,31 @@ namespace PowerPointLabs.Utils
 
         public static float GetScaleWidth(Shape shape)
         {
+            var isAspectRatioLocked = shape.LockAspectRatio;
+            shape.LockAspectRatio = MsoTriState.msoFalse;
+
             float oldWidth = shape.Width;
             shape.ScaleWidth(1, MsoTriState.msoCTrue);
             float scaleFactorWidth = oldWidth / shape.Width;
 
             shape.ScaleWidth(scaleFactorWidth, MsoTriState.msoCTrue);
 
+            shape.LockAspectRatio = isAspectRatioLocked;
             return scaleFactorWidth;
         }
 
         public static float GetScaleHeight(Shape shape)
         {
+            var isAspectRatioLocked = shape.LockAspectRatio;
+            shape.LockAspectRatio = MsoTriState.msoFalse;
+
             float oldHeight = shape.Height;
             shape.ScaleHeight(1, MsoTriState.msoCTrue);
             float scaleFactorHeight = oldHeight / shape.Height;
 
             shape.ScaleHeight(scaleFactorHeight, MsoTriState.msoCTrue);
 
+            shape.LockAspectRatio = isAspectRatioLocked;
             return scaleFactorHeight;
         }
 

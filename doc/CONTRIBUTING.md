@@ -152,6 +152,11 @@ We regularly publish the dev version of PowerPointLabs add-in, and a contributor
 
 If any strange behaviour or exception is encountered, please submit a [bug report](#bugs).
 
+## Coding Standards
+
+See [OSS-Generics Coding Standards](https://github.com/oss-generic/process/blob/master/docs/CodingStandards.md)
+
+
 <a name="branches"></a>
 ## Branches convention
 

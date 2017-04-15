@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId("AddCustomShape")]
+    [ExportLabelRibbonId("AddCustomShape", "addCustomShapePictureGroup")]
     class AddShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

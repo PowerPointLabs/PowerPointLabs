@@ -46,7 +46,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return Path + @"\" + NameNoExtension;
+                if (Regex.IsMatch(Name, extensionRegex, RegexOptions.IgnoreCase))
+                {
+                    return Path + @"\" + Name;
+                }
+                else
+                {
+                    return Path + @"\" + Name + ".pptx";
+                }
             }
         }
 
@@ -90,13 +97,13 @@ namespace PowerPointLabs.Models
                 if (Regex.IsMatch(value, extensionRegex, RegexOptions.IgnoreCase))
                 {
                     NameNoExtension = Regex.Replace(value, extensionRegex, "", RegexOptions.IgnoreCase);
+                    _name = value;
                 }
                 else
                 {
                     NameNoExtension = value;
+                    _name = value + ".pptx";
                 }
-
-                _name = value;
             }
         }
 
@@ -245,6 +252,7 @@ namespace PowerPointLabs.Models
         {
             Presentation = presentation;
             Name = presentation.Name;
+            _name = presentation.Name;
         }
         # endregion
 

@@ -1190,6 +1190,7 @@ namespace PowerPointLabs
             SelectShapes();
             if (_selectedShapes == null && _selectedText == null && currMode != MODE.NONE)
             {
+                ResetEyeDropperSelectionInDataSource();
                 MessageBox.Show(TextCollection.ColorsLabText.InfoHowToActivateFeature, "Colors Lab");
                 return false;
             }

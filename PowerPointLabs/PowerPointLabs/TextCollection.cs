@@ -41,12 +41,34 @@
         # endregion
 
         # region Crop Lab
+        public const string CropLabMenuSupertip =
+            "Use Crop Lab to crop shapes and pictures with ease.";
+
+        public const string CropLabSettingsSupertip =
+            "Configure the settings for Crop Lab features.";
+
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-        # endregion
 
-        # region Narrations Lab
+        public const string CropOutPaddingSupertip =
+            "Crop out transparent areas of a picture.\n\n" +
+            "To activate, select the picture(s), then click this button.";
+
+        public const string CropToAspectRatioSupertip =
+            "Crop a picture to a specified aspect ratio.\n\n" +
+            "To activate, select the picture(s), then click this button and enter the desired aspect ratio.";
+
+        public const string CropToSlideButtonSupertip =
+            "Crops a picture of the current slide.\n\n" +
+            "To activate, select the shape(s), then click this button.";
+
+        public const string CropToSameButtonSupertip =
+            "Crops multiple shapes to the same dimensions.\n\n" +
+            "To activate, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
+        #endregion
+
+        #region Narrations Lab
         public const string AddAudioButtonSupertip =
             "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
@@ -82,7 +104,7 @@
             "To activate, select the text to highlight, then click this button.";
         public const string RemoveHighlightButtonSupertip =
             "Removes all Highlighting from the current slide.";
-        
+
         # endregion
 
         # region More Labs
@@ -130,6 +152,20 @@
         public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
         #endregion
 
+        #region Timer Lab
+        public const string TimerLabButtonSupertip = "Opens the Timer Lab Interface";
+        #endregion
+
+        #region Sync Lab
+        public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
+        public const string SyncLabCopySelectError = "Please select one item to copy.";
+        public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
+        public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
+        public const string SyncLabCopyError = "Error: Unable to copy selected item.";
+        public const string SyncLabStorageFileName = "Sync Lab - Do not edit - {0}";
+        public const string SyncLabDefaultFormatName = "Format";
+        #endregion
+
         #endregion
 
         #region Help
@@ -161,8 +197,14 @@
         # endregion
 
         # region Crop Lab
-        public const string CropLabGroupLabel = "Crop Lab";
+        public const string CropLabMenuLabel = "Crop Lab";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
+        public const string CropOutPaddingLabel = "Crop Out Padding";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
+        public const string CropToSlideButtonLabel = "Crop To Slide";
+        public const string CropToSameButtonLabel = "Crop To Same Dimensions";
+        public const string CropLabSettingsButtonLabel = "Settings";
         # endregion
 
         # region Narrations Lab
@@ -234,7 +276,16 @@
 
         # region Resize Lab
         public const string ResizeLabButtonLabel = "Resize Lab";
+        #endregion
+
+        #region Sync Lab
+        public const string SyncLabButtonLabel = "Sync Lab";
         # endregion
+
+        # region Timer Lab
+        public const string TimerLabButtonLabel = "Timer Lab";
+        # endregion
+
         # endregion
 
         # region Help
@@ -328,7 +379,9 @@
         public const string RecManagementPanelTitle = "Record Management";
         public const string PositionsLabTaskPanelTitle = "Positions Lab";
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
-        # endregion 
+        public const string TimerLabTaskPaneTitle = "Timer Lab";
+        public const string SyncLabTaskPanelTitle = "Sync Lab";
+        # endregion
 
         # region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
@@ -345,9 +398,39 @@
             public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
         }
 
-        # endregion
+        #endregion
 
-        # region ConvertToPicture
+        #region CropToSlide
+
+        public class CropToSlideText
+        {
+            //------------ Msg -------------
+            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
+            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
+            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
+        }
+
+        #endregion
+
+        #region CropLab
+
+        public class CropLabText
+        {
+            public const string ErrorSelectionIsInvalid = "You need to select at least {1} {2} before applying '{0}'.";
+            public const string ErrorSelectionMustBeShape = "'{0}' only supports shape objects.";
+            public const string ErrorSelectionMustBePicture = "'{0}' only supports picture objects.";
+            public const string ErrorSelectionMustBeShapeOrPicture = "'{0}' only supports shape or picture objects.";
+            public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
+            public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
+            public const string ErrorMessageNoShapeOverBoundary = "All selected objects are inside the slide boundary. No cropping was done.";
+            public const string ErrorMessageNoDimensionCropped = "All selected pictures are smaller than reference shape. No cropping was done.";
+            public const string ErrorMessageNoPaddingCropped = "All selected pictures have no transparent padding. No cropping was done.";
+            public const string ErrorMessageNoAspectRatioCropped = "All selected pictures are already in the given aspect ratio. No cropping was done.";
+        }
+
+        #endregion
+
+        #region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
@@ -358,10 +441,10 @@
 
             /// <summary>
             /// Styles Variation Category Name
-            /// 
+            ///
             /// Leave OptionName to be ColorNoEffect to hide color panel & picker
-            /// 
-            /// Color category's name (without spaces) should be equal to corresponding style option's 
+            ///
+            /// Color category's name (without spaces) should be equal to corresponding style option's
             /// property name, so that the color picker can work properly
             /// </summary>
             public const string NoEffect = "No Effect";
@@ -506,7 +589,7 @@
         public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
         #endregion
-
+        
         #region Captions Lab
 
         public const string CaptionsLabErrorNoSelection = "Select at least one slide to apply captions.";
@@ -517,7 +600,7 @@
 
         # endregion
 
-        # region Task Pane - Recorder
+        #region Task Pane - Recorder
         public const string RecorderInitialTimer = "00:00:00";
         public const string RecorderReadyStatusLabel = "Ready.";
         public const string RecorderRecordingStatusLabel = "Recording...";
@@ -568,7 +651,7 @@
             //------------ Msg ------------
             public const string InfoHowToActivateFeature = "To use this feature, select at least one shape.";
         }
-        
+
         # endregion
 
         # region Task Pane - Shapes Lab
@@ -605,7 +688,7 @@
 
         public const string CustomShapeImportShapeFileDialogTitle = "Import Shapes";
         public const string CustomShapeImportLibraryFileDialogTitle = "Import Library";
-        
+
         public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
         public const string CustomShapeShapeContextStripEditName = "Edit Name";
         public const string CustomShapeShapeContextStripMoveShape = "Move Shape To";
@@ -632,6 +715,18 @@
             public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
             public const string ErrorFunctionNotSupportedForOverlapRefShapeCenter = "This function is not supported for shapes that overlap the center of the reference shape.";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
+        }
+        #endregion
+
+        #region Paste Lab
+        public class PasteLabText
+        {
+            public const string PasteToFillSlide = "Paste To Fill Slide";
+            public const string PasteAndReplace = "Replace with Clipboard";
+            public const string PasteIntoGroup = "Paste Into Group";
+            public const string PasteToPosition = "Paste to Cursor Position";
+            public const string PasteToOriginalPosition = "Paste to Original Position";
+            public const string MergeSelection = "Merge into One Group";
         }
         #endregion
 
