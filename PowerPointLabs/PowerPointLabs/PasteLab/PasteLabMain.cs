@@ -36,7 +36,8 @@ namespace PowerPointLabs.PasteLab
             }
         }
 
-        public static void PasteAndReplace(Models.PowerPointSlide slide, bool clipboardIsEmpty, PowerPoint.Selection selection)
+        public static void PasteAndReplace(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
+                                           bool clipboardIsEmpty, PowerPoint.Selection selection)
         {
             if (clipboardIsEmpty)
             {
@@ -51,6 +52,18 @@ namespace PowerPointLabs.PasteLab
             }
 
             var shapeToReplace = selection.ShapeRange[1];
+
+            if (selection.HasChildShapeRange)
+            {
+                Logger.Log("PasteAndReplace: Replacing item in group");
+                shapeToReplace = selection.ChildShapeRange[1];
+                selection.ShapeRange[1].Select();
+                var pastedShapes = PasteIntoGroup(presentation, slide, clipboardIsEmpty, selection);
+                pastedShapes.Left = shapeToReplace.Left;
+                pastedShapes.Top = shapeToReplace.Top;
+                shapeToReplace.Delete();
+                return;
+            }
 
             PowerPoint.Shape newShape = slide.Shapes.Paste()[1];
             newShape.Left = shapeToReplace.Left;
@@ -73,8 +86,8 @@ namespace PowerPointLabs.PasteLab
             shapeToReplace.Delete();
         }
 
-        public static void PasteIntoGroup(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
-                                          bool clipboardIsEmpty, PowerPoint.Selection selection)
+        public static PowerPoint.ShapeRange PasteIntoGroup(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
+                                                           bool clipboardIsEmpty, PowerPoint.Selection selection)
         {
             var newSlide = presentation.AddSlide();
             var selectedShapes = selection.ShapeRange;
@@ -116,6 +129,8 @@ namespace PowerPointLabs.PasteLab
             TransferEffects(order, newGroupedShape, slide, newSlide);
 
             newSlide.Delete();
+
+            return pastedShapes;
         }
 
         public static void GroupSelectedShapes(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,

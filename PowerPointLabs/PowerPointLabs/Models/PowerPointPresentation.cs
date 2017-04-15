@@ -97,13 +97,13 @@ namespace PowerPointLabs.Models
                 if (Regex.IsMatch(value, extensionRegex, RegexOptions.IgnoreCase))
                 {
                     NameNoExtension = Regex.Replace(value, extensionRegex, "", RegexOptions.IgnoreCase);
+                    _name = value;
                 }
                 else
                 {
                     NameNoExtension = value;
+                    _name = value + ".pptx";
                 }
-
-                _name = value + ".pptx";
             }
         }
 
@@ -252,6 +252,7 @@ namespace PowerPointLabs.Models
         {
             Presentation = presentation;
             Name = presentation.Name;
+            _name = presentation.Name;
         }
         # endregion
 
