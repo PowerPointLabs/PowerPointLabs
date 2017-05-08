@@ -65,6 +65,7 @@ namespace Test.UnitTest.CropLab
         {
             CropLabSettings.AnchorPosition = AnchorPosition.BottomRight;
             CropAndCompare(22, 23);
+            CropLabSettings.AnchorPosition = AnchorPosition.Reference;
         }
 
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
