@@ -49,19 +49,19 @@
 
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
-            "To perform this action, draw one or more shapes upon the picture to crop, select the shape(s) and click this button.";
+            "To perform this action, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
 
         public const string CropOutPaddingSupertip =
             "Crop away transparent areas of a picture.\n\n" +
-            "To perform this action, select the picture(s) and click this button.";
+            "To perform this action, select the picture(s), then click this button.";
 
         public const string CropToAspectRatioSupertip =
             "Crop a picture to a specific aspect ratio.\n\n" +
-            "To perform this action, select the picture(s) and click this button.";
+            "To perform this action, select the picture(s), then click this button.";
 
         public const string CropToSlideButtonSupertip =
-            "Crop a shape or picture to within the slide boundaries.\n\n" +
-            "To perform this action, select the shape(s) or picture(s) and click this button.";
+            "Crop a shape or picture to fit within the slide boundaries.\n\n" +
+            "To perform this action, select the shape(s) or picture(s), then click this button.";
 
         public const string CropToSameButtonSupertip =
             "Crop multiple shapes to the same dimension.\n\n" +
