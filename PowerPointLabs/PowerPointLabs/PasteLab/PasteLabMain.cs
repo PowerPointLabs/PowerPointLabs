@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Windows;
 
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PasteLab
 {
     public class PasteLabMain
     {
-        public static void PasteToFillSlide(Models.PowerPointSlide slide, bool clipboardIsEmpty, float width, float height)
+        public static void PasteToFillSlide(PowerPointSlide slide, bool clipboardIsEmpty, float width, float height)
         {
             if (clipboardIsEmpty)
             {
@@ -18,7 +22,7 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            PowerPoint.ShapeRange pastedObject = slide.Shapes.Paste();
+            ShapeRange pastedObject = slide.Shapes.Paste();
 
             Logger.Log(string.Format("PasteToFillSlide: {0} objects pasted", pastedObject.Count));
 
@@ -36,8 +40,8 @@ namespace PowerPointLabs.PasteLab
             }
         }
 
-        public static void PasteAndReplace(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
-                                           bool clipboardIsEmpty, PowerPoint.Selection selection)
+        public static void PasteAndReplace(PowerPointPresentation presentation, PowerPointSlide slide,
+                                           bool clipboardIsEmpty, Selection selection)
         {
             if (clipboardIsEmpty)
             {
@@ -65,15 +69,15 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            PowerPoint.Shape newShape = slide.Shapes.Paste()[1];
+            Shape newShape = slide.Shapes.Paste()[1];
             newShape.Left = shapeToReplace.Left;
             newShape.Top = shapeToReplace.Top;
 
-            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            foreach (Effect eff in slide.TimeLine.MainSequence)
             {
                 if (eff.Shape == shapeToReplace)
                 {
-                    PowerPoint.Effect newEff = slide.TimeLine.MainSequence.Clone(eff);
+                    Effect newEff = slide.TimeLine.MainSequence.Clone(eff);
                     newEff.Shape = newShape;
                     eff.Delete();
                 }
@@ -86,13 +90,13 @@ namespace PowerPointLabs.PasteLab
             shapeToReplace.Delete();
         }
 
-        public static PowerPoint.ShapeRange PasteIntoGroup(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
-                                                           bool clipboardIsEmpty, PowerPoint.Selection selection)
+        public static ShapeRange PasteIntoGroup(PowerPointPresentation presentation, PowerPointSlide slide,
+                                                bool clipboardIsEmpty, Selection selection)
         {
             var newSlide = presentation.AddSlide();
             var selectedShapes = selection.ShapeRange;
 
-            PowerPoint.ShapeRange pastedShapes = slide.Shapes.Paste();
+            ShapeRange pastedShapes = slide.Shapes.Paste();
 
             selection.Copy();
             newSlide.Shapes.Paste();
@@ -100,7 +104,7 @@ namespace PowerPointLabs.PasteLab
 
             List<int> order = new List<int>();
 
-            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            foreach (Effect eff in slide.TimeLine.MainSequence)
             {
                 if (eff.Shape.Equals(selectedShapes[1]))
                 {
@@ -133,7 +137,7 @@ namespace PowerPointLabs.PasteLab
             return pastedShapes;
         }
 
-        public static void GroupSelectedShapes(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
+        public static void GroupSelectedShapes(PowerPointPresentation presentation, Models.PowerPointSlide slide,
                                                PowerPoint.Selection selection)
         {
             if (selection.ShapeRange.Count < 2)
@@ -150,7 +154,7 @@ namespace PowerPointLabs.PasteLab
 
             List<int> order = new List<int>();
 
-            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            foreach (Effect eff in slide.TimeLine.MainSequence)
             {
                 if (eff.Shape.Equals(selectedShapes[1]))
                 {
@@ -174,18 +178,27 @@ namespace PowerPointLabs.PasteLab
             }
 
             var newShapeRange = slide.Shapes.Paste();
+            newShapeRange = RemovePlaceholders(slide, newShapeRange);
 
-            foreach (PowerPoint.Shape shape in newShapeRange)
+            if (newShapeRange.Count > 1)
             {
-                shape.Left = xPosition;
-                shape.Top = yPosition;
-
-                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", shape.Name, shape.Left, shape.Top));
+                Shape pastedShape = newShapeRange.Group();
+                pastedShape.Left = xPosition;
+                pastedShape.Top = yPosition;
+                pastedShape.Ungroup();
+            }
+            else
+            {
+                foreach (Shape shape in newShapeRange)
+                {
+                    shape.Left = xPosition;
+                    shape.Top = yPosition;
+                }
             }
         }
 
-        public static void PasteToOriginalPosition(Models.PowerPointPresentation presentation,
-                                                   Models.PowerPointSlide slide, bool clipboardIsEmpty)
+        public static void PasteToOriginalPosition(PowerPointPresentation presentation,
+                                                   PowerPointSlide slide, bool clipboardIsEmpty)
         {
             if (clipboardIsEmpty)
             {
@@ -195,12 +208,12 @@ namespace PowerPointLabs.PasteLab
 
             var newSlide = presentation.AddSlide();
 
-            PowerPoint.ShapeRange correctShapes = newSlide.Shapes.Paste();
+            ShapeRange correctShapes = newSlide.Shapes.Paste();
 
-            foreach (PowerPoint.Shape shape in correctShapes)
+            foreach (Shape shape in correctShapes)
             {
                 shape.Copy();
-                PowerPoint.Shape pastedShape = slide.Shapes.Paste()[1];
+                Shape pastedShape = slide.Shapes.Paste()[1];
                 pastedShape.Top = shape.Top;
                 pastedShape.Left = shape.Left;
             }
@@ -208,18 +221,18 @@ namespace PowerPointLabs.PasteLab
             newSlide.Delete();
         }
 
-        private static void TransferEffects(List<int> effOrder, PowerPoint.Shape newGroupedShape,
-                                            Models.PowerPointSlide curSlide, Models.PowerPointSlide newSlide)
+        private static void TransferEffects(List<int> effOrder, Shape newGroupedShape,
+                                            PowerPointSlide curSlide, PowerPointSlide newSlide)
         {
             foreach (int curo in effOrder)
             {
-                PowerPoint.Effect eff = newSlide.TimeLine.MainSequence[1];
+                Effect eff = newSlide.TimeLine.MainSequence[1];
                 eff.Shape = newGroupedShape;
 
                 if (curSlide.TimeLine.MainSequence.Count == 0)
                 {
-                    PowerPoint.Shape tempShape = curSlide.Shapes.AddLine(0, 0, 1, 1);
-                    PowerPoint.Effect tempEff = curSlide.TimeLine.MainSequence.AddEffect(tempShape, PowerPoint.MsoAnimEffect.msoAnimEffectAppear);
+                    Shape tempShape = curSlide.Shapes.AddLine(0, 0, 1, 1);
+                    Effect tempEff = curSlide.TimeLine.MainSequence.AddEffect(tempShape, MsoAnimEffect.msoAnimEffectAppear);
                     eff.MoveAfter(tempEff);
                     tempEff.Delete();
                 }
@@ -238,6 +251,19 @@ namespace PowerPointLabs.PasteLab
                     eff.MoveAfter(curSlide.TimeLine.MainSequence[curo - 1]);
                 }
             }
+        }
+
+        private static ShapeRange RemovePlaceholders(PowerPointSlide slide, ShapeRange shapes)
+        {
+            List<Shape> newShapeList = new List<Shape>();
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
+                {
+                    newShapeList.Add(shape);
+                }
+            }
+            return slide.ToShapeRange(newShapeList);
         }
     }
 }
