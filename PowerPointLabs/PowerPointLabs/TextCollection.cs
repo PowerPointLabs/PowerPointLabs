@@ -655,8 +655,6 @@
         # endregion
 
         # region Task Pane - Shapes Lab
-        public const string CustomShapeDefaultShapeName = "My Shape Untitled";
-
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -667,7 +665,7 @@
         public const string CustomeShapeSetAsDefaultCategorySuccessFormat = "{0} has been set as default category.";
         public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
         public const string CustomShapeMigrationError =
-            "The folder cannot be migrated entirely. Please check if your destination loaction forbids this action.";
+            "The folder cannot be migrated entirely. Please check if your destination location forbids this action.";
         public const string CustomShapeOriginalFolderDeletionError =
             "The original folder could not be deleted because some of the files in folder is still in use. You could " +
             "try to delete this folder manually when those files are closed.";

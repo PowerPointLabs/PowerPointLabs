@@ -821,16 +821,7 @@ namespace PowerPointLabs
             }
 
             var shapeName = shapeRange[1].Name;
-
-            if (shapeRange.Count > 1)
-            {
-                shapeName = TextCollection.CustomShapeDefaultShapeName;
-                importShapeGallery.CopyShape();
-            }
-            else
-            {
-                importShapeGallery.CopyShape(shapeName);
-            }
+            importShapeGallery.CopyShape(shapeName);
 
             shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
             var exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
