@@ -15,6 +15,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             var slide = this.GetCurrentSlide();
             var selection = this.GetCurrentSelection();
 
+            this.StartNewUndoEntry();
             PowerPointLabs.PasteLab.PasteLabMain.GroupSelectedShapes(presentation, slide, selection);
         }
     }

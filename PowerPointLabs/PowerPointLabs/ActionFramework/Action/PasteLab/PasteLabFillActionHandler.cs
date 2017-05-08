@@ -13,6 +13,8 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         {
             var curPresentation = this.GetCurrentPresentation();
             bool clipboardIsEmpty = (Clipboard.GetDataObject() == null);
+
+            this.StartNewUndoEntry();
             PowerPointLabs.PasteLab.PasteLabMain.PasteToFillSlide(this.GetCurrentSlide(), clipboardIsEmpty, curPresentation.SlideWidth, curPresentation.SlideHeight);
         }
     }
