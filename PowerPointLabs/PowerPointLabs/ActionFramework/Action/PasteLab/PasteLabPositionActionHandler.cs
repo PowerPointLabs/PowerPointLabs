@@ -30,6 +30,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 yPosition = ((float)(coordinates.Y - activeWindow.PointsToScreenPixelsY(0)) / (float)yref) * 100;
             }
 
+            this.StartNewUndoEntry();
             PowerPointLabs.PasteLab.PasteLabMain.PasteToPosition(slide, clipboardIsEmpty, xPosition, yPosition);
         }
     }

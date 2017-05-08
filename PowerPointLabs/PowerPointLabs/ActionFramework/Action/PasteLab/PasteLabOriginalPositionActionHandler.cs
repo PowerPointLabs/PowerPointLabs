@@ -15,6 +15,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             var slide = this.GetCurrentSlide();
             bool clipboardIsEmpty = (Clipboard.GetDataObject() == null);
 
+            this.StartNewUndoEntry();
             PowerPointLabs.PasteLab.PasteLabMain.PasteToOriginalPosition(presentation, slide, clipboardIsEmpty);
         }
     }
