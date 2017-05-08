@@ -722,7 +722,7 @@
         public class PasteLabText
         {
             public const string PasteToFillSlide = "Paste To Fill Slide";
-            public const string PasteAndReplace = "Replace wWith Clipboard";
+            public const string PasteAndReplace = "Replace With Clipboard";
             public const string PasteIntoGroup = "Paste Into Group";
             public const string PasteToPosition = "Paste At Cursor Position";
             public const string PasteToOriginalPosition = "Paste At Original Position";
