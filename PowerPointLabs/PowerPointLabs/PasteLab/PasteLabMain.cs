@@ -86,51 +86,69 @@ namespace PowerPointLabs.PasteLab
             shapeToReplace.Delete();
         }
 
-        public static PowerPoint.ShapeRange PasteIntoGroup(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
+        public static PowerPoint.Shape PasteIntoGroup(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
                                                            bool clipboardIsEmpty, PowerPoint.Selection selection)
         {
-            var newSlide = presentation.AddSlide();
             var selectedShapes = selection.ShapeRange;
+            var pastedShapes = slide.Shapes.Paste();
 
-            PowerPoint.ShapeRange pastedShapes = slide.Shapes.Paste();
+            var tempSlide = presentation.AddSlide();
+            selectedShapes.Copy();
+            tempSlide.Shapes.Paste();
+            pastedShapes.Copy();    // revert the clipboard state
 
-            selection.Copy();
-            newSlide.Shapes.Paste();
-            pastedShapes.Copy();
-
-            List<int> order = new List<int>();
-
-            foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
+            List<int> transferEffects = new List<int>();
+            foreach (PowerPoint.Effect effect in slide.TimeLine.MainSequence)
             {
-                if (eff.Shape.Equals(selectedShapes[1]))
+                if (effect.Shape.Equals(selectedShapes[1]))
                 {
-                    order.Add(eff.Index);
+                    transferEffects.Add(effect.Index);
                 }
             }
-
-            selectedShapes = selectedShapes.Ungroup();
-
-
-            List<String> newShapeNames = new List<String>();
-
+            List<String> transferShapeNames = new List<String>();
             foreach (PowerPoint.Shape shape in selectedShapes)
             {
-                newShapeNames.Add(shape.Name);
+                transferShapeNames.Add(shape.Name);
             }
-
             foreach (PowerPoint.Shape shape in pastedShapes)
             {
-                newShapeNames.Add(shape.Name);
+                transferShapeNames.Add(shape.Name);
+            }
+            PowerPoint.ShapeRange transferShapes = slide.Shapes.Range(transferShapeNames.ToArray());
+
+            float selectionLeft = selectedShapes[1].Left;
+            float selectionTop = selectedShapes[1].Top;
+            float selectionWidth = selectedShapes[1].Width;
+            float selectionHeight = selectedShapes[1].Height;
+            if (selectedShapes.Count > 1)
+            {
+                var selectionGroup = selectedShapes.Group();
+                selectionLeft = selectionGroup.Left;
+                selectionTop = selectionGroup.Top;
+                selectionWidth = selectionGroup.Width;
+                selectionHeight = selectionGroup.Height;
+                selectedShapes.Ungroup();
             }
 
-            PowerPoint.ShapeRange newShapeRange = slide.Shapes.Range(newShapeNames.ToArray());
-            PowerPoint.Shape newGroupedShape = newShapeRange.Group();
+            // Paste at center of the selection
+            if (pastedShapes.Count > 1)
+            {
+                var pastedGroup = pastedShapes.Group();
+                pastedGroup.Left = selectionLeft + (selectionWidth - pastedGroup.Width) / 2;
+                pastedGroup.Top = selectionTop + (selectionHeight - pastedGroup.Height) / 2;
+                pastedShapes.Ungroup();
+            }
+            else
+            {
+                pastedShapes[1].Left = selectionLeft + (selectionWidth - pastedShapes[1].Width) / 2;
+                pastedShapes[1].Top = selectionTop + (selectionHeight - pastedShapes[1].Height) / 2;
+            }
 
-            TransferEffects(order, newGroupedShape, slide, newSlide);
+            PowerPoint.Shape transferShapesGroup = transferShapes.Group();
+            TransferEffects(transferEffects, transferShapesGroup, slide, tempSlide);
 
-            newSlide.Delete();
-
-            return pastedShapes;
+            tempSlide.Delete();
+            return transferShapesGroup;
         }
 
         public static void GroupSelectedShapes(Models.PowerPointPresentation presentation, Models.PowerPointSlide slide,
@@ -165,23 +183,22 @@ namespace PowerPointLabs.PasteLab
             newSlide.Delete();
         }
 
-        public static void PasteToPosition(Models.PowerPointSlide slide, bool clipboardIsEmpty, float xPosition, float yPosition)
+        public static PowerPoint.ShapeRange PasteToPosition(Models.PowerPointSlide slide, bool clipboardIsEmpty, float xPosition, float yPosition)
         {
             if (clipboardIsEmpty)
             {
                 Logger.Log("PasteToPosition encountered an empty clipboard");
-                return;
+                return null;
             }
 
-            var newShapeRange = slide.Shapes.Paste();
-
-            foreach (PowerPoint.Shape shape in newShapeRange)
+            PowerPoint.ShapeRange pastedShapes = slide.Shapes.Paste();
+            foreach (PowerPoint.Shape shape in pastedShapes)
             {
                 shape.Left = xPosition;
                 shape.Top = yPosition;
-
-                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", shape.Name, shape.Left, shape.Top));
             }
+
+            return pastedShapes;
         }
 
         public static void PasteToOriginalPosition(Models.PowerPointPresentation presentation,
@@ -193,19 +210,8 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            var newSlide = presentation.AddSlide();
-
-            PowerPoint.ShapeRange correctShapes = newSlide.Shapes.Paste();
-
-            foreach (PowerPoint.Shape shape in correctShapes)
-            {
-                shape.Copy();
-                PowerPoint.Shape pastedShape = slide.Shapes.Paste()[1];
-                pastedShape.Top = shape.Top;
-                pastedShape.Left = shape.Left;
-            }
-
-            newSlide.Delete();
+            // This is identical to PowerPoint's native paste function.
+            slide.Shapes.Paste();
         }
 
         private static void TransferEffects(List<int> effOrder, PowerPoint.Shape newGroupedShape,

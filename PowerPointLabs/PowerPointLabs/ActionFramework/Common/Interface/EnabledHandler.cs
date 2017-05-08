@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Microsoft.Office.Interop.PowerPoint;
+
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
@@ -22,5 +24,26 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
         }
 
         protected abstract bool GetEnabled(string ribbonId);
+        
+        protected bool HasPlaceholderInSelection()
+        {
+            var selection = GetCurrentSelection();
+            foreach (Shape shape in selection.ShapeRange)
+            {
+                if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Allow ActionFrameworkExtensions to get current selection
+#pragma warning disable 0618
+        protected Selection GetCurrentSelection()
+        {
+            return Extension.ActionFrameworkExtensions.GetCurrentSelection();
+        }
+#pragma warning restore 0618
     }
 }

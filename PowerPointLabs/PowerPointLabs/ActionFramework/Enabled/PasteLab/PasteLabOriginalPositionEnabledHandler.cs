@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return !(Clipboard.GetDataObject() == null);
+            return Clipboard.GetDataObject() != null;
         }
     }
 }
