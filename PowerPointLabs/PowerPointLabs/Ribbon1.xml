@@ -437,11 +437,6 @@
                getImage="GetZoomToAreaContextImage"
                getEnabled="OnGetEnabledZoomButton"
                onAction="ZoomBtnClick"/>
-        <button id="pasteAndReplace"
-                getEnabled="GetEnabled"
-                getImage="GetImage"
-                getLabel="GetLabel"
-                onAction="OnAction"/>
         <menu id="HighlightBulletsMenuShape"
               getLabel="GetHighlightBulletsMenuShapeLabel"
               getImage="GetHighlightBulletsBackgroundContextImage">
@@ -478,6 +473,11 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteAndReplace"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
@@ -515,6 +515,11 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteAndReplaceFreeform"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
@@ -550,6 +555,11 @@
                getLabel ="GetHideSelectedShapeLabel"
                getImage="GetHideShapeImage"
                onAction="HideShapeButtonClick"/>
+        <button id="PasteAndReplacePicture"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
