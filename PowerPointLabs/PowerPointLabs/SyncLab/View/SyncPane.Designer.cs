@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.syncPaneWPF1 = new PowerPointLabs.SyncLab.View.SyncPaneWPF();
+            this.SyncPaneWPF1 = new PowerPointLabs.SyncLab.View.SyncPaneWPF();
             this.SuspendLayout();
             // 
             // elementHost1
@@ -40,7 +40,7 @@
             this.elementHost1.Size = new System.Drawing.Size(300, 833);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this.syncPaneWPF1;
+            this.elementHost1.Child = this.SyncPaneWPF1;
             // 
             // SyncPane
             // 
@@ -56,6 +56,6 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private SyncPaneWPF syncPaneWPF1;
+        public SyncPaneWPF SyncPaneWPF1 { get; private set; }
     }
 }

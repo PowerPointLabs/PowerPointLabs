@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="IHighlightLabController.cs" />
+    <Compile Include="ISyncLabController.cs" />
     <Compile Include="IPositionsLabController.cs" />
     <Compile Include="IColorsLabController.cs" />
     <Compile Include="IColorsLabMoreInfoDialog.cs" />
