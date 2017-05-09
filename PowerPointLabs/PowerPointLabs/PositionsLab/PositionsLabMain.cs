@@ -2404,15 +2404,16 @@ namespace PowerPointLabs.PositionsLab
                 {
                     var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
                     var nextPos = GetSwapReferencePoint(sortedShapes[i + 1], SwapReferencePoint);
-
                     currentShape.IncrementLeft(nextPos.X - currentPos.X);
                     currentShape.IncrementTop(nextPos.Y - currentPos.Y);
+                    currentShape.SwapZOrder(sortedShapes[0]);
                 }
                 else
                 {
                     var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
                     currentShape.IncrementLeft(firstPos.X - currentPos.X);
                     currentShape.IncrementTop(firstPos.Y - currentPos.Y);
+                    currentShape.SwapZOrder(sortedShapes[0]);
                 }
 
                 if (i != 0 && !IsSwapByClickOrder && !isPreview)

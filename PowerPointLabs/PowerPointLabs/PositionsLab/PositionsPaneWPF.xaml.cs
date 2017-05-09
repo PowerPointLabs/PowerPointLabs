@@ -1337,6 +1337,13 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
+
+                // copy the zOrder
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    UpdateZOrder(simulatedShapes[i], selectedShapes[i].ZOrderPosition);
+                }
+
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1623,6 +1630,7 @@ namespace PowerPointLabs.PositionsLab
 
                 selectedShape.IncrementLeft(simulatedShape.VisualCenter.X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(simulatedShape.VisualCenter.Y - originalPositions[i - 1, Top]);
+                UpdateZOrder(selectedShape, simulatedShape.ZOrderPosition);
             }
         }
 
@@ -1664,6 +1672,21 @@ namespace PowerPointLabs.PositionsLab
             foreach (Shape s in shapes)
             {
                 dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation, s.HorizontalFlip, s.VerticalFlip));
+            }
+        }
+
+        private void UpdateZOrder(Shape original, int zOrder)
+        {
+            while (original.ZOrderPosition != zOrder)
+            {
+                if (original.ZOrderPosition < zOrder)
+                {
+                    original.ZOrder(Office.MsoZOrderCmd.msoBringForward);
+                }
+                else if (original.ZOrderPosition > zOrder)
+                {
+                    original.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                }
             }
         }
         #endregion
