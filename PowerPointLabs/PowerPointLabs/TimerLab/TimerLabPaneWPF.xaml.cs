@@ -102,6 +102,11 @@ namespace PowerPointLabs.TimerLab
             return System.Drawing.Color.FromArgb(70, 150, 247).ToArgb();
         }
 
+        private int LineMarkerColor()
+        {
+            return System.Drawing.Color.FromArgb(50, 130, 200).ToArgb();
+        }
+
         private int TimeMarkerColor()
         {
             return System.Drawing.Color.FromArgb(90, 90, 90).ToArgb();
@@ -165,7 +170,7 @@ namespace PowerPointLabs.TimerLab
                 if (currentMarker != TimerLabConstants.StartTime && currentMarker != duration)
                 {
                     var lineMarker = AddLineMarker(timerLeft, currentMarker, widthPerSec, timerTop, timerHeight,
-                        TimerLabConstants.DefaultSecondsLineMarkerWidth);
+                                                    TimerLabConstants.DefaultSecondsLineMarkerWidth);
                     lineMarkers.Add(lineMarker);
                 }
 
@@ -398,7 +403,7 @@ namespace PowerPointLabs.TimerLab
             if (HasTimer())
             {
                 ReformMissingComponents();
-                UpdateMarkers();
+                ReformMarkersIfMissing();
                 UpdateSliderDuration();
                 AdjustZOrder();
             }
@@ -435,7 +440,7 @@ namespace PowerPointLabs.TimerLab
 
                 if (increment == 0)
                 {
-                    UpdateMarkers();
+                    ReformMarkersIfMissing();
                 }
                 else
                 {
@@ -609,36 +614,56 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Timer Helper
-        private void UpdateMarkers()
+        private void ReformMarkersIfMissing()
         {
+            int lineMarkerColor = LineMarkerColor();
+            int timeMarkerColor = TimeMarkerColor();
+
             // remove current marker
             Shape lineMarkerGroup = GetLineMarkerGroup();
             if (lineMarkerGroup != null)
             {
+                lineMarkerColor = lineMarkerGroup.Line.ForeColor.RGB;
                 lineMarkerGroup.Delete();
             }
-            Shape timerMarkeGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
-            timerMarkeGroup.Delete();
+            Shape timeMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
+            if (timeMarkerGroup != null)
+            {
+                timeMarkerColor = timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB;
+                timeMarkerGroup.Delete();
+            }
 
             var timerBody = GetShapeByName(TimerLabConstants.TimerBodyId);
 
             // add new markers
             AddMarkers(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top);
+            GetLineMarkerGroup().Line.ForeColor.RGB = lineMarkerColor;
+            GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId).TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
         }
 
-        private void UpdateSlider()
+        private void ReformSliderIfMissing()
         {
+            int sliderColor = SliderColor();
+
             // remove current Slider
             Shape sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHeadId);
-            sliderHead.Delete();
+            if (sliderHead != null)
+            {
+                sliderColor = sliderHead.Fill.ForeColor.RGB;
+                sliderHead.Delete();
+            }
             Shape sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBodyId);
-            sliderBody.Delete();
+            if (sliderBody != null)
+            {
+                sliderColor = sliderBody.Fill.ForeColor.RGB;
+                sliderBody.Delete();
+            }
 
             var timerBody = GetShapeByName(TimerLabConstants.TimerBodyId);
 
             // add new slider
             AddSlider(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top, 
-                SliderColor(), SlideWidth());
+                    sliderColor, SlideWidth());
         }
 
         private void UpdateSliderDuration()
@@ -677,8 +702,6 @@ namespace PowerPointLabs.TimerLab
             ReformTimerBodyIfMissing();
             ReformMarkersIfMissing();
             ReformSliderIfMissing();
-            UpdateMarkers();
-            UpdateSlider();
             AdjustZOrder();
         }
 
@@ -689,59 +712,6 @@ namespace PowerPointLabs.TimerLab
             {
                 AddTimerBody(TimerWidth(), TimerHeight(), DefaultTimerLeft(SlideWidth(), TimerWidth()),
                     DefaultTimerTop(SlideHeight(), TimerHeight()), TimerBodyColor());
-            }
-        }
-
-        private void ReformMarkersIfMissing()
-        {
-            var lineMarkerGroup = GetLineMarkerGroup();
-            var timerMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
-            var timerBody = GetShapeByName(TimerLabConstants.TimerBodyId);
-            if (lineMarkerGroup == null && timerMarkerGroup == null)
-            {
-                AddMarkers(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top);
-            }
-            else if (lineMarkerGroup != null && timerMarkerGroup == null)
-            {
-                lineMarkerGroup.Delete();
-                AddMarkers(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top);
-            }
-            else if (lineMarkerGroup == null && timerMarkerGroup != null)
-            {
-                timerMarkerGroup.Delete();
-                AddMarkers(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top);
-            }
-            else
-            {
-                // Do nothing
-            }
-        }
-
-        private void ReformSliderIfMissing()
-        {
-            var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHeadId);
-            var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBodyId);
-            var timerBody = GetShapeByName(TimerLabConstants.TimerBodyId);
-            if (sliderHead == null && sliderBody == null)
-            {
-                AddSlider(Duration(), timerBody.Width, timerBody.Height, timerBody.Left,
-                    timerBody.Top, SliderColor(), SlideWidth());
-            }
-            else if (sliderHead != null && sliderBody == null)
-            {
-                sliderHead.Delete();
-                AddSlider(Duration(), timerBody.Width, timerBody.Height, timerBody.Left,
-                    timerBody.Top, SliderColor(), SlideWidth());
-            }
-            else if (sliderHead == null && sliderBody != null)
-            {
-                sliderBody.Delete();
-                AddSlider(Duration(), timerBody.Width, timerBody.Height, timerBody.Left,
-                    timerBody.Top, SliderColor(), SlideWidth());
-            }
-            else
-            {
-                // Do nothing
             }
         }
 
