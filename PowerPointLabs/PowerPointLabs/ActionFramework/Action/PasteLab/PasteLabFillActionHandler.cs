@@ -7,9 +7,9 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId("pasteToFillSlide")]
-    class PasteLabFillActionHandler : ActionHandler
+    class PasteLabFillActionHandler : PasteLabActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecutePasteAction(string ribbonId)
         {
             var curPresentation = this.GetCurrentPresentation();
             bool clipboardIsEmpty = (Clipboard.GetDataObject() == null);

@@ -141,27 +141,24 @@ namespace PowerPointLabs.PasteLab
                 MessageBox.Show("Please select more than one shape.", "Error");
                 return;
             }
-
+            
             var newSlide = presentation.AddSlide();
             var selectedShapes = selection.ShapeRange;
-
+            
             selectedShapes[1].Copy();
             newSlide.Shapes.Paste();
 
-            List<int> order = new List<int>();
-
+            List<int> effectsOrder = new List<int>();
             foreach (PowerPoint.Effect eff in slide.TimeLine.MainSequence)
             {
                 if (eff.Shape.Equals(selectedShapes[1]))
                 {
-                    order.Add(eff.Index);
+                    effectsOrder.Add(eff.Index);
                 }
             }
 
             PowerPoint.Shape newGroupedShape = selectedShapes.Group();
-
-            TransferEffects(order, newGroupedShape, slide, newSlide);
-
+            TransferEffects(effectsOrder, newGroupedShape, slide, newSlide);
             newSlide.Delete();
         }
 
@@ -193,6 +190,7 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
+            // Needs new slide, otherwise there will be a slight offset when pasting
             var newSlide = presentation.AddSlide();
 
             PowerPoint.ShapeRange correctShapes = newSlide.Shapes.Paste();
