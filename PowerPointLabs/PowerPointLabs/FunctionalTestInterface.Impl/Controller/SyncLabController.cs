@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SyncLab.View;
 using TestInterface;
@@ -16,7 +17,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         public static ISyncLabController Instance { get { return _instance; } }
 
         private SyncPane _pane;
-        private SyncFormatDialog _dialog;
 
         private SyncLabController() { }
 
@@ -31,43 +31,28 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             });
         }
 
-        public void OpenCopyDialog()
+        public void Copy()
         {
             if (_pane != null)
             {
                 UIThreadExecutor.Execute(() =>
                 {
                     _pane.SyncPaneWPF1.copyButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    _dialog = FunctionalTestExtensions.GetTaskPane(
-                        typeof(SyncFormatDialog)).Control as SyncFormatDialog;
                 });
             }
         }
 
-        public void Copy()
-        {
-            OpenCopyDialog();
-            if (_dialog != null)
-            {
-                UIThreadExecutor.Execute(() =>
-                {
-                    _dialog.okButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    _dialog = null;
-                });
-            }
-        }
-
-        public void Sync()
+        public void Sync(int index)
         {
             if (_pane != null)
             {
                 UIThreadExecutor.Execute(() =>
                 {
-                    //_pane.positionsPaneWPF.duplicateRotationButton.IsChecked = !_pane.positionsPaneWPF.duplicateRotationButton.IsChecked;
+                    ((SyncFormatPaneItem)_pane.SyncPaneWPF1.formatListBox.Items[index])
+                            .pasteButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 });
             }
         }
-
 
     }
 }

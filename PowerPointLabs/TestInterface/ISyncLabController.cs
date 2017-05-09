@@ -1,13 +1,13 @@
-﻿namespace TestInterface
+﻿using Microsoft.Office.Interop.PowerPoint;
+
+namespace TestInterface
 {
     public interface ISyncLabController
     {
         void OpenPane();
 
-        void OpenCopyDialog();
-
         void Copy();
 
-        void Sync();
+        void Sync(int index);
     }
 }
