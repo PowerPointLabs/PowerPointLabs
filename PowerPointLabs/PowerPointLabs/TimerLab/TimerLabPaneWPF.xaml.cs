@@ -212,8 +212,8 @@ namespace PowerPointLabs.TimerLab
                     int remainingSeconds = currentMarker % TimerLabConstants.SecondsInMinute;
                     if (currentMarker == duration && remainingSeconds != 0)
                     {
-                        timeMarker.TextFrame.TextRange.Text = (currentMarker / TimerLabConstants.SecondsInMinute).ToString() + ":"
-                            + remainingSeconds.ToString();
+                        timeMarker.TextFrame.TextRange.Text = (currentMarker / TimerLabConstants.SecondsInMinute).ToString() + "."
+                            + remainingSeconds.ToString("D2");
                     }
                     else
                     {
