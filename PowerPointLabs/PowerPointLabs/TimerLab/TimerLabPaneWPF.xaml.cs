@@ -637,7 +637,13 @@ namespace PowerPointLabs.TimerLab
 
             // add new markers
             AddMarkers(Duration(), timerBody.Width, timerBody.Height, timerBody.Left, timerBody.Top);
-            GetLineMarkerGroup().Line.ForeColor.RGB = lineMarkerColor;
+            lineMarkerGroup = GetLineMarkerGroup();
+            timeMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
+
+            if (lineMarkerGroup != null)
+            {
+                lineMarkerGroup.Line.ForeColor.RGB = lineMarkerColor;
+            }
             GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId).TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
         }
 
