@@ -1338,10 +1338,17 @@ namespace PowerPointLabs.PositionsLab
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
 
-                // copy the zOrder
+                // copy the zOrder first because updating one zOrder will mess up the ordering
+                int[] zOrders = new int[selectedShapes.Count];
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    UpdateZOrder(simulatedShapes[i], selectedShapes[i].ZOrderPosition);
+                    zOrders[i - 1] = selectedShapes[i].ZOrderPosition;
+                }
+
+                // set the zOrder
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    UpdateZOrder(simulatedShapes[i], zOrders[i - 1]);
                 }
 
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
