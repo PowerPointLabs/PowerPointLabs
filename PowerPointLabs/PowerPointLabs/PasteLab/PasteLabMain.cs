@@ -185,6 +185,7 @@ namespace PowerPointLabs.PasteLab
                 Shape pastedShape = newShapeRange.Group();
                 pastedShape.Left = xPosition;
                 pastedShape.Top = yPosition;
+                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", pastedShape.Name, pastedShape.Left, pastedShape.Top));
                 pastedShape.Ungroup();
             }
             else
@@ -193,6 +194,7 @@ namespace PowerPointLabs.PasteLab
                 {
                     shape.Left = xPosition;
                     shape.Top = yPosition;
+                    Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", shape.Name, shape.Left, shape.Top));
                 }
             }
         }
