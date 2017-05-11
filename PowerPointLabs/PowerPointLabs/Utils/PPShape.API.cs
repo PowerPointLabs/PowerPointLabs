@@ -424,7 +424,8 @@ namespace PowerPointLabs.Utils
         public List<PointF> Points => _points;
 
         /// <summary>
-        /// Returns the position of the specified shape in the z-order. Read-only.
+        /// Return or set the position of the specified shape in the z-order
+        /// Read/write
         /// </summary>
         public int ZOrderPosition
         {

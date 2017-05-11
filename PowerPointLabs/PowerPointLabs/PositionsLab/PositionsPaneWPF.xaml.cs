@@ -1338,17 +1338,10 @@ namespace PowerPointLabs.PositionsLab
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
 
-                // copy the zOrder first because updating one zOrder will mess up the ordering
-                int[] zOrders = new int[selectedShapes.Count];
-                for (int i = 1; i <= selectedShapes.Count; i++)
-                {
-                    zOrders[i - 1] = selectedShapes[i].ZOrderPosition;
-                }
-
                 // set the zOrder
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    UpdateZOrder(simulatedShapes[i], zOrders[i - 1]);
+                    SwapZOrder(simulatedShapes[i], selectedShapes[i]);
                 }
 
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
@@ -1637,7 +1630,7 @@ namespace PowerPointLabs.PositionsLab
 
                 selectedShape.IncrementLeft(simulatedShape.VisualCenter.X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(simulatedShape.VisualCenter.Y - originalPositions[i - 1, Top]);
-                UpdateZOrder(selectedShape, simulatedShape.ZOrderPosition);
+                SwapZOrder(selectedShape, simulatedShape);
             }
         }
 
@@ -1695,6 +1688,24 @@ namespace PowerPointLabs.PositionsLab
                     original.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
                 }
             }
+        }
+
+        private void SwapZOrder(Shape original, Shape target)
+        {
+            int originalZOrder = original.ZOrderPosition;
+            int targetZOrder = target.ZOrderPosition;
+
+            UpdateZOrder(original, targetZOrder);
+            UpdateZOrder(target, originalZOrder);
+        }
+
+        private void SwapZOrder(Shape original, PPShape target)
+        {
+            int originalZOrder = original.ZOrderPosition;
+            int targetZOrder = target.ZOrderPosition;
+
+            UpdateZOrder(original, targetZOrder);
+            target.ZOrderPosition = originalZOrder;
         }
         #endregion
     }
