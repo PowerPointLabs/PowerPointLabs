@@ -10,9 +10,9 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId("pasteToPosition")]
-    class PasteLabPositionActionHandler : ActionHandler
+    class PasteLabPositionActionHandler : PasteLabActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecutePasteAction(string ribbonId)
         {
             var slide = this.GetCurrentSlide();
             var coordinates = PPMouse.RightClickCoordinates;

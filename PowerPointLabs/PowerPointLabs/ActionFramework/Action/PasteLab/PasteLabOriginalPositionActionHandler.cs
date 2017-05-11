@@ -7,9 +7,9 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId("pasteToOriginalPosition")]
-    class PasteLabOriginalPositionActionHandler : ActionHandler
+    class PasteLabOriginalPositionActionHandler : PasteLabActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecutePasteAction(string ribbonId)
         {
             var presentation = this.GetCurrentPresentation();
             var slide = this.GetCurrentSlide();
