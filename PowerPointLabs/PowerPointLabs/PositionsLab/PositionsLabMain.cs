@@ -2413,7 +2413,6 @@ namespace PowerPointLabs.PositionsLab
                     var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
                     currentShape.IncrementLeft(firstPos.X - currentPos.X);
                     currentShape.IncrementTop(firstPos.Y - currentPos.Y);
-                    //currentShape.SwapZOrder(sortedShapes[0]);
                 }
 
                 if (i != 0 && !IsSwapByClickOrder && !isPreview)

@@ -33,6 +33,8 @@ namespace Test.Util
                 "different shape horizontal flip. exp:{0}, actual:{1}", expShape.HorizontalFlip, actualShape.HorizontalFlip);
             Assert.IsTrue(expShape.VerticalFlip == actualShape.VerticalFlip,
                 "different shape vertical flip. exp:{0}, actual:{1}", expShape.VerticalFlip, actualShape.VerticalFlip);
+            Assert.IsTrue(expShape.ZOrderPosition == actualShape.ZOrderPosition,
+                "different shape z order. exp:{0}, actual:{1}", expShape.ZOrderPosition, actualShape.ZOrderPosition);
         }
 
         // compare shape's prop & looking
