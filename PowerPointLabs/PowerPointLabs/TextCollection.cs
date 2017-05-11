@@ -49,7 +49,7 @@
 
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
-            "To perform this action, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
+            "To perform this action, indicate area-to-keep by drawing one or more shapes upon the picture to crop, select the shape(s), then click this button.";
 
         public const string CropOutPaddingSupertip =
             "Crop away transparent areas of a picture.\n\n" +
