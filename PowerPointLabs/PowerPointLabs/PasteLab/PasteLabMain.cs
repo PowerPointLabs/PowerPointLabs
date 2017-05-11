@@ -22,22 +22,33 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            ShapeRange pastedObject = slide.Shapes.Paste();
+            ShapeRange pastedShapeRange = slide.Shapes.Paste();
+            Logger.Log(string.Format("PasteToFillSlide: {0} objects pasted", pastedShapeRange.Count));
+            pastedShapeRange = RemovePlaceholders(slide, pastedShapeRange);
 
-            Logger.Log(string.Format("PasteToFillSlide: {0} objects pasted", pastedObject.Count));
-
-            for (int i = 1; i <= pastedObject.Count; i++)
+            if (pastedShapeRange.Count <= 0)
             {
-                var shape = new PPShape(pastedObject[i]);
-                shape.AbsoluteHeight = height;
-
-                if (shape.AbsoluteWidth < width)
-                {
-                    shape.AbsoluteWidth = width;
-                }
-
-                shape.VisualCenter = new System.Drawing.PointF(width / 2, height / 2);
+                Logger.Log("No resizable objects, PasteToFillSlide finished early");
+                return;
             }
+
+            var resizeShape = pastedShapeRange[1];
+            if (pastedShapeRange.Count > 1)
+            {
+                resizeShape = pastedShapeRange.Group();
+            }
+            resizeShape.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+
+            var ppResizeShape = new PPShape(resizeShape);
+            
+            ppResizeShape.AbsoluteHeight = height;
+            if (ppResizeShape.AbsoluteWidth < width)
+            {
+                ppResizeShape.AbsoluteWidth = width;
+            }
+            ppResizeShape.VisualCenter = new System.Drawing.PointF(width / 2, height / 2);
+            
+            CropLab.CropToSlide.Crop(resizeShape, slide, width, height);
         }
 
         public static void PasteAndReplace(PowerPointPresentation presentation, PowerPointSlide slide,
