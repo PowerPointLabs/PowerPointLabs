@@ -177,22 +177,22 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            var newShapeRange = slide.Shapes.Paste();
-            newShapeRange = RemovePlaceholders(slide, newShapeRange);
+            var pastedShapeRange = slide.Shapes.Paste();
+            pastedShapeRange = RemovePlaceholders(slide, pastedShapeRange);
 
-            if (newShapeRange.Count > 1)
+            if (pastedShapeRange.Count > 1)
             {
-                Shape pastedShape = newShapeRange.Group();
-                pastedShape.Left = xPosition;
-                pastedShape.Top = yPosition;
-                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", pastedShape.Name, pastedShape.Left, pastedShape.Top));
-                pastedShape.Ungroup();
+                Shape pastedShapeGroup = pastedShapeRange.Group();
+                pastedShapeGroup.Left = xPosition;
+                pastedShapeGroup.Top = yPosition;
+                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", pastedShapeGroup.Name, pastedShapeGroup.Left, pastedShapeGroup.Top));
+                pastedShapeGroup.Ungroup();
             }
-            else
+            else if (pastedShapeRange.Count == 1)
             {
-                newShapeRange.Left = xPosition;
-                newShapeRange.Top = yPosition;
-                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", newShapeRange.Name, newShapeRange.Left, newShapeRange.Top));
+                pastedShapeRange.Left = xPosition;
+                pastedShapeRange.Top = yPosition;
+                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", pastedShapeRange.Name, pastedShapeRange.Left, pastedShapeRange.Top));
             }
         }
 
