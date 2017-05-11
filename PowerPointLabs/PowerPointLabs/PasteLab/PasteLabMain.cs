@@ -190,12 +190,9 @@ namespace PowerPointLabs.PasteLab
             }
             else
             {
-                foreach (Shape shape in newShapeRange)
-                {
-                    shape.Left = xPosition;
-                    shape.Top = yPosition;
-                    Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", shape.Name, shape.Left, shape.Top));
-                }
+                newShapeRange.Left = xPosition;
+                newShapeRange.Top = yPosition;
+                Logger.Log(string.Format("PasteToPosition: Pasted {0} at ({1}, {2})", newShapeRange.Name, newShapeRange.Left, newShapeRange.Top));
             }
         }
 
