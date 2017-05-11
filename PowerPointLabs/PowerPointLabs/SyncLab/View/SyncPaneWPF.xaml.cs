@@ -94,7 +94,7 @@ namespace PowerPointLabs.SyncLab.View
             if (selection.Type != PpSelectionType.ppSelectionShapes ||
                 selection.ShapeRange.Count == 0)
             {
-                MessageBox.Show(TextCollection.SyncLabPasteSelectError);
+                MessageBox.Show(TextCollection.SyncLabPasteSelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
             }
             ApplyFormats(nodes, formatShape, selection.ShapeRange);
@@ -173,7 +173,7 @@ namespace PowerPointLabs.SyncLab.View
             if (selection.Type != PpSelectionType.ppSelectionShapes ||
                 selection.ShapeRange.Count != 1)
             {
-                MessageBox.Show(TextCollection.SyncLabCopySelectError);
+                MessageBox.Show(TextCollection.SyncLabCopySelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
             }
             var shape = selection.ShapeRange[1];

@@ -161,7 +161,7 @@ namespace PowerPointLabs.SyncLab.View
             Shape formatShape = shapeStorage.GetShape(shapeKey);
             if (formatShape == null)
             {
-                MessageBox.Show(TextCollection.SyncLabShapeDeletedError);
+                MessageBox.Show(TextCollection.SyncLabShapeDeletedError, TextCollection.SyncLabErrorDialogTitle);
                 parent.ClearInvalidFormats();
             }
             this.StartNewUndoEntry();

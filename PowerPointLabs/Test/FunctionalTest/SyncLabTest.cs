@@ -42,12 +42,14 @@ namespace Test.FunctionalTest
             var actualSlide = PpOperations.SelectSlide(4);
 
             // no selection
-            MessageBoxUtil.ExpectMessageBoxWillPopUp("", "Please select one item to copy.", syncLab.Copy, "Ok");
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+                "Please select one item to copy.", syncLab.Copy, "Ok");
 
             // 2 item selected
             List<String> shapes = new List<string> { Oval, RotatedArrow };
             PpOperations.SelectShapes(shapes);
-            MessageBoxUtil.ExpectMessageBoxWillPopUp("", "Please select one item to copy.", syncLab.Copy, "Ok");
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+                "Please select one item to copy.", syncLab.Copy, "Ok");
 
             // copy successful
             PpOperations.SelectShape(CopyFromShape);
@@ -62,7 +64,8 @@ namespace Test.FunctionalTest
         private void TestPasteDialog(ISyncLabController syncLab)
         {
             PpOperations.SelectSlide(5);
-            MessageBoxUtil.ExpectMessageBoxWillPopUp("", "Please select at least one item to apply.", () => syncLab.Sync(0), "Ok");
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+                "Please select at least one item to apply.", () => syncLab.Sync(0), "Ok");
         }
 
         # region Helper methods
