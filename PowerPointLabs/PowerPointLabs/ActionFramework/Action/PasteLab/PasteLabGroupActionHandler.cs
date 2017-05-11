@@ -7,15 +7,15 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId("pasteIntoGroup")]
-    class PasteLabGroupActionHandler : ActionHandler
+    class PasteLabGroupActionHandler : PasteLabActionHandler
     {
-        protected override void ExecuteAction(string ribbonId)
+        protected override void ExecutePasteAction(string ribbonId)
         {
             var presentation = this.GetCurrentPresentation();
             var slide = this.GetCurrentSlide();
             var selection = this.GetCurrentSelection();
             bool clipboardIsEmpty = (Clipboard.GetDataObject() == null);
-
+            
             PowerPointLabs.PasteLab.PasteLabMain.PasteIntoGroup(presentation, slide, clipboardIsEmpty, selection);
         }
     }
