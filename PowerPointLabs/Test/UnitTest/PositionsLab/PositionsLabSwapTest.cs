@@ -5,6 +5,7 @@ using PowerPointLabs.PositionsLab;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
 using System.Diagnostics;
+using Test.Util;
 
 namespace Test.UnitTest.PositionsLab
 {
@@ -108,6 +109,28 @@ namespace Test.UnitTest.PositionsLab
             var expectedShapes4Swap = GetShapes(SwapClick4Slide, _allShapes);
             var actualShapes4Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes4Swap, actualShapes4Swap);
+        }
+
+        private new void CheckShapes(PowerPoint.ShapeRange expectedShapes, PowerPoint.ShapeRange actualShapes)
+        {
+            foreach (PowerPoint.Shape actualShape in actualShapes)
+            {
+                var isFound = false;
+
+                foreach (PowerPoint.Shape expectedShape in expectedShapes)
+                {
+                    if (!actualShape.Name.Equals(expectedShape.Name)) continue;
+                    isFound = true;
+                    SlideUtil.IsSameShape(expectedShape, actualShape);
+                    SlideUtil.IsSameZOrderPosition(expectedShape, actualShape);
+                    break;
+                }
+
+                if (!isFound)
+                {
+                    Assert.Fail("Unable to find corresponding actual shape");
+                }
+            }
         }
     }
 }
