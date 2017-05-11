@@ -42,30 +42,30 @@
 
         # region Crop Lab
         public const string CropLabMenuSupertip =
-            "Use Crop Lab to crop shapes and pictures with ease.";
+            "Use Crop Lab to crop shapes and pictures.";
 
         public const string CropLabSettingsSupertip =
-            "Configure the settings for Crop Lab features.";
+            "Configure the settings for Crop Lab.";
 
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
-            "To activate, draw one or more shapes upon the picture to crop, select the shape(s), then click this button.";
+            "To perform this action, indicate area-to-keep by drawing one or more shapes upon the picture to crop, select the shape(s), then click this button.";
 
         public const string CropOutPaddingSupertip =
-            "Crop out transparent areas of a picture.\n\n" +
-            "To activate, select the picture(s), then click this button.";
+            "Crop away transparent areas of a picture.\n\n" +
+            "To perform this action, select the picture(s), then click this button.";
 
         public const string CropToAspectRatioSupertip =
-            "Crop a picture to a specified aspect ratio.\n\n" +
-            "To activate, select the picture(s), then click this button and enter the desired aspect ratio.";
+            "Crop a picture to a specific aspect ratio.\n\n" +
+            "To perform this action, select the picture(s), then click this button.";
 
         public const string CropToSlideButtonSupertip =
-            "Crops a picture of the current slide.\n\n" +
-            "To activate, select the shape(s), then click this button.";
+            "Crop a shape or picture to fit within the slide boundaries.\n\n" +
+            "To perform this action, select the shape(s) or picture(s), then click this button.";
 
         public const string CropToSameButtonSupertip =
-            "Crops multiple shapes to the same dimensions.\n\n" +
-            "To activate, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
+            "Crop multiple shapes to the same dimension.\n\n" +
+            "To perform this action, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
         #endregion
 
         #region Narrations Lab
