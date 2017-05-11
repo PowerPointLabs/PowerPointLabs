@@ -22,8 +22,7 @@ namespace PowerPointLabs.ActionFramework.Action
             }
 
             // add shape into shape gallery first to reduce flicker
-            var shapeName = addIn.ShapePresentation.AddShape(selection,
-                                                                         TextCollection.CustomShapeDefaultShapeName);
+            var shapeName = addIn.ShapePresentation.AddShape(selection, selection.ShapeRange[1].Name);
 
             // add the selection into pane and save it as .png locally
             var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName + ".png");
