@@ -1074,8 +1074,10 @@ namespace PowerPointLabs.AgendaLab
                                                                                             shape.Section.Index == section.Index))
                                                 .FirstOrDefault();
             var currentSectionText = currentSectionTextBox.TextFrame2.TextRange;
+            var alignment = currentSectionText.ParagraphFormat.Alignment;
 
             Graphics.SyncTextRange(beamFormats.Highlighted, currentSectionText, pickupTextContent: false);
+            currentSectionText.ParagraphFormat.Alignment = alignment;
         }
         #endregion
 
