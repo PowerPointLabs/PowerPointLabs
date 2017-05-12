@@ -1,4 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using PowerPointLabs;
+
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -35,7 +38,7 @@ namespace Test.FunctionalTest
             ThreadUtil.WaitFor(1000);
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error",
+                TextCollection.CaptionsLabErrorDialogTitle,
                 "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.",
                 PplFeatures.AutoCaptions);
         }
