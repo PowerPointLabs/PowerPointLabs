@@ -58,19 +58,19 @@ namespace PowerPointLabs.Properties {
                 return ((string)(this["DevAddr"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2.8.7.17")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.8.7.18")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30 March 2017")]
+        [global::System.Configuration.DefaultSettingValueAttribute("12 May 2017")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));
