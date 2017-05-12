@@ -79,15 +79,22 @@ namespace PowerPointLabs.Utils
                               slideHeight, PpExportMode.ppScaleToFit);
         }
 
-        public static Image ShapeToImage(Shape shape)
+        public static Bitmap ShapeToImage(Shape shape)
         {
-            string fileName = "temp_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".png";
+            string fileName = "synclabtemp.png";
             string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
             ExportShape(shape, tempPicPath);
-            Image tempImage = Image.FromFile(tempPicPath);
-            Image image = (Image)tempImage.Clone(); // free up the original file to be deleted
-            tempImage.Dispose();
-            return image;
+
+            Image image = Image.FromFile(tempPicPath);
+            Bitmap bitmap = new Bitmap(image);
+            image.Dispose(); // free up the original file to be deleted
+
+            FileInfo file = new FileInfo(Path.GetTempPath() + fileName);
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+            return bitmap;
         }
 
         public static void FitShapeToSlide(ref Shape shapeToMove)
