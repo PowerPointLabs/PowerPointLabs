@@ -259,6 +259,7 @@
     <Compile Include="ActionFramework\Action\CropLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\PasteLab\PasteLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\SyncLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
