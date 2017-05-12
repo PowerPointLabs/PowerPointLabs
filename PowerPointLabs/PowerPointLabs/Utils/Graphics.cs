@@ -81,13 +81,14 @@ namespace PowerPointLabs.Utils
 
         public static Bitmap ShapeToImage(Shape shape)
         {
-            string fileName = "synclabtemp.png";
+            string fileName = TextCollection.TemporaryImageStorageFileName;
             string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
             ExportShape(shape, tempPicPath);
 
             Image image = Image.FromFile(tempPicPath);
             Bitmap bitmap = new Bitmap(image);
-            image.Dispose(); // free up the original file to be deleted
+            // free up the original file to be deleted
+            image.Dispose();
 
             FileInfo file = new FileInfo(Path.GetTempPath() + fileName);
             if (file.Exists)

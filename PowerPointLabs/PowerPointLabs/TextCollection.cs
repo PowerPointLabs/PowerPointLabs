@@ -381,9 +381,13 @@
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         public const string TimerLabTaskPaneTitle = "Timer Lab";
         public const string SyncLabTaskPanelTitle = "Sync Lab";
-        # endregion
+        #endregion
 
-        # region ShapeGalleryPresentation
+        #region Graphics
+        public const string TemporaryImageStorageFileName = "temp.png";
+        #endregion
+
+        #region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
             "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
         # endregion
