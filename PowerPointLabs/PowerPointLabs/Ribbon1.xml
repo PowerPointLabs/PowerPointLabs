@@ -437,11 +437,6 @@
                getImage="GetZoomToAreaContextImage"
                getEnabled="OnGetEnabledZoomButton"
                onAction="ZoomBtnClick"/>
-        <button id="pasteAndReplace"
-                getEnabled="GetEnabled"
-                getImage="GetImage"
-                getLabel="GetLabel"
-                onAction="OnAction"/>
         <menu id="HighlightBulletsMenuShape"
               getLabel="GetHighlightBulletsMenuShapeLabel"
               getImage="GetHighlightBulletsBackgroundContextImage">
@@ -478,6 +473,11 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteAndReplace"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
@@ -495,10 +495,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeFreeform"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeFreeform"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeFreeform"
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetImage"
@@ -515,6 +515,11 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteAndReplaceFreeform"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
@@ -534,6 +539,10 @@
                getImage="GetZoomOutContextImage"
                getEnabled="OnGetEnabledZoomButton"
                onAction="AddZoomOutButtonClick"/>
+        <button id="AddCustomShapePicture"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="fitToWidthPicture"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -542,14 +551,15 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 onAction="OnAction"/>
-        <button id="addCustomShapePicture"
-                getLabel ="GetAddCustomShapeShapeLabel"
-                getImage="GetAddToCustomShapeContextImage"
-                onAction="AddShapeButtonClick"/>
         <button id="hideShape"
                getLabel ="GetHideSelectedShapeLabel"
                getImage="GetHideShapeImage"
                onAction="HideShapeButtonClick"/>
+        <button id="PasteAndReplacePicture"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
@@ -563,10 +573,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeChart"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeChart"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="fitToWidthChart"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -592,10 +602,10 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 onAction="OnAction"/>
-        <button id="addCustomShapeTable"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeTable"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
@@ -645,7 +655,7 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapePictureGroup"
+        <button id="AddCustomShapeGroup"
                getLabel ="GetLabel"
                getImage="GetImage"
                onAction="OnAction"/>
@@ -670,10 +680,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeInk"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeInk"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
@@ -687,10 +697,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeSmartArt"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeSmartArt"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
