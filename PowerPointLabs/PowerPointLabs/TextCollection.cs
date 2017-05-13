@@ -435,6 +435,7 @@
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
 
+        #region PictureSlidesLab
         public class PictureSlidesLabText
         {
             public const string PictureSlidesLabSupertip = "Open Picture Slides Lab window.";
@@ -525,6 +526,7 @@
             public const string InfoAddPictureCitationSlide = "Added successfully!";
             public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
         }
+        #endregion
 
         #region Agenda Lab
         // Errors
@@ -589,9 +591,10 @@
         public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
         #endregion
-        
+
         #region Captions Lab
 
+        public const string CaptionsLabErrorDialogTitle = "Unable to perform action";
         public const string CaptionsLabErrorNoSelection = "Select at least one slide to apply captions.";
         public const string CaptionsLabErrorNoNotes = "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.";
         public const string CaptionsLabErrorNoSelectionLog = "No slide in selection";
