@@ -29,6 +29,8 @@ namespace PowerPointLabs.Utils
     public static class Graphics
     {
 #pragma warning disable 0618
+        private static Object fileLock = new object();
+
         #region Const
         public const float PictureExportingRatio = 96.0f / 72.0f;
         private const float TargetDpi = 96.0f;
@@ -81,15 +83,27 @@ namespace PowerPointLabs.Utils
                               slideHeight, PpExportMode.ppScaleToFit);
         }
 
-        public static Image ShapeToImage(Shape shape)
+        public static Bitmap ShapeToBitmap(Shape shape)
         {
-            string fileName = "temp_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".png";
-            string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
-            ExportShape(shape, tempPicPath);
-            Image tempImage = Image.FromFile(tempPicPath);
-            Image image = (Image)tempImage.Clone(); // free up the original file to be deleted
-            tempImage.Dispose();
-            return image;
+            // we need a lock here to prevent race conditions on the temporary file
+            lock (fileLock)
+            {
+                string fileName = TextCollection.TemporaryImageStorageFileName;
+                string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
+                ExportShape(shape, tempPicPath);
+
+                Image image = Image.FromFile(tempPicPath);
+                Bitmap bitmap = new Bitmap(image);
+                // free up the original file to be deleted
+                image.Dispose();
+
+                FileInfo file = new FileInfo(Path.GetTempPath() + fileName);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+                return bitmap;
+            }
         }
 
         public static void FitShapeToSlide(ref Shape shapeToMove)

@@ -13,20 +13,10 @@ namespace PowerPointLabs.SyncLab
     {
         #region Display Image Utils
 
-        private static PowerPointPresentation templateShapeStorage = null;
-
         public static Shapes GetTemplateShapes()
         {
-            if (templateShapeStorage == null)
-            {
-                string path = Path.GetTempPath();
-                string name = string.Format(TextCollection.SyncLabStorageFileName,
-                                 DateTime.Now.ToString("yyyyMMddHHmmssffff"));
-                templateShapeStorage = new PowerPointPresentation(path, name);
-                templateShapeStorage.OpenInBackground();
-                templateShapeStorage.AddSlide();
-            }
-            return templateShapeStorage.Slides[0].Shapes;
+            var shapeStorage = SyncLabShapeStorage.Instance;
+            return shapeStorage.Slides[SyncLabShapeStorage.FormatStorageSlide].Shapes;
         }
 
         public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size imageSize)

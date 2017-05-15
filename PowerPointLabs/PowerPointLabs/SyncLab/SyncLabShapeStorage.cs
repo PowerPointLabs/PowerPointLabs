@@ -6,16 +6,25 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.SyncLab
 {
-    public class SyncLabShapeStorage : PowerPointPresentation
+    public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
+
+        public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
 
-        public SyncLabShapeStorage() : base()
+        private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
+            new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
+
+        public static SyncLabShapeStorage Instance
+        {
+            get { return StorageInstance.Value; }
+        }
+
+        private SyncLabShapeStorage() : base()
         {
             Path = System.IO.Path.GetTempPath();
-            Name = string.Format(TextCollection.SyncLabStorageFileName,
-                                 DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+            Name = TextCollection.SyncLabStorageFileName;
             OpenInBackground();
             ClearShapes();
         }
@@ -87,7 +96,7 @@ namespace PowerPointLabs.SyncLab
                 GetSlide(1).Delete();
             }
             AddSlide();
-            Slides[0].DeleteAllShapes();
+            Slides[FormatStorageSlide].DeleteAllShapes();
         }
     }
 }
