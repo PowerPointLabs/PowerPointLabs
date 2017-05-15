@@ -24,7 +24,7 @@ namespace PowerPointLabs.PasteLab
 
             ShapeRange pastedShapeRange = slide.Shapes.Paste();
             Logger.Log(string.Format("PasteToFillSlide: {0} objects pasted", pastedShapeRange.Count));
-            pastedShapeRange = RemovePlaceholders(slide, pastedShapeRange);
+            pastedShapeRange = Graphics.GetShapesWhenTypeNotMatches(slide, pastedShapeRange, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
 
             if (pastedShapeRange.Count <= 0)
             {
@@ -186,7 +186,7 @@ namespace PowerPointLabs.PasteLab
             }
 
             var pastedShapeRange = slide.Shapes.Paste();
-            pastedShapeRange = RemovePlaceholders(slide, pastedShapeRange);
+            pastedShapeRange = Graphics.GetShapesWhenTypeNotMatches(slide, pastedShapeRange, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
 
             if (pastedShapeRange.Count > 1)
             {
@@ -259,19 +259,6 @@ namespace PowerPointLabs.PasteLab
                     eff.MoveAfter(curSlide.TimeLine.MainSequence[curo - 1]);
                 }
             }
-        }
-
-        private static ShapeRange RemovePlaceholders(PowerPointSlide slide, ShapeRange shapes)
-        {
-            List<Shape> newShapeList = new List<Shape>();
-            foreach (Shape shape in shapes)
-            {
-                if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
-                {
-                    newShapeList.Add(shape);
-                }
-            }
-            return slide.ToShapeRange(newShapeList);
         }
     }
 }

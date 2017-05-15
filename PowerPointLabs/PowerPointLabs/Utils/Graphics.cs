@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Models;
+
 using PPExtraEventHelper;
 
 using Drawing = System.Drawing;
@@ -161,6 +163,32 @@ namespace PowerPointLabs.Utils
                    refShape.Type == candidateShape.Type &&
                    (refShape.Type != MsoShapeType.msoAutoShape ||
                    refShape.AutoShapeType == candidateShape.AutoShapeType);
+        }
+
+        public static ShapeRange GetShapesWhenTypeMatches(PowerPointSlide slide, ShapeRange shapes, MsoShapeType type)
+        {
+            List<Shape> newShapeList = new List<Shape>();
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Type == type)
+                {
+                    newShapeList.Add(shape);
+                }
+            }
+            return slide.ToShapeRange(newShapeList);
+        }
+
+        public static ShapeRange GetShapesWhenTypeNotMatches(PowerPointSlide slide, ShapeRange shapes, MsoShapeType type)
+        {
+            List<Shape> newShapeList = new List<Shape>();
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Type != type)
+                {
+                    newShapeList.Add(shape);
+                }
+            }
+            return slide.ToShapeRange(newShapeList);
         }
 
         public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)
