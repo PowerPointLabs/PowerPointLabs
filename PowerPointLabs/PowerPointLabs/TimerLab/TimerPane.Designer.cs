@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.wpf = new System.Windows.Forms.Integration.ElementHost();
-            this.timerLabPaneWPF1 = new PowerPointLabs.TimerLab.TimerLabPaneWPF();
+            this.TimerPaneWPF = new PowerPointLabs.TimerLab.TimerLabPaneWPF();
             this.SuspendLayout();
             // 
             // wpf
@@ -41,7 +41,7 @@
             this.wpf.Size = new System.Drawing.Size(300, 883);
             this.wpf.TabIndex = 0;
             this.wpf.Text = "wpf";
-            this.wpf.Child = this.timerLabPaneWPF1;
+            this.wpf.Child = this.TimerPaneWPF;
             // 
             // TimerPane
             // 
@@ -57,8 +57,6 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost wpf;
-        private TimerLabPaneWPF timerLabPaneWPF1;
-
         public TimerLabPaneWPF TimerPaneWPF { get; private set; }
     }
 }
