@@ -125,6 +125,7 @@
     <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
+    <Compile Include="UnitTest\PasteLab\BasePasteLabTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />
