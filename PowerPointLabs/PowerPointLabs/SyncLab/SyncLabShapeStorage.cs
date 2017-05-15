@@ -6,22 +6,19 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.SyncLab
 {
-    public class SyncLabShapeStorage : PowerPointPresentation
+    public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
 
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
 
-        private static SyncLabShapeStorage storage;
+        private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
+            new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
 
-        public static SyncLabShapeStorage GetInstance()
+        public static SyncLabShapeStorage Instance
         {
-            if (storage == null)
-            {
-                storage = new SyncLabShapeStorage();
-            }
-            return storage;
+            get { return StorageInstance.Value; }
         }
 
         private SyncLabShapeStorage() : base()
