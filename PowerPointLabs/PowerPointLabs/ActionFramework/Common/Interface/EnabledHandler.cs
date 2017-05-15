@@ -2,12 +2,14 @@
 
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Extension;
+
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
     /// Handler that handles GetEnabled class
     /// </summary>
-    public abstract class EnabledHandler
+    public abstract class EnabledHandler : BaseHandler
     {
         public bool Get(string ribbonId)
         {
@@ -27,7 +29,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
         
         protected bool HasPlaceholderInSelection()
         {
-            var selection = GetCurrentSelection();
+            var selection = this.GetCurrentSelection();
             foreach (Shape shape in selection.ShapeRange)
             {
                 if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
@@ -37,13 +39,5 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             }
             return false;
         }
-
-        // Allow ActionFrameworkExtensions to get current selection
-#pragma warning disable 0618
-        protected Selection GetCurrentSelection()
-        {
-            return Extension.ActionFrameworkExtensions.GetCurrentSelection();
-        }
-#pragma warning restore 0618
     }
 }
