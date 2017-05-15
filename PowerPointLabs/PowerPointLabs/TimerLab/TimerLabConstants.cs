@@ -20,7 +20,7 @@ namespace PowerPointLabs.TimerLab
         public const float DefaultSecondsLineMarkerWidth = 2;
 
         public const float DefaultTimeMarkerHeight = 30;
-        public const float DefaultTimeMarkerWidth = 50;
+        public const float DefaultTimeMarkerWidth = 1;
 
         public const float DefaultSliderBodyWidth = 4;
         public const float DefaultSliderHeadSize = 20;
