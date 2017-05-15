@@ -1341,7 +1341,8 @@ namespace PowerPointLabs.PositionsLab
                 // set the zOrder
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    SwapZOrder(simulatedShapes[i], selectedShapes[i]);
+                    PPShape simulatedPPShape = new PPShape(simulatedShapes[i], false);
+                    simulatedPPShape.SwapZOrder(selectedShapes[i]);
                 }
 
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
@@ -1630,7 +1631,7 @@ namespace PowerPointLabs.PositionsLab
 
                 selectedShape.IncrementLeft(simulatedShape.VisualCenter.X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(simulatedShape.VisualCenter.Y - originalPositions[i - 1, Top]);
-                SwapZOrder(selectedShape, simulatedShape);
+                simulatedShape.SwapZOrder(selectedShape);
             }
         }
 
@@ -1673,39 +1674,6 @@ namespace PowerPointLabs.PositionsLab
             {
                 dictionary.Add(s.Id, new PositionShapeProperties(new System.Drawing.PointF(s.Left, s.Top), s.Rotation, s.HorizontalFlip, s.VerticalFlip));
             }
-        }
-
-        private void UpdateZOrder(Shape original, int zOrder)
-        {
-            while (original.ZOrderPosition != zOrder)
-            {
-                if (original.ZOrderPosition < zOrder)
-                {
-                    original.ZOrder(Office.MsoZOrderCmd.msoBringForward);
-                }
-                else if (original.ZOrderPosition > zOrder)
-                {
-                    original.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-                }
-            }
-        }
-
-        private void SwapZOrder(Shape original, Shape target)
-        {
-            int originalZOrder = original.ZOrderPosition;
-            int targetZOrder = target.ZOrderPosition;
-
-            UpdateZOrder(original, targetZOrder);
-            UpdateZOrder(target, originalZOrder);
-        }
-
-        private void SwapZOrder(Shape original, PPShape target)
-        {
-            int originalZOrder = original.ZOrderPosition;
-            int targetZOrder = target.ZOrderPosition;
-
-            UpdateZOrder(original, targetZOrder);
-            target.ZOrderPosition = originalZOrder;
         }
         #endregion
     }

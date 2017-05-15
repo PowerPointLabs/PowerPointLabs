@@ -507,7 +507,7 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Swap Z order of the two shapes
+        /// Swap Z order of the two PPShapes
         /// </summary>
         public void SwapZOrder(PPShape shape)
         {
@@ -516,6 +516,14 @@ namespace PowerPointLabs.Utils
 
             ZOrderPosition = targetZOrder;
             shape.ZOrderPosition = originalZOrder;
+        }
+
+        /// <summary>
+        /// Swap Z order of the with a shape
+        /// </summary>
+        public void SwapZOrder(PowerPoint.Shape shape)
+        {
+            SwapZOrder(new PPShape(shape, false));
         }
 
         /// <summary>
