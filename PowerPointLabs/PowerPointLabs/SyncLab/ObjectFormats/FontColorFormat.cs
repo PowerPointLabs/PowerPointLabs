@@ -34,7 +34,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.Fill.ForeColor.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
             shape.Fill.BackColor.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
             shape.Fill.Solid();
-            Bitmap image = Graphics.ShapeToImage(shape);
+            Bitmap image = Graphics.ShapeToBitmap(shape);
             shape.Delete();
             return image;
         }

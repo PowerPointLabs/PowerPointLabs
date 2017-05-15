@@ -81,7 +81,7 @@ namespace PowerPointLabs.Utils
                               slideHeight, PpExportMode.ppScaleToFit);
         }
 
-        public static Bitmap ShapeToImage(Shape shape)
+        public static Bitmap ShapeToBitmap(Shape shape)
         {
             // we need a lock here to prevent race conditions on the temporary file
             lock (fileLock)
