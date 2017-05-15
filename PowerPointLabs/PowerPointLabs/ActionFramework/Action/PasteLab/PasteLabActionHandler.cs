@@ -12,12 +12,15 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         // Sealed method: Subclasses should override ExecutePasteAction instead
         protected sealed override void ExecuteAction(string ribbonId)
         {
+            this.StartNewUndoEntry();
+
             // Store and restore clipboard data:
             // Reason for not using Clipboard.SetDataObject(): it does not preserve position
+            var currentSelectedShapes = this.GetCurrentSelection().ShapeRange;
             var tempSlide = this.GetCurrentPresentation().AddSlide();
             ShapeRange clipboardItems = tempSlide.Shapes.Paste();
-
-            this.StartNewUndoEntry();
+            currentSelectedShapes.Select();
+            
             ExecutePasteAction(ribbonId);
 
             clipboardItems.Copy();
