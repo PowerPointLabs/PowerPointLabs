@@ -5,7 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
 {
-    [ExportEnabledRibbonId("pasteAndReplace")]
+    [ExportEnabledRibbonId("PasteAndReplace", "PasteAndReplaceFreeform", "PasteAndReplacePicture")]
     class PasteLabReplaceEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

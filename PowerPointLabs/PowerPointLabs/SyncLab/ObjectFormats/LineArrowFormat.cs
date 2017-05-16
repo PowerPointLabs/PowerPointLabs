@@ -30,7 +30,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 0, SyncFormatConstants.DisplayImageSize.Height,
                 SyncFormatConstants.DisplayImageSize.Width, 0);
             SyncFormat(formatShape, shape);
-            Bitmap image = new Bitmap(Graphics.ShapeToImage(shape));
+            Bitmap image = Graphics.ShapeToBitmap(shape);
             shape.Delete();
             return image;
         }

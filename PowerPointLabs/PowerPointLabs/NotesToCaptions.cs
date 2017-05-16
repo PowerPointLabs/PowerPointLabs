@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 
 using Microsoft.Office.Core;
@@ -23,7 +22,7 @@ namespace PowerPointLabs
                 !PowerPointCurrentPresentationInfo.SelectedSlides.Any())
             {
                 Logger.Log(String.Format("{0} in EmbedCaptionsOnSelectedSlides", TextCollection.CaptionsLabErrorNoSelectionLog));
-                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection);
+                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection, TextCollection.CaptionsLabErrorDialogTitle);
                 return;
             }
             EmbedCaptionsOnSlides(PowerPointCurrentPresentationInfo.SelectedSlides.ToList());
@@ -38,7 +37,7 @@ namespace PowerPointLabs
                 if (!captionAdded && slides.Count == 1)
                 {
                     Logger.Log(String.Format("{0} in EmbedCaptionsOnSlides", TextCollection.CaptionsLabErrorNoNotesLog));
-                    MessageBox.Show(TextCollection.CaptionsLabErrorNoNotes);
+                    MessageBox.Show(TextCollection.CaptionsLabErrorNoNotes, TextCollection.CaptionsLabErrorDialogTitle);
                     ShowNotesPane();
                 }
             }
@@ -55,7 +54,7 @@ namespace PowerPointLabs
             else
             {
                 Logger.Log(String.Format("{0} in EmbedCaptionsOnCurrentSlide", TextCollection.CaptionsLabErrorNoCurrentSlideLog));
-                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection);
+                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection, TextCollection.CaptionsLabErrorDialogTitle);
             }
         }
 

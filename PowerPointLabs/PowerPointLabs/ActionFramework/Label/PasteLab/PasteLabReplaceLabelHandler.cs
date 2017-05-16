@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
-    [ExportLabelRibbonId("pasteAndReplace")]
+    [ExportLabelRibbonId("PasteAndReplace", "PasteAndReplaceFreeform", "PasteAndReplacePicture")]
     class PasteLabReplaceLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

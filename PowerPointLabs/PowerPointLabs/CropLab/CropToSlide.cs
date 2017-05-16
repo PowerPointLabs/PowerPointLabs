@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -11,39 +15,47 @@ namespace PowerPointLabs.CropLab
     {
         private static readonly string ShapePicture = Path.GetTempPath() + @"\shape.png";
 
-        public static bool CropSelection(PowerPoint.ShapeRange shapeRange, PowerPointSlide currentSlide, float slideWidth, float slideHeight)
+        public static bool Crop(ShapeRange shapeRange, PowerPointSlide currentSlide, float slideWidth, float slideHeight)
         {
             bool hasChange = false;
-            foreach (PowerPoint.Shape shape in shapeRange)
+            foreach (Shape shape in shapeRange)
             {
-                PowerPoint.Shape toCrop = shape;
-                RectangleF shapeBounds = GetAbsoluteBounds(shape);
-                if (!CrossesSlideBoundary(shapeBounds, slideWidth, slideHeight))
+                if (Crop(shape, currentSlide, slideWidth, slideHeight))
                 {
-                    continue;
+                    hasChange = true;
                 }
-                hasChange = true;
-                if (Utils.Graphics.IsShape(shape) || shape.Rotation != 0)
-                {
-                    Utils.Graphics.ExportShape(shape, ShapePicture);
-                    var newShape = currentSlide.Shapes.AddPicture(ShapePicture,
-                        Office.MsoTriState.msoFalse,
-                        Office.MsoTriState.msoTrue,
-                        shapeBounds.Left, shapeBounds.Top, shapeBounds.Width, shapeBounds.Height);
-                    toCrop = newShape;
-                    toCrop.Name = shape.Name;
-                    shape.Delete();
-                }
-                RectangleF cropArea = GetCropArea(toCrop, slideWidth, slideHeight);
-                toCrop.PictureFormat.Crop.ShapeHeight = cropArea.Height;
-                toCrop.PictureFormat.Crop.ShapeWidth = cropArea.Width;
-                toCrop.PictureFormat.Crop.ShapeLeft = cropArea.Left;
-                toCrop.PictureFormat.Crop.ShapeTop = cropArea.Top;
             }
             return hasChange;
         }
 
-        private static RectangleF GetAbsoluteBounds(PowerPoint.Shape shape)
+        public static bool Crop(Shape shape, PowerPointSlide currentSlide, float slideWidth, float slideHeight)
+        {
+            Shape toCrop = shape;
+            RectangleF shapeBounds = GetAbsoluteBounds(shape);
+            if (!CrossesSlideBoundary(shapeBounds, slideWidth, slideHeight))
+            {
+                return false;
+            }
+            if (Utils.Graphics.IsShape(shape) || shape.Rotation != 0)
+            {
+                Utils.Graphics.ExportShape(shape, ShapePicture);
+                var newShape = currentSlide.Shapes.AddPicture(ShapePicture,
+                    Office.MsoTriState.msoFalse,
+                    Office.MsoTriState.msoTrue,
+                    shapeBounds.Left, shapeBounds.Top, shapeBounds.Width, shapeBounds.Height);
+                toCrop = newShape;
+                toCrop.Name = shape.Name;
+                shape.Delete();
+            }
+            RectangleF cropArea = GetCropArea(toCrop, slideWidth, slideHeight);
+            toCrop.PictureFormat.Crop.ShapeHeight = cropArea.Height;
+            toCrop.PictureFormat.Crop.ShapeWidth = cropArea.Width;
+            toCrop.PictureFormat.Crop.ShapeLeft = cropArea.Left;
+            toCrop.PictureFormat.Crop.ShapeTop = cropArea.Top;
+            return true;
+        }
+
+        private static RectangleF GetAbsoluteBounds(Shape shape)
         {
             float rotation = (float)Utils.Graphics.DegreeToRadian(shape.Rotation);
             PointF[] corners = new PointF[]
@@ -75,7 +87,7 @@ namespace PowerPointLabs.CropLab
                             (float)(point.X * Math.Sin(theta) + point.Y * Math.Cos(theta)));
         }
 
-        private static RectangleF GetCropArea(PowerPoint.Shape shape, float slideWidth, float slideHeight)
+        private static RectangleF GetCropArea(Shape shape, float slideWidth, float slideHeight)
         {
             float cropTop = Math.Max(0, shape.Top);
             float cropLeft = Math.Max(0, shape.Left);

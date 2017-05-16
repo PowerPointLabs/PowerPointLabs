@@ -162,7 +162,7 @@
         public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
         public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
         public const string SyncLabCopyError = "Error: Unable to copy selected item.";
-        public const string SyncLabStorageFileName = "Sync Lab - Do not edit - {0}";
+        public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
         public const string SyncLabDefaultFormatName = "Format";
         #endregion
 
@@ -381,9 +381,13 @@
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         public const string TimerLabTaskPaneTitle = "Timer Lab";
         public const string SyncLabTaskPanelTitle = "Sync Lab";
-        # endregion
+        #endregion
 
-        # region ShapeGalleryPresentation
+        #region Graphics
+        public const string TemporaryImageStorageFileName = "temp.png";
+        #endregion
+
+        #region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
             "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
         # endregion
@@ -435,6 +439,7 @@
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         # endregion
 
+        #region PictureSlidesLab
         public class PictureSlidesLabText
         {
             public const string PictureSlidesLabSupertip = "Open Picture Slides Lab window.";
@@ -525,6 +530,7 @@
             public const string InfoAddPictureCitationSlide = "Added successfully!";
             public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
         }
+        #endregion
 
         #region Agenda Lab
         // Errors
@@ -589,9 +595,10 @@
         public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
         #endregion
-        
+
         #region Captions Lab
 
+        public const string CaptionsLabErrorDialogTitle = "Unable to perform action";
         public const string CaptionsLabErrorNoSelection = "Select at least one slide to apply captions.";
         public const string CaptionsLabErrorNoNotes = "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.";
         public const string CaptionsLabErrorNoSelectionLog = "No slide in selection";
@@ -655,8 +662,6 @@
         # endregion
 
         # region Task Pane - Shapes Lab
-        public const string CustomShapeDefaultShapeName = "My Shape Untitled";
-
         public const string CustomShapeFileNameInvalid = "Invalid shape name.";
         public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
         public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -667,7 +672,7 @@
         public const string CustomeShapeSetAsDefaultCategorySuccessFormat = "{0} has been set as default category.";
         public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
         public const string CustomShapeMigrationError =
-            "The folder cannot be migrated entirely. Please check if your destination loaction forbids this action.";
+            "The folder cannot be migrated entirely. Please check if your destination location forbids this action.";
         public const string CustomShapeOriginalFolderDeletionError =
             "The original folder could not be deleted because some of the files in folder is still in use. You could " +
             "try to delete this folder manually when those files are closed.";
