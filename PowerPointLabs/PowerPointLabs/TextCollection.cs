@@ -162,7 +162,7 @@
         public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
         public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
         public const string SyncLabCopyError = "Error: Unable to copy selected item.";
-        public const string SyncLabStorageFileName = "Sync Lab - Do not edit - {0}";
+        public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
         public const string SyncLabDefaultFormatName = "Format";
         #endregion
 
@@ -381,9 +381,13 @@
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
         public const string TimerLabTaskPaneTitle = "Timer Lab";
         public const string SyncLabTaskPanelTitle = "Sync Lab";
-        # endregion
+        #endregion
 
-        # region ShapeGalleryPresentation
+        #region Graphics
+        public const string TemporaryImageStorageFileName = "temp.png";
+        #endregion
+
+        #region ShapeGalleryPresentation
         public const string ShapeCorruptedError =
             "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
         # endregion

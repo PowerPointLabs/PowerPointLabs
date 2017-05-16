@@ -37,7 +37,7 @@ namespace PowerPointLabs.TimerLab
         public const double FractionalIncrementOffset = 0.99;
         public const double FractionalIncrementUpperBound = 0.59;
 
-        public const string ShapeId = "Id";
+        public const string ShapeId = "TimerLabShapeId";
         public const string TimerBodyId = "TimerBody";
         public const string TimerLineMarkerId = "TimerLineMarker";
         public const string TimerLineMarkerGroupId = "TimerLineMarkerGroup";
