@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 
-using Microsoft.Office.Interop.PowerPoint;
-
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
@@ -14,17 +12,15 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         {
             this.StartNewUndoEntry();
 
-            // Store and restore clipboard data:
-            // Reason for not using Clipboard.SetDataObject(): it does not preserve position
-            var currentSelectedShapes = this.GetCurrentSelection().ShapeRange;
-            var tempSlide = this.GetCurrentPresentation().AddSlide(index: this.GetCurrentSlide().Index);
-            ShapeRange clipboardItems = tempSlide.Shapes.Paste();
-            currentSelectedShapes.Select();
-            
+            // Limitation: Clipboard Shapes' positions will not be preserved. Unable to find a good fix.
+            IDataObject clipboardData = Clipboard.GetDataObject();
+
             ExecutePasteAction(ribbonId);
 
-            clipboardItems.Copy();
-            tempSlide.Delete();
+            if (clipboardData != null)
+            {
+                Clipboard.SetDataObject(clipboardData);
+            }
         }
 
         protected abstract void ExecutePasteAction(string ribbonId);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -7,8 +6,6 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
-
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PasteLab
 {
