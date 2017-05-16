@@ -314,7 +314,6 @@ namespace PowerPointLabs.TimerLab
                 UpdateMarkerPosition();
                 UpdateSliderPosition();
                 ShowErrorMessageBox(TimerLabConstants.ErrorMessageOneTimerOnly);
-                return;
             }
             else
             {
@@ -683,12 +682,12 @@ namespace PowerPointLabs.TimerLab
 
         private Shape GetLineMarkerGroup()
         {
-            Shape lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerGroupId);
-            if (lineMarkerGroup == null)
+            Shape result = GetShapeByName(TimerLabConstants.TimerLineMarkerGroupId);
+            if (result == null)
             {
-                lineMarkerGroup = GetShapeByName(TimerLabConstants.TimerLineMarkerId);
+                result = GetShapeByName(TimerLabConstants.TimerLineMarkerId);
             }
-            return lineMarkerGroup;
+            return result;
         }
 
         private Shape GetShapeByName(string name)
