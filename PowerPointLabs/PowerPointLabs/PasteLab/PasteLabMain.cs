@@ -75,7 +75,7 @@ namespace PowerPointLabs.PasteLab
                 shapeToReplace.Delete();
                 return;
             }
-
+            
             Shape newShape = slide.Shapes.Paste()[1];
             newShape.Left = shapeToReplace.Left;
             newShape.Top = shapeToReplace.Top;
@@ -89,9 +89,6 @@ namespace PowerPointLabs.PasteLab
                     eff.Delete();
                 }
             }
-
-            shapeToReplace.PickUp();
-            newShape.Apply();
 
             Logger.Log(string.Format("PasteAndReplace: Replaced {0} with {1}", shapeToReplace.Name, newShape.Name));
             shapeToReplace.Delete();

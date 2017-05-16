@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
     [ExportActionRibbonId("mergeSelection")]
     class PasteLabMergeActionHandler : PasteLabActionHandler
     {
-        protected override void ExecutePasteAction(string ribbonId)
+        protected override void ExecutePasteAction(string ribbonId, bool isClipboardEmpty)
         {
             var presentation = this.GetCurrentPresentation();
             var slide = this.GetCurrentSlide();

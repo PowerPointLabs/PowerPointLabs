@@ -9,11 +9,10 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
     [ExportActionRibbonId("pasteToFillSlide")]
     class PasteLabFillActionHandler : PasteLabActionHandler
     {
-        protected override void ExecutePasteAction(string ribbonId)
+        protected override void ExecutePasteAction(string ribbonId, bool isClipboardEmpty)
         {
             var curPresentation = this.GetCurrentPresentation();
-            bool clipboardIsEmpty = (Clipboard.GetDataObject() == null);
-            PowerPointLabs.PasteLab.PasteLabMain.PasteToFillSlide(this.GetCurrentSlide(), clipboardIsEmpty, curPresentation.SlideWidth, curPresentation.SlideHeight);
+            PowerPointLabs.PasteLab.PasteLabMain.PasteToFillSlide(this.GetCurrentSlide(), isClipboardEmpty, curPresentation.SlideWidth, curPresentation.SlideHeight);
         }
     }
 }

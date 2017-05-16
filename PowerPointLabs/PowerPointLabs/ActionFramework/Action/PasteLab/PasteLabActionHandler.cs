@@ -12,17 +12,18 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         {
             this.StartNewUndoEntry();
 
-            // Limitation: Clipboard Shapes' positions will not be preserved. Unable to find a good fix.
+            // Limitation: Clipboard's shape positions will not be preserved. Unable to find a good fix.
             IDataObject clipboardData = Clipboard.GetDataObject();
+            bool isClipboardEmpty = clipboardData == null || clipboardData.GetFormats().Length == 0;
 
-            ExecutePasteAction(ribbonId);
+            ExecutePasteAction(ribbonId, isClipboardEmpty);
 
-            if (clipboardData != null)
+            if (!isClipboardEmpty)
             {
                 Clipboard.SetDataObject(clipboardData);
             }
         }
 
-        protected abstract void ExecutePasteAction(string ribbonId);
+        protected abstract void ExecutePasteAction(string ribbonId, bool isClipboardEmpty);
     }
 }
