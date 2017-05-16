@@ -17,7 +17,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             // Store and restore clipboard data:
             // Reason for not using Clipboard.SetDataObject(): it does not preserve position
             var currentSelectedShapes = this.GetCurrentSelection().ShapeRange;
-            var tempSlide = this.GetCurrentPresentation().AddSlide();
+            var tempSlide = this.GetCurrentPresentation().AddSlide(index: this.GetCurrentSlide().Index);
             ShapeRange clipboardItems = tempSlide.Shapes.Paste();
             currentSelectedShapes.Select();
             

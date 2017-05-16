@@ -92,7 +92,7 @@ namespace PowerPointLabs.PasteLab
             var selectedShapes = selection.ShapeRange;
             var pastedShapes = slide.Shapes.Paste();
 
-            var tempSlide = presentation.AddSlide();
+            var tempSlide = presentation.AddSlide(index: slide.Index);
             selectedShapes.Copy();
             tempSlide.Shapes.Paste();
             pastedShapes.Copy();    // revert the clipboard state
@@ -160,7 +160,7 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
             
-            var newSlide = presentation.AddSlide();
+            var newSlide = presentation.AddSlide(index: slide.Index);
             var selectedShapes = selection.ShapeRange;
             
             selectedShapes[1].Copy();
@@ -208,7 +208,7 @@ namespace PowerPointLabs.PasteLab
             }
 
             // Needs new slide, otherwise there will be a slight offset when pasting
-            var newSlide = presentation.AddSlide();
+            var newSlide = presentation.AddSlide(index: slide.Index);
 
             PowerPoint.ShapeRange correctShapes = newSlide.Shapes.Paste();
 

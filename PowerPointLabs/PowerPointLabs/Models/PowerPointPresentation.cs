@@ -305,15 +305,20 @@ namespace PowerPointLabs.Models
             return index == Slides.Count;
         }
 
-        public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
+        public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "", int index = -1)
         {
             if (!Opened)
             {
                 return null;
             }
 
+            if (index < 0)
+            {
+                index = SlideCount + 1;
+            }
+
             var customLayout = Presentation.SlideMaster.CustomLayouts[layout];
-            var newSlide = Presentation.Slides.AddSlide(SlideCount + 1, customLayout);
+            var newSlide = Presentation.Slides.AddSlide(index, customLayout);
 
             if (name != "")
             {
