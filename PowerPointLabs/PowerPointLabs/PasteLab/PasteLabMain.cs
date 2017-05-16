@@ -105,16 +105,16 @@ namespace PowerPointLabs.PasteLab
                     transferEffects.Add(effect.Index);
                 }
             }
-            List<String> transferShapeNames = new List<String>();
+            List<PowerPoint.Shape> transferShapeList = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape shape in selectedShapes)
             {
-                transferShapeNames.Add(shape.Name);
+                transferShapeList.Add(shape);
             }
             foreach (PowerPoint.Shape shape in pastedShapes)
             {
-                transferShapeNames.Add(shape.Name);
+                transferShapeList.Add(shape);
             }
-            PowerPoint.ShapeRange transferShapes = slide.Shapes.Range(transferShapeNames.ToArray());
+            PowerPoint.ShapeRange transferShapes = slide.ToShapeRange(transferShapeList);
 
             float selectionLeft = selectedShapes[1].Left;
             float selectionTop = selectedShapes[1].Top;
