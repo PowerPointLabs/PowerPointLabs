@@ -57,11 +57,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void DialogSelectItem(int categoryIndex, int itemIndex)
         {
-            if (_pane != null && _pane.SyncPaneWPF1.dialog != null)
+            if (_pane != null && _pane.SyncPaneWPF1.Dialog != null)
             {
                 UIThreadExecutor.Execute(() =>
                 {
-                    ((_pane.SyncPaneWPF1.dialog.treeView.Items[categoryIndex] as TreeViewItem)
+                    ((_pane.SyncPaneWPF1.Dialog.treeView.Items[categoryIndex] as TreeViewItem)
                         .Items[itemIndex] as SyncFormatDialogItem).IsChecked = true;
                 });
             }
@@ -69,11 +69,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void DialogClickOk()
         {
-            if (_pane != null && _pane.SyncPaneWPF1.dialog != null)
+            if (_pane != null && _pane.SyncPaneWPF1.Dialog != null)
             {
                 UIThreadExecutor.Execute(() =>
                 {
-                    _pane.SyncPaneWPF1.dialog.okButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    _pane.SyncPaneWPF1.Dialog.okButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 });
             }
             

@@ -157,7 +157,7 @@ namespace PowerPointLabs.SyncLab.View
         {
             this.formats = eventDialog.Formats;
             this.Text = eventDialog.ObjectName;
-            eventDialog.OkButtonClick += new SyncFormatDialog.OkButtonEventHandler(EditFormat);
+            eventDialog.OkButtonClick -= new SyncFormatDialog.OkButtonEventHandler(EditFormat);
         }
 
         private void ApplyFormatToSelected()

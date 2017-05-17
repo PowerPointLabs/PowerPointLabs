@@ -15,7 +15,7 @@ namespace PowerPointLabs.SyncLab.View
     /// </summary>
     public partial class SyncPaneWPF : UserControl
     {
-        public SyncFormatDialog dialog;
+        public SyncFormatDialog Dialog { get; set; }
         private readonly SyncLabShapeStorage shapeStorage;
 
         public SyncPaneWPF()
@@ -46,9 +46,9 @@ namespace PowerPointLabs.SyncLab.View
         public void SyncPane_Closing(Object sender, EventArgs e)
         {
             shapeStorage.Close();
-            if (dialog != null)
+            if (Dialog != null)
             {
-                dialog.Close();
+                Dialog.Close();
             }
         }
 
@@ -83,14 +83,14 @@ namespace PowerPointLabs.SyncLab.View
 
         public SyncFormatDialog ShowDialog(Shape shape, String formatName, FormatTreeNode[] formats)
         {
-            if (dialog != null)
+            if (Dialog != null)
             {
-                dialog.Close();
+                Dialog.Close();
             }
 
-            dialog = new SyncFormatDialog(this, shape, formatName, formats);
-            dialog.Show();
-            return dialog;
+            Dialog = new SyncFormatDialog(this, shape, formatName, formats);
+            Dialog.Show();
+            return Dialog;
         }
         #endregion
 
@@ -163,7 +163,7 @@ namespace PowerPointLabs.SyncLab.View
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
             eventDialog.OkButtonClick -= new SyncFormatDialog.OkButtonEventHandler(AddFormatToList);
-            dialog = null;
+            Dialog = null;
         }
 
         private void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)

@@ -107,13 +107,13 @@ namespace PowerPointLabs.SyncLab.View
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             OkButtonClick(this);
-            parent.dialog = null;
+            parent.Dialog = null;
             this.Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            parent.dialog = null;
+            parent.Dialog = null;
             this.Close();
         }
 
