@@ -12,22 +12,23 @@ namespace PowerPointLabs.ActionFramework.Util
     abstract class BaseUtilActionHandler : ActionHandler
     {
 
-        protected static bool VerifyIsSelectionValid(Selection selection)
+        protected static bool IsSelectionShapes(Selection selection)
         {
-            return selection.Type == PpSelectionType.ppSelectionShapes;
+            return selection.Type == PpSelectionType.ppSelectionShapes &&
+                    selection.ShapeRange.Count >= 1;
         }
 
-        protected static bool IsPictureOrShapeForSelection(ShapeRange shapeRange)
+        protected static bool IsAllPictureOrShape(ShapeRange shapeRange)
         {
             return (from Shape shape in shapeRange select shape).All(IsPictureOrShape);
         }
 
-        protected static bool IsPictureForSelection(ShapeRange shapeRange)
+        protected static bool IsAllPicture(ShapeRange shapeRange)
         {
             return (from Shape shape in shapeRange select shape).All(IsPicture);
         }
 
-        protected static bool IsShapeForSelection(ShapeRange shapeRange)
+        protected static bool IsAllShape(ShapeRange shapeRange)
         {
             return (from Shape shape in shapeRange select shape).All(IsShape);
         }

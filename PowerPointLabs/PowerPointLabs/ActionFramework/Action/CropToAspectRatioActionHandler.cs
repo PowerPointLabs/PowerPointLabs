@@ -18,7 +18,7 @@ namespace PowerPointLabs.ActionFramework.Action
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             var selection = this.GetCurrentSelection();
 
-            if (!VerifyIsSelectionValid(selection))
+            if (!IsSelectionShapes(selection))
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
                 return;
@@ -29,7 +29,7 @@ namespace PowerPointLabs.ActionFramework.Action
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
                 return;
             }
-            if (!IsPictureForSelection(shapeRange))
+            if (!IsAllPicture(shapeRange))
             {
                 HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;

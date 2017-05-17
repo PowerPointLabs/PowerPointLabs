@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
@@ -14,8 +14,21 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             var presentation = this.GetCurrentPresentation();
             var slide = this.GetCurrentSlide();
             var selection = this.GetCurrentSelection();
-            
-            PowerPointLabs.PasteLab.PasteLabMain.PasteIntoGroup(presentation, slide, isClipboardEmpty, selection);
+
+            if (!IsSelectionShapes(selection))
+            {
+                Logger.Log("PasteIntoGroup failed. No valid shape is selected.");
+                return;
+            }
+
+            if (isClipboardEmpty)
+            {
+                Logger.Log("PasteIntoGroup failed. Clipboard is empty.");
+                return;
+            }
+
+            ShapeRange pastingShapes = slide.Shapes.Paste();
+            PowerPointLabs.PasteLab.PasteLabMain.PutIntoGroup(presentation, slide, selection.ShapeRange, pastingShapes);
         }
     }
 }

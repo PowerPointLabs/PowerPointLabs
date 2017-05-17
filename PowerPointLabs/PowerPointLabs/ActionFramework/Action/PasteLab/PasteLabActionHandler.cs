@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ActionFramework.Util;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
-    abstract class PasteLabActionHandler : ActionHandler
+    abstract class PasteLabActionHandler : BaseUtilActionHandler
     {
         // Sealed method: Subclasses should override ExecutePasteAction instead
         protected sealed override void ExecuteAction(string ribbonId)

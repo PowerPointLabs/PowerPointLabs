@@ -16,7 +16,7 @@ namespace PowerPointLabs.ActionFramework.Action
         {
             IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
-            if (!VerifyIsSelectionValid(this.GetCurrentSelection()))
+            if (!IsSelectionShapes(this.GetCurrentSelection()))
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 2, errorHandler);
                 return;
@@ -27,7 +27,7 @@ namespace PowerPointLabs.ActionFramework.Action
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 2, errorHandler);
                 return;
             }
-            if (!IsPictureForSelection(shapeRange))
+            if (!IsAllPicture(shapeRange))
             {
                 HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;

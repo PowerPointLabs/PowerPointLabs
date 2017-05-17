@@ -62,47 +62,49 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            var shapeToReplace = selection.ShapeRange[1];
-
+            Shape selectedShape = selection.ShapeRange[1];
+            ShapeRange pastingShapes = slide.Shapes.Paste();
+            
             if (selection.HasChildShapeRange)
             {
                 Logger.Log("PasteAndReplace: Replacing item in group");
-                shapeToReplace = selection.ChildShapeRange[1];
-                selection.ShapeRange[1].Select();
-                var pastedShapes = PasteIntoGroup(presentation, slide, clipboardIsEmpty, selection);
-                pastedShapes.Left = shapeToReplace.Left;
-                pastedShapes.Top = shapeToReplace.Top;
-                shapeToReplace.Delete();
+                selectedShape = selection.ChildShapeRange[1];
+                
+                Shape newGroup = PutIntoGroup(presentation, slide, selection.ShapeRange, pastingShapes, selectedShape.Left, selectedShape.Top);
+                selectedShape.Delete();
+
                 return;
             }
-            
-            Shape newShape = slide.Shapes.Paste()[1];
-            newShape.Left = shapeToReplace.Left;
-            newShape.Top = shapeToReplace.Top;
+
+            Shape pastingShape = pastingShapes[1];
+            if (pastingShapes.Count > 1)
+            {
+                pastingShape = pastingShapes.Group();
+            }
+            pastingShape.Left = selectedShape.Left;
+            pastingShape.Top = selectedShape.Top;
 
             foreach (Effect eff in slide.TimeLine.MainSequence)
             {
-                if (eff.Shape == shapeToReplace)
+                if (eff.Shape == selectedShape)
                 {
                     Effect newEff = slide.TimeLine.MainSequence.Clone(eff);
-                    newEff.Shape = newShape;
+                    newEff.Shape = pastingShape;
                     eff.Delete();
                 }
             }
 
-            Logger.Log(string.Format("PasteAndReplace: Replaced {0} with {1}", shapeToReplace.Name, newShape.Name));
-            shapeToReplace.Delete();
+            Logger.Log(string.Format("PasteAndReplace: Replaced {0} with {1}", selectedShape.Name, pastingShape.Name));
+            selectedShape.Delete();
         }
 
-        public static Shape PasteIntoGroup(PowerPointPresentation presentation, PowerPointSlide slide, bool clipboardIsEmpty, Selection selection)
+        public static Shape PutIntoGroup(PowerPointPresentation presentation, PowerPointSlide slide, 
+                                            ShapeRange selectedShapes, ShapeRange puttingShapes,
+                                            float? posLeft = null, float? posTop = null)
         {
-            var selectedShapes = selection.ShapeRange;
-            var clipboardShapes = slide.Shapes.Paste();
-
-            var tempSlide = presentation.AddSlide(index: slide.Index);
+            PowerPointSlide tempSlide = presentation.AddSlide(index: slide.Index);
             selectedShapes.Copy();
             tempSlide.Shapes.Paste();
-            clipboardShapes.Copy();    // revert the clipboard state
 
             List<int> transferEffectsOrder = new List<int>();
             foreach (Effect effect in slide.TimeLine.MainSequence)
@@ -117,7 +119,7 @@ namespace PowerPointLabs.PasteLab
             {
                 transferShapeList.Add(shape);
             }
-            foreach (Shape shape in clipboardShapes)
+            foreach (Shape shape in puttingShapes)
             {
                 transferShapeList.Add(shape);
             }
@@ -138,17 +140,17 @@ namespace PowerPointLabs.PasteLab
             }
 
             // Paste at center of the selection
-            if (clipboardShapes.Count > 1)
+            if (puttingShapes.Count > 1)
             {
-                var pastedGroup = clipboardShapes.Group();
-                pastedGroup.Left = selectionLeft + (selectionWidth - pastedGroup.Width) / 2;
-                pastedGroup.Top = selectionTop + (selectionHeight - pastedGroup.Height) / 2;
-                clipboardShapes.Ungroup();
+                var pastedGroup = puttingShapes.Group();
+                pastedGroup.Left = posLeft ?? (selectionLeft + (selectionWidth - pastedGroup.Width) / 2);
+                pastedGroup.Top = posTop ?? (selectionTop + (selectionHeight - pastedGroup.Height) / 2);
+                puttingShapes.Ungroup();
             }
             else
             {
-                clipboardShapes[1].Left = selectionLeft + (selectionWidth - clipboardShapes[1].Width) / 2;
-                clipboardShapes[1].Top = selectionTop + (selectionHeight - clipboardShapes[1].Height) / 2;
+                puttingShapes[1].Left = posLeft ?? (selectionLeft + (selectionWidth - puttingShapes[1].Width) / 2);
+                puttingShapes[1].Top = posTop ?? (selectionTop + (selectionHeight - puttingShapes[1].Height) / 2);
             }
 
             Shape transferShapesGroup = transferShapes.Group();
