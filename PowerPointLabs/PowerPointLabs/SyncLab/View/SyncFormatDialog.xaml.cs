@@ -15,28 +15,32 @@ namespace PowerPointLabs.SyncLab.View
     /// </summary>
     public partial class SyncFormatDialog : Window
     {
+        public delegate void OkButtonEventHandler(SyncFormatDialog dialog);
+        public event OkButtonEventHandler OkButtonClick;
+        public string OriginalName { get; private set; }
+        public FormatTreeNode[] Formats { get; private set; }
+        public Shape Shape { get; private set; }
 
-        string originalName;
-        FormatTreeNode[] formats = null;
+        private SyncPaneWPF parent;
 
-        public SyncFormatDialog(Shape shape) : this(shape, shape.Name, SyncFormatConstants.FormatCategories)
-        {
-        }
-
-        public SyncFormatDialog(Shape shape, string formatName, FormatTreeNode[] formats)
+        public SyncFormatDialog(SyncPaneWPF parent, Shape shape, string formatName, FormatTreeNode[] formats)
         {
             InitializeComponent();
+            this.parent = parent;
+            this.Shape = shape;
+
             formatName = formatName.Trim();
             if (SyncFormatUtil.IsValidFormatName(formatName))
             {
-                this.originalName = formatName;
+                OriginalName = formatName;
             }
             else
             {
-                this.originalName = TextCollection.SyncLabDefaultFormatName;
+                OriginalName = TextCollection.SyncLabDefaultFormatName;
             }
-            this.originalName = formatName;
-            this.formats = formats;
+            OriginalName = formatName;
+            ObjectName = OriginalName;
+            this.Formats = formats;
             foreach (FormatTreeNode format in formats)
             {
                 Object treeItem = DialogItemFromFormatTree(shape, format);
@@ -102,7 +106,15 @@ namespace PowerPointLabs.SyncLab.View
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            OkButtonClick(this);
+            parent.dialog = null;
+            this.Close();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            parent.dialog = null;
+            this.Close();
         }
 
         private void ScrollToTop()
@@ -110,14 +122,6 @@ namespace PowerPointLabs.SyncLab.View
             if (!treeView.Items.IsEmpty)
             {
                 (treeView.Items[0] as TreeViewItem).BringIntoView();
-            }
-        }
-
-        public FormatTreeNode[] Formats
-        {
-            get
-            {
-                return formats;
             }
         }
 
@@ -131,7 +135,7 @@ namespace PowerPointLabs.SyncLab.View
                 }
                 else
                 {
-                    return this.originalName;
+                    return this.OriginalName;
                 }
             }
             set
