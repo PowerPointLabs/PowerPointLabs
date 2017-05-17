@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Utils;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -65,26 +66,31 @@ namespace PowerPointLabs.TimerLab
 
         private int TimerBodyColor()
         {
-            return System.Drawing.Color.FromArgb(106, 84, 68).ToArgb();
+            return Graphics.PackRgbInt(68, 84, 106);
         }
 
         private int SliderColor()
         {
-            return System.Drawing.Color.FromArgb(70, 150, 247).ToArgb();
+            return Graphics.PackRgbInt(247, 150, 70);
         }
 
         private int TimeMarkerColor()
         {
-            return System.Drawing.Color.FromArgb(90, 90, 90).ToArgb();
+            return Graphics.PackRgbInt(90, 90, 90);
+        }
+
+        private int LineMarkerColor()
+        {
+            return Graphics.PackRgbInt(68, 114, 196);
         }
         #endregion
 
         #region Timer Creation
-        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, 
-                                        float timerTop, int timerBodyColor, int sliderColor)
+        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop, 
+                                        int timerBodyColor, int sliderColor, int timeMarkerColor, int lineMarkerColor)
         {
             AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, timerBodyColor);
-            AddMarkers(duration, timerWidth, timerHeight);
+            AddMarkers(duration, timerWidth, timerHeight, timeMarkerColor, lineMarkerColor);
             AddSlider(duration, timerWidth, timerHeight, sliderColor, SlideWidth());
         }
 
@@ -101,27 +107,28 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Markers
-        private void AddMarkers(int duration, float timerWidth, float timerHeight)
+        private void AddMarkers(int duration, float timerWidth, float timerHeight, int timeMarkerColor, int lineMarkerColor)
         {
             if (duration <= TimerLabConstants.SecondsInMinute)
             {
                 AddSecondsMarker(duration, TimerLabConstants.DefaultDenomination, timerWidth, timerHeight, 
                                 TimerLabConstants.DefaultMinutesLineMarkerWidth, 
-                                TimerLabConstants.DefaultTimeMarkerWidth, 
-                                TimerLabConstants.DefaultTimeMarkerHeight);
+                                TimerLabConstants.DefaultTimeMarkerWidth, TimerLabConstants.DefaultTimeMarkerHeight,
+                                timeMarkerColor, lineMarkerColor);
             }
             else
             {
                 AddMinutesMarker(duration, TimerLabConstants.DefaultDenomination, timerWidth, timerHeight,
                                 TimerLabConstants.DefaultMinutesLineMarkerWidth,
-                                TimerLabConstants.DefaultTimeMarkerWidth, 
-                                TimerLabConstants.DefaultTimeMarkerHeight);
+                                TimerLabConstants.DefaultTimeMarkerWidth, TimerLabConstants.DefaultTimeMarkerHeight,
+                                timeMarkerColor, lineMarkerColor);
             }
             UpdateMarkerPosition();
         }
 
         private void AddSecondsMarker(int duration, int denomination, float timerWidth, float timerHeight, 
-                                    float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight)
+                                    float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight,
+                                    int timeMarkerColor, int lineMarkerColor)
         {
             List<Shape> lineMarkers = new List<Shape>();
             List<Shape> timeMarkers = new List<Shape>();
@@ -131,13 +138,14 @@ namespace PowerPointLabs.TimerLab
             while (currentMarker <= duration) 
             {
                 // Add time marker
-                Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight);
+                Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight, timeMarkerColor);
                 timeMarkers.Add(timeMarker);
 
                 // Add line marker if it is not the start or end
                 if (currentMarker != TimerLabConstants.StartTime && currentMarker != duration)
                 {
-                    Shape lineMarker = AddLineMarker(currentMarker, widthPerSec, timerHeight, TimerLabConstants.DefaultSecondsLineMarkerWidth);
+                    Shape lineMarker = AddLineMarker(currentMarker, widthPerSec, timerHeight, 
+                                                    TimerLabConstants.DefaultSecondsLineMarkerWidth, lineMarkerColor);
                     lineMarkers.Add(lineMarker);
                 }
 
@@ -161,7 +169,8 @@ namespace PowerPointLabs.TimerLab
         }
 
         private void AddMinutesMarker(int duration, int denomination, float timerWidth, float timerHeight, 
-                                    float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight)
+                                    float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight, 
+                                    int timeMarkerColor, int lineMarkerColor)
         {
             List<Shape> lineMarkers = new List<Shape>();
             List<Shape> timeMarkers = new List<Shape>();
@@ -174,7 +183,7 @@ namespace PowerPointLabs.TimerLab
                 if (currentMarker % TimerLabConstants.SecondsInMinute == 0 || currentMarker == duration)
                 {
                     // Add time marker
-                    Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight);
+                    Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight, timeMarkerColor);
 
                     int remainingSeconds = currentMarker % TimerLabConstants.SecondsInMinute;
                     if (currentMarker == duration && remainingSeconds != 0)
@@ -197,7 +206,7 @@ namespace PowerPointLabs.TimerLab
                     bool isMinuteMarker = (currentMarker % TimerLabConstants.SecondsInMinute == 0);
                     float markerLineWeight = isMinuteMarker ? TimerLabConstants.DefaultMinutesLineMarkerWidth :
                                                                 TimerLabConstants.DefaultSecondsLineMarkerWidth;
-                    Shape lineMarker = AddLineMarker(currentMarker, widthPerSec, timerHeight, markerLineWeight);
+                    Shape lineMarker = AddLineMarker(currentMarker, widthPerSec, timerHeight, markerLineWeight, lineMarkerColor);
                     lineMarkers.Add(lineMarker);
                 }
 
@@ -212,7 +221,8 @@ namespace PowerPointLabs.TimerLab
             timeMarkerGroup = GroupShapes(TimerLabConstants.TimerTimeMarkerId, TimerLabConstants.TimerTimeMarkerGroupId);
         }
 
-        private Shape AddTimeMarker(int currentMarker, float widthPerSec, float timerHeight, float timeMarkerWidth, float timeMarkerHeight)
+        private Shape AddTimeMarker(int currentMarker, float widthPerSec, float timerHeight, 
+                                    float timeMarkerWidth, float timeMarkerHeight, int timeMarkerColor)
         {
             string markerText = currentMarker.ToString();
             Shape timeMarker = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
@@ -223,12 +233,12 @@ namespace PowerPointLabs.TimerLab
             timeMarker.TextFrame.WordWrap = Microsoft.Office.Core.MsoTriState.msoFalse;
             timeMarker.Fill.Transparency = TimerLabConstants.TransparencyTranparent;
             timeMarker.Line.Transparency = TimerLabConstants.TransparencyTranparent;
-            timeMarker.TextFrame.TextRange.Font.Color.RGB = TimeMarkerColor();
+            timeMarker.TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
             timeMarker.TextFrame.TextRange.Text = markerText;
             return timeMarker;
         }
         
-        private Shape AddLineMarker(int currentMarker, float widthPerSec, float timerHeight, float lineWeight)
+        private Shape AddLineMarker(int currentMarker, float widthPerSec, float timerHeight, float lineWeight, int lineMarkerColor)
         {
             string markerText = currentMarker.ToString();
             float beginX = currentMarker * widthPerSec;
@@ -240,6 +250,7 @@ namespace PowerPointLabs.TimerLab
             lineMarker.Name = TimerLabConstants.TimerLineMarkerId + markerText;
             lineMarker.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.TimerLineMarkerId);
             lineMarker.Line.Weight = lineWeight;
+            lineMarker.Line.ForeColor.RGB = lineMarkerColor;
 
             return lineMarker;
         }
@@ -323,12 +334,15 @@ namespace PowerPointLabs.TimerLab
                 float timerHeight = TimerHeight();
                 int timerBodyColor = TimerBodyColor();
                 int sliderColor = SliderColor();
+                int timeMarkerColor = TimeMarkerColor();
+                int lineMarkerColor = LineMarkerColor();
 
                 // Position
                 float timerLeft = DefaultTimerLeft(SlideWidth(), timerWidth);
                 float timerTop = DefaultTimerTop(SlideHeight(), timerHeight);
 
-                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop, timerBodyColor, sliderColor);
+                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop, 
+                                timerBodyColor, sliderColor, timeMarkerColor, lineMarkerColor);
             }
         }
         #endregion
@@ -567,11 +581,6 @@ namespace PowerPointLabs.TimerLab
         private void RecreateMarkers()
         {
             // remove current markers
-            if (lineMarkerGroup != null)
-            {
-                lineMarkerGroup.Delete();
-            }
-
             int timeMarkerColor = TimeMarkerColor();
             if (timeMarkerGroup != null)
             {
@@ -579,8 +588,15 @@ namespace PowerPointLabs.TimerLab
                 timeMarkerGroup.Delete();
             }
 
+            int lineMarkerColor = LineMarkerColor();
+            if (lineMarkerGroup != null)
+            {
+                lineMarkerColor = lineMarkerGroup.Line.ForeColor.RGB;
+                lineMarkerGroup.Delete();
+            }
+
             // add new markers
-            AddMarkers(Duration(), timerBody.Width, timerBody.Height);
+            AddMarkers(Duration(), timerBody.Width, timerBody.Height, timeMarkerColor, lineMarkerColor);
             timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
         }
 
