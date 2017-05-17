@@ -427,8 +427,8 @@ namespace PowerPointLabs.TimerLab
                 timerBody.Left = NewPosition(timerBody.Left, increment);
                 timerBody.Width = timerBody.Width + increment;
 
-                UpdateMarkerPosition();
-                UpdateSliderPosition();
+                UpdateMarkerPositionX();
+                UpdateSliderPositionX();
             }
         }
 
@@ -487,8 +487,8 @@ namespace PowerPointLabs.TimerLab
                 timerBody.Top = NewPosition(timerBody.Top, increment);
                 timerBody.Height = timerBody.Height + increment;
 
-                UpdateMarkerPosition();
-                UpdateSliderPosition();
+                UpdateMarkerPositionY();
+                UpdateSliderPositionY();
             }
         }
 
@@ -615,6 +615,12 @@ namespace PowerPointLabs.TimerLab
 
         private void UpdateMarkerPosition()
         {
+            UpdateMarkerPositionX();
+            UpdateMarkerPositionY();
+        }
+
+        private void UpdateMarkerPositionX()
+        {
             if (lineMarkerGroup != null)
             {
                 float widthPerSec = timerBody.Width / Duration();
@@ -622,22 +628,39 @@ namespace PowerPointLabs.TimerLab
                 int numOfLineMarkers = (int)(Math.Ceiling((double)Duration() / TimerLabConstants.DefaultDenomination)) - 2;
                 lineMarkerGroup.Left = timerBody.Left + lineSpacing;
                 lineMarkerGroup.Width = numOfLineMarkers * lineSpacing;
-                lineMarkerGroup.Top = timerBody.Top;
-                lineMarkerGroup.Height = timerBody.Height;
             }
             timeMarkerGroup.Left = timerBody.Left;
             timeMarkerGroup.Width = timerBody.Width;
+        }
+
+        private void UpdateMarkerPositionY()
+        {
+            if (lineMarkerGroup != null)
+            {
+                lineMarkerGroup.Top = timerBody.Top;
+                lineMarkerGroup.Height = timerBody.Height;
+            }
             timeMarkerGroup.Top = timerBody.Top + timerBody.Height;
         }
 
         private void UpdateSliderPosition()
         {
+            UpdateSliderPositionX();
+            UpdateSliderPositionY();
+        }
+
+        private void UpdateSliderPositionX()
+        {
             sliderHead.Left = timerBody.Left - (TimerLabConstants.DefaultSliderHeadSize / 2);
-            sliderHead.Top = timerBody.Top - (TimerLabConstants.DefaultSliderHeadSize / 2);
             sliderBody.Left = timerBody.Left - (TimerLabConstants.DefaultSliderBodyWidth / 2);
+            UpdateSliderAnimationPath();
+        }
+
+        private void UpdateSliderPositionY()
+        {
+            sliderHead.Top = timerBody.Top - (TimerLabConstants.DefaultSliderHeadSize / 2);
             sliderBody.Top = timerBody.Top;
             sliderBody.Height = timerBody.Height;
-            UpdateSliderAnimationPosition();
         }
 
         private void UpdateSliderAnimationDuration()
@@ -655,7 +678,7 @@ namespace PowerPointLabs.TimerLab
             }
         }
 
-        private void UpdateSliderAnimationPosition()
+        private void UpdateSliderAnimationPath()
         {
             foreach (PowerPoint.Effect effect in this.GetCurrentSlide().TimeLine.MainSequence)
             {
