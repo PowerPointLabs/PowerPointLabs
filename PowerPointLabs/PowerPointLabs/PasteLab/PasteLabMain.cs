@@ -70,7 +70,7 @@ namespace PowerPointLabs.PasteLab
                 Logger.Log("PasteAndReplace: Replacing item in group");
                 selectedShape = selection.ChildShapeRange[1];
                 
-                Shape newGroup = PutIntoGroup(presentation, slide, selection.ShapeRange, pastingShapes, selectedShape.Left, selectedShape.Top);
+                PutIntoGroup(presentation, slide, selection.ShapeRange, pastingShapes, selectedShape.Left, selectedShape.Top);
                 selectedShape.Delete();
 
                 return;
