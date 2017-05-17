@@ -7,7 +7,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace Test.UnitTest.SyncLab
 {
     [TestClass]
-    public class BaseSyncLabTest :BaseUnitTest
+    public class BaseSyncLabTest : BaseUnitTest
     {
         private readonly Dictionary<string, string> _originalShapeName = new Dictionary<string, string>();
 

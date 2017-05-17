@@ -135,15 +135,7 @@ namespace PowerPointLabs.SyncLab.View
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Shape shape = shapeStorage.GetShape(shapeKey);
-            SyncFormatDialog dialog = new SyncFormatDialog(shape, Text, formats);
-            dialog.ObjectName = this.Text;
-            bool? result = dialog.ShowDialog();
-            if (!result.HasValue || !(bool)result)
-            {
-                return;
-            }
-            this.formats = dialog.Formats;
-            this.Text = dialog.ObjectName;
+            Subscribe(parent.ShowDialog(shape, this.Text, formats));
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -154,6 +146,18 @@ namespace PowerPointLabs.SyncLab.View
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ApplyFormatToSelected();
+        }
+
+        private void Subscribe(SyncFormatDialog eventDialog)
+        {
+            eventDialog.OkButtonClick += new SyncFormatDialog.OkButtonEventHandler(EditFormat);
+        }
+
+        private void EditFormat(SyncFormatDialog eventDialog)
+        {
+            this.formats = eventDialog.Formats;
+            this.Text = eventDialog.ObjectName;
+            eventDialog.OkButtonClick -= new SyncFormatDialog.OkButtonEventHandler(EditFormat);
         }
 
         private void ApplyFormatToSelected()

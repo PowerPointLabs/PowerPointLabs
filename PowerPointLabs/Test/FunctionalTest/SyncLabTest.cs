@@ -33,13 +33,13 @@ namespace Test.FunctionalTest
             var syncLab = PplFeatures.SyncLab;
             syncLab.OpenPane();
 
-            TestCopyDialog(syncLab);
-            TestPasteDialog(syncLab);
+            TestSync(syncLab);
+            TestErrorDialogs(syncLab);
         }
 
-        private void TestCopyDialog(ISyncLabController syncLab)
+        private void TestErrorDialogs(ISyncLabController syncLab)
         {
-            var actualSlide = PpOperations.SelectSlide(4);
+            PpOperations.SelectSlide(4);
 
             // no selection
             MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
@@ -51,29 +51,30 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
                 "Please select one item to copy.", syncLab.Copy, "Ok");
 
-            // copy successful
-            PpOperations.SelectShape(CopyFromShape);
-            new Task(() =>
-            {
-                ThreadUtil.WaitFor(1000);
-                SendKeys.SendWait("{ENTER}");
-            }).Start();
+            // copy blank item for the paste error dialog test
+            PpOperations.SelectShape(CopyFromShape);    
             syncLab.Copy();
-        }
+            syncLab.DialogClickOk();
 
-        private void TestPasteDialog(ISyncLabController syncLab)
-        {
             PpOperations.SelectSlide(5);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
                 "Please select at least one item to apply.", () => syncLab.Sync(0), "Ok");
         }
 
-        # region Helper methods
-        // mouse drag & drop from Control to Shape to apply color
-        private void FindDialog()
+        private void TestSync(ISyncLabController syncLab)
         {
-            
+            PpOperations.SelectSlide(4);
+            PpOperations.SelectShape(CopyFromShape);
+
+            syncLab.Copy();
+            syncLab.DialogSelectItem(3, 2);
+            syncLab.DialogClickOk();
+
+            syncLab.Sync(0);
+
+            var actualSlide = PpOperations.SelectSlide(4);
+            var expectedSlide = PpOperations.SelectSlide(5);
+            SlideUtil.IsSameLooking(expectedSlide, actualSlide);
         }
-        # endregion
     }
 }

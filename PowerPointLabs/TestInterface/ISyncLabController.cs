@@ -9,5 +9,9 @@ namespace TestInterface
         void Copy();
 
         void Sync(int index);
+
+        void DialogSelectItem(int categoryIndex, int itemIndex);
+
+        void DialogClickOk();
     }
 }
