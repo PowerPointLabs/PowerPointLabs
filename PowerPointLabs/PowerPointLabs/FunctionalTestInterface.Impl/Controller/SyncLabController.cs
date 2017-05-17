@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.SyncLab;
 using PowerPointLabs.SyncLab.View;
 using TestInterface;
 
@@ -52,6 +53,30 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                             .pasteButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 });
             }
+        }
+
+        public void DialogSelectItem(int categoryIndex, int itemIndex)
+        {
+            if (_pane != null && _pane.SyncPaneWPF1.dialog != null)
+            {
+                UIThreadExecutor.Execute(() =>
+                {
+                    ((_pane.SyncPaneWPF1.dialog.treeView.Items[categoryIndex] as TreeViewItem)
+                        .Items[itemIndex] as SyncFormatDialogItem).IsChecked = true;
+                });
+            }
+        }
+
+        public void DialogClickOk()
+        {
+            if (_pane != null && _pane.SyncPaneWPF1.dialog != null)
+            {
+                UIThreadExecutor.Execute(() =>
+                {
+                    _pane.SyncPaneWPF1.dialog.okButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                });
+            }
+            
         }
 
     }
