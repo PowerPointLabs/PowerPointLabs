@@ -86,12 +86,11 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Timer Creation
-        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop, 
-                                        int timerBodyColor, int sliderColor, int timeMarkerColor, int lineMarkerColor)
+        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop)
         {
-            AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, timerBodyColor);
-            AddMarkers(duration, timerWidth, timerHeight, timeMarkerColor, lineMarkerColor);
-            AddSlider(duration, timerWidth, timerHeight, sliderColor, SlideWidth());
+            AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, TimerBodyColor());
+            AddMarkers(duration, timerWidth, timerHeight, TimeMarkerColor(), LineMarkerColor());
+            AddSlider(duration, timerWidth, timerHeight, SliderColor(), SlideWidth());
         }
 
         #region Body
@@ -332,17 +331,12 @@ namespace PowerPointLabs.TimerLab
                 int duration = Duration();
                 float timerWidth = TimerWidth();
                 float timerHeight = TimerHeight();
-                int timerBodyColor = TimerBodyColor();
-                int sliderColor = SliderColor();
-                int timeMarkerColor = TimeMarkerColor();
-                int lineMarkerColor = LineMarkerColor();
 
                 // Position
                 float timerLeft = DefaultTimerLeft(SlideWidth(), timerWidth);
                 float timerTop = DefaultTimerTop(SlideHeight(), timerHeight);
 
-                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop, 
-                                timerBodyColor, sliderColor, timeMarkerColor, lineMarkerColor);
+                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop);
             }
         }
         #endregion
