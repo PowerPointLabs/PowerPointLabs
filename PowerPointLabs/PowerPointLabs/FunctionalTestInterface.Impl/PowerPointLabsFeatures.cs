@@ -30,6 +30,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             get { return HighlightLabController.Instance; }
         }
 
+        public ISyncLabController SyncLab
+        {
+            get { return SyncLabController.Instance; }
+        }
+
         private Ribbon1 Ribbon
         {
             get { return FunctionalTestExtensions.GetRibbonUi(); }

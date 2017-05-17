@@ -1337,6 +1337,14 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
+
+                // set the zOrder
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    PPShape simulatedPPShape = new PPShape(simulatedShapes[i], false);
+                    simulatedPPShape.SwapZOrder(selectedShapes[i]);
+                }
+
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1623,6 +1631,7 @@ namespace PowerPointLabs.PositionsLab
 
                 selectedShape.IncrementLeft(simulatedShape.VisualCenter.X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(simulatedShape.VisualCenter.Y - originalPositions[i - 1, Top]);
+                simulatedShape.SwapZOrder(selectedShape);
             }
         }
 

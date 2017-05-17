@@ -424,9 +424,27 @@ namespace PowerPointLabs.Utils
         public List<PointF> Points => _points;
 
         /// <summary>
-        /// Returns the position of the specified shape in the z-order. Read-only.
+        /// Return or set the position of the specified shape in the z-order
+        /// Read/write
         /// </summary>
-        public int ZOrderPosition => _shape.ZOrderPosition;
+        public int ZOrderPosition
+        {
+            get { return _shape.ZOrderPosition; }
+            set
+            {
+                while (_shape.ZOrderPosition != value)
+                {
+                    if (_shape.ZOrderPosition < value)
+                    {
+                        _shape.ZOrder(MsoZOrderCmd.msoBringForward);
+                    }
+                    else if (_shape.ZOrderPosition > value)
+                    {
+                        _shape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -486,6 +504,26 @@ namespace PowerPointLabs.Utils
         public void Select(MsoTriState replace)
         {
             _shape.Select(replace);
+        }
+
+        /// <summary>
+        /// Swap Z order of the two PPShapes
+        /// </summary>
+        public void SwapZOrder(PPShape shape)
+        {
+            int originalZOrder = _shape.ZOrderPosition;
+            int targetZOrder = shape.ZOrderPosition;
+
+            ZOrderPosition = targetZOrder;
+            shape.ZOrderPosition = originalZOrder;
+        }
+
+        /// <summary>
+        /// Swap Z order of the with a shape
+        /// </summary>
+        public void SwapZOrder(PowerPoint.Shape shape)
+        {
+            SwapZOrder(new PPShape(shape, false));
         }
 
         /// <summary>
