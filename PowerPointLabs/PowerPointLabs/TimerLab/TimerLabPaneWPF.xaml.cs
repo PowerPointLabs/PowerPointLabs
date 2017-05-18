@@ -450,28 +450,20 @@ namespace PowerPointLabs.TimerLab
                 var timerBody = GetShapeByName(TimerLabConstants.TimerBodyId);
                 float increment = value - timerBody.Width;
 
-                if (increment == 0)
-                {
-                    ReformMarkersIfMissing();
-                }
-                else
-                {
-                    var lineMarkerGroup = GetLineMarkerGroup();
-                    var timeMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
-                    timerBody.Select();
-                    if (lineMarkerGroup != null)
-                    {
-                        lineMarkerGroup.Select(Microsoft.Office.Core.MsoTriState.msoFalse);
-                    }
-                    timeMarkerGroup.Select(Microsoft.Office.Core.MsoTriState.msoFalse);
+                timerBody.Left = NewPosition(timerBody.Left, increment);
+                timerBody.Width = timerBody.Width + increment;
 
-                    var tempGroup = this.GetCurrentSelection().ShapeRange.Group();
-                    tempGroup.Left = NewPosition(tempGroup.Left, increment);
-                    tempGroup.Width = tempGroup.Width + increment;
+                var lineMarkerGroup = GetLineMarkerGroup();
+                float widthPerSec = timerBody.Width / Duration();
+                float lineSpacing = TimerLabConstants.DefaultDenomination * widthPerSec;
+                float beginX = timerBody.Left + lineSpacing;
+                float endX = timerBody.Left + timerBody.Width - lineSpacing;
+                lineMarkerGroup.Left = beginX;
+                lineMarkerGroup.Width = endX - beginX;
 
-                    var ungroupedShapes = tempGroup.Ungroup();
-                    timerBody = GetShapeByName(TimerLabConstants.TimerBodyId, ungroupedShapes);
-                }
+                var timeMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
+                timeMarkerGroup.Left = timerBody.Left;
+                timeMarkerGroup.Width = timerBody.Width;
 
                 var sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHeadId);
                 var sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBodyId);
