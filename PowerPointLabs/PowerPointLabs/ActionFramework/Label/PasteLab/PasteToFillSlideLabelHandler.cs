@@ -3,8 +3,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
-    [ExportLabelRibbonId("pasteToFillSlide")]
-    class PasteLabFillLabelHandler : LabelHandler
+    [ExportLabelRibbonId("PasteToFillSlide")]
+    class PasteToFillSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

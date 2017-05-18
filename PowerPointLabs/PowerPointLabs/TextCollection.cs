@@ -328,6 +328,7 @@
         public const string HighlightBulletsTextShapeLabel = "Highlight Text";
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
         public const string ConvertToPictureShapeLabel = "Convert to Picture";
+        public const string MergeIntoGroup = "Merge Into One Group";
         public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
         public const string HideSelectedShapeLabel = "Hide the Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
@@ -728,11 +729,10 @@
         public class PasteLabText
         {
             public const string PasteToFillSlide = "Paste To Fill Slide";
-            public const string PasteAndReplace = "Replace With Clipboard";
+            public const string ReplaceWithClipboard = "Replace With Clipboard";
             public const string PasteIntoGroup = "Paste Into Group";
-            public const string PasteToPosition = "Paste At Cursor Position";
-            public const string PasteToOriginalPosition = "Paste At Original Position";
-            public const string MergeSelection = "Merge Into One Group";
+            public const string PasteAtCursorPosition = "Paste At Cursor Position";
+            public const string PasteAtOriginalPosition = "Paste At Original Position";
         }
         #endregion
 

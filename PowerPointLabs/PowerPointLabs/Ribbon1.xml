@@ -473,7 +473,7 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
-        <button id="PasteAndReplace"
+        <button id="ReplaceWithClipboard"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
                 getLabel="GetLabel"
@@ -515,7 +515,7 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
-        <button id="PasteAndReplaceFreeform"
+        <button id="ReplaceWithClipboardFreeform"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
                 getLabel="GetLabel"
@@ -555,7 +555,7 @@
                getLabel ="GetHideSelectedShapeLabel"
                getImage="GetHideShapeImage"
                onAction="HideShapeButtonClick"/>
-        <button id="PasteAndReplacePicture"
+        <button id="ReplaceWithClipboardPicture"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
                 getLabel="GetLabel"
@@ -641,12 +641,12 @@
                  getImage="GetHighlightBulletsBackgroundContextImage"
                  onAction="HighlightBulletsBackgroundButtonClick"/>
         </menu>
-        <button id="pasteIntoGroup"
+        <button id="PasteIntoGroup"
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getEnabled="GetEnabled"
                 onAction="OnAction"/>
-        <button id="mergeSelection"
+        <button id="MergeIntoGroup"
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getEnabled="GetEnabled"
@@ -897,17 +897,17 @@
     <contextMenu idMso="ContextMenuFrame">
 	    <menuSeparator id="separatorFrame" />
 	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="true">
-        <button id="pasteToFillSlide"
+        <button id="PasteToFillSlide"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
                 getLabel="GetLabel"
                 onAction="OnAction"/>
-        <button id="pasteToPosition"
+        <button id="PasteAtCursorPosition"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
                 getLabel="GetLabel"
                 onAction="OnAction"/>
-        <button id="pasteToOriginalPosition"
+        <button id="PasteAtOriginalPosition"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
                 getLabel="GetLabel"

@@ -4,8 +4,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image.PasteLab
 {
-    [ExportImageRibbonId("PasteAndReplace", "PasteAndReplaceFreeform", "PasteAndReplacePicture")]
-    class PasteLabReplaceImageHandler : ImageHandler
+    [ExportImageRibbonId("PasteAtOriginalPosition")]
+    class PasteAtOriginalPositionImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

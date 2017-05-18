@@ -562,6 +562,28 @@ namespace PowerPointLabs.Models
         }
 
         /// <summary>
+        /// Clones the specified shape onto the slide, leaving the range unmodified.
+        /// </summary>
+        public ShapeRange CloneShapeFromRange(ShapeRange range, Shape shapeToClone)
+        {
+            Shape clonedShape = this.CopyShapeToSlide(shapeToClone);
+
+            List<Shape> result = new List<Shape>();
+            foreach (Shape shape in range)
+            {
+                if (shape == shapeToClone)
+                {
+                    result.Add(clonedShape);
+                }
+                else
+                {
+                    result.Add(shape);
+                }
+            }
+            return this.ToShapeRange(result);
+        }
+
+        /// <summary>
         /// Copies the shaperange into this slide, without the usual position offset when pasting over an existing shape.
         /// If you are having difficulty getting a shaperange, use the ToShapeRange method.
         /// TODO: Test this method more thoroughly in more cases other than Graphics.SquashSlides
