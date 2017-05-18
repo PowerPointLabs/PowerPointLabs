@@ -7,7 +7,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.MiscFeatures
 {
-    class MergeIntoGroup
+    internal class MergeIntoGroup
     {
         public static void Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection)
         {

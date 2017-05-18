@@ -5,7 +5,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PasteLab
 {
-    class PasteToFillSlide
+    internal class PasteToFillSlide
     {
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float width, float height)
         {

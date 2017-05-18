@@ -7,7 +7,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PasteLab
 {
-    class PasteIntoGroup
+    internal class PasteIntoGroup
     {
         public static Shape Execute(PowerPointPresentation presentation, PowerPointSlide slide,
                                     ShapeRange selectedShapes, ShapeRange pastingShapes,
