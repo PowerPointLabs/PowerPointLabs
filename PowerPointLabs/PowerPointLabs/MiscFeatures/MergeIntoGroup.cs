@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.MiscFeatures
 {
-    internal class MergeIntoGroup
+    static internal class MergeIntoGroup
     {
         public static void Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection)
         {

@@ -4,7 +4,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.PasteLab
 {
-    internal class ReplaceWithClipboard
+    static internal class ReplaceWithClipboard
     {
         public static void Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection, ShapeRange pastingShapes)
         {
