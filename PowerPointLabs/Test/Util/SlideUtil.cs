@@ -20,19 +20,19 @@ namespace Test.Util
             }
 
             Assert.IsTrue(IsRoughlySame(expShape.Rotation, actualShape.Rotation),
-                "different shape rotation. exp:{0}, actual:{1}", expShape.Rotation, actualShape.Rotation);
+                "different shape rotation for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Rotation, actualShape.Rotation);
             Assert.IsTrue(IsRoughlySame(expShape.Left, actualShape.Left),
-                "different shape left. exp:{0}, actual:{1}", expShape.Left, actualShape.Left);
+                "different shape left for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Left, actualShape.Left);
             Assert.IsTrue(IsRoughlySame(expShape.Top, actualShape.Top),
-                "different shape top. exp:{0}, actual:{1}", expShape.Top, actualShape.Top);
+                "different shape top for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Top, actualShape.Top);
             Assert.IsTrue(IsRoughlySame(expShape.Width, actualShape.Width),
-                "different shape width. exp:{0}, actual:{1}", expShape.Width, actualShape.Width);
+                "different shape width for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Width, actualShape.Width);
             Assert.IsTrue(IsRoughlySame(expShape.Height, actualShape.Height),
-                "different shape height. exp:{0}, actual:{1}", expShape.Height, actualShape.Height);
+                "different shape height for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Height, actualShape.Height);
             Assert.IsTrue(expShape.HorizontalFlip == actualShape.HorizontalFlip,
-                "different shape horizontal flip. exp:{0}, actual:{1}", expShape.HorizontalFlip, actualShape.HorizontalFlip);
+                "different shape horizontal flip for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.HorizontalFlip, actualShape.HorizontalFlip);
             Assert.IsTrue(expShape.VerticalFlip == actualShape.VerticalFlip,
-                "different shape vertical flip. exp:{0}, actual:{1}", expShape.VerticalFlip, actualShape.VerticalFlip);
+                "different shape vertical flip for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.VerticalFlip, actualShape.VerticalFlip);
         }
 
         public static void IsSameText(Shape expShape, Shape actualShape)
@@ -43,24 +43,24 @@ namespace Test.Util
                 var actualText = actualShape.TextFrame.TextRange;
 
                 Assert.IsTrue(expText.Text == actualText.Text,
-                    "different text. exp:{0}, actual{1}", expText.Text, actualText.Text);
+                    "different text for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Text, actualText.Text);
                 Assert.IsTrue(expText.Font.Color.RGB == actualText.Font.Color.RGB,
-                    "different font color. exp:{0}, actual:{1}", expText.Font.Color.RGB, actualText.Font.Color.RGB);
+                    "different font color for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Color.RGB, actualText.Font.Color.RGB);
                 Assert.IsTrue(expText.Font.Bold == actualText.Font.Bold,
-                    "different bold style. exp:{0}, actual:{1}", expText.Font.Bold, expText.Font.Bold);
+                    "different bold style for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Bold, expText.Font.Bold);
                 Assert.IsTrue(expText.Font.Underline == actualText.Font.Underline,
-                    "different underline style. exp:{0}, actual:{1}", expText.Font.Underline, expText.Font.Underline);
+                    "different underline style for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Underline, expText.Font.Underline);
                 Assert.IsTrue(expText.Font.Italic == actualText.Font.Italic,
-                    "different italic style. exp:{0}, actual:{1}", expText.Font.Italic, expText.Font.Italic);
+                    "different italic style for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Italic, expText.Font.Italic);
                 Assert.IsTrue(expText.Font.Size == actualText.Font.Size,
-                    "different text size. exp:{0}, actual:{1}", expText.Font.Size, expText.Font.Size);
+                    "different text size for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Size, expText.Font.Size);
             }
         }
 
         public static void IsSameZOrderPosition(Shape expShape, Shape actualShape)
         {
             Assert.IsTrue(expShape.ZOrderPosition == actualShape.ZOrderPosition,
-                "different shape z order. exp:{0}, actual:{1}", expShape.ZOrderPosition, actualShape.ZOrderPosition);
+                "different shape z order for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.ZOrderPosition, actualShape.ZOrderPosition);
         }
 
         public static void IsSameShapes(Slide expSlide, Slide actualSlide)
@@ -83,10 +83,10 @@ namespace Test.Util
                         if (expShapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
                         {
                             Assert.IsTrue(expShape.Type == actualShape.Type,
-                                "difNferent shape type. {2}. exp:{0}, actual:{1}", expShape.Type, actualShape.Type, expShape.Name);
+                                "different shape type for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Type, actualShape.Type);
                             Assert.IsTrue(expShape.GroupItems.Count == actualShape.GroupItems.Count,
-                                "different number of shapes in group. exp:{0}, actual:{1}",
-                                expShape.GroupItems.Count, actualShape.GroupItems.Count);
+                                "different number of shapes in group for {0}. exp:{1}, actual:{2}",
+                                expShape.Name, expShape.GroupItems.Count, actualShape.GroupItems.Count);
 
                             for (int k = 1; k <= expShape.GroupItems.Count; k++)
                             {
