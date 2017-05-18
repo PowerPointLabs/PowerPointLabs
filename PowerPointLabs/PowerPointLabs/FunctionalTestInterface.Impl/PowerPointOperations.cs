@@ -46,6 +46,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         }
 
         public List<ISlideData> FetchCurrentPresentationData()
+
         {
             var slideData = FunctionalTestExtensions.GetCurrentPresentation().Presentation
                 .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
