@@ -41,31 +41,31 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
+        public void SetDurationTextBoxValue(double value)
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute(() =>
+                {
+                    _pane.TimerPaneWPF.DurationTextBox.Value = value;
+                    _pane.TimerPaneWPF.DurationTextBox.Focusable = true;
+                    _pane.TimerPaneWPF.DurationTextBox.Focus();
+                });
+            }
+        }
+
         public void SetHeightTextBoxValue(int value)
         {
             if (_pane != null)
             {
                 UIThreadExecutor.Execute(() =>
                 {
+                    _pane.TimerPaneWPF.HeightTextBox.Focus();
                     _pane.TimerPaneWPF.HeightTextBox.Text = "" + value;
                     // set focus to the other text box to trigger the change
                     _pane.TimerPaneWPF.WidthTextBox.Focus();
                 });
             }
-        }
-
-        public int GetHeightTextBoxValue()
-        {
-            int value = -1;
-
-            if (_pane != null)
-            {
-                UIThreadExecutor.Execute(() =>
-                {
-                    value = Int32.Parse(_pane.TimerPaneWPF.HeightTextBox.Text);
-                });
-            }
-            return value;
         }
 
         public void SetWidthTextBoxValue(int value)
@@ -74,6 +74,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute(() =>
                 {
+                    _pane.TimerPaneWPF.WidthTextBox.Focus();
                     _pane.TimerPaneWPF.WidthTextBox.Text = "" + value;
                     // set focus to the other text box to trigger the change
                     _pane.TimerPaneWPF.HeightTextBox.Focus();
@@ -81,18 +82,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
-        public int GetWidthTextBoxValue()
+        public void SetHeightSliderValue(int value)
         {
-            int value = -1;
-
             if (_pane != null)
             {
                 UIThreadExecutor.Execute(() =>
                 {
-                    value = Int32.Parse(_pane.TimerPaneWPF.WidthTextBox.Text);
+                    _pane.TimerPaneWPF.HeightSlider.Value = value;
                 });
             }
-            return value;
+        }
+
+        public void SetWidthSliderValue(int value)
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute(() =>
+                {
+                    _pane.TimerPaneWPF.WidthSlider.Value = value;
+                });
+            }
         }
     }
 }

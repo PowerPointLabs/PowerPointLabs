@@ -9,9 +9,10 @@ namespace TestInterface
 
         void ClickCreateButton();
 
+        void SetDurationTextBoxValue(double value);
         void SetHeightTextBoxValue(int value);
-        int GetHeightTextBoxValue();
         void SetWidthTextBoxValue(int value);
-        int GetWidthTextBoxValue();
+        void SetHeightSliderValue(int value);
+        void SetWidthSliderValue(int value);
     }
 }

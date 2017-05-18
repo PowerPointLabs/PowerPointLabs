@@ -35,10 +35,73 @@ namespace Test.Util
                 "different shape vertical flip. exp:{0}, actual:{1}", expShape.VerticalFlip, actualShape.VerticalFlip);
         }
 
+        public static void IsSameText(Shape expShape, Shape actualShape)
+        {
+            if (expShape.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+            {
+                var expText = expShape.TextFrame.TextRange;
+                var actualText = actualShape.TextFrame.TextRange;
+
+                Assert.IsTrue(expText.Text == actualText.Text,
+                    "different text. exp:{0}, actual{1}", expText.Text, actualText.Text);
+                Assert.IsTrue(expText.Font.Color.RGB == actualText.Font.Color.RGB,
+                    "different font color. exp:{0}, actual:{1}", expText.Font.Color.RGB, actualText.Font.Color.RGB);
+                Assert.IsTrue(expText.Font.Bold == actualText.Font.Bold,
+                    "different bold style. exp:{0}, actual:{1}", expText.Font.Bold, expText.Font.Bold);
+                Assert.IsTrue(expText.Font.Underline == actualText.Font.Underline,
+                    "different underline style. exp:{0}, actual:{1}", expText.Font.Underline, expText.Font.Underline);
+                Assert.IsTrue(expText.Font.Italic == actualText.Font.Italic,
+                    "different italic style. exp:{0}, actual:{1}", expText.Font.Italic, expText.Font.Italic);
+                Assert.IsTrue(expText.Font.Size == actualText.Font.Size,
+                    "different text size. exp:{0}, actual:{1}", expText.Font.Size, expText.Font.Size);
+            }
+        }
+
         public static void IsSameZOrderPosition(Shape expShape, Shape actualShape)
         {
             Assert.IsTrue(expShape.ZOrderPosition == actualShape.ZOrderPosition,
                 "different shape z order. exp:{0}, actual:{1}", expShape.ZOrderPosition, actualShape.ZOrderPosition);
+        }
+
+        public static void IsSameShapes(Slide expSlide, Slide actualSlide)
+        {
+            var expShapes = expSlide.Shapes;
+            var actualShapes = actualSlide.Shapes;
+            Assert.IsTrue(expShapes.Count == actualShapes.Count,
+                "different number of shapes on slide. exp:{0}, actual:{1}", expShapes.Count, actualShapes.Count);
+
+            for (int i = 1; i <= expShapes.Count; i++)
+            {
+                var expShape = expShapes[i];
+                bool isMatchingShapeFound = false;
+                for (int j = 1; j <= actualShapes.Count; j++)
+                {
+                    var actualShape = actualShapes[j];
+                    if (expShape.Name == actualShape.Name)
+                    {
+                        isMatchingShapeFound = true;
+                        if (expShapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
+                        {
+                            Assert.IsTrue(expShape.Type == actualShape.Type,
+                                "difNferent shape type. {2}. exp:{0}, actual:{1}", expShape.Type, actualShape.Type, expShape.Name);
+                            Assert.IsTrue(expShape.GroupItems.Count == actualShape.GroupItems.Count,
+                                "different number of shapes in group. exp:{0}, actual:{1}",
+                                expShape.GroupItems.Count, actualShape.GroupItems.Count);
+
+                            for (int k = 1; k <= expShape.GroupItems.Count; k++)
+                            {
+                                IsSameShape(expShape.GroupItems[k], actualShape.GroupItems[k]);
+                                IsSameText(expShape.GroupItems[k], actualShape.GroupItems[k]);
+                            }
+                        }
+
+                        // even if shape type is group, we still want to check if the overall group is equal
+                        IsSameShape(expShape, actualShape);
+                        break;
+                    }
+                }
+                Assert.IsTrue(isMatchingShapeFound, "no matching shape found");
+            }
         }
 
         // compare shape's prop & looking
