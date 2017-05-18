@@ -69,8 +69,7 @@
                            Width="23" Height="15" Source="../Resources/TimerLab/MaxWidth.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                     <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">Width</TextBlock>
                     <Slider x:Name="WidthSlider" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="7" VerticalAlignment="Center" 
-                            TickPlacement="BottomRight" TickFrequency="100" Loaded="WidthSlider_Loaded" ValueChanged="WidthSlider_ValueChanged" 
-                            PreviewMouseDown="WidthSlider_PreviewMouseDown"/>
+                            TickPlacement="BottomRight" TickFrequency="100" Loaded="WidthSlider_Loaded" ValueChanged="WidthSlider_ValueChanged"/>
                     <TextBox x:Name="WidthTextBox" Grid.Row="4" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
                              LostFocus="WidthTextBox_LostFocus" Loaded="WidthTextBox_Loaded" PreviewTextInput="WidthTextBox_PreviewTextInput"/>
 
@@ -82,8 +81,7 @@
                            Width="15" Height="23" Source="../Resources/TimerLab/MaxHeight.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                     <TextBlock Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5">Height</TextBlock>
                     <Slider x:Name="HeightSlider" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="7" VerticalAlignment="Center" 
-                            TickPlacement="BottomRight" TickFrequency="100" Loaded="HeightSlider_Loaded" ValueChanged="HeightSlider_ValueChanged" 
-                            PreviewMouseDown="HeightSlider_PreviewMouseDown"/>
+                            TickPlacement="BottomRight" TickFrequency="100" Loaded="HeightSlider_Loaded" ValueChanged="HeightSlider_ValueChanged"/>
                     <TextBox x:Name="HeightTextBox" Grid.Row="7" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
                              LostFocus="HeightTextBox_LostFocus" Loaded="HeightTextBox_Loaded" PreviewTextInput="HeightTextBox_PreviewTextInput" />
 
