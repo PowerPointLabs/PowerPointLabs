@@ -667,7 +667,9 @@ namespace PowerPointLabs.Models
             for (int x = sequence.Count; x >= 1; x--)
             {
                 Effect effect = sequence[x];
-                if (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id)
+                
+                if (effect.Shape == null || 
+                    (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id))
                 {
                     effect.Delete();
                 }

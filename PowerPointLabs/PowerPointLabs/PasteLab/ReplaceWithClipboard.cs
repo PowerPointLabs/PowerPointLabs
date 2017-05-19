@@ -15,17 +15,33 @@ namespace PowerPointLabs.PasteLab
             if (selection.HasChildShapeRange)
             {
                 selectedShape = selection.ChildShapeRange[1];
-                Shape tempSelectedGroup = slide.CopyShapeToSlide(selectedShape.ParentGroup);
-                slide.DeleteShapeAnimations(tempSelectedGroup);
-                slide.TransferAnimation(selectedShape.ParentGroup, tempSelectedGroup);
-
                 float posLeft = selectedShape.Left;
                 float posTop = selectedShape.Top;
-                selectedShape.Delete();
 
-                ShapeRange result = PasteIntoGroup.Execute(presentation, slide, selection.ShapeRange, pastingShapes, posLeft, posTop);
+                Shape selectedGroup = selectedShape.ParentGroup;
+                Shape tempSelectedGroup = slide.CopyShapeToSlide(selectedGroup);
+                slide.DeleteShapeAnimations(tempSelectedGroup);
+                slide.TransferAnimation(selectedGroup, tempSelectedGroup);
+
+                List<Shape> selectedGroupShapeList = new List<Shape>();
+                int selectedGroupCount = selectedGroup.GroupItems.Count;
+                for (int i = 1; i <= selectedGroupCount; i++)
+                {
+                    Shape shape = selectedGroup.GroupItems.Range(i)[1];
+                    if (shape.Name.Equals(selectedShape.Name))
+                    {
+                        continue;
+                    }
+                    selectedGroupShapeList.Add(shape);
+                }
+                
+                ShapeRange shapesToGroup = slide.ToShapeRange(selectedGroupShapeList);
+                shapesToGroup = slide.CopyShapesToSlide(shapesToGroup);
+                selectedGroup.Delete();
+                
+                ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop);
                 slide.TransferAnimation(tempSelectedGroup, result[1]);
-
+                
                 tempSelectedGroup.Delete();
                 return result;
             }
