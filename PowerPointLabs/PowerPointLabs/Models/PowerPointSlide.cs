@@ -524,6 +524,12 @@ namespace PowerPointLabs.Models
             return ToShapeRange(shapes).Group();
         }
 
+        public ShapeRange ToShapeRange(Shape shape)
+        {
+            List<Shape> shapeList = new List<Shape> { shape };
+            return ToShapeRange(shapeList);
+        }
+
         public ShapeRange ToShapeRange(IEnumerable<Shape> shapes)
         {
             var shapeList = shapes.ToList();

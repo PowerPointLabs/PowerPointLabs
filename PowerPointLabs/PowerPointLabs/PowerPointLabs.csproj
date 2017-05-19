@@ -547,6 +547,7 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
     <Compile Include="MiscFeatures\MergeIntoGroup.cs" />
+    <Compile Include="PasteLab\PasteAtPosition.cs" />
     <Compile Include="PasteLab\PasteIntoGroup.cs" />
     <Compile Include="PasteLab\PasteToFillSlide.cs" />
     <Compile Include="PasteLab\ReplaceWithClipboard.cs" />

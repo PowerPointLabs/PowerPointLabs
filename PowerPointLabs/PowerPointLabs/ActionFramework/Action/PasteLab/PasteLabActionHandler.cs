@@ -21,15 +21,14 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             PowerPointSlide slide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            // Limitation: Clipboard's shape positions will not be preserved. Unable to find a good fix.
             if (Graphics.IsClipboardEmpty())
             {
                 Logger.Log(ribbonId + " failed. Clipboard is empty.");
                 return;
             }
-            IDataObject clipboardData = Clipboard.GetDataObject();
 
-            ShapeRange pastingShapes = null;
+            ShapeRange tempClipboardShapes = null;
+            PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
             if (IsSelectionShapes(selection))
             {
                 ShapeRange selectedShapes = selection.ShapeRange;
@@ -37,24 +36,26 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 {
                     selectedShapes = selection.ChildShapeRange;
                 }
-                pastingShapes = slide.Shapes.Paste();
+                tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
                 selectedShapes.Select();
-                
             }
             else
             {
-                pastingShapes = slide.Shapes.Paste();
+                tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
+            }
+            ShapeRange pastingShapes = slide.CopyShapesToSlide(tempClipboardShapes);
+            ShapeRange result = ExecutePasteAction(ribbonId, presentation, slide, selection, pastingShapes);
+            if (result != null)
+            {
+                result.Select();
             }
 
-            ExecutePasteAction(ribbonId, presentation, slide, selection, pastingShapes);
-            Clipboard.SetDataObject(clipboardData);
-
-            CleanupPasteAction();
+            tempClipboardShapes.Copy();
+            tempClipboardShapes.Delete();
+            tempClipboardSlide.Delete();
         }
 
-        protected abstract void ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
-                                                    Selection selection, ShapeRange pastingShapes);
-
-        protected virtual void CleanupPasteAction() { }
+        protected abstract ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
+                                                        Selection selection, ShapeRange pastingShapes);
     }
 }

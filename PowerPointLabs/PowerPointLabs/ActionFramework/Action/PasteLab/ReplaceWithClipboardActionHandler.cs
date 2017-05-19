@@ -11,16 +11,17 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
     [ExportActionRibbonId("ReplaceWithClipboard", "ReplaceWithClipboardFreeform", "ReplaceWithClipboardPicture")]
     class ReplaceWithClipboardActionHandler : PasteLabActionHandler
     {
-        protected override void ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
-                                                    Selection selection, ShapeRange pastingShapes)
+        protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
+                                                        Selection selection, ShapeRange pastingShapes)
         {
             if (!IsSelectionShapes(selection))
             {
                 MessageBox.Show("Please select at least one shape.", "Error");
-                return;
+                pastingShapes.Delete();
+                return null;
             }
 
-            ReplaceWithClipboard.Execute(presentation, slide, selection, pastingShapes);
+            return ReplaceWithClipboard.Execute(presentation, slide, selection, pastingShapes);
         }
     }
 }

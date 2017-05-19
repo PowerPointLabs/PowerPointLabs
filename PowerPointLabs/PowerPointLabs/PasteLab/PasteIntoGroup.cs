@@ -9,7 +9,7 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteIntoGroup
     {
-        public static Shape Execute(PowerPointPresentation presentation, PowerPointSlide slide,
+        public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide,
                                     ShapeRange selectedShapes, ShapeRange pastingShapes,
                                     float? posLeft = null, float? posTop = null)
         {
@@ -30,21 +30,11 @@ namespace PowerPointLabs.PasteLab
                 selectionHeight = selectionGroup.Height;
                 newSelectedShapes.Ungroup();
             }
-            
-            if (pastingShapes.Count > 1)
-            {
-                Shape pastedGroup = pastingShapes.Group();
-                pastedGroup.Left = posLeft ?? (selectionLeft + (selectionWidth - pastedGroup.Width) / 2);
-                pastedGroup.Top = posTop ?? (selectionTop + (selectionHeight - pastedGroup.Height) / 2);
-                pastedGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
-                pastingShapes.Ungroup();
-            }
-            else
-            {
-                pastingShapes[1].Left = posLeft ?? (selectionLeft + (selectionWidth - pastingShapes[1].Width) / 2);
-                pastingShapes[1].Top = posTop ?? (selectionTop + (selectionHeight - pastingShapes[1].Height) / 2);
-                pastingShapes[1].ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
-            }
+
+            posLeft = posLeft ?? (selectionLeft + (selectionWidth - pastingShapes[1].Width) / 2);
+            posTop = posTop ?? (selectionTop + (selectionHeight - pastingShapes[1].Height) / 2);
+            ShapeRange pastedShapes = PasteAtPosition.Execute(presentation, slide, pastingShapes, posLeft.Value, posTop.Value);
+            pastedShapes.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
 
             List<Shape> newGroupShapeList = new List<Shape>();
             for (int i = 1; i <= newSelectedShapes.Count; i++)
@@ -56,12 +46,13 @@ namespace PowerPointLabs.PasteLab
                 newGroupShapeList.Add(pastingShapes[i]);
             }
 
-            Shape newGroup = slide.ToShapeRange(newGroupShapeList).Group();
+            ShapeRange newShapeRange = slide.ToShapeRange(newGroupShapeList);
+            Shape newGroup = newShapeRange.Group();
             Graphics.MoveZToJustInFront(newGroup, firstSelectedShape);
             slide.TransferAnimation(firstSelectedShape, newGroup);
 
             firstSelectedShape.Delete();
-            return newGroup;
+            return slide.ToShapeRange(newGroup);
         }
     }
 }
