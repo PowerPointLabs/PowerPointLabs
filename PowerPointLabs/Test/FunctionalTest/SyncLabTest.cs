@@ -20,7 +20,6 @@ namespace Test.FunctionalTest
         private const string RotatedArrow = "Right Arrow 5";
         private const string CopyFromShape = "CopyFrom";
 
-
         protected override string GetTestingSlideName()
         {
             return "SyncLab.pptx";
@@ -70,11 +69,15 @@ namespace Test.FunctionalTest
             syncLab.DialogSelectItem(3, 2);
             syncLab.DialogClickOk();
 
+            PpOperations.SelectShape(UnrotatedRectangle);
             syncLab.Sync(0);
 
             var actualSlide = PpOperations.SelectSlide(4);
+            var actualShape = PpOperations.SelectShape(UnrotatedRectangle)[1];
             var expectedSlide = PpOperations.SelectSlide(5);
+            var expectedShape = PpOperations.SelectShape(UnrotatedRectangle)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
+            SlideUtil.IsSameShape(expectedShape, actualShape);
         }
     }
 }
