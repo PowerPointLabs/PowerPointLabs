@@ -29,37 +29,40 @@ namespace Test.Util
                 "different shape width for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Width, actualShape.Width);
             Assert.IsTrue(IsRoughlySame(expShape.Height, actualShape.Height),
                 "different shape height for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Height, actualShape.Height);
-            Assert.IsTrue(expShape.HorizontalFlip == actualShape.HorizontalFlip,
+            Assert.AreEqual(expShape.HorizontalFlip, actualShape.HorizontalFlip,
                 "different shape horizontal flip for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.HorizontalFlip, actualShape.HorizontalFlip);
-            Assert.IsTrue(expShape.VerticalFlip == actualShape.VerticalFlip,
+            Assert.AreEqual(expShape.VerticalFlip, actualShape.VerticalFlip,
                 "different shape vertical flip for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.VerticalFlip, actualShape.VerticalFlip);
         }
 
         public static void IsSameText(Shape expShape, Shape actualShape)
         {
+            Assert.AreEqual(expShape.HasTextFrame, actualShape.HasTextFrame,
+                "different text frame for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.HasTextFrame, actualShape.HasTextFrame);
+
             if (expShape.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
             {
                 var expText = expShape.TextFrame.TextRange;
                 var actualText = actualShape.TextFrame.TextRange;
 
-                Assert.IsTrue(expText.Text == actualText.Text,
+                Assert.AreEqual(expText.Text, actualText.Text,
                     "different text for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Text, actualText.Text);
-                Assert.IsTrue(expText.Font.Color.RGB == actualText.Font.Color.RGB,
+                Assert.AreEqual(expText.Font.Color.RGB, actualText.Font.Color.RGB,
                     "different font color for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Color.RGB, actualText.Font.Color.RGB);
-                Assert.IsTrue(expText.Font.Bold == actualText.Font.Bold,
+                Assert.AreEqual(expText.Font.Bold, actualText.Font.Bold,
                     "different bold style for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Bold, expText.Font.Bold);
-                Assert.IsTrue(expText.Font.Underline == actualText.Font.Underline,
+                Assert.AreEqual(expText.Font.Underline, actualText.Font.Underline,
                     "different underline style for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Underline, expText.Font.Underline);
-                Assert.IsTrue(expText.Font.Italic == actualText.Font.Italic,
+                Assert.AreEqual(expText.Font.Italic, actualText.Font.Italic,
                     "different italic style for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Italic, expText.Font.Italic);
-                Assert.IsTrue(expText.Font.Size == actualText.Font.Size,
+                Assert.AreEqual(expText.Font.Size, actualText.Font.Size,
                     "different text size for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Font.Size, expText.Font.Size);
             }
         }
 
         public static void IsSameZOrderPosition(Shape expShape, Shape actualShape)
         {
-            Assert.IsTrue(expShape.ZOrderPosition == actualShape.ZOrderPosition,
+            Assert.AreEqual(expShape.ZOrderPosition, actualShape.ZOrderPosition,
                 "different shape z order for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.ZOrderPosition, actualShape.ZOrderPosition);
         }
 
@@ -67,7 +70,7 @@ namespace Test.Util
         {
             var expShapes = expSlide.Shapes;
             var actualShapes = actualSlide.Shapes;
-            Assert.IsTrue(expShapes.Count == actualShapes.Count,
+            Assert.AreEqual(expShapes.Count, actualShapes.Count,
                 "different number of shapes on slide. exp:{0}, actual:{1}", expShapes.Count, actualShapes.Count);
 
             for (int i = 1; i <= expShapes.Count; i++)
@@ -80,28 +83,33 @@ namespace Test.Util
                     if (expShape.Name == actualShape.Name)
                     {
                         isMatchingShapeFound = true;
-                        if (expShapes[i].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
-                        {
-                            Assert.IsTrue(expShape.Type == actualShape.Type,
-                                "different shape type for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Type, actualShape.Type);
-                            Assert.IsTrue(expShape.GroupItems.Count == actualShape.GroupItems.Count,
-                                "different number of shapes in group for {0}. exp:{1}, actual:{2}",
-                                expShape.Name, expShape.GroupItems.Count, actualShape.GroupItems.Count);
-
-                            for (int k = 1; k <= expShape.GroupItems.Count; k++)
-                            {
-                                IsSameShape(expShape.GroupItems[k], actualShape.GroupItems[k]);
-                                IsSameText(expShape.GroupItems[k], actualShape.GroupItems[k]);
-                            }
-                        }
-
-                        // even if shape type is group, we still want to check if the overall group is equal
-                        IsSameShape(expShape, actualShape);
+                        IsSameShapeGroup(expShape, actualShape);
                         break;
                     }
                 }
                 Assert.IsTrue(isMatchingShapeFound, "no matching shape found");
             }
+        }
+
+        public static void IsSameShapeGroup(Shape expShape, Shape actualShape)
+        {
+            if (expShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
+            {
+                Assert.AreEqual(expShape.Type, actualShape.Type,
+                    "different shape type for {0}. exp:{1}, actual:{2}", expShape.Name, expShape.Type, actualShape.Type);
+                Assert.AreEqual(expShape.GroupItems.Count, actualShape.GroupItems.Count,
+                    "different number of shapes in group for {0}. exp:{1}, actual:{2}",
+                    expShape.Name, expShape.GroupItems.Count, actualShape.GroupItems.Count);
+
+                for (int i = 1; i <= expShape.GroupItems.Count; i++)
+                {
+                    IsSameShapeGroup(expShape.GroupItems[i], actualShape.GroupItems[i]);
+                }
+            }
+
+            // even if shape type is group, we still want to check if the overall group is equal
+            IsSameShape(expShape, actualShape);
+            IsSameText(expShape, actualShape);
         }
 
         // compare shape's prop & looking
