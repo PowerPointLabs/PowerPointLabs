@@ -102,6 +102,7 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\PasteLabTest.cs" />
     <Compile Include="FunctionalTest\SyncLabTest.cs" />
     <Compile Include="FunctionalTest\TimerLabTest.cs" />
     <Compile Include="FunctionalTest\NarrationsLabTest.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
-    <Compile Include="UnitTest\PasteLab\BasePasteLabTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />
