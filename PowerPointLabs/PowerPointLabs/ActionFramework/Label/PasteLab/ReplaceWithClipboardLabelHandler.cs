@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
-    [ExportLabelRibbonId("pasteToOriginalPosition")]
-    class PasteLabOriginalPositionLabelHandler : LabelHandler
+    [ExportLabelRibbonId("ReplaceWithClipboard", "ReplaceWithClipboardFreeform", "ReplaceWithClipboardPicture")]
+    class ReplaceWithClipboardLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.PasteLabText.PasteToOriginalPosition;
+            return TextCollection.PasteLabText.ReplaceWithClipboard;
         }
     }
 }

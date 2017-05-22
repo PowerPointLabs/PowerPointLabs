@@ -97,14 +97,26 @@ namespace PowerPointLabs
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.ShapeRange shapeRange)
         {
-            PowerPoint.Shape shape =
-                shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
-            return shape;
+            PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
+            return result;
         }
 
         private static bool IsSelectionShape(PowerPoint.Selection selection)
         {
-            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes;
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return false;
+            }
+
+            foreach (PowerPoint.Shape shape in selection.ShapeRange)
+            {
+                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

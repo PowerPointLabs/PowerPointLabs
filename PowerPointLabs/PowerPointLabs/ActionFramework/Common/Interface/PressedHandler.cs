@@ -5,7 +5,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles GetPressed call
     /// </summary>
-    public abstract class PressedHandler
+    public abstract class PressedHandler : BaseHandler
     {
         public bool Get(string ribbonId)
         {

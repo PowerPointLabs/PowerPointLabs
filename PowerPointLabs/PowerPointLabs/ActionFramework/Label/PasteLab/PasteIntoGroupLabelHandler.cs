@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
-    [ExportLabelRibbonId("PasteAndReplace", "PasteAndReplaceFreeform", "PasteAndReplacePicture")]
-    class PasteLabReplaceLabelHandler : LabelHandler
+    [ExportLabelRibbonId("PasteIntoGroup")]
+    class PasteIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.PasteLabText.PasteAndReplace;
+            return TextCollection.PasteLabText.PasteIntoGroup;
         }
     }
 }

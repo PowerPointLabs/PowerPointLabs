@@ -524,6 +524,12 @@ namespace PowerPointLabs.Models
             return ToShapeRange(shapes).Group();
         }
 
+        public ShapeRange ToShapeRange(Shape shape)
+        {
+            List<Shape> shapeList = new List<Shape> { shape };
+            return ToShapeRange(shapeList);
+        }
+
         public ShapeRange ToShapeRange(IEnumerable<Shape> shapes)
         {
             var shapeList = shapes.ToList();
@@ -552,6 +558,7 @@ namespace PowerPointLabs.Models
                 var newShape = _slide.Shapes.Paste()[1];
                 newShape.Left = shape.Left;
                 newShape.Top = shape.Top;
+                Graphics.MoveZToJustInFront(newShape, shape);
                 return newShape;
             }
             catch (COMException)
@@ -559,6 +566,28 @@ namespace PowerPointLabs.Models
                 // invalid shape for copy paste (e.g. a placeholder title box with no content)
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Clones the specified shape onto the slide, leaving the range unmodified.
+        /// </summary>
+        public ShapeRange CloneShapeFromRange(ShapeRange range, Shape shapeToClone)
+        {
+            Shape clonedShape = this.CopyShapeToSlide(shapeToClone);
+
+            List<Shape> result = new List<Shape>();
+            foreach (Shape shape in range)
+            {
+                if (shape == shapeToClone)
+                {
+                    result.Add(clonedShape);
+                }
+                else
+                {
+                    result.Add(shape);
+                }
+            }
+            return this.ToShapeRange(result);
         }
 
         /// <summary>
@@ -639,7 +668,9 @@ namespace PowerPointLabs.Models
             for (int x = sequence.Count; x >= 1; x--)
             {
                 Effect effect = sequence[x];
-                if (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id)
+                
+                if (effect.Shape == null || 
+                    (effect.Shape.Name == sh.Name && effect.Shape.Id == sh.Id))
                 {
                     effect.Delete();
                 }

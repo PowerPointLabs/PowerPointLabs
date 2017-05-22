@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Enabled
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return false;
+            return true;
         }
     }
 }

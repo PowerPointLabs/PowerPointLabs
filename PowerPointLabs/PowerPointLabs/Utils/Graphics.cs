@@ -106,6 +106,12 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        public static bool IsClipboardEmpty()
+        {
+            IDataObject clipboardData = Clipboard.GetDataObject();
+            return clipboardData == null || clipboardData.GetFormats().Length == 0;
+        }
+
         public static void FitShapeToSlide(ref Shape shapeToMove)
         {
             shapeToMove.LockAspectRatio = MsoTriState.msoFalse;

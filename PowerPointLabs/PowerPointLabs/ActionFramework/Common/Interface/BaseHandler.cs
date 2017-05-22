@@ -2,9 +2,9 @@
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
-    /// Base handler for action calls
+    /// Base handler for action framework
     /// </summary>
-    public abstract class BaseActionHandler
+    public abstract class BaseHandler
     {
     }
 }
