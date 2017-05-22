@@ -85,7 +85,7 @@
                     <TextBox x:Name="HeightTextBox" Grid.Row="7" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
                              LostFocus="HeightTextBox_LostFocus" Loaded="HeightTextBox_Loaded" PreviewTextInput="HeightTextBox_PreviewTextInput" />
 
-                    <Button Grid.Row="9" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Center" Click="CreateButton_Click">Create</Button>
+                    <Button x:Name="createButton" Grid.Row="9" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Center" Click="CreateButton_Click">Create</Button>
                 </Grid>
             </GroupBox>
         </Grid>

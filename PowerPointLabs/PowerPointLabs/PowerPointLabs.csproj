@@ -532,6 +532,7 @@
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="EffectsLab\EffectsLabBlurSelected.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\TimerLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\HighlightLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\SyncLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\PositionsLabController.cs" />
