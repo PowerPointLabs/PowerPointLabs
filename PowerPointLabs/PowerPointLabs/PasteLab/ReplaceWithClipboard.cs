@@ -28,7 +28,7 @@ namespace PowerPointLabs.PasteLab
                 for (int i = 1; i <= selectedGroupCount; i++)
                 {
                     Shape shape = selectedGroup.GroupItems.Range(i)[1];
-                    if (shape.Name.Equals(selectedShape.Name))
+                    if (shape == selectedShape)
                     {
                         continue;
                     }
