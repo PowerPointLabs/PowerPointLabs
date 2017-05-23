@@ -358,5 +358,50 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 Ribbon.SepiaBackgroundEffectClick(new RibbonControl("SepiaEffect"));
             });
         }
+
+        public void PasteToFillSlide()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("PasteToFillSlide");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void PasteAtCursorPosition()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("PasteAtCursorPosition");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void PasteAtOriginalPosition()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("PasteAtOriginalPosition");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void PasteIntoGroup()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("PasteIntoGroup");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void ReplaceWithClipboard()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("ReplaceWithClipboard");
+                Ribbon.OnAction(control);
+            });
+        }
     }
 }
