@@ -270,6 +270,8 @@ namespace PPExtraEventHelper
             WM_LBUTTONDOWN = 0x0201,
             WM_LBUTTONUP = 0x0202,
             WM_LBUTTONDBLCLK = 0x0203,
+            WM_RBUTTONDOWN = 0x0204,
+            WM_RBUTTONUP = 0x0205,
             WM_PARENTNOTIFY = 0x0210,
             WM_DRAWCLIPBOARD = 0x308,
             WM_CHANGECBCHAIN = 0x30D,

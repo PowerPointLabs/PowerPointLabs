@@ -4,7 +4,12 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
 {
-    [ExportEnabledRibbonId("PasteToFillSlide")]
+    [ExportEnabledRibbonId(
+        "PasteToFillSlide",
+        "PasteToFillSlideShape",
+        "PasteToFillSlideFreeform",
+        "PasteToFillSlidePicture",
+        "PasteToFillSlideGroup")]
     class PasteToFillSlideEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

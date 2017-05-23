@@ -38,15 +38,7 @@ namespace PPExtraEventHelper
 
         private static double startTimeInMillisecond = CurrentMillisecond();
 
-        private static Coordinates rightClickCoordinates = new Coordinates(0, 0);
-
-        public static Coordinates RightClickCoordinates
-        {
-            get
-            {
-                return rightClickCoordinates;
-            }
-        }
+        public static Coordinates RightClickCoordinates { get; private set; }
 
         public static void Init(PowerPoint.Application application)
         {
@@ -83,12 +75,6 @@ namespace PPExtraEventHelper
             }
         }
 
-        public static void RightClickCallback(float x, float y)
-        {
-            rightClickCoordinates.X = x;
-            rightClickCoordinates.Y = y;
-        }
-
         private static bool IsHookSuccessful()
         {
             return hook != 0;
@@ -121,10 +107,13 @@ namespace PPExtraEventHelper
                 // Left mouse button up/released
                 if (wParam.ToInt32() == (uint)Native.Message.WM_LBUTTONUP)
                 {
-                    if (LeftButtonUp != null)
-                    {
-                        LeftButtonUp();
-                    }
+                    LeftButtonUp?.Invoke();
+                }
+
+                // Right mouse button down
+                if (wParam.ToInt32() == (uint)Native.Message.WM_RBUTTONDOWN)
+                {
+                    RightClickCoordinates = new Coordinates(Cursor.Position.X, Cursor.Position.Y);
                 }
 
                 UpdateStartTime();  
