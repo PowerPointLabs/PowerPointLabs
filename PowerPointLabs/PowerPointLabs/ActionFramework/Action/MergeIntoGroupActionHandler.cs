@@ -24,7 +24,8 @@ namespace PowerPointLabs.ActionFramework.Action
                 return;
             }
 
-            MiscFeatures.MergeIntoGroup.Execute(presentation, slide, selection);
+            ShapeRange result = MiscFeatures.MergeIntoGroup.Execute(presentation, slide, selection);
+            result.Select();
         }
     }
 }
