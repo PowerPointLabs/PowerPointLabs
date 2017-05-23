@@ -47,6 +47,13 @@ namespace TestInterface
         void BlackAndWhiteBackgroundEffect();
         void SepiaBackgroundEffect();
 
+        // Paste lab
+        void PasteToFillSlide();
+        void PasteAtOriginalPosition();
+        void PasteAtCursorPosition();
+        void PasteIntoGroup();
+        void ReplaceWithClipboard();
+
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }
         IPositionsLabController PositionsLab { get; }
