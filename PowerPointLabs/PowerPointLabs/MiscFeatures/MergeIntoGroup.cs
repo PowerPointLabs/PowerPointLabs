@@ -7,23 +7,20 @@ namespace PowerPointLabs.MiscFeatures
 {
     static internal class MergeIntoGroup
     {
-        public static void Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection)
+        public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection)
         {
             ShapeRange selectedShapes = selection.ShapeRange;
             Shape firstSelectedShape = selectedShapes[1];
 
-            string originalGroupName = null;
-            if (Graphics.IsAGroup(firstSelectedShape))
-            {
-                originalGroupName = firstSelectedShape.Name;
-            }
+            Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
+            slide.TransferAnimation(firstSelectedShape, tempShapeForAnimation);
 
-            ShapeRange newGroupShapes = slide.CloneShapeFromRange(selectedShapes, firstSelectedShape);
-            Shape newGroup = newGroupShapes.Group();
-            newGroup.Name = originalGroupName ?? newGroup.Name;
-            slide.TransferAnimation(firstSelectedShape, newGroup);
+            Shape selectedGroup = selectedShapes.Group();
+            
+            slide.TransferAnimation(tempShapeForAnimation, selectedGroup);
+            tempShapeForAnimation.Delete();
 
-            firstSelectedShape.Delete();
+            return slide.ToShapeRange(selectedGroup);
         }
     }
 }

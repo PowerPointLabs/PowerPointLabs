@@ -17,10 +17,10 @@ namespace PowerPointLabs.SyncLab.View
     {
         public delegate void OkButtonEventHandler(SyncFormatDialog dialog);
         public event OkButtonEventHandler OkButtonClick;
-        public string OriginalName { get; private set; }
         public FormatTreeNode[] Formats { get; private set; }
         public Shape Shape { get; private set; }
 
+        private string originalName;
         private SyncPaneWPF parent;
 
         public SyncFormatDialog(SyncPaneWPF parent, Shape shape, string formatName, FormatTreeNode[] formats)
@@ -32,14 +32,14 @@ namespace PowerPointLabs.SyncLab.View
             formatName = formatName.Trim();
             if (SyncFormatUtil.IsValidFormatName(formatName))
             {
-                OriginalName = formatName;
+                originalName = formatName;
             }
             else
             {
-                OriginalName = TextCollection.SyncLabDefaultFormatName;
+                originalName = TextCollection.SyncLabDefaultFormatName;
             }
-            OriginalName = formatName;
-            ObjectName = OriginalName;
+            originalName = formatName;
+            ObjectName = originalName;
             this.Formats = formats;
             foreach (FormatTreeNode format in formats)
             {
@@ -135,7 +135,7 @@ namespace PowerPointLabs.SyncLab.View
                 }
                 else
                 {
-                    return this.OriginalName;
+                    return this.originalName;
                 }
             }
             set

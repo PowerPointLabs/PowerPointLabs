@@ -148,7 +148,7 @@ namespace PowerPointLabs.SyncLab.View
         private void AddFormatToList(SyncFormatDialog eventDialog)
         {
             Shape shape = eventDialog.Shape;
-            string name = eventDialog.OriginalName;
+            string name = eventDialog.ObjectName;
             FormatTreeNode[] formats = eventDialog.Formats;
 
             string shapeKey = CopyShape(shape);
