@@ -557,6 +557,7 @@ namespace PowerPointLabs.Models
                 shape.Copy();
                 var newShape = _slide.Shapes.Paste()[1];
 
+                newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
                 newShape.Top = shape.Top;
                 Graphics.MoveZToJustInFront(newShape, shape);

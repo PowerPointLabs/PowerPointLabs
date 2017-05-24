@@ -15,6 +15,7 @@ namespace PowerPointLabs.PasteLab
         {
             Shape firstSelectedShape = selectedShapes[1];
             Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
+            slide.TransferAnimation(firstSelectedShape, tempShapeForAnimation);
             Graphics.MoveZToJustInFront(tempShapeForAnimation, firstSelectedShape);
 
             string originalGroupName = null;
@@ -57,8 +58,8 @@ namespace PowerPointLabs.PasteLab
             ShapeRange shapesToGroup = slide.ToShapeRange(shapesToGroupList);
             Shape resultGroup = shapesToGroup.Group();
             resultGroup.Name = originalGroupName ?? resultGroup.Name;
-            Graphics.MoveZToJustInFront(resultGroup, tempShapeForAnimation);
             slide.TransferAnimation(tempShapeForAnimation, resultGroup);
+            Graphics.MoveZToJustInFront(resultGroup, tempShapeForAnimation);
 
             tempShapeForAnimation.Delete();
             return slide.ToShapeRange(resultGroup);

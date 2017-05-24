@@ -37,6 +37,7 @@ namespace PowerPointLabs.PasteLab
             {
                 Shape selectedGroup = selectedShapes[1];
                 Shape selectedChildShape = selectedChildShapes[1];
+                string originalGroupName = selectedGroup.Name;
 
                 float posLeft = selectedChildShape.Left;
                 float posTop = selectedChildShape.Top;
@@ -62,6 +63,7 @@ namespace PowerPointLabs.PasteLab
                 selectedChildShape.Delete();
 
                 ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop);
+                result[1].Name = originalGroupName;
                 slide.TransferAnimation(tempShapeForAnimation, result[1]);
 
                 tempShapeForAnimation.Delete();
