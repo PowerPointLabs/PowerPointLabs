@@ -12,6 +12,7 @@ namespace PowerPointLabs.PasteLab
         {
             Shape selectedShape = selection.ShapeRange[1];
 
+            // Replacing shape within a group
             if (selection.HasChildShapeRange)
             {
                 selectedShape = selection.ChildShapeRange[1];
@@ -19,6 +20,8 @@ namespace PowerPointLabs.PasteLab
                 float posTop = selectedShape.Top;
 
                 Shape selectedGroup = selectedShape.ParentGroup;
+                string originalGroupName = selectedGroup.Name;
+
                 Shape tempSelectedGroup = slide.CopyShapeToSlide(selectedGroup);
                 slide.DeleteShapeAnimations(tempSelectedGroup);
                 slide.TransferAnimation(selectedGroup, tempSelectedGroup);
@@ -41,11 +44,13 @@ namespace PowerPointLabs.PasteLab
                 
                 ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop);
                 slide.TransferAnimation(tempSelectedGroup, result[1]);
-                
+                result[1].Name = originalGroupName;
+
                 tempSelectedGroup.Delete();
                 return result;
             }
 
+            // Replacing individual shape
             Shape pastingShape = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {

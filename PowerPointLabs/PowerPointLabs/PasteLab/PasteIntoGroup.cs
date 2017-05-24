@@ -16,6 +16,13 @@ namespace PowerPointLabs.PasteLab
             Shape firstSelectedShape = selectedShapes[1];
             ShapeRange newSelectedShapes = slide.CloneShapeFromRange(selectedShapes, firstSelectedShape);
 
+            string originalGroupName = null;
+            if (newSelectedShapes.Count == 1 && Graphics.IsAGroup(firstSelectedShape))
+            {
+                originalGroupName = firstSelectedShape.Name;
+                newSelectedShapes = newSelectedShapes[1].Ungroup();
+            }
+
             // Calculate the center to paste at if not specified
             float selectionLeft = newSelectedShapes[1].Left;
             float selectionTop = newSelectedShapes[1].Top;
@@ -48,6 +55,7 @@ namespace PowerPointLabs.PasteLab
 
             ShapeRange newShapeRange = slide.ToShapeRange(newGroupShapeList);
             Shape newGroup = newShapeRange.Group();
+            newGroup.Name = originalGroupName ?? newGroup.Name;
             Graphics.MoveZToJustInFront(newGroup, firstSelectedShape);
             slide.TransferAnimation(firstSelectedShape, newGroup);
 
