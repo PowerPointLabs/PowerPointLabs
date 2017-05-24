@@ -43,6 +43,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             {
                 tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
             }
+
             ShapeRange pastingShapes = slide.CopyShapesToSlide(tempClipboardShapes);
             ShapeRange result = ExecutePasteAction(ribbonId, presentation, slide, selection, pastingShapes);
             if (result != null)

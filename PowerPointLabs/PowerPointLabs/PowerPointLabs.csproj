@@ -550,6 +550,7 @@
     <Compile Include="MiscFeatures\MergeIntoGroup.cs" />
     <Compile Include="PasteLab\PasteAtPosition.cs" />
     <Compile Include="PasteLab\PasteIntoGroup.cs" />
+    <Compile Include="PasteLab\PasteLabConstants.cs" />
     <Compile Include="PasteLab\PasteToFillSlide.cs" />
     <Compile Include="PasteLab\ReplaceWithClipboard.cs" />
     <Compile Include="PictureSlidesLab\ModelFactory\Options\FrostedGlassTextBoxStyleOptions.cs" />
