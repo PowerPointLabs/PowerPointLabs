@@ -51,8 +51,20 @@ namespace PowerPointLabs.Utils
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
             // in case of random corruption of shape, cut-paste a shape before using its property
-            shape.Cut();
-            return ownerSlide.Shapes.Paste()[1];
+            Shape correctedShape = ownerSlide.CopyShapeToSlide(shape);
+            shape.Delete();
+            return correctedShape;
+        }
+
+        public static ShapeRange CorruptionCorrection(ShapeRange shapes, PowerPointSlide ownerSlide)
+        {
+            List<Shape> correctedShapeList = new List<Shape>();
+            foreach (Shape shape in shapes)
+            {
+                Shape correctedShape = CorruptionCorrection(shape, ownerSlide);
+                correctedShapeList.Add(correctedShape);
+            }
+            return ownerSlide.ToShapeRange(correctedShapeList);
         }
 
         public static void ExportShape(Shape shape, string exportPath)

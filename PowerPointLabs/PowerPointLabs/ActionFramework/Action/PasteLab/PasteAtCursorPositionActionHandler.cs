@@ -18,7 +18,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
-                                                        Selection selection, ShapeRange pastingShapes)
+                                                        ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
             PPMouse.Coordinates coordinates = PPMouse.RightClickCoordinates;
             DocumentWindow activeWindow = this.GetCurrentWindow();
@@ -34,7 +34,8 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 positionY = ((coordinates.Y - activeWindow.PointsToScreenPixelsY(0)) / yref) * 100;
             }
 
-            return PasteAtPosition.Execute(presentation, slide, pastingShapes, positionX, positionY);
+            ShapeRange pastingShapes = slide.Shapes.Paste();
+            return PasteAtCursorPosition.Execute(presentation, slide, pastingShapes, positionX, positionY);
         }
     }
 }

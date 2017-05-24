@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -12,6 +12,9 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     abstract class PasteLabActionHandler : BaseUtilActionHandler
     {
+        private static readonly string SelectOrderTagName = "SelectOrderTagName";
+        private static readonly string SelectChildOrderTagName = "SelectChildOrderTagName";
+
         // Sealed method: Subclasses should override ExecutePasteAction instead
         protected sealed override void ExecuteAction(string ribbonId)
         {
@@ -27,36 +30,81 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 return;
             }
 
-            ShapeRange tempClipboardShapes = null;
-            PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
+            ShapeRange passedSelectedShapes = null;
+            ShapeRange passedSelectedChildShapes = null;
+
             if (IsSelectionShapes(selection))
             {
+                // Save clipboard onto a temp slide, because CorruptionCorrrection uses Copy-Paste
+                PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
+                ShapeRange tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
+
+                // Preserve selection using tags
                 ShapeRange selectedShapes = selection.ShapeRange;
+                for (int i = 1; i <= selectedShapes.Count; i++)
+                {
+                    selectedShapes[i].Tags.Add(SelectOrderTagName, i.ToString());
+                }
+
+                ShapeRange selectedChildShapes = null;
                 if (selection.HasChildShapeRange)
                 {
-                    selectedShapes = selection.ChildShapeRange;
+                    selectedChildShapes = selection.ChildShapeRange;
+                    for (int i = 1; i <= selectedChildShapes.Count; i++)
+                    {
+                        selectedChildShapes[i].Tags.Add(SelectChildOrderTagName, i.ToString());
+                    }
                 }
-                tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
-                selectedShapes.Select();
-            }
-            else
-            {
-                tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
+
+                // Corruption correction
+                ShapeRange correctedShapes = Graphics.CorruptionCorrection(selectedShapes, slide);
+
+                // Reselect the preserved selections
+                List<Shape> correctedShapeList = new List<Shape>();
+                List<Shape> correctedChildShapeList = new List<Shape>();
+                foreach (Shape shape in correctedShapes)
+                {
+                    correctedShapeList.Add(shape);
+                    if (Graphics.IsAGroup(shape))
+                    {
+                        for (int i = 1; i <= shape.GroupItems.Count; i++)
+                        {
+                            Shape child = shape.GroupItems.Range(i)[1];
+                            if (!child.Tags[SelectChildOrderTagName].Equals(""))
+                            {
+                                correctedChildShapeList.Add(child);
+                            }
+                        }
+                    }
+                }
+                correctedShapeList.Sort((sh1, sh2) => int.Parse(sh2.Tags[SelectOrderTagName]) - int.Parse(sh1.Tags[SelectOrderTagName]));
+                correctedChildShapeList.Sort((sh1, sh2) => int.Parse(sh2.Tags[SelectChildOrderTagName]) - int.Parse(sh1.Tags[SelectChildOrderTagName]));
+                passedSelectedShapes = slide.ToShapeRange(correctedShapeList);
+                passedSelectedChildShapes = slide.ToShapeRange(correctedChildShapeList);
+
+                // Remove the tags after they have been used
+                foreach (Shape shape in passedSelectedShapes)
+                {
+                    shape.Tags.Delete(SelectOrderTagName);
+                }
+                foreach (Shape shape in passedSelectedChildShapes)
+                {
+                    shape.Tags.Delete(SelectChildOrderTagName);
+                }
+
+                // Revert clipboard
+                tempClipboardShapes.Copy();
+                tempClipboardSlide.Delete();
             }
 
-            ShapeRange pastingShapes = slide.CopyShapesToSlide(tempClipboardShapes);
-            ShapeRange result = ExecutePasteAction(ribbonId, presentation, slide, selection, pastingShapes);
+            ShapeRange result = ExecutePasteAction(ribbonId, presentation, slide, passedSelectedShapes, passedSelectedChildShapes);
             if (result != null)
             {
                 result.Select();
             }
-
-            tempClipboardShapes.Copy();
-            tempClipboardShapes.Delete();
-            tempClipboardSlide.Delete();
         }
 
         protected abstract ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
-                                                        Selection selection, ShapeRange pastingShapes);
+                                                        ShapeRange selectedShapes, ShapeRange selectedChildShapes);
     }
 }

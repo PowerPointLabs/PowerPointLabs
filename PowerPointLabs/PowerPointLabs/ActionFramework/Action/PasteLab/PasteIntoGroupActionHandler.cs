@@ -12,23 +12,22 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
     class PasteIntoGroupActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
-                                                        Selection selection, ShapeRange pastingShapes)
+                                                        ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
-            if (!IsSelectionShapes(selection))
+            if (selectedShapes.Count <= 0)
             {
                 Logger.Log("PasteIntoGroup failed. No valid shape is selected.");
-                pastingShapes.Delete();
                 return null;
             }
 
-            if (selection.ShapeRange.Count == 1 && !Graphics.IsAGroup(selection.ShapeRange[1]))
+            if (selectedShapes.Count == 1 && !Graphics.IsAGroup(selectedShapes[1]))
             {
                 Logger.Log("PasteIntoGroup failed. Selection is only a single shape.");
-                pastingShapes.Delete();
                 return null;
             }
 
-            return PasteIntoGroup.Execute(presentation, slide, selection.ShapeRange, pastingShapes);
+            ShapeRange pastingShapes = slide.Shapes.Paste();
+            return PasteIntoGroup.Execute(presentation, slide, selectedShapes, pastingShapes);
         }
     }
 }

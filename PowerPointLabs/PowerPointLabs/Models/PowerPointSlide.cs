@@ -556,9 +556,14 @@ namespace PowerPointLabs.Models
             {
                 shape.Copy();
                 var newShape = _slide.Shapes.Paste()[1];
+
                 newShape.Left = shape.Left;
                 newShape.Top = shape.Top;
                 Graphics.MoveZToJustInFront(newShape, shape);
+
+                DeleteShapeAnimations(newShape);
+                TransferAnimation(shape, newShape);
+
                 return newShape;
             }
             catch (COMException)
