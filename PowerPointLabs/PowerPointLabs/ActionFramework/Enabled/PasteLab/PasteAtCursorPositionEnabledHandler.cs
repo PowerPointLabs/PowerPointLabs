@@ -4,7 +4,12 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
 {
-    [ExportEnabledRibbonId("PasteAtCursorPosition")]
+    [ExportEnabledRibbonId(
+        "PasteAtCursorPosition",
+        "PasteAtCursorPositionShape",
+        "PasteAtCursorPositionFreeform",
+        "PasteAtCursorPositionPicture",
+        "PasteAtCursorPositionGroup")]
     class PasteAtCursorPositionEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

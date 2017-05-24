@@ -6,7 +6,12 @@ using PowerPointLabs.PasteLab;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
-    [ExportActionRibbonId("PasteToFillSlide")]
+    [ExportActionRibbonId(
+        "PasteToFillSlide",
+        "PasteToFillSlideShape",
+        "PasteToFillSlideFreeform",
+        "PasteToFillSlidePicture",
+        "PasteToFillSlideGroup")]
     class PasteToFillSlideActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
