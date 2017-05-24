@@ -203,7 +203,8 @@ namespace PowerPointLabs.SyncLab.View
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             var selection = this.GetCurrentSelection();
-            if (selection.Type != PpSelectionType.ppSelectionShapes ||
+            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
+                selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count != 1)
             {
                 MessageBox.Show(TextCollection.SyncLabCopySelectError, TextCollection.SyncLabErrorDialogTitle);
