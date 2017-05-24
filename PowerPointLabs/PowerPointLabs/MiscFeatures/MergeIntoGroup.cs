@@ -19,35 +19,40 @@ namespace PowerPointLabs.MiscFeatures
             slide.TransferAnimation(firstSelectedShape, tempShapeForAnimation);
 
             // Merge into one group
-            bool isFirstSelectionGroup = false;
-            string groupName = firstSelectedShape.Name;
-
             if (Graphics.IsCorrupted(firstSelectedShape))
             {
                 firstSelectedShape = Graphics.CorruptionCorrection(firstSelectedShape, slide);
             }
+
+            string groupName = firstSelectedShape.Name;
+            bool isFirstSelectionGroup = false;
+            List<Shape> newShapesList = new List<Shape>();
+
             if (Graphics.IsAGroup(firstSelectedShape))
             {
                 isFirstSelectionGroup = true;
-
-                List<Shape> newShapesList = new List<Shape>();
                 ShapeRange ungroupedShapes = firstSelectedShape.Ungroup();
                 foreach (Shape shape in ungroupedShapes)
                 {
                     newShapesList.Add(shape);
                 }
-                for (int i = 2; i <= selectedShapes.Count; i++)
+            }
+            else
+            {
+                newShapesList.Add(firstSelectedShape);
+            }
+            
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                Shape shape = selectedShapes[i];
+                if (Graphics.IsCorrupted(shape))
                 {
-                    Shape shape = selectedShapes[i];
-                    if (Graphics.IsCorrupted(shape))
-                    {
-                        shape = Graphics.CorruptionCorrection(shape, slide);
-                    }
-                    newShapesList.Add(shape);
+                    shape = Graphics.CorruptionCorrection(shape, slide);
                 }
-                selectedShapes = slide.ToShapeRange(newShapesList);
+                newShapesList.Add(shape);
             }
 
+            selectedShapes = slide.ToShapeRange(newShapesList);
             Shape selectedGroup = selectedShapes.Group();
             selectedGroup.Name = isFirstSelectionGroup ? groupName : selectedGroup.Name;
 
