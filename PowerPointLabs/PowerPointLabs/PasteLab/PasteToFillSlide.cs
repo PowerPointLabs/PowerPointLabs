@@ -7,7 +7,7 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteToFillSlide
     {
-        public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float width, float height)
+        public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
             pastingShapes = Graphics.GetShapesWhenTypeNotMatches(slide, pastingShapes, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
 
@@ -20,14 +20,14 @@ namespace PowerPointLabs.PasteLab
 
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
 
-            ppShapeToFillSlide.AbsoluteHeight = height;
-            if (ppShapeToFillSlide.AbsoluteWidth < width)
+            ppShapeToFillSlide.AbsoluteHeight = slideHeight;
+            if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
             {
-                ppShapeToFillSlide.AbsoluteWidth = width;
+                ppShapeToFillSlide.AbsoluteWidth = slideWidth;
             }
-            ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(width / 2, height / 2);
+            ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
 
-            CropLab.CropToSlide.Crop(shapeToFillSlide, slide, width, height);
+            CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
         }
     }
 }

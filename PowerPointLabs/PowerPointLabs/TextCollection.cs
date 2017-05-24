@@ -327,8 +327,8 @@
         public const string HighlightBulletsMenuShapeLabel = "Highlight Bullets";
         public const string HighlightBulletsTextShapeLabel = "Highlight Text";
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
-        public const string ConvertToPictureShapeLabel = "Convert to Picture";
-        public const string MergeIntoGroup = "Merge Into One Group";
+        public const string ConvertToPictureShapeLabel = "Convert To Picture";
+        public const string MergeIntoGroup = "Add Into Group";
         public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
         public const string HideSelectedShapeLabel = "Hide the Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";

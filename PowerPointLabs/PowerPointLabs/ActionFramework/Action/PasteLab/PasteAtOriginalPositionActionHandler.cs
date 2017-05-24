@@ -5,7 +5,12 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
-    [ExportActionRibbonId("PasteAtOriginalPosition")]
+    [ExportActionRibbonId(
+        "PasteAtOriginalPosition",
+        "PasteAtOriginalPositionShape",
+        "PasteAtOriginalPositionFreeform",
+        "PasteAtOriginalPositionPicture",
+        "PasteAtOriginalPositionGroup")]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

@@ -12,7 +12,7 @@ namespace PowerPointLabs.PasteLab
     {
         public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection, ShapeRange pastingShapes)
         {
-            // Replacing shape in a group
+            // Replacing shape within a group
             if (selection.HasChildShapeRange)
             {
                 string uid = DateTime.Now.ToString("ddMMyyyyHHmmssfff");

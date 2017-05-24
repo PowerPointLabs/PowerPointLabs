@@ -9,7 +9,12 @@ using PPExtraEventHelper;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
-    [ExportActionRibbonId("PasteAtCursorPosition")]
+    [ExportActionRibbonId(
+        "PasteAtCursorPosition", 
+        "PasteAtCursorPositionShape", 
+        "PasteAtCursorPositionFreeform", 
+        "PasteAtCursorPositionPicture", 
+        "PasteAtCursorPositionGroup")]
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
@@ -17,7 +22,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         {
             PPMouse.Coordinates coordinates = PPMouse.RightClickCoordinates;
             DocumentWindow activeWindow = this.GetCurrentWindow();
-
+            
             float positionX = 0;
             float positionY = 0;
 
