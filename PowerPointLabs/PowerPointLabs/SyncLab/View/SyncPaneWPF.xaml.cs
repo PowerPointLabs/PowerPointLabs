@@ -133,7 +133,7 @@ namespace PowerPointLabs.SyncLab.View
             var selection = this.GetCurrentSelection();
             if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
-                selection.ShapeRange.Count != 1)
+                selection.ShapeRange.Count == 0)
             {
                 MessageBox.Show(TextCollection.SyncLabPasteSelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
