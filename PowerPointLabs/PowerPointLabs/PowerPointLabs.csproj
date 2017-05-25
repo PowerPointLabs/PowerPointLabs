@@ -1742,16 +1742,16 @@
     <None Include="Resources\MergeIntoGroup.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SyncLabEditButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SyncLabPasteButton.png" />
+    <None Include="Resources\SyncLabCopyButton.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SyncLabDeleteButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SyncLabCopyButton.png" />
+    <None Include="Resources\SyncLabEditButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLabPasteButton.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
