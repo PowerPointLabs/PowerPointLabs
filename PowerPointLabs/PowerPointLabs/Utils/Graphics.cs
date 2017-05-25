@@ -620,6 +620,14 @@ namespace PowerPointLabs.Utils
             shape.Rotation += angle;
         }
 
+        public static void DeleteTagFromShapes(ShapeRange shapes, string tagName)
+        {
+            foreach (Shape shape in shapes)
+            {
+                shape.Tags.Delete(tagName);
+            }
+        }
+
         // TODO: This could be an extension method of shape.
         public static string GetText(Shape shape)
         {

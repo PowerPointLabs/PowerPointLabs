@@ -73,14 +73,8 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 passedSelectedChildShapes = slide.ToShapeRange(correctedChildShapeList);
 
                 // Remove the tags after they have been used
-                foreach (Shape shape in passedSelectedShapes)
-                {
-                    shape.Tags.Delete(SelectOrderTagName);
-                }
-                foreach (Shape shape in passedSelectedChildShapes)
-                {
-                    shape.Tags.Delete(SelectChildOrderTagName);
-                }
+                Graphics.DeleteTagFromShapes(passedSelectedShapes, SelectOrderTagName);
+                Graphics.DeleteTagFromShapes(passedSelectedChildShapes, SelectChildOrderTagName);
 
                 // Revert clipboard
                 tempClipboardShapes.Copy();
