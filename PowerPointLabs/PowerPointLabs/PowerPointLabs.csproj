@@ -1703,10 +1703,6 @@
     <None Include="Resources\RemoveHighlighting.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SyncLabCopyButton.png" />
-    <None Include="Resources\SyncLabDeleteButton.png" />
-    <None Include="Resources\SyncLabEditButton.png" />
-    <None Include="Resources\SyncLabPasteButton.png" />
     <Resource Include="Resources\TimerLab.png" />
     <Resource Include="Resources\TimerLab\HalfHeight.png" />
     <Resource Include="Resources\TimerLab\HalfWidth.png" />
@@ -1744,6 +1740,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MergeIntoGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLabCopyButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLabDeleteButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLabEditButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLabPasteButton.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.SyncLab.View"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="300"
+             d:DesignHeight="60" d:DesignWidth="300"
              MouseDoubleClick="OnMouseDoubleClick">
     <Grid x:Name="grid">
-        <Image x:Name="imageBox" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
-        <Label x:Name="label" Margin="45,7,85,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-        <Button x:Name="pasteButton" Margin="0,15,60,15" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
+        <Image x:Name="imageBox" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
+        <Label x:Name="label" Margin="45,10,0,10" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MinWidth="160" MaxWidth="160"/>
+        <Button x:Name="pasteButton" Margin="0,10,65,10" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
             <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabPasteButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
@@ -22,7 +22,7 @@
                 </StackPanel>
             </Button.ToolTip>
         </Button>
-        <Button x:Name="editButton" Margin="0,15,35,15" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
+        <Button x:Name="editButton" Margin="0,10,35,10" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
             <Image x:Name="editImage" Source="pack://siteoforigin:,,,/Resources/SyncLabEditButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
@@ -36,7 +36,7 @@
                 </StackPanel>
             </Button.ToolTip>
         </Button>
-        <Button x:Name="deleteButton" Margin="0,15,10,15" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="20" MaxWidth="20" MinHeight="20" MaxHeight="20">
+        <Button x:Name="deleteButton" Margin="0,10,5,10" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
             <Image x:Name="deleteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabDeleteButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
