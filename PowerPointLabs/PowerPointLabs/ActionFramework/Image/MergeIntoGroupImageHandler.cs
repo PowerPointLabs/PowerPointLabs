@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.Image
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.ColorsLab);
+            return new Bitmap(Properties.Resources.MergeIntoGroup);
         }
     }
 }
