@@ -12,8 +12,8 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     abstract class PasteLabActionHandler : BaseUtilActionHandler
     {
-        private static readonly string SelectOrder = "PasteLabSelectOrder";
-        private static readonly string SelectChildOrder = "PasteLabSelectChildOrder";
+        private static readonly string SelectOrderTagName = "PasteLabSelectOrder";
+        private static readonly string SelectChildOrderTagName = "PasteLabSelectChildOrder";
 
         // Sealed method: Subclasses should override ExecutePasteAction instead
         protected sealed override void ExecuteAction(string ribbonId)
@@ -43,7 +43,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 ShapeRange selectedShapes = selection.ShapeRange;
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    selectedShapes[i].Tags.Add(SelectOrder, i.ToString());
+                    selectedShapes[i].Tags.Add(SelectOrderTagName, i.ToString());
                 }
 
                 ShapeRange selectedChildShapes = null;
@@ -52,7 +52,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                     selectedChildShapes = selection.ChildShapeRange;
                     for (int i = 1; i <= selectedChildShapes.Count; i++)
                     {
-                        selectedChildShapes[i].Tags.Add(SelectChildOrder, i.ToString());
+                        selectedChildShapes[i].Tags.Add(SelectChildOrderTagName, i.ToString());
                     }
                 }
 
@@ -65,31 +65,21 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 foreach (Shape shape in correctedShapes)
                 {
                     correctedShapeList.Add(shape);
-                    if (Graphics.IsAGroup(shape))
-                    {
-                        for (int i = 1; i <= shape.GroupItems.Count; i++)
-                        {
-                            Shape child = shape.GroupItems.Range(i)[1];
-                            if (!child.Tags[SelectChildOrder].Equals(""))
-                            {
-                                correctedChildShapeList.Add(child);
-                            }
-                        }
-                    }
+                    correctedChildShapeList.AddRange(Graphics.GetChildrenWithNonEmptyTag(shape, SelectChildOrderTagName));
                 }
-                correctedShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectOrder]) - int.Parse(sh2.Tags[SelectOrder]));
-                correctedChildShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectChildOrder]) - int.Parse(sh2.Tags[SelectChildOrder]));
+                correctedShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectOrderTagName]) - int.Parse(sh2.Tags[SelectOrderTagName]));
+                correctedChildShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectChildOrderTagName]) - int.Parse(sh2.Tags[SelectChildOrderTagName]));
                 passedSelectedShapes = slide.ToShapeRange(correctedShapeList);
                 passedSelectedChildShapes = slide.ToShapeRange(correctedChildShapeList);
 
                 // Remove the tags after they have been used
                 foreach (Shape shape in passedSelectedShapes)
                 {
-                    shape.Tags.Delete(SelectOrder);
+                    shape.Tags.Delete(SelectOrderTagName);
                 }
                 foreach (Shape shape in passedSelectedChildShapes)
                 {
-                    shape.Tags.Delete(SelectChildOrder);
+                    shape.Tags.Delete(SelectChildOrderTagName);
                 }
 
                 // Revert clipboard

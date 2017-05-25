@@ -223,6 +223,26 @@ namespace PowerPointLabs.Utils
             return slide.ToShapeRange(newShapeList);
         }
 
+        public static List<Shape> GetChildrenWithNonEmptyTag(Shape shape, string tagName)
+        {
+            List<Shape> result = new List<Shape>();
+
+            if (!IsAGroup(shape))
+            {
+                return result;
+            }
+            
+            for (int i = 1; i <= shape.GroupItems.Count; i++)
+            {
+                Shape child = shape.GroupItems.Range(i)[1];
+                if (!child.Tags[tagName].Equals(""))
+                {
+                    result.Add(child);
+                }
+            }
+            return result;
+        }
+
         public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)
         {
             var sequence = curSlide.TimeLine.MainSequence;
