@@ -9,7 +9,7 @@
              MouseDoubleClick="OnMouseDoubleClick">
     <Grid x:Name="grid">
         <Image x:Name="imageBox" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
-        <Label x:Name="label" Margin="45,10,95,10" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label x:Name="label" Margin="45,10,0,10" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" MinWidth="160" MaxWidth="160"/>
         <Button x:Name="pasteButton" Margin="0,10,65,10" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
             <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabPasteButton.png" Stretch="Fill"/>
             <Button.ToolTip>
