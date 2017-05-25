@@ -160,6 +160,7 @@
         public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
         public const string SyncLabErrorDialogTitle = "Unable to execute action";
         public const string SyncLabCopySelectError = "Please select one item to copy.";
+        public const string SyncLabCopyShapeError = "Sync Lab only supports basic shapes and lines.";
         public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
         public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
         public const string SyncLabCopyError = "Error: Unable to copy selected item.";
