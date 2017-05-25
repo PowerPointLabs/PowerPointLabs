@@ -51,8 +51,20 @@ namespace PowerPointLabs.Utils
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
             // in case of random corruption of shape, cut-paste a shape before using its property
-            shape.Cut();
-            return ownerSlide.Shapes.Paste()[1];
+            Shape correctedShape = ownerSlide.CopyShapeToSlide(shape);
+            shape.Delete();
+            return correctedShape;
+        }
+
+        public static ShapeRange CorruptionCorrection(ShapeRange shapes, PowerPointSlide ownerSlide)
+        {
+            List<Shape> correctedShapeList = new List<Shape>();
+            foreach (Shape shape in shapes)
+            {
+                Shape correctedShape = CorruptionCorrection(shape, ownerSlide);
+                correctedShapeList.Add(correctedShape);
+            }
+            return ownerSlide.ToShapeRange(correctedShapeList);
         }
 
         public static void ExportShape(Shape shape, string exportPath)
@@ -209,6 +221,26 @@ namespace PowerPointLabs.Utils
                 }
             }
             return slide.ToShapeRange(newShapeList);
+        }
+
+        public static List<Shape> GetChildrenWithNonEmptyTag(Shape shape, string tagName)
+        {
+            List<Shape> result = new List<Shape>();
+
+            if (!IsAGroup(shape))
+            {
+                return result;
+            }
+            
+            for (int i = 1; i <= shape.GroupItems.Count; i++)
+            {
+                Shape child = shape.GroupItems.Range(i)[1];
+                if (!child.Tags[tagName].Equals(""))
+                {
+                    result.Add(child);
+                }
+            }
+            return result;
         }
 
         public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)
@@ -586,6 +618,14 @@ namespace PowerPointLabs.Utils
             SetMidpointX(shape, (float)(pivotX + newdx));
             SetMidpointY(shape, (float)(pivotY + newdy));
             shape.Rotation += angle;
+        }
+
+        public static void DeleteTagFromShapes(ShapeRange shapes, string tagName)
+        {
+            foreach (Shape shape in shapes)
+            {
+                shape.Tags.Delete(tagName);
+            }
         }
 
         // TODO: This could be an extension method of shape.

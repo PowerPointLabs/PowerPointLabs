@@ -17,17 +17,16 @@ namespace PowerPointLabs.MiscFeatures
             // Temporarily save the animation
             Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
             slide.TransferAnimation(firstSelectedShape, tempShapeForAnimation);
-
-            // Merge into one group
-            if (Graphics.IsCorrupted(firstSelectedShape))
-            {
-                firstSelectedShape = Graphics.CorruptionCorrection(firstSelectedShape, slide);
-            }
-
+            
+            // Ungroup first selection and add into list
             string groupName = firstSelectedShape.Name;
             bool isFirstSelectionGroup = false;
             List<Shape> newShapesList = new List<Shape>();
 
+            if (Graphics.IsCorrupted(firstSelectedShape))
+            {
+                firstSelectedShape = Graphics.CorruptionCorrection(firstSelectedShape, slide);
+            }
             if (Graphics.IsAGroup(firstSelectedShape))
             {
                 isFirstSelectionGroup = true;
@@ -42,6 +41,7 @@ namespace PowerPointLabs.MiscFeatures
                 newShapesList.Add(firstSelectedShape);
             }
             
+            // Add all other selections into list
             for (int i = 2; i <= selectedShapes.Count; i++)
             {
                 Shape shape = selectedShapes[i];
@@ -52,6 +52,7 @@ namespace PowerPointLabs.MiscFeatures
                 newShapesList.Add(shape);
             }
 
+            // Create the new group from the list
             selectedShapes = slide.ToShapeRange(newShapesList);
             Shape selectedGroup = selectedShapes.Group();
             selectedGroup.Name = isFirstSelectionGroup ? groupName : selectedGroup.Name;

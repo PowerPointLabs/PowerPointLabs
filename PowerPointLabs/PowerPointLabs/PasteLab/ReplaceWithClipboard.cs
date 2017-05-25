@@ -10,50 +10,13 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class ReplaceWithClipboard
     {
-        public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection, ShapeRange pastingShapes)
+        public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, 
+                                        ShapeRange selectedShapes, ShapeRange selectedChildShapes, ShapeRange pastingShapes)
         {
-            // Replacing shape within a group
-            if (selection.HasChildShapeRange)
+            // Replacing individual shape
+            if (selectedChildShapes.Count == 0)
             {
-                string uid = DateTime.Now.ToString("ddMMyyyyHHmmssfff");
-
-                Shape selectedGroup = selection.ShapeRange[1];
-                Shape selectedChildShape = selection.ChildShapeRange[1];
-                selectedChildShape.Tags.Add(PasteLabConstants.ReplaceWithClipboardShapeId, uid);
-
-                float posLeft = selectedChildShape.Left;
-                float posTop = selectedChildShape.Top;
-
-                Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
-                slide.TransferAnimation(selectedGroup, tempShapeForAnimation);
-
-                selectedGroup = Graphics.CorruptionCorrection(selectedGroup, slide);
-
-                List<Shape> selectedGroupShapeList = new List<Shape>();
-                int selectedGroupCount = selectedGroup.GroupItems.Count;
-                for (int i = 1; i <= selectedGroupCount; i++)
-                {
-                    Shape shape = selectedGroup.GroupItems.Range(i)[1];
-                    if (shape.Tags[PasteLabConstants.ReplaceWithClipboardShapeId].Equals(uid))
-                    {
-                        continue;
-                    }
-                    selectedGroupShapeList.Add(shape);
-                }
-
-                ShapeRange shapesToGroup = slide.ToShapeRange(selectedGroupShapeList);
-                shapesToGroup = slide.CopyShapesToSlide(shapesToGroup);
-                selectedGroup.Delete();
-
-                ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop);
-                slide.TransferAnimation(tempShapeForAnimation, result[1]);
-
-                tempShapeForAnimation.Delete();
-                return result;
-            }
-            else // replacing individual shape
-            {
-                Shape selectedShape = selection.ShapeRange[1];
+                Shape selectedShape = selectedShapes[1];
 
                 Shape pastingShape = pastingShapes[1];
                 if (pastingShapes.Count > 1)
@@ -68,6 +31,43 @@ namespace PowerPointLabs.PasteLab
                 selectedShape.Delete();
 
                 return slide.ToShapeRange(pastingShape);
+            }
+            // Replacing shape within a group
+            else
+            {
+                Shape selectedGroup = selectedShapes[1];
+                Shape selectedChildShape = selectedChildShapes[1];
+                string originalGroupName = selectedGroup.Name;
+
+                float posLeft = selectedChildShape.Left;
+                float posTop = selectedChildShape.Top;
+
+                Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
+                slide.TransferAnimation(selectedGroup, tempShapeForAnimation);
+
+                // Get all siblings of selected child
+                List<Shape> selectedGroupShapeList = new List<Shape>();
+                for (int i = 1; i <= selectedGroup.GroupItems.Count; i++)
+                {
+                    Shape shape = selectedGroup.GroupItems.Range(i)[1];
+                    if (shape == selectedChildShape)
+                    {
+                        continue;
+                    }
+                    selectedGroupShapeList.Add(shape);
+                }
+
+                // Remove selected child since it is being replaced
+                ShapeRange shapesToGroup = slide.ToShapeRange(selectedGroupShapeList);
+                selectedGroup.Ungroup();
+                selectedChildShape.Delete();
+
+                ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop);
+                result[1].Name = originalGroupName;
+                slide.TransferAnimation(tempShapeForAnimation, result[1]);
+
+                tempShapeForAnimation.Delete();
+                return result;
             }
         }
     }

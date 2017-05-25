@@ -4,7 +4,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.PasteLab
 {
-    static internal class PasteAtPosition
+    static internal class PasteAtCursorPosition
     {
         public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, 
                                         ShapeRange pastingShapes, float positionX, float positionY)
