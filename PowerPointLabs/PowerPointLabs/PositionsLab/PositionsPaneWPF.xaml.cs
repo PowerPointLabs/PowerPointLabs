@@ -358,8 +358,17 @@ namespace PowerPointLabs.PositionsLab
 
         void _leftMouseUpListener_Rotation(object sender, SysMouseEventInfo e)
         {
-            _dispatcherTimer.Stop();
-            _selectedRange.Select();
+            try
+            {
+                _dispatcherTimer.Stop();
+                _selectedRange.Select();
+            }
+            catch (Exception ex)
+            {
+                rotationButton.IsChecked = false;
+                duplicateRotationButton.IsChecked = false;
+                Logger.LogException(ex, "Rotation");
+            }
         }
 
         void _leftMouseDownListener_Rotation(object sender, SysMouseEventInfo e)
