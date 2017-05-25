@@ -131,7 +131,8 @@ namespace PowerPointLabs.SyncLab.View
         public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape)
         {
             var selection = this.GetCurrentSelection();
-            if (selection.Type != PpSelectionType.ppSelectionShapes ||
+            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
+                selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
             {
                 MessageBox.Show(TextCollection.SyncLabPasteSelectError, TextCollection.SyncLabErrorDialogTitle);
@@ -203,13 +204,22 @@ namespace PowerPointLabs.SyncLab.View
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             var selection = this.GetCurrentSelection();
-            if (selection.Type != PpSelectionType.ppSelectionShapes ||
+            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
+                selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count != 1)
             {
                 MessageBox.Show(TextCollection.SyncLabCopySelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
             }
+
             var shape = selection.ShapeRange[1];
+            if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
+                shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
+                shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
+            {
+                MessageBox.Show(TextCollection.SyncLabCopyShapeError, TextCollection.SyncLabErrorDialogTitle);
+                return;
+            }
             Subscribe(ShowDialog(shape));
         }
         #endregion
