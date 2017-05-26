@@ -1486,7 +1486,8 @@ namespace PowerPointLabs
                     overlappingShapeZIndex = shape.ZOrderPosition;
                 }
             }
-            if (overlappingShape != null)
+            if (overlappingShape != null &&
+                overlappingShape.Visible == Office.MsoTriState.msoTrue)
             {
                 overlappingShape.Select();
             }
