@@ -1,5 +1,9 @@
 ﻿using System;
+
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Utils;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.CropLab
@@ -12,22 +16,25 @@ namespace PowerPointLabs.CropLab
         public static bool CropSelection(PowerPoint.ShapeRange shapeRange)
         {
             bool hasChange = false;
-            var refShape = shapeRange[1];
-            float refScaleWidth = Graphics.GetScaleWidth(refShape);
-            float refScaleHeight = Graphics.GetScaleHeight(refShape);
 
-            float cropTop = Math.Max(refShape.PictureFormat.CropTop, Epsilon);
-            float cropBottom = Math.Max(refShape.PictureFormat.CropBottom, Epsilon);
-            float cropLeft = Math.Max(refShape.PictureFormat.CropLeft, Epsilon);
-            float cropRight = Math.Max(refShape.PictureFormat.CropRight, Epsilon);
+            Shape refObj = shapeRange[1];
+            bool isRefObjShape = Graphics.IsShape(refObj);
+
+            float refScaleWidth = Graphics.GetScaleWidth(refObj);
+            float refScaleHeight = Graphics.GetScaleHeight(refObj);
+
+            float cropTop = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropTop, Epsilon);
+            float cropBottom = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropBottom, Epsilon);
+            float cropLeft = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropLeft, Epsilon);
+            float cropRight = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropRight, Epsilon);
 
             float refShapeCroppedHeight = cropTop + cropBottom;
             float refShapeCroppedWidth = cropLeft + cropRight;
 
             for (int i = 2; i <= shapeRange.Count; i++)
             {
-                float heightToCrop = shapeRange[i].Height - refShape.Height;
-                float widthToCrop = shapeRange[i].Width - refShape.Width;
+                float heightToCrop = shapeRange[i].Height - refObj.Height;
+                float widthToCrop = shapeRange[i].Width - refObj.Width;
                 if (heightToCrop <= 0 && widthToCrop <= 0)
                 {
                     continue;

@@ -27,7 +27,7 @@ namespace PowerPointLabs.ActionFramework.Action
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 2, errorHandler);
                 return;
             }
-            if (!IsAllPicture(shapeRange))
+            if (!IsAllPictureWithReferenceObject(shapeRange))
             {
                 HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;
