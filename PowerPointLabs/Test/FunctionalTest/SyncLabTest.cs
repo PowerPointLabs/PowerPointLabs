@@ -15,10 +15,17 @@ namespace Test.FunctionalTest
     [TestClass]
     public class SyncLabTest : BaseFunctionalTest
     {
-        private const string UnrotatedRectangle = "Rectangle 3";
-        private const string Oval = "Oval 4";
+        private const int OriginalSyncGroupToShapeSlideNo = 36;
+        private const int ExpectedSyncGroupToShapeSlideNo = 37;
+        private const int OriginalSyncShapeToGroupSlideNo = 38;
+        private const int ExpectedSyncShapeToGroupSlideNo = 39;
+
+        private const string Line = "Straight Connector 2";
         private const string RotatedArrow = "Right Arrow 5";
+        private const string Group = "Group 1";
+        private const string Oval = "Oval 4";
         private const string CopyFromShape = "CopyFrom";
+        private const string UnrotatedRectangle = "Rectangle 3";
 
         protected override string GetTestingSlideName()
         {
@@ -38,44 +45,61 @@ namespace Test.FunctionalTest
 
         private void TestErrorDialogs(ISyncLabController syncLab)
         {
-            PpOperations.SelectSlide(4);
+            PpOperations.SelectSlide(OriginalSyncGroupToShapeSlideNo);
 
-            // no selection
+            // no selection copy
             MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
-                "Please select one item to copy.", syncLab.Copy, "Ok");
+                "Please select one shape to copy.", syncLab.Copy, "Ok");
 
-            // 2 item selected
-            List<String> shapes = new List<string> { Oval, RotatedArrow };
+            // 2 item selected copy
+            List<String> shapes = new List<string> { Line, RotatedArrow };
             PpOperations.SelectShapes(shapes);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
-                "Please select one item to copy.", syncLab.Copy, "Ok");
+                "Please select one shape to copy.", syncLab.Copy, "Ok");
+
+            // group selected copy
+            PpOperations.SelectShape(Group);
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+                "Please select one shape to copy.", syncLab.Copy, "Ok");
 
             // copy blank item for the paste error dialog test
-            PpOperations.SelectShape(CopyFromShape);    
+            PpOperations.SelectShape(Line);    
             syncLab.Copy();
             syncLab.DialogClickOk();
 
-            PpOperations.SelectSlide(5);
+            // no selection sync
+            PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
                 "Please select at least one item to apply.", () => syncLab.Sync(0), "Ok");
         }
 
         private void TestSync(ISyncLabController syncLab)
         {
-            PpOperations.SelectSlide(4);
-            PpOperations.SelectShape(CopyFromShape);
+            Sync(syncLab, OriginalSyncGroupToShapeSlideNo, ExpectedSyncGroupToShapeSlideNo, CopyFromShape, RotatedArrow);
+            Sync(syncLab, OriginalSyncShapeToGroupSlideNo, ExpectedSyncShapeToGroupSlideNo, Line, Oval);
+        }
+
+        private void Sync(ISyncLabController syncLab, int originalSlide, int expectedSlide, string fromShape, string toShape)
+        {
+            PpOperations.SelectSlide(originalSlide);
+            PpOperations.SelectShape(fromShape);
 
             syncLab.Copy();
-            syncLab.DialogSelectItem(3, 2);
+            syncLab.DialogSelectItem(1, 0);
             syncLab.DialogClickOk();
 
-            PpOperations.SelectShape(UnrotatedRectangle);
+            PpOperations.SelectShape(toShape);
             syncLab.Sync(0);
 
-            var actualSlide = PpOperations.SelectSlide(4);
-            var actualShape = PpOperations.SelectShape(UnrotatedRectangle)[1];
-            var expectedSlide = PpOperations.SelectSlide(5);
-            var expectedShape = PpOperations.SelectShape(UnrotatedRectangle)[1];
+            IsSame(originalSlide, expectedSlide, toShape);
+        }
+
+        private void IsSame(int originalSlideNo, int expectedSlideNo, string shapeToCheck)
+        {
+            var actualSlide = PpOperations.SelectSlide(originalSlideNo);
+            var actualShape = PpOperations.SelectShape(shapeToCheck)[1];
+            var expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            var expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameShape(expectedShape, actualShape);
         }
