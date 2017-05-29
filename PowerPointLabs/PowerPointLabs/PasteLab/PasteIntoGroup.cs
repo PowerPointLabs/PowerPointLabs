@@ -11,7 +11,7 @@ namespace PowerPointLabs.PasteLab
     {
         public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide,
                                     ShapeRange selectedShapes, ShapeRange pastingShapes,
-                                    float? posLeft = null, float? posTop = null)
+                                    float? posLeft = null, float? posTop = null, int zOrder = 0)
         {
             Shape firstSelectedShape = selectedShapes[1];
             Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
@@ -42,8 +42,7 @@ namespace PowerPointLabs.PasteLab
             posLeft = posLeft ?? (selectionLeft + (selectionWidth - pastingShapes[1].Width) / 2);
             posTop = posTop ?? (selectionTop + (selectionHeight - pastingShapes[1].Height) / 2);
 
-            ShapeRange pastedShapes = PasteAtCursorPosition.Execute(presentation, slide, pastingShapes, posLeft.Value, posTop.Value);
-            pastedShapes.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            PasteAtCursorPosition.Execute(presentation, slide, pastingShapes, posLeft.Value, posTop.Value);
 
             List<Shape> shapesToGroupList = new List<Shape>();
             for (int i = 1; i <= selectedShapes.Count; i++)
@@ -60,8 +59,16 @@ namespace PowerPointLabs.PasteLab
             resultGroup.Name = originalGroupName ?? resultGroup.Name;
             slide.TransferAnimation(tempShapeForAnimation, resultGroup);
             Graphics.MoveZToJustInFront(resultGroup, tempShapeForAnimation);
-
             tempShapeForAnimation.Delete();
+            if (zOrder == 0)
+            {
+                pastingShapes.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            }
+            else
+            {
+                new PPShape(pastingShapes[1]).ZOrderPosition = zOrder;
+            }
+
             return slide.ToShapeRange(resultGroup);
         }
     }
