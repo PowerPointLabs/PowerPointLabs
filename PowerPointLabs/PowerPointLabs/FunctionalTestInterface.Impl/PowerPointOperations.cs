@@ -180,15 +180,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public ShapeRange SelectShape(string shapeName)
         {
             var nameList = new List<String>();
-            var shapes = FunctionalTestExtensions.GetCurrentSlide().Shapes;
-            foreach (Shape sh in shapes)
-            {
-                if (sh.Name == shapeName)
-                {
-                    nameList.Add(sh.Name);
-                    break;
-                }
-            }
+            nameList.Add(shapeName);
             return SelectShapes(nameList);
         }
 

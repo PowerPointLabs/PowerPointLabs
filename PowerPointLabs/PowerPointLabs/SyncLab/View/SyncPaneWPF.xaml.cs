@@ -138,7 +138,14 @@ namespace PowerPointLabs.SyncLab.View
                 MessageBox.Show(TextCollection.SyncLabPasteSelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
             }
-            ApplyFormats(nodes, formatShape, selection.ShapeRange);
+
+            var shapes = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
+            {
+                shapes = selection.ChildShapeRange;
+            }
+
+            ApplyFormats(nodes, formatShape, shapes);
         }
 
         private void Subscribe(SyncFormatDialog eventDialog)
@@ -213,11 +220,21 @@ namespace PowerPointLabs.SyncLab.View
             }
 
             var shape = selection.ShapeRange[1];
+            if (selection.HasChildShapeRange)
+            {
+                if (selection.ChildShapeRange.Count != 1)
+                {
+                    MessageBox.Show(TextCollection.SyncLabCopySelectError, TextCollection.SyncLabErrorDialogTitle);
+                    return;
+                }
+                shape = selection.ChildShapeRange[1];
+            }
+
             if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
             {
-                MessageBox.Show(TextCollection.SyncLabCopyShapeError, TextCollection.SyncLabErrorDialogTitle);
+                MessageBox.Show(TextCollection.SyncLabCopySelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
             }
             Subscribe(ShowDialog(shape));
