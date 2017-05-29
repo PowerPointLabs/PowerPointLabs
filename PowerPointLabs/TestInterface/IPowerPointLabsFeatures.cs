@@ -5,6 +5,9 @@ namespace TestInterface
     public interface IPowerPointLabsFeatures
     {
         void AutoCrop();
+        void AutoCropContextMenuShape();
+        void AutoCropContextMenuFreeform();
+        void AutoCropContextMenuGroup();
         void CropOutPadding();
         void CropToAspectRatioW1H10();
         void AutoAnimate();

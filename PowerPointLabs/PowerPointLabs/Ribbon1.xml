@@ -460,7 +460,7 @@
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetImage"
-                onAction="CropShapeButtonClick"/>
+                onAction="OnAction"/>
         <button id="fitToWidthShape"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -517,7 +517,7 @@
         <button id="cutOutShapeFreeform"
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetImage"
-                onAction="CropShapeButtonClick"/>
+                onAction="OnAction"/>
         <button id="fitToWidthFreeform"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -702,7 +702,7 @@
         <button id="cutOutShapeGroup"
                 getLabel="GetCutOutShapeShapeLabel"
                 getImage="GetImage"
-                onAction="CropShapeButtonClick"/>
+                onAction="OnAction"/>
         <button id="hideShapeGroup"
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"

@@ -23,6 +23,15 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
+        public void FT_AutoCropContextMenuTest()
+        {
+            CropOneShapeSuccessfully(isContextMenuAction: true);
+            CropMultipleShapesSuccessfully(isContextMenuAction: true);
+            CropRotatedShapeSuccessfully(isContextMenuAction: true);
+        }
+
+        [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoCropNegativeTest()
         {
             CropOnNothingUnsuccessfully();
@@ -31,13 +40,20 @@ namespace Test.FunctionalTest
 
         #region Positive Test Cases
 
-        public void CropOneShapeSuccessfully()
+        public void CropOneShapeSuccessfully(bool isContextMenuAction = false)
         {
             var actualSlide = PpOperations.SelectSlide(4);
             PpOperations.SelectShape("selectMe");
 
             // Execute the Crop To Shape feature
-            PplFeatures.AutoCrop();
+            if (isContextMenuAction)
+            {
+                PplFeatures.AutoCropContextMenuShape();
+            }
+            else
+            {
+                PplFeatures.AutoCrop();
+            }
 
             var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
             var resultShapeInPic = PpOperations.ExportSelectedShapes();
@@ -55,14 +71,21 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
-        public void CropMultipleShapesSuccessfully()
+        public void CropMultipleShapesSuccessfully(bool isContextMenuAction = false)
         {
             var actualSlide = PpOperations.SelectSlide(7);
             var shapesBeforeCrop = PpOperations.SelectShapesByPrefix("selectMe");
             Assert.AreEqual(6, shapesBeforeCrop.Count);
 
             // Execute the Crop To Shape feature
-            PplFeatures.AutoCrop();
+            if (isContextMenuAction)
+            {
+                PplFeatures.AutoCropContextMenuGroup();
+            }
+            else
+            {
+                PplFeatures.AutoCrop();
+            }
 
             // the result shape after crop multiple shapes will have name starts with
             // Group
@@ -82,13 +105,20 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
-        private void CropRotatedShapeSuccessfully()
+        private void CropRotatedShapeSuccessfully(bool isContextMenuAction = false)
         {
             var actualSlide = PpOperations.SelectSlide(10);
             PpOperations.SelectShape("selectMe");
 
             // Execute the Crop To Shape feature
-            PplFeatures.AutoCrop();
+            if (isContextMenuAction)
+            {
+                PplFeatures.AutoCropContextMenuShape();
+            }
+            else
+            {
+                PplFeatures.AutoCrop();
+            }
 
             var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
             var resultShapeInPic = PpOperations.ExportSelectedShapes();
