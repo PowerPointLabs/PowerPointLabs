@@ -15,19 +15,17 @@ namespace PowerPointLabs.SyncLab.View
     /// </summary>
     public partial class SyncFormatDialog : Window
     {
-        public delegate void OkButtonEventHandler(SyncFormatDialog dialog);
-        public event OkButtonEventHandler OkButtonClick;
         public FormatTreeNode[] Formats { get; private set; }
-        public Shape Shape { get; private set; }
 
         private string originalName;
-        private SyncPaneWPF parent;
 
-        public SyncFormatDialog(SyncPaneWPF parent, Shape shape, string formatName, FormatTreeNode[] formats)
+        public SyncFormatDialog(Shape shape) : this(shape, shape.Name, SyncFormatConstants.FormatCategories)
+        {
+        }
+
+        public SyncFormatDialog(Shape shape, string formatName, FormatTreeNode[] formats)
         {
             InitializeComponent();
-            this.parent = parent;
-            this.Shape = shape;
 
             formatName = formatName.Trim();
             if (SyncFormatUtil.IsValidFormatName(formatName))
@@ -106,15 +104,7 @@ namespace PowerPointLabs.SyncLab.View
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            OkButtonClick(this);
-            parent.Dialog = null;
-            this.Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            parent.Dialog = null;
-            this.Close();
+            this.DialogResult = true;
         }
 
         private void ScrollToTop()

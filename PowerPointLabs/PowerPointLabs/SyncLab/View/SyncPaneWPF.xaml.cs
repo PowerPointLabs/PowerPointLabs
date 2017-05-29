@@ -75,23 +75,6 @@ namespace PowerPointLabs.SyncLab.View
         {
             (formatListBox.Items[index] as SyncFormatPaneItem).Text = text;
         }
-
-        public SyncFormatDialog ShowDialog(Shape shape)
-        {
-            return ShowDialog(shape, shape.Name, SyncFormatConstants.FormatCategories);
-        }
-
-        public SyncFormatDialog ShowDialog(Shape shape, String formatName, FormatTreeNode[] formats)
-        {
-            if (Dialog != null)
-            {
-                Dialog.Close();
-            }
-
-            Dialog = new SyncFormatDialog(this, shape, formatName, formats);
-            Dialog.Show();
-            return Dialog;
-        }
         #endregion
 
         #region Sync API
@@ -148,17 +131,8 @@ namespace PowerPointLabs.SyncLab.View
             ApplyFormats(nodes, formatShape, shapes);
         }
 
-        private void Subscribe(SyncFormatDialog eventDialog)
+        private void AddFormatToList(Shape shape, string name, FormatTreeNode[] formats)
         {
-            eventDialog.OkButtonClick += new SyncFormatDialog.OkButtonEventHandler(AddFormatToList);
-        }
-
-        private void AddFormatToList(SyncFormatDialog eventDialog)
-        {
-            Shape shape = eventDialog.Shape;
-            string name = eventDialog.ObjectName;
-            FormatTreeNode[] formats = eventDialog.Formats;
-
             string shapeKey = CopyShape(shape);
             if (shapeKey == null)
             {
@@ -170,7 +144,6 @@ namespace PowerPointLabs.SyncLab.View
             item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToBitmap(shape));
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
-            eventDialog.OkButtonClick -= new SyncFormatDialog.OkButtonEventHandler(AddFormatToList);
             Dialog = null;
         }
 
@@ -237,7 +210,14 @@ namespace PowerPointLabs.SyncLab.View
                 MessageBox.Show(TextCollection.SyncLabCopySelectError, TextCollection.SyncLabErrorDialogTitle);
                 return;
             }
-            Subscribe(ShowDialog(shape));
+            Dialog = new SyncFormatDialog(shape);
+            Dialog.ObjectName = shape.Name;
+            bool? result = Dialog.ShowDialog();
+            if (!result.HasValue || !(bool)result)
+            {
+                return;
+            }
+            AddFormatToList(shape, Dialog.ObjectName, Dialog.Formats);
         }
         #endregion
 

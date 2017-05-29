@@ -15,6 +15,10 @@ namespace Test.FunctionalTest
     [TestClass]
     public class SyncLabTest : BaseFunctionalTest
     {
+        private const int MaxRetry = 5;
+        private const int CategoryIndexPosition = 0;
+        private const int FormatItemIndexPosition = 1;
+
         private const int OriginalSyncGroupToShapeSlideNo = 36;
         private const int ExpectedSyncGroupToShapeSlideNo = 37;
         private const int OriginalSyncShapeToGroupSlideNo = 38;
@@ -64,8 +68,7 @@ namespace Test.FunctionalTest
 
             // copy blank item for the paste error dialog test
             PpOperations.SelectShape(Line);    
-            syncLab.Copy();
-            syncLab.DialogClickOk();
+            CopyStyle(syncLab);
 
             // no selection sync
             PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
@@ -84,9 +87,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(originalSlide);
             PpOperations.SelectShape(fromShape);
 
-            syncLab.Copy();
-            syncLab.DialogSelectItem(1, 0);
-            syncLab.DialogClickOk();
+            CopyStyle(syncLab, 1, 0);
 
             PpOperations.SelectShape(toShape);
             syncLab.Sync(0);
@@ -102,6 +103,36 @@ namespace Test.FunctionalTest
             var expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameShape(expectedShape, actualShape);
+        }
+
+        private void CopyStyle(ISyncLabController syncLab)
+        {
+            new Task(() =>
+            {
+                ThreadUtil.WaitFor(1000);
+                syncLab.DialogClickOk();
+            }).Start();
+            syncLab.Copy();
+        }
+
+        private void CopyStyle(ISyncLabController syncLab, int categoryPosition, int itemPosition)
+        {
+            int[,] dialogItems = new int[,] { { categoryPosition, itemPosition } };
+            CopyStyle(syncLab, dialogItems);
+        }
+
+        private void CopyStyle(ISyncLabController syncLab, int[,] dialogItems)
+        {
+            new Task(() =>
+            {
+                ThreadUtil.WaitFor(1000);
+                for (int i = 0; i < dialogItems.GetLength(0); i++)
+                {
+                    syncLab.DialogSelectItem(dialogItems[i, CategoryIndexPosition], dialogItems[i, FormatItemIndexPosition]);
+                }
+                syncLab.DialogClickOk();
+            }).Start();
+            syncLab.Copy();
         }
     }
 }
