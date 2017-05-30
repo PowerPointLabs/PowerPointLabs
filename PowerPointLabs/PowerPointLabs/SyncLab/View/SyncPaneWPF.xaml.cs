@@ -144,7 +144,6 @@ namespace PowerPointLabs.SyncLab.View
             item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToBitmap(shape));
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
-            Dialog = null;
         }
 
         private void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)
@@ -218,6 +217,7 @@ namespace PowerPointLabs.SyncLab.View
                 return;
             }
             AddFormatToList(shape, Dialog.ObjectName, Dialog.Formats);
+            Dialog = null;
         }
         #endregion
 
