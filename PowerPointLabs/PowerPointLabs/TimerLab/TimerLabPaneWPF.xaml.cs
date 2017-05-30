@@ -323,6 +323,10 @@ namespace PowerPointLabs.TimerLab
                 ReformMissingComponents();
                 UpdateMarkerPosition();
                 UpdateSliderPosition();
+
+                WidthTextBox.Text = Math.Round(timerBody.Width).ToString();
+                HeightTextBox.Text = Math.Round(timerBody.Height).ToString();
+
                 ShowErrorMessageBox(TimerLabConstants.ErrorMessageOneTimerOnly);
             }
             else
