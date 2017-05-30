@@ -13,20 +13,27 @@ namespace PowerPointLabs.CropLab
 
         private const float Epsilon = 0.00001F; // Prevents divide by zero
 
-        public static bool CropSelection(PowerPoint.ShapeRange shapeRange)
+        public static bool CropSelection(ShapeRange shapeRange)
         {
             bool hasChange = false;
 
             Shape refObj = shapeRange[1];
-            bool isRefObjShape = Graphics.IsShape(refObj);
 
             float refScaleWidth = Graphics.GetScaleWidth(refObj);
             float refScaleHeight = Graphics.GetScaleHeight(refObj);
 
-            float cropTop = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropTop, Epsilon);
-            float cropBottom = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropBottom, Epsilon);
-            float cropLeft = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropLeft, Epsilon);
-            float cropRight = isRefObjShape ? Epsilon : Math.Max(refObj.PictureFormat.CropRight, Epsilon);
+            float cropTop = Epsilon;
+            float cropBottom = Epsilon;
+            float cropLeft = Epsilon;
+            float cropRight = Epsilon;
+
+            if (!Graphics.IsShape(refObj))
+            {
+                cropTop = Math.Max(refObj.PictureFormat.CropTop, Epsilon);
+                cropBottom = Math.Max(refObj.PictureFormat.CropBottom, Epsilon);
+                cropLeft = Math.Max(refObj.PictureFormat.CropLeft, Epsilon);
+                cropRight = Math.Max(refObj.PictureFormat.CropRight, Epsilon);
+            }
 
             float refShapeCroppedHeight = cropTop + cropBottom;
             float refShapeCroppedWidth = cropLeft + cropRight;
