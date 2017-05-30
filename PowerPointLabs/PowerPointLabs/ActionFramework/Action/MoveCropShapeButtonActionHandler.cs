@@ -7,7 +7,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
-    [ExportActionRibbonId("MoveCropShapeButton")]
+    [ExportActionRibbonId("MoveCropShapeButton", "cutOutShapeFreeform", "cutOutShapeGroup", "cutOutShapeShape")]
     class MoveCropShapeButtonActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Shape";

@@ -54,6 +54,33 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void AutoCropContextMenuShape()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("cutOutShapeShape");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void AutoCropContextMenuFreeform()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("cutOutShapeFreeform");
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void AutoCropContextMenuGroup()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("cutOutShapeGroup");
+                Ribbon.OnAction(control);
+            });
+        }
+
         public void CropOutPadding()
         {
             UIThreadExecutor.Execute(() =>
