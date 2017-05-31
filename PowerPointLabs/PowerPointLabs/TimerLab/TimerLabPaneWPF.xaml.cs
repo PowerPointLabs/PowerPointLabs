@@ -439,7 +439,23 @@ namespace PowerPointLabs.TimerLab
 
         private void WidthTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = IsNumbersOnly(e.Text);
+            e.Handled = !IsNumbersOnly(e.Text);
+        }
+
+        private void WidthTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!IsNumbersOnly(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
 
         private void WidthTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -499,7 +515,23 @@ namespace PowerPointLabs.TimerLab
 
         private void HeightTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            e.Handled = IsNumbersOnly(e.Text);
+            e.Handled = !IsNumbersOnly(e.Text);
+        }
+
+        private void HeightTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!IsNumbersOnly(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
 
         private void HeightTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -784,7 +816,7 @@ namespace PowerPointLabs.TimerLab
 
         private bool IsNumbersOnly(string text)
         {
-            Regex regex = new Regex("[^0-9]+");
+            Regex regex = new Regex("[0-9]+");
             return regex.IsMatch(text);
         }
         #endregion
