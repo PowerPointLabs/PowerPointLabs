@@ -1,5 +1,9 @@
 ﻿using System;
+
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Utils;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.CropLab
@@ -9,25 +13,35 @@ namespace PowerPointLabs.CropLab
 
         private const float Epsilon = 0.00001F; // Prevents divide by zero
 
-        public static bool CropSelection(PowerPoint.ShapeRange shapeRange)
+        public static bool CropSelection(ShapeRange shapeRange)
         {
             bool hasChange = false;
-            var refShape = shapeRange[1];
-            float refScaleWidth = Graphics.GetScaleWidth(refShape);
-            float refScaleHeight = Graphics.GetScaleHeight(refShape);
 
-            float cropTop = Math.Max(refShape.PictureFormat.CropTop, Epsilon);
-            float cropBottom = Math.Max(refShape.PictureFormat.CropBottom, Epsilon);
-            float cropLeft = Math.Max(refShape.PictureFormat.CropLeft, Epsilon);
-            float cropRight = Math.Max(refShape.PictureFormat.CropRight, Epsilon);
+            Shape refObj = shapeRange[1];
+
+            float refScaleWidth = Graphics.GetScaleWidth(refObj);
+            float refScaleHeight = Graphics.GetScaleHeight(refObj);
+
+            float cropTop = Epsilon;
+            float cropBottom = Epsilon;
+            float cropLeft = Epsilon;
+            float cropRight = Epsilon;
+
+            if (!Graphics.IsShape(refObj))
+            {
+                cropTop = Math.Max(refObj.PictureFormat.CropTop, Epsilon);
+                cropBottom = Math.Max(refObj.PictureFormat.CropBottom, Epsilon);
+                cropLeft = Math.Max(refObj.PictureFormat.CropLeft, Epsilon);
+                cropRight = Math.Max(refObj.PictureFormat.CropRight, Epsilon);
+            }
 
             float refShapeCroppedHeight = cropTop + cropBottom;
             float refShapeCroppedWidth = cropLeft + cropRight;
 
             for (int i = 2; i <= shapeRange.Count; i++)
             {
-                float heightToCrop = shapeRange[i].Height - refShape.Height;
-                float widthToCrop = shapeRange[i].Width - refShape.Width;
+                float heightToCrop = shapeRange[i].Height - refObj.Height;
+                float widthToCrop = shapeRange[i].Width - refObj.Width;
                 if (heightToCrop <= 0 && widthToCrop <= 0)
                 {
                     continue;

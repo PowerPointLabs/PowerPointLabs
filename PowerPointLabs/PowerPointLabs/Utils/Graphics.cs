@@ -552,6 +552,11 @@ namespace PowerPointLabs.Utils
 
         public static float GetScaleWidth(Shape shape)
         {
+            if (IsShape(shape))
+            {
+                return 1.0f;
+            }
+
             var isAspectRatioLocked = shape.LockAspectRatio;
             shape.LockAspectRatio = MsoTriState.msoFalse;
 
@@ -567,6 +572,11 @@ namespace PowerPointLabs.Utils
 
         public static float GetScaleHeight(Shape shape)
         {
+            if (IsShape(shape))
+            {
+                return 1.0f;
+            }
+
             var isAspectRatioLocked = shape.LockAspectRatio;
             shape.LockAspectRatio = MsoTriState.msoFalse;
 

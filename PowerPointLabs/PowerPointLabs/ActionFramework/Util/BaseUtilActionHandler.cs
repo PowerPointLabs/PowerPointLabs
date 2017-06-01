@@ -28,6 +28,22 @@ namespace PowerPointLabs.ActionFramework.Util
             return (from Shape shape in shapeRange select shape).All(IsPicture);
         }
 
+        protected static bool IsAllPictureWithReferenceObject(ShapeRange shapeRange)
+        {
+            if (!IsPictureOrShape(shapeRange[1]))
+            {
+                return false;
+            }
+            for (int i = 2; i <= shapeRange.Count; i++)
+            {
+                if (!IsPicture(shapeRange[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         protected static bool IsAllShape(ShapeRange shapeRange)
         {
             return (from Shape shape in shapeRange select shape).All(IsShape);
