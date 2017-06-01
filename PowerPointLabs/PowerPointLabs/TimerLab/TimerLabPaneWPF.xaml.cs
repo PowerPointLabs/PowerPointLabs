@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
@@ -441,9 +442,25 @@ namespace PowerPointLabs.TimerLab
             WidthTextBox.Text = TimerLabConstants.DefaultTimerWidth.ToString();
         }
 
-        private void WidthTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void WidthTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsNumbersOnly(e.Text);
+            e.Handled = !IsNumbersOnly(e.Text);
+        }
+
+        private void WidthTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!IsNumbersOnly(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
 
         private void WidthTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -501,9 +518,25 @@ namespace PowerPointLabs.TimerLab
             HeightTextBox.Text = TimerLabConstants.DefaultTimerHeight.ToString();
         }
 
-        private void HeightTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void HeightTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsNumbersOnly(e.Text);
+            e.Handled = !IsNumbersOnly(e.Text);
+        }
+
+        private void HeightTextBox_TextBoxPasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(String)))
+            {
+                String text = (String)e.DataObject.GetData(typeof(String));
+                if (!IsNumbersOnly(text))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
 
         private void HeightTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -788,7 +821,7 @@ namespace PowerPointLabs.TimerLab
 
         private bool IsNumbersOnly(string text)
         {
-            Regex regex = new Regex("[^0-9]+");
+            Regex regex = new Regex("[0-9]+");
             return regex.IsMatch(text);
         }
         #endregion
