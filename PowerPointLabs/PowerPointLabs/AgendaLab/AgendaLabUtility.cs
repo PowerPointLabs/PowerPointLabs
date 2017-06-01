@@ -144,7 +144,7 @@ namespace PowerPointLabs.AgendaLab
 
                 for (var i = 1; i <= sectionProperty.Count; i++)
                 {
-                    sections.Add(new AgendaSection(sectionProperty.Name(i), i));
+                    sections.Add(AgendaSection.FromSectionName(sectionProperty.Name(i), i));
                 }
                 return sections;
             }
@@ -164,6 +164,18 @@ namespace PowerPointLabs.AgendaLab
         private static int NumberOfSections
         {
             get { return PowerPointPresentation.Current.Sections.Count; }
+        }
+
+        private static int MaximumSubsectionLevel
+        {
+            get
+            {
+                var section = Sections;
+                return section.Max<AgendaSection>((current) =>
+                {
+                    return current.Level;
+                });
+            }
         }
 
         private static PowerPointSlide FindSectionFirstNonAgendaSlide(int sectionIndex)

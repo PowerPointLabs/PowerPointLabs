@@ -35,27 +35,45 @@ namespace PowerPointLabs.AgendaLab
         #region Bullet Formats
         private struct BulletFormats
         {
-            public readonly TextRange2 Visited;
-            public readonly TextRange2 Highlighted;
-            public readonly TextRange2 Unvisited;
+            public readonly TextRange2[] VisitedStyles;
+            public readonly TextRange2[] HighlightedStyles;
+            public readonly TextRange2[] UnvisitedStyles;
 
-            private BulletFormats(TextRange2 visited, TextRange2 highlighted, TextRange2 unvisited)
+            private BulletFormats(TextRange2[] visited, TextRange2[] highlighted, TextRange2[] unvisited)
             {
-                Visited = visited;
-                Highlighted = highlighted;
-                Unvisited = unvisited;
+                VisitedStyles = visited;
+                HighlightedStyles = highlighted;
+                UnvisitedStyles = unvisited;
             }
 
-            /// <summary>
-            /// Assumes the number of paragraphs >= 3.
-            /// The check should have been done before this function is called.
-            /// </summary>
-            public static BulletFormats ExtractFormats(Shape contentShape)
+            public static BulletFormats ExtractFormats(Shape contentShape, int numSublevels)
             {
                 var paragraphs = contentShape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
-                return new BulletFormats(paragraphs[0],
-                                        paragraphs[1],
-                                        paragraphs[2]);
+                int stylesPerType = paragraphs.Count / 3;
+
+                var bulletStyles = new TextRange2[3][]
+                {
+                    new TextRange2[numSublevels],
+                    new TextRange2[numSublevels],
+                    new TextRange2[numSublevels]
+                };
+
+                for (int type = 0; type < 3; type++)
+                {
+                    for (int level = 0; level < numSublevels; level++)
+                    {
+                        if (level >= stylesPerType)
+                        {
+                            bulletStyles[type][level] = paragraphs[type * stylesPerType];
+                        }
+                        else
+                        {
+                            bulletStyles[type][level] = paragraphs[(type * stylesPerType) + level];
+                        }
+                    }
+                }
+
+                return new BulletFormats(bulletStyles[0], bulletStyles[1], bulletStyles[2]);
             }
         }
         #endregion
@@ -470,15 +488,39 @@ namespace PowerPointLabs.AgendaLab
             var contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
+            var maxLevel = MaximumSubsectionLevel;
+
+            List<string> placeholderList = new List<string>();
+
+            int[] placeholderColors =
+            {
+                Graphics.ConvertColorToRgb(Color.Gray),
+                Graphics.ConvertColorToRgb(Color.Red),
+                Graphics.ConvertColorToRgb(Color.Black)
+            };
+
+            foreach (string placeholder in TextCollection.AgendaLabBulletTextStrings)
+            {
+                for (int i = 0; i < maxLevel; i++)
+                {
+                    placeholderList.Add(placeholder);
+                }
+            }
+
             Graphics.SetText(titleShape, TextCollection.AgendaLabTitleContent);
-            Graphics.SetText(contentShape, TextCollection.AgendaLabBulletVisitedContent,
-                                            TextCollection.AgendaLabBulletHighlightedContent,
-                                            TextCollection.AgendaLabBulletUnvisitedContent);
+            Graphics.SetText(contentShape, placeholderList);
 
             var paragraphs = Graphics.GetParagraphs(contentShape);
-            paragraphs[0].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Gray);
-            paragraphs[1].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Red);
-            paragraphs[2].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Black);
+
+            for (int type = 0; type < TextCollection.AgendaLabBulletTextStrings.Length; type++)
+            {
+                for (int level = 0; level < maxLevel; level++)
+                {
+                    var paragraphIndex = (maxLevel * type) + level;
+                    paragraphs[paragraphIndex].ParagraphFormat.IndentLevel = level + 1;
+                    paragraphs[paragraphIndex].Font.Fill.ForeColor.RGB = placeholderColors[type];
+                }
+            }
 
             AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Bullet);
             refSlide.AddTemplateSlideMarker();
@@ -666,24 +708,45 @@ namespace PowerPointLabs.AgendaLab
         private static void AdjustBulletReferenceSlideContent(PowerPointSlide refSlide)
         {
             int numberOfSections = NumberOfSections;
+            int maxLevel = MaximumSubsectionLevel;
+            int numBullets = maxLevel * 3;
+            var placeholderStrings = TextCollection.AgendaLabBulletTextStrings;
 
             // post process bullet points
             var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var textRange = contentHolder.TextFrame2.TextRange;
 
-            while (textRange.Paragraphs.Count < numberOfSections)
+            for (int type = 0; type < 3; type++)
             {
-                textRange.InsertAfter("\r ");
+                for (int level = 1; level <= maxLevel; level++)
+                {
+                    int index = (type * maxLevel) + level;
+
+                    if (textRange.Paragraphs.Count < index)
+                    {
+                        textRange.InsertAfter(String.Format("{0} \r", placeholderStrings[type]));
+                        textRange.Paragraphs[index].ParagraphFormat.IndentLevel = level;
+                    }
+                    else if (textRange.Paragraphs[index].ParagraphFormat.IndentLevel != level)
+                    {
+                        if (textRange.Paragraphs.Count < numBullets)
+                        {
+                            textRange.Paragraphs[index].InsertBefore(String.Format("{0} \r", placeholderStrings[type]));       
+                        }
+
+                        textRange.Paragraphs[index].Text = placeholderStrings[type];
+                        textRange.Paragraphs[index].ParagraphFormat.IndentLevel = level;
+                    }
+                    else
+                    {
+                        textRange.Paragraphs[index].Text = placeholderStrings[type];
+                    }
+                }
             }
 
-            while (textRange.Paragraphs.Count > 3 && textRange.Paragraphs.Count > numberOfSections)
+            while (textRange.Paragraphs.Count > numBullets + 1)
             {
                 textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
-            }
-
-            for (var i = 4; i <= textRange.Paragraphs.Count; i++)
-            {
-                textRange.Paragraphs[i].ParagraphFormat.Bullet.Type = MsoBulletType.msoBulletNone;
             }
         }
 

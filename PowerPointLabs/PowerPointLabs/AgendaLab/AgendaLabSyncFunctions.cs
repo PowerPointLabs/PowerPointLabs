@@ -70,11 +70,12 @@ namespace PowerPointLabs.AgendaLab
         private static void SyncBulletAgendaSlide(PowerPointSlide refSlide, List<AgendaSection> sections,
             AgendaSection currentSection, List<string> deletedShapeNames, PowerPointSlide targetSlide)
         {
+            var maxDepth = MaximumSubsectionLevel;
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
 
             var referenceContentShape = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
-            var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
+            var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape, maxDepth);
 
             Graphics.SetText(targetContentShape, sections.Where(section => section.Index > 1)
                 .Select(section => section.Name));
@@ -92,6 +93,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void ApplyBulletFormats(TextRange2 textRange, BulletFormats bulletFormats, AgendaSection currentSection)
         {
+            var section = Sections;
             // - 1 because first section in agenda is at index 2 (exclude first section)
             int focusIndex = currentSection.IsNone() ? int.MaxValue : currentSection.Index - 1;
 
@@ -103,16 +105,18 @@ namespace PowerPointLabs.AgendaLab
 
                 if (i == focusIndex)
                 {
-                    Graphics.SyncTextRange(bulletFormats.Highlighted, currentParagraph, pickupTextContent: false);
+                    Graphics.SyncTextRange(bulletFormats.HighlightedStyles[section[i].Level - 1], currentParagraph, pickupTextContent: false);
                 }
                 else if (i < focusIndex)
                 {
-                    Graphics.SyncTextRange(bulletFormats.Visited, currentParagraph, pickupTextContent: false);
+                    Graphics.SyncTextRange(bulletFormats.VisitedStyles[section[i].Level - 1], currentParagraph, pickupTextContent: false);
                 }
                 else
                 {
-                    Graphics.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
+                    Graphics.SyncTextRange(bulletFormats.UnvisitedStyles[section[i].Level - 1], currentParagraph, pickupTextContent: false);
                 }
+
+                currentParagraph.ParagraphFormat.IndentLevel = section[i].Level;
             }
         }
 
