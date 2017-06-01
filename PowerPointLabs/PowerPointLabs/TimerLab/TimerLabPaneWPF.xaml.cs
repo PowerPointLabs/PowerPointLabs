@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
@@ -437,7 +438,7 @@ namespace PowerPointLabs.TimerLab
             WidthTextBox.Text = TimerLabConstants.DefaultTimerWidth.ToString();
         }
 
-        private void WidthTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void WidthTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsNumbersOnly(e.Text);
         }
@@ -513,7 +514,7 @@ namespace PowerPointLabs.TimerLab
             HeightTextBox.Text = TimerLabConstants.DefaultTimerHeight.ToString();
         }
 
-        private void HeightTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        private void HeightTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsNumbersOnly(e.Text);
         }
