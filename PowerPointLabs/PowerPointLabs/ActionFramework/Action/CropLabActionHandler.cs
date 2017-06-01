@@ -48,7 +48,7 @@ namespace PowerPointLabs.ActionFramework.Action
             aspectRatioWidth = 0.0f;
             aspectRatioHeight = 0.0f;
 
-            string pattern = @"(\d+):(\d+)";
+            string pattern = @"(\d*\.?\d*):(\d*\.?\d*)";
             Match matches = Regex.Match(aspectRatioString, pattern);
             if (!matches.Success)
             {
