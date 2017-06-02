@@ -67,9 +67,10 @@ namespace PowerPointLabs.ColorPicker
                 // Make window click-through
                 int extendedStyle = Native.GetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE);
                 Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_EXSTYLE,
-                                                extendedStyle |
-                                                (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT |
-                                                (int)Native.ExtendedWindowStyles.WS_EX_LAYERED);
+                                    extendedStyle |
+                                    (int)Native.ExtendedWindowStyles.WS_EX_TRANSPARENT |
+                                    (int)Native.ExtendedWindowStyles.WS_EX_LAYERED |
+                                    (int)Native.ExtendedWindowStyles.WS_EX_TOOLWINDOW);
                 Native.SetWindowLong(hwndParent.Handle, (int)Native.WindowLong.GWL_STYLE, (int)Native.WindowStyles.WS_POPUP);
 
                 // Must be transparent for Magnification to work

@@ -75,6 +75,11 @@ namespace PPExtraEventHelper
             }
         }
 
+        public static void StopAllActions()
+        {
+            LeftButtonUp?.Invoke();
+        }
+
         private static bool IsHookSuccessful()
         {
             return hook != 0;
