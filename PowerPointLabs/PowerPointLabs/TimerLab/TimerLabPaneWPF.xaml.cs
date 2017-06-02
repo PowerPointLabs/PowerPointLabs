@@ -403,6 +403,7 @@ namespace PowerPointLabs.TimerLab
             {
                 ReformMissingComponents();
                 RecreateMarkers();
+                AdjustZOrder();
                 UpdateSliderPosition();
                 UpdateSliderAnimationDuration();
             }
