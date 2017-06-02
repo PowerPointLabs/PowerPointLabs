@@ -13,7 +13,7 @@
              Width="200" 
              Height="200" 
              Loaded="MagnifierOverlay_Loaded" 
-             Deactivated="MagnifierMainWindow_Deactivated">
+             Deactivated="MagnifierOverlay_Deactivated">
     <Window.Background>
         <SolidColorBrush Color="White" Opacity="0"/>
     </Window.Background>

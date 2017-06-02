@@ -24,7 +24,7 @@ namespace PowerPointLabs.ColorPicker
                                 extendedStyle | (int)Native.ExtendedWindowStyles.WS_EX_TOOLWINDOW);
         }
 
-        private void MagnifierMainWindow_Deactivated(object sender, System.EventArgs e)
+        private void MagnifierOverlay_Deactivated(object sender, System.EventArgs e)
         {
             PPMouse.StopAllActions();
         }
