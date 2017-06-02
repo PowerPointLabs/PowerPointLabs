@@ -11,7 +11,9 @@
              WindowStartupLocation="Manual"
              WindowStyle="None"
              Width="200" 
-             Height="200">
+             Height="200" 
+             Loaded="MagnifierOverlay_Loaded" 
+             Deactivated="MagnifierOverlay_Deactivated">
     <Window.Background>
         <SolidColorBrush Color="White" Opacity="0"/>
     </Window.Background>
