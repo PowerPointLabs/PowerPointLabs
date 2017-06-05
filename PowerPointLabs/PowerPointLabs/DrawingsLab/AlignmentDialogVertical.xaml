@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dataSources="clr-namespace:PowerPointLabs.DataSources"
-             xmlns:converters="clr-namespace:PowerPointLabs.Converters"
+             xmlns:converters="clr-namespace:PowerPointLabs.Converters.DrawingsLab"
              mc:Ignorable="d" 
              Title="Input" WindowStartupLocation="CenterScreen"
              ResizeMode="NoResize"

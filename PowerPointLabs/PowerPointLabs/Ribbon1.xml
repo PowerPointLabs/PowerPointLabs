@@ -21,6 +21,7 @@
            getLabel="GetPowerPointLabsAddInsTabLabel">
         <group id="AutoMotionGroup"
                getLabel="GetAnimationLabGroupLabel"
+               getImage="GetImage"
                visible ="true">
           <button id="AddAnimationButton"
                   getLabel="GetAddAnimationButtonLabel"
@@ -43,6 +44,7 @@
         </group>
         <group id="ZoomLabGroup"
                getLabel="GetZoomLabGroupLabel"
+               getImage="GetImage"
                visible ="true">
           <button id="AddZoomInButton"
                  getLabel ="GetAddZoomInButtonLabel"
@@ -70,18 +72,9 @@
                     onAction="ZoomLabDialogButtonPressed"/>
           </dialogBoxLauncher>
         </group>
-        <group id="CropLabGroup"
-               getLabel="GetCropLabGroupLabel"
-               visible="true">
-          <button id="MoveCropShapeButton"
-                  getLabel ="GetMoveCropShapeButtonLabel"
-                  size ="large"
-                  getImage="GetCropShapeImage"
-                  getSupertip="GetMoveCropShapeButtonSupertip"
-                  onAction="CropShapeButtonClick"/>
-        </group>
         <group id="embedAudio"
-               getLabel="GetEmbedAudioGroupLabel">
+               getLabel="GetEmbedAudioGroupLabel"
+               getImage="GetImage">
           <splitButton id="addAudioSplit" size="large">
             <button id="AddAudioButton"
                   getLabel="GetAddAudioButtonLabel"
@@ -116,7 +109,8 @@
           </dialogBoxLauncher>
         </group>
         <group id="embedCaptions"
-               getLabel="GetEmbedCaptionGroupLabel">
+               getLabel="GetEmbedCaptionGroupLabel"
+               getImage="GetImage">
           <button id="AddCaptionsButton"
                   getLabel="GetAddCaptionsButtonLabel"
                   keytip="CA"
@@ -142,6 +136,7 @@
         </group>
         <group id="HighlightBullets"
                getLabel="GetHighlightLabGroupLabel"
+               getImage="GetImage"
                visible="true">
           <splitButton id ="addSpotlight" size ="large">  
             <button id="AddSpotlightButton"
@@ -178,6 +173,12 @@
                   getSupertip="GetHighlightTextFragmentsButtonSupertip"
                   getEnabled="OnGetEnabledHighlightTextFragments"
                   onAction="HighlightTextFragmentsButtonClick"/>
+          <button id="RemoveHighlightButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <dialogBoxLauncher>
             <button id="HighlightBulletsDialogBox"
                     onAction="HighlightBulletsDialogBoxPressed"/>
@@ -185,6 +186,7 @@
         </group>
         <group id="Labs"
                getLabel="GetLabsGroupLabel"
+               getImage="GetImage"
                visible="true">
           <button id="ColorsLabButton"
                   getLabel="GetLabel"
@@ -200,11 +202,11 @@
                   onAction="PictureSlidesLabButtonClick"
                   />
           <button id="ShapesLabButton"
-                  getLabel="GetCustomeShapeButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
-                  getImage="GetShapesLabImage"
-                  getSupertip="GetCustomeShapeButtonSupertip"
-                  onAction="CustomShapeButtonClick"/>
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <menu id="EffectLabsMenu"
                 getLabel="GetEffectsLabButtonLabel"
                 getImage="GetEffectsLabImage"
@@ -311,6 +313,12 @@
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
           </menu>
+          <button id="TimerLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
           <button id="DrawingsLabButton"
                   visible="false"
                   getLabel="GetDrawingsLabButtonLabel"
@@ -319,22 +327,66 @@
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
           <button id="PositionsLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
           <button id="ResizeLabButton"
-                  visible="false"
+                  visible="true"
                   getLabel="GetLabel"
                   size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
+          <button id="SyncLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+          <menu id="CropLabMenu"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  size="large">
+                <button id="MoveCropShapeButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <button id="CropToSlideButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <button id="CropToSameButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <dynamicMenu id="CropToAspectRatioDynamicMenu"
+                        getContent="GetContent"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"/>
+                <button id="CropOutPaddingButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+                <menuSeparator id="CropLabSettingsSeparator"/>
+                <button id="CropLabSettingsButton"
+                        getLabel="GetLabel"
+                        getImage="GetImage"
+                        getSupertip="GetSupertip"
+                        onAction="onAction"/>
+            </menu>
         </group>
         <group id="PPTLabsHelp"
                getLabel="GetPPTLabsHelpGroupLabel"
+               getImage="GetImage"
                visible="true">
           <button id="HelpButton"
                   getLabel="GetHelpButtonLabel"
@@ -401,14 +453,14 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeShape"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShape"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeShape"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
-                onAction="CropShapeButtonClick"/>
+                getImage="GetImage"
+                onAction="OnAction"/>
         <button id="fitToWidthShape"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -421,6 +473,26 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteToFillSlideShape"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtCursorPositionShape"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtOriginalPositionShape"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="ReplaceWithClipboard"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
@@ -438,14 +510,14 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeFreeform"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeFreeform"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeFreeform"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
-                onAction="CropShapeButtonClick"/>
+                getImage="GetImage"
+                onAction="OnAction"/>
         <button id="fitToWidthFreeform"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -458,6 +530,26 @@
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteToFillSlideFreeform"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtCursorPositionFreeform"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtOriginalPositionFreeform"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="ReplaceWithClipboardFreeform"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
@@ -477,6 +569,10 @@
                getImage="GetZoomOutContextImage"
                getEnabled="OnGetEnabledZoomButton"
                onAction="AddZoomOutButtonClick"/>
+        <button id="AddCustomShapePicture"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="fitToWidthPicture"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -485,14 +581,30 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 onAction="OnAction"/>
-        <button id="addCustomShapePicture"
-                getLabel ="GetAddCustomShapeShapeLabel"
-                getImage="GetAddToCustomShapeContextImage"
-                onAction="AddShapeButtonClick"/>
         <button id="hideShape"
                getLabel ="GetHideSelectedShapeLabel"
                getImage="GetHideShapeImage"
                onAction="HideShapeButtonClick"/>
+        <button id="PasteToFillSlidePicture"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtCursorPositionPicture"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtOriginalPositionPicture"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="ReplaceWithClipboardPicture"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
@@ -506,10 +618,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeChart"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeChart"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="fitToWidthChart"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -535,10 +647,10 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 onAction="OnAction"/>
-        <button id="addCustomShapeTable"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeTable"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
@@ -578,18 +690,43 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapePictureGroup"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="MergeIntoGroup"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getEnabled="GetEnabled"
+                onAction="OnAction"/>
+        <button id="AddCustomShapeGroup"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
         <button id="cutOutShapeGroup"
                 getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
-                onAction="CropShapeButtonClick"/>
+                getImage="GetImage"
+                onAction="OnAction"/>
         <button id="hideShapeGroup"
               getLabel ="GetHideSelectedShapeLabel"
               getImage="GetHideShapeImage"
               onAction="HideShapeButtonClick"/>
+        <button id="PasteToFillSlideGroup"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtCursorPositionGroup"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtOriginalPositionGroup"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteIntoGroup"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getEnabled="GetEnabled"
+                onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
@@ -603,10 +740,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeInk"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeInk"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
@@ -620,10 +757,10 @@
                getLabel ="GetConvertToPictureShapeLabel"
                getImage="GetConvertToPicMenuImage"
                onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeSmartArt"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
+        <button id="AddCustomShapeSmartArt"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuThumbnail">
@@ -819,7 +956,22 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuFrame">
 	    <menuSeparator id="separatorFrame" />
-	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="true">
+        <button id="PasteToFillSlide"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtCursorPosition"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
+        <button id="PasteAtOriginalPosition"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                getLabel="GetLabel"
+                onAction="OnAction"/>
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuGraphicOleClassic">

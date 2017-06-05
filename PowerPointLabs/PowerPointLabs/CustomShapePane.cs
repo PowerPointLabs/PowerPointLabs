@@ -6,11 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
-using PPExtraEventHelper;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+using PPExtraEventHelper;
+
 using Font = System.Drawing.Font;
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Point = System.Drawing.Point;
@@ -255,6 +257,30 @@ namespace PowerPointLabs
 
             _firstTimeLoading = false;
         }
+        #endregion
+
+        #region Functional Test APIs
+
+        public LabeledThumbnail GetLabeledThumbnail(string labelName)
+        {
+            return FindLabeledThumbnail(labelName);
+        }
+
+        public void ImportLibrary(string pathToLibrary)
+        {
+            ImportShapes(pathToLibrary, fromLibrary: true);
+        }
+
+        public void ImportShape(string pathToShape)
+        {
+            ImportShapes(pathToShape, fromLibrary: false);
+        }
+
+        public Presentation GetShapeGallery()
+        {
+            return Globals.ThisAddIn.ShapePresentation.Presentation;
+        }
+
         # endregion
 
         # region Helper Functions
@@ -362,7 +388,10 @@ namespace PowerPointLabs
                                                                (current, fileName) =>
                                                                ImportShapes(fileName, false) && current);
 
-            if (!importSuccess) return;
+            if (!importSuccess)
+            {
+                return;
+            }
             
             PaneReload(true);
             MessageBox.Show(TextCollection.CustomShapeImportSuccess);
@@ -584,7 +613,10 @@ namespace PowerPointLabs
             {
                 var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
 
-                if (control == null) continue;
+                if (control == null)
+                {
+                    continue;
+                }
 
                 // skip itself
                 if (control.NameLable == name)
@@ -627,7 +659,10 @@ namespace PowerPointLabs
 
         private void FirstClickOnThumbnail(LabeledThumbnail clickedThumbnail)
         {
-            if (_selectedThumbnail == null) return;
+            if (_selectedThumbnail == null)
+            {
+                return;
+            }
 
             if (_selectedThumbnail.Count != 0)
             {
@@ -780,19 +815,13 @@ namespace PowerPointLabs
         {
             var shapeRange = importShapeGallery.Slides[0].Shapes.Range();
 
-            if (shapeRange.Count < 1) return;
+            if (shapeRange.Count < 1)
+            {
+                return;
+            }
 
             var shapeName = shapeRange[1].Name;
-
-            if (shapeRange.Count > 1)
-            {
-                shapeName = TextCollection.CustomShapeDefaultShapeName;
-                importShapeGallery.CopyShape();
-            }
-            else
-            {
-                importShapeGallery.CopyShape(shapeName);
-            }
+            importShapeGallery.CopyShape(shapeName);
 
             shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
             var exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
@@ -846,7 +875,10 @@ namespace PowerPointLabs
         private void MultiSelectClickHandler(LabeledThumbnail clickedThumbnail)
         {
             if (MouseButtons != MouseButtons.Left &&
-                MouseButtons != MouseButtons.Right) return;
+                MouseButtons != MouseButtons.Right)
+            {
+                return;
+            }
 
             // for right click, if selection > 1, the context menu should appear with selection
             // remained, else we should change the focus. Specially, when selection > 1, some of
@@ -993,7 +1025,10 @@ namespace PowerPointLabs
 
         private void RenameThumbnail(string oldName, LabeledThumbnail labeledThumbnail)
         {
-            if (oldName == labeledThumbnail.NameLable) return;
+            if (oldName == labeledThumbnail.NameLable)
+            {
+                return;
+            }
 
             var newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLable);
 
@@ -1048,7 +1083,10 @@ namespace PowerPointLabs
             var comboBox = sender as ComboBox;
 
             if (comboBox == null ||
-                e.Index == -1) return;
+                e.Index == -1)
+            {
+                return;
+            }
 
             var font = comboBox.Font;
             var text = (string)_categoryBinding[e.Index];
@@ -1094,7 +1132,10 @@ namespace PowerPointLabs
         {
             var item = sender as ToolStripItem;
 
-            if (item == null) return;
+            if (item == null)
+            {
+                return;
+            }
 
             var categoryName = item.Text;
 
@@ -1211,7 +1252,10 @@ namespace PowerPointLabs
                 
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
-                    if (!(control is LabeledThumbnail)) continue;
+                    if (!(control is LabeledThumbnail))
+                    {
+                        continue;
+                    }
 
                     var labeledThumbnail = control as LabeledThumbnail;
                     var labeledThumbnailRect =
@@ -1303,7 +1347,10 @@ namespace PowerPointLabs
             }
 
             // only first click will be entertained
-            if (!_firstClick) return;
+            if (!_firstClick)
+            {
+                return;
+            }
 
             myShapeFlowLayout.Focus();
 
@@ -1351,7 +1398,10 @@ namespace PowerPointLabs
             // goes wrong.
             if (labeledThumbnail == null ||
                 (_selectedThumbnail.Count != 0 &&
-                labeledThumbnail != _selectedThumbnail[0])) return;
+                labeledThumbnail != _selectedThumbnail[0]))
+            {
+                return;
+            }
 
             // if name changed, rename the shape in shape gallery and the file on disk
             RenameThumbnail(oldName, labeledThumbnail);
@@ -1388,7 +1438,10 @@ namespace PowerPointLabs
         {
             var item = sender as ToolStripItem;
 
-            if (item == null) return;
+            if (item == null)
+            {
+                return;
+            }
 
             var categoryName = item.Text;
 
@@ -1532,30 +1585,6 @@ namespace PowerPointLabs
             }
         }
         */
-        # endregion
-
-        # region Functional Test APIs
-
-        public LabeledThumbnail GetLabeledThumbnail(string labelName)
-        {
-            return FindLabeledThumbnail(labelName);
-        }
-
-        public void ImportLibrary(string pathToLibrary)
-        {
-            ImportShapes(pathToLibrary, fromLibrary: true);
-        }
-
-        public void ImportShape(string pathToShape)
-        {
-            ImportShapes(pathToShape, fromLibrary: false);
-        }
-
-        public Presentation GetShapeGallery()
-        {
-            return Globals.ThisAddIn.ShapePresentation.Presentation;
-        }
-
         # endregion
     }
 }

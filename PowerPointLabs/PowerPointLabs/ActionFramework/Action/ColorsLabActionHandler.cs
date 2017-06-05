@@ -11,9 +11,9 @@ namespace PowerPointLabs.ActionFramework.Action
         {
             var colorPane = 
                 this.RegisterTaskPane(typeof(ColorPane), TextCollection.ColorsLabTaskPanelTitle);
-            if (colorPane != null && !colorPane.Visible)
+            if (colorPane != null)
             {
-                colorPane.Visible = true;
+                colorPane.Visible = !colorPane.Visible;
             }
         }
     }

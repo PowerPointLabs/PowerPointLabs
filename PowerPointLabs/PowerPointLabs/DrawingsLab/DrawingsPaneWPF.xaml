@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:converters="clr-namespace:PowerPointLabs.Converters"
+             xmlns:converters="clr-namespace:PowerPointLabs.Converters.DrawingsLab"
              xmlns:dataSources="clr-namespace:PowerPointLabs.DataSources"
              xmlns:cc="clr-namespace:PowerPointLabs.WPF"
              x:Class="PowerPointLabs.DrawingsLab.DrawingsPaneWPF"

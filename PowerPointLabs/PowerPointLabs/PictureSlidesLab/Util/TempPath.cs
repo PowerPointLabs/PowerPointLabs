@@ -20,6 +20,18 @@ namespace PowerPointLabs.PictureSlidesLab.Util
 
         private static bool _isInit;
 
+        public static string GetPath(string name)
+        {
+            if (!_isInit)
+            {
+                throw new Exception("TempPath is not initialized!");
+            }
+            var fullsizeImageFile = TempFolder + name + "_"
+                                    + Guid.NewGuid().ToString().Substring(0, 6)
+                                    + DateTime.Now.GetHashCode();
+            return fullsizeImageFile;
+        }
+
         /// <returns>is successful</returns>
         public static bool InitTempFolder()
         {
@@ -64,26 +76,24 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             return true;
         }
 
-        public static string GetPath(string name)
-        {
-            if (!_isInit)
-            {
-                throw new Exception("TempPath is not initialized!");
-            }
-            var fullsizeImageFile = TempFolder + name + "_"
-                                    + Guid.NewGuid().ToString().Substring(0, 6)
-                                    + DateTime.Now.GetHashCode();
-            return fullsizeImageFile;
-        }
-
         private static void Empty(DirectoryInfo directory)
         {
-            if (!directory.Exists) return;
+            if (!directory.Exists)
+            {
+                return;
+            }
 
             try
             {
-                foreach (FileInfo file in directory.GetFiles()) file.Delete();
-                foreach (DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    file.Delete();
+                }
+
+                foreach (DirectoryInfo subDirectory in directory.GetDirectories())
+                {
+                    subDirectory.Delete(true);
+                }
             }
             catch (Exception)
             {

@@ -30,7 +30,10 @@ namespace PowerPointLabs.AgendaLab
             get
             {
                 if (PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionSlides)
+                {
                     return new List<PowerPointSlide>();
+                }
+
                 return PowerPointPresentation.Current.SelectedSlides;
             }
         }
@@ -44,7 +47,10 @@ namespace PowerPointLabs.AgendaLab
             get
             {
                 var slides = PowerPointPresentation.Current.SelectedSlides;
-                if (slides.Count == 0) return null;
+                if (slides.Count == 0)
+                {
+                    return null;
+                }
                 return slides[0];
             }
         }
@@ -80,7 +86,10 @@ namespace PowerPointLabs.AgendaLab
         private static Type GetReferenceSlideType()
         {
             var referenceSlide = FindReferenceSlide();
-            if (referenceSlide == null) return Type.None;
+            if (referenceSlide == null)
+            {
+                return Type.None;
+            }
             return AgendaSlide.Decode(referenceSlide).AgendaType;
         }
 
@@ -90,8 +99,16 @@ namespace PowerPointLabs.AgendaLab
                                                     .Slides
                                                     .FirstOrDefault(slide => AgendaSlide.IsAnyAgendaSlide(slide) ||
                                                                              HasBeamShape(slide));
-            if (agendaSlide == null) return Type.None;
-            if (HasBeamShape(agendaSlide)) return Type.Beam;
+            if (agendaSlide == null)
+            {
+                return Type.None;
+            }
+
+            if (HasBeamShape(agendaSlide))
+            {
+                return Type.Beam;
+            }
+
             return AgendaSlide.Decode(agendaSlide).AgendaType;
         }
 
@@ -102,8 +119,16 @@ namespace PowerPointLabs.AgendaLab
         private static PowerPointSlide TryFindSuitableRefSlide(Type type)
         {
             var firstSlide = PowerPointPresentation.Current.FirstSlide;
-            if (firstSlide == null) return null;
-            if (InvalidReferenceSlide(type, firstSlide)) return null;
+            if (firstSlide == null)
+            {
+                return null;
+            }
+
+            if (InvalidReferenceSlide(type, firstSlide))
+            {
+                return null;
+            }
+
             return firstSlide;
         }
 
@@ -152,7 +177,10 @@ namespace PowerPointLabs.AgendaLab
             while (AgendaSlide.IsAnyAgendaSlide(slide))
             {
                 currentIndex++;
-                if (currentIndex > slideCount) return null;
+                if (currentIndex > slideCount)
+                {
+                    return null;
+                }
 
                 slide = presentation.GetSlide(currentIndex);
             }
@@ -169,7 +197,10 @@ namespace PowerPointLabs.AgendaLab
             while (AgendaSlide.IsAnyAgendaSlide(slide))
             {
                 currentIndex--;
-                if (currentIndex <= 0) return null;
+                if (currentIndex <= 0)
+                {
+                    return null;
+                }
 
                 slide = presentation.GetSlide(currentIndex);
             }
@@ -193,8 +224,16 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static PowerPointSlide TryGetSlideAtIndex(int index)
         {
-            if (index > PowerPointPresentation.Current.SlideCount) return null;
-            if (index < 1) return null;
+            if (index > PowerPointPresentation.Current.SlideCount)
+            {
+                return null;
+            }
+
+            if (index < 1)
+            {
+                return null;
+            }
+
             return PowerPointPresentation.Current.GetSlide(index);
         }
 
@@ -254,7 +293,10 @@ namespace PowerPointLabs.AgendaLab
                 lastSlideIndex = sectionProperties.FirstSlide(sectionIndex + 1) - 1;
             }
 
-            if (lastSlideIndex <= -1) lastSlideIndex = -1;
+            if (lastSlideIndex <= -1)
+            {
+                lastSlideIndex = -1;
+            }
             return lastSlideIndex;
         }
 
@@ -267,7 +309,10 @@ namespace PowerPointLabs.AgendaLab
 
             int firstSlideIndex = SectionFirstSlideIndex(section);
             int lastSlideIndex = SectionLastSlideIndex(section);
-            if (firstSlideIndex == -1 || lastSlideIndex == -1) return new List<PowerPointSlide>();
+            if (firstSlideIndex == -1 || lastSlideIndex == -1)
+            {
+                return new List<PowerPointSlide>();
+            }
 
             return slides.GetRange(firstSlideIndex - 1, lastSlideIndex - firstSlideIndex + 1);
         }

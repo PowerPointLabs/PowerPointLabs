@@ -68,11 +68,11 @@ namespace Test.FunctionalTest
             shapesLab.SaveSelectedShapes();
 
             var actualSlide = PpOperations.SelectSlide(4);
-            var addedThumbnail = shapesLab.GetLabeledThumbnail("My Shape Untitled");
+            var addedThumbnail = shapesLab.GetLabeledThumbnail("selectMe1");
             addedThumbnail.FinishNameEdit();
             // add shapes back
             DoubleClick(addedThumbnail as Control);
-            var shapes = PpOperations.SelectShapesByPrefix("Group My Shape");
+            var shapes = PpOperations.SelectShapesByPrefix("Group selectMe1");
             Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
                                             "UI test is flaky, pls re-run.");
 

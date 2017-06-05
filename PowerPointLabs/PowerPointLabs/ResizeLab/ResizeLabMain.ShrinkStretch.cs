@@ -1,6 +1,6 @@
-﻿using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Utils;
+﻿using PowerPointLabs.Utils;
 
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
 {
