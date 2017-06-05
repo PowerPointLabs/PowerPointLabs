@@ -5,7 +5,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles GetContent call
     /// </summary>
-    public abstract class ContentHandler : BaseHandler
+    public abstract class ContentHandler
     {
         public string Get(string ribbonId)
         {

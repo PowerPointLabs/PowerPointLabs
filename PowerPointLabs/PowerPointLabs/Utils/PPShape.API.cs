@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-
 using Microsoft.Office.Core;
-
+using System.Drawing;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using System.Collections.Generic;
 
 namespace PowerPointLabs.Utils
 {
@@ -424,27 +422,9 @@ namespace PowerPointLabs.Utils
         public List<PointF> Points => _points;
 
         /// <summary>
-        /// Return or set the position of the specified shape in the z-order
-        /// Read/write
+        /// Returns the position of the specified shape in the z-order. Read-only.
         /// </summary>
-        public int ZOrderPosition
-        {
-            get { return _shape.ZOrderPosition; }
-            set
-            {
-                while (_shape.ZOrderPosition != value)
-                {
-                    if (_shape.ZOrderPosition < value)
-                    {
-                        _shape.ZOrder(MsoZOrderCmd.msoBringForward);
-                    }
-                    else if (_shape.ZOrderPosition > value)
-                    {
-                        _shape.ZOrder(MsoZOrderCmd.msoSendBackward);
-                    }
-                }
-            }
-        }
+        public int ZOrderPosition => _shape.ZOrderPosition;
 
         #endregion
 
@@ -507,34 +487,11 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// Swap Z order of the two PPShapes
-        /// </summary>
-        public void SwapZOrder(PPShape shape)
-        {
-            int originalZOrder = _shape.ZOrderPosition;
-            int targetZOrder = shape.ZOrderPosition;
-
-            ZOrderPosition = targetZOrder;
-            shape.ZOrderPosition = originalZOrder;
-        }
-
-        /// <summary>
-        /// Swap Z order of the with a shape
-        /// </summary>
-        public void SwapZOrder(PowerPoint.Shape shape)
-        {
-            SwapZOrder(new PPShape(shape, false));
-        }
-
-        /// <summary>
         /// Reset the nodes to corresponding original rotation.
         /// </summary>
         public void ResetNodes()
         {
-            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1)
-            {
-                return;
-            }
+            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1) return;
 
             var isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
                                          (_originalRotation >= 270 && _originalRotation < 360);

@@ -27,9 +27,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 if (shape.Type != MsoShapeType.msoPlaceholder
                     || shape.TextFrame.HasText == MsoTriState.msoFalse)
-                {
                     continue;
-                }
 
                 switch (shape.PlaceholderFormat.Type)
                 {

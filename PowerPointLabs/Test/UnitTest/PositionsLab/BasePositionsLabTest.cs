@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-
-using Microsoft.Office.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.PositionsLab;
-using PowerPointLabs.Utils;
-
+using Test.Util;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ResizeLab;
+using PowerPointLabs.Utils;
+using System;
+using PowerPointLabs.PositionsLab;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using System.Diagnostics;
 
 namespace Test.UnitTest.PositionsLab
 {
@@ -46,7 +46,6 @@ namespace Test.UnitTest.PositionsLab
 
                 selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
-                SwapZOrder(selectedShape, simulatedShape);
             }
         }
 
@@ -281,13 +280,6 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-
-                // set the zOrder
-                for (int i = 1; i <= selectedShapes.Count; i++)
-                {
-                    SwapZOrder(simulatedShapes[i], selectedShapes[i]);
-                }
-
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -427,30 +419,6 @@ namespace Test.UnitTest.PositionsLab
             {
                 throw ex;
             }
-        }
-
-        private void UpdateZOrder(Shape original, int zOrder)
-        {
-            while (original.ZOrderPosition != zOrder)
-            {
-                if (original.ZOrderPosition < zOrder)
-                {
-                    original.ZOrder(MsoZOrderCmd.msoBringForward);
-                }
-                else if (original.ZOrderPosition > zOrder)
-                {
-                    original.ZOrder(MsoZOrderCmd.msoSendBackward);
-                }
-            }
-        }
-
-        private void SwapZOrder(Shape original, Shape target)
-        {
-            int originalZOrder = original.ZOrderPosition;
-            int targetZOrder = target.ZOrderPosition;
-
-            UpdateZOrder(original, targetZOrder);
-            UpdateZOrder(target, originalZOrder);
         }
     }
 }

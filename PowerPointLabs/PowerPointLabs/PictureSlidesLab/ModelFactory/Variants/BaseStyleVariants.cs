@@ -13,6 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
         [ImportMany("GeneralVariantWorker", typeof(IVariantWorker))]
         private IEnumerable<Lazy<IVariantWorker, IGeneralVariantWorkerOrderMetadata>> ImportedGeneralVariantWorkers { get; set; }
 
+        protected abstract IList<IVariantWorker> GetRequiredVariantWorkers();
+
         public abstract string GetStyleName();
 
         public Dictionary<string, List<StyleVariant>> GetVariantsForStyle()
@@ -29,7 +31,5 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
                 worker => worker.GetVariantName(), 
                 worker => worker.GetVariants());
         }
-
-        protected abstract IList<IVariantWorker> GetRequiredVariantWorkers();
     }
 }

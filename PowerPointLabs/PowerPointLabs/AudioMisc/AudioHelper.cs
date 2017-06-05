@@ -2,12 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-
 using Microsoft.Office.Core;
-using NAudio.Wave;
-using PowerPointLabs.Models;
 using PPExtraEventHelper;
-
+using PowerPointLabs.Models;
+using NAudio.Wave;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.AudioMisc

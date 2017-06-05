@@ -12,9 +12,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
-            {
                 return;
-            }
 
             var margin = CalculateTextBoxMargin(fontSizeToIncrease);
             // multiple paragraphs.. 
@@ -51,9 +49,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
-            {
                 return null;
-            }
 
             TextBoxes.AddMargin(tbInfo);
 

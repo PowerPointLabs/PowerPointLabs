@@ -6,24 +6,18 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.AudioMisc
 {
-    public class Audio
+    internal class Audio
     {
-
         public enum AudioType
         {
             Record,
-            Auto,
-            Unrecognized
+            Auto
         }
 
         public const int GeneratedSamplingRate = 22050;
         public const int RecordedSamplingRate = 11025;
         public const int GeneratedBitRate = 16;
-        public const int RecordedBitRate = 16;
-        public const int GeneratedChannels = 1;
-        public const int RecordedChannels = 1;
-        public const string RecordedFormatName = "WAVE";
-        public const string RecordedFormatExtension = "wav";
+        public const int RecordedBitRate = 8;
 
         public string Name { get; set; }
         public int MatchScriptID { get; set; }
@@ -32,18 +26,11 @@ namespace PowerPointLabs.AudioMisc
         public int LengthMillis { get; set; }
         public AudioType Type { get; set; }
 
-        // Tag key to store audio type in shape
-        private const string AudioTypeTagName = "AUDIO_TAG";
-
         /// <summary>
         /// Default constructor.
         /// </summary>
         public Audio() {}
 
-
-        /// <summary>
-        /// Initialize Audio from sound file
-        /// </summary>
         public Audio(string name, string saveName, int matchScriptID)
         {
             Name = name;
@@ -52,53 +39,6 @@ namespace PowerPointLabs.AudioMisc
             LengthMillis = AudioHelper.GetAudioLength(saveName);
             Length = AudioHelper.ConvertMillisToTime(LengthMillis);
             Type = AudioHelper.GetAudioType(saveName);
-        }
-
-        /// <summary>
-        /// Initialize Audio from a sound shape
-        /// </summary>
-        public Audio(Shape shape, string saveName)
-        {
-            // detect audio type from shape tag
-            AudioType audioType = GetShapeAudioType(shape);
-            this.Type = audioType;
-
-            // derive matched id from shape name
-            var temp = shape.Name.Split(new[] { ' ' });
-            if (temp.Length < 3)
-            {
-                throw new FormatException(TextCollection.RecorderUnrecognizeAudio);
-            }
-            this.MatchScriptID = Int32.Parse(temp[2]);
-
-            // get corresponding audio
-            this.Name = shape.Name;
-            this.SaveName = saveName;
-            this.Length = AudioHelper.GetAudioLengthString(saveName);
-            this.LengthMillis = AudioHelper.GetAudioLength(saveName);
-        }
-
-        public static AudioType GetShapeAudioType(Shape shape)
-        {
-            AudioType audioType = AudioType.Unrecognized;
-            if (!Enum.TryParse<AudioType>(shape.Tags[AudioTypeTagName], out audioType))
-            {
-                // Maintain backwards compatibility with old audio shapes
-                // which still use sampling rate to store
-                switch (shape.MediaFormat.AudioSamplingRate)
-                {
-                    case GeneratedSamplingRate:
-                        audioType = AudioType.Auto;
-                        break;
-                    case RecordedSamplingRate:
-                        audioType = AudioType.Record;
-                        break;
-                    default:
-                        audioType = AudioType.Unrecognized;
-                        break;
-                }
-            }
-            return audioType;
         }
 
         // before we embed we need to check if we have any old shape on the slide. If
@@ -134,9 +74,6 @@ namespace PowerPointLabs.AudioMisc
                     slide.DeleteShapesWithPrefixTimelineInvariant(Name);
 
                     audioShape.Name = shapeName;
-                    
-                    // tag item with type
-                    audioShape.Tags.Add(AudioTypeTagName, Type.ToString());
                 }
                 catch (COMException)
                 {

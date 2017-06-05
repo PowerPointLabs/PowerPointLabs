@@ -22,8 +22,10 @@ namespace PowerPointLabs.PictureSlidesLab.View.ImageAdjustment
                     FrameworkPropertyMetadataOptions.AffectsRender,
                     null,
                     new CoerceValueCallback(CoerceRectInterior),
-                    false),
-                null);
+                    false
+                ),
+                null
+            );
 
         private static object CoerceRectInterior(DependencyObject d, object value)
         {
@@ -59,8 +61,10 @@ namespace PowerPointLabs.PictureSlidesLab.View.ImageAdjustment
                     FrameworkPropertyMetadataOptions.AffectsRender,
                     null,
                     null,
-                    false),
-                null);
+                    false
+                ),
+                null
+            );
 
         public Rect RectExterior
         {

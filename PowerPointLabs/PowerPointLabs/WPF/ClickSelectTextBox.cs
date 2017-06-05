@@ -25,9 +25,7 @@ namespace PowerPointLabs.WPF
             // Find the TextBox
             DependencyObject parent = e.OriginalSource as UIElement;
             while (parent != null && !(parent is TextBox))
-            {
                 parent = VisualTreeHelper.GetParent(parent);
-            }
 
             if (parent != null)
             {
@@ -46,9 +44,7 @@ namespace PowerPointLabs.WPF
         {
             var textBox = e.OriginalSource as TextBox;
             if (textBox != null)
-            {
                 textBox.SelectAll();
-            }
         }
     }
 }

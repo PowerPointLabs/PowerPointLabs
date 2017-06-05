@@ -38,6 +38,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
     public partial class PictureSlidesLabWindow : IPictureSlidesLabWindowView
     {
         # region Props & States
+        // View model that contains the presenting logic
+        private PictureSlidesLabWindowViewModel ViewModel { set; get; }
+
         // UI model used to adjust image offset
         public AdjustImageWindow CropWindow { get; set; }
 
@@ -48,13 +51,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         // indicate to add-in that whether the window is open
         public bool IsOpen { get; set; }
 
-        public bool IsVariationsFlyoutOpen { get; private set; }
-
         // indicate that whether the window is closing
         private bool IsClosing { get; set; }
 
-        // View model that contains the presenting logic
-        private PictureSlidesLabWindowViewModel ViewModel { set; get; }
+        public bool IsVariationsFlyoutOpen { get; private set; }
 
         // used to indicate right-click item
         private int _clickedImageSelectionItemIndex = -1;
@@ -249,19 +249,13 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                if (args == null)
-                {
-                    return;
-                }
+                if (args == null) return;
 
                 Logger.Log("Drop enter");
                 if (args.Data.GetDataPresent("FileDrop"))
                 {
                     var filenames = (args.Data.GetData("FileDrop") as string[]);
-                    if (filenames == null || filenames.Length == 0)
-                    {
-                        return;
-                    }
+                    if (filenames == null || filenames.Length == 0) return;
 
                     ViewModel.AddImageSelectionListItem(filenames,
                         this.GetCurrentSlide().GetNativeSlide(),
@@ -387,10 +381,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                if (IsDisposed)
-                {
-                    return;
-                }
+                if (IsDisposed) return;
 
                 _lastSelectedSlideIndex = this.GetCurrentSlide().Index;
 
@@ -639,10 +630,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             var item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) 
                 as ListBoxItem;
-            if (item == null || item.Content == null)
-            {
-                return;
-            }
+            if (item == null || item.Content == null) return;
 
             if (e.RightButton == MouseButtonState.Pressed)
             {
@@ -651,10 +639,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 {
                     var listBoxItem = ImageSelectionListBox.ItemContainerGenerator.ContainerFromIndex(i) 
                         as ListBoxItem;
-                    if (listBoxItem == null)
-                    {
-                        continue;
-                    }
+                    if (listBoxItem == null) continue;
 
                     if (IsMouseOverTarget(listBoxItem, e.GetPosition(listBoxItem)))
                     {
@@ -712,15 +697,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (_clickedImageSelectionItemIndex < 0
                 || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
-            {
                 return;
-            }
 
             var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
-            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
-            {
-                return;
-            }
+            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
             AdjustImageDimensions(selectedImage);
         }
@@ -741,10 +721,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             else
             {
                 var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
-                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
-                {
-                    return;
-                }
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
                 AdjustImageDimensions(selectedImage);
             }
@@ -754,15 +731,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (_clickedImageSelectionItemIndex < 0
                 || _clickedImageSelectionItemIndex > ImageSelectionListBox.Items.Count)
-            {
                 return;
-            }
 
             var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
-            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
-            {
-                return;
-            }
+            if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
             EditPictureSource(selectedImage);
         }
@@ -783,10 +755,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             else
             {
                 var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
-                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
-                {
-                    return;
-                }
+                if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath) return;
 
                 EditPictureSource(selectedImage);
             }
@@ -937,15 +906,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             if (_clickedImageSelectionItemIndex < 1 
                 || _clickedImageSelectionItemIndex >= ImageSelectionListBox.Items.Count)
-            {
                 return;
-            }
 
             var selectedImage = (ImageItem) ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
-            if (selectedImage == null)
-            {
-                return;
-            }
+            if (selectedImage == null) return;
 
             ViewModel.ImageSelectionList.RemoveAt(_clickedImageSelectionItemIndex);
             HandleDeletePictureInPictureVariation();
@@ -956,9 +920,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
             var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
             if (selectedImage == null
                 || ImageSelectionListBox.SelectedIndex == 0)
-            {
                 return;
-            }
 
             ViewModel.ImageSelectionList.RemoveAt(ImageSelectionListBox.SelectedIndex);
             HandleDeletePictureInPictureVariation();
@@ -1122,10 +1084,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (IsVariationsFlyoutOpen)
-                {
-                    return;
-                }
+                if (IsVariationsFlyoutOpen) return;
 
                 var left2RightToShowTranslate = new TranslateTransform { X = -StylesPreviewGrid.ActualWidth };
                 StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
@@ -1144,10 +1103,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void CloseVariationsFlyout()
         {
-            if (!IsVariationsFlyoutOpen)
-            {
-                return;
-            }
+            if (!IsVariationsFlyoutOpen) return;
 
             var right2LeftToHideTranslate = new TranslateTransform();
             StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
@@ -1184,10 +1140,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                if (!_isEnableUpdatePreview)
-                {
-                    return;
-                }
+                if (!_isEnableUpdatePreview) return;
 
                 if (IsVariationsFlyoutOpen && isEnteringPictureVariation)
                 {

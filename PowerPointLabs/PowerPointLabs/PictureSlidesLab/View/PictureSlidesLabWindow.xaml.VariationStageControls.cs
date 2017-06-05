@@ -38,10 +38,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void VariantsColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var panel = sender as Border;
-            if (panel == null)
-            {
-                return;
-            }
+            if (panel == null) return;
 
             var colorDialog = new ColorDialog
             {
@@ -109,10 +106,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         #region Helper funcs
         private void UpdateVariantFontPanelVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null)
-            {
-                return;
-            }
+            if (VariantsComboBox.SelectedValue == null) return;
 
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
@@ -132,10 +126,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdateVariantsColorPanelVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null)
-            {
-                return;
-            }
+            if (VariantsComboBox.SelectedValue == null) return;
 
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
@@ -155,10 +146,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdateVariantsSliderVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null)
-            {
-                return;
-            }
+            if (VariantsComboBox.SelectedValue == null) return;
 
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
@@ -178,10 +166,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdatePictureAspectRefreshButtonVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null)
-            {
-                return;
-            }
+            if (VariantsComboBox.SelectedValue == null) return;
 
             var currentCategory = (string) VariantsComboBox.SelectedValue;
             if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)

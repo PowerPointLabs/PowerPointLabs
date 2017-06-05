@@ -18,10 +18,7 @@ namespace PowerPointLabs
 
         public static void AddZoomToArea()
         {
-            if (!IsSelectingShapes())
-            {
-                return;
-            }
+            if (!IsSelectingShapes()) return;
 
             try
             {
@@ -36,10 +33,7 @@ namespace PowerPointLabs
                 List<PowerPoint.Shape> editedSelectedShapes = GetEditedShapesForZoomToArea(currentSlide, zoomRectangles);
 
                 var addedSlides = AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
-                if (!multiSlideZoomChecked)
-                {
-                    Graphics.SquashSlides(addedSlides);
-                }
+                if (!multiSlideZoomChecked) Graphics.SquashSlides(addedSlides);
 
                 MakeVisible(zoomRectangles);
 
@@ -100,10 +94,7 @@ namespace PowerPointLabs
                     magnifyingSlide.Delete();
                     magnifiedSlide.MoveTo(magnifiedPanSlide.Index);
                     if (deMagnifyingSlide != null)
-                    {
                         deMagnifyingSlide.MoveTo(magnifiedSlide.Index);
-                    }
-
                     lastMagnifiedSlide = magnifiedSlide;
                 }
                 else
@@ -179,34 +170,18 @@ namespace PowerPointLabs
             LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomShapeCopy);
 
             if (zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
-            {
                 zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth;
-            }
-
             if (zoomShapeCopy.Height > PowerPointPresentation.Current.SlideHeight)
-            {
                 zoomShapeCopy.Height = PowerPointPresentation.Current.SlideHeight;
-            }
 
             if (zoomShapeCopy.Left < 0)
-            {
                 zoomShapeCopy.Left = 0;
-            }
-
             if (zoomShapeCopy.Left + zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
-            {
                 zoomShapeCopy.Left = PowerPointPresentation.Current.SlideWidth - zoomShapeCopy.Width;
-            }
-
             if (zoomShapeCopy.Top < 0)
-            {
                 zoomShapeCopy.Top = 0;
-            }
-
             if (zoomShapeCopy.Top + zoomShapeCopy.Height > PowerPointPresentation.Current.SlideHeight)
-            {
                 zoomShapeCopy.Top = PowerPointPresentation.Current.SlideHeight - zoomShapeCopy.Height;
-            }
 
             return zoomShapeCopy;
         }

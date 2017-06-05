@@ -1,45 +1,14 @@
 ﻿using System;
 using System.Drawing;
-
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using TestInterface;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
 {
     [Serializable]
     class PowerPointLabsFeatures : MarshalByRefObject, IPowerPointLabsFeatures
     {
-        public IColorsLabController ColorsLab
-        {
-            get { return ColorsLabController.Instance; }
-        }
-
-        public IShapesLabController ShapesLab
-        {
-            get { return ShapesLabController.Instance; }
-        }
-
-        public IPositionsLabController PositionsLab
-        {
-            get { return PositionsLabController.Instance; }
-        }
-
-        public IHighlightLabController HighlightLab
-        {
-            get { return HighlightLabController.Instance; }
-        }
-
-        public ISyncLabController SyncLab
-        {
-            get { return SyncLabController.Instance; }
-        }
-
-        public ITimerLabController TimerLab
-        {
-            get { return TimerLabController.Instance; }
-        }
-
         private Ribbon1 Ribbon
         {
             get { return FunctionalTestExtensions.GetRibbonUi(); }
@@ -49,67 +18,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("MoveCropShapeButton");
-                Ribbon.OnAction(control);
+                Ribbon.CropShapeButtonClick(new RibbonControl("AutoCrop"));
             });
-        }
-
-        public void AutoCropContextMenuShape()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("cutOutShapeShape");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void AutoCropContextMenuFreeform()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("cutOutShapeFreeform");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void AutoCropContextMenuGroup()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("cutOutShapeGroup");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void CropOutPadding()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("CropOutPaddingButton");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void CropToAspectRatioW1H10()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("CropToAspectRatioOption1_10");
-                control.Tag = "CropToAspectRatio";
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void CropToSlide()
-        {
-            var control = new RibbonControl("CropToSlideButton");
-            Ribbon.OnAction(control);
-        }
-
-        public void CropToSame()
-        {
-            var control = new RibbonControl("CropToSameButton");
-            Ribbon.OnAction(control);
         }
 
         public void AutoAnimate()
@@ -386,49 +296,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void PasteToFillSlide()
+        public IColorsLabController ColorsLab
         {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("PasteToFillSlide");
-                Ribbon.OnAction(control);
-            });
+            get { return ColorsLabController.Instance; }
         }
 
-        public void PasteAtCursorPosition()
+        public IShapesLabController ShapesLab
         {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("PasteAtCursorPosition");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void PasteAtOriginalPosition()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("PasteAtOriginalPosition");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void PasteIntoGroup()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("PasteIntoGroup");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void ReplaceWithClipboard()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("ReplaceWithClipboard");
-                Ribbon.OnAction(control);
-            });
+            get { return ShapesLabController.Instance; }
         }
     }
 }

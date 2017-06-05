@@ -37,7 +37,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return null;
         }
 
-        public Panel GetFontColorButton()
+        public Button GetFontColorButton()
         {
             if (_pane != null)
             {
@@ -46,7 +46,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return null;
         }
 
-        public Panel GetLineColorButton()
+        public Button GetLineColorButton()
         {
             if (_pane != null)
             {
@@ -55,11 +55,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return null;
         }
 
-        public Panel GetFillColorButton()
+        public Button GetFillCollorButton()
         {
             if (_pane != null)
             {
-                return _pane.GetFillColorButton();
+                return _pane.GetFillCollorButton();
             }
             return null;
         }

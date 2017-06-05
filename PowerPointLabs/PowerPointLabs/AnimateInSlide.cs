@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-
+using System.Runtime.InteropServices;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using Office = Microsoft.Office.Core;
@@ -91,9 +90,7 @@ namespace PowerPointLabs
                 PowerPoint.Shape shape2 = shapesToAnimate[num + 1];
 
                 if (shape1 == null || shape2 == null)
-                {
                     return;
-                }
 
                 if (!isHighlightTextFragments)
                 {
@@ -119,7 +116,7 @@ namespace PowerPointLabs
                         PowerPoint.MsoAnimTriggerType.msoAnimTriggerAfterPrevious);
                 }
                 PowerPoint.Effect shape1Disappear = currentSlide.TimeLine.MainSequence.AddEffect(
-                        Utils.Graphics.IsStraightLine(shape1) ? shape1.ParentGroup : shape1,
+                        shape1,
                         PowerPoint.MsoAnimEffect.msoAnimEffectFade,
                         PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
                         PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
@@ -158,7 +155,6 @@ namespace PowerPointLabs
 
             if ((frameAnimationChecked && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
                 || ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
-                || (!Utils.Graphics.IsStraightLine(shape1) && (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip))
                 || finalFont != initialFont)
             {
                 return true;

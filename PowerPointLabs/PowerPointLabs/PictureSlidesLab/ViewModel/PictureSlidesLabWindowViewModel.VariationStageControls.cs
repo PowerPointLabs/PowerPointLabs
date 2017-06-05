@@ -1,9 +1,7 @@
 ﻿using System.Windows.Media;
-
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Utils;
-
 using Color = System.Drawing.Color;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {
@@ -18,10 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #region Binding funcs for color panel
         public void BindStyleToColorPanel()
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
@@ -70,10 +65,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #region Binding funcs for font panel
         public void BindStyleToFontPanel()
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var styleFontFamily = styleOption.GetFontFamily();
@@ -106,10 +98,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         #region Binding funcs for slider
         public void BindStyleToSlider()
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
@@ -152,10 +141,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void BindColorToStyle(Color color)
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
@@ -173,10 +159,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void BindColorToVariant(Color color)
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var currentCategory = CurrentVariantCategory.Text;
             var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
@@ -190,10 +173,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void BindFontToStyle(string font)
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
@@ -207,10 +187,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void BindFontToVariant(string font)
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var currentCategory = CurrentVariantCategory.Text;
             var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
@@ -224,10 +201,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void BindSliderValueToStyle(int value)
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             var currentCategory = CurrentVariantCategory.Text;
@@ -237,10 +211,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void BindSliderValueToVariant(int value)
         {
-            if (!IsAbleToBindProperty())
-            {
-                return;
-            }
+            if (!IsAbleToBindProperty()) return;
 
             var currentCategory = CurrentVariantCategory.Text;
             var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];

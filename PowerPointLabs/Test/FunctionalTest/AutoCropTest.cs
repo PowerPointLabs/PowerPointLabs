@@ -23,15 +23,6 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_AutoCropContextMenuTest()
-        {
-            ContextMenuCropOneShapeSuccessfully();
-            ContextMenuCropMultipleShapesSuccessfully();
-            ContextMenuCropRotatedShapeSuccessfully();
-        }
-
-        [TestMethod]
-        [TestCategory("FT")]
         public void FT_AutoCropNegativeTest()
         {
             CropOnNothingUnsuccessfully();
@@ -116,86 +107,6 @@ namespace Test.FunctionalTest
         }
 
         #endregion
-
-        #region Positive Context Menu Test Cases
-
-        public void ContextMenuCropOneShapeSuccessfully()
-        {
-            var actualSlide = PpOperations.SelectSlide(4);
-            PpOperations.SelectShape("selectMe");
-
-            // Execute the Crop To Shape feature
-            PplFeatures.AutoCropContextMenuShape();
-
-            var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var resultShapeInPic = PpOperations.ExportSelectedShapes();
-
-            var expSlide = PpOperations.SelectSlide(5);
-
-            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var expShapeInPic = PpOperations.ExportSelectedShapes();
-
-            // remove elements that affect comparing slides
-            // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
-
-            SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
-        }
-
-        public void ContextMenuCropMultipleShapesSuccessfully()
-        {
-            var actualSlide = PpOperations.SelectSlide(7);
-            var shapesBeforeCrop = PpOperations.SelectShapesByPrefix("selectMe");
-            Assert.AreEqual(6, shapesBeforeCrop.Count);
-
-            // Execute the Crop To Shape feature
-            PplFeatures.AutoCropContextMenuGroup();
-
-            // the result shape after crop multiple shapes will have name starts with
-            // Group
-            var resultShape = PpOperations.SelectShapesByPrefix("Group")[1];
-            var resultShapeInPic = PpOperations.ExportSelectedShapes();
-
-            var expSlide = PpOperations.SelectSlide(8);
-
-            var expShape = PpOperations.SelectShapesByPrefix("Group")[1];
-            var expShapeInPic = PpOperations.ExportSelectedShapes();
-
-            // remove elements that affect comparing slides
-            // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
-
-            SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
-        }
-
-        private void ContextMenuCropRotatedShapeSuccessfully()
-        {
-            var actualSlide = PpOperations.SelectSlide(10);
-            PpOperations.SelectShape("selectMe");
-
-            // Execute the Crop To Shape feature
-            PplFeatures.AutoCropContextMenuShape();
-
-            var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var resultShapeInPic = PpOperations.ExportSelectedShapes();
-
-            var expSlide = PpOperations.SelectSlide(11);
-
-            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var expShapeInPic = PpOperations.ExportSelectedShapes();
-
-            // remove elements that affect comparing slides
-            // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
-
-            SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
-        }
-
-        #endregion
-
         #region Negative Test Cases
 
         private void CropOnNothingUnsuccessfully()
@@ -204,8 +115,8 @@ namespace Test.FunctionalTest
             // don't select any shape here
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error",
-                "You need to select at least 1 shape before applying 'Crop To Shape'.",
+                "Unable to crop",
+                "'Crop To Shape' requires at least one shape to be selected.",
                 PplFeatures.AutoCrop);
         }
 
@@ -215,7 +126,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShapes(new List<string> {"selectMe", "pic"});
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                "Error", 
+                "Unable to crop", 
                 "'Crop To Shape' only supports shape objects.",
                 PplFeatures.AutoCrop);
         }

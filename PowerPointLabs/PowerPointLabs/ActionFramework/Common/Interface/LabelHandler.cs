@@ -5,7 +5,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles GetLabel call
     /// </summary>
-    public abstract class LabelHandler : BaseHandler
+    public abstract class LabelHandler
     {
         public string Get(string ribbonId)
         {

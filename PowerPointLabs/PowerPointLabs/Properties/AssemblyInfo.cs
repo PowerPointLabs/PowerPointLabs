@@ -35,6 +35,3 @@ using System.Security;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-// Expose internals to the Test project for testing
-[assembly: InternalsVisibleTo("Test")]
