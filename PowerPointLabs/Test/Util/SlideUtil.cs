@@ -112,6 +112,12 @@ namespace Test.Util
             IsSameText(expShape, actualShape);
         }
 
+        public static void IsSameZOrderPosition(Shape expShape, Shape actualShape)
+        {
+            Assert.IsTrue(expShape.ZOrderPosition == actualShape.ZOrderPosition,
+                "different shape z order. exp:{0}, actual:{1}", expShape.ZOrderPosition, actualShape.ZOrderPosition);
+        }
+
         // compare shape's prop & looking
         //
         // You may need to call PpOperations.ExportSelectedShapes()
