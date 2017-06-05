@@ -44,10 +44,7 @@ namespace PowerPointLabs.DrawingsLab
         #region Data Binding
         internal void TryInitialise(DrawingLabData data, DrawingsLabMain drawingLab)
         {
-            if (_data != null)
-            {
-                return;
-            }
+            if (_data != null) return;
 
             _data = data;
             _dataSource.AssignData(data);
@@ -268,11 +265,7 @@ namespace PowerPointLabs.DrawingsLab
             }
 
             var s = key.ToString();
-            if (s.StartsWith("VK_"))
-            {
-                s = s.Substring(3);
-            }
-
+            if (s.StartsWith("VK_")) s = s.Substring(3);
             return s;
         }
 
@@ -295,13 +288,7 @@ namespace PowerPointLabs.DrawingsLab
 
         private Action RunOnlyWhenOpen(Action action)
         {
-            return () =>
-            {
-                if (IsReadingHotkeys())
-                {
-                    action();
-                }
-            };
+            return () => { if (IsReadingHotkeys()) action(); };
         }
 
         private Dictionary<int, Native.VirtualKey> SetupButtonHotkeys()
@@ -311,10 +298,7 @@ namespace PowerPointLabs.DrawingsLab
             Action<Native.VirtualKey, ImageButton> assign = (key, button) =>
             {
                 bindings.Add(button.ImageButtonUniqueId, key);
-                if (usedKeys.Contains(key))
-                {
-                    throw new ArgumentException("Key already has a binding: " + key.ToString());
-                }
+                if (usedKeys.Contains(key)) throw new ArgumentException("Key already has a binding: " + key.ToString());
                 usedKeys.Add(key);
             };
 
@@ -351,11 +335,7 @@ namespace PowerPointLabs.DrawingsLab
 
         private void InitializeHotkeys(Dictionary<Native.VirtualKey, Action> hotkeyActionBindings)
         {
-            if (_data.IsHotkeysInitialised)
-            {
-                return;
-            }
-
+            if (_data.IsHotkeysInitialised) return;
             _data.IsHotkeysInitialised = true;
 
             PPKeyboard.AddConditionToBlockTextInput(IsReadingHotkeys);
@@ -405,11 +385,7 @@ namespace PowerPointLabs.DrawingsLab
                 Color = Graphics.ConvertRgbToColor(_dataSource.FormatFillColor),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() == DialogResult.Cancel)
-            {
-                return;
-            }
-
+            if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
             _dataSource.FormatFillColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
 
@@ -420,11 +396,7 @@ namespace PowerPointLabs.DrawingsLab
                 Color = Graphics.ConvertRgbToColor(_dataSource.FormatLineColor),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() == DialogResult.Cancel)
-            {
-                return;
-            }
-
+            if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
             _dataSource.FormatLineColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
 
@@ -435,11 +407,7 @@ namespace PowerPointLabs.DrawingsLab
                 Color = Graphics.ConvertRgbToColor(_dataSource.FormatTextColor),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() == DialogResult.Cancel)
-            {
-                return;
-            }
-
+            if (colorDialog.ShowDialog() == DialogResult.Cancel) return;
             _dataSource.FormatTextColor = Graphics.ConvertColorToRgb(colorDialog.Color);
         }
     }

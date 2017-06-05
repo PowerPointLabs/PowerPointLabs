@@ -77,22 +77,31 @@ namespace PowerPointLabs.Utils
         public static List<string> UnserializeCollection(string dataString)
         {
             var lastDelim = dataString.LastIndexOf('@');
-            if (lastDelim == -1)
-            {
-                return null;
-            }
+            if (lastDelim == -1) return null;
 
             // Verify checksum
             var hashCode = dataString.Substring(lastDelim + 1);
             var serialized = dataString.Substring(0, lastDelim);
-            if (ComputeCheckSum(serialized).ToString() != hashCode)
-            {
-                return null;
-            }
+            if (ComputeCheckSum(serialized).ToString() != hashCode) return null;
 
             return serialized.Split(new[] {'@'}, StringSplitOptions.None)
                              .Select(Base64Decode)
                              .ToList();
+        }
+
+        /// <summary>
+        /// Works like a hashcode function, but returns a digit string.
+        /// Except that hashcode isn't consistent across all platforms / implementations. This is.
+        /// </summary>
+        private static string ComputeCheckSum(string s)
+        {
+            uint x = 0;
+            foreach (var c in s)
+            {
+                x += c;
+                x *= 565325351;
+            }
+            return x.ToString();
         }
 
         /// <summary>
@@ -129,33 +138,6 @@ namespace PowerPointLabs.Utils
             return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
         }
 
-        #region Math
-        /// <summary>
-        /// Computes ceil(dividend / divisor)
-        /// </summary>
-        public static int CeilingDivide(int dividend, int divisor)
-        {
-            return (dividend + divisor - 1) / divisor;
-        }
-
-
-        # endregion
-
-        /// <summary>
-        /// Works like a hashcode function, but returns a digit string.
-        /// Except that hashcode isn't consistent across all platforms / implementations. This is.
-        /// </summary>
-        private static string ComputeCheckSum(string s)
-        {
-            uint x = 0;
-            foreach (var c in s)
-            {
-                x += c;
-                x *= 565325351;
-            }
-            return x.ToString();
-        }
-
         # region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
@@ -181,6 +163,19 @@ namespace PowerPointLabs.Utils
 
             return min + 1;
         }
+        # endregion
+
+
+        # region Math
+        /// <summary>
+        /// Computes ceil(dividend / divisor)
+        /// </summary>
+        public static int CeilingDivide(int dividend, int divisor)
+        {
+            return (dividend + divisor - 1)/divisor;
+        }
+
+
         # endregion
     }
 }

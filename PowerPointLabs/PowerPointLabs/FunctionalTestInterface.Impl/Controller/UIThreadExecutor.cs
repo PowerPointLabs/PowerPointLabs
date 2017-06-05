@@ -33,10 +33,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public static void TearDown()
         {
-            if (_isDisposed)
-            {
-                return;
-            }
+            if (_isDisposed) return;
 
             _isDisposed = true;
             _instance.Dispose(true);

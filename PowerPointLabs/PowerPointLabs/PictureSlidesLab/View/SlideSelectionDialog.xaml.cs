@@ -109,22 +109,6 @@ namespace PowerPointLabs.PictureSlidesLab.View
             IsOpen = false;
         }
 
-
-        public SlideSelectionDialog CustomizeGotoSlideButton(string content, string tooltip)
-        {
-            GotoSlideButton.Content = content;
-            GotoSlideButton.ToolTip = tooltip;
-            return this;
-        }
-
-        public SlideSelectionDialog CustomizeAdditionalButton(string content, string tooltip)
-        {
-            AdditionalButton.Content = content;
-            AdditionalButton.ToolTip = tooltip;
-            AdditionalButton.Visibility = Visibility.Visible;
-            return this;
-        }
-
         private void SelectCurrentSlide()
         {
             foreach (var slide in SlideList)
@@ -138,10 +122,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void AddSlideThumbnail(PowerPointSlide slide, int pos = -1, bool isCurrentSlide = false)
         {
-            if (slide == null)
-            {
-                return;
-            }
+            if (slide == null) return;
 
             var thumbnailPath = TempPath.GetPath("slide-" + DateTime.Now.GetHashCode() + slide.Index);
             slide.GetNativeSlide().Export(thumbnailPath, "JPG", GetPreviewWidth(), PreviewHeight);
@@ -188,6 +169,21 @@ namespace PowerPointLabs.PictureSlidesLab.View
             {
                 OnGotoSlide();
             }
+        }
+
+        public SlideSelectionDialog CustomizeGotoSlideButton(string content, string tooltip)
+        {
+            GotoSlideButton.Content = content;
+            GotoSlideButton.ToolTip = tooltip;
+            return this;
+        }
+
+        public SlideSelectionDialog CustomizeAdditionalButton(string content, string tooltip)
+        {
+            AdditionalButton.Content = content;
+            AdditionalButton.ToolTip = tooltip;
+            AdditionalButton.Visibility = Visibility.Visible;
+            return this;
         }
 
         private void CancelButton_OnClick(object sender, RoutedEventArgs e)
@@ -344,10 +340,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             var item = ItemsControl.ContainerFromElement((ItemsControl)sender, (DependencyObject)e.OriginalSource)
                 as ListBoxItem;
-            if (item == null || item.Content == null)
-            {
-                return;
-            }
+            if (item == null || item.Content == null) return;
 
             if (OnGotoSlide != null)
             {

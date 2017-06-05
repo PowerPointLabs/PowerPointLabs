@@ -9,6 +9,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Factory
     [Export(typeof(StyleWorkerFactory))]
     class StyleWorkerFactory
     {
+        [ImportMany(typeof(IStyleWorker))]
+        private IEnumerable<Lazy<IStyleWorker, IWorkerOrderMetadata>> ImportedStyleWorkers { get; set; }
+
         public IEnumerable<IStyleWorker> StyleWorkers
         {
             get
@@ -18,8 +21,5 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Factory
                     .Select(worker => worker.Value);
             }
         }
-
-        [ImportMany(typeof(IStyleWorker))]
-        private IEnumerable<Lazy<IStyleWorker, IWorkerOrderMetadata>> ImportedStyleWorkers { get; set; }
     }
 }

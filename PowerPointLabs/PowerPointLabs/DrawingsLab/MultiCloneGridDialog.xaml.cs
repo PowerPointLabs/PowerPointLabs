@@ -53,10 +53,7 @@ namespace PowerPointLabs.DrawingsLab
         private void DrawAlignmentCanvas()
         {
             GridCanvas.Children.Clear();
-            if (XCopies * YCopies > 2500)
-            {
-                return; // Don't draw anything if too many rectangles.
-            }
+            if (XCopies*YCopies > 2500) return; // Don't draw anything if too many rectangles.
 
             var drawWidth = GridCanvas.ActualWidth - 2*MARGIN;
             var drawHeight = GridCanvas.ActualHeight - 2*MARGIN;
@@ -79,15 +76,8 @@ namespace PowerPointLabs.DrawingsLab
                     var y1 = MARGIN + y * intervalSize;
 
                     var colour = Brushes.CornflowerBlue;
-                    if (x == sourceIndexX && y == sourceIndexY)
-                    {
-                        colour = Brushes.OrangeRed;
-                    }
-
-                    if (x == targetIndexX && y == targetIndexY)
-                    {
-                        colour = Brushes.DarkOrange;
-                    }
+                    if (x == sourceIndexX && y == sourceIndexY) colour = Brushes.OrangeRed;
+                    if (x == targetIndexX && y == targetIndexY) colour = Brushes.DarkOrange;
 
                     DrawRect(x1, y1, rectSize, rectSize, colour);
                 }
@@ -103,52 +93,28 @@ namespace PowerPointLabs.DrawingsLab
             if (_sourceLeft < _targetLeft)
             {
                 sourceIndexX = 0;
-                if (IsExtend)
-                {
-                    targetIndexX = 1;
-                }
-                else
-                {
-                    targetIndexX = xLast;
-                }
+                if (IsExtend) targetIndexX = 1;
+                else targetIndexX = xLast;
             }
             else
             {
                 sourceIndexX = xLast;
-                if (IsExtend)
-                {
-                    targetIndexX = xLast - 1;
-                }
-                else
-                {
-                    targetIndexX = 0;
-                }
+                if (IsExtend) targetIndexX = xLast - 1;
+                else targetIndexX = 0;
             }
 
             // Set Y Axis Indexes
             if (_sourceTop < _targetTop)
             {
                 sourceIndexY = 0;
-                if (IsExtend)
-                {
-                    targetIndexY = 1;
-                }
-                else
-                {
-                    targetIndexY = yLast;
-                }
+                if (IsExtend) targetIndexY = 1;
+                else targetIndexY = yLast;
             }
             else
             {
                 sourceIndexY = yLast;
-                if (IsExtend)
-                {
-                    targetIndexY = yLast - 1;
-                }
-                else
-                {
-                    targetIndexY = 0;
-                }
+                if (IsExtend) targetIndexY = yLast - 1;
+                else targetIndexY = 0;
             }
         }
 
@@ -195,10 +161,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             get
             {
-                if (dataSource.XCopies < MIN_COPIES)
-                {
-                    return MIN_COPIES;
-                }
+                if (dataSource.XCopies < MIN_COPIES) return MIN_COPIES;
                 return dataSource.XCopies;
             }
         }
@@ -207,10 +170,7 @@ namespace PowerPointLabs.DrawingsLab
         {
             get
             {
-                if (dataSource.YCopies < MIN_COPIES)
-                {
-                    return MIN_COPIES;
-                }
+                if (dataSource.YCopies < MIN_COPIES) return MIN_COPIES;
                 return dataSource.YCopies;
             }
         }

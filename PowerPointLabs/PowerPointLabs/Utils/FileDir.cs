@@ -30,10 +30,7 @@ namespace PowerPointLabs.Utils
 
                 // ignore thumb.db
                 if (name == null ||
-                    name == FolderThumbnailFile)
-                {
-                    continue;
-                }
+                    name == FolderThumbnailFile) continue;
 
                 var dest = Path.Combine(newPath, name);
 
@@ -64,10 +61,7 @@ namespace PowerPointLabs.Utils
             {
                 var name = Path.GetFileName(folder);
 
-                if (name == null)
-                {
-                    continue;
-                }
+                if (name == null) continue;
 
                 var dest = Path.Combine(newPath, name);
 
@@ -87,10 +81,7 @@ namespace PowerPointLabs.Utils
             {
                 var name = Path.GetFileName(file);
 
-                if (name == null)
-                {
-                    continue;
-                }
+                if (name == null) continue;
 
                 try
                 {
@@ -108,10 +99,7 @@ namespace PowerPointLabs.Utils
             {
                 var name = Path.GetFileName(folder);
 
-                if (name == null)
-                {
-                    continue;
-                }
+                if (name == null) continue;
 
                 deleteSuccess = deleteSuccess && DeleteFolder(folder);
             }
@@ -178,10 +166,7 @@ namespace PowerPointLabs.Utils
         public static void CopyFile(string sourcePath, string destPath,
                                         FileAttributes fileAttribute = FileAttributes.Normal)
         {
-            if (!File.Exists(sourcePath))
-            {
-                return;
-            }
+            if (!File.Exists(sourcePath)) return;
 
             File.Copy(sourcePath, destPath);
             File.SetAttributes(destPath, fileAttribute);
@@ -189,10 +174,7 @@ namespace PowerPointLabs.Utils
 
         public static void DeleteFile(string filePath)
         {
-            if (!File.Exists(filePath))
-            {
-                return;
-            }
+            if (!File.Exists(filePath)) return;
 
             File.SetAttributes(filePath, FileAttributes.Normal);
             File.Delete(filePath);

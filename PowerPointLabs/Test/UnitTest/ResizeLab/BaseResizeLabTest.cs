@@ -26,8 +26,7 @@ namespace Test.UnitTest.ResizeLab
                 var duplicateShape = shape.Duplicate()[1];
                 duplicateShape.Top = shape.Top;
                 duplicateShape.Left = shape.Left;
-                duplicateShape.Name = Guid.NewGuid().ToString();
-                _originalShapeName.Add(duplicateShape.Name, shape.Name);
+                _originalShapeName.Add(duplicateShape.Name, duplicateShape.Name);
             }
         }
 

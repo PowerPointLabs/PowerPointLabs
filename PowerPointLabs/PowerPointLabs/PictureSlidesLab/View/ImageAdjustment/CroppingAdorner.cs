@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -10,7 +9,6 @@ using System.Windows.Shapes;
 
 namespace PowerPointLabs.PictureSlidesLab.View.ImageAdjustment
 {
-    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     /// <summary>
     /// Taken from
     /// http://www.codeproject.com/Articles/23158/A-Photoshop-like-Cropping-Adorner-for-WPF
@@ -514,10 +512,7 @@ namespace PowerPointLabs.PictureSlidesLab.View.ImageAdjustment
 
         private void BuildCorner(ref CropThumb crt, Cursor crs, Brush color = null)
         {
-            if (crt != null)
-            {
-                return;
-            }
+            if (crt != null) return;
 
             crt = new CropThumb(CpxThumbWidth, color);
 

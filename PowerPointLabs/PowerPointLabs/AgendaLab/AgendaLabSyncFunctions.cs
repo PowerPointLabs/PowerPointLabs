@@ -4,12 +4,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
-
 using Graphics = PowerPointLabs.Utils.Graphics;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
@@ -249,10 +246,9 @@ namespace PowerPointLabs.AgendaLab
 
             DeleteShapesMarkedForDeletion(candidate, markedForDeletion);
 
+            candidate.CopyBackgroundColourFrom(refSlide);
             candidate.Layout = refSlide.Layout;
-            
-            candidate.Design = Graphics.GetDesign("Agenda Template");
-            candidate.GetNativeSlide().FollowMasterBackground = MsoTriState.msoTrue;
+            candidate.Design = refSlide.Design;
 
             // synchronize extra shapes other than visual items in reference slide
             var candidateSlideShapes = candidate.GetNameToShapeDictionary();
@@ -308,20 +304,14 @@ namespace PowerPointLabs.AgendaLab
 
         private static void DeleteShapesMarkedForDeletion(PowerPointSlide candidate, List<string> markedForDeletion)
         {
-            if (markedForDeletion.Count == 0)
-            {
-                return;
-            }
+            if (markedForDeletion.Count == 0) return;
             
             var candidateSlideShapes = candidate.GetNameToShapeDictionary();
             foreach (var shapeName in markedForDeletion)
             {
                 Shape shapeInSlide;
                 bool shapeExists = candidateSlideShapes.TryGetValue(shapeName, out shapeInSlide);
-                if (!shapeExists || shapeInSlide == null)
-                {
-                    continue;
-                }
+                if (!shapeExists || shapeInSlide == null) continue;
                 
                 shapeInSlide.Delete();
                 candidateSlideShapes[shapeName] = null;

@@ -12,9 +12,9 @@ namespace PowerPointLabs.ActionFramework.Action
         {
             var resizePane =
                 this.RegisterTaskPane(typeof(ResizeLabPane), TextCollection.ResizeLabsTaskPaneTitle);
-            if (resizePane != null)
+            if (resizePane != null && !resizePane.Visible)
             {
-                resizePane.Visible = !resizePane.Visible;
+                resizePane.Visible = true;
             }
         }
     }

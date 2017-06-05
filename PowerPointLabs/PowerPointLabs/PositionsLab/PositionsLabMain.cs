@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 using Microsoft.Office.Core;
 using PowerPointLabs.Utils;
-
-using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
-using Drawing = System.Drawing;
-using Office = Microsoft.Office.Core;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using Office = Microsoft.Office.Core;
+using System.Diagnostics;
+using Drawing = System.Drawing;
+using System.Linq;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -2404,9 +2402,9 @@ namespace PowerPointLabs.PositionsLab
                 {
                     var currentPos = GetSwapReferencePoint(currentShape, SwapReferencePoint);
                     var nextPos = GetSwapReferencePoint(sortedShapes[i + 1], SwapReferencePoint);
+
                     currentShape.IncrementLeft(nextPos.X - currentPos.X);
                     currentShape.IncrementTop(nextPos.Y - currentPos.Y);
-                    currentShape.SwapZOrder(sortedShapes[i + 1]);
                 }
                 else
                 {

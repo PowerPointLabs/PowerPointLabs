@@ -2,11 +2,9 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
 using PPExtraEventHelper;
-
+using PowerPointLabs.Models;
 using Point = System.Drawing.Point;
 
 namespace PowerPointLabs.Views
@@ -75,10 +73,7 @@ namespace PowerPointLabs.Views
 
         private void RecButtonClick(object sender, EventArgs e)
         {
-            if (_recorder == null)
-            {
-                return;
-            }
+            if (_recorder == null) return;
             
             int click;
             PowerPointSlide currentSlide;
@@ -138,10 +133,7 @@ namespace PowerPointLabs.Views
 
         private void UndoButtonClick(object sender, EventArgs e)
         {
-            if (_recorder == null)
-            {
-                return;
-            }
+            if (_recorder == null) return;
 
             var temp = _recorder.AudioBuffer[_recordStartSlide.Index - 1];
 

@@ -63,10 +63,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public static bool IsCitationSlide(PowerPointSlide slide)
         {
             if (slide == null)
-            {
                 return false;
-            }
-
             return slide.Name == PictureCitationSlideName;
         }
 

@@ -9,11 +9,11 @@ namespace TestInterface
 
         Panel GetDropletPanel();
 
-        Panel GetFontColorButton();
+        Button GetFontColorButton();
 
-        Panel GetLineColorButton();
+        Button GetLineColorButton();
 
-        Panel GetFillColorButton();
+        Button GetFillCollorButton();
 
         Panel GetMonoPanel1();
 

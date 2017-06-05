@@ -33,11 +33,7 @@ namespace PPExtraEventHelper
                     //if fails to set up clipboardFormatListener, re-try 5 times
                     for (int i = 0; i < 5; i++)
                     {
-                        if (isSuccessful)
-                        {
-                            break;
-                        }
-
+                        if (isSuccessful) break;
                         isSuccessful = Native.AddClipboardFormatListener(instance.Handle);
                     }
 
@@ -68,10 +64,7 @@ namespace PPExtraEventHelper
 
         public static void StopHook()
         {
-            if (isDisposed)
-            {
-                return;
-            }
+            if (isDisposed) return;
 
             isDisposed = true;
             instance.Dispose(true);

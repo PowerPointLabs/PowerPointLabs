@@ -1,12 +1,11 @@
-﻿using System;
+﻿using PPExtraEventHelper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
-using PPExtraEventHelper;
 using TestInterface;
 
 namespace PowerPointLabs.ColorPicker
@@ -21,28 +20,6 @@ namespace PowerPointLabs.ColorPicker
             InitializeComponent();
             SetUpUI();
         }
-
-        #region Functional Test method
-        public string GetHslText()
-        {
-            return hslTextBox.Text;
-        }
-
-        public string GetRgbText()
-        {
-            return rgbTextBox.Text;
-        }
-
-        public string GetHexText()
-        {
-            return hexTextBox.Text;
-        }
-
-        public void TearDown()
-        {
-            Close();
-        }
-        # endregion
 
         private void TextBox_Enter(object sender, EventArgs e)
         {
@@ -104,5 +81,27 @@ namespace PowerPointLabs.ColorPicker
             string hex = BitConverter.ToString(ba);
             return hex.Replace("-", "");
         }
+
+        #region Functional Test method
+        public string GetHslText()
+        {
+            return hslTextBox.Text;
+        }
+
+        public string GetRgbText()
+        {
+            return rgbTextBox.Text;
+        }
+
+        public string GetHexText()
+        {
+            return hexTextBox.Text;
+        }
+
+        public void TearDown()
+        {
+            Close();
+        }
+        # endregion
     }
 }

@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
-using Microsoft.Office.Core;
+using PowerPointLabs.DataSources;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Models;
+using System.Drawing.Drawing2D;
+using PPExtraEventHelper;
+using Converters = PowerPointLabs.Converters;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
-using PowerPointLabs.DataSources;
-using PowerPointLabs.DrawingsLab;
-using PowerPointLabs.Models;
 using PowerPointLabs.Views;
-using PPExtraEventHelper;
-
-using Converters = PowerPointLabs.Converters;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
+using PowerPointLabs.DrawingsLab;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs

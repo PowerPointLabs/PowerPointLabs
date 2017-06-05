@@ -12,9 +12,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
-            {
                 return null;
-            }
 
             TextBoxes.AddMargin(tbInfo, 10);
 

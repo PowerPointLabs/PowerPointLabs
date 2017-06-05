@@ -11,9 +11,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
-            {
                 return;
-            }
 
             var margin = CalculateTextBoxMargin(fontSizeToIncrease);
             // multiple paragraphs.. 

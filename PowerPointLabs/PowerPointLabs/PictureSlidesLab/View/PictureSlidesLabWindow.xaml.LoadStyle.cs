@@ -24,10 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void LoadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_loadStylesDialog.IsOpen)
-            {
-                return;
-            }
+            if (_loadStylesDialog.IsOpen) return;
 
             _loadStylesDialog
                 .Init("Load Style or Picture from the Selected Slide")
@@ -64,10 +61,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             // which is the current slide
             var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
-            if (currentSlide == null)
-            {
-                return;
-            }
+            if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
             var croppedShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
@@ -119,10 +113,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
             // which is the current slide
             var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
-            if (currentSlide == null)
-            {
-                return;
-            }
+            if (currentSlide == null) return;
 
             var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
 
@@ -156,10 +147,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
         /// <returns>is successfully loaded</returns>
         private bool LoadStyleAndImage(PowerPointSlide targetSlide, bool isLoadingWithDefaultPicture = true)
         {
-            if (targetSlide == null)
-            {
-                return false;
-            }
+            if (targetSlide == null) return false;
 
             var isSuccessfullyLoaded = false;
             var originalShapeList = targetSlide

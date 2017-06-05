@@ -1,11 +1,10 @@
-﻿using System;
+﻿using PowerPointLabs.Utils;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
-
-using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.Utils;
+using Microsoft.Office.Interop.PowerPoint;
+using System.Diagnostics;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -30,50 +29,6 @@ namespace PowerPointLabs.PositionsLab
         private ShapeRange _selectedShapes;
         private int _rowLength;
         private int _colLength;
-
-        #region Error Handling
-        public void ShowErrorMessageBox(string content, Exception exception = null)
-        {
-
-            if (exception == null)
-            {
-                MessageBox.Show(content, "Error");
-                return;
-            }
-
-            var errorMessage = GetErrorMessage(exception.Message);
-            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
-            {
-                MessageBox.Show(content, "Error");
-            }
-            else
-            {
-                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
-            }
-        }
-
-        private string GetErrorMessage(string errorMsg)
-        {
-            switch (errorMsg)
-            {
-                case ErrorMessageNoSelection:
-                    return ErrorMessageNoSelection;
-                case ErrorMessageFewerThanTwoSelection:
-                    return ErrorMessageFewerThanTwoSelection;
-                case ErrorMessageFewerThanThreeSelection:
-                    return ErrorMessageFewerThanThreeSelection;
-                case ErrorMessageFunctionNotSupportedForExtremeShapes:
-                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
-                case ErrorMessageFunctionNotSupportedForSlide:
-                    return ErrorMessageFunctionNotSupportedForSlide;
-                default:
-                    return ErrorMessageUndefined;
-            }
-        }
-
-        private void IgnoreExceptionThrown() { }
-
-        #endregion
 
         internal PositionsDistributeGridDialog(ShapeRange selectedShapes, int rowLength, int colLength)
         {
@@ -301,5 +256,49 @@ namespace PowerPointLabs.PositionsLab
 
             return shapes;
         }
+        #region Error Handling
+        public void ShowErrorMessageBox(string content, Exception exception = null)
+        {
+
+            if (exception == null)
+            {
+                MessageBox.Show(content, "Error");
+                return;
+            }
+
+            var errorMessage = GetErrorMessage(exception.Message);
+            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
+            {
+                MessageBox.Show(content, "Error");
+            }
+            else
+            {
+                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+            }
+        }
+
+        private string GetErrorMessage(string errorMsg)
+        {
+            switch (errorMsg)
+            {
+                case ErrorMessageNoSelection:
+                    return ErrorMessageNoSelection;
+                case ErrorMessageFewerThanTwoSelection:
+                    return ErrorMessageFewerThanTwoSelection;
+                case ErrorMessageFewerThanThreeSelection:
+                    return ErrorMessageFewerThanThreeSelection;
+                case ErrorMessageFunctionNotSupportedForExtremeShapes:
+                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
+                case ErrorMessageFunctionNotSupportedForSlide:
+                    return ErrorMessageFunctionNotSupportedForSlide;
+                default:
+                    return ErrorMessageUndefined;
+            }
+        }
+
+        private void IgnoreExceptionThrown() { }
+
+        #endregion
+
     }
 }

@@ -37,10 +37,7 @@ namespace PowerPointLabs.WPF
         {
             get
             {
-                if (_mWindowApplicationSettings == null)
-                {
-                    _mWindowApplicationSettings = CreateWindowApplicationSettingsInstance();
-                }
+                if (_mWindowApplicationSettings == null) _mWindowApplicationSettings = CreateWindowApplicationSettingsInstance();
                 return _mWindowApplicationSettings;
             }
         }
@@ -73,10 +70,7 @@ namespace PowerPointLabs.WPF
                 _mWindow.Top = SystemParameters.PrimaryScreenHeight - 60 - 50;
             }
 
-            if (Settings.WindowState != WindowState.Maximized)
-            {
-                _mWindow.WindowState = Settings.WindowState;
-            }
+            if (Settings.WindowState != WindowState.Maximized) _mWindow.WindowState = Settings.WindowState;
         }
 
         /// <summary>
@@ -96,13 +90,11 @@ namespace PowerPointLabs.WPF
         {
             var window = pDependencyObject as Window;
             if (window != null)
-            {
                 if ((bool)pDependencyPropertyChangedEventArgs.NewValue)
                 {
                     var settings = new WindowSettings(window);
                     settings.Attach();
                 }
-            }
         }
 
         private void Attach()
@@ -119,13 +111,7 @@ namespace PowerPointLabs.WPF
 
         private void WindowInitialized(object pSender, EventArgs pEventArgs) { LoadWindowState(); }
 
-        private void WindowLoaded(object pSender, RoutedEventArgs pRoutedEventArgs)
-        {
-            if (Settings.WindowState == WindowState.Maximized)
-            {
-                _mWindow.WindowState = Settings.WindowState;
-            }
-        }
+        private void WindowLoaded(object pSender, RoutedEventArgs pRoutedEventArgs) { if (Settings.WindowState == WindowState.Maximized) _mWindow.WindowState = Settings.WindowState; }
 
         #endregion Methods
 
@@ -146,11 +132,7 @@ namespace PowerPointLabs.WPF
             {
                 get
                 {
-                    if (this["Location"] != null)
-                    {
-                        return ((Rect)this["Location"]);
-                    }
-
+                    if (this["Location"] != null) return ((Rect)this["Location"]);
                     return Rect.Empty;
                 }
                 set { this["Location"] = value; }
@@ -161,11 +143,7 @@ namespace PowerPointLabs.WPF
             {
                 get
                 {
-                    if (this["WindowState"] != null)
-                    {
-                        return (WindowState)this["WindowState"];
-                    }
-
+                    if (this["WindowState"] != null) return (WindowState)this["WindowState"];
                     return WindowState.Normal;
                 }
                 set { this["WindowState"] = value; }

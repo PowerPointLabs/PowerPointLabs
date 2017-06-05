@@ -37,19 +37,6 @@ namespace PowerPointLabs
             }
         }
 
-        public static System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ConvertToPicture);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetConvertToPicMenuImage");
-                throw;
-            }
-        }
-
         private static void ConvertToPictureForShape(PowerPoint.Shape shape)
         {
             float rotation = 0;
@@ -75,6 +62,19 @@ namespace PowerPointLabs
             pic.Select();
         }
 
+        public static System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new System.Drawing.Bitmap(Properties.Resources.ConvertToPicture);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetConvertToPicMenuImage");
+                throw;
+            }
+        }
+
         /// <summary>
         /// To avoid corrupted shape.
         /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
@@ -97,26 +97,14 @@ namespace PowerPointLabs
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.ShapeRange shapeRange)
         {
-            PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
-            return result;
+            PowerPoint.Shape shape =
+                shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
+            return shape;
         }
 
         private static bool IsSelectionShape(PowerPoint.Selection selection)
         {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                return false;
-            }
-
-            foreach (PowerPoint.Shape shape in selection.ShapeRange)
-            {
-                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes;
         }
     }
 }

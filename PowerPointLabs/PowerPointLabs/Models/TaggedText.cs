@@ -92,11 +92,6 @@ namespace PowerPointLabs.Models
             return builder.ToString();
         }
 
-        public override string ToString()
-        {
-            return _contents;
-        }
-
         private IEnumerable<ITag> GetTagsInText()
         {
             List<ITag> tags = new List<ITag>();
@@ -108,6 +103,11 @@ namespace PowerPointLabs.Models
 
             tags.Sort((first, second) => first.Start - second.Start);
             return tags;
+        }
+
+        public override string ToString()
+        {
+            return _contents;
         }
     }
 }

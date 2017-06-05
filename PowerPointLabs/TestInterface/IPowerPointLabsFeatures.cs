@@ -5,11 +5,6 @@ namespace TestInterface
     public interface IPowerPointLabsFeatures
     {
         void AutoCrop();
-        void AutoCropContextMenuShape();
-        void AutoCropContextMenuFreeform();
-        void AutoCropContextMenuGroup();
-        void CropOutPadding();
-        void CropToAspectRatioW1H10();
         void AutoAnimate();
         void AnimateInSlide();
         void AutoCaptions();
@@ -19,8 +14,6 @@ namespace TestInterface
         void FitToWidth();
         void FitToHeight();
         void ConvertToPic();
-        void CropToSlide();
-        void CropToSame();
         void DrillDown();
         void StepBack();
         void AddZoomToArea();
@@ -50,18 +43,7 @@ namespace TestInterface
         void BlackAndWhiteBackgroundEffect();
         void SepiaBackgroundEffect();
 
-        // Paste lab
-        void PasteToFillSlide();
-        void PasteAtOriginalPosition();
-        void PasteAtCursorPosition();
-        void PasteIntoGroup();
-        void ReplaceWithClipboard();
-
         IColorsLabController ColorsLab { get; }
         IShapesLabController ShapesLab { get; }
-        IPositionsLabController PositionsLab { get; }
-        IHighlightLabController HighlightLab { get; }
-        ISyncLabController SyncLab { get; }
-        ITimerLabController TimerLab { get; }
     }
 }

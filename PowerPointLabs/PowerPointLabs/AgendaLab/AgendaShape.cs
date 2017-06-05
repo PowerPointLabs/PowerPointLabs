@@ -13,11 +13,11 @@ namespace PowerPointLabs.AgendaLab
     /// </summary>
     internal class AgendaShape
     {
+        private static readonly string[] Delim = {"_&^@"};
+        private const string Prefix = "PptLabsAgenda";
+
         public readonly ShapePurpose ShapePurpose;
         public readonly AgendaSection Section;
-
-        private static readonly string[] Delim = { "_&^@" };
-        private const string Prefix = "PptLabsAgenda";
 
         private AgendaShape(ShapePurpose shapePurpose, AgendaSection section)
         {
@@ -43,22 +43,11 @@ namespace PowerPointLabs.AgendaLab
         {
             string[] parameters = shapeName.Split(Delim, StringSplitOptions.None);
 
-            if (parameters.Length != 3)
-            {
-                return null;
-            }
-
-            if (parameters[0] != Prefix)
-            {
-                return null;
-            }
+            if (parameters.Length != 3) return null;
+            if (parameters[0] != Prefix) return null;
 
             ShapePurpose shapePurpose;
-            if (!Enum.TryParse(parameters[1], out shapePurpose))
-            {
-                return null;
-            }
-
+            if (!Enum.TryParse(parameters[1], out shapePurpose)) return null;
             AgendaSection section = AgendaSection.Decode(parameters[2]);
 
             return new AgendaShape(shapePurpose, section);
@@ -67,21 +56,13 @@ namespace PowerPointLabs.AgendaLab
         public static bool IsBeamShape(Shape shape)
         {
             var agendaShape = Decode(shape);
-            if (agendaShape == null)
-            {
-                return false;
-            }
-
+            if (agendaShape == null) return false;
             return agendaShape.ShapePurpose == ShapePurpose.BeamShapeMainGroup;
         }
 
         public static AgendaShape Decode(Shape shape)
         {
-            if (shape == null)
-            {
-                return null;
-            }
-
+            if (shape == null) return null;
             try
             {
                 return Decode(shape.Name);
@@ -104,11 +85,7 @@ namespace PowerPointLabs.AgendaLab
             return shape =>
             {
                 var agendaShape = Decode(shape);
-                if (agendaShape == null)
-                {
-                    return false;
-                }
-
+                if (agendaShape == null) return false;
                 return condition(agendaShape);
             };
         }
@@ -122,11 +99,7 @@ namespace PowerPointLabs.AgendaLab
             return shape =>
             {
                 var agendaShape = Decode(shape);
-                if (agendaShape == null)
-                {
-                    return false;
-                }
-
+                if (agendaShape == null) return false;
                 return agendaShape.ShapePurpose == purpose;
             };
         }
