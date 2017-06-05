@@ -17,7 +17,9 @@ namespace PowerPointLabs.Models
         public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
+            {
                 return null;
+            }
 
             return new PowerPointAutoAnimateSlide(slide);
         }
@@ -40,7 +42,15 @@ namespace PowerPointLabs.Models
         private void AnimateMatchingShapes(PowerPoint.Shape[] currentSlideShapes, PowerPoint.Shape[] nextSlideSlideShapes, int[] matchingShapeIDs)
         {
             int matchingShapeIndex;
-            foreach (PowerPoint.Shape sh in _slide.Shapes)
+
+            // Copy the shapes as the list may be modified when iterating
+            PowerPoint.Shape[] slideShapesCopy = new PowerPoint.Shape[_slide.Shapes.Count];
+            for (int i = 0; i < slideShapesCopy.Length; i++)
+            {
+                slideShapesCopy[i] = _slide.Shapes[i + 1];
+            }
+
+            foreach (PowerPoint.Shape sh in slideShapesCopy)
             {
                 if (matchingShapeIDs.Contains(sh.Id))
                 {
@@ -55,7 +65,9 @@ namespace PowerPointLabs.Models
                             FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration);
                         }
                         else
+                        {
                             DefaultMotionAnimation.AddDefaultMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration, trigger);
+                        }
                     }
                 }
             }
@@ -101,6 +113,7 @@ namespace PowerPointLabs.Models
 
             if ((AutoAnimate.frameAnimationChecked && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
                 || ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
+                || (!Utils.Graphics.IsStraightLine(shape1) && (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip))
                 || finalFont != initialFont)
             {
                 return true;

@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+
 using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using System.Text;
 
 namespace PPExtraEventHelper
 {
     internal class PPMouse
     {
+        public struct Coordinates
+        {
+            public float X;
+            public float Y;
+
+            public Coordinates(float x, float y)
+            {
+                X = x;
+                Y = y;
+            }
+        }
+
         private static int hook;
 
         private static bool isInit = false;
@@ -25,6 +38,8 @@ namespace PPExtraEventHelper
 
         private static double startTimeInMillisecond = CurrentMillisecond();
 
+        public static Coordinates RightClickCoordinates { get; private set; }
+
         public static void Init(PowerPoint.Application application)
         {
             if (!isInit)
@@ -33,13 +48,36 @@ namespace PPExtraEventHelper
                 application.WindowSelectionChange += (selection) =>
                 {
                     selectedRange = selection;
-                    if (!IsHookSuccessful())
-                    {
-                        IntPtr PPHandle = Process.GetCurrentProcess().MainWindowHandle;
-                        StartHook(PPHandle);
-                    }
+                    TryStartHook();
                 };
             }
+        }
+
+        public static void StartHook(IntPtr handle)
+        {
+            FindSlideViewWindowHandle(handle);
+            hookProcedure = HookProcedureCallback;
+            hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE, hookProcedure, 0,
+                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
+        }
+
+        public static bool StopHook()
+        {
+            return Native.UnhookWindowsHookEx(hook);
+        }
+
+        public static void TryStartHook()
+        {
+            if (!IsHookSuccessful())
+            {
+                IntPtr ppHandle = Process.GetCurrentProcess().MainWindowHandle;
+                StartHook(ppHandle);
+            }
+        }
+
+        public static void StopAllActions()
+        {
+            LeftButtonUp?.Invoke();
         }
 
         private static bool IsHookSuccessful()
@@ -74,10 +112,13 @@ namespace PPExtraEventHelper
                 // Left mouse button up/released
                 if (wParam.ToInt32() == (uint)Native.Message.WM_LBUTTONUP)
                 {
-                    if (LeftButtonUp != null)
-                    {
-                        LeftButtonUp();
-                    }
+                    LeftButtonUp?.Invoke();
+                }
+
+                // Right mouse button down
+                if (wParam.ToInt32() == (uint)Native.Message.WM_RBUTTONDOWN)
+                {
+                    RightClickCoordinates = new Coordinates(Cursor.Position.X, Cursor.Position.Y);
                 }
 
                 UpdateStartTime();  
@@ -109,19 +150,6 @@ namespace PPExtraEventHelper
                 && x < slideViewWindowRectangle.X + slideViewWindowRectangle.Width 
                 && y > slideViewWindowRectangle.Y 
                 && y < slideViewWindowRectangle.Y + slideViewWindowRectangle.Height;
-        }
-
-        public static void StartHook(IntPtr handle)
-        {
-            FindSlideViewWindowHandle(handle);
-            hookProcedure = HookProcedureCallback;
-            hook = Native.SetWindowsHookEx((int)Native.HookType.WH_MOUSE, hookProcedure, 0, 
-                Native.GetWindowThreadProcessId(slideViewWindowHandle, 0));
-        }
-
-        public static bool StopHook()
-        {
-            return Native.UnhookWindowsHookEx(hook);
         }
 
         //for Office 2010, its window structure is like MDIClient --> mdiClass --> paneClassDC (SlideView)

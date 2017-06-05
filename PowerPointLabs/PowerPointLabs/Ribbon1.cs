@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
+using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
 
 // Follow these steps to enable the Ribbon (XML) item:
 
@@ -31,7 +37,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 //    move your code from the event handlers to the callback methods and modify the code to work with the
 //    Ribbon extensibility (RibbonX) programming model.
 
-// 3. Assign attributes to the control tags in the Ribbon XML file to identify the appropriate callback methods in your code.  
+// 3. Assign attributes to the control tags in the Ribbon XML file to identify the appropriate callback methods in your code.
 
 // For more information, see the Ribbon XML documentation in the Visual Studio Tools for Office Help.
 
@@ -39,10 +45,13 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace PowerPointLabs
 {
     [ComVisible(true)]
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "Migration to Action Framework")]
     public class Ribbon1 : Office.IRibbonExtensibility
     {
         #region Action Framework Factory
         private ActionHandlerFactory ActionHandlerFactory { get; set; }
+
+        private EnabledHandlerFactory EnabledHandlerFactory { get; set; }
 
         private LabelHandlerFactory LabelHandlerFactory { get; set; }
 
@@ -63,6 +72,12 @@ namespace PowerPointLabs
         {
             var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             actionHandler.Execute(control.Id);
+        }
+
+        public bool GetEnabled(Office.IRibbonControl control)
+        {
+            var enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+            return enabledHandler.Get(control.Id);
         }
 
         public string GetLabel(Office.IRibbonControl control)
@@ -107,7 +122,7 @@ namespace PowerPointLabs
 
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
-        
+
         public bool FrameAnimationChecked = false;
         public bool BackgroundZoomChecked = true;
         public bool MultiSlideZoomChecked = true;
@@ -128,9 +143,9 @@ namespace PowerPointLabs
 
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
-        
+
         private bool _previewCurrentSlide;
-        
+
         private List<string> _voiceNames;
 
         private int _voiceSelected;
@@ -150,6 +165,7 @@ namespace PowerPointLabs
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
             ActionHandlerFactory = new ActionHandlerFactory();
+            EnabledHandlerFactory = new EnabledHandlerFactory();
             LabelHandlerFactory = new LabelHandlerFactory();
             SupertipHandlerFactory = new SupertipHandlerFactory();
             ImageHandlerFactory = new ImageHandlerFactory();
@@ -189,11 +205,17 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
+                }
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kTextSelected;
+                }
                 else
+                {
                     HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kNoneSelected;
+                }
 
                 HighlightBulletsBackground.AddHighlightBulletsBackground();
             }
@@ -210,11 +232,17 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
+                }
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kTextSelected;
+                }
                 else
+                {
                     HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kNoneSelected;
+                }
 
                 HighlightBulletsText.AddHighlightBulletsText();
             }
@@ -231,11 +259,17 @@ namespace PowerPointLabs
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
+                }
                 else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
+                }
                 else
+                {
                     HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
+                }
 
                 HighlightTextFragments.AddHighlightedTextFragments();
             }
@@ -266,6 +300,11 @@ namespace PowerPointLabs
         {
             try
             {
+                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    return;
+                }
+
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
                 Spotlight.AddSpotlightEffect();
@@ -286,7 +325,7 @@ namespace PowerPointLabs
         {
             return TextCollection.InSlideAnimateButtonSupertip;
         }
-        
+
         public string GetAddZoomInButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddZoomInButtonSupertip;
@@ -299,12 +338,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonSupertip;
         }
-        
-        public string GetMoveCropShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonSupertip;
-        }
-        
+
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -331,7 +365,7 @@ namespace PowerPointLabs
         {
             return TextCollection.RemoveAudioButtonSupertip;
         }
-        
+
         public string GetAddCaptionsButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddCaptionsButtonSupertip;
@@ -344,7 +378,7 @@ namespace PowerPointLabs
         {
             return TextCollection.RemoveAllNotesButtonSupertip;
         }
-        
+
         public string GetHighlightBulletsTextButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HighlightBulletsTextButtonSupertip;
@@ -357,11 +391,6 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonSupertip;
-        }
-        
-        public string GetCustomeShapeButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.CustomeShapeButtonSupertip;
         }
 
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
@@ -495,14 +524,6 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonLabel;
         }
 
-        public string GetCropLabGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CropLabGroupLabel;
-        }
-        public string GetMoveCropShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.MoveCropShapeButtonLabel;
-        }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -568,14 +589,10 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonLabel;
-        }        
+        }
         public string GetLabsGroupLabel(Office.IRibbonControl control)
         {
             return TextCollection.LabsGroupLabel;
-        }
-        public string GetCustomeShapeButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CustomeShapeButtonLabel;
         }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
@@ -703,10 +720,6 @@ namespace PowerPointLabs
         {
             return TextCollection.ConvertToPictureShapeLabel;
         }
-        public string GetAddCustomShapeShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddCustomShapeShapeLabel;
-        }
         public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
         {
             return TextCollection.HideSelectedShapeLabel;
@@ -741,7 +754,7 @@ namespace PowerPointLabs
         }
         # endregion
 
-        //Button Click Callbacks        
+        //Button Click Callbacks
         public void AddAnimationButtonClick(Office.IRibbonControl control)
         {
             try
@@ -965,31 +978,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetZoomToAreaContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetCropShapeImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.CutOutShape);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetCropShapeImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetShapesLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ShapesLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetShapesLabImage");
                 throw;
             }
         }
@@ -1346,18 +1334,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetAddToCustomShapeContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddToCustomShapes);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomOutContextImage");
-                throw;
-            }
-        }
         public Bitmap GetHideShapeImage(Office.IRibbonControl control)
         {
             try
@@ -1667,7 +1643,7 @@ namespace PowerPointLabs
             else
             {
                 PictureSlidesLabWindow.Activate();
-            }            
+            }
         }
 
         public Bitmap GetPictureSlidesLabImage(Office.IRibbonControl control)
@@ -1686,23 +1662,6 @@ namespace PowerPointLabs
         public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.PictureSlidesLabText.PictureSlidesLabSupertip;
-        }
-        
-        #endregion
-
-        #region Feature: Crop to Shape
-
-        public void CropShapeButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            CropToShape.Crop(selection);
-        }
-
-        public Bitmap GetCutOutShapeMenuImage(Office.IRibbonControl control)
-        {
-            return CropToShape.GetCutOutShapeMenuImage(control);
         }
 
         #endregion
@@ -1747,11 +1706,17 @@ namespace PowerPointLabs
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
 
-            if (recorderPane == null) return;
+            if (recorderPane == null)
+            {
+                return;
+            }
 
             var recorder = recorderPane.Control as RecorderTaskPane;
 
-            if (recorder == null) return;
+            if (recorder == null)
+            {
+                return;
+            }
 
             // initialize selected slides' audio
             recorder.InitializeAudioAndScript(PowerPointCurrentPresentationInfo.SelectedSlides.ToList(),
@@ -1846,7 +1811,10 @@ namespace PowerPointLabs
 
             var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
 
-            if (recorderPane == null) return;
+            if (recorderPane == null)
+            {
+                return;
+            }
 
             var recorder = recorderPane.Control as RecorderTaskPane;
             recorder.ClearRecordDataListForSelectedSlides();
@@ -1904,74 +1872,6 @@ namespace PowerPointLabs
         }
         # endregion
 
-        # region Feature: Shapes Lab
-        public void CustomShapeButtonClick(Office.IRibbonControl control)
-        {
-            InitCustomShapePane();
-        }
-
-        public void AddShapeButtonClick(Office.IRibbonControl control)
-        {
-            var customShape = InitCustomShapePane();
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-
-            // first of all we check if the shape gallery has been opened correctly
-            if (!Globals.ThisAddIn.ShapePresentation.Opened)
-            {
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
-                return;
-            }
-
-            // add shape into shape gallery first to reduce flicker
-            var shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(selection,
-                                                                         TextCollection.CustomShapeDefaultShapeName);
-
-            // add the selection into pane and save it as .png locally
-            var shapeFullName = Path.Combine(customShape.CurrentShapeFolderPath, shapeName + ".png");
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
-
-            // sync the shape among all opening panels
-            Globals.ThisAddIn.SyncShapeAdd(shapeName, shapeFullName, customShape.CurrentCategory);
-
-            // finally, add the shape into the panel and waiting for name editing
-            customShape.AddCustomShape(shapeName, shapeFullName, true);
-        }
-
-        private static CustomShapePane InitCustomShapePane()
-        {
-            var prensentation = PowerPointPresentation.Current.Presentation;
-
-            Globals.ThisAddIn.InitializeShapesLabConfig();
-            Globals.ThisAddIn.InitializeShapeGallery();
-            Globals.ThisAddIn.RegisterShapesLabPane(prensentation);
-
-            var customShapePane = Globals.ThisAddIn.GetActivePane(typeof(CustomShapePane));
-
-            if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
-            {
-                return null;
-            }
-
-            var customShape = customShapePane.Control as CustomShapePane;
-
-            Trace.TraceInformation(
-                "Before Visible: " +
-                string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",
-                              customShapePane.Width, customShapePane.Height, customShape.Width, customShape.Height));
-
-            // if currently the pane is hidden, show the pane
-            if (!customShapePane.Visible)
-            {
-                customShapePane.Visible = true;
-
-                customShape.Width = customShapePane.Width - 16;
-                customShape.PaneReload();
-            }
-
-            return customShape;
-        }
-        # endregion
-
         # region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
@@ -1995,19 +1895,19 @@ namespace PowerPointLabs
             if (shapeRange.Count > 1 || shapeRange[1].Type == Office.MsoShapeType.msoGroup)
             {
                 MessageBox.Show("Only one magnify area is allowed.");
-                
+
                 return;
             }
 
             try
             {
-                var croppedShape = CropToShape.Crop(selection, isInPlace: true, handleError: false);
+                var croppedShape = CropToShape.Crop(PowerPointCurrentPresentationInfo.CurrentSlide, selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
             catch (Exception e)
             {
-                var errorMessage = CropToShape.GetErrorMessageForErrorCode(e.Message);
+                var errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
 
                 MessageBox.Show(errorMessage);
@@ -2020,7 +1920,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintRemainder);
             effectSlide.GetNativeSlide().Select();
@@ -2032,7 +1935,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GreyScaleBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2044,7 +1950,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlackWhiteBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2056,7 +1965,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GothamBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2068,7 +1980,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(true);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.SepiaBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2080,7 +1995,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlurBackground(percentage, EffectsLab.EffectsLabBlurSelected.IsTintBackground);
             effectSlide.GetNativeSlide().Select();
@@ -2092,7 +2010,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GreyScaleBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2104,7 +2025,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.BlackWhiteBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2116,7 +2040,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.GothamBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2128,7 +2055,10 @@ namespace PowerPointLabs
 
             var effectSlide = GenerateEffectSlide(false);
 
-            if (effectSlide == null) return;
+            if (effectSlide == null)
+            {
+                return;
+            }
 
             effectSlide.SepiaBackground();
             effectSlide.GetNativeSlide().Select();
@@ -2139,7 +2069,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
             var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            
+
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 MessageBox.Show("Please select at least 1 shape");
@@ -2198,9 +2128,17 @@ namespace PowerPointLabs
 
                 if (dupSlide != null)
                 {
-                    dupSlide.Delete();
+                    if (generateOnRemainder)
+                    {
+                        dupSlide.Delete();
+                    }
+                    else
+                    {
+                        dupSlide.MoveTo(curSlide.Index);
+                        curSlide.Delete();
+                    }
                 }
-                
+
                 PowerPointPresentation.Current.AddAckSlide();
 
                 return effectSlide;
@@ -2226,7 +2164,7 @@ namespace PowerPointLabs
                 {
                     dupSlide.Delete();
                 }
-                
+
                 ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
                 return null;
             }
@@ -2421,7 +2359,7 @@ namespace PowerPointLabs
 
                 var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
                 ((DrawingsPane)drawingsPane.Control).drawingsPaneWPF.TryInitialise(DrawingLabData, DrawingLab);
-                
+
                 // if currently the pane is hidden, show the pane
                 if (!drawingsPane.Visible)
                 {

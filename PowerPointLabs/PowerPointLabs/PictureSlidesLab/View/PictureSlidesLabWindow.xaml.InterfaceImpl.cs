@@ -63,7 +63,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         {
             try
             {
-                if (_gotoSlideDialog.IsOpen) return;
+                if (_gotoSlideDialog.IsOpen)
+                {
+                    return;
+                }
 
                 _gotoSlideDialog
                     .Init("Successfully Applied!")

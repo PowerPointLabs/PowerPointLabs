@@ -7,6 +7,24 @@ namespace PowerPointLabs.SpeechEngine
 {
     class PromptToAudio
     {
+        public static void SaveAsWav(PromptBuilder p, String directory)
+        {
+            bool hasFilePath = !String.IsNullOrWhiteSpace(directory);
+            if (!hasFilePath)
+            {
+                // We check if there is text first, as
+                // .SetOutputToWaveFile creates an empty WAV file
+                // (even if nothing will be added to it.)
+                return;
+            }
+
+            using (var synthesizer = new SpeechSynthesizer())
+            {
+                synthesizer.SetOutputToWaveFile(directory);
+                synthesizer.Speak(p);
+            }
+        }
+
         public static void Speak(PromptBuilder p)
         {
             var synthesizer = CreateSynthesizerOutputToAudio();
@@ -43,24 +61,5 @@ namespace PowerPointLabs.SpeechEngine
                 }
             }
         }
-
-        public static void SaveAsWav(PromptBuilder p, String directory)
-        {
-            bool hasFilePath = !String.IsNullOrWhiteSpace(directory);
-            if (!hasFilePath)
-            {
-                // We check if there is text first, as
-                // .SetOutputToWaveFile creates an empty WAV file
-                // (even if nothing will be added to it.)
-                return;
-            }
-
-            using (var synthesizer = new SpeechSynthesizer())
-            {
-                synthesizer.SetOutputToWaveFile(directory);
-                synthesizer.Speak(p);
-            }
-        }
-        
     }
 }

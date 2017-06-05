@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using PowerPointLabs.DataSources;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Models;
-using System.Drawing.Drawing2D;
-using PPExtraEventHelper;
-using Converters = PowerPointLabs.Converters;
+
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ColorPicker;
+using PowerPointLabs.DataSources;
+using PowerPointLabs.Models;
 using PowerPointLabs.Views;
-using Microsoft.Office.Core;
+using PPExtraEventHelper;
+
+using ColorPaneConverters = PowerPointLabs.Converters.ColorPane;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
 {
-
+    [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     public partial class ColorPane : UserControl
     {
 #pragma warning disable 0618
@@ -66,6 +69,24 @@ namespace PowerPointLabs
 
             // Default color to CornFlowerBlue
             SetDefaultColor(Color.CornflowerBlue);
+
+            EnableScrolling();
+
+            // Hook the mouse process if it has not
+            PPMouse.TryStartHook();
+        }
+
+        private void EnableScrolling()
+        {
+            // Account for scrollbar width
+            this.Width += System.Windows.Forms.SystemInformation.VerticalScrollBarWidth;
+
+            // Prevent horizontal scrollbar from appearing
+            this.HorizontalScroll.Visible = false;
+            this.HorizontalScroll.Maximum = 0;
+
+            // Enable Autoscroll
+            this.AutoScroll = true;
         }
 
         public void SaveDefaultColorPaneThemeColors()
@@ -165,232 +186,239 @@ namespace PowerPointLabs
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorOne",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel2.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTwo",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel3.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorThree",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel4.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFour",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel5.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorFive",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel6.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSix",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel7.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorSeven",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel8.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorEight",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel9.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorNine",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.themePanel10.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "themeColorTen",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.analogousSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.analogousLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToAnalogousLower()));
+                new ColorPaneConverters.SelectedColorToAnalogousLower()));
 
             this.analogousDarker.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToAnalogousHigher()));
+                new ColorPaneConverters.SelectedColorToAnalogousHigher()));
 
             this.complementarySelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToComplementaryColor()));
+                new ColorPaneConverters.SelectedColorToComplementaryColor()));
 
             this.complementaryLighter.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToSplitComplementaryLower()));
+                new ColorPaneConverters.SelectedColorToSplitComplementaryLower()));
 
             this.complementaryDarker.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToSplitComplementaryHigher()));
+                new ColorPaneConverters.SelectedColorToSplitComplementaryHigher()));
 
             this.triadicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.triadicLower.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToTriadicLower()));
+                new ColorPaneConverters.SelectedColorToTriadicLower()));
 
             this.triadicHigher.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToTriadicHigher()));
+                new ColorPaneConverters.SelectedColorToTriadicHigher()));
 
             this.tetradicSelected.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.HSLColorToRGBColor()));
+                new ColorPaneConverters.HSLColorToRGBColor()));
 
             this.tetradic1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
                 "selectedColor",
-                new Converters.SelectedColorToTetradicOne()));
+                new ColorPaneConverters.SelectedColorToTetradicOne()));
 
             this.tetradic2.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToTetradicTwo()));
+                            new ColorPaneConverters.SelectedColorToTetradicTwo()));
 
             this.tetradic3.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToTetradicThree()));
+                            new ColorPaneConverters.SelectedColorToTetradicThree()));
 
             this.monoPanel1.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticOne()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticOne()));
 
             this.monoPanel2.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticTwo()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticTwo()));
 
             this.monoPanel3.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticThree()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticThree()));
 
             this.monoPanel4.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticFour()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticFour()));
 
             this.monoPanel5.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticFive()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticFive()));
 
             this.monoPanel6.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticSix()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticSix()));
 
             this.monoPanel7.DataBindings.Add(new CustomBinding(
                             "BackColor",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToMonochromaticSeven()));
+                            new ColorPaneConverters.SelectedColorToMonochromaticSeven()));
 
             brightnessBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToBrightnessValue()));
+                            new ColorPaneConverters.SelectedColorToBrightnessValue()));
 
             saturationBar.DataBindings.Add(new CustomBinding(
                             "Value",
                             dataSource,
                             "selectedColor",
-                            new Converters.SelectedColorToSaturationValue()));
+                            new ColorPaneConverters.SelectedColorToSaturationValue()));
 
             fillButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isFillColorSelected",
-                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+                        new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
             
             lineButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isLineColorSelected",
-                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+                        new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
             
             fontButton.DataBindings.Add(new CustomBinding(
                         "BackColor",
                         dataSource,
                         "isFontColorSelected",
-                        new Converters.IsActiveBoolToButtonBackColorConverter()));
+                        new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
         }
 
         #endregion
 
         private int _timerCounter = 0;
         private const int TIMER_COUNTER_THRESHOLD = 2;
+        private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
+        private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
 
         private void BeginEyedropping()
         {
-            if (!VerifyIsShapeSelected()) return;
+            if (!VerifyIsShapeSelected())
+            {
+                return;
+            }
 
             _timerCounter = 0;
             timer1.Start();
+            Cursor.Current = eyeDropperCursor;
             PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
+            magnifier.Show();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
@@ -403,8 +431,7 @@ namespace PowerPointLabs
                 return;
             }
             _timerCounter++;
-
-            Cursor.Current = eyeDropperCursor;
+            
             System.Drawing.Point mousePos = Control.MousePosition;
             IntPtr deviceContext = Native.GetDC(IntPtr.Zero);
             if (currMode == MODE.NONE)
@@ -425,7 +452,10 @@ namespace PowerPointLabs
             try
             {
                 var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-                if (selection == null) return;
+                if (selection == null)
+                {
+                    return;
+                }
 
                 if (selection.Type == PpSelectionType.ppSelectionShapes &&
                     selection.HasChildShapeRange)
@@ -568,12 +598,12 @@ namespace PowerPointLabs
         void LeftMouseButtonUpEventHandler()
         {
             PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
+            magnifier.Hide();
             timer1.Stop();
             //this is to ensure that EyeDropper tool feature doesn't
             //affect Color Dialog tool feature
             if (_timerCounter >= TIMER_COUNTER_THRESHOLD)
             {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
                 UpdateUIForNewColor();
                 if (currMode != MODE.NONE)
                 {
@@ -767,12 +797,7 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseEnter(object sender, EventArgs e)
         {
-            if (sender is Button)
-            {
-                Button button = sender as Button;
-                button.Cursor = openHandCursor;
-            }
-            else if (sender is Panel)
+            if (sender is Panel)
             {
                 Panel panel = sender as Panel;
                 panel.Cursor = openHandCursor;
@@ -793,7 +818,10 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
             _mouseDownLocation = e.Location;
             Panel panel = sender as Panel;
             panel.Cursor = closedHandCursor;
@@ -872,7 +900,10 @@ namespace PowerPointLabs
 
         private void MatchingPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
 
             int dx = e.X - _mouseDownLocation.X;
             int dy = e.Y - _mouseDownLocation.Y;
@@ -1006,17 +1037,16 @@ namespace PowerPointLabs
         private void EyeDropButton_MouseClick(object sender, MouseEventArgs e)
         {
             string buttonName = "";
-            if (sender is Button)
-            {
-                buttonName = ((Button)sender).Name;
-            }
-            else if (sender is Panel)
+            if (sender is Panel)
             {
                 buttonName = ((Panel)sender).Name;
             }
             SetModeForSenderName(buttonName);
 
-            if (!VerifyIsShapeSelected()) return;
+            if (!VerifyIsShapeSelected())
+            {
+                return;
+            }
 
             colorDialog1.Color = GetSelectedShapeColor();
 
@@ -1043,7 +1073,9 @@ namespace PowerPointLabs
         {
             SelectShapes();
             if (_selectedShapes == null && _selectedText == null)
+            {
                 return dataSource.SelectedColor;
+            }
 
             if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
             {
@@ -1138,19 +1170,19 @@ namespace PowerPointLabs
 
         private void EyeDropButton_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
 
             string buttonName = "";
-            if (sender is Button)
-            {
-                buttonName = ((Button)sender).Name;
-            } 
-            else if (sender is Panel)
+            if (sender is Panel)
             {
                 buttonName = ((Panel)sender).Name;
             }
             SetModeForSenderName(buttonName);
             BeginEyedropping();
+            Globals.ThisAddIn.Application.StartNewUndoEntry();
         }
 
         private Boolean VerifyIsShapeSelected()
@@ -1158,6 +1190,7 @@ namespace PowerPointLabs
             SelectShapes();
             if (_selectedShapes == null && _selectedText == null && currMode != MODE.NONE)
             {
+                ResetEyeDropperSelectionInDataSource();
                 MessageBox.Show(TextCollection.ColorsLabText.InfoHowToActivateFeature, "Colors Lab");
                 return false;
             }
@@ -1181,17 +1214,17 @@ namespace PowerPointLabs
             return panel1;
         }
 
-        public Button GetFontColorButton()
+        public Panel GetFontColorButton()
         {
             return fontButton;
         }
 
-        public Button GetLineColorButton()
+        public Panel GetLineColorButton()
         {
             return lineButton;
         }
 
-        public Button GetFillCollorButton()
+        public Panel GetFillColorButton()
         {
             return fillButton;
         }

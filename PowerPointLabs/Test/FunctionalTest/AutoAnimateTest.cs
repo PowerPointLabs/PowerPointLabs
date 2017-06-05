@@ -26,6 +26,13 @@ namespace Test.FunctionalTest
         {
             AutoAnimateWithCopyPasteShapesSuccessfully();
         }
+        
+        [TestMethod]
+        [TestCategory("FT")]
+        public void FT_AutoAnimateStraightLinesSuccessfully()
+        {
+            AutoAnimateStraightLinesSuccessfully();
+        }
 
         private static void AutoAnimateSuccessfully()
         {
@@ -77,6 +84,24 @@ namespace Test.FunctionalTest
             PpOperations.SelectShapesByPrefix("text").Delete();
 
             // TODO: actually this expected slide looks a bit strange..
+            SlideUtil.IsSameAnimations(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private static void AutoAnimateStraightLinesSuccessfully()
+        {
+            PpOperations.SelectSlide(38);
+
+            PplFeatures.AutoAnimate();
+
+            var actualSlide = PpOperations.SelectSlide(39);
+            // remove elements that affect comparing slides
+            PpOperations.SelectShape("Text Label Initial Slide")[1].Delete();
+
+            var expSlide = PpOperations.SelectSlide(41);
+            // remove elements that affect comparing slides
+            PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
+
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }

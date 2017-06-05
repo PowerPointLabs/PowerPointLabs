@@ -25,7 +25,9 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void ShowErrorTextDialog(string text)
         {
             if (_errorTextDialog.IsOpen)
+            {
                 return;
+            }
 
             _errorTextDialog.DialogTitleProperty.Text = "Error";
             _errorTextDialog.DialogTextBlockProperty.Text = text;

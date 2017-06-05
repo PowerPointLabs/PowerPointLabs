@@ -9,6 +9,11 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
     [Export(typeof(IStyleVariants))]
     class TriangleStyleVariants : BaseStyleVariants
     {
+        public override string GetStyleName()
+        {
+            return TextCollection.PictureSlidesLabText.StyleNameTriangle;
+        }
+
         protected override IList<IVariantWorker> GetRequiredVariantWorkers()
         {
             return new List<IVariantWorker>
@@ -19,11 +24,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
                 new BlurVariantWorker(),
                 new BrightnessVariantWorker()
             };
-        }
-
-        public override string GetStyleName()
-        {
-            return TextCollection.PictureSlidesLabText.StyleNameTriangle;
         }
     }
 }
