@@ -28,7 +28,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public List<PowerPoint.Shape> EmbedStyleOptionsInformation(string originalImageFile, string croppedImageFile,
             string imageContext, string imageSource, Rect rect, StyleOption opt)
         {
-            if (originalImageFile == null) return new List<PowerPoint.Shape>();
+            if (originalImageFile == null)
+            {
+                return new List<PowerPoint.Shape>();
+            }
 
             var originalImage = AddPicture(originalImageFile, EffectName.Original_DO_NOT_REMOVE);
             var slideWidth = SlideWidth;

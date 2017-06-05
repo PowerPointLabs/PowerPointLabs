@@ -19,7 +19,9 @@ namespace PowerPointLabs.Models
         private PowerPointSpotlightSlide(PowerPoint.Slide slide) : base(slide)
         {
             if (!slide.Name.Contains("PPTLabsSpotlight"))
+            {
                 _slide.Name = "PPTLabsSpotlight" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            }
         }
 
         public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
@@ -40,10 +42,14 @@ namespace PowerPointLabs.Models
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
             var matchingShapes = shapes.Where(current => (HasExitAnimation(current)));
             foreach (PowerPoint.Shape s in matchingShapes)
+            {
                 s.Delete();
+            }
 
             foreach (PowerPoint.Shape s in _slide.Shapes)
+            {
                 DeleteShapeAnimations(s);
+            }
 
             DeleteSlideNotes();
             DeleteSlideMedia();
@@ -58,7 +64,9 @@ namespace PowerPointLabs.Models
             PowerPoint.Shape spotlightShape;
             
             if (spotShape.Type == Office.MsoShapeType.msoCallout)
+            {
                 isCallout = true;
+            }
 
             if (isCallout)
             {
@@ -153,7 +161,10 @@ namespace PowerPointLabs.Models
         {
             spotlightShape.Line.Visible = Office.MsoTriState.msoFalse;
             if (spotlightShape.HasTextFrame == Office.MsoTriState.msoTrue && spotlightShape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+            {
                 spotlightShape.TextFrame.TextRange.Font.Color.RGB = 0xffffff;
+            }
+
             spotlightShape.Name = "SpotlightShape" + Guid.NewGuid().ToString();
         }
 
@@ -182,9 +193,16 @@ namespace PowerPointLabs.Models
             newRange.Select();
 
             PowerPoint.Selection currentSelection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+
+            // Save the original dimensions because ppPastePNG is resized in PowerPoint 2016
+            float originalWidth = currentSelection.ShapeRange[1].Width;
+            float originalHeight = currentSelection.ShapeRange[1].Height;
             currentSelection.Cut();
 
             PowerPoint.Shape spotlightPicture = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            spotlightPicture.Width = originalWidth;
+            spotlightPicture.Height = originalHeight;
+
             return spotlightPicture;
         }
 

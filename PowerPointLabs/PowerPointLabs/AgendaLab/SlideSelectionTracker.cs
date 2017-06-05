@@ -58,7 +58,11 @@ namespace PowerPointLabs.AgendaLab
 
         private void RemoveSlideMeetingCondition(Predicate<PowerPointSlide> condition)
         {
-            if (UserCurrentSlide != null && condition(UserCurrentSlide)) UserCurrentSlide = null;
+            if (UserCurrentSlide != null && condition(UserCurrentSlide))
+            {
+                UserCurrentSlide = null;
+            }
+
             _selectedSlides.RemoveAll(condition);
         }
 

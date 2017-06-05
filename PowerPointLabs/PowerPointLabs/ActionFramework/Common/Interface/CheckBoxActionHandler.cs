@@ -5,7 +5,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles OnCheckBoxAction call
     /// </summary>
-    public abstract class CheckBoxActionHandler : BaseActionHandler
+    public abstract class CheckBoxActionHandler : BaseHandler
     {
         public void Execute(string ribbonId, bool pressed)
         {

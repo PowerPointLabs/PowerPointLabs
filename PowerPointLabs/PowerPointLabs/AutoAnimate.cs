@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -86,7 +88,9 @@ namespace PowerPointLabs
                         currentSlide = PowerPointPresentation.Current.Slides[selectedSlide.Index - 3];
                         nextSlide = selectedSlide;
                         if (animatedSlide.Name.StartsWith("PPSlideAnimated"))
+                        {
                             ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
+                        }
                     }
 
                     if (selectedSlide.Index < PowerPointPresentation.Current.SlideCount - 1)
@@ -95,11 +99,15 @@ namespace PowerPointLabs
                         nextSlide = PowerPointPresentation.Current.Slides[selectedSlide.Index + 1];
                         currentSlide = selectedSlide;
                         if (animatedSlide.Name.StartsWith("PPSlideAnimated"))
+                        {
                             ManageSlidesForReload(currentSlide, nextSlide, animatedSlide);
+                        }
                     }
                 }
                 else
+                {
                     System.Windows.Forms.MessageBox.Show("The current slide was not added by PowerPointLabs Auto Animate", "Error");
+                }
             }
             catch (Exception e)
             {
@@ -140,7 +148,9 @@ namespace PowerPointLabs
         private static void PrepareNextSlide(PowerPointSlide nextSlide)
         {
             if (nextSlide.Transition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFade && nextSlide.Transition.EntryEffect != PowerPoint.PpEntryEffect.ppEffectFadeSmoothly)
+            {
                 nextSlide.Transition.EntryEffect = PowerPoint.PpEntryEffect.ppEffectNone;
+            }
 
             if (nextSlide.Name.StartsWith("PPSlideStart") || nextSlide.Name.StartsWith("PPSlideMulti"))
             {
@@ -184,7 +194,9 @@ namespace PowerPointLabs
             {
                 tempMatchingShape = nextSlide.GetShapeWithSameIDAndName(sh);
                 if (tempMatchingShape == null)
+                {
                     tempMatchingShape = nextSlide.GetShapeWithSameName(sh);
+                }
                 
                 if (tempMatchingShape != null)
                 {

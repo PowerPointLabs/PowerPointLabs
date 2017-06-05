@@ -128,7 +128,10 @@ namespace PowerPointLabs.Models
             {
                 var categoryIndex = FindCategoryIndex(category);
 
-                if (categoryIndex == -1) return string.Empty;
+                if (categoryIndex == -1)
+                {
+                    return string.Empty;
+                }
 
                 categorySlide = Slides[categoryIndex - 1];
             }
@@ -212,7 +215,10 @@ namespace PowerPointLabs.Models
         {
             var index = FindCategoryIndex(categoryName);
 
-            if (index == -1) return;
+            if (index == -1)
+            {
+                return;
+            }
 
             // copy a shape with name from default category to another category
             var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
@@ -234,7 +240,10 @@ namespace PowerPointLabs.Models
         {
             var index = FindCategoryIndex(categoryName);
 
-            if (index == -1) return;
+            if (index == -1)
+            {
+                return;
+            }
 
             // move a shape with name from default category to another category
             var shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
@@ -258,7 +267,10 @@ namespace PowerPointLabs.Models
                 return false;
             }
 
-            if (!ConsistencyCheck()) return false;
+            if (!ConsistencyCheck())
+            {
+                return false;
+            }
 
             // set default category to be the first slide, but do nothing if the presentation
             // has no slide, i.e. it's a newly created presentation

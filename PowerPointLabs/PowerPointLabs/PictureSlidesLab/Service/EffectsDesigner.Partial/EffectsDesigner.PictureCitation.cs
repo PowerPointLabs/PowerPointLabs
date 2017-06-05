@@ -12,7 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyImageReferenceToSlideNote(string source)
         {
-            if (StringUtil.IsEmpty(source)) return;
+            if (StringUtil.IsEmpty(source))
+            {
+                return;
+            }
 
             RemoveImageReference();
             NotesPageText = "[[Picture taken from " + source + " on " + DateTime.Now + "]]\n" +

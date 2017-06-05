@@ -84,6 +84,25 @@ namespace PPExtraEventHelper
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+        
+        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Unicode)]
+        internal static extern IntPtr CreateWindowEx(int dwExStyle,
+                                                      string lpszClassName,
+                                                      string lpszWindowName,
+                                                      int style,
+                                                      int x, int y,
+                                                      int width, int height,
+                                                      IntPtr hwndParent,
+                                                      IntPtr hMenu,
+                                                      IntPtr hInst,
+                                                      [MarshalAs(UnmanagedType.AsAny)] object pvParam);
+
+        [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Unicode)]
+        internal static extern bool DestroyWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool SetLayeredWindowAttributes(IntPtr hwnd, int crKey, byte bAlpha, LayeredWindowAttributeFlags dwFlags);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -117,6 +136,47 @@ namespace PPExtraEventHelper
 
         [DllImport("user32.dll")]
         internal static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool InvalidateRect(IntPtr hWnd, IntPtr rect, [MarshalAs(UnmanagedType.Bool)] bool erase);
+
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
+        [DllImport("gdi32.dll")]
+        internal static extern IntPtr CreateRoundRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect, int nWidthEllipse, int nHeightEllipse);
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowLong(IntPtr hwnd, int index);
+
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+
+        // Minimum supported client: Vista
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool MagInitialize();
+
+        // Minimum supported client: Vista
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool MagUninitialize();
+
+        // Minimum supported client: Vista
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool MagSetWindowTransform(IntPtr hwnd, ref MAGTRANSFORM pTransform);
+
+        // Minimum supported client: Vista
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool MagSetWindowSource(IntPtr hwnd, RECT rect);
+
+        // Minimum supported client: Vista 
+        [DllImport("Magnification.dll", CallingConvention = CallingConvention.StdCall)] 
+        [return: MarshalAs(UnmanagedType.Bool)] 
+        internal static extern bool MagSetWindowFilterList(IntPtr hwnd, int dwFilterMode, int count, IntPtr[] pHWND);
 
         [DllImport("winmm.dll")]
         internal static extern int mciSendString(string mciCommand,
@@ -154,6 +214,20 @@ namespace PPExtraEventHelper
             internal int Top;         // y position of upper-left corner
             internal int Right;       // x position of lower-right corner
             internal int Bottom;      // y position of lower-right corner
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct MAGTRANSFORM
+        {
+            internal float m00;
+            internal float m10;
+            internal float m20;
+            internal float m01;
+            internal float m11;
+            internal float m21;
+            internal float m02;
+            internal float m12;
+            internal float m22;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -196,6 +270,8 @@ namespace PPExtraEventHelper
             WM_LBUTTONDOWN = 0x0201,
             WM_LBUTTONUP = 0x0202,
             WM_LBUTTONDBLCLK = 0x0203,
+            WM_RBUTTONDOWN = 0x0204,
+            WM_RBUTTONUP = 0x0205,
             WM_PARENTNOTIFY = 0x0210,
             WM_DRAWCLIPBOARD = 0x308,
             WM_CHANGECBCHAIN = 0x30D,
@@ -282,6 +358,88 @@ namespace PPExtraEventHelper
         {
             EVENT_SYSTEM_MENUEND = 0x5,
             EVENT_OBJECT_CREATE = 0x8000,
+        }
+        
+        internal enum MagnifierStyle : int
+        {
+            MS_SHOWMAGNIFIEDCURSOR = 0x0001,
+            MS_CLIPAROUNDCURSOR = 0x0002,
+            MS_INVERTCOLORS = 0x0004
+        }
+
+        internal enum MagnifierFilterMode : int
+        {
+            MW_FILTERMODE_EXCLUDE = 0,
+            MW_FILTERMODE_INCLUDE = 1
+        }
+
+        internal enum WindowLong : int
+        {
+            GWL_WNDPROC = -4,
+            GWL_HINSTANCE = -6,
+            GWL_HWNDPARENT = -8,
+            GWL_ID = -12,
+            GWL_STYLE = -16,
+            GWL_EXSTYLE = -20,
+            GWL_USERDATA = -21
+        }
+
+        internal enum WindowStyles : int
+        {
+            WS_OVERLAPPED = 0x00000000,
+            WS_POPUP = -2147483648,
+            WS_CHILD = 0x40000000,
+            WS_MINIMIZE = 0x20000000,
+            WS_VISIBLE = 0x10000000,
+            WS_DISABLED = 0x08000000,
+            WS_CLIPSIBLINGS = 0x04000000,
+            WS_CLIPCHILDREN = 0x02000000,
+            WS_MAXIMIZE = 0x01000000,
+            WS_CAPTION = 0x00C00000,
+            WS_BORDER = 0x00800000,
+            WS_DLGFRAME = 0x00400000,
+            WS_VSCROLL = 0x00200000,
+            WS_HSCROLL = 0x00100000,
+            WS_SYSMENU = 0x00080000,
+            WS_THICKFRAME = 0x00040000,
+            WS_GROUP = 0x00020000,
+            WS_TABSTOP = 0x00010000,
+            WS_MINIMIZEBOX = 0x00020000,
+            WS_MAXIMIZEBOX = 0x00010000
+        }
+
+        internal enum ExtendedWindowStyles : int
+        {
+            WS_EX_DLGMODALFRAME = 0x00000001,
+            WS_EX_NOPARENTNOTIFY = 0x00000004,
+            WS_EX_TOPMOST = 0x00000008,
+            WS_EX_ACCEPTFILES = 0x00000010,
+            WS_EX_TRANSPARENT = 0x00000020,
+            WS_EX_MDICHILD = 0x00000040,
+            WS_EX_TOOLWINDOW = 0x00000080,
+            WS_EX_WINDOWEDGE = 0x00000100,
+            WS_EX_CLIENTEDGE = 0x00000200,
+            WS_EX_CONTEXTHELP = 0x00000400,
+            WS_EX_RIGHT = 0x00001000,
+            WS_EX_LEFT = 0x00000000,
+            WS_EX_RTLREADING = 0x00002000,
+            WS_EX_LTRREADING = 0x00000000,
+            WS_EX_LEFTSCROLLBAR = 0x00004000,
+            WS_EX_RIGHTSCROLLBAR = 0x00000000,
+            WS_EX_CONTROLPARENT = 0x00010000,
+            WS_EX_STATICEDGE = 0x00020000,
+            WS_EX_APPWINDOW = 0x00040000,
+            WS_EX_LAYERED = 0x00080000,
+            WS_EX_NOINHERITLAYOUT = 0x00100000,
+            WS_EX_LAYOUTRTL = 0x00400000,
+            WS_EX_COMPOSITED = 0x02000000,
+            WS_EX_NOACTIVATE = 0x08000000
+        }
+        
+        internal enum LayeredWindowAttributeFlags : int
+        {
+            LWA_COLORKEY = 0x00000001,
+            LWA_ALPHA = 0x00000002
         }
 
         [StructLayout(LayoutKind.Sequential)]

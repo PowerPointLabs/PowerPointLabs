@@ -12,7 +12,10 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void ConvertToFreeform()
         {
-            if ((int)_shape.Rotation == 0) return;
+            if ((int)_shape.Rotation == 0)
+            {
+                return;
+            }
             
             SetPoints(isConvertToFreeform: true);
             if (_points == null)

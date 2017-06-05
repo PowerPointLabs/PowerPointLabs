@@ -22,41 +22,6 @@ namespace PowerPointLabs.ResizeLab
             HeightAndWidth
         }
 
-        /// <summary>
-        /// Get the height of the reference shape.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <returns></returns>
-        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
-        {
-            if (selectedShapes.Count <= 0) return -1;
-            switch (ResizeType)
-            {
-                case ResizeBy.Visual:
-                    return new PPShape(selectedShapes[1]).AbsoluteHeight;
-                case ResizeBy.Actual:
-                    return new PPShape(selectedShapes[1], false).ShapeHeight;
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Get the width of the reference shape.
-        /// </summary>
-        /// <param name="selectedShapes"></param>
-        /// <returns></returns>
-        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
-        {
-            if (selectedShapes.Count <= 0) return -1;
-            switch (ResizeType)
-            {
-                case ResizeBy.Visual:
-                    return new PPShape(selectedShapes[1]).AbsoluteWidth;
-                case ResizeBy.Actual:
-                    return new PPShape(selectedShapes[1], false).ShapeWidth;
-            }
-            return -1;
-        }
 
         #region Validation
 
@@ -69,7 +34,7 @@ namespace PowerPointLabs.ResizeLab
         /// <returns></returns>
         internal bool IsSelectionValid(PowerPoint.Selection selection, bool handleError = true, string[] optionalParameters = null)
         {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes && 
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes &&
                 selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
             {
                 if (handleError)
@@ -105,5 +70,49 @@ namespace PowerPointLabs.ResizeLab
         }
 
         #endregion
+
+        /// <summary>
+        /// Get the height of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceHeight(PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count <= 0)
+            {
+                return -1;
+            }
+
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    return new PPShape(selectedShapes[1]).AbsoluteHeight;
+                case ResizeBy.Actual:
+                    return new PPShape(selectedShapes[1], false).ShapeHeight;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Get the width of the reference shape.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <returns></returns>
+        private float GetReferenceWidth(PowerPoint.ShapeRange selectedShapes)
+        {
+            if (selectedShapes.Count <= 0)
+            {
+                return -1;
+            }
+
+            switch (ResizeType)
+            {
+                case ResizeBy.Visual:
+                    return new PPShape(selectedShapes[1]).AbsoluteWidth;
+                case ResizeBy.Actual:
+                    return new PPShape(selectedShapes[1], false).ShapeWidth;
+            }
+            return -1;
+        }
     }
 }

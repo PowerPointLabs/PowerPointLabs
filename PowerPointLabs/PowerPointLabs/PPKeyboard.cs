@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+
 using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using System.Text;
 
 namespace PPExtraEventHelper
 {
@@ -76,7 +77,11 @@ namespace PPExtraEventHelper
 
         public static void Init(PowerPoint.Application application)
         {
-            if (_initialised) return;
+            if (_initialised)
+            {
+                return;
+            }
+
             _initialised = true;
 
             InitialiseDictionaries();
@@ -99,7 +104,11 @@ namespace PPExtraEventHelper
 
         private static void InitialiseDictionaries()
         {
-            if (_isDictionaryInitialised) return;
+            if (_isDictionaryInitialised)
+            {
+                return;
+            }
+
             _isDictionaryInitialised = true;
 
             _keyStatuses = new Dictionary<int, KeyStatus>();
@@ -217,7 +226,10 @@ namespace PPExtraEventHelper
         {
             RefreshSlideViewWindowHandle();
             //Only process inputs that are sent to the main slide view window.
-            if (!IsSlideViewWindowFocused()) return Native.CallNextHookEx(0, nCode, wParam, lParam);
+            if (!IsSlideViewWindowFocused())
+            {
+                return Native.CallNextHookEx(0, nCode, wParam, lParam);
+            }
 
             bool blockInput = false;
             if (nCode == 0)
@@ -236,7 +248,10 @@ namespace PPExtraEventHelper
                         foreach (var action in _keyDownActions[keyIndex])
                         {
                             var block = action.RunConditionally(keyStatus);
-                            if (block) blockInput = true;
+                            if (block)
+                            {
+                                blockInput = true;
+                            }
                         }
                     }
                     else
@@ -246,7 +261,10 @@ namespace PPExtraEventHelper
                             foreach (var action in _keyUpActions[keyIndex])
                             {
                                 var block = action.RunConditionally(keyStatus);
-                                if (block) blockInput = true;
+                                if (block)
+                                {
+                                    blockInput = true;
+                                }
                             }
                             keyStatus.Release();
                         }
@@ -254,8 +272,14 @@ namespace PPExtraEventHelper
                 }
             }
 
-            if (blockInput) return 1;
-            else return Native.CallNextHookEx(0, nCode, wParam, lParam);
+            if (blockInput)
+            {
+                return 1;
+            }
+            else
+            {
+                return Native.CallNextHookEx(0, nCode, wParam, lParam);
+            }
         }
 
         /// <summary>
