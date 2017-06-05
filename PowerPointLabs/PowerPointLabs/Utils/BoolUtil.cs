@@ -6,7 +6,10 @@ namespace PowerPointLabs.Utils
     {
         public static bool ToBool(string state)
         {
-            if (StringUtil.IsEmpty(state)) return false;
+            if (StringUtil.IsEmpty(state))
+            {
+                return false;
+            }
 
             try
             {

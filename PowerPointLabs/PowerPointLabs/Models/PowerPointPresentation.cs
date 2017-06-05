@@ -14,6 +14,7 @@ namespace PowerPointLabs.Models
 #pragma warning disable 0618
         #region Properties
         private string _name;
+        private const string extensionRegex = "\\.pptx?$";
 
         public static Application Application { get; set; }
 
@@ -30,7 +31,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return Path + @"\" + Name;
+                if (Regex.IsMatch(Name, extensionRegex, RegexOptions.IgnoreCase))
+                {
+                    return Path + @"\" + Name;
+                }
+                else
+                {
+                    return Path + @"\" + Name + ".pptx";
+                }
             }
         }
 
@@ -38,7 +46,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return Path + @"\" + NameNoExtension;
+                if (Regex.IsMatch(Name, extensionRegex, RegexOptions.IgnoreCase))
+                {
+                    return Path + @"\" + Name;
+                }
+                else
+                {
+                    return Path + @"\" + Name + ".pptx";
+                }
             }
         }
 
@@ -57,11 +72,18 @@ namespace PowerPointLabs.Models
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {
-                        if (hasAckSlide) AddAckSlide();
+                        if (hasAckSlide)
+                        {
+                            AddAckSlide();
+                        }
+
                         return true;
                     }
                 }
-                if (hasAckSlide) AddAckSlide();
+                if (hasAckSlide)
+                {
+                    AddAckSlide();
+                }
 
                 return false;
             }
@@ -72,8 +94,16 @@ namespace PowerPointLabs.Models
             get { return _name; }
             set
             {
-                NameNoExtension = value;
-                _name = value + ".pptx";
+                if (Regex.IsMatch(value, extensionRegex, RegexOptions.IgnoreCase))
+                {
+                    NameNoExtension = Regex.Replace(value, extensionRegex, "", RegexOptions.IgnoreCase);
+                    _name = value;
+                }
+                else
+                {
+                    NameNoExtension = value;
+                    _name = value + ".pptx";
+                }
             }
         }
 
@@ -215,12 +245,14 @@ namespace PowerPointLabs.Models
         public PowerPointPresentation(string path, string name)
         {
             Path = path;
-            Name = name;
+            Name = name + ".pptx";
         }
 
         public PowerPointPresentation(Presentation presentation)
         {
             Presentation = presentation;
+            Name = presentation.Name;
+            _name = presentation.Name;
         }
         # endregion
 
@@ -249,7 +281,10 @@ namespace PowerPointLabs.Models
         public void GotoNextSlide()
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide == null) return;
+            if (currentSlide == null)
+            {
+                return;
+            }
 
             var index = currentSlide.Index;
             if (index < Slides.Count)
@@ -261,21 +296,29 @@ namespace PowerPointLabs.Models
         public bool IsLastSlide()
         {
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            if (currentSlide == null) return false;
+            if (currentSlide == null)
+            {
+                return false;
+            }
 
             var index = currentSlide.Index;
             return index == Slides.Count;
         }
 
-        public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "")
+        public PowerPointSlide AddSlide(PpSlideLayout layout = PpSlideLayout.ppLayoutText, string name = "", int index = -1)
         {
             if (!Opened)
             {
                 return null;
             }
 
+            if (index < 0)
+            {
+                index = SlideCount + 1;
+            }
+
             var customLayout = Presentation.SlideMaster.CustomLayouts[layout];
-            var newSlide = Presentation.Slides.AddSlide(SlideCount + 1, customLayout);
+            var newSlide = Presentation.Slides.AddSlide(index, customLayout);
 
             if (name != "")
             {

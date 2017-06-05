@@ -10,6 +10,36 @@ namespace PowerPointLabs.PictureSlidesLab.Model
             Init();
         }
 
+        #region APIs
+
+        public Aspect GetDefaultAspectWhenCustomize()
+        {
+            switch (DefaultAspectWhenCustomize)
+            {
+                case 0:
+                    return Aspect.RecommendedAspect;
+                case 1:
+                default:
+                    return Aspect.PictureAspect;
+            }
+        }
+
+        public Alignment GetCitationTextBoxAlignment()
+        {
+            switch (CitationAlignment)
+            {
+                case 0:
+                    return Alignment.Left;
+                case 1:
+                    return Alignment.Centre;
+                case 2:
+                default:
+                    return Alignment.Right;
+            }
+        }
+
+        #endregion
+
         private void Init()
         {
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(this))
@@ -162,36 +192,6 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         #region other info
 
         // any properties that not linked to UI should be put here
-
-        #endregion
-
-        #region APIs
-
-        public Aspect GetDefaultAspectWhenCustomize()
-        {
-            switch (DefaultAspectWhenCustomize)
-            {
-                case 0:
-                    return Aspect.RecommendedAspect;
-                case 1:
-                default:
-                    return Aspect.PictureAspect;
-            }
-        }
-
-        public Alignment GetCitationTextBoxAlignment()
-        {
-            switch (CitationAlignment)
-            {
-                case 0:
-                    return Alignment.Left;
-                case 1:
-                    return Alignment.Centre;
-                case 2:
-                default:
-                    return Alignment.Right;
-            }
-        }
 
         #endregion
     }

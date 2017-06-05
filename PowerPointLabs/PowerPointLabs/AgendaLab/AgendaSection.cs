@@ -22,18 +22,27 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         public string Encode()
         {
-            if (IsNone()) return Common.UniqueDigitString();
+            if (IsNone())
+            {
+                return Common.UniqueDigitString();
+            }
             return Name + "_" + Index;
         }
 
         public static AgendaSection Decode(string sectionStr)
         {
             int delimIndex = sectionStr.LastIndexOf("_");
-            if (delimIndex == -1) return None;
+            if (delimIndex == -1)
+            {
+                return None;
+            }
 
             int index;
             bool result = int.TryParse(sectionStr.Substring(delimIndex + 1), out index);
-            if (result == false) return None;
+            if (result == false)
+            {
+                return None;
+            }
 
             string name = sectionStr.Substring(0, delimIndex);
 

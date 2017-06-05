@@ -16,7 +16,7 @@ namespace Test.Util
                 NativeUtil.MOUSEEVENTF_LEFTDOWN | NativeUtil.MOUSEEVENTF_LEFTUP, 0, 0, 0, UIntPtr.Zero);
         }
 
-        public static void SendMouseRightclick(int x, int y)
+        public static void SendMouseRightClick(int x, int y)
         {
             Cursor.Position = GetDpiSafeLocation(x, y);
             NativeUtil.mouse_event(

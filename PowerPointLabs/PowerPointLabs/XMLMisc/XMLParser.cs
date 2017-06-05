@@ -16,6 +16,24 @@ namespace PowerPointLabs.XMLMisc
         private readonly XNamespace _r = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
         private readonly XNamespace _a = "http://schemas.openxmlformats.org/drawingml/2006/main";
 
+        public XmlParser(string filePath)
+        {
+            shapeFileMapper = new Dictionary<string, string>();
+            audioIDFileMapper = new Dictionary<string, string>();
+
+            if (!File.Exists(filePath))
+            {
+                throw new ArgumentException("XML does not exist");
+            }
+
+            LinkShapeAndAudio(filePath);
+        }
+
+        public string GetCorrespondingAudio(string name)
+        {
+            return shapeFileMapper[name];
+        }
+
         private void ParseRelation(string path)
         {
             var doc = File.ReadAllText(path);
@@ -61,24 +79,6 @@ namespace PowerPointLabs.XMLMisc
         {
             ParseRelation(path + ".rels");
             ParseShape(path);
-        }
-
-        public string GetCorrespondingAudio(string name)
-        {
-            return shapeFileMapper[name];
-        }
-
-        public XmlParser(string filePath)
-        {
-            shapeFileMapper = new Dictionary<string, string>();
-            audioIDFileMapper = new Dictionary<string, string>();
-
-            if (!File.Exists(filePath))
-            {
-                throw new ArgumentException("XML does not exist");
-            }
-
-            LinkShapeAndAudio(filePath);
         }
     }
 }

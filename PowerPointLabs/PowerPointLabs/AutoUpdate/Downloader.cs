@@ -25,18 +25,6 @@ namespace PowerPointLabs.AutoUpdate
             _client.Proxy = null;
         }
 
-        private void CallAfterDownloadDelegate()
-        {
-            var handler = AfterDownload;
-            if (handler != null) handler();
-        }
-
-        private void CallWhenErrorDelegate(Exception e)
-        {
-            var handler = WhenError;
-            if (handler != null) handler(e);
-        }
-
         public IDownloader Get(string webAddress, string destinationPath)
         {
             _downloadAddress = webAddress;
@@ -69,10 +57,30 @@ namespace PowerPointLabs.AutoUpdate
             }
         }
 
+        private void CallAfterDownloadDelegate()
+        {
+            var handler = AfterDownload;
+            if (handler != null)
+            {
+                handler();
+            }
+        }
+
+        private void CallWhenErrorDelegate(Exception e)
+        {
+            var handler = WhenError;
+            if (handler != null)
+            {
+                handler(e);
+            }
+        }
+
         private void StartDownload()
         {
-            if (_downloadAddress == "" || _destAddress == "") 
+            if (_downloadAddress == "" || _destAddress == "")
+            {
                 return;
+            }
 
             try
             {
