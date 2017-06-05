@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace Test.FunctionalTest
 {
@@ -22,7 +23,7 @@ namespace Test.FunctionalTest
         // create a new test, since the previous one will change the later's slide index..
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_Flaky_AutoAnimateWithCopyPasteSuccessfully()
+        public void FT_AutoAnimateWithCopyPasteSuccessfully()
         {
             AutoAnimateWithCopyPasteShapesSuccessfully();
         }
@@ -55,19 +56,17 @@ namespace Test.FunctionalTest
         private static void AutoAnimateWithCopyPasteShapesSuccessfully()
         {
             PpOperations.SelectSlide(8);
-            PpOperations.SelectShapes(new List<string> {"Notched Right Arrow 3", "Group 2"});
-            // use keyboard to copy & paste,
-            // otherwise API's copy & paste won't trigger special clipboard event.
-            KeyboardUtil.Copy();
+            ShapeRange pastingShapes = PpOperations.SelectShapes(new List<string> {"Notched Right Arrow", "Group"});
+            pastingShapes.Copy();
 
-            PpOperations.SelectSlide(9);
-            KeyboardUtil.Paste();
+            Slide targetSlide = PpOperations.SelectSlide(9);
+            targetSlide.Shapes.Paste();
 
-            Assert.IsNotNull(PpOperations.SelectShape("Notched Right Arrow 3"), 
+            Assert.IsNotNull(PpOperations.SelectShape("Notched Right Arrow"), 
                 "Copy-Paste failed, this task is flaky so please re-run.");
-            var sh1 = PpOperations.SelectShape("Notched Right Arrow 3")[1];
+            var sh1 = PpOperations.SelectShape("Notched Right Arrow")[1];
             sh1.Rotation += 90;
-            var sh2 = PpOperations.SelectShape("Group 2")[1];
+            var sh2 = PpOperations.SelectShape("Group")[1];
             sh2.Rotation += 90;
 
             // go back to slide 8
