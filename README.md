@@ -7,7 +7,7 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 [![Build status](https://img.shields.io/appveyor/ci/kai33/powerpointlabs/master.svg)](https://ci.appveyor.com/project/kai33/powerpointlabs)
 
 ### Contributing To PowerPointLabs
-Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/doc/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
+Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
 
 ### Dev Prerequisites
 0. Install Office 2016 or 2013 with PowerPoint.
@@ -46,6 +46,27 @@ DevOps | Installer, issue tracker, releases, CI | Syed Abdullah | Kenneth | Hany
 Quality | code quality, design quality | Ong Heng Le | Jamos | Kai|
 Testing | test coverage, test automation | Ian Teo | Syed | Kai|
 UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
+
+Feature  | Lead | Co-Lead | Past Leads
+-----|------|---------|-----|
+AgendaLab | Syed |  | Shunhao, Huang Da
+AnimationLab (d) | Ian |  | Raunak
+CaptionsLab | Kenneth |  | Jerome
+ColorsLab | Ian |  | Karan
+CropLab | Jamos | Heng Le | Raunak
+EffectsLab | Heng Le |  | Fiona
+HighlightLab | Syed |  | Karan
+NarrationsLab | Kenneth |  | Jerome
+PasteLab | Syed |  |
+PictureSlideLab | Shi Ya |  | Xie Kai
+PositionsLab | Jamos |  | Oswell, Victor
+ResizeLab | Min Oo | Yu Ting |  
+ShapesLab (d) | Ian | Kenneth | Huang Da
+ShortcutsLab |  |  | Raunak
+SyncLab | Kenneth | Ian |
+ZoomLab | Shi Ya |  | Raunak
+
+Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
 
 ### Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
