@@ -858,7 +858,7 @@
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
-    <Compile Include="PPKeyboard.cs" />
+    <Compile Include="PPExtraEventHelper\PPKeyboard.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -945,10 +945,10 @@
     <Compile Include="NotesToAudio.cs" />
     <Compile Include="NotesToCaptions.cs" />
     <Compile Include="PostInstall.cs" />
-    <Compile Include="PPCopy.cs">
+    <Compile Include="PPExtraEventHelper\PPCopy.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PPMouse.cs" />
+    <Compile Include="PPExtraEventHelper\PPMouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
