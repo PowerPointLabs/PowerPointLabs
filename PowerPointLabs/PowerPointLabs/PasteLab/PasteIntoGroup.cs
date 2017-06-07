@@ -66,6 +66,8 @@ namespace PowerPointLabs.PasteLab
             }
             else
             {
+                //Graphics.MoveZUntilBehind(pastingShapes[1], zOrder);
+                //Graphics.MoveZUntilInFront(pastingShapes[1], zOrder);
                 new PPShape(pastingShapes[1]).ZOrderPosition = zOrder;
             }
 

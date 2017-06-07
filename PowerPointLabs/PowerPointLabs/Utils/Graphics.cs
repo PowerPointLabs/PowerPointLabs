@@ -439,7 +439,16 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
         {
-            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
+            MoveZUntilInFront(shiftShape, destinationShape.ZOrderPosition);
+        }
+
+        /// <summary>
+        /// Moves shiftShape forward until it is in front of destination zOrder index.
+        /// (does nothing if already in front)
+        /// </summary>
+        public static void MoveZUntilInFront(Shape shiftShape, int destination)
+        {
+            while (shiftShape.ZOrderPosition < destination)
             {
                 int currentValue = shiftShape.ZOrderPosition;
                 shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
@@ -457,7 +466,16 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
         {
-            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            MoveZUntilBehind(shiftShape, destinationShape.ZOrderPosition);
+        }
+
+        /// <summary>
+        /// Moves shiftShape backward until it is behind destination zOrder index.
+        /// (does nothing if already behind)
+        /// </summary>
+        public static void MoveZUntilBehind(Shape shiftShape, int destination)
+        {
+            while (shiftShape.ZOrderPosition > destination)
             {
                 int currentValue = shiftShape.ZOrderPosition;
                 shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
@@ -467,6 +485,35 @@ namespace PowerPointLabs.Utils
                     break;
                 }
             }
+        }
+
+        public static void SwapZOrder(Shape originalShape, Shape destinationShape)
+        {
+            Shape lowerZOrderShape = originalShape;
+            Shape higherZOrderShape = destinationShape;
+            if (originalShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            {
+                lowerZOrderShape = destinationShape;
+                higherZOrderShape = originalShape;
+            }
+            int lowerZOrder = lowerZOrderShape.ZOrderPosition;
+            int higherZOrder = higherZOrderShape.ZOrderPosition;
+
+            // If shape is a group, our target zOrder needs to be offset by the number of items in the group
+            // This is to account for the zOrder of the items in the group
+            if (IsAGroup(lowerZOrderShape))
+            {
+                higherZOrder -= originalShape.GroupItems.Count;
+            }
+
+            if (IsAGroup(higherZOrderShape))
+            {
+                higherZOrder += destinationShape.GroupItems.Count;
+            }
+
+            MoveZUntilInFront(lowerZOrderShape, higherZOrder);
+
+            MoveZUntilBehind(higherZOrderShape, lowerZOrder);
         }
 
         /// <summary>
