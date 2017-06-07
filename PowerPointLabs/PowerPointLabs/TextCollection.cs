@@ -772,8 +772,17 @@
         }
         #endregion
 
-        #region Task Pane - Resize Lab
+        #region Sync Lab
+        public const string SyncLabErrorDialogTitle = "Unable to execute action";
+        public const string SyncLabCopySelectError = "Please select one shape to copy.";
+        public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
+        public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
+        public const string SyncLabCopyError = "Error: Unable to copy selected item.";
+        public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
+        public const string SyncLabDefaultFormatName = "Format";
+        #endregion
 
+        #region Task Pane - Resize Lab
         public class ResizeLabText
         {
             public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'";
@@ -781,7 +790,6 @@
             public const string ErrorGroupShapeNotSupported = "'Adjust Area Proportionally' does not support grouped objects";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
-
         #endregion
 
         #region Control - ShapesLabSetting
