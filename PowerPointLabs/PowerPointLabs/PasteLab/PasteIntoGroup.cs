@@ -11,7 +11,7 @@ namespace PowerPointLabs.PasteLab
     {
         public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide,
                                     ShapeRange selectedShapes, ShapeRange pastingShapes,
-                                    float? posLeft = null, float? posTop = null, int zOrder = 0)
+                                    float? posLeft = null, float? posTop = null, Shape shapeAbove = null)
         {
             Shape firstSelectedShape = selectedShapes[1];
             Shape tempShapeForAnimation = slide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
@@ -60,15 +60,13 @@ namespace PowerPointLabs.PasteLab
             slide.TransferAnimation(tempShapeForAnimation, resultGroup);
             Graphics.MoveZToJustInFront(resultGroup, tempShapeForAnimation);
             tempShapeForAnimation.Delete();
-            if (zOrder == 0)
+            if (shapeAbove == null)
             {
                 pastingShapes.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
             }
             else
             {
-                //Graphics.MoveZUntilBehind(pastingShapes[1], zOrder);
-                //Graphics.MoveZUntilInFront(pastingShapes[1], zOrder);
-                new PPShape(pastingShapes[1]).ZOrderPosition = zOrder;
+                Graphics.MoveZToJustBehind(pastingShapes[1], shapeAbove);
             }
 
             return slide.ToShapeRange(resultGroup);

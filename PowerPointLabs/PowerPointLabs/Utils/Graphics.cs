@@ -503,12 +503,12 @@ namespace PowerPointLabs.Utils
             // This is to account for the zOrder of the items in the group
             if (IsAGroup(lowerZOrderShape))
             {
-                higherZOrder -= originalShape.GroupItems.Count;
+                higherZOrder -= lowerZOrderShape.GroupItems.Count;
             }
 
             if (IsAGroup(higherZOrderShape))
             {
-                higherZOrder += destinationShape.GroupItems.Count;
+                higherZOrder += higherZOrderShape.GroupItems.Count;
             }
 
             MoveZUntilInFront(lowerZOrderShape, higherZOrder);
@@ -722,15 +722,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsAGroup(Shape shape)
         {
-            try
-            {
-                var groupItems = shape.GroupItems;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
-            return true;
+            return shape.Type == MsoShapeType.msoGroup;
         }
 
         public static bool CanAddArrows(Shape shape)
