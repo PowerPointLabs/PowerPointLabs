@@ -509,13 +509,38 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// Swap Z order of the two PPShapes
         /// </summary>
-        public void SwapZOrder(PPShape shape)
+        public void SwapZOrder(PPShape target)
         {
             int originalZOrder = _shape.ZOrderPosition;
-            int targetZOrder = shape.ZOrderPosition;
+            int targetZOrder = target.ZOrderPosition;
+
+            if (originalZOrder < targetZOrder)
+            {
+                if (Graphics.IsAGroup(_shape))
+                {
+                    targetZOrder -= _shape.GroupItems.Count;
+                }
+
+                if (Graphics.IsAGroup(target._shape))
+                {
+                    targetZOrder += target._shape.GroupItems.Count;
+                }
+            }
+            else
+            {
+                if (Graphics.IsAGroup(_shape))
+                {
+                    originalZOrder += _shape.GroupItems.Count;
+                }
+
+                if (Graphics.IsAGroup(target._shape))
+                {
+                    originalZOrder -= target._shape.GroupItems.Count;
+                }
+            }
 
             ZOrderPosition = targetZOrder;
-            shape.ZOrderPosition = originalZOrder;
+            target.ZOrderPosition = originalZOrder;
         }
 
         /// <summary>
