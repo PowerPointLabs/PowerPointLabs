@@ -13,12 +13,12 @@ namespace PowerPointLabs.SyncLab
 
         private int nextKey = 0;
 
-        private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
+        private static Lazy<SyncLabShapeStorage> storageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
 
         public static SyncLabShapeStorage Instance
         {
-            get { return StorageInstance.Value; }
+            get { return storageInstance.Value; }
         }
 
         private SyncLabShapeStorage() : base()
@@ -27,6 +27,12 @@ namespace PowerPointLabs.SyncLab
             Name = TextCollection.SyncLabStorageFileName;
             OpenInBackground();
             ClearShapes();
+        }
+
+        public override void Close()
+        {
+            storageInstance = new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
+            base.Close();
         }
 
         // Saves shape in storage
