@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -20,7 +21,6 @@ using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
-using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
@@ -958,14 +958,28 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("RemoveAudioButton");
         }
 
+        // To handle AccessViolationException
+        [HandleProcessCorruptedStateExceptions]
         private void ThisAddInSelectionChanged(PowerPoint.Selection sel)
         {
             Ribbon.SpotlightEnabled = false;
             Ribbon.InSlideEnabled = false;
             Ribbon.ZoomButtonEnabled = false;
+
             if (sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                PowerPoint.Shape sh = sel.ShapeRange[1];
+                PowerPoint.Shape sh = null;
+                try
+                {
+                    sh = sel.ShapeRange[1];
+                }
+                catch (AccessViolationException e)
+                {
+                    Logger.LogException(e, "ThisAddInSelectionChanged");
+                    Logger.Log("We do not have access to the ShapeRange now!");
+                    return;
+                }
+
                 if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform ||
                     sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
                     || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk ||

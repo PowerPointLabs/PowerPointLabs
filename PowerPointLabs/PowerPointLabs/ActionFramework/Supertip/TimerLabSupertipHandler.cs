@@ -8,7 +8,7 @@ namespace PowerPointLabs.ActionFramework.Supertip
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.TimerLabButtonSupertip;
+            return TextCollection.TimerLabMenuSupertip;
         }
     }
 }
