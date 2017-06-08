@@ -78,16 +78,17 @@ namespace Test.FunctionalTest
 
         private void TestSync(ISyncLabController syncLab)
         {
-            Sync(syncLab, OriginalSyncGroupToShapeSlideNo, ExpectedSyncGroupToShapeSlideNo, CopyFromShape, RotatedArrow);
-            Sync(syncLab, OriginalSyncShapeToGroupSlideNo, ExpectedSyncShapeToGroupSlideNo, Line, Oval);
+            Sync(syncLab, OriginalSyncGroupToShapeSlideNo, ExpectedSyncGroupToShapeSlideNo, CopyFromShape, RotatedArrow, 1, 0);
+            Sync(syncLab, OriginalSyncShapeToGroupSlideNo, ExpectedSyncShapeToGroupSlideNo, Line, Oval, 1, 4);
         }
 
-        private void Sync(ISyncLabController syncLab, int originalSlide, int expectedSlide, string fromShape, string toShape)
+        private void Sync(ISyncLabController syncLab, int originalSlide, int expectedSlide,
+                string fromShape, string toShape, int categoryPosition, int itemPosition)
         {
             PpOperations.SelectSlide(originalSlide);
             PpOperations.SelectShape(fromShape);
 
-            CopyStyle(syncLab, 1, 0);
+            CopyStyle(syncLab, categoryPosition, itemPosition);
 
             PpOperations.SelectShape(toShape);
             syncLab.Sync(0);
