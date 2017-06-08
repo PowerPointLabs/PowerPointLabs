@@ -21,7 +21,7 @@
         public const string AnimationLabMenuSupertip =
             "Use Animation Lab to add animations your slides easily.";
         public const string AddAnimationButtonSupertip =
-            "Creates an animation slide to transition from the currently selected slide to the next slide.\n\n" +
+            "Create an animation slide to transition from the currently selected slide to the next slide.\n\n" +
             "To perform this action, duplicate the currently selected slide, move the objects to the desired position, select the original slide, then click this button.";
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
@@ -69,24 +69,30 @@
         public const string NarrationsLabMenuSupertip =
             "Use Narrations Lab to create narration from text in the Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
-            "Creates synthesized narration from text in the Notes pane of the selected slides.\n\n" +
+            "Create synthesized narration from text in the Notes pane of the selected slides.\n\n" +
             "To perform this action, select the slide(s) with the Speaker Notes, then click this button.";
         public const string AddRecordButtonSupertip =
             "Manually record audio to replace synthesized narration.\n\n" +
             "Click this button to open the Recording interface.";
         public const string RemoveAudioButtonSupertip =
-            "Removes synthesized audio added using Narrations Lab from the selected slides.\n\n" +
+            "Remove synthesized audio added using Narrations Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the narrations from, then click this button.";
-        # endregion
+        #endregion
 
-        # region Captions Lab
+        #region Picture Slides Lab
+        public const string PictureSlidesLabMenuSupertip =
+            "Use Picture Slides Lab to create better picture slides with much less effort.\n\n" +
+            "Click this button to open the Picture Slides Lab interface.";
+        #endregion
+
+        #region Captions Lab
         public const string CaptionsLabMenuSupertip =
             "Use Captions lab to create customizable movie-style subtitles from text in the Notes pane of the selected slides.";
         public const string AddCaptionsButtonSupertip =
-            "Creates movie-style subtitles from text in the Notes pane for the currently selected slides.\n\n" +
+            "Create movie-style subtitles from text in the Notes pane for the currently selected slides.\n\n" +
             "To perform this action, select the slide(s) with the notes, then click this button.";
         public const string RemoveCaptionsButtonSupertip =
-            "Removes captions added using Captions Lab from the selected slides.\n\n" +
+            "Remove captions added using Captions Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the captions from, then click this button.";
         public const string RemoveAllNotesButtonSupertip = 
             "Remove notes from Notes pane of selected slides.\n\n" +
@@ -109,7 +115,7 @@
             "Highlight the selected text fragments.\n\n" +
             "To perform this action, select the text fragment(s) to highlight, then click this button.";
         public const string RemoveHighlightButtonSupertip =
-            "Removes all Highlighting from the current slide." +
+            "Remove all Highlighting from the current slide.\n\n" +
             "To perform this action, click this button.";
 
         # endregion
@@ -131,7 +137,7 @@
         public const string EffectsLabMenuSupertip =
             "Use Effects Lab to apply elegant effects to your shapes.";
         public const string EffectsLabMakeTransparentSupertip =
-            "Adjust the transparency of pictures or shapes." +
+            "Adjust the transparency of pictures or shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s), then click this button.";
         public const string EffectsLabMagnifyGlassSupertip =
             "Magnify a small area or detail on the slide.\n\n" +
@@ -143,35 +149,35 @@
             "Blur evrything in the slide except for the area covered by the selected shapes.\n\n" +
             "To perform this action, select the shape(s) over the area to keep, then click this button.";
         public const string EffectsLabBlurBackgroundSupertip =
-            "Blur everything in the slide except for the selected shapes." +
+            "Blur everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
         public const string EffectsLabColorizeRemainderSupertip =
-            "Recolor an area of a slide to attract attention to it." +
+            "Recolor an area of a slide to attract attention to it.\n\n" +
             "To perform this action, select the shape(s) over the area to keep, then click this button.";
         public const string EffectsLabColorizeBackgroundSupertip =
-            "Recolor everything in the slide except for the selected shapes." +
+            "Recolor everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
         # endregion
 
         # region Agenda Lab
         public const string AgendaLabSupertip =
-            "Generate professional-look agenda automatically.\n\n" +
+            "Use Agenda Lab to generate professional-looking agendas automatically.\n\n" +
             "To use this feature, you need to group up your into appropriate sections. " +
             "Each section will be used as one item in the agenda.";
         public const string AgendaLabBulletPointSupertip =
-            "Generate an agenda in bullet point style." +
+            "Generate an agenda in bullet point style.\n\n" +
             "To perform this action, group your slides into sections, then click this button.";
         public const string AgendaLabVisualAgendaSupertip =
-            "Generate an agenda in visual style." +
+            "Generate an agenda in visual style.\n\n" +
             "To perform this action, group your slides into sections, then click this button.";
         public const string AgendaLabBeamAgendaSupertip =
-            "Generate agenda side bar for selected slides." +
+            "Generate agenda side bar for selected slides.\n\n" +
             "To perform this action, group your slides into sections, then click this button.";
         public const string AgendaLabUpdateAgendaSupertip =
-            "Synchronize agenda's layout and format with the first (template) slide." +
+            "Synchronize agenda's layout and format with the first (template) slide.\n\n" +
             "To perform this action, make the changes you want on the first (template) slide, then click this button.";
         public const string AgendaLabRemoveAgendaSupertip =
-            "Remove agenda generated by PowerPointLabs." +
+            "Remove agenda generated by PowerPointLabs.\n\n" +
             "To perform this action, click this button";
         # endregion
 
@@ -206,9 +212,9 @@
         #endregion
 
         #region Help
-        public const string HelpButtonSupertip = "Click this to visit PowerPointLabs help page in our website.";
-        public const string FeedbackButtonSupertip = "Click this to email us problem reports or other feedback. ";
-        public const string AboutButtonSupertip = "Information about the PowerPointLabs plugin.";
+        public const string HelpButtonSupertip = "Click this button to visit PowerPointLabs help page in our website.";
+        public const string FeedbackButtonSupertip = "Click this button to email us problem reports or other feedback. ";
+        public const string AboutButtonSupertip = "Click this button for information about the PowerPointLabs plugin.";
         # endregion
         # endregion
 
@@ -480,8 +486,6 @@
         #region PictureSlidesLab
         public class PictureSlidesLabText
         {
-            public const string PictureSlidesLabSupertip = "Open Picture Slides Lab window.";
-
             /// <summary>
             /// Styles Variation Category Name
             ///

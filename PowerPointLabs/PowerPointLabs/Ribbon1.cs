@@ -1653,7 +1653,7 @@ namespace PowerPointLabs
 
         public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.PictureSlidesLabText.PictureSlidesLabSupertip;
+            return TextCollection.PictureSlidesLabMenuSupertip;
         }
 
         #endregion
