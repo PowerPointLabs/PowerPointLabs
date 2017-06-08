@@ -675,15 +675,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsAGroup(Shape shape)
         {
-            try
-            {
-                var groupItems = shape.GroupItems;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
-            return true;
+            return shape.Type == MsoShapeType.msoGroup;
         }
 
         public static bool CanAddArrows(Shape shape)
