@@ -434,21 +434,40 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Moves shiftShape until it is at destination zOrder index.
+        /// </summary>
+        public static void MoveZTo(Shape shiftShape, int destination)
+        {
+            while (shiftShape.ZOrderPosition < destination)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+
+            while (shiftShape.ZOrderPosition > destination)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Moves shiftShape forward until it is in front of destinationShape.
         /// (does nothing if already in front)
         /// </summary>
         public static void MoveZUntilInFront(Shape shiftShape, Shape destinationShape)
         {
-            MoveZUntilInFront(shiftShape, destinationShape.ZOrderPosition);
-        }
-
-        /// <summary>
-        /// Moves shiftShape forward until it is in front of destination zOrder index.
-        /// (does nothing if already in front)
-        /// </summary>
-        public static void MoveZUntilInFront(Shape shiftShape, int destination)
-        {
-            while (shiftShape.ZOrderPosition < destination)
+            while (shiftShape.ZOrderPosition < destinationShape.ZOrderPosition)
             {
                 int currentValue = shiftShape.ZOrderPosition;
                 shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
@@ -466,16 +485,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static void MoveZUntilBehind(Shape shiftShape, Shape destinationShape)
         {
-            MoveZUntilBehind(shiftShape, destinationShape.ZOrderPosition);
-        }
-
-        /// <summary>
-        /// Moves shiftShape backward until it is behind destination zOrder index.
-        /// (does nothing if already behind)
-        /// </summary>
-        public static void MoveZUntilBehind(Shape shiftShape, int destination)
-        {
-            while (shiftShape.ZOrderPosition > destination)
+            while (shiftShape.ZOrderPosition > destinationShape.ZOrderPosition)
             {
                 int currentValue = shiftShape.ZOrderPosition;
                 shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
@@ -511,9 +521,9 @@ namespace PowerPointLabs.Utils
                 higherZOrder += higherZOrderShape.GroupItems.Count;
             }
 
-            MoveZUntilInFront(lowerZOrderShape, higherZOrder);
+            MoveZTo(lowerZOrderShape, higherZOrder);
 
-            MoveZUntilBehind(higherZOrderShape, lowerZOrder);
+            MoveZTo(higherZOrderShape, lowerZOrder);
         }
 
         /// <summary>
