@@ -18,161 +18,203 @@
         # region Ribbon XML
         # region Supertips
         # region Animation Lab
+        public const string AnimationLabMenuSupertip =
+            "Use Animation Lab to add animations your slides easily.";
         public const string AddAnimationButtonSupertip =
-            "Creates an animation slide to transition from the currently selected slide to the next slide.";
-        public const string ReloadButtonSupertip =
-            "Recreates an existing animation slide with new animations.\n\n" +
-            "To activate, select the original slide or the animation slide then click this button.";
+            "Create an animation slide to transition from the currently selected slide to the next slide.\n\n" +
+            "To perform this action, duplicate the currently selected slide, move the objects to the desired position, select the original slide, then click this button.";
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
-            "To activate, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button";
+            "To perform this action, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button.";
         # endregion
 
         # region Zoom Lab
+        public const string ZoomLabMenuSupertip =
+            "Use Zoom Lab to creating zoom in and out effects for your slides easily.";
         public const string AddZoomInButtonSupertip =
-            "Creates an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
-            "To activate, select a rectangle shape on the slide to drill down from, then click this button.";
+            "Create an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
+            "To perform this action, select a rectangle shape on the slide to drill down from, then click this button.";
         public const string AddZoomOutButtonSupertip =
-            "Creates an animation slide with a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
-            "To activate, select a rectangle shape on the slide to step back to, then click this button.";
+            "Create an animation slide with a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
+            "To perform this action, select a rectangle shape on the slide to step back to, then click this button.";
         public const string ZoomToAreaButtonSupertip =
-            "Zoom into an area of a slide or image.\n\nTo activate, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
+            "Zoom into an area of a slide or picture.\n\n" +
+            "To perform this action, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
             "This feature works best with high-resolution images.";
         # endregion
 
         # region Crop Lab
         public const string CropLabMenuSupertip =
             "Use Crop Lab to crop shapes and pictures.";
-
         public const string CropLabSettingsSupertip =
             "Configure the settings for Crop Lab.";
-
         public const string MoveCropShapeButtonSupertip =
             "Crop a picture to a custom shape.\n\n" +
             "To perform this action, indicate area-to-keep by drawing one or more shapes upon the picture to crop, select the shape(s), then click this button.";
-
         public const string CropOutPaddingSupertip =
             "Crop away transparent areas of a picture.\n\n" +
-            "To perform this action, select the picture(s), then click this button.";
-
+            "To perform this action, select the picture(s) to crop out padding, then click this button.";
         public const string CropToAspectRatioSupertip =
             "Crop a picture to a specific aspect ratio.\n\n" +
-            "To perform this action, select the picture(s), then click this button.";
-
+            "To perform this action, select the picture(s) to crop to aspect ratio, then click this button.";
         public const string CropToSlideButtonSupertip =
             "Crop a shape or picture to fit within the slide boundaries.\n\n" +
-            "To perform this action, select the shape(s) or picture(s), then click this button.";
-
+            "To perform this action, select the shape(s) or picture(s) to crop to slide, then click this button.";
         public const string CropToSameButtonSupertip =
             "Crop multiple shapes to the same dimension.\n\n" +
-            "To perform this action, select the shape of desired dimensions, then select the other shape(s) to crop and click this button.";
+            "To perform this action, select the shape of desired dimensions, then select the other shape(s) to crop, then click this button.";
         #endregion
 
         #region Narrations Lab
-        public const string AddAudioButtonSupertip =
-            "Creates synthesized narration from text in the Speaker Notes pane of the selected slides.";
+        public const string NarrationsLabMenuSupertip =
+            "Use Narrations Lab to create narration from text in the Notes pane of the selected slides.";
         public const string GenerateRecordButtonSupertip =
-            "Creates synthesized narration from text in a slide's Speaker Notes pane.";
+            "Create synthesized narration from text in the Notes pane of the selected slides.\n\n" +
+            "To perform this action, select the slide(s) with the Speaker Notes, then click this button.";
         public const string AddRecordButtonSupertip =
-            "Manually record audio to replace synthesized narration.";
+            "Manually record audio to replace synthesized narration.\n\n" +
+            "Click this button to open the Recording interface.";
         public const string RemoveAudioButtonSupertip =
-            "Removes synthesized audio added using Narrations Lab from the selected slides.";
-        # endregion
+            "Remove synthesized audio added using Narrations Lab from the selected slides.\n\n" +
+            "To perform this action, select the slide(s) to remove the narrations from, then click this button.";
+        #endregion
 
-        # region Captions Lab
+        #region Picture Slides Lab
+        public const string PictureSlidesLabMenuSupertip =
+            "Use Picture Slides Lab to create better picture slides with much less effort.\n\n" +
+            "Click this button to open the Picture Slides Lab interface.";
+        #endregion
+
+        #region Captions Lab
+        public const string CaptionsLabMenuSupertip =
+            "Use Captions lab to create customizable movie-style subtitles from text in the Notes pane of the selected slides.";
         public const string AddCaptionsButtonSupertip =
-            "Creates movie-style subtitles from text in the Speaker Notes pane, and adds it to the selected slides.";
+            "Create movie-style subtitles from text in the Notes pane for the currently selected slides.\n\n" +
+            "To perform this action, select the slide(s) with the notes, then click this button.";
         public const string RemoveCaptionsButtonSupertip =
-            "Removes captions added using Captions Lab from the selected slides.";
-        public const string RemoveAllNotesButtonSupertip = "Remove notes from note pane of selected slides.";
+            "Remove captions added using Captions Lab from the selected slides.\n\n" +
+            "To perform this action, select the slide(s) to remove the captions from, then click this button.";
+        public const string RemoveAllNotesButtonSupertip = 
+            "Remove notes from Notes pane of selected slides.\n\n" +
+            "To perform this action, select the slide(s) to remove the notes from, then click this button.";
         # endregion
 
         # region Highlight Lab
         public const string AddSpotlightButtonSupertip =
-            "Creates a spotlight effect for a selected shape.\n\n" +
-            "To activate, draw a shape that the spotlight should outline, select it, then click this button.";
+            "Create a spotlight effect for the slide using selected shapes.\n\n" +
+            "To perform this action, draw a shape that the spotlight should outline, select it, then click this button.";
         public const string SpotlightPropertiesButtonSupertip =
-            "Set the Spotlight properries.";
+            "Configure the settings for Spotlight.";
         public const string HighlightBulletsTextButtonSupertip =
-            "Highlights selected bullet points by changing the text's color.\n\n" +
-            "To activate, select the bullet points to highlight, then click this button.";
+            "Highlight selected bullet points by changing the font color.\n\n" +
+            "To perform this action, select the bullet points to highlight, then click this button.";
         public const string HighlightBulletsBackgroundButtonSupertip =
-            "Highlights selected bullet points by changing the text's background color.\n\n" +
-            "To activate, select the bullet points to highlight, then click this button.";
+            "Highlight selected bullet points by changing the text background color.\n\n" +
+            "To perform this action, select the bullet points to highlight, then click this button.";
         public const string HighlightTextFragmentsButtonSupertip =
-            "Highlights the selected text fragments.\n\n" +
-            "To activate, select the text to highlight, then click this button.";
+            "Highlight the selected text fragments.\n\n" +
+            "To perform this action, select the text fragment(s) to highlight, then click this button.";
         public const string RemoveHighlightButtonSupertip =
-            "Removes all Highlighting from the current slide.";
+            "Remove all Highlighting from the current slide.\n\n" +
+            "To perform this action, click this button.";
 
         # endregion
 
         # region More Labs
         # region Colors Lab
-        public const string ColorPickerButtonSupertip = @"Opens Custom Color Picker";
+        public const string ColorsLabMenuSupertip =
+            "Use Colors Lab to add beautiful colors to your slide.\n\n" +
+            "Click this button to open the Colors Lab interface.";
         # endregion
 
         # region Shapes Lab
-        public const string CustomShapeButtonSupertip = @"Manage your custom shapes.";
+        public const string CustomShapeButtonSupertip =
+            "Use Shapes Lab to manage your custom shapes.\n\n" +
+            "Click this button to open the Shapes Lab interface.";
         # endregion
 
         # region Effects Lab
-        public const string EffectsLabMenuSupertip = @"Apply elegant effects to shapes.";
-        public const string EffectsLabMakeTransparentSupertip = @"Adjust the transparency of pictures or shapes.";
-        public const string EffectsLabMagnifyGlassSupertip = @"Magnify a small area or detail on the slide.";
-        public const string EffectsLabBlurSelectedSupertip = @"Blur the area covered by the selected shapes.";
-        public const string EffectsLabBlurRemainderSupertip = @"Draw attention to an area of the slide by blurring everything else.";
-        public const string EffectsLabColorizeRemainderSupertip = @"Recolor an area of a slide to attract attention to it.";
-        public const string EffectsLabBlurBackgroundSupertip = @"Blur everything in the slide except for the selected shapes.";
-        public const string EffectsLabColorizeBackgroundSupertip = @"Recolor everything in the slide except for the selected shapes.";
+        public const string EffectsLabMenuSupertip =
+            "Use Effects Lab to apply elegant effects to your shapes.";
+        public const string EffectsLabMakeTransparentSupertip =
+            "Adjust the transparency of pictures or shapes.\n\n" +
+            "To perform this action, select the shape(s) or picture(s), then click this button.";
+        public const string EffectsLabMagnifyGlassSupertip =
+            "Magnify a small area or detail on the slide.\n\n" +
+            "To perform this action, select the shape over the area to magnify, then click this button.";
+        public const string EffectsLabBlurSelectedSupertip =
+            "Blur the area covered by the selected shapes.\n\n" +
+            "To perform this action, select the shape(s) over the area to blur, then click this button.";
+        public const string EffectsLabBlurRemainderSupertip =
+            "Blur evrything in the slide except for the area covered by the selected shapes.\n\n" +
+            "To perform this action, select the shape(s) over the area to keep, then click this button.";
+        public const string EffectsLabBlurBackgroundSupertip =
+            "Blur everything in the slide except for the selected shapes.\n\n" +
+            "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
+        public const string EffectsLabColorizeRemainderSupertip =
+            "Recolor an area of a slide to attract attention to it.\n\n" +
+            "To perform this action, select the shape(s) over the area to keep, then click this button.";
+        public const string EffectsLabColorizeBackgroundSupertip =
+            "Recolor everything in the slide except for the selected shapes.\n\n" +
+            "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
         # endregion
 
         # region Agenda Lab
-        public const string AgendaLabSupertip = "Generate professional-look agenda automatically.\n\n To use this feature, you need " +
-                                                "to group up your into appropriate sections. Each section will be used as one item in " +
-                                                "the agenda.";
-        public const string AgendaLabBulletPointSupertip = "Generate an agenda in bullet point style.";
-        public const string AgendaLabVisualAgendaSupertip = "Generate an agenda in visual style.";
-        public const string AgendaLabBeamAgendaSupertip = "Generate agenda side bar for selected slides.";
-        public const string AgendaLabUpdateAgendaSupertip = "Synchronize agenda's layout and format with the first slide.";
-        public const string AgendaLabRemoveAgendaSupertip = "Remove agenda generated by PowerPointLabs.";
-        public const string AgendaLabAgendaSettingsSupertip = "Configure agenda settings.";
-        public const string AgendaLabBulletAgendaSettingsSupertip = "Set color scheme for Bullet Agenda.";
+        public const string AgendaLabSupertip =
+            "Use Agenda Lab to generate professional-looking agendas automatically.\n\n" +
+            "To use this feature, you need to group up your into appropriate sections. " +
+            "Each section will be used as one item in the agenda.";
+        public const string AgendaLabBulletPointSupertip =
+            "Generate an agenda in bullet point style.\n\n" +
+            "To perform this action, group your slides into sections, then click this button.";
+        public const string AgendaLabVisualAgendaSupertip =
+            "Generate an agenda in visual style.\n\n" +
+            "To perform this action, group your slides into sections, then click this button.";
+        public const string AgendaLabBeamAgendaSupertip =
+            "Generate agenda side bar for selected slides.\n\n" +
+            "To perform this action, group your slides into sections, then click this button.";
+        public const string AgendaLabUpdateAgendaSupertip =
+            "Synchronize agenda's layout and format with the first (template) slide.\n\n" +
+            "To perform this action, make the changes you want on the first (template) slide, then click this button.";
+        public const string AgendaLabRemoveAgendaSupertip =
+            "Remove agenda generated by PowerPointLabs.\n\n" +
+            "To perform this action, click this button";
         # endregion
 
         # region Drawing Lab
-        public const string DrawingsLabButtonSupertip = @"Opens the Drawing Lab Interface";
+        public const string DrawingsLabButtonSupertip = "Open the Drawing Lab Interface";
         #endregion
 
-        # region Drawing Lab
-        public const string PositionsLabSupertip = "Open Positions Lab window.";
+        # region Positions Lab
+        public const string PositionsLabMenuSupertip =
+            "Use Positions Lab to accurately position the objects on your slide.\n\n" +
+            "Click this button to open the Positions Lab interface.";
         #endregion
 
         #region Resize Lab
-        public const string ResizeLabButtonSupertip = "Opens the Resize Lab Interface";
+        public const string ResizeLabMenuSupertip =
+            "Use Resize Lab to accurately resize the objects on your slide.\n\n" +
+            "Click this button to open the Resize Lab interface.";
         #endregion
 
         #region Timer Lab
-        public const string TimerLabButtonSupertip = "Opens the Timer Lab Interface";
+        public const string TimerLabMenuSupertip =
+            "Use Timer Lab to create beautiful timers for your slides.\n\n" +
+            "Click this button to open the Timer Lab interface.";
         #endregion
 
         #region Sync Lab
-        public const string SyncLabButtonSupertip = "Opens the Sync Lab Interface";
-        public const string SyncLabErrorDialogTitle = "Unable to execute action";
-        public const string SyncLabCopySelectError = "Please select one shape to copy.";
-        public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
-        public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
-        public const string SyncLabCopyError = "Error: Unable to copy selected item.";
-        public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
-        public const string SyncLabDefaultFormatName = "Format";
+        public const string SyncLabMenuSupertip =
+            "Use Sync Lab to make your slides look more consistent.\n\n" +
+            "Click this button to open the Sync Lab interface.";
         #endregion
 
         #endregion
 
         #region Help
-        public const string HelpButtonSupertip = @"Click this to visit PowerPointLabs help page in our website.";
-        public const string FeedbackButtonSupertip = @"Click this to email us problem reports or other feedback. ";
-        public const string AboutButtonSupertip = @"Information about the PowerPointLabs plugin.";
+        public const string HelpButtonSupertip = "Click this button to visit PowerPointLabs help page in our website.";
+        public const string FeedbackButtonSupertip = "Click this button to email us problem reports or other feedback. ";
+        public const string AboutButtonSupertip = "Click this button for information about the PowerPointLabs plugin.";
         # endregion
         # endregion
 
@@ -444,8 +486,6 @@
         #region PictureSlidesLab
         public class PictureSlidesLabText
         {
-            public const string PictureSlidesLabSupertip = "Open Picture Slides Lab window.";
-
             /// <summary>
             /// Styles Variation Category Name
             ///
@@ -736,8 +776,17 @@
         }
         #endregion
 
-        #region Task Pane - Resize Lab
+        #region Sync Lab
+        public const string SyncLabErrorDialogTitle = "Unable to execute action";
+        public const string SyncLabCopySelectError = "Please select one shape to copy.";
+        public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
+        public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
+        public const string SyncLabCopyError = "Error: Unable to copy selected item.";
+        public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
+        public const string SyncLabDefaultFormatName = "Format";
+        #endregion
 
+        #region Task Pane - Resize Lab
         public class ResizeLabText
         {
             public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'";
@@ -745,7 +794,6 @@
             public const string ErrorGroupShapeNotSupported = "'Adjust Area Proportionally' does not support grouped objects";
             public const string ErrorUndefined = "'Undefined error in Resize Lab'";
         }
-
         #endregion
 
         #region Control - ShapesLabSetting

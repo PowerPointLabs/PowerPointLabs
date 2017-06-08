@@ -351,7 +351,7 @@ namespace PowerPointLabs
 
         public string GetAddAudioButtonSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.AddAudioButtonSupertip;
+            return TextCollection.NarrationsLabMenuSupertip;
         }
         public string GetGenerateRecordButtonSupertip(Office.IRibbonControl control)
         {
@@ -446,14 +446,6 @@ namespace PowerPointLabs
         {
             return TextCollection.AgendaLabRemoveAgendaSupertip;
         }
-        public string GetAgendaLabAgendaSettingsSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabAgendaSettingsSupertip;
-        }
-        public string GetAgendaLabBulletAgendaSettingsSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabBulletAgendaSettingsSupertip;
-        }
 
         public string GetDrawingsLabButtonSupertip(Office.IRibbonControl control)
         {
@@ -462,7 +454,7 @@ namespace PowerPointLabs
 
         public string GetResizeLabButtonSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.ResizeLabButtonSupertip;
+            return TextCollection.ResizeLabMenuSupertip;
         }
 
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
@@ -479,7 +471,7 @@ namespace PowerPointLabs
         }
         public string GetPositionsLabSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.PositionsLabSupertip;
+            return TextCollection.PositionsLabMenuSupertip;
         }
         # endregion
 
@@ -1661,7 +1653,7 @@ namespace PowerPointLabs
 
         public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.PictureSlidesLabText.PictureSlidesLabSupertip;
+            return TextCollection.PictureSlidesLabMenuSupertip;
         }
 
         #endregion
