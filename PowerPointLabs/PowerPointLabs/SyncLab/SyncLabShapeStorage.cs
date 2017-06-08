@@ -29,12 +29,6 @@ namespace PowerPointLabs.SyncLab
             ClearShapes();
         }
 
-        public override void Close()
-        {
-            storageInstance = new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
-            base.Close();
-        }
-
         // Saves shape in storage
         // Returns a key to find the shape by,
         // or null if the shape cannot be copied
