@@ -434,6 +434,34 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Moves shiftShape until it is at destination zOrder index.
+        /// </summary>
+        public static void MoveZTo(Shape shiftShape, int destination)
+        {
+            while (shiftShape.ZOrderPosition < destination)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+
+            while (shiftShape.ZOrderPosition > destination)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Moves shiftShape forward until it is in front of destinationShape.
         /// (does nothing if already in front)
         /// </summary>
@@ -467,6 +495,35 @@ namespace PowerPointLabs.Utils
                     break;
                 }
             }
+        }
+
+        public static void SwapZOrder(Shape originalShape, Shape destinationShape)
+        {
+            Shape lowerZOrderShape = originalShape;
+            Shape higherZOrderShape = destinationShape;
+            if (originalShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            {
+                lowerZOrderShape = destinationShape;
+                higherZOrderShape = originalShape;
+            }
+            int lowerZOrder = lowerZOrderShape.ZOrderPosition;
+            int higherZOrder = higherZOrderShape.ZOrderPosition;
+
+            // If shape is a group, our target zOrder needs to be offset by the number of items in the group
+            // This is to account for the zOrder of the items in the group
+            if (IsAGroup(lowerZOrderShape))
+            {
+                higherZOrder -= lowerZOrderShape.GroupItems.Count;
+            }
+
+            if (IsAGroup(higherZOrderShape))
+            {
+                higherZOrder += higherZOrderShape.GroupItems.Count;
+            }
+
+            MoveZTo(lowerZOrderShape, higherZOrder);
+
+            MoveZTo(higherZOrderShape, lowerZOrder);
         }
 
         /// <summary>
@@ -675,15 +732,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsAGroup(Shape shape)
         {
-            try
-            {
-                var groupItems = shape.GroupItems;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
-            return true;
+            return shape.Type == MsoShapeType.msoGroup;
         }
 
         public static bool CanAddArrows(Shape shape)
