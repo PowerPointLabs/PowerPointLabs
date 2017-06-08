@@ -8,6 +8,7 @@ using ImageProcessor.Imaging.Filters;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.CropLab;
+using PowerPointLabs.Utils;
 
 using Core = Microsoft.Office.Core;
 
@@ -150,7 +151,19 @@ namespace PowerPointLabs.Models
         {
             foreach (Shape shape in shapeRange)
             {
-                shape.SoftEdge.Radius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
+                float softEdgeRadius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
+                if (Graphics.IsAGroup(shape))
+                {
+                    for (int i = 1; i <= shape.GroupItems.Count; i++)
+                    {
+                        Shape child = shape.GroupItems.Range(i)[1];
+                        child.SoftEdge.Radius = softEdgeRadius;
+                    }
+                }
+                else
+                {
+                    shape.SoftEdge.Radius = softEdgeRadius;
+                }
             }
 
             var croppedShape = CropToShape.Crop(FromSlideFactory(refSlide), shapeRange, handleError: false);
