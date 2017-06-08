@@ -13,12 +13,12 @@ namespace PowerPointLabs.SyncLab
 
         private int nextKey = 0;
 
-        private static Lazy<SyncLabShapeStorage> storageInstance =
+        private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
 
         public static SyncLabShapeStorage Instance
         {
-            get { return storageInstance.Value; }
+            get { return StorageInstance.Value; }
         }
 
         private SyncLabShapeStorage() : base()
