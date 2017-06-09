@@ -410,69 +410,12 @@
       </tab>
     </tabs>
   </ribbon>
+  
   <contextMenus>
     <contextMenu idMso="ContextMenuShape">
       <menuSeparator id="separatorShape"/>
       <menu id="menuShape" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditShape"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="spotlightShape"
-                getLabel="GetSpotlightShapeLabel"
-                getImage="GetAddSpotlightContextImage"
-                onAction="SpotlightBtnClick"/>
-        <button id="zoomInContextMenu"
-                getLabel ="GetZoomInContextMenuLabel"
-                getImage="GetZoomInContextImage"
-                getEnabled="OnGetEnabledZoomButton"
-                onAction="AddZoomInButtonClick"/>
-        <button id="zoomOutContextMenu"
-               getLabel ="GetZoomOutContextMenuLabel"
-               getImage="GetZoomOutContextImage"
-               getEnabled="OnGetEnabledZoomButton"
-               onAction="AddZoomOutButtonClick"/>
-        <button id="ZoomToAreaContextMenu"
-               getLabel ="GetZoomToAreaContextMenuLabel"
-               getImage="GetZoomToAreaContextImage"
-               getEnabled="OnGetEnabledZoomButton"
-               onAction="ZoomBtnClick"/>
-        <menu id="HighlightBulletsMenuShape"
-              getLabel="GetHighlightBulletsMenuShapeLabel"
-              getImage="GetHighlightBulletsBackgroundContextImage">
-          <button id="HighlightBulletsTextShape"
-                getLabel ="GetHighlightBulletsTextShapeLabel"
-                getImage="GetHighlightBulletsTextContextImage"
-                onAction="HighlightBulletsTextButtonClick"/>
-          <button id="HighlightBulletsBackgroundShape"
-                 getLabel ="GetHighlightBulletsBackgroundShapeLabel"
-                 getImage="GetHighlightBulletsBackgroundContextImage"
-                 onAction="HighlightBulletsBackgroundButtonClick"/>
-        </menu>
-        <button id="ConvertToPictureShape"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="AddCustomShape"
-               getLabel ="GetLabel"
-               getImage="GetImage"
-               onAction="OnAction"/>
-        <button id="cutOutShapeShape"
-                getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToWidthShape"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToHeightShape"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="hideShapeShape"
-              getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetHideShapeImage"
-              onAction="HideShapeButtonClick"/>
+        <menuSeparator id="PasteLabContextMenuSeperator" title="Paste Lab"/>
         <button id="PasteToFillSlideShape"
                 getEnabled="GetEnabled"
                 getImage="GetImage"
@@ -493,6 +436,31 @@
                 getImage="GetImage"
                 getLabel="GetLabel"
                 onAction="OnAction"/>
+        <menuSeparator id="ShortcutsLabContextMenuSeperator" title="Shortcuts"/>
+        <button id="nameEditShape"
+                getLabel="GetNameEditShapeLabel"
+                getImage="GetEditNameContextImage"
+                onAction="NameEditBtnClick"/>
+        <button id="fitToWidthShape"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                onAction="OnAction"/>
+        <button id="fitToHeightShape"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                onAction="OnAction"/>
+        <button id="ConvertToPictureShape"
+               getLabel ="GetConvertToPictureShapeLabel"
+               getImage="GetConvertToPicMenuImage"
+               onAction="ConvertToPictureButtonClick"/>
+        <button id="hideShapeShape"
+               getLabel ="GetHideSelectedShapeLabel"
+               getImage="GetHideShapeImage"
+               onAction="HideShapeButtonClick"/>
+        <button id="AddCustomShape"
+               getLabel ="GetLabel"
+               getImage="GetImage"
+               onAction="OnAction"/>
       </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
