@@ -1,23 +1,25 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId(
-        "fitToWidthShape",
-        "fitToWidthFreeform",
-        "fitToWidthPicture",
-        "fitToWidthChart",
-        "fitToWidthTable")]
-    class FitToWidthActionHandler : ActionHandler
+        "EditNameMenuShape",
+        "EditNameMenuLine",
+        "EditNameMenuFreeform",
+        "EditNameMenuPicture",
+        "EditNameMenuGroup",
+        "EditNameMenuChart",
+        "EditNameMenuTable")]
+    class EditNameActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            this.StartNewUndoEntry();
             var selectedShape = this.GetCurrentSelection().ShapeRange[1];
-            var pres = this.GetCurrentPresentation();
-            FitToSlide.FitToWidth(selectedShape, pres.SlideWidth, pres.SlideHeight);
+            var editForm = new Form1(this.GetRibbonUi(), selectedShape.Name);
+            editForm.ShowDialog();
         }
     }
 }

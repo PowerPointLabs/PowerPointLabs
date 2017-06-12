@@ -5,11 +5,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Image.PasteLab
 {
     [ExportImageRibbonId(
-        "PasteAtCursorPosition",
-        "PasteAtCursorPositionShape",
-        "PasteAtCursorPositionFreeform",
-        "PasteAtCursorPositionPicture",
-        "PasteAtCursorPositionGroup")]
+        "PasteAtCursorPositionMenuFrame",
+        "PasteAtCursorPositionMenuShape",
+        "PasteAtCursorPositionMenuLine",
+        "PasteAtCursorPositionMenuFreeform",
+        "PasteAtCursorPositionMenuPicture",
+        "PasteAtCursorPositionMenuGroup")]
     class PasteAtCursorPositionImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

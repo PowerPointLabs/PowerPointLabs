@@ -37,19 +37,6 @@ namespace PowerPointLabs
             }
         }
 
-        public static System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ConvertToPicture);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetConvertToPicMenuImage");
-                throw;
-            }
-        }
-
         private static void ConvertToPictureForShape(PowerPoint.Shape shape)
         {
             float rotation = 0;

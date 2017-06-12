@@ -4,9 +4,9 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image
 {
-    [ExportImageRibbonId("AddCustomShape", "AddCustomShapePicture", "AddCustomShapeChart", 
-                        "AddCustomShapeTable", "AddCustomShapeGroup", "AddCustomShapeFreeform",
-                        "AddCustomShapeInk", "AddCustomShapeSmartArt")]
+    [ExportImageRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
+                        "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup",
+                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt")]
     class AddShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

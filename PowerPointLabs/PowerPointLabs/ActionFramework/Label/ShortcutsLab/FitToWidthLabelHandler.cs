@@ -4,11 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label
 {
     [ExportLabelRibbonId(
-        "fitToWidthShape",
-        "fitToWidthFreeform",
-        "fitToWidthPicture",
-        "fitToWidthChart",
-        "fitToWidthTable")]
+        "FitToWidthMenuShape",
+        "FitToWidthMenuFreeform",
+        "FitToWidthMenuPicture",
+        "FitToWidthMenuGroup",
+        "FitToWidthMenuChart",
+        "FitToWidthMenuTable")]
     class FitToWidthLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

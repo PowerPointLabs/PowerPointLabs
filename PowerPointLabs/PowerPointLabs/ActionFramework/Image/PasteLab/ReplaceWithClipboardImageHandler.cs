@@ -4,7 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image.PasteLab
 {
-    [ExportImageRibbonId("ReplaceWithClipboard", "ReplaceWithClipboardFreeform", "ReplaceWithClipboardPicture")]
+    [ExportImageRibbonId(
+        "ReplaceWithClipboardMenuShape",
+        "ReplaceWithClipboardMenuLine",
+        "ReplaceWithClipboardMenuFreeform",
+        "ReplaceWithClipboardMenuPicture",
+        "ReplaceWithClipboardMenuGroup")]
     class ReplaceWithClipboardImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

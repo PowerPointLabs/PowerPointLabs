@@ -180,7 +180,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.ConvertToPictureButtonClick(new RibbonControl("ConvertToPic"));
+                Ribbon.OnAction(new RibbonControl("ConvertToPictureShape"));
             });
         }
 

@@ -10,11 +10,12 @@ using PPExtraEventHelper;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId(
-        "PasteAtCursorPosition", 
-        "PasteAtCursorPositionShape", 
-        "PasteAtCursorPositionFreeform", 
-        "PasteAtCursorPositionPicture", 
-        "PasteAtCursorPositionGroup")]
+        "PasteAtCursorPositionMenuFrame", 
+        "PasteAtCursorPositionMenuShape",
+        "PasteAtCursorPositionMenuLine",
+        "PasteAtCursorPositionMenuFreeform",
+        "PasteAtCursorPositionMenuPicture",
+        "PasteAtCursorPositionMenuGroup")]
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

@@ -4,11 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
     [ExportLabelRibbonId(
-        "PasteToFillSlide",
-        "PasteToFillSlideShape",
-        "PasteToFillSlideFreeform",
-        "PasteToFillSlidePicture",
-        "PasteToFillSlideGroup")]
+        "PasteToFillSlideMenuFrame",
+        "PasteToFillSlideMenuShape",
+        "PasteToFillSlideMenuLine",
+        "PasteToFillSlideMenuFreeform",
+        "PasteToFillSlideMenuPicture",
+        "PasteToFillSlideMenuGroup")]
     class PasteToFillSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

@@ -5,11 +5,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Image
 {
     [ExportImageRibbonId(
-        "fitToHeightShape", 
-        "fitToHeightFreeform", 
-        "fitToHeightPicture",
-        "fitToHeightChart", 
-        "fitToHeightTable")]
+        "FitToHeightMenuShape",
+        "FitToHeightMenuFreeform",
+        "FitToHeightMenuPicture",
+        "FitToHeightMenuGroup",
+        "FitToHeightMenuChart",
+        "FitToHeightMenuTable")]
     class FitToHeightImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

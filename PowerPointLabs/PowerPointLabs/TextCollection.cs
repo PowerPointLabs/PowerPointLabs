@@ -94,7 +94,7 @@
         public const string RemoveCaptionsButtonSupertip =
             "Remove captions added using Captions Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the captions from, then click this button.";
-        public const string RemoveAllNotesButtonSupertip = 
+        public const string RemoveAllNotesButtonSupertip =
             "Remove notes from Notes pane of selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the notes from, then click this button.";
         # endregion
@@ -346,9 +346,11 @@
         public const string DynamicMenuCheckBoxId = "CheckBox";
         public const string DynamicMenuOptionId = "Option";
         public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
+        public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" getLabel=\"GetLabel\" getImage=\"GetImage\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
         public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
         public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
+        public const string DynamicMenuXmlTitleMenuSeparator = "<menuSeparator id=\"{0}Separator\" title=\"{1}\"/>";
         public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
         public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";
@@ -361,7 +363,7 @@
         #region Context Menu Labels
 
         public const string PowerPointLabsMenuLabel = "PowerPointLabs";
-        public const string NameEditShapeLabel = "Edit Name";
+        public const string EditNameShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
         public const string ZoomOutContextMenuLabel = "Step Back";
@@ -370,9 +372,9 @@
         public const string HighlightBulletsTextShapeLabel = "Highlight Text";
         public const string HighlightBulletsBackgroundShapeLabel = "Highlight Background";
         public const string ConvertToPictureShapeLabel = "Convert To Picture";
-        public const string MergeIntoGroup = "Add Into Group";
-        public const string AddCustomShapeShapeLabel = "Add to Shapes Lab";
-        public const string HideSelectedShapeLabel = "Hide the Shape";
+        public const string AddIntoGroup = "Add Into Group";
+        public const string AddCustomShapeShapeLabel = "Add To Shapes Lab";
+        public const string HideSelectedShapeLabel = "Hide Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
         public const string FitToWidthShapeLabel = "Fit To Width";
         public const string FitToHeightShapeLabel = "Fit To Height";

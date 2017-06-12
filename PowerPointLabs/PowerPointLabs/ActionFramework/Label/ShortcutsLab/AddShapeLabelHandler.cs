@@ -3,9 +3,9 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId("AddCustomShape", "AddCustomShapePicture", "AddCustomShapeChart", 
-                        "AddCustomShapeTable", "AddCustomShapeGroup", "AddCustomShapeFreeform",
-                        "AddCustomShapeInk", "AddCustomShapeSmartArt")]
+    [ExportLabelRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
+                        "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup",
+                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt")]
     class AddShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
