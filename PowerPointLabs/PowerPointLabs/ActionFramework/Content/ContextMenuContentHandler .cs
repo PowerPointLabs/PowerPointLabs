@@ -49,8 +49,6 @@ namespace PowerPointLabs.ActionFramework.Content
 
                 pasteLab.Items.Add(TextCollection.PasteLabText.ReplaceWithClipboard);
                 shortcuts.Items.Add(TextCollection.EditNameShapeLabel);
-                shortcuts.Items.Add(TextCollection.FitToWidthShapeLabel);
-                shortcuts.Items.Add(TextCollection.FitToHeightShapeLabel);
 
                 // Context menus other than picture will have these buttons
                 if (ribbonId != "MenuPicture")

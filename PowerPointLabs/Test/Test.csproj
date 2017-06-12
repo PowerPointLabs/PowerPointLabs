@@ -110,7 +110,6 @@
     <Compile Include="FunctionalTest\ColorsLabTest.cs" />
     <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
     <Compile Include="FunctionalTest\EffectsLabTest.cs" />
-    <Compile Include="FunctionalTest\FitToSlideTest.cs" />
     <Compile Include="FunctionalTest\HighlightBulletsTest.cs" />
     <Compile Include="FunctionalTest\QuickPropertyTest.cs" />
     <Compile Include="FunctionalTest\ShapesLabTest.cs" />

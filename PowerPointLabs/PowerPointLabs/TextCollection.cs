@@ -376,8 +376,6 @@
         public const string AddCustomShapeShapeLabel = "Add To Shapes Lab";
         public const string HideSelectedShapeLabel = "Hide Shape";
         public const string CutOutShapeShapeLabel = "Crop To Shape";
-        public const string FitToWidthShapeLabel = "Fit To Width";
-        public const string FitToHeightShapeLabel = "Fit To Height";
         public const string InSlideAnimateGroupLabel = "Animate In-Slide";
         public const string ApplyAutoMotionThumbnailLabel = "Add Animation Slide";
         public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";

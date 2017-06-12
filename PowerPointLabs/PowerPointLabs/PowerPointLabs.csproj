@@ -296,8 +296,6 @@
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\BaseHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
-    <Compile Include="ActionFramework\Action\ShortcutsLab\FitToHeightActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\ShortcutsLab\FitToWidthActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\EnabledHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
@@ -356,8 +354,6 @@
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
-    <Compile Include="ActionFramework\Image\ShortcutsLab\FitToHeightImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\ShortcutsLab\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
@@ -389,8 +385,6 @@
     <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
-    <Compile Include="ActionFramework\Label\ShortcutsLab\FitToHeightLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\ShortcutsLab\FitToWidthLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Label\TimerLabLabelHandler.cs" />
