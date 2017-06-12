@@ -595,11 +595,6 @@
 	    <menu id="MenuChartWalls" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
-    <contextMenu idMso="ContextMenuCommentMarker">
-	    <menuSeparator id="separatorCommentMarker" />
-	    <menu id="MenuCommentMarker" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
     <contextMenu idMso="ContextMenuCurve">
 	    <menuSeparator id="separatorCurve" />
 	    <menu id="MenuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
@@ -732,11 +727,6 @@
     <contextMenu idMso="ContextMenuSmartArtEditText">
 	    <menuSeparator id="separatorSmartArtEditText" />
 	    <menu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSpell">
-	    <menuSeparator id="separatorSpell" />
-	    <menu id="MenuSpell" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuTextEdit">
