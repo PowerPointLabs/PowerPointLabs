@@ -13,7 +13,7 @@ namespace PowerPointLabs
 #pragma warning disable 0618
         public static void Convert(PowerPoint.Selection selection)
         {
-            if (IsSelectionShape(selection))
+            if (IsSelectionShapeOrText(selection))
             {
                 var shape = GetShapeFromSelection(selection);
                 shape = CutPasteShape(shape);
@@ -27,7 +27,7 @@ namespace PowerPointLabs
 
         public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
         {
-            if (IsSelectionShape(selection))
+            if (IsSelectionShapeOrText(selection))
             {
                 Graphics.ExportShape(selection.ShapeRange, fileName);
             }
@@ -88,7 +88,7 @@ namespace PowerPointLabs
             return result;
         }
 
-        private static bool IsSelectionShape(PowerPoint.Selection selection)
+        private static bool IsSelectionShapeOrText(PowerPoint.Selection selection)
         {
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes &&
                 selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
