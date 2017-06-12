@@ -90,7 +90,8 @@ namespace PowerPointLabs
 
         private static bool IsSelectionShape(PowerPoint.Selection selection)
         {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes &&
+                selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
             {
                 return false;
             }

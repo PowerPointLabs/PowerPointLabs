@@ -5,7 +5,8 @@ namespace PowerPointLabs.ActionFramework.Label
 {
     [ExportLabelRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
                         "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup",
-                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt")]
+                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt",
+                        "AddToShapesLabMenuTableWhole")]
     class AddShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

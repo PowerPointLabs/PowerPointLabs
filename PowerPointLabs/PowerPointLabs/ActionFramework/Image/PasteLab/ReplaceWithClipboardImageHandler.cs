@@ -9,7 +9,10 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "ReplaceWithClipboardMenuLine",
         "ReplaceWithClipboardMenuFreeform",
         "ReplaceWithClipboardMenuPicture",
-        "ReplaceWithClipboardMenuGroup")]
+        "ReplaceWithClipboardMenuGroup",
+        "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable",
+        "ReplaceWithClipboardMenuTableWhole")]
     class ReplaceWithClipboardImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

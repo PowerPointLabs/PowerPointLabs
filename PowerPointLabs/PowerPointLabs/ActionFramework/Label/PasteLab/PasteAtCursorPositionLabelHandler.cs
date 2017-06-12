@@ -9,7 +9,10 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteAtCursorPositionMenuLine",
         "PasteAtCursorPositionMenuFreeform",
         "PasteAtCursorPositionMenuPicture",
-        "PasteAtCursorPositionMenuGroup")]
+        "PasteAtCursorPositionMenuGroup",
+        "PasteAtCursorPositionMenuChart",
+        "PasteAtCursorPositionMenuTable",
+        "PasteAtCursorPositionMenuTableWhole")]
     class PasteAtCursorPositionLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

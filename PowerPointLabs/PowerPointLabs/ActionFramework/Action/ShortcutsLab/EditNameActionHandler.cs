@@ -12,7 +12,8 @@ namespace PowerPointLabs.ActionFramework.Action
         "EditNameMenuPicture",
         "EditNameMenuGroup",
         "EditNameMenuChart",
-        "EditNameMenuTable")]
+        "EditNameMenuTable",
+        "EditNameMenuTableWhole")]
     class EditNameActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

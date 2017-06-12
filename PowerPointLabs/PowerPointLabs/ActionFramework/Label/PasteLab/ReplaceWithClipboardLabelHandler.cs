@@ -8,7 +8,10 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "ReplaceWithClipboardMenuLine",
         "ReplaceWithClipboardMenuFreeform",
         "ReplaceWithClipboardMenuPicture",
-        "ReplaceWithClipboardMenuGroup")]
+        "ReplaceWithClipboardMenuGroup",
+        "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable",
+        "ReplaceWithClipboardMenuTableWhole")]
     class ReplaceWithClipboardLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

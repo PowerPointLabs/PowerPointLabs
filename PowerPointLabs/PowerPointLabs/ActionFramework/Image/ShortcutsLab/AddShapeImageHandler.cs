@@ -6,7 +6,8 @@ namespace PowerPointLabs.ActionFramework.Image
 {
     [ExportImageRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
                         "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup",
-                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt")]
+                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt",
+                        "AddToShapesLabMenuTableWhole")]
     class AddShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

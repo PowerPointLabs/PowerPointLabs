@@ -11,7 +11,8 @@ namespace PowerPointLabs.ActionFramework.Image
         "EditNameMenuPicture",
         "EditNameMenuGroup",
         "EditNameMenuChart",
-        "EditNameMenuTable")]
+        "EditNameMenuTable",
+        "EditNameMenuTableWhole")]
     class EditNameImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

@@ -430,11 +430,15 @@
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
-      <dynamicMenu id="menuChartArea" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+      <dynamicMenu id="MenuChart" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuTable">
       <menuSeparator id="separatorTable"/>
       <dynamicMenu id="MenuTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTableWhole">
+	    <menuSeparator id="separatorTableWhole" />
+	    <dynamicMenu id="MenuTableWhole" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>
@@ -733,11 +737,6 @@
     <contextMenu idMso="ContextMenuSpell">
 	    <menuSeparator id="separatorSpell" />
 	    <menu id="MenuSpell" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuTableWhole">
-	    <menuSeparator id="separatorTableWhole" />
-	    <menu id="MenuTableWhole" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuTextEdit">

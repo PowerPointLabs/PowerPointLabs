@@ -10,7 +10,8 @@ namespace PowerPointLabs.ActionFramework.Label
         "HideShapeMenuPicture",
         "HideShapeMenuGroup",
         "HideShapeMenuChart",
-        "HideShapeMenuTable")]
+        "HideShapeMenuTable",
+        "HideShapeMenuTableWhole")]
     class HideShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

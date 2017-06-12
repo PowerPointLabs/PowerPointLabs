@@ -13,7 +13,10 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "ReplaceWithClipboardMenuLine",
         "ReplaceWithClipboardMenuFreeform",
         "ReplaceWithClipboardMenuPicture",
-        "ReplaceWithClipboardMenuGroup")]
+        "ReplaceWithClipboardMenuGroup",
+        "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable",
+        "ReplaceWithClipboardMenuTableWhole")]
     class ReplaceWithClipboardActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

@@ -10,7 +10,8 @@ namespace PowerPointLabs.ActionFramework.Image
         "ConvertToPictureMenuFreeform",
         "ConvertToPictureMenuGroup",
         "ConvertToPictureMenuChart",
-        "ConvertToPictureMenuTable")]
+        "ConvertToPictureMenuTable",
+        "ConvertToPictureMenuTableWhole")]
     class ConvertToPictureImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

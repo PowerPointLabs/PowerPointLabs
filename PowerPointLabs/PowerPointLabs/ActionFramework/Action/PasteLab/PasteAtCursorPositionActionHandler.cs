@@ -15,7 +15,10 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteAtCursorPositionMenuLine",
         "PasteAtCursorPositionMenuFreeform",
         "PasteAtCursorPositionMenuPicture",
-        "PasteAtCursorPositionMenuGroup")]
+        "PasteAtCursorPositionMenuGroup",
+        "PasteAtCursorPositionMenuChart",
+        "PasteAtCursorPositionMenuTable",
+        "PasteAtCursorPositionMenuTableWhole")]
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

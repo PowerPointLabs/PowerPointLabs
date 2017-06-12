@@ -8,8 +8,10 @@ namespace PowerPointLabs.ActionFramework.Action
         "ConvertToPictureMenuShape",
         "ConvertToPictureMenuLine",
         "ConvertToPictureMenuFreeform",
+        "ConvertToPictureMenuGroup",
         "ConvertToPictureMenuChart",
-        "ConvertToPictureMenuTable")]
+        "ConvertToPictureMenuTable",
+        "ConvertToPictureMenuTableWhole")]
     class ConvertToPictureActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
