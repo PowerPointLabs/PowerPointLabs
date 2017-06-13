@@ -16,6 +16,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "ReplaceWithClipboardMenuGroup",
         "ReplaceWithClipboardMenuInk",
         "ReplaceWithClipboardMenuVideo",
+        "ReplaceWithClipboardMenuTextEdit",
         "ReplaceWithClipboardMenuChart",
         "ReplaceWithClipboardMenuTable",
         "ReplaceWithClipboardMenuTableWhole",

@@ -11,6 +11,7 @@ namespace PowerPointLabs.ActionFramework.Action
         "ConvertToPictureMenuGroup",
         "ConvertToPictureMenuInk",
         "ConvertToPictureMenuVideo",
+        "ConvertToPictureMenuTextEdit",
         "ConvertToPictureMenuChart",
         "ConvertToPictureMenuTable",
         "ConvertToPictureMenuTableWhole",

@@ -12,6 +12,7 @@ namespace PowerPointLabs.ActionFramework.Image
         "HideShapeMenuGroup",
         "HideShapeMenuInk",
         "HideShapeMenuVideo",
+        "HideShapeMenuTextEdit",
         "HideShapeMenuChart",
         "HideShapeMenuTable",
         "HideShapeMenuTableWhole",

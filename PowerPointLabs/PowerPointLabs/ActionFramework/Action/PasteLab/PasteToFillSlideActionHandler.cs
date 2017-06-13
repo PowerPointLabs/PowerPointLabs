@@ -15,6 +15,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteToFillSlideMenuGroup",
         "PasteToFillSlideMenuInk",
         "PasteToFillSlideMenuVideo",
+        "PasteToFillSlideMenuTextEdit",
         "PasteToFillSlideMenuChart",
         "PasteToFillSlideMenuTable",
         "PasteToFillSlideMenuTableWhole",

@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Content
 {
     [ExportContentRibbonId("MenuShape", "MenuLine", "MenuFreeform", "MenuPicture", "MenuFrame", "MenuGroup",
-                           "MenuInk", "MenuVideo", "MenuChart", "MenuTable", "MenuTableWhole",
+                           "MenuInk", "MenuVideo", "MenuTextEdit", "MenuChart", "MenuTable", "MenuTableWhole",
                            "MenuSmartArtBackground", "MenuSmartArtEditSmartArt", "MenuSmartArtEditText")]
 
     class ContextMenuContentHandler : ContentHandler
@@ -49,7 +49,7 @@ namespace PowerPointLabs.ActionFramework.Content
                 // We only add shortcuts group if context menu is not for slide
                 contextMenuGroups.Add(shortcuts);
 
-                if (!ribbonId.Contains("MenuSmartArtEdit"))
+                if (!ribbonId.Contains("MenuSmartArtEdit") && ribbonId != "MenuTextEdit" && ribbonId != "MenuTable")
                 {
                     pasteLab.Items.Add(TextCollection.PasteLabText.ReplaceWithClipboard);
                 }

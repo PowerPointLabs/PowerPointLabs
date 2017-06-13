@@ -15,6 +15,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteAtOriginalPositionMenuGroup",
         "PasteAtOriginalPositionMenuInk",
         "PasteAtOriginalPositionMenuVideo",
+        "PasteAtOriginalPositionMenuTextEdit",
         "PasteAtOriginalPositionMenuChart",
         "PasteAtOriginalPositionMenuTable",
         "PasteAtOriginalPositionMenuTableWhole",

@@ -18,6 +18,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteAtCursorPositionMenuGroup",
         "PasteAtCursorPositionMenuInk",
         "PasteAtCursorPositionMenuVideo",
+        "PasteAtCursorPositionMenuTextEdit",
         "PasteAtCursorPositionMenuChart",
         "PasteAtCursorPositionMenuTable",
         "PasteAtCursorPositionMenuTableWhole",

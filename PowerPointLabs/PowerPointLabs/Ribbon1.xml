@@ -428,6 +428,10 @@
       <menuSeparator id="separatorPicture"/>
       <dynamicMenu id="MenuPicture" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuTextEdit">
+      <menuSeparator id="separatorTextEdit"/>
+      <dynamicMenu id="MenuTextEdit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
       <dynamicMenu id="MenuChart" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>

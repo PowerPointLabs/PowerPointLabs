@@ -11,6 +11,7 @@ namespace PowerPointLabs.ActionFramework.Label
         "EditNameMenuGroup",
         "EditNameMenuInk",
         "EditNameMenuVideo",
+        "EditNameMenuTextEdit",
         "EditNameMenuChart",
         "EditNameMenuTable",
         "EditNameMenuTableWhole",
