@@ -341,7 +341,7 @@
     <Compile Include="ActionFramework\Image\PasteLab\PasteIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\ReplaceWithClipboardImageHandler.cs" />
     <Compile Include="ActionFramework\Image\SyncLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\PPTLabsGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PptLabsGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteToFillSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteToFillSlideImageHandler.cs" />
@@ -418,6 +418,11 @@
     <Compile Include="ActionFramework\Supertip\CaptionsLab\CaptionsLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\HelpMenu\TutorialSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\HelpMenu\HelpMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteAtOriginalPositionSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteIntoGroupSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\ReplaceWithClipboardSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteToFillSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\SyncLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />

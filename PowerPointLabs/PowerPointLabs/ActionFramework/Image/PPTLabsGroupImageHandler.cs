@@ -5,7 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Image
 {
     [ExportImageRibbonId("PowerPointLabsGroup")]
-    class PPTLabsGroupImageHandler : ImageHandler
+    class PptLabsGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

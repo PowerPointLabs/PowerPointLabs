@@ -131,7 +131,19 @@
 
         #region Paste Lab
         public const string PasteLabMenuSupertip =
-            "Use Paste Lab to customize how you paste your copied items.";
+            "Use Paste Lab to customize how you paste your copied objects.";
+        public const string PasteToFillSlideSupertip =
+            "Paste your copied objects to fill the current slide.\n\n" +
+            "To perform this action, with object(s) copied, click this button.";
+        public const string PasteAtOriginalPositionSupertip =
+            "Paste your copied objects at their original positions when they were copied.\n\n" +
+            "To perform this action, with object(s) copied, click this button.";
+        public const string ReplaceWithClipboardSupertip =
+            "Paste your copied objects over your selection while preserving its animations.\n\n" +
+            "To perform this action, select an object on the slide, then with object(s) copied, click this button.";
+        public const string PasteIntoGroupSupertip =
+            "Paste your copied objects into an existing group.\n\n" +
+            "To perform this action, select a group on the slide, then with object(s) copied, click this button.";
         #endregion
 
         #region More Labs
