@@ -7,8 +7,8 @@ namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
                         "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup",
-                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArt",
-                        "AddToShapesLabMenuTableWhole")]
+                        "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArtBackground",
+                        "AddToShapesLabMenuTableWhole", "AddToShapesLabMenuSmartArtEditSmartArt", "AddToShapesLabMenuSmartArtEditText")]
     class AddShapeActionHandler : ShapesLabActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -13,7 +13,10 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "PasteAtOriginalPositionMenuGroup",
         "PasteAtOriginalPositionMenuChart",
         "PasteAtOriginalPositionMenuTable",
-        "PasteAtOriginalPositionMenuTableWhole")]
+        "PasteAtOriginalPositionMenuTableWhole",
+        "PasteAtOriginalPositionMenuSmartArtBackground",
+        "PasteAtOriginalPositionMenuSmartArtEditSmartArt",
+        "PasteAtOriginalPositionMenuSmartArtEditText")]
     class PasteAtOriginalPositionImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

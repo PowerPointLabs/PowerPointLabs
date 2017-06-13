@@ -12,7 +12,8 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "ReplaceWithClipboardMenuGroup",
         "ReplaceWithClipboardMenuChart",
         "ReplaceWithClipboardMenuTable",
-        "ReplaceWithClipboardMenuTableWhole")]
+        "ReplaceWithClipboardMenuTableWhole",
+        "ReplaceWithClipboardMenuSmartArtBackground")]
     class ReplaceWithClipboardImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

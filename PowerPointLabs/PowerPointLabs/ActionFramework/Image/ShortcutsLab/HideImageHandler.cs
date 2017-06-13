@@ -12,7 +12,10 @@ namespace PowerPointLabs.ActionFramework.Image
         "HideShapeMenuGroup",
         "HideShapeMenuChart",
         "HideShapeMenuTable",
-        "HideShapeMenuTableWhole")]
+        "HideShapeMenuTableWhole",
+        "HideShapeMenuSmartArtBackground",
+        "HideShapeMenuSmartArtEditSmartArt",
+        "HideShapeMenuSmartArtEditText")]
     class HideImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

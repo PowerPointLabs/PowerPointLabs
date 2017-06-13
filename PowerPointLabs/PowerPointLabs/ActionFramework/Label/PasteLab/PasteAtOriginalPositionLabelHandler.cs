@@ -12,7 +12,10 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteAtOriginalPositionMenuGroup",
         "PasteAtOriginalPositionMenuChart",
         "PasteAtOriginalPositionMenuTable",
-        "PasteAtOriginalPositionMenuTableWhole")]
+        "PasteAtOriginalPositionMenuTableWhole",
+        "PasteAtOriginalPositionMenuSmartArtBackground",
+        "PasteAtOriginalPositionMenuSmartArtEditSmartArt",
+        "PasteAtOriginalPositionMenuSmartArtEditText")]
     class PasteAtOriginalPositionLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

@@ -11,7 +11,10 @@ namespace PowerPointLabs.ActionFramework.Image
         "ConvertToPictureMenuGroup",
         "ConvertToPictureMenuChart",
         "ConvertToPictureMenuTable",
-        "ConvertToPictureMenuTableWhole")]
+        "ConvertToPictureMenuTableWhole",
+        "ConvertToPictureMenuSmartArtBackground",
+        "ConvertToPictureMenuSmartArtEditSmartArt",
+        "ConvertToPictureMenuSmartArtEditText")]
     class ConvertToPictureImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

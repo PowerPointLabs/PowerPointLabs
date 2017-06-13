@@ -10,7 +10,10 @@ namespace PowerPointLabs.ActionFramework.Label
         "ConvertToPictureMenuGroup",
         "ConvertToPictureMenuChart",
         "ConvertToPictureMenuTable",
-        "ConvertToPictureMenuTableWhole")]
+        "ConvertToPictureMenuTableWhole",
+        "ConvertToPictureMenuSmartArtBackground",
+        "ConvertToPictureMenuSmartArtEditSmartArt",
+        "ConvertToPictureMenuSmartArtEditText")]
     class ConvertToPictureShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

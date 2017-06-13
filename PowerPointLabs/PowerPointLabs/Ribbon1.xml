@@ -448,10 +448,20 @@
       <menuSeparator id="separatorInk"/>
       <dynamicMenu id="MenuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
       <dynamicMenu id="MenuSmartArtBackground" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtEditSmartArt">
+      <menuSeparator id="separatorSmartArtEditSmartArt"/>
+      <dynamicMenu id="MenuSmartArtEditSmartArt" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuSmartArtEditText">
+      <menuSeparator id="separatorSmartArtEditText"/>
+      <dynamicMenu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    
     <contextMenu idMso="ContextMenuChartAxis">
 	    <menuSeparator id="separatorChartAxis" />
 	    <menu id="MenuChartAxis" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">

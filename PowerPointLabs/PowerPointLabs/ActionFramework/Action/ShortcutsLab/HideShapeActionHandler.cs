@@ -12,7 +12,10 @@ namespace PowerPointLabs.ActionFramework.Action
         "HideShapeMenuGroup",
         "HideShapeMenuChart",
         "HideShapeMenuTable",
-        "HideShapeMenuTableWhole")]
+        "HideShapeMenuTableWhole",
+        "HideShapeMenuSmartArtBackground",
+        "HideShapeMenuSmartArtEditSmartArt",
+        "HideShapeMenuSmartArtEditText")]
     class HideActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

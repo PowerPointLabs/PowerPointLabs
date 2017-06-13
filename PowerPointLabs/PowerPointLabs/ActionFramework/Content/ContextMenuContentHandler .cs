@@ -6,7 +6,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Content
 {
     [ExportContentRibbonId("MenuShape", "MenuLine", "MenuFreeform", "MenuPicture", "MenuFrame", "MenuGroup",
-                           "MenuChart", "MenuTable", "MenuTableWhole")]
+                           "MenuChart", "MenuTable", "MenuTableWhole",
+                           "MenuSmartArtBackground", "MenuSmartArtEditSmartArt", "MenuSmartArtEditText")]
 
     class ContextMenuContentHandler : ContentHandler
     {
@@ -48,7 +49,11 @@ namespace PowerPointLabs.ActionFramework.Content
                 // We only add shortcuts group if context menu is not for slide
                 contextMenuGroups.Add(shortcuts);
 
-                pasteLab.Items.Add(TextCollection.PasteLabText.ReplaceWithClipboard);
+                if (!ribbonId.Contains("MenuSmartArtEdit"))
+                {
+                    pasteLab.Items.Add(TextCollection.PasteLabText.ReplaceWithClipboard);
+                }
+
                 shortcuts.Items.Add(TextCollection.EditNameShapeLabel);
 
                 // Context menus other than picture will have these buttons

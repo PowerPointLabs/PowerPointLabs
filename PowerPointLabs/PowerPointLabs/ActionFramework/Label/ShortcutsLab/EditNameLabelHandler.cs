@@ -11,7 +11,10 @@ namespace PowerPointLabs.ActionFramework.Label
         "EditNameMenuGroup",
         "EditNameMenuChart",
         "EditNameMenuTable",
-        "EditNameMenuTableWhole")]
+        "EditNameMenuTableWhole",
+        "EditNameMenuSmartArtBackground",
+        "EditNameMenuSmartArtEditSmartArt",
+        "EditNameMenuSmartArtEditText")]
     class EditNameLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

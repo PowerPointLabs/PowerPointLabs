@@ -13,7 +13,10 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "PasteToFillSlideMenuGroup",
         "PasteToFillSlideMenuChart",
         "PasteToFillSlideMenuTable",
-        "PasteToFillSlideMenuTableWhole")]
+        "PasteToFillSlideMenuTableWhole",
+        "PasteToFillSlideMenuSmartArtBackground",
+        "PasteToFillSlideMenuSmartArtEditSmartArt",
+        "PasteToFillSlideMenuSmartArtEditText")]
     class PasteToFillSlideImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

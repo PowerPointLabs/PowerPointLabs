@@ -12,7 +12,10 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteToFillSlideMenuGroup",
         "PasteToFillSlideMenuChart",
         "PasteToFillSlideMenuTable",
-        "PasteToFillSlideMenuTableWhole")]
+        "PasteToFillSlideMenuTableWhole",
+        "PasteToFillSlideMenuSmartArtBackground",
+        "PasteToFillSlideMenuSmartArtEditSmartArt",
+        "PasteToFillSlideMenuSmartArtEditText")]
     class PasteToFillSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
