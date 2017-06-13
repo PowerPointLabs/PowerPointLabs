@@ -11,6 +11,8 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "PasteAtCursorPositionMenuFreeform",
         "PasteAtCursorPositionMenuPicture",
         "PasteAtCursorPositionMenuGroup",
+        "PasteAtCursorPositionMenuInk",
+        "PasteAtCursorPositionMenuVideo",
         "PasteAtCursorPositionMenuChart",
         "PasteAtCursorPositionMenuTable",
         "PasteAtCursorPositionMenuTableWhole",

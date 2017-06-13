@@ -9,6 +9,8 @@ namespace PowerPointLabs.ActionFramework.Label
         "HideShapeMenuFreeform",
         "HideShapeMenuPicture",
         "HideShapeMenuGroup",
+        "HideShapeMenuInk",
+        "HideShapeMenuVideo",
         "HideShapeMenuChart",
         "HideShapeMenuTable",
         "HideShapeMenuTableWhole",

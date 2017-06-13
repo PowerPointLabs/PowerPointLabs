@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
-                        "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup",
+                        "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup", "AddToShapesLabMenuVideo",
                         "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArtBackground",
                         "AddToShapesLabMenuTableWhole", "AddToShapesLabMenuSmartArtEditSmartArt", "AddToShapesLabMenuSmartArtEditText")]
     class AddShapeActionHandler : ShapesLabActionHandler

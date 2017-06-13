@@ -10,6 +10,8 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "ReplaceWithClipboardMenuFreeform",
         "ReplaceWithClipboardMenuPicture",
         "ReplaceWithClipboardMenuGroup",
+        "ReplaceWithClipboardMenuInk",
+        "ReplaceWithClipboardMenuVideo",
         "ReplaceWithClipboardMenuChart",
         "ReplaceWithClipboardMenuTable",
         "ReplaceWithClipboardMenuTableWhole",

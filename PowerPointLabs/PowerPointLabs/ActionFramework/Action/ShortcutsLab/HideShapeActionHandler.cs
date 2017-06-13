@@ -10,6 +10,8 @@ namespace PowerPointLabs.ActionFramework.Action
         "HideShapeMenuFreeform",
         "HideShapeMenuPicture",
         "HideShapeMenuGroup",
+        "HideShapeMenuInk",
+        "HideShapeMenuVideo",
         "HideShapeMenuChart",
         "HideShapeMenuTable",
         "HideShapeMenuTableWhole",
@@ -21,7 +23,7 @@ namespace PowerPointLabs.ActionFramework.Action
         protected override void ExecuteAction(string ribbonId)
         {
             var selection = this.GetCurrentSelection();
-            ConvertToPicture.Convert(selection);
+            //ConvertToPicture.Convert(selection);
 
             var selectedShapes = this.GetCurrentSelection().ShapeRange;
             selectedShapes.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;

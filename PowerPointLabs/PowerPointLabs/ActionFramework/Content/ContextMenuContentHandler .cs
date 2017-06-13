@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Content
 {
     [ExportContentRibbonId("MenuShape", "MenuLine", "MenuFreeform", "MenuPicture", "MenuFrame", "MenuGroup",
-                           "MenuChart", "MenuTable", "MenuTableWhole",
+                           "MenuInk", "MenuVideo", "MenuChart", "MenuTable", "MenuTableWhole",
                            "MenuSmartArtBackground", "MenuSmartArtEditSmartArt", "MenuSmartArtEditText")]
 
     class ContextMenuContentHandler : ContentHandler

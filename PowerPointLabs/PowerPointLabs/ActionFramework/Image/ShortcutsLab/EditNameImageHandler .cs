@@ -10,6 +10,8 @@ namespace PowerPointLabs.ActionFramework.Image
         "EditNameMenuFreeform",
         "EditNameMenuPicture",
         "EditNameMenuGroup",
+        "EditNameMenuInk",
+        "EditNameMenuVideo",
         "EditNameMenuChart",
         "EditNameMenuTable",
         "EditNameMenuTableWhole",

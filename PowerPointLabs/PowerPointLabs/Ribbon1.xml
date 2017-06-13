@@ -448,6 +448,10 @@
       <menuSeparator id="separatorInk"/>
       <dynamicMenu id="MenuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuVideo">
+      <menuSeparator id="separatorVideo"/>
+      <dynamicMenu id="MenuVideo" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
     
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
@@ -462,136 +466,6 @@
       <dynamicMenu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     
-    <contextMenu idMso="ContextMenuChartAxis">
-	    <menuSeparator id="separatorChartAxis" />
-	    <menu id="MenuChartAxis" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartAxisTitle">
-	    <menuSeparator id="separatorChartAxisTitle" />
-	    <menu id="MenuChartAxisTitle" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartBackWall">
-	    <menuSeparator id="separatorChartBackWall" />
-	    <menu id="MenuChartBackWall" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataLabel">
-	    <menuSeparator id="separatorChartDataLabel" />
-	    <menu id="MenuChartDataLabel" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataLabels">
-	    <menuSeparator id="separatorChartDataLabels" />
-	    <menu id="MenuChartDataLabels" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataPoint">
-	    <menuSeparator id="separatorChartDataPoint" />
-	    <menu id="MenuChartDataPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataSeries">
-	    <menuSeparator id="separatorChartDataSeries" />
-	    <menu id="MenuChartDataSeries" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataTable">
-	    <menuSeparator id="separatorChartDataTable" />
-	    <menu id="MenuChartDataTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDisplayUnit">
-	    <menuSeparator id="separatorChartDisplayUnit" />
-	    <menu id="MenuChartDisplayUnit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDownBars">
-	    <menuSeparator id="separatorChartDownBars" />
-	    <menu id="MenuChartDownBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDropLines">
-	    <menuSeparator id="separatorChartDropLines" />
-	    <menu id="MenuChartDropLines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartErrorBars">
-	    <menuSeparator id="separatorChartErrorBars" />
-	    <menu id="MenuChartErrorBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartFloor">
-	    <menuSeparator id="separatorChartFloor" />
-	    <menu id="MenuChartFloor" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartGridlines">
-	    <menuSeparator id="separatorChartGridlines" />
-	    <menu id="MenuChartGridlines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartHighLowLine">
-	    <menuSeparator id="separatorChartHighLowLine" />
-	    <menu id="MenuChartHighLowLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartLeaderLines">
-	    <menuSeparator id="separatorChartLeaderLines" />
-	    <menu id="MenuChartLeaderLines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartLegend">
-	    <menuSeparator id="separatorChartLegend" />
-	    <menu id="MenuChartLegend" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartLegendEntry">
-	    <menuSeparator id="separatorChartLegendEntry" />
-	    <menu id="MenuChartLegendEntry" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartPlotArea">
-	    <menuSeparator id="separatorChartPlotArea" />
-	    <menu id="MenuChartPlotArea" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartSeriesLine">
-	    <menuSeparator id="separatorChartSeriesLine" />
-	    <menu id="MenuChartSeriesLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartSideWall">
-	    <menuSeparator id="separatorChartSideWall" />
-	    <menu id="MenuChartSideWall" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartTitle">
-	    <menuSeparator id="separatorChartTitle" />
-	    <menu id="MenuChartTitle" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartTrendline">
-	    <menuSeparator id="separatorChartTrendline" />
-	    <menu id="MenuChartTrendline" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartTrendlineLabel">
-	    <menuSeparator id="separatorChartTrendlineLabel" />
-	    <menu id="MenuChartTrendlineLabel" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartUpBars">
-	    <menuSeparator id="separatorChartUpBars" />
-	    <menu id="MenuChartUpBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartWalls">
-	    <menuSeparator id="separatorChartWalls" />
-	    <menu id="MenuChartWalls" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
     <contextMenu idMso="ContextMenuCurve">
 	    <menuSeparator id="separatorCurve" />
 	    <menu id="MenuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">

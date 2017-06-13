@@ -8,6 +8,8 @@ namespace PowerPointLabs.ActionFramework.Label
         "ConvertToPictureMenuLine",
         "ConvertToPictureMenuFreeform",
         "ConvertToPictureMenuGroup",
+        "ConvertToPictureMenuInk",
+        "ConvertToPictureMenuVideo",
         "ConvertToPictureMenuChart",
         "ConvertToPictureMenuTable",
         "ConvertToPictureMenuTableWhole",

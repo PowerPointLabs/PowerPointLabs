@@ -9,6 +9,8 @@ namespace PowerPointLabs.ActionFramework.Action
         "ConvertToPictureMenuLine",
         "ConvertToPictureMenuFreeform",
         "ConvertToPictureMenuGroup",
+        "ConvertToPictureMenuInk",
+        "ConvertToPictureMenuVideo",
         "ConvertToPictureMenuChart",
         "ConvertToPictureMenuTable",
         "ConvertToPictureMenuTableWhole",
