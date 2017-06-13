@@ -1068,8 +1068,6 @@
     <None Include="Resources\LineColor_icon.png" />
     <None Include="Resources\TextColor_icon.png" />
     <None Include="Resources\refresh-icon.png" />
-    <None Include="Resources\ShapesLab.png" />
-    <None Include="Resources\ColorsLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
     <None Include="Resources\delete-icon.png" />
     <None Include="Resources\down-icon.png" />
@@ -1668,16 +1666,12 @@
     <None Include="Resources\CropToSame.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CropLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CutOutShape.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CropOutPadding.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\TimerLab.png" />
     <Resource Include="Resources\TimerLab\HalfHeight.png" />
     <Resource Include="Resources\TimerLab\HalfWidth.png" />
     <Resource Include="Resources\TimerLab\MaxHeight.png" />
@@ -1722,25 +1716,10 @@
     <None Include="Resources\SyncLabPasteButton.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AnimationLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\NarrationsLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\AddCaption.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveCaption.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RemoveNotes.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\HighlightLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RecordAudio.png" />
@@ -1750,9 +1729,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RemoveAudio.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EffectsLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PptlabsContextMenu.png" />
@@ -1777,18 +1753,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddToCustomShapes.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\PositionsLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ResizeLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\HelpMenu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SyncLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\UserGuide.png" />
@@ -1821,12 +1785,6 @@
     <None Include="Resources\PasteAtCursorPosition.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CaptionsLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\PasteLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\RemoveHighlighting.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1839,10 +1797,61 @@
     <None Include="Resources\HighlightText.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\HideShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveNotes.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\AgendaLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HideShape.png" />
+    <None Include="Resources\AnimationLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CaptionsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ColorsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EffectsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HelpMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NarrationsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PictureSlidesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PositionsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShapesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimerLab.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

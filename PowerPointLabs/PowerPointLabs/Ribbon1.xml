@@ -403,7 +403,7 @@
           </menu>
 
           <button id="PictureSlidesLabButton"
-                  label="Picture Slides Lab"
+                  label="Picture Slides"
                   size="large"
                   getImage="GetPictureSlidesLabImage"
                   getSupertip="GetPictureSlidesLabSupertip"

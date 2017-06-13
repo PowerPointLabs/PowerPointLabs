@@ -255,7 +255,7 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Animation Lab
-        public const string AnimationLabMenuLabel = "Animation Lab";
+        public const string AnimationLabMenuLabel = "Animation";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
@@ -263,7 +263,7 @@
         # endregion
 
         # region Zoom Lab
-        public const string ZoomLabMenuLabel = "Zoom Lab";
+        public const string ZoomLabMenuLabel = "Zoom";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
@@ -271,7 +271,7 @@
         # endregion
 
         # region Crop Lab
-        public const string CropLabMenuLabel = "Crop Lab";
+        public const string CropLabMenuLabel = "Crop";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingLabel = "Crop Out Padding";
         public const string CropToAspectRatioTag = "CropToAspectRatio";
@@ -282,7 +282,7 @@
         # endregion
 
         # region Narrations Lab
-        public const string NarrationsLabMenuLabel = "Narrations Lab";
+        public const string NarrationsLabMenuLabel = "Narrations";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
         public const string AddRecordButtonLabel = "Record Audio Manually";
@@ -291,14 +291,14 @@
         # endregion
 
         # region Captions Lab
-        public const string CaptionsLabMenuLabel = "Captions Lab";
+        public const string CaptionsLabMenuLabel = "Captions";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
         # endregion
 
         # region Highlight Lab
-        public const string HighlightLabMenuLabel = "Highlight Lab";
+        public const string HighlightLabMenuLabel = "Highlight";
         public const string SpotlightPropertiesButtonLabel = "Spotlight Properties";
         public const string SpotlightMenuLabel = "Spotlight";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
@@ -311,15 +311,15 @@
         #endregion
 
         #region Colors Lab
-        public const string ColorPickerButtonLabel = "Colors Lab";
+        public const string ColorPickerButtonLabel = "Colors";
         # endregion
 
         # region Shapes Lab
-        public const string CustomeShapeButtonLabel = "Shapes Lab";
+        public const string CustomeShapeButtonLabel = "Shapes";
         # endregion
 
         # region Effects Lab
-        public const string EffectsLabButtonLabel = "Effects Lab";
+        public const string EffectsLabButtonLabel = "Effects";
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
         public const string EffectsLabBlurSelectedButtonLabel = "Blur Selected";
@@ -330,7 +330,7 @@
         # endregion
 
         # region Agenda Lab
-        public const string AgendaLabButtonLabel = "Agenda Lab";
+        public const string AgendaLabButtonLabel = "Agenda";
         public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
         public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
         public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
@@ -341,23 +341,23 @@
         # endregion
 
         # region Drawing Lab
-        public const string DrawingsLabButtonLabel = "Drawing Lab";
+        public const string DrawingsLabButtonLabel = "Drawing";
         # endregion
 
         # region Positions Lab
-        public const string PositionsLabButtonLabel = "Positions Lab";
+        public const string PositionsLabButtonLabel = "Positions";
         # endregion
 
         # region Resize Lab
-        public const string ResizeLabButtonLabel = "Resize Lab";
+        public const string ResizeLabButtonLabel = "Resize";
         #endregion
 
         #region Sync Lab
-        public const string SyncLabButtonLabel = "Sync Lab";
+        public const string SyncLabButtonLabel = "Sync";
         # endregion
 
         # region Timer Lab
-        public const string TimerLabButtonLabel = "Timer Lab";
+        public const string TimerLabButtonLabel = "Timer";
         # endregion
         
         # region Help Menu
@@ -798,7 +798,7 @@
         #region Paste Lab
         public class PasteLabText
         {
-            public const string PasteLabMenu = "Paste Lab";
+            public const string PasteLabMenu = "Paste";
             public const string PasteToFillSlide = "Paste To Fill Slide";
             public const string ReplaceWithClipboard = "Replace With Clipboard";
             public const string PasteIntoGroup = "Paste Into Group";
