@@ -8,7 +8,8 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteAtOriginalPositionShape",
         "PasteAtOriginalPositionFreeform",
         "PasteAtOriginalPositionPicture",
-        "PasteAtOriginalPositionGroup")]
+        "PasteAtOriginalPositionGroup",
+        "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

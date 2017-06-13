@@ -9,12 +9,13 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "PasteAtOriginalPositionShape",
         "PasteAtOriginalPositionFreeform",
         "PasteAtOriginalPositionPicture",
-        "PasteAtOriginalPositionGroup")]
+        "PasteAtOriginalPositionGroup",
+        "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.PasteLab);
+            return new Bitmap(Properties.Resources.PasteAtOriginalPosition);
         }
     }
 }

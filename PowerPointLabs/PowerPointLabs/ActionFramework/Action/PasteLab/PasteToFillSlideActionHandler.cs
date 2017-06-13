@@ -11,7 +11,8 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteToFillSlideShape",
         "PasteToFillSlideFreeform",
         "PasteToFillSlidePicture",
-        "PasteToFillSlideGroup")]
+        "PasteToFillSlideGroup",
+        "PasteToFillSlideButton")]
     class PasteToFillSlideActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

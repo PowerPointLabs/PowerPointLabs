@@ -11,7 +11,8 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteAtOriginalPositionShape",
         "PasteAtOriginalPositionFreeform",
         "PasteAtOriginalPositionPicture",
-        "PasteAtOriginalPositionGroup")]
+        "PasteAtOriginalPositionGroup",
+        "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

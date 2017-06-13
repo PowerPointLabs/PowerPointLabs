@@ -8,7 +8,8 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteToFillSlideShape",
         "PasteToFillSlideFreeform",
         "PasteToFillSlidePicture",
-        "PasteToFillSlideGroup")]
+        "PasteToFillSlideGroup",
+        "PasteToFillSlideButton")]
     class PasteToFillSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

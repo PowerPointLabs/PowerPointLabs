@@ -9,12 +9,13 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
         "PasteToFillSlideShape",
         "PasteToFillSlideFreeform",
         "PasteToFillSlidePicture",
-        "PasteToFillSlideGroup")]
+        "PasteToFillSlideGroup",
+        "PasteToFillSlideButton")]
     class PasteToFillSlideImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.PasteLab);
+            return new Bitmap(Properties.Resources.PasteToFillSlide);
         }
     }
 }

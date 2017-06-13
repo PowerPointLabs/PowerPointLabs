@@ -730,6 +730,11 @@ namespace PowerPointLabs.Utils
             return shape.Visible == MsoTriState.msoFalse;
         }
 
+        public static bool IsSelectionShapes(Selection selection)
+        {
+            return selection.Type == PpSelectionType.ppSelectionShapes;
+        }
+
         public static bool IsAGroup(Shape shape)
         {
             return shape.Type == MsoShapeType.msoGroup;
