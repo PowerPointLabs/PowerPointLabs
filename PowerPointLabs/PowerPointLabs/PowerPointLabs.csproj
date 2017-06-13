@@ -1841,6 +1841,9 @@
   <ItemGroup>
     <None Include="Resources\AgendaLab.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HideShape.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
