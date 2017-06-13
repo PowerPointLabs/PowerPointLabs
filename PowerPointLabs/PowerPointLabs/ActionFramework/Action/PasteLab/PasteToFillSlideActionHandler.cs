@@ -7,20 +7,11 @@ using PowerPointLabs.PasteLab;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId(
-        "PasteToFillSlideMenuFrame",
-        "PasteToFillSlideMenuShape",
-        "PasteToFillSlideMenuLine",
-        "PasteToFillSlideMenuFreeform",
-        "PasteToFillSlideMenuPicture",
-        "PasteToFillSlideMenuGroup",
-        "PasteToFillSlideMenuInk",
-        "PasteToFillSlideMenuVideo",
-        "PasteToFillSlideMenuTextEdit",
-        "PasteToFillSlideMenuChart",
-        "PasteToFillSlideMenuTable",
-        "PasteToFillSlideMenuTableWhole",
-        "PasteToFillSlideMenuSmartArtBackground",
-        "PasteToFillSlideMenuSmartArtEditSmartArt",
+        "PasteToFillSlideMenuShape", "PasteToFillSlideMenuLine", "PasteToFillSlideMenuFreeform",
+        "PasteToFillSlideMenuPicture", "PasteToFillSlideMenuGroup", "PasteToFillSlideMenuInk",
+        "PasteToFillSlideMenuVideo", "PasteToFillSlideMenuTextEdit", "PasteToFillSlideMenuChart",
+        "PasteToFillSlideMenuTable", "PasteToFillSlideMenuTableWhole", "PasteToFillSlideMenuFrame",
+        "PasteToFillSlideMenuSmartArtBackground", "PasteToFillSlideMenuSmartArtEditSmartArt",
         "PasteToFillSlideMenuSmartArtEditText")]
     class PasteToFillSlideActionHandler : PasteLabActionHandler
     {

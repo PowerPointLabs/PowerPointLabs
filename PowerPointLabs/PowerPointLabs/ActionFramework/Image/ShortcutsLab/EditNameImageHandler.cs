@@ -1,19 +1,20 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using System.Drawing;
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label
+namespace PowerPointLabs.ActionFramework.Image
 {
-    [ExportLabelRibbonId(
+    [ExportImageRibbonId(
         "EditNameMenuShape", "EditNameMenuLine", "EditNameMenuFreeform",
         "EditNameMenuPicture", "EditNameMenuGroup", "EditNameMenuInk",
         "EditNameMenuVideo", "EditNameMenuTextEdit", "EditNameMenuChart",
         "EditNameMenuTable", "EditNameMenuTableWhole", "EditNameMenuSmartArtBackground",
         "EditNameMenuSmartArtEditSmartArt", "EditNameMenuSmartArtEditText")]
-    class EditNameLabelHandler : LabelHandler
+    class EditNameImageHandler : ImageHandler
     {
-        protected override string GetLabel(string ribbonId)
+        protected override Bitmap GetImage(string ribbonId)
         {
-            return TextCollection.EditNameShapeLabel;
+            return new Bitmap(Properties.Resources.EditNameContext);
         }
     }
 }

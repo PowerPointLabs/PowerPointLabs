@@ -6,20 +6,11 @@ using PowerPointLabs.Views;
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId(
-        "EditNameMenuShape",
-        "EditNameMenuLine",
-        "EditNameMenuFreeform",
-        "EditNameMenuPicture",
-        "EditNameMenuGroup",
-        "EditNameMenuInk",
-        "EditNameMenuVideo",
-        "EditNameMenuTextEdit",
-        "EditNameMenuChart",
-        "EditNameMenuTable",
-        "EditNameMenuTableWhole",
-        "EditNameMenuSmartArtBackground",
-        "EditNameMenuSmartArtEditSmartArt",
-        "EditNameMenuSmartArtEditText")]
+        "EditNameMenuShape", "EditNameMenuLine", "EditNameMenuFreeform",
+        "EditNameMenuPicture", "EditNameMenuGroup", "EditNameMenuInk",
+        "EditNameMenuVideo", "EditNameMenuTextEdit", "EditNameMenuChart",
+        "EditNameMenuTable", "EditNameMenuTableWhole",  "EditNameMenuSmartArtBackground",
+        "EditNameMenuSmartArtEditSmartArt", "EditNameMenuSmartArtEditText")]
     class EditNameActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

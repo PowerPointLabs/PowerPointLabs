@@ -321,7 +321,7 @@
     <Compile Include="ActionFramework\Enabled\PasteLab\ReplaceWithClipboardEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\HideImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\ShortcutsLab\EditNameImageHandler .cs" />
+    <Compile Include="ActionFramework\Image\ShortcutsLab\EditNameImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropShapeMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />

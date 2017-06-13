@@ -5,10 +5,12 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
-    [ExportActionRibbonId("AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuPicture",
-                        "AddToShapesLabMenuChart", "AddToShapesLabMenuTable", "AddToShapesLabMenuGroup", "AddToShapesLabMenuVideo",
-                        "AddToShapesLabMenuTextEdit", "AddToShapesLabMenuFreeform", "AddToShapesLabMenuInk", "AddToShapesLabMenuSmartArtBackground",
-                        "AddToShapesLabMenuTableWhole", "AddToShapesLabMenuSmartArtEditSmartArt", "AddToShapesLabMenuSmartArtEditText")]
+    [ExportActionRibbonId(
+        "AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuFreeform",
+        "AddToShapesLabMenuPicture", "AddToShapesLabMenuGroup", "AddToShapesLabMenuInk",
+        "AddToShapesLabMenuVideo", "AddToShapesLabMenuTextEdit", "AddToShapesLabMenuChart",
+        "AddToShapesLabMenuTable", "AddToShapesLabMenuTableWhole", "AddToShapesLabMenuSmartArtBackground",
+        "AddToShapesLabMenuSmartArtEditSmartArt", "AddToShapesLabMenuSmartArtEditText")]
     class AddShapeActionHandler : ShapesLabActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
