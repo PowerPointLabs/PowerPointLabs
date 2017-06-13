@@ -68,6 +68,7 @@ namespace PowerPointLabs.ActionFramework.Content
                 // Context menu group will have these buttons
                 if (ribbonId == "MenuGroup")
                 {
+                    pasteLab.Items.Add(TextCollection.PasteLabText.PasteIntoGroup);
                     shortcuts.Items.Add(TextCollection.AddIntoGroup);
                 }
             }
