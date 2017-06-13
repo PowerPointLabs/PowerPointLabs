@@ -14,8 +14,6 @@ namespace PowerPointLabs.ActionFramework.Action
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var selection = this.GetCurrentSelection();
-
             var selectedShapes = this.GetCurrentSelection().ShapeRange;
             selectedShapes.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
         }
