@@ -310,7 +310,7 @@
     <Compile Include="ActionFramework\Common\Interface\PressedHandler.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
-    <Compile Include="ActionFramework\Content\ContextMenuContentHandler .cs" />
+    <Compile Include="ActionFramework\Content\ContextMenuContentHandler.cs" />
     <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
