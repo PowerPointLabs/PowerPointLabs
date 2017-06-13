@@ -160,6 +160,12 @@ namespace PowerPointLabs.Utils
                 || shape.Type == MsoShapeType.msoGroup;
         }
 
+        public static bool IsPicture(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoPicture ||
+                   shape.Type == MsoShapeType.msoLinkedPicture;
+        }
+
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
                                           bool exactMatch = true, float blurRadius = float.Epsilon)
         {
