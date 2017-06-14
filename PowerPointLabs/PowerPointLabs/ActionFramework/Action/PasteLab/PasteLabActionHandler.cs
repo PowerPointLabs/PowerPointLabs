@@ -33,7 +33,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             ShapeRange passedSelectedShapes = null;
             ShapeRange passedSelectedChildShapes = null;
 
-            if (IsSelectionShapes(selection))
+            if (IsSelectionShapes(selection) && !IsSelectionIgnored(ribbonId))
             {
                 // Save clipboard onto a temp slide, because CorruptionCorrrection uses Copy-Paste
                 PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
@@ -90,5 +90,12 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
 
         protected abstract ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes);
+
+        private bool IsSelectionIgnored(string ribbonId)
+        {
+            return ribbonId.StartsWith("PasteAtCursorPosition") ||
+                ribbonId.StartsWith("PasteAtOriginalPosition") ||
+                ribbonId.StartsWith("PasteToFillSlide");
+        }
     }
 }
