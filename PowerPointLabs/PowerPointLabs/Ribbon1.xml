@@ -355,13 +355,13 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
-            <button id="PasteToFillSlideButton"
+            <button id="PasteAtOriginalPositionButton"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
                     getEnabled="GetEnabled"
                     onAction="onAction"/>
-            <button id="PasteAtOriginalPositionButton"
+            <button id="PasteToFillSlideButton"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"

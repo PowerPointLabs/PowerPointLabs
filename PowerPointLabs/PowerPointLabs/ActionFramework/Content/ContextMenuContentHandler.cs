@@ -39,9 +39,9 @@ namespace PowerPointLabs.ActionFramework.Content
             contextMenuGroups.Add(pasteLab);
 
             // All context menus will have these buttons
-            pasteLab.Items.Add(TextCollection.PasteLabText.PasteToFillSlide);
             pasteLab.Items.Add(TextCollection.PasteLabText.PasteAtCursorPosition);
             pasteLab.Items.Add(TextCollection.PasteLabText.PasteAtOriginalPosition);
+            pasteLab.Items.Add(TextCollection.PasteLabText.PasteToFillSlide);
 
             // Context menus other than slide will have these buttons
             if (ribbonId != "MenuFrame")
