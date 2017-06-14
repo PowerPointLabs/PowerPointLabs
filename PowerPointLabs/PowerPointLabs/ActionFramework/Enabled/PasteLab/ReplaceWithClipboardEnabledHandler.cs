@@ -5,9 +5,10 @@ using PowerPointLabs.Utils;
 namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
 {
     [ExportEnabledRibbonId(
-        "ReplaceWithClipboard",
-        "ReplaceWithClipboardFreeform",
-        "ReplaceWithClipboardPicture",
+        "ReplaceWithClipboardMenuShape", "ReplaceWithClipboardMenuLine", "ReplaceWithClipboardMenuFreeform",
+        "ReplaceWithClipboardMenuPicture", "ReplaceWithClipboardMenuGroup", "ReplaceWithClipboardMenuInk",
+        "ReplaceWithClipboardMenuVideo", "ReplaceWithClipboardMenuTextEdit", "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable", "ReplaceWithClipboardMenuTableWhole", "ReplaceWithClipboardMenuSmartArtBackground",
         "ReplaceWithClipboardButton")]
     class ReplaceWithClipboardEnabledHandler : EnabledHandler
     {
