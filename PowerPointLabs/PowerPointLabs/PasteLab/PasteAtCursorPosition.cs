@@ -6,12 +6,14 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteAtCursorPosition
     {
-        public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, 
+        public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide,
                                         ShapeRange pastingShapes, float positionX, float positionY)
         {
-            if (pastingShapes.Count > 1)
+            ShapeRange tempPastingShapes = slide.CopyShapesToSlide(pastingShapes);
+
+            if (tempPastingShapes.Count > 1)
             {
-                Shape pastingGroup = slide.CopyShapesToSlide(pastingShapes).Group();
+                Shape pastingGroup = tempPastingShapes.Group();
                 float pastingGroupLeft = pastingGroup.Left;
                 float pastingGroupTop = pastingGroup.Top;
                 pastingGroup.Delete();
@@ -28,6 +30,7 @@ namespace PowerPointLabs.PasteLab
                 pastingShapes[1].Top = positionY;
             }
 
+            tempPastingShapes.Delete();
             return pastingShapes;
         }
     }
