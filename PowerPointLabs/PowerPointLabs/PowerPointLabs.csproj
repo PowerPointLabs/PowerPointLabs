@@ -961,11 +961,11 @@
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
     <Compile Include="Views\FolderDialogLauncher.cs" />
-    <Compile Include="Views\Form1.cs">
+    <Compile Include="Views\EditNameDialogBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Views\EditNameDialogBox.Designer.cs">
+      <DependentUpon>EditNameDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
     <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
@@ -1133,8 +1133,8 @@
     <EmbeddedResource Include="Views\ZoomLabDialogBox.resx">
       <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Views\EditNameDialogBox.resx">
+      <DependentUpon>EditNameDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\HighlightBulletsDialogBox.resx">
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
