@@ -7,11 +7,12 @@ using PowerPointLabs.PasteLab;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId(
-        "PasteAtOriginalPosition",
-        "PasteAtOriginalPositionShape",
-        "PasteAtOriginalPositionFreeform",
-        "PasteAtOriginalPositionPicture",
-        "PasteAtOriginalPositionGroup")]
+        "PasteAtOriginalPositionMenuShape", "PasteAtOriginalPositionMenuLine", "PasteAtOriginalPositionMenuFreeform",
+        "PasteAtOriginalPositionMenuPicture", "PasteAtOriginalPositionMenuGroup", "PasteAtOriginalPositionMenuInk",
+        "PasteAtOriginalPositionMenuVideo", "PasteAtOriginalPositionMenuTextEdit", "PasteAtOriginalPositionMenuChart",
+        "PasteAtOriginalPositionMenuTable", "PasteAtOriginalPositionMenuTableWhole", "PasteAtOriginalPositionMenuFrame",
+        "PasteAtOriginalPositionMenuSmartArtBackground", "PasteAtOriginalPositionMenuSmartArtEditSmartArt",
+        "PasteAtOriginalPositionMenuSmartArtEditText")]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

@@ -676,58 +676,6 @@ namespace PowerPointLabs
             return TextCollection.AboutButtonLabel;
         }
 
-        public string GetNameEditShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.NameEditShapeLabel;
-        }
-        public string GetSpotlightShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.SpotlightShapeLabel;
-        }
-        public string GetZoomInContextMenuLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ZoomInContextMenuLabel;
-        }
-        public string GetZoomOutContextMenuLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ZoomOutContextMenuLabel;
-        }
-        public string GetZoomToAreaContextMenuLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ZoomToAreaContextMenuLabel;
-        }
-        public string GetHighlightBulletsMenuShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsMenuShapeLabel;
-        }
-        public string GetHighlightBulletsBackgroundShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsBackgroundShapeLabel;
-        }
-        public string GetHighlightBulletsTextShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsTextShapeLabel;
-        }
-        public string GetConvertToPictureShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ConvertToPictureShapeLabel;
-        }
-        public string GetHideSelectedShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HideSelectedShapeLabel;
-        }
-        public string GetCutOutShapeShapeLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.CutOutShapeShapeLabel;
-        }
-        public string GetInSlideAnimateGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.InSlideAnimateGroupLabel;
-        }
-        public string GetApplyAutoMotionThumbnailLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ApplyAutoMotionThumbnailLabel;
-        }
         public string GetContextSpeakSelectedTextLabel(Office.IRibbonControl control)
         {
             return TextCollection.ContextSpeakSelectedTextLabel;
@@ -1278,18 +1226,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetEditNameContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.EditNameContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetEditNameContextImage");
-                throw;
-            }
-        }
         public Bitmap GetInSlideAnimationContextImage(Office.IRibbonControl control)
         {
             try
@@ -1323,18 +1259,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetZoomOutContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetHideShapeImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.HideShape);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHideShapeImage");
                 throw;
             }
         }
@@ -1405,20 +1329,6 @@ namespace PowerPointLabs
         # endregion
 
         //Edit Name Callbacks
-        public void NameEditBtnClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-                var editForm = new Form1(this, selectedShape.Name);
-                editForm.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "NameEditBtnClick");
-                throw;
-            }
-        }
         public void ShapeNameEdited(String newName)
         {
             try
@@ -1654,23 +1564,6 @@ namespace PowerPointLabs
         public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
         {
             return TextCollection.PictureSlidesLabMenuSupertip;
-        }
-
-        #endregion
-
-        #region Feature: Convert to Picture
-
-        public void ConvertToPictureButtonClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
-            ConvertToPicture.Convert(selection);
-        }
-
-        public Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
-        {
-            return ConvertToPicture.GetConvertToPicMenuImage(control);
         }
 
         #endregion
@@ -2405,13 +2298,6 @@ namespace PowerPointLabs
             }
             return null;
         }
-
-        public void HideShapeButtonClick(Office.IRibbonControl control)
-        {
-            var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-            selectedShapes.Visible = Office.MsoTriState.msoFalse;
-        }
-
         #endregion
     }
 }

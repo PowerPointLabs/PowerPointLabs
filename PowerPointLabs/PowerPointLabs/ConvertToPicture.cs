@@ -13,7 +13,7 @@ namespace PowerPointLabs
 #pragma warning disable 0618
         public static void Convert(PowerPoint.Selection selection)
         {
-            if (IsSelectionShape(selection))
+            if (IsSelectionShapeOrText(selection))
             {
                 var shape = GetShapeFromSelection(selection);
                 shape = CutPasteShape(shape);
@@ -27,26 +27,13 @@ namespace PowerPointLabs
 
         public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
         {
-            if (IsSelectionShape(selection))
+            if (IsSelectionShapeOrText(selection))
             {
                 Graphics.ExportShape(selection.ShapeRange, fileName);
             }
             else
             {
                 MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
-            }
-        }
-
-        public static System.Drawing.Bitmap GetConvertToPicMenuImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new System.Drawing.Bitmap(Properties.Resources.ConvertToPicture);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetConvertToPicMenuImage");
-                throw;
             }
         }
 
@@ -101,9 +88,10 @@ namespace PowerPointLabs
             return result;
         }
 
-        private static bool IsSelectionShape(PowerPoint.Selection selection)
+        private static bool IsSelectionShapeOrText(PowerPoint.Selection selection)
         {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes &&
+                selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
             {
                 return false;
             }
