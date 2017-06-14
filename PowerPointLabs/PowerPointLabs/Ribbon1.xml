@@ -20,8 +20,9 @@
       <tab id="PowerPointLabsAddIns"
            getLabel="GetPowerPointLabsAddInsTabLabel">
 
-        <group id="PowerPointLabsGroup"
+        <group id="AnimationsGroup"
                getImage="GetImage"
+               label="Animations"
                visible="true">
 
           <menu id="AnimationLabMenu"
@@ -79,6 +80,12 @@
                     onAction="ZoomLabDialogButtonPressed"/>
           </menu>
 
+        </group>
+        <group id="AudioGroup"
+               getImage="GetImage"
+               label="Audio"
+               visible="true">
+          
           <menu id="NarrationsLabMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -130,6 +137,12 @@
                     getSupertip="GetRemoveAllNotesButtonSupertip"
                     onAction="RemoveAllNotesClick"/>
           </menu>
+
+        </group>
+        <group id="EffectsGroup"
+               getImage="GetImage"
+               label="Effects"
+               visible="true">
 
           <menu id="HighlightLabMenu"
                 getLabel="GetLabel"
@@ -256,43 +269,11 @@
             </menu>
           </menu>
 
-          <menu id="CropLabMenu"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                getSupertip="GetSupertip"
-                size="large">
-            <button id="MoveCropShapeButton"
-                    getLabel="GetLabel"
-                    getImage="GetImage"
-                    getSupertip="GetSupertip"
-                    onAction="onAction"/>
-            <button id="CropToSlideButton"
-                    getLabel="GetLabel"
-                    getImage="GetImage"
-                    getSupertip="GetSupertip"
-                    onAction="onAction"/>
-            <button id="CropToSameButton"
-                    getLabel="GetLabel"
-                    getImage="GetImage"
-                    getSupertip="GetSupertip"
-                    onAction="onAction"/>
-            <dynamicMenu id="CropToAspectRatioDynamicMenu"
-                    getContent="GetContent"
-                    getLabel="GetLabel"
-                    getImage="GetImage"
-                    getSupertip="GetSupertip"/>
-            <button id="CropOutPaddingButton"
-                    getLabel="GetLabel"
-                    getImage="GetImage"
-                    getSupertip="GetSupertip"
-                    onAction="onAction"/>
-            <menuSeparator id="CropLabSettingsSeparator"/>
-            <button id="CropLabSettingsButton"
-                    getLabel="GetLabel"
-                    getImage="GetImage"
-                    getSupertip="GetSupertip"
-                    onAction="onAction"/>
-          </menu>
+        </group>
+        <group id="FormattingGroup"
+               getImage="GetImage"
+               label="Formatting"
+               visible="true">
 
           <button id="PositionsLabButton"
                   visible="true"
@@ -331,6 +312,44 @@
                   getSupertip="GetSupertip"
                   onAction="OnAction"/>
 
+          <menu id="CropLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="MoveCropShapeButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <button id="CropToSlideButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <button id="CropToSameButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <dynamicMenu id="CropToAspectRatioDynamicMenu"
+                    getContent="GetContent"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"/>
+            <button id="CropOutPaddingButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <menuSeparator id="CropLabSettingsSeparator"/>
+            <button id="CropLabSettingsButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+          </menu>
+          
           <menu id="PasteLabMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -361,6 +380,12 @@
                     getEnabled="GetEnabled"
                     onAction="onAction"/>
           </menu>
+
+        </group>
+        <group id="MoreLabsGroup"
+               getImage="GetImage"
+               label="More Labs"
+               visible="true">
           
           <button id="TimerLabButton"
                   getLabel="GetLabel"
@@ -417,6 +442,12 @@
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
 
+        </group>
+        <group id="HelpGroup"
+               getImage="GetImage"
+               label="Help"
+               visible="true">
+          
           <menu id="HelpMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"
