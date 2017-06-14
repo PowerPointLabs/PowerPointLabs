@@ -24,13 +24,13 @@ namespace PowerPointLabs.Views
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            this.SelectedShape.Name = this.editNameTextBox.Text;
+            SelectedShape.Name = editNameTextBox.Text;
             this.Close();
         }
 
         private void EditNameDialogBox_Load(object sender, EventArgs e)
         {
-            this.editNameTextBox.Text = SelectedShape.Name;
+            editNameTextBox.Text = SelectedShape.Name;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
