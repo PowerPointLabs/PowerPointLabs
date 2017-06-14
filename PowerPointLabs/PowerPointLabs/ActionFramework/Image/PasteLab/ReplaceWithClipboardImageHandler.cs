@@ -5,9 +5,10 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Image.PasteLab
 {
     [ExportImageRibbonId(
-        "ReplaceWithClipboard", 
-        "ReplaceWithClipboardFreeform",
-        "ReplaceWithClipboardPicture",
+        "ReplaceWithClipboardMenuShape", "ReplaceWithClipboardMenuLine", "ReplaceWithClipboardMenuFreeform",
+        "ReplaceWithClipboardMenuPicture", "ReplaceWithClipboardMenuGroup", "ReplaceWithClipboardMenuInk",
+        "ReplaceWithClipboardMenuVideo", "ReplaceWithClipboardMenuTextEdit", "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable", "ReplaceWithClipboardMenuTableWhole", "ReplaceWithClipboardMenuSmartArtBackground",
         "ReplaceWithClipboardButton")]
     class ReplaceWithClipboardImageHandler : ImageHandler
     {

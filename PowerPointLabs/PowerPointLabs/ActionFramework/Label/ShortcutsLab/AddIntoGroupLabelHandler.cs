@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId("MergeIntoGroup")]
+    [ExportLabelRibbonId("AddIntoGroupMenuGroup")]
     class MergeIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.MergeIntoGroup;
+            return TextCollection.AddIntoGroup;
         }
     }
 }

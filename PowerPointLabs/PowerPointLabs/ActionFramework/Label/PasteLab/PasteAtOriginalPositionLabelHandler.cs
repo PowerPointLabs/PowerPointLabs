@@ -4,12 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
     [ExportLabelRibbonId(
-        "PasteAtOriginalPosition",
-        "PasteAtOriginalPositionShape",
-        "PasteAtOriginalPositionFreeform",
-        "PasteAtOriginalPositionPicture",
-        "PasteAtOriginalPositionGroup",
-        "PasteAtOriginalPositionButton")]
+        "PasteAtOriginalPositionMenuShape", "PasteAtOriginalPositionMenuLine", "PasteAtOriginalPositionMenuFreeform",
+        "PasteAtOriginalPositionMenuPicture", "PasteAtOriginalPositionMenuGroup", "PasteAtOriginalPositionMenuInk",
+        "PasteAtOriginalPositionMenuVideo", "PasteAtOriginalPositionMenuTextEdit", "PasteAtOriginalPositionMenuChart",
+        "PasteAtOriginalPositionMenuTable", "PasteAtOriginalPositionMenuTableWhole", "PasteAtOriginalPositionMenuFrame",
+        "PasteAtOriginalPositionMenuSmartArtBackground", "PasteAtOriginalPositionMenuSmartArtEditSmartArt",
+        "PasteAtOriginalPositionMenuSmartArtEditText", "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

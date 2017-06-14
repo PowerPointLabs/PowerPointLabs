@@ -4,9 +4,10 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
     [ExportLabelRibbonId(
-        "ReplaceWithClipboard", 
-        "ReplaceWithClipboardFreeform",
-        "ReplaceWithClipboardPicture",
+        "ReplaceWithClipboardMenuShape", "ReplaceWithClipboardMenuLine", "ReplaceWithClipboardMenuFreeform",
+        "ReplaceWithClipboardMenuPicture", "ReplaceWithClipboardMenuGroup", "ReplaceWithClipboardMenuInk",
+        "ReplaceWithClipboardMenuVideo", "ReplaceWithClipboardMenuTextEdit", "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable", "ReplaceWithClipboardMenuTableWhole", "ReplaceWithClipboardMenuSmartArtBackground",
         "ReplaceWithClipboardButton")]
     class ReplaceWithClipboardLabelHandler : LabelHandler
     {

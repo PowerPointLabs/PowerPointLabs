@@ -255,19 +255,22 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Action\ShortcutsLab\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSameActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShortcutsLab\EditNameActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShortcutsLab\ConvertToPictureActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\SyncLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\MoveCropShapeButtonActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\Action\CropOutPaddingActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\AddShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShortcutsLab\AddShapeActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteAtCursorPositionActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteAtOriginalPositionActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\MergeIntoGroupActionHandler.cs" />
+    <Compile Include="ActionFramework\Action\ShortcutsLab\AddIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\ReplaceWithClipboardActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ShapeMenuActionHandler.cs" />
@@ -293,8 +296,6 @@
     <Compile Include="ActionFramework\Common\Extension\ContentControlExtensions.cs" />
     <Compile Include="ActionFramework\Common\Extension\BaseHandlerExtensions.cs" />
     <Compile Include="ActionFramework\Common\Factory\ActionHandlerFactory.cs" />
-    <Compile Include="ActionFramework\Action\FitToHeightActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\FitToWidthActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ContentHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\EnabledHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Factory\PressedHandlerFactory.cs" />
@@ -309,6 +310,7 @@
     <Compile Include="ActionFramework\Common\Interface\PressedHandler.cs" />
     <Compile Include="ActionFramework\Common\Log\Logger.cs" />
     <Compile Include="ActionFramework\Common\Log\LogType.cs" />
+    <Compile Include="ActionFramework\Content\ContextMenuContentHandler.cs" />
     <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
@@ -317,6 +319,10 @@
     <Compile Include="ActionFramework\Enabled\MergeIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\ReplaceWithClipboardEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShortcutsLab\HideImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShortcutsLab\EditNameImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShortcutsLab\ConvertToPictureImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShortcutsLab\AddShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\AnimationLab\AnimationLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\AnimationLab\AnimationLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropLabMenuImageHandler.cs" />
@@ -328,7 +334,6 @@
     <Compile Include="ActionFramework\Image\CropLab\MoveCropShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
-    <Compile Include="ActionFramework\Image\AddShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CaptionsLab\CaptionsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CaptionsLab\RemoveNotesImageHandler.cs" />
     <Compile Include="ActionFramework\Image\HelpMenu\TutorialImageHandler.cs" />
@@ -337,7 +342,7 @@
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteAtCursorPositionImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteAtOriginalPositionImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\MergeIntoGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ShortcutsLab\AddIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\ReplaceWithClipboardImageHandler.cs" />
     <Compile Include="ActionFramework\Image\SyncLabImageHandler.cs" />
@@ -351,8 +356,6 @@
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
-    <Compile Include="ActionFramework\Image\FitToHeightImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\FitToWidthImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
@@ -372,12 +375,15 @@
     <Compile Include="ActionFramework\Label\CropLab\CropToAspectRatioLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropLab\CropToAspectRatioOptionsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CropLab\CropOutPaddingLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\AddShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\HelpMenu\TutorialLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\HelpMenu\HelpMenuLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\MergeIntoGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\CaptionsLab\CaptionsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShortcutsLab\HideLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShortcutsLab\EditNameLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShortcutsLab\ConvertToPictureShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShortcutsLab\AddShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ShortcutsLab\AddIntoGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteIntoGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteAtCursorPositionLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteAtOriginalPositionLabelHandler.cs" />
@@ -393,8 +399,6 @@
     <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
-    <Compile Include="ActionFramework\Label\FitToHeightLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\FitToWidthLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Label\TimerLabLabelHandler.cs" />

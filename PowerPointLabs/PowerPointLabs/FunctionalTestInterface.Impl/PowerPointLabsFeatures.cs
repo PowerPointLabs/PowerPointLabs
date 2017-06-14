@@ -180,7 +180,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.ConvertToPictureButtonClick(new RibbonControl("ConvertToPic"));
+                Ribbon.OnAction(new RibbonControl("ConvertToPictureMenuShape"));
             });
         }
 
@@ -390,7 +390,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteToFillSlide");
+                var control = new RibbonControl("PasteToFillSlideMenuFrame");
                 Ribbon.OnAction(control);
             });
         }
@@ -399,7 +399,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteAtCursorPosition");
+                var control = new RibbonControl("PasteAtCursorPositionMenuFrame");
                 Ribbon.OnAction(control);
             });
         }
@@ -408,7 +408,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteAtOriginalPosition");
+                var control = new RibbonControl("PasteAtOriginalPositionMenuFrame");
                 Ribbon.OnAction(control);
             });
         }
@@ -417,7 +417,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteIntoGroup");
+                var control = new RibbonControl("PasteIntoGroupMenuGroup");
                 Ribbon.OnAction(control);
             });
         }
@@ -426,7 +426,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("ReplaceWithClipboard");
+                var control = new RibbonControl("ReplaceWithClipboardMenuShape");
                 Ribbon.OnAction(control);
             });
         }

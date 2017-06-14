@@ -9,9 +9,10 @@ using PowerPointLabs.PasteLab;
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
     [ExportActionRibbonId(
-        "ReplaceWithClipboard", 
-        "ReplaceWithClipboardFreeform",
-        "ReplaceWithClipboardPicture",
+        "ReplaceWithClipboardMenuShape", "ReplaceWithClipboardMenuLine", "ReplaceWithClipboardMenuFreeform",
+        "ReplaceWithClipboardMenuPicture", "ReplaceWithClipboardMenuGroup", "ReplaceWithClipboardMenuInk",
+        "ReplaceWithClipboardMenuVideo", "ReplaceWithClipboardMenuTextEdit", "ReplaceWithClipboardMenuChart",
+        "ReplaceWithClipboardMenuTable", "ReplaceWithClipboardMenuTableWhole", "ReplaceWithClipboardMenuSmartArtBackground",
         "ReplaceWithClipboardButton")]
     class ReplaceWithClipboardActionHandler : PasteLabActionHandler
     {
