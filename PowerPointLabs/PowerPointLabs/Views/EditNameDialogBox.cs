@@ -7,8 +7,9 @@ namespace PowerPointLabs.Views
 {
     public partial class EditNameDialogBox : Form
     {
-        public Shape shape;
         private Ribbon1 ribbon;
+        public Shape SelectedShape { get; private set; }
+
         public EditNameDialogBox()
         {
             InitializeComponent();
@@ -18,18 +19,18 @@ namespace PowerPointLabs.Views
             : this()
         {
             ribbon = parentRibbon;
-            shape = selectedShape;
+            SelectedShape = selectedShape;
         }
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            this.shape.Name = this.editNameTextBox.Text;
+            this.SelectedShape.Name = this.editNameTextBox.Text;
             this.Close();
         }
 
         private void EditNameDialogBox_Load(object sender, EventArgs e)
         {
-            this.editNameTextBox.Text = shape.Name;
+            this.editNameTextBox.Text = SelectedShape.Name;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
