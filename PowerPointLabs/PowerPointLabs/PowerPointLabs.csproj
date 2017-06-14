@@ -319,6 +319,7 @@
     <Compile Include="ActionFramework\Enabled\MergeIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\ReplaceWithClipboardEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\ShortcutsLab\EditNameEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\HideImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\EditNameImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\ConvertToPictureImageHandler.cs" />

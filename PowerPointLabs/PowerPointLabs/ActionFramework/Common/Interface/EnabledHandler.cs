@@ -52,6 +52,12 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
         {
             Selection selection = this.GetCurrentSelection();
 
+            if (selection.HasChildShapeRange)
+            {
+                return selection.ChildShapeRange.Count == 1 &&
+                    selection.ChildShapeRange.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape;
+            }
+
             return selection.Type == PpSelectionType.ppSelectionShapes && 
                 selection.ShapeRange.Count == 1;
         }
