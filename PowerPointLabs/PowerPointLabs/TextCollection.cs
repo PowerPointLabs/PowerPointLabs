@@ -26,6 +26,8 @@
         public const string InSlideAnimateButtonSupertip =
             "Moves a shape around the slide in multiple steps.\n\n" +
             "To perform this action, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button.";
+        public const string AnimationLabSettingsSupertip =
+            "Configure the settings for Animation Lab.";
         # endregion
 
         # region Zoom Lab
@@ -41,6 +43,8 @@
             "Zoom into an area of a slide or picture.\n\n" +
             "To perform this action, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
             "This feature works best with high-resolution images.";
+        public const string ZoomLabSettingsSupertip =
+            "Configure the settings for Zoom Lab.";
         # endregion
 
         # region Crop Lab
@@ -77,11 +81,13 @@
         public const string RemoveAudioButtonSupertip =
             "Remove synthesized audio added using Narrations Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the narrations from, then click this button.";
+        public const string NarrationsLabSettingsSupertip =
+            "Configure the settings for Narrations Lab.";
         #endregion
 
         #region Picture Slides Lab
         public const string PictureSlidesLabMenuSupertip =
-            "Use Picture Slides Lab to create better picture slides with much less effort.\n\n" +
+            "Use Picture Slides Lab to create better picture slides using less effort.\n\n" +
             "Click this button to open the Picture Slides Lab interface.";
         #endregion
 
@@ -100,6 +106,8 @@
         # endregion
 
         # region Highlight Lab
+        public const string HighlightLabMenuSupertip =
+            "Use Highlight Lab to highlight bullet points and text.";
         public const string AddSpotlightButtonSupertip =
             "Create a spotlight effect for the slide using selected shapes.\n\n" +
             "To perform this action, draw a shape that the spotlight should outline, select it, then click this button.";
@@ -117,11 +125,29 @@
         public const string RemoveHighlightButtonSupertip =
             "Remove all Highlighting from the current slide.\n\n" +
             "To perform this action, click this button.";
+        public const string HighlightLabSettingsSupertip =
+            "Configure the settings for Highlight Lab.";
+        #endregion
 
-        # endregion
+        #region Paste Lab
+        public const string PasteLabMenuSupertip =
+            "Use Paste Lab to customize how you paste your copied objects.";
+        public const string PasteToFillSlideSupertip =
+            "Paste your copied objects to fill the current slide.\n\n" +
+            "To perform this action, with object(s) copied, click this button.";
+        public const string PasteAtOriginalPositionSupertip =
+            "Paste your copied objects at their original positions when they were copied.\n\n" +
+            "To perform this action, with object(s) copied, click this button.";
+        public const string ReplaceWithClipboardSupertip =
+            "Paste your copied objects over your selection while preserving its animations.\n\n" +
+            "To perform this action, select an object on the slide, then with object(s) copied, click this button.";
+        public const string PasteIntoGroupSupertip =
+            "Paste your copied objects into an existing group.\n\n" +
+            "To perform this action, select a group on the slide, then with object(s) copied, click this button.";
+        #endregion
 
-        # region More Labs
-        # region Colors Lab
+        #region More Labs
+        #region Colors Lab
         public const string ColorsLabMenuSupertip =
             "Use Colors Lab to add beautiful colors to your slide.\n\n" +
             "Click this button to open the Colors Lab interface.";
@@ -212,9 +238,12 @@
         #endregion
 
         #region Help
-        public const string HelpButtonSupertip = "Click this button to visit PowerPointLabs help page in our website.";
+        public const string HelpMenuSupertip =
+            "More information about PowerPointLabs.";
+        public const string UserGuideButtonSupertip = "Click this button to visit PowerPointLabs help page in our website.";
+        public const string TutorialButtonSupertip = "Click this button to open the tutorial for PowerPointLabs.";
         public const string FeedbackButtonSupertip = "Click this button to email us problem reports or other feedback. ";
-        public const string AboutButtonSupertip = "Click this button for information about the PowerPointLabs plugin.";
+        public const string AboutButtonSupertip = "Click this button for information about the PowerPointLabs add-in.";
         # endregion
         # endregion
 
@@ -226,21 +255,23 @@
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Animation Lab
-        public const string AnimationLabGroupLabel = "Animation Lab";
+        public const string AnimationLabMenuLabel = "Animation";
         public const string AddAnimationButtonLabel = "Add Animation Slide";
         public const string AddAnimationReloadButtonLabel = "Recreate Animation";
         public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
+        public const string AnimationLabSettingsButtonLabel = "Settings";
         # endregion
 
         # region Zoom Lab
-        public const string ZoomLabGroupLabel = "Zoom Lab";
+        public const string ZoomLabMenuLabel = "Zoom";
         public const string AddZoomInButtonLabel = "Drill Down";
         public const string AddZoomOutButtonLabel = "Step Back";
         public const string ZoomToAreaButtonLabel = "Zoom To Area";
+        public const string ZoomLabSettingsButtonLabel = "Settings";
         # endregion
 
         # region Crop Lab
-        public const string CropLabMenuLabel = "Crop Lab";
+        public const string CropLabMenuLabel = "Crop";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingLabel = "Crop Out Padding";
         public const string CropToAspectRatioTag = "CropToAspectRatio";
@@ -251,44 +282,44 @@
         # endregion
 
         # region Narrations Lab
-        public const string EmbedAudioGroupLabel = "Narrations Lab";
+        public const string NarrationsLabMenuLabel = "Narrations";
         public const string AddAudioButtonLabel = "Add Audio";
         public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
         public const string AddRecordButtonLabel = "Record Audio Manually";
         public const string RemoveAudioButtonLabel = "Remove Audio";
+        public const string NarrationsLabSettingsButtonLabel = "Settings";
         # endregion
 
         # region Captions Lab
-        public const string EmbedCaptionGroupLabel = "Captions Lab";
+        public const string CaptionsLabMenuLabel = "Captions";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
         public const string RemoveAllNotesButtonLabel = "Remove All Notes";
         # endregion
 
         # region Highlight Lab
-        public const string HighlightLabGroupLabel = "Highlight Lab";
+        public const string HighlightLabMenuLabel = "Highlight";
         public const string SpotlightPropertiesButtonLabel = "Spotlight Properties";
+        public const string SpotlightMenuLabel = "Spotlight";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
         public const string HighlightTextFragmentsButtonLabel = "Highlight Text";
         public const string RemoveHighlightButtonLabel = "Remove Highlighting";
-        # endregion
+        public const string HighlightLabSettingsButtonLabel = "Settings";
+        #endregion
 
-        # region Labs
-        public const string LabsGroupLabel = "More Labs";
-
-        # region Colors Lab
-        public const string ColorPickerButtonLabel = "Colors Lab";
+        #region Colors Lab
+        public const string ColorPickerButtonLabel = "Colors";
         # endregion
 
         # region Shapes Lab
-        public const string CustomeShapeButtonLabel = "Shapes Lab";
+        public const string CustomeShapeButtonLabel = "Shapes";
         # endregion
 
         # region Effects Lab
-        public const string EffectsLabButtonLabel = "Effects Lab";
+        public const string EffectsLabButtonLabel = "Effects";
         public const string EffectsLabMakeTransparentButtonLabel = "Make Transparent";
         public const string EffectsLabMagnifyGlassButtonLabel = "Magnifying Glass";
         public const string EffectsLabBlurSelectedButtonLabel = "Blur Selected";
@@ -299,7 +330,7 @@
         # endregion
 
         # region Agenda Lab
-        public const string AgendaLabButtonLabel = "Agenda Lab";
+        public const string AgendaLabButtonLabel = "Agenda";
         public const string AgendaLabBulletPointButtonLabel = "Create Text Agenda";
         public const string AgendaLabVisualAgendaButtonLabel = "Create Visual Agenda";
         public const string AgendaLabBeamAgendaButtonLabel = "Create Sidebar Agenda";
@@ -310,30 +341,29 @@
         # endregion
 
         # region Drawing Lab
-        public const string DrawingsLabButtonLabel = "Drawing Lab";
+        public const string DrawingsLabButtonLabel = "Drawing";
         # endregion
 
         # region Positions Lab
-        public const string PositionsLabButtonLabel = "Positions Lab";
+        public const string PositionsLabButtonLabel = "Positions";
         # endregion
 
         # region Resize Lab
-        public const string ResizeLabButtonLabel = "Resize Lab";
+        public const string ResizeLabButtonLabel = "Resize";
         #endregion
 
         #region Sync Lab
-        public const string SyncLabButtonLabel = "Sync Lab";
+        public const string SyncLabButtonLabel = "Sync";
         # endregion
 
         # region Timer Lab
-        public const string TimerLabButtonLabel = "Timer Lab";
+        public const string TimerLabButtonLabel = "Timer";
         # endregion
-
-        # endregion
-
-        # region Help
-        public const string PPTLabsHelpGroupLabel = "Help";
-        public const string HelpButtonLabel = "Help";
+        
+        # region Help Menu
+        public const string HelpMenuLabel = "Help";
+        public const string UserGuideButtonLabel = "User Guide";
+        public const string TutorialButtonLabel = "Tutorial";
         public const string FeedbackButtonLabel = "Report Issues/ Send Feedback";
         public const string AboutButtonLabel = "About";
         #endregion
@@ -768,6 +798,7 @@
         #region Paste Lab
         public class PasteLabText
         {
+            public const string PasteLabMenu = "Paste";
             public const string PasteToFillSlide = "Paste To Fill Slide";
             public const string ReplaceWithClipboard = "Replace With Clipboard";
             public const string PasteIntoGroup = "Paste Into Group";

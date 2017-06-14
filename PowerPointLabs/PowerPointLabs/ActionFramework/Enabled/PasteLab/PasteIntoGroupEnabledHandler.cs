@@ -4,12 +4,14 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
 {
-    [ExportEnabledRibbonId("PasteIntoGroup")]
+    [ExportEnabledRibbonId("PasteIntoGroup", "PasteIntoGroupButton")]
     class PasteIntoGroupEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return !Graphics.IsClipboardEmpty() && !HasPlaceholderInSelection();
+            return !Graphics.IsClipboardEmpty() && 
+                IsSelectionMultipleOrGroup() &&
+                !HasPlaceholderInSelection();
         }
     }
 }

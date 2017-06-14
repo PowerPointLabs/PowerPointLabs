@@ -8,7 +8,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
-    [ExportActionRibbonId("PasteIntoGroupMenuGroup")]
+    [ExportActionRibbonId("PasteIntoGroupMenuGroup", "PasteIntoGroupButton")]
     class PasteIntoGroupActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

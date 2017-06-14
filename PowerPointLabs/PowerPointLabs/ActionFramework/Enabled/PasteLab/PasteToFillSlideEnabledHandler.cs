@@ -9,7 +9,8 @@ namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
         "PasteToFillSlideShape",
         "PasteToFillSlideFreeform",
         "PasteToFillSlidePicture",
-        "PasteToFillSlideGroup")]
+        "PasteToFillSlideGroup",
+        "PasteToFillSlideButton")]
     class PasteToFillSlideEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

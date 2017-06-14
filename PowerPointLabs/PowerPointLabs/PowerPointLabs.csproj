@@ -320,31 +320,33 @@
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\ReplaceWithClipboardEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\HideImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\EditNameImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropLabSettingsImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropShapeMenuImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropOutPaddingImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropToSameImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropToSlideImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\ConvertToPictureImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\MoveCropShapeImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropToAspectRatioImageHandler.cs" />
-    <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\AddShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\AnimationLab\AnimationLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\AnimationLab\AnimationLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropShapeMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropOutPaddingImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropToSameImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropToSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\MoveCropShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CropLab\CropToAspectRatioImageHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\CaptionsLab\CaptionsLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\CaptionsLab\RemoveNotesImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\HelpMenu\TutorialImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\HelpMenu\HelpMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\NarrationsLab\RecordAudioImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PasteLab\PasteLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteAtCursorPositionImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteAtOriginalPositionImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\AddIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\ReplaceWithClipboardImageHandler.cs" />
     <Compile Include="ActionFramework\Image\SyncLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\AnimationLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\SmallHelpImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\ZoomLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\CaptionLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\HighlightLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\NarrationsLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\Group\MoreLabsImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\PptLabsGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteToFillSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteToFillSlideImageHandler.cs" />
@@ -357,17 +359,29 @@
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\NarrationsLab\NarrationsLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\NarrationsLab\NarrationsLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\HighlightLab\HighlightLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\HighlightLab\HighlightLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ZoomLab\ZoomLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\ZoomLab\ZoomLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\Label\AnimationLab\AnimationLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\AnimationLab\AnimationLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropToSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\MoveCropShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropToSameLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropToAspectRatioLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropToAspectRatioOptionsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CropLab\CropOutPaddingLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\HelpMenu\TutorialLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\HelpMenu\HelpMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\CaptionsLab\CaptionsLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\PasteLab\PasteLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\HideLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropLabSettingsLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropToSlideLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\EditNameLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\ConvertToPictureShapeLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\MoveCropShapeLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropToSameLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropToAspectRatioLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropToAspectRatioOptionsLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CropOutPaddingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\AddShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\AddIntoGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteIntoGroupLabelHandler.cs" />
@@ -388,15 +402,31 @@
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Label\TimerLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\NarrationsLab\NarrationsLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\NarrationsLab\NarrationsLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\HighlightLab\HighlightLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\HighlightLab\HighlightLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ZoomLab\ZoomLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\Label\ZoomLab\ZoomLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropLabSettingsSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropToSameSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\MoveCropShapeSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropToSlideSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropLabMenuSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropToAspectRatioSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropOutPaddingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\AnimationLab\AnimationLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\AnimationLab\AnimationLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropToSameSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\MoveCropShapeSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropToSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropToAspectRatioSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropOutPaddingSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CaptionsLab\CaptionsLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\HelpMenu\TutorialSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\HelpMenu\HelpMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteAtOriginalPositionSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteIntoGroupSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\ReplaceWithClipboardSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteToFillSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\PasteLab\PasteLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\SyncLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\RemoveHighlightingSupertipHandler.cs" />
@@ -409,6 +439,12 @@
     <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ResizeLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\TimerLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\NarrationsLab\NarrationsLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\NarrationsLab\NarrationsLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\HighlightLab\HighlightLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\HighlightLab\HighlightLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ZoomLab\ZoomLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\ZoomLab\ZoomLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\Util\BaseUtilActionHandler.cs" />
     <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
@@ -1022,11 +1058,9 @@
     <Compile Include="ZoomToArea.cs" />
     <None Include="app.config" />
     <None Include="PowerPointLabs.dev.pfx" />
-    <None Include="Resources\AddToCustomShapes.png" />
     <None Include="Resources\ClosedHand.cur" />
     <None Include="Resources\OpenHand.cur" />
     <None Include="Resources\EyeDropper.cur" />
-    <None Include="Resources\HighlightWords.png" />
     <None Include="Resources\Saturation-icon_18x18.png" />
     <None Include="Resources\Brightness-icon_25x25.png" />
     <None Include="Resources\Load_icon.png" />
@@ -1038,8 +1072,6 @@
     <None Include="Resources\LineColor_icon.png" />
     <None Include="Resources\TextColor_icon.png" />
     <None Include="Resources\refresh-icon.png" />
-    <None Include="Resources\ShapesLab.png" />
-    <None Include="Resources\ColorsLab.png" />
     <None Include="Resources\Eyedropper-icon.png" />
     <None Include="Resources\delete-icon.png" />
     <None Include="Resources\down-icon.png" />
@@ -1178,25 +1210,13 @@
     <None Include="Resources\Zoom.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Spotlight.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ReloadAnimation.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Feedback.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Bullets.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AddAnimation.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Help.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\About.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Logo.png" />
@@ -1211,18 +1231,6 @@
     <None Include="Resources\ReloadSpotlight.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RemoveCaption.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RemoveAudio.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddCaption.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddAudio.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\AddNarrationContext.png" />
     <None Include="Resources\SpeakTextContext.png" />
   </ItemGroup>
@@ -1230,28 +1238,7 @@
     <None Include="Resources\ReloadAnimationContext.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\InSlideAnimation.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EditNameContext.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddSpotlightContext.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\AddAnimationContext.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomOutContext.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomOut.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomInContext.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomIn.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\InSlideContext.png" />
@@ -1269,27 +1256,6 @@
     <None Include="Resources\ZoomToAreaContext.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ZoomToArea.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ConvertToPicture.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\HighlightText.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\HighlightBackground.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\HighlightTextContext.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\HighlightBackgroundContext.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EffectsLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BlurRemainder.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1297,9 +1263,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MakeTransparent.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AgendaLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AgendaRemove.png" />
@@ -1473,9 +1436,6 @@
     <Resource Include="Resources\DrawingLab\triangle.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PptlabsContextMenu.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ImagesLab.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1587,12 +1547,6 @@
     <Resource Include="Resources\SettingsGear.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AgendaSettings1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AgendaSync1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\PositionsLab\AlignCenterIcon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1686,37 +1640,12 @@
     <Resource Include="Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CropToAspectRatio.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CropToSlide.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CropToSame.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CropLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CutOutShape.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CropOutPadding.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RemoveHighlighting.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\TimerLab.png" />
     <Resource Include="Resources\TimerLab\HalfHeight.png" />
     <Resource Include="Resources\TimerLab\HalfWidth.png" />
     <Resource Include="Resources\TimerLab\MaxHeight.png" />
     <Resource Include="Resources\TimerLab\MaxWidth.png" />
     <Resource Include="Resources\TimerLab\MinHeight.png" />
     <Resource Include="Resources\TimerLab\MinWidth.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SyncLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MoreLabs.png" />
@@ -1740,12 +1669,6 @@
     <None Include="Resources\AnimationLabSmall.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PasteLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MergeIntoGroup.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\SyncLabCopyButton.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1756,6 +1679,183 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SyncLabPasteButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteAtCursorPositio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AgendaLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AnimationLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CaptionsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ColorsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EffectsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HelpMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NarrationsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PictureSlidesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PositionsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ResizeLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShapesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TimerLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddAudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddCaption.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddSpotlightContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddToCustomShapes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ConvertToPicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropOutPadding.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToAspectRatio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CropToSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CutOutShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EditNameContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Feedback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HideShape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightBackgroundContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightTextContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HighlightWords.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InSlideAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MergeIntoGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteAtCursorPosition.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteAtOriginalPosition.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteIntoGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFillSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PptlabsContextMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecordAudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveAudio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveCaption.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveHighlighting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RemoveNotes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ReplaceWithClipboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Spotlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserGuide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomIn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomInContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomOutContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZoomToArea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tutorial.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

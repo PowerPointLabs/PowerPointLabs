@@ -15,7 +15,7 @@ namespace PowerPointLabs.ActionFramework.Image.PasteLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.PasteLab);
+            return new Bitmap(Properties.Resources.PasteAtCursorPosition);
         }
     }
 }

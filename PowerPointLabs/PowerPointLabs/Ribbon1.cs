@@ -338,7 +338,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ZoomToAreaButtonSupertip;
         }
-
+        
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -348,11 +348,7 @@ namespace PowerPointLabs
         {
             return TextCollection.SpotlightPropertiesButtonSupertip;
         }
-
-        public string GetAddAudioButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.NarrationsLabMenuSupertip;
-        }
+        
         public string GetGenerateRecordButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.GenerateRecordButtonSupertip;
@@ -459,7 +455,7 @@ namespace PowerPointLabs
 
         public string GetHelpButtonSupertip(Office.IRibbonControl control)
         {
-            return TextCollection.HelpButtonSupertip;
+            return TextCollection.UserGuideButtonSupertip;
         }
         public string GetFeedbackButtonSupertip(Office.IRibbonControl control)
         {
@@ -486,10 +482,6 @@ namespace PowerPointLabs
             return TextCollection.CombineShapesLabel;
         }
 
-        public string GetAnimationLabGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AnimationLabGroupLabel;
-        }
         public string GetAddAnimationButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddAnimationButtonLabel;
@@ -498,11 +490,7 @@ namespace PowerPointLabs
         {
             return TextCollection.AddAnimationInSlideAnimateButtonLabel;
         }
-
-        public string GetZoomLabGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ZoomLabGroupLabel;
-        }
+        
         public string GetAddZoomInButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddZoomInButtonLabel;
@@ -516,6 +504,10 @@ namespace PowerPointLabs
             return TextCollection.ZoomToAreaButtonLabel;
         }
 
+        public string GetSpotlightMenuLabel(Office.IRibbonControl control)
+        {
+            return TextCollection.SpotlightMenuLabel;
+        }
         public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonLabel;
@@ -524,11 +516,7 @@ namespace PowerPointLabs
         {
             return TextCollection.ReloadSpotlightButtonLabel;
         }
-
-        public string GetEmbedAudioGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EmbedAudioGroupLabel;
-        }
+        
         public string GetAddAudioButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddAudioButtonLabel;
@@ -545,11 +533,7 @@ namespace PowerPointLabs
         {
             return TextCollection.RemoveAudioButtonLabel;
         }
-
-        public string GetEmbedCaptionGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EmbedCaptionGroupLabel;
-        }
+        
         public string GetAddCaptionsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AddCaptionsButtonLabel;
@@ -566,10 +550,6 @@ namespace PowerPointLabs
         {
             return TextCollection.SpotlightPropertiesButtonLabel;
         }
-        public string GetHighlightLabGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightLabGroupLabel;
-        }
         public string GetHighlightBulletsTextButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightBulletsTextButtonLabel;
@@ -581,10 +561,6 @@ namespace PowerPointLabs
         public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.HighlightTextFragmentsButtonLabel;
-        }
-        public string GetLabsGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.LabsGroupLabel;
         }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
@@ -659,13 +635,9 @@ namespace PowerPointLabs
             return TextCollection.PositionsLabButtonLabel;
         }
 
-        public string GetPPTLabsHelpGroupLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.PPTLabsHelpGroupLabel;
-        }
         public string GetHelpButtonLabel(Office.IRibbonControl control)
         {
-            return TextCollection.HelpButtonLabel;
+            return TextCollection.UserGuideButtonLabel;
         }
         public string GetFeedbackButtonLabel(Office.IRibbonControl control)
         {
@@ -729,6 +701,31 @@ namespace PowerPointLabs
             {
                 Logger.LogException(e, "HelpButtonClick");
                 throw;
+            }
+        }
+        public void TutorialButtonClick(Office.IRibbonControl control)
+        {
+            string sourceFile = "";
+            switch (Properties.Settings.Default.ReleaseType)
+            {
+                case "dev":
+                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
+                    break;
+                case "release":
+                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
+                    break;
+            }
+
+            try
+            {
+                if (sourceFile != "")
+                {
+                    Process.Start("POWERPNT", sourceFile);
+                }
+            }
+            catch
+            {
+                Logger.Log("TutorialButtonClick: Failed to open tutorial file!", ActionFramework.Common.Logger.LogType.Error);
             }
         }
         public void FeedbackButtonClick(Office.IRibbonControl control)
@@ -1096,7 +1093,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new Bitmap(Properties.Resources.Help);
+                return new Bitmap(Properties.Resources.UserGuide);
             }
             catch (Exception e)
             {

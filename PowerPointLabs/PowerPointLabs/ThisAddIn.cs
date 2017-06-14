@@ -645,13 +645,13 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
+                        if (Ribbon.RemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
-                        Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
+                        Ribbon.RemoveAudioEnabled = true;
+                        Ribbon.RefreshRibbonControl("RemoveAudioButton");
                     }
                 }
             }
@@ -948,12 +948,10 @@ namespace PowerPointLabs
                     Ribbon.ReloadSpotlight = false;
                 }
             }
-
-            Ribbon.RefreshRibbonControl("AddAnimationButton");
-            Ribbon.RefreshRibbonControl("ReloadButton");
-            Ribbon.RefreshRibbonControl("ReloadSpotlightButton");
-            Ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
-            Ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
+            
+            Ribbon.RefreshRibbonControl("AddAnimationSlideButton");
+            Ribbon.RefreshRibbonControl("HighlightPointsButton");
+            Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
             Ribbon.RefreshRibbonControl("RemoveAudioButton");
         }
@@ -1021,10 +1019,12 @@ namespace PowerPointLabs
             }
 
             Ribbon.RefreshRibbonControl("AddSpotlightButton");
-            Ribbon.RefreshRibbonControl("InSlideAnimateButton");
+            Ribbon.RefreshRibbonControl("AnimateInSlideButton");
             Ribbon.RefreshRibbonControl("AddZoomInButton");
             Ribbon.RefreshRibbonControl("AddZoomOutButton");
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
+            Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
+            Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
         }
 
         private void ThisAddInNewPresentation(PowerPoint.Presentation pres)
@@ -1385,6 +1385,11 @@ namespace PowerPointLabs
 
                     _copiedShapes.Sort((x, y) => (x.Id - y.Id));
                 }
+
+                Ribbon.RefreshRibbonControl("PasteToFillSlideButton");
+                Ribbon.RefreshRibbonControl("PasteAtOriginalPositionButton");
+                Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
+                Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             }
             catch
             {

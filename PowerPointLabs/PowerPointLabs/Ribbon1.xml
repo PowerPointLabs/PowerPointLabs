@@ -19,194 +19,167 @@
     <tabs>
       <tab id="PowerPointLabsAddIns"
            getLabel="GetPowerPointLabsAddInsTabLabel">
-        <group id="AutoMotionGroup"
-               getLabel="GetAnimationLabGroupLabel"
+
+        <group id="AnimationsGroup"
                getImage="GetImage"
-               visible ="true">
-          <button id="AddAnimationButton"
-                  getLabel="GetAddAnimationButtonLabel"
-                  size="large"
-                  getImage="GetAddAnimationImage"
-                  getSupertip="GetAddAnimationButtonSupertip"
-                  getEnabled="OnGetEnabledAddAutoMotion"
-                  onAction="AddAnimationButtonClick"/>
-          <button id="InSlideAnimateButton"
-                   getLabel="GetInSlideAnimateButtonLabel"
-                   size="large"
-                   getImage="GetInSlideAnimationImage"
-                   getSupertip="GetInSlideAnimateButtonSupertip"
-                   getEnabled="OnGetEnabledAddInSlide"
-                   onAction="AddInSlideAnimationButtonClick"/>
-          <dialogBoxLauncher>
-            <button id ="AnimationLabDialogBox"
+               label="Animations"
+               visible="true">
+
+          <menu id="AnimationLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="AnimateInSlideButton"
+                    getLabel="GetInSlideAnimateButtonLabel"
+                    getImage="GetInSlideAnimationImage"
+                    getSupertip="GetInSlideAnimateButtonSupertip"
+                    getEnabled="OnGetEnabledAddInSlide"
+                    onAction="onAction"/>
+            <button id="AddAnimationSlideButton"
+                    getLabel="GetAddAnimationButtonLabel"
+                    getImage="GetAddAnimationImage"
+                    getSupertip="GetAddAnimationButtonSupertip"
+                    onAction="AddAnimationButtonClick"/>
+            <menuSeparator id="AnimationLabSettingsSeparator"/>
+            <button id="AnimationLabSettingsButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
                     onAction="AnimationLabDialogButtonPressed"/>
-          </dialogBoxLauncher>
-        </group>
-        <group id="ZoomLabGroup"
-               getLabel="GetZoomLabGroupLabel"
-               getImage="GetImage"
-               visible ="true">
-          <button id="AddZoomInButton"
-                 getLabel ="GetAddZoomInButtonLabel"
-                 size ="large"
-                 getImage="GetZoomInImage"
-                 getSupertip="GetAddZoomInButtonSupertip"
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="AddZoomInButtonClick"/>
-          <button id="AddZoomOutButton"
-                 getLabel ="GetAddZoomOutButtonLabel"
-                 size ="large"
-                 getImage="GetZoomOutImage"
-                 getSupertip="GetAddZoomOutButtonSupertip"
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="AddZoomOutButtonClick"/>
-          <button id="ZoomToAreaButton"
-                 getLabel ="GetZoomToAreaButtonLabel"
-                 size ="large"
-                 getImage="GetZoomToAreaImage"
-                 getSupertip="GetZoomToAreaButtonSupertip"
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="ZoomBtnClick"/>
-          <dialogBoxLauncher>
-            <button id ="ZoomLabDialogBox"
+          </menu>
+
+          <menu id="ZoomLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="AddZoomInButton"
+                    getLabel="GetAddZoomInButtonLabel"
+                    getImage="GetZoomInImage"
+                    getSupertip="GetAddZoomInButtonSupertip"
+                    getEnabled="OnGetEnabledZoomButton"
+                    onAction="AddZoomInButtonClick"/>
+            <button id="AddZoomOutButton"
+                    getLabel="GetAddZoomOutButtonLabel"
+                    getImage="GetZoomOutImage"
+                    getSupertip="GetAddZoomOutButtonSupertip"
+                    getEnabled="OnGetEnabledZoomButton"
+                    onAction="AddZoomOutButtonClick"/>
+            <button id="ZoomToAreaButton"
+                    getLabel="GetZoomToAreaButtonLabel"
+                    getImage="GetZoomToAreaImage"
+                    getSupertip="GetZoomToAreaButtonSupertip"
+                    getEnabled="OnGetEnabledZoomButton"
+                    onAction="ZoomBtnClick"/>
+            <menuSeparator id="ZoomLabSettingsSeparator"/>
+            <button id="ZoomLabSettingsButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
                     onAction="ZoomLabDialogButtonPressed"/>
-          </dialogBoxLauncher>
+          </menu>
+
         </group>
-        <group id="embedAudio"
-               getLabel="GetEmbedAudioGroupLabel"
-               getImage="GetImage">
-          <splitButton id="addAudioSplit" size="large">
+        <group id="AudioGroup"
+               getImage="GetImage"
+               label="Audio"
+               visible="true">
+          
+          <menu id="NarrationsLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
             <button id="AddAudioButton"
-                  getLabel="GetAddAudioButtonLabel"
-                  onAction="AddAudioClick"
-                  keytip="NA"
-                  getSupertip="GetAddAudioButtonSupertip"
-                  getImage="GetAddAudioImage" />
-            <menu id="menu">
-              <button id="GenerateRecordButton"
-                      getLabel="GetGenerateRecordButtonLabel"
-                      onAction="AddAudioClick"
-                      keytip="NA"
-                      getSupertip="GetGenerateRecordButtonSupertip"/>
-              <button id="AddRecordButton"
-                      getLabel="GetAddRecordButtonLabel"
-                      onAction="RecManagementClick"
-                      keytip="NA"
-                      getSupertip="GetAddRecordButtonSupertip"/>
-            </menu>
-          </splitButton>
-          <button id="RemoveAudioButton"
-                  getLabel="GetRemoveAudioButtonLabel"
-                  onAction="RemoveAudioClick"
-                  getSupertip="GetRemoveAudioButtonSupertip"
-                  keytip="NR"
-                  getEnabled="OnGetEnabledRemoveAudio"
-                  getImage="GetRemoveAudioImage"
-                  size="large" />
-          <dialogBoxLauncher>
-            <button id="NarrationsLabDialogBox"
+                    getLabel="GetGenerateRecordButtonLabel"
+                    getImage="GetAddAudioImage"
+                    getSupertip="GetGenerateRecordButtonSupertip"
+                    onAction="AddAudioClick"/>
+            <button id="RecordAudioButton"
+                    getLabel="GetAddRecordButtonLabel"
+                    getImage="GetImage"
+                    getSupertip="GetAddRecordButtonSupertip"
+                    onAction="RecManagementClick"/>
+            <button id="RemoveAudioButton"
+                    getLabel="GetRemoveAudioButtonLabel"
+                    getImage="GetRemoveAudioImage"
+                    getSupertip="GetRemoveAudioButtonSupertip"
+                    getEnabled="OnGetEnabledRemoveAudio"
+                    onAction="RemoveAudioClick"/>
+            <menuSeparator id="NarrationsLabSettingsSeparator"/>
+            <button id="NarrationsLabSettingsButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
                     onAction="NarrationsLabDialogButtonPressed"/>
-          </dialogBoxLauncher>
-        </group>
-        <group id="embedCaptions"
-               getLabel="GetEmbedCaptionGroupLabel"
-               getImage="GetImage">
-          <button id="AddCaptionsButton"
-                  getLabel="GetAddCaptionsButtonLabel"
-                  keytip="CA"
-                  getSupertip="GetAddCaptionsButtonSupertip"
-                  onAction="AddCaptionClick"
-                  getImage="GetAddCaptionsImage"
-                  size="large" />
-          <splitButton id ="removeCaptionSplit" size ="large">  
+          </menu>
+
+          <menu id="CaptionsLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="AddCaptionsButton"
+                    getLabel="GetAddCaptionsButtonLabel"
+                    getImage="GetAddCaptionsImage"
+                    getSupertip="GetAddCaptionsButtonSupertip"
+                    onAction="AddCaptionClick"/>
             <button id="RemoveCaptionsButton"
                     getLabel="GetRemoveCaptionsButtonLabel"
-                    keytip="CR"
-                    getSupertip="GetRemoveCaptionsButtonSupertip"
-                    onAction="RemoveCaptionClick"
                     getImage="GetRemoveCaptionsImage"
-                    getEnabled="OnGetEnabledRemoveCaptions"/>
-            <menu id ="removeCaptionMenu">
-               <button id="RemoveAllNotesButton"
-                      getLabel="GetRemoveAllNotesButtonLabel"
-                      getSupertip="GetRemoveAllNotesButtonSupertip"
-                      onAction="RemoveAllNotesClick"/>
-             </menu>
-          </splitButton>
+                    getSupertip="GetRemoveCaptionsButtonSupertip"
+                    getEnabled="OnGetEnabledRemoveCaptions"
+                    onAction="RemoveCaptionClick"/>
+            <button id="RemoveNotesButton"
+                    getLabel="GetRemoveAllNotesButtonLabel"
+                    getImage="GetImage"
+                    getSupertip="GetRemoveAllNotesButtonSupertip"
+                    onAction="RemoveAllNotesClick"/>
+          </menu>
+
         </group>
-        <group id="HighlightBullets"
-               getLabel="GetHighlightLabGroupLabel"
+        <group id="EffectsGroup"
                getImage="GetImage"
+               label="Effects"
                visible="true">
-          <splitButton id ="addSpotlight" size ="large">  
-            <button id="AddSpotlightButton"
-                    getLabel="GetAddSpotlightButtonLabel"
-                    getSupertip="GetAddSpotlightButtonSupertip"
-                    getImage="GetSpotlightImage"
-                    getEnabled="OnGetEnabledSpotlight"
-                    onAction="SpotlightBtnClick"/>
-            <menu id ="spotlightPropertiesMenu">
-               <button id="SpotlightPropertiesButton"
-                      getLabel="GetSpotlightPropertiesButtonLabel"
-                      getSupertip="GetSpotlightPropertiesButtonSupertip"
-                      onAction="SpotlightDialogButtonPressed"/>
-            </menu>
-          </splitButton>
-          <button id="HighlightBulletsTextButton"
-                 getLabel ="GetHighlightBulletsTextButtonLabel"
-                 size ="large"
-                 getImage="GetHighlightBulletsTextImage"
-                 getSupertip="GetHighlightBulletsTextButtonSupertip"
-                 getEnabled="OnGetEnabledHighlightBullets"
-                 onAction="HighlightBulletsTextButtonClick"/>
-          <button id="HighlightBulletsBackgroundButton"
-                 getLabel ="GetHighlightBulletsBackgroundButtonLabel"
-                 size ="large"
-                 getImage="GetHighlightBulletsBackgroundImage"
-                 getSupertip="GetHighlightBulletsBackgroundButtonSupertip"
-                 getEnabled="OnGetEnabledHighlightBullets"
-                 onAction="HighlightBulletsBackgroundButtonClick"/>
-          <button id="HighlightTextFragmentsButton"
-                  getLabel="GetHighlightTextFragmentsButtonLabel"
-                  size="large"
-                  getImage="GetHighlightWordsImage"
-                  getSupertip="GetHighlightTextFragmentsButtonSupertip"
-                  getEnabled="OnGetEnabledHighlightTextFragments"
-                  onAction="HighlightTextFragmentsButtonClick"/>
-          <button id="RemoveHighlightButton"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <dialogBoxLauncher>
-            <button id="HighlightBulletsDialogBox"
+
+          <menu id="HighlightLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="HighlightPointsButton"
+                    getLabel="GetHighlightBulletsTextButtonLabel"
+                    getImage="GetHighlightBulletsTextImage"
+                    getSupertip="GetHighlightBulletsTextButtonSupertip"
+                    getEnabled="OnGetEnabledHighlightBullets"
+                    onAction="HighlightBulletsTextButtonClick"/>
+            <button id="HighlightBackgroundButton"
+                    getLabel="GetHighlightBulletsBackgroundButtonLabel"
+                    getImage="GetHighlightBulletsBackgroundImage"
+                    getSupertip="GetHighlightBulletsBackgroundButtonSupertip"
+                    getEnabled="OnGetEnabledHighlightBullets"
+                    onAction="HighlightBulletsBackgroundButtonClick"/>
+            <button id="HighlightTextButton"
+                    getLabel="GetHighlightTextFragmentsButtonLabel"
+                    getImage="GetHighlightWordsImage"
+                    getSupertip="GetHighlightTextFragmentsButtonSupertip"
+                    getEnabled="OnGetEnabledHighlightTextFragments"
+                    onAction="HighlightTextFragmentsButtonClick"/>
+            <button id="RemoveHighlightButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <menuSeparator id="HighlightLabSettingsSeparator"/>
+            <button id="HighlightLabSettingsButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
                     onAction="HighlightBulletsDialogBoxPressed"/>
-          </dialogBoxLauncher>
-        </group>
-        <group id="Labs"
-               getLabel="GetLabsGroupLabel"
-               getImage="GetImage"
-               visible="true">
-          <button id="ColorsLabButton"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <button id="PictureSlidesLabButton"
-                  label="Picture Slides Lab"
-                  size="large"
-                  getImage="GetPictureSlidesLabImage"
-                  getSupertip="GetPictureSlidesLabSupertip"
-                  onAction="PictureSlidesLabButtonClick"
-                  />
-          <button id="ShapesLabButton"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+          </menu>
+
           <menu id="EffectLabsMenu"
                 getLabel="GetEffectsLabButtonLabel"
                 getImage="GetEffectsLabImage"
@@ -214,12 +187,12 @@
                 size="large">
             <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
-              <gallery idMso="PictureSharpenSoftenGallery"/>
-              <gallery idMso="PictureBrightnessAndContrastGallery"/>
-              <gallery idMso="PictureEffectsSoftEdgesGallery"/>
-              <gallery idMso="PictureRecolorGallery"/>
-              <gallery idMso="PictureArtisticEffectsGallery"/>
-            <menuSeparator id="newEffectSeparator"
+            <gallery idMso="PictureSharpenSoftenGallery"/>
+            <gallery idMso="PictureBrightnessAndContrastGallery"/>
+            <gallery idMso="PictureEffectsSoftEdgesGallery"/>
+            <gallery idMso="PictureRecolorGallery"/>
+            <gallery idMso="PictureArtisticEffectsGallery"/>
+            <menuSeparator id="NewEffectsSeparator"
                            title="New Effects"/>
             <button id="transparentEffect"
                     getLabel="GetEffectsLabMakeTransparentButtonLabel"
@@ -231,6 +204,20 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
+            <menu id="spotlightMenu"
+                  getLabel="GetSpotlightMenuLabel"
+                  getImage="GetSpotlightImage">
+              <button id="AddSpotlightButton"
+                      getLabel="GetAddSpotlightButtonLabel"
+                      getSupertip="GetAddSpotlightButtonSupertip"
+                      getEnabled="OnGetEnabledSpotlight"
+                      onAction="SpotlightBtnClick"/>
+              <menuSeparator id="SpotlightPropertiesSeparator"/>
+              <button id="SpotlightPropertiesButton"
+                      getLabel="GetSpotlightPropertiesButtonLabel"
+                      getSupertip="GetSpotlightPropertiesButtonSupertip"
+                      onAction="SpotlightDialogButtonPressed"/>
+            </menu>
             <dynamicMenu id="EffectsLabBlurSelectedDynamicMenu"
                          getLabel="GetLabel"
                          getImage="GetImage"
@@ -247,9 +234,9 @@
                          getSupertip="GetEffectsLabBlurBackgroundSupertip"
                          getContent="GetContent"/>
             <menu id="colorizeRemainderEffect"
-                getLabel="GetEffectsLabRecolorRemainderButtonLabel"
-                getSupertip="GetEffectsLabColorizeRemainderSupertip"
-                getImage="GetRecolorRemainderImage">
+                  getLabel="GetEffectsLabRecolorRemainderButtonLabel"
+                  getSupertip="GetEffectsLabColorizeRemainderSupertip"
+                  getImage="GetRecolorRemainderImage">
               <button id="greyScaleRemainderEffect"
                       label="Grey Scale"
                       onAction="GreyScaleRemainderEffectClick"/>
@@ -264,9 +251,9 @@
                       onAction="SepiaRemainderEffectClick"/>
             </menu>
             <menu id="colorizeBackgroundEffect"
-                getLabel="GetEffectsLabRecolorBackgroundButtonLabel"
-                getSupertip="GetEffectsLabColorizeBackgroundSupertip"
-                getImage="GetRecolorRemainderImage">
+                  getLabel="GetEffectsLabRecolorBackgroundButtonLabel"
+                  getSupertip="GetEffectsLabColorizeBackgroundSupertip"
+                  getImage="GetRecolorRemainderImage">
               <button id="greyScaleBackgroundEffect"
                       label="Grey Scale"
                       onAction="GreyScaleBackgroundEffectClick"/>
@@ -281,6 +268,132 @@
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
           </menu>
+
+        </group>
+        <group id="FormattingGroup"
+               getImage="GetImage"
+               label="Formatting"
+               visible="true">
+
+          <button id="PositionsLabButton"
+                  visible="true"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+          
+          <button id="ResizeLabButton"
+                  visible="true"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+
+          <button id="ColorsLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+
+          <button id="SyncLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+
+          <button id="ShapesLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+
+          <menu id="CropLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="MoveCropShapeButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <button id="CropToSlideButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <button id="CropToSameButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <dynamicMenu id="CropToAspectRatioDynamicMenu"
+                    getContent="GetContent"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"/>
+            <button id="CropOutPaddingButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+            <menuSeparator id="CropLabSettingsSeparator"/>
+            <button id="CropLabSettingsButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="onAction"/>
+          </menu>
+          
+          <menu id="PasteLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="PasteToFillSlideButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="onAction"/>
+            <button id="PasteAtOriginalPositionButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="onAction"/>
+            <button id="ReplaceWithClipboardButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="onAction"/>
+            <button id="PasteIntoGroupButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="onAction"/>
+          </menu>
+
+        </group>
+        <group id="MoreLabsGroup"
+               getImage="GetImage"
+               label="More Labs"
+               visible="true">
+          
+          <button id="TimerLabButton"
+                  getLabel="GetLabel"
+                  size="large"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"/>
+
           <menu id="AgendaLabsMenu"
                 getLabel="GetAgendaLabButtonLabel"
                 getSupertip="GetAgendaLabSupertip"
@@ -301,7 +414,7 @@
                     getLabel="GetAgendaLabBeamAgendaButtonLabel"
                     getSupertip="GetAgendaLabBeamAgendaSupertip"
                     onAction="BeamAgendaClick"/>
-            <menuSeparator id="miscAgendaseparator" />
+            <menuSeparator id="miscAgendaseparator"/>
             <button id="removeAgenda"
                     getImage="GetAgendaRemoveImage"
                     getLabel="GetAgendaLabRemoveAgendaButtonLabel"
@@ -313,12 +426,14 @@
                     getSupertip="GetAgendaLabUpdateAgendaSupertip"
                     onAction="UpdateAgendaClick"/>
           </menu>
-          <button id="TimerLabButton"
-                  getLabel="GetLabel"
+
+          <button id="PictureSlidesLabButton"
+                  label="Picture Slides"
                   size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+                  getImage="GetPictureSlidesLabImage"
+                  getSupertip="GetPictureSlidesLabSupertip"
+                  onAction="PictureSlidesLabButtonClick"/>
+
           <button id="DrawingsLabButton"
                   visible="false"
                   getLabel="GetDrawingsLabButtonLabel"
@@ -326,87 +441,42 @@
                   getImage="GetDrawingsLabImage"
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
-          <button id="PositionsLabButton"
-                  visible="true"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <button id="ResizeLabButton"
-                  visible="true"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <button id="SyncLabButton"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <menu id="CropLabMenu"
-                  getLabel="GetLabel"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  size="large">
-                <button id="MoveCropShapeButton"
-                        getLabel="GetLabel"
-                        getImage="GetImage"
-                        getSupertip="GetSupertip"
-                        onAction="onAction"/>
-                <button id="CropToSlideButton"
-                        getLabel="GetLabel"
-                        getImage="GetImage"
-                        getSupertip="GetSupertip"
-                        onAction="onAction"/>
-                <button id="CropToSameButton"
-                        getLabel="GetLabel"
-                        getImage="GetImage"
-                        getSupertip="GetSupertip"
-                        onAction="onAction"/>
-                <dynamicMenu id="CropToAspectRatioDynamicMenu"
-                        getContent="GetContent"
-                        getLabel="GetLabel"
-                        getImage="GetImage"
-                        getSupertip="GetSupertip"/>
-                <button id="CropOutPaddingButton"
-                        getLabel="GetLabel"
-                        getImage="GetImage"
-                        getSupertip="GetSupertip"
-                        onAction="onAction"/>
-                <menuSeparator id="CropLabSettingsSeparator"/>
-                <button id="CropLabSettingsButton"
-                        getLabel="GetLabel"
-                        getImage="GetImage"
-                        getSupertip="GetSupertip"
-                        onAction="onAction"/>
-            </menu>
+
         </group>
-        <group id="PPTLabsHelp"
-               getLabel="GetPPTLabsHelpGroupLabel"
+        <group id="HelpGroup"
                getImage="GetImage"
+               label="Help"
                visible="true">
-          <button id="HelpButton"
-                  getLabel="GetHelpButtonLabel"
-                  size="large"
-                  getImage="GetHelpImage"
-                  getSupertip="GetHelpButtonSupertip"
-                  onAction="HelpButtonClick"/>
-          <button id="FeedbackButton"
-                  getLabel="GetFeedbackButtonLabel"
-                  size="large"
-                  getImage="GetFeedbackImage"
-                  getSupertip="GetFeedbackButtonSupertip"
-                  onAction="FeedbackButtonClick"/>
-          <button id="AboutButton"
-                  getLabel="GetAboutButtonLabel"
-                  size="large"
-                  getImage="GetAboutImage"
-                  getSupertip="GetAboutButtonSupertip"
-                  onAction="AboutButtonClick"/>
+          
+          <menu id="HelpMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="HelpButton"
+                    getLabel="GetHelpButtonLabel"
+                    getImage="GetHelpImage"
+                    getSupertip="GetHelpButtonSupertip"
+                    onAction="HelpButtonClick"/>
+            <button id="TutorialButton"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="TutorialButtonClick"/>
+            <button id="FeedbackButton"
+                    getLabel="GetFeedbackButtonLabel"
+                    getImage="GetFeedbackImage"
+                    getSupertip="GetFeedbackButtonSupertip"
+                    onAction="FeedbackButtonClick"/>
+            <button id="AboutButton"
+                    getLabel="GetAboutButtonLabel"
+                    getImage="GetAboutImage"
+                    getSupertip="GetAboutButtonSupertip"
+                    onAction="AboutButtonClick"/>
+          </menu>
+          
         </group>
+        
       </tab>
     </tabs>
   </ribbon>

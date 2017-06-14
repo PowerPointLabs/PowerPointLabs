@@ -3,6 +3,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
@@ -29,7 +30,13 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
         
         protected bool HasPlaceholderInSelection()
         {
-            var selection = this.GetCurrentSelection();
+            Selection selection = this.GetCurrentSelection();
+            
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return false;
+            }
+
             foreach (Shape shape in selection.ShapeRange)
             {
                 if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
@@ -37,6 +44,37 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
                     return true;
                 }
             }
+
+            return false;
+        }
+
+        protected bool IsSelectionSingleShape()
+        {
+            Selection selection = this.GetCurrentSelection();
+
+            return selection.Type == PpSelectionType.ppSelectionShapes && 
+                selection.ShapeRange.Count == 1;
+        }
+
+        protected bool IsSelectionMultipleOrGroup()
+        {
+            Selection selection = this.GetCurrentSelection();
+
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return false;
+            }
+
+            if (selection.ShapeRange.Count > 1)
+            {
+                return true;
+            }
+
+            if (Graphics.IsAGroup(selection.ShapeRange[1]))
+            {
+                return true;
+            }
+
             return false;
         }
     }

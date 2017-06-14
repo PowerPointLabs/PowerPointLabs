@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteAtOriginalPositionMenuVideo", "PasteAtOriginalPositionMenuTextEdit", "PasteAtOriginalPositionMenuChart",
         "PasteAtOriginalPositionMenuTable", "PasteAtOriginalPositionMenuTableWhole", "PasteAtOriginalPositionMenuFrame",
         "PasteAtOriginalPositionMenuSmartArtBackground", "PasteAtOriginalPositionMenuSmartArtEditSmartArt",
-        "PasteAtOriginalPositionMenuSmartArtEditText")]
+        "PasteAtOriginalPositionMenuSmartArtEditText", "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

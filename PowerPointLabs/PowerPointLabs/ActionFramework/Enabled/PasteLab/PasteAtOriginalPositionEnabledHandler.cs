@@ -9,7 +9,8 @@ namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
         "PasteAtOriginalPositionShape",
         "PasteAtOriginalPositionFreeform",
         "PasteAtOriginalPositionPicture",
-        "PasteAtOriginalPositionGroup")]
+        "PasteAtOriginalPositionGroup",
+        "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

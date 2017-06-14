@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.Label.PasteLab
         "PasteToFillSlideMenuVideo", "PasteToFillSlideMenuTextEdit", "PasteToFillSlideMenuChart",
         "PasteToFillSlideMenuTable", "PasteToFillSlideMenuTableWhole", "PasteToFillSlideMenuFrame",
         "PasteToFillSlideMenuSmartArtBackground", "PasteToFillSlideMenuSmartArtEditSmartArt",
-        "PasteToFillSlideMenuSmartArtEditText")]
+        "PasteToFillSlideMenuSmartArtEditText", "PasteToFillSlideButton")]
     class PasteToFillSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

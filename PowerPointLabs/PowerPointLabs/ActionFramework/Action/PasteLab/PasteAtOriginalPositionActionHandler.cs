@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         "PasteAtOriginalPositionMenuVideo", "PasteAtOriginalPositionMenuTextEdit", "PasteAtOriginalPositionMenuChart",
         "PasteAtOriginalPositionMenuTable", "PasteAtOriginalPositionMenuTableWhole", "PasteAtOriginalPositionMenuFrame",
         "PasteAtOriginalPositionMenuSmartArtBackground", "PasteAtOriginalPositionMenuSmartArtEditSmartArt",
-        "PasteAtOriginalPositionMenuSmartArtEditText")]
+        "PasteAtOriginalPositionMenuSmartArtEditText", "PasteAtOriginalPositionButton")]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
