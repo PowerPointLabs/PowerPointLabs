@@ -316,7 +316,7 @@
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteAtCursorPositionEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteAtOriginalPositionEnabledHandler.cs" />
-    <Compile Include="ActionFramework\Enabled\MergeIntoGroupEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Enabled\ShortcutsLab\AddIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\ReplaceWithClipboardEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\ShortcutsLab\EditNameEnabledHandler.cs" />
