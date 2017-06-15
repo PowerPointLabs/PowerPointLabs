@@ -7,7 +7,6 @@ namespace PowerPointLabs.Views
 {
     public partial class EditNameDialogBox : Form
     {
-        private Ribbon1 ribbon;
         public Shape SelectedShape { get; private set; }
 
         public EditNameDialogBox()
@@ -18,7 +17,6 @@ namespace PowerPointLabs.Views
         public EditNameDialogBox(Ribbon1 parentRibbon, Shape selectedShape)
             : this()
         {
-            ribbon = parentRibbon;
             SelectedShape = selectedShape;
         }
 
