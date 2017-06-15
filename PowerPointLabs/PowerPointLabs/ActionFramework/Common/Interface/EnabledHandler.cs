@@ -83,5 +83,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
 
             return false;
         }
+
+        protected bool IsSelectionChildShapeRange()
+        {
+            Selection selection = this.GetCurrentSelection();
+            return selection.HasChildShapeRange;
+        }
     }
 }
