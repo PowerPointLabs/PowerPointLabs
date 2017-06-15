@@ -26,7 +26,12 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 return null;
             }
 
-            ShapeRange pastingShapes = slide.Shapes.Paste();
+            ShapeRange pastingShapes = PasteShapesFromClipboard(slide);
+            if (pastingShapes == null)
+            {
+                return null;
+            }
+
             return PasteIntoGroup.Execute(presentation, slide, selectedShapes, pastingShapes);
         }
     }

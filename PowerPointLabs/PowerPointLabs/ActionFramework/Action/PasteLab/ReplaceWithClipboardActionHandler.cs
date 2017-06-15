@@ -24,8 +24,13 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                 MessageBox.Show("Please select at least one shape.", "Error");
                 return null;
             }
-            
-            ShapeRange pastingShapes = slide.Shapes.Paste();
+
+            ShapeRange pastingShapes = PasteShapesFromClipboard(slide);
+            if (pastingShapes == null)
+            {
+                return null;
+            }
+
             return ReplaceWithClipboard.Execute(presentation, slide, selectedShapes, selectedChildShapes, pastingShapes);
         }
     }

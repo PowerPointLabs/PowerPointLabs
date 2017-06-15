@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -37,7 +38,14 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             {
                 // Save clipboard onto a temp slide, because CorruptionCorrrection uses Copy-Paste
                 PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
-                ShapeRange tempClipboardShapes = tempClipboardSlide.Shapes.Paste();
+                ShapeRange tempClipboardShapes = PasteShapesFromClipboard(tempClipboardSlide);
+
+                // Nothing is pasted, stop now
+                if (tempClipboardShapes == null)
+                {
+                    tempClipboardSlide.Delete();
+                    return;
+                }
 
                 // Preserve selection using tags
                 ShapeRange selectedShapes = selection.ShapeRange;
@@ -90,6 +98,20 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
 
         protected abstract ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes);
+
+        protected ShapeRange PasteShapesFromClipboard(PowerPointSlide slide)
+        {
+            try
+            {
+                return slide.Shapes.Paste();
+            }
+            catch (COMException e)
+            {
+                // May be thrown if there is placeholder shape in clipboard
+                Logger.LogException(e, "PasteShapeFromClipboard");
+                return null;
+            }
+        }
 
         private bool IsSelectionIgnored(string ribbonId)
         {
