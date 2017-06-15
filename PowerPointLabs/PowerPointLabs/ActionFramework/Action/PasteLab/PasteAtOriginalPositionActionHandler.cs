@@ -2,7 +2,6 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
-using PowerPointLabs.PasteLab;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
@@ -23,7 +22,7 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
             if (tempPastingShapes == null)
             {
                 tempSlide.Delete();
-                return null;
+                return PasteShapesFromClipboard(slide);
             }
 
             ShapeRange pastingShapes = slide.CopyShapesToSlide(tempPastingShapes);
