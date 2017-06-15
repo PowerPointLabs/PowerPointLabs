@@ -694,4 +694,16 @@
   <data name="PictureSlidesLab1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PictureSlidesLab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AnimationsGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AnimationsGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AudioGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AudioGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EffectsGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EffectsGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FormattingGroup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FormattingGroup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

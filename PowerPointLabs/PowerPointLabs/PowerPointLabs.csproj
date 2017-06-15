@@ -320,6 +320,10 @@
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteIntoGroupEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\ReplaceWithClipboardEnabledHandler.cs" />
     <Compile Include="ActionFramework\Enabled\ShortcutsLab\EditNameEnabledHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\MoreLabsGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\FormattingGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\EffectsGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\AudioGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\HideImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\EditNameImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShortcutsLab\ConvertToPictureImageHandler.cs" />
@@ -347,7 +351,7 @@
     <Compile Include="ActionFramework\Image\PasteLab\PasteIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\ReplaceWithClipboardImageHandler.cs" />
     <Compile Include="ActionFramework\Image\SyncLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\PptLabsGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\AnimationsGroupImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteToFillSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteToFillSlideImageHandler.cs" />
@@ -1692,9 +1696,6 @@
     <None Include="Resources\CaptionsLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ColorsLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CropLab.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1855,6 +1856,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Tutorial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ColorsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AnimationsGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AudioGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EffectsGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FormattingGroup.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

@@ -2,12 +2,10 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image
+namespace PowerPointLabs.ActionFramework.Image.RibbonGroups
 {
-    [ExportImageRibbonId(
-        "AnimationsGroup", "AudioGroup", "EffectsGroup",
-        "FormattingGroup", "MoreLabsGroup", "HelpGroup")]
-    class PptLabsGroupImageHandler : ImageHandler
+    [ExportImageRibbonId("MoreLabsGroup")]
+    class MoreLabsGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
