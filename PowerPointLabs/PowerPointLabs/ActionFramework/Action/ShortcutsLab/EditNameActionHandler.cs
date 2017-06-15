@@ -22,7 +22,7 @@ namespace PowerPointLabs.ActionFramework.Action
                 selectedShape = selection.ChildShapeRange[1];
             }
             
-            var editForm = new EditNameDialogBox(this.GetRibbonUi(), selectedShape);
+            var editForm = new EditNameDialogBox(selectedShape);
             editForm.ShowDialog();
         }
     }
