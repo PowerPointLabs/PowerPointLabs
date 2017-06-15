@@ -18,7 +18,12 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
-            ShapeRange pastingShapes = slide.Shapes.Paste();
+            ShapeRange pastingShapes = PasteShapesFromClipboard(slide);
+            if (pastingShapes == null)
+            {
+                return null;
+            }
+
             PasteToFillSlide.Execute(slide, pastingShapes, presentation.SlideWidth, presentation.SlideHeight);
             return null;
         }

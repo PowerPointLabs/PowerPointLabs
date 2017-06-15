@@ -19,9 +19,16 @@ namespace PowerPointLabs.ActionFramework.Action.PasteLab
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
             PowerPointSlide tempSlide = presentation.AddSlide(index: slide.Index);
-            ShapeRange tempPastingShapes = tempSlide.Shapes.Paste();
+            ShapeRange tempPastingShapes = PasteShapesFromClipboard(tempSlide);
+            if (tempPastingShapes == null)
+            {
+                tempSlide.Delete();
+                return null;
+            }
+
             ShapeRange pastingShapes = slide.CopyShapesToSlide(tempPastingShapes);
             tempSlide.Delete();
+
             return pastingShapes;
         }
     }
