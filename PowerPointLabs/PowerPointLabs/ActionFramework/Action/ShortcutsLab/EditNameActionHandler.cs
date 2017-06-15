@@ -15,8 +15,14 @@ namespace PowerPointLabs.ActionFramework.Action
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var selectedShape = this.GetCurrentSelection().ShapeRange[1];
-            var editForm = new Form1(this.GetRibbonUi(), selectedShape.Name);
+            var selection = this.GetCurrentSelection();
+            var selectedShape = selection.ShapeRange[1];
+            if (selection.HasChildShapeRange)
+            {
+                selectedShape = selection.ChildShapeRange[1];
+            }
+            
+            var editForm = new EditNameDialogBox(selectedShape);
             editForm.ShowDialog();
         }
     }

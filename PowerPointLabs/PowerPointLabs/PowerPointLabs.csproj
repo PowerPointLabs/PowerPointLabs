@@ -923,6 +923,9 @@
     <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
       <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditNameDialogBox.xaml.cs">
+      <DependentUpon>EditNameDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
@@ -962,12 +965,6 @@
     </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
     <Compile Include="Views\FolderDialogLauncher.cs" />
-    <Compile Include="Views\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrameMotionAnimation.cs" />
     <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
     <Compile Include="HighlightLab\HighlightBulletsText.cs" />
@@ -1133,9 +1130,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ZoomLabDialogBox.resx">
       <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\HighlightBulletsDialogBox.resx">
       <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
@@ -1381,6 +1375,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SyncLab\View\SyncPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditNameDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
