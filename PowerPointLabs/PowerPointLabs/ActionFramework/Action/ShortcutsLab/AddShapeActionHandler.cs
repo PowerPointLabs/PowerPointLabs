@@ -6,11 +6,20 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId(
-        "AddToShapesLabMenuShape", "AddToShapesLabMenuLine", "AddToShapesLabMenuFreeform",
-        "AddToShapesLabMenuPicture", "AddToShapesLabMenuGroup", "AddToShapesLabMenuInk",
-        "AddToShapesLabMenuVideo", "AddToShapesLabMenuTextEdit", "AddToShapesLabMenuChart",
-        "AddToShapesLabMenuTable", "AddToShapesLabMenuTableWhole", "AddToShapesLabMenuSmartArtBackground",
-        "AddToShapesLabMenuSmartArtEditSmartArt", "AddToShapesLabMenuSmartArtEditText")]
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuShape,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuLine,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuFreeform,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuPicture,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuGroup,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuInk,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuVideo,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuTextEdit,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuChart,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuTable,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuTableCell,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuSmartArt,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuEditSmartArt,
+        TextCollection.AddCustomShapeMenuId + TextCollection.MenuEditSmartArtText)]
     class AddShapeActionHandler : ShapesLabActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -393,6 +393,9 @@
         #region Context Menu Labels
 
         public const string PowerPointLabsMenuLabel = "PowerPointLabs";
+        public const string PasteLabMenuLabel = "Paste Lab";
+        public const string ShortcutsLabMenuLabel = "Shortcuts";
+
         public const string EditNameShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
@@ -411,10 +414,42 @@
         public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";
         public const string ContextAddCurrentSlideLabel = "Add Audio (Current Slide)";
         public const string ContextReplaceAudioLabel = "Replace Audio";
-        # endregion
-        # endregion
+        #endregion
 
-        # region PowerPointSlide
+        #region Context Menu Content
+
+        public const string MenuShape = "MenuShape";
+        public const string MenuLine = "MenuLine";
+        public const string MenuFreeform = "MenuFreeform";
+        public const string MenuPicture = "MenuPicture";
+        public const string MenuGroup = "MenuGroup";
+        public const string MenuInk = "MenuInk";
+        public const string MenuVideo = "MenuVideo";
+        public const string MenuTextEdit = "MenuTextEdit";
+        public const string MenuChart = "MenuChart";
+        public const string MenuTable = "MenuTable";
+        public const string MenuTableCell = "MenuTableWhole";
+        public const string MenuSlide = "MenuFrame";
+        public const string MenuSmartArt = "MenuSmartArtBackground";
+        public const string MenuEditSmartArtBase = "MenuSmartArtEdit";
+        public const string MenuEditSmartArt = MenuEditSmartArtBase + "SmartArt";
+        public const string MenuEditSmartArtText = MenuEditSmartArtBase + "Text";
+
+        public const string PasteAtCursorPositionMenuId = "PasteAtCursorPosition";
+        public const string PasteAtOriginalPositionMenuId = "PasteAtOriginalPosition";
+        public const string PasteToFillSlideMenuId = "PasteToFillSlide";
+        public const string ReplaceWithClipboardMenuId = "ReplaceWithClipboard";
+        public const string PasteIntoGroupMenuId = "PasteIntoGroup";
+
+        public const string EditNameMenuId = "EditName";
+        public const string ConvertToPictureMenuId = "ConvertToPicture";
+        public const string HideSelectedShapeMenuId = "HideShape";
+        public const string AddCustomShapeMenuId = "AddShape";
+        public const string AddIntoGroupMenuId = "AddIntoGroup";
+        #endregion
+        #endregion
+
+        #region PowerPointSlide
 
         public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
 
@@ -425,6 +460,7 @@
             "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
 
         public const string AboutInfoTitle = "About PowerPointLabs";
+        public const string RibbonButton = "Button";
         # endregion
 
         # region ThisAddIn
