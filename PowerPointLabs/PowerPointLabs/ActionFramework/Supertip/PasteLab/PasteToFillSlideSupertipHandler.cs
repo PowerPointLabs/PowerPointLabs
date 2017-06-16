@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.PasteLab
 {
-    [ExportSupertipRibbonId("PasteToFillSlideButton")]
+    [ExportSupertipRibbonId(TextCollection.PasteToFillSlideTag)]
     class PasteToFillSlideSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

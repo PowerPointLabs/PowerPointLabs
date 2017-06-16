@@ -4,9 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image.PasteLab
 {
-    [ExportImageRibbonId(
-        TextCollection.PasteIntoGroupId + TextCollection.MenuGroup,
-        TextCollection.PasteIntoGroupId + TextCollection.RibbonButton)]
+    [ExportImageRibbonId(TextCollection.PasteIntoGroupTag)]
     class PasteIntoGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

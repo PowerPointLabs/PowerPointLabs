@@ -375,7 +375,7 @@
         public const string DynamicMenuCheckBoxId = "CheckBox";
         public const string DynamicMenuOptionId = "Option";
         public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
-        public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" getLabel=\"GetLabel\" getImage=\"GetImage\" getEnabled=\"GetEnabled\" onAction=\"OnAction\"/>";
+        public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getImage=\"GetImage\" getEnabled=\"GetEnabled\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
         public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
         public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
@@ -419,18 +419,18 @@
         public const string RibbonButton = "Button";
         public const string RibbonMenu = "Menu";
 
-        public const string CropToShapeId = "CropToShape";
-        public const string CropToSlideId = "CropToSlide";
-        public const string CropToSameDimensionsId = "CropToSame";
-        public const string CropToAspectRatioId = "CropToAspectRatio";
-        public const string CropOutPaddingId = "CropOutPadding";
-        public const string CropLabSettingsId = "CropLabSettings";
+        public const string CropToShapeTag = "CropToShape";
+        public const string CropToSlideTag = "CropToSlide";
+        public const string CropToSameDimensionsTag = "CropToSame";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropOutPaddingTag = "CropOutPadding";
+        public const string CropLabSettingsTag = "CropLabSettings";
 
-        public const string PasteAtCursorPositionId = "PasteAtCursorPosition";
-        public const string PasteAtOriginalPositionId = "PasteAtOriginalPosition";
-        public const string PasteToFillSlideId = "PasteToFillSlide";
-        public const string ReplaceWithClipboardId = "ReplaceWithClipboard";
-        public const string PasteIntoGroupId = "PasteIntoGroup";
+        public const string PasteAtCursorPositionTag = "PasteAtCursorPosition";
+        public const string PasteAtOriginalPositionTag = "PasteAtOriginalPosition";
+        public const string PasteToFillSlideTag = "PasteToFillSlide";
+        public const string ReplaceWithClipboardTag = "ReplaceWithClipboard";
+        public const string PasteIntoGroupTag = "PasteIntoGroup";
         #endregion
 
         #region Context Menu Content
@@ -452,11 +452,11 @@
         public const string MenuEditSmartArt = MenuEditSmartArtBase + "SmartArt";
         public const string MenuEditSmartArtText = MenuEditSmartArtBase + "Text";
 
-        public const string EditNameId = "EditName";
-        public const string ConvertToPictureId = "ConvertToPicture";
-        public const string HideSelectedShapeId = "HideShape";
-        public const string AddCustomShapeId = "AddShape";
-        public const string AddIntoGroupId = "AddIntoGroup";
+        public const string EditNameTag = "EditName";
+        public const string ConvertToPictureTag = "ConvertToPicture";
+        public const string HideSelectedShapeTag = "HideShape";
+        public const string AddCustomShapeTag = "AddShape";
+        public const string AddIntoGroupTag = "AddIntoGroup";
         #endregion
         #endregion
 

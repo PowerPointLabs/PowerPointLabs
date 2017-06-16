@@ -7,7 +7,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToSameDimensionsId + TextCollection.RibbonButton)]
+    [ExportActionRibbonId(TextCollection.CropToSameDimensionsTag + TextCollection.RibbonButton)]
     class CropToSameActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Same Dimensions";

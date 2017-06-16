@@ -4,8 +4,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label.PasteLab
 {
     [ExportLabelRibbonId(
-        TextCollection.PasteIntoGroupId + TextCollection.MenuGroup,
-        TextCollection.PasteIntoGroupId + TextCollection.RibbonButton)]
+        TextCollection.PasteIntoGroupTag + TextCollection.MenuGroup,
+        TextCollection.PasteIntoGroupTag + TextCollection.RibbonButton)]
     class PasteIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

@@ -6,7 +6,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToSlideId + TextCollection.RibbonButton)]
+    [ExportActionRibbonId(TextCollection.CropToSlideTag + TextCollection.RibbonButton)]
     class CropToSlideActionHandler : CropLabActionHandler
     {
 

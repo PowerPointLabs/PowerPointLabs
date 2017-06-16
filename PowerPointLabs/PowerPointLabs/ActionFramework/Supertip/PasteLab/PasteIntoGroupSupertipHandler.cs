@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.PasteLab
 {
-    [ExportSupertipRibbonId("PasteIntoGroupButton")]
+    [ExportSupertipRibbonId(TextCollection.PasteIntoGroupTag)]
     class PasteIntoGroupSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

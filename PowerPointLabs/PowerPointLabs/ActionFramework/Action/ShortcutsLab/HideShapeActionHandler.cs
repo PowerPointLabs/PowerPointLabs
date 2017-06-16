@@ -4,21 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
-    [ExportActionRibbonId(
-        TextCollection.HideSelectedShapeId + TextCollection.MenuShape,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuLine,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuFreeform,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuPicture,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuGroup,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuInk,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuVideo,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuTextEdit,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuChart,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuTable,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuTableCell,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuSmartArt,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuEditSmartArt,
-        TextCollection.HideSelectedShapeId + TextCollection.MenuEditSmartArtText)]
+    [ExportActionRibbonId(TextCollection.HideSelectedShapeTag)]
     class HideActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

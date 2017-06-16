@@ -8,19 +8,7 @@ using PowerPointLabs.PasteLab;
 
 namespace PowerPointLabs.ActionFramework.Action.PasteLab
 {
-    [ExportActionRibbonId(
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuShape,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuLine,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuFreeform,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuPicture,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuGroup,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuInk,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuVideo,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuChart,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuTable,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuTableCell,
-        TextCollection.ReplaceWithClipboardId + TextCollection.MenuSmartArt,
-        TextCollection.ReplaceWithClipboardId + TextCollection.RibbonButton)]
+    [ExportActionRibbonId(TextCollection.ReplaceWithClipboardTag)]
     class ReplaceWithClipboardActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

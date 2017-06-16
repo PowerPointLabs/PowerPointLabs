@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Enabled.ShortcutsLab
 {
-    [ExportEnabledRibbonId(TextCollection.AddIntoGroupId + TextCollection.MenuGroup)]
+    [ExportEnabledRibbonId(TextCollection.AddIntoGroupTag)]
     class AddIntoGroupEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

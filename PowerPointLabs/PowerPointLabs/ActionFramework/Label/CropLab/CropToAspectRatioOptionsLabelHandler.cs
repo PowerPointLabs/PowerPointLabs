@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.CropLab
 {
-    [ExportLabelRibbonId(TextCollection.CropToAspectRatioId)]
+    [ExportLabelRibbonId(TextCollection.CropToAspectRatioTag)]
     class CropToAspectRatioOptionsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

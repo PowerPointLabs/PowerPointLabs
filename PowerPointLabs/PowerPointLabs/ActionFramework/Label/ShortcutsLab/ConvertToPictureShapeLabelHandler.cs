@@ -4,19 +4,19 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label
 {
     [ExportLabelRibbonId(
-        TextCollection.ConvertToPictureId + TextCollection.MenuShape,
-        TextCollection.ConvertToPictureId + TextCollection.MenuLine,
-        TextCollection.ConvertToPictureId + TextCollection.MenuFreeform,
-        TextCollection.ConvertToPictureId + TextCollection.MenuGroup,
-        TextCollection.ConvertToPictureId + TextCollection.MenuInk,
-        TextCollection.ConvertToPictureId + TextCollection.MenuVideo,
-        TextCollection.ConvertToPictureId + TextCollection.MenuTextEdit,
-        TextCollection.ConvertToPictureId + TextCollection.MenuChart,
-        TextCollection.ConvertToPictureId + TextCollection.MenuTable,
-        TextCollection.ConvertToPictureId + TextCollection.MenuTableCell,
-        TextCollection.ConvertToPictureId + TextCollection.MenuSmartArt,
-        TextCollection.ConvertToPictureId + TextCollection.MenuEditSmartArt,
-        TextCollection.ConvertToPictureId + TextCollection.MenuEditSmartArtText)]
+        TextCollection.ConvertToPictureTag + TextCollection.MenuShape,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuLine,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuFreeform,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuGroup,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuInk,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuVideo,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuTextEdit,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuChart,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuTable,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuTableCell,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuSmartArt,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuEditSmartArt,
+        TextCollection.ConvertToPictureTag + TextCollection.MenuEditSmartArtText)]
     class ConvertToPictureShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
