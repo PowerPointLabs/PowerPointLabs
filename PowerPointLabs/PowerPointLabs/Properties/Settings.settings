@@ -15,10 +15,10 @@
       <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download/dev/</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">3.1.0.0</Value>
+      <Value Profile="(Default)">3.1.0.1</Value>
     </Setting>
     <Setting Name="ReleaseDate" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">15 Jun 2017</Value>
+      <Value Profile="(Default)">16 Jun 2017</Value>
     </Setting>
   </Settings>
 </SettingsFile>
