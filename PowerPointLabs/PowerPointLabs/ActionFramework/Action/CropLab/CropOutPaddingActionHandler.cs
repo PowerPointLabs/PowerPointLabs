@@ -5,7 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
     [ExportActionRibbonId("CropOutPaddingButton")]
     class CropOutPaddingActionHandler : CropLabActionHandler

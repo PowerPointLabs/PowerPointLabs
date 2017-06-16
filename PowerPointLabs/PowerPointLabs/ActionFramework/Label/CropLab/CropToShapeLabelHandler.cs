@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Label.CropLab
 {
     [ExportLabelRibbonId("MoveCropShapeButton")]
-    class MoveCropShapeLabelHandler : LabelHandler
+    class CropToShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

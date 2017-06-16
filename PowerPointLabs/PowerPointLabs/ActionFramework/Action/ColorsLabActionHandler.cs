@@ -13,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.Action
                 this.RegisterTaskPane(typeof(ColorPane), TextCollection.ColorsLabTaskPanelTitle);
             if (colorPane != null)
             {
-                colorPane.Visible = !colorPane.Visible;`
+                colorPane.Visible = !colorPane.Visible;
             }
         }
     }

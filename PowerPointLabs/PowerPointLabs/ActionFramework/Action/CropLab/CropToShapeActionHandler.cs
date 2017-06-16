@@ -5,10 +5,10 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
     [ExportActionRibbonId("MoveCropShapeButton", "cutOutShapeFreeform", "cutOutShapeGroup", "cutOutShapeShape")]
-    class MoveCropShapeButtonActionHandler : CropLabActionHandler
+    class CropToShapeActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Shape";
 
