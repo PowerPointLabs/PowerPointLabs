@@ -328,7 +328,6 @@
     <Compile Include="ActionFramework\Image\AnimationLab\AnimationLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropLabSettingsImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CropLab\CropShapeMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropOutPaddingImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropToSameImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropToSlideImageHandler.cs" />
@@ -415,7 +414,7 @@
     <Compile Include="ActionFramework\Supertip\AnimationLab\AnimationLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropToSameSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CropLab\MoveCropShapeSupertipHandler.cs" />
+    <Compile Include="ActionFramework\Supertip\CropLab\CropToShapeSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropToSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropToAspectRatioSupertipHandler.cs" />

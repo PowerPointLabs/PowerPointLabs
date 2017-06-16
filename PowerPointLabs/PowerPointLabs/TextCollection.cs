@@ -274,7 +274,6 @@
         public const string CropLabMenuLabel = "Crop";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingLabel = "Crop Out Padding";
-        public const string CropToAspectRatioTag = "CropToAspectRatio";
         public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
         public const string CropToSlideButtonLabel = "Crop To Slide";
         public const string CropToSameButtonLabel = "Crop To Same Dimensions";
@@ -418,6 +417,14 @@
 
         #region Ribbon Content
         public const string RibbonButton = "Button";
+        public const string RibbonMenu = "Menu";
+
+        public const string CropToShapeId = "CropToShape";
+        public const string CropToSlideId = "CropToSlide";
+        public const string CropToSameDimensionsId = "CropToSame";
+        public const string CropToAspectRatioId = "CropToAspectRatio";
+        public const string CropOutPaddingId = "CropOutPadding";
+        public const string CropLabSettingsId = "CropLabSettings";
 
         public const string PasteAtCursorPositionId = "PasteAtCursorPosition";
         public const string PasteAtOriginalPositionId = "PasteAtOriginalPosition";

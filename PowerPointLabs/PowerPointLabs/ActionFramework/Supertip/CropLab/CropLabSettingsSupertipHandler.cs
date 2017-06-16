@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.CropLab
 {
-    [ExportSupertipRibbonId("CropLabSettingsButton")]
+    [ExportSupertipRibbonId(TextCollection.CropLabSettingsId + TextCollection.RibbonButton)]
     class CropLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

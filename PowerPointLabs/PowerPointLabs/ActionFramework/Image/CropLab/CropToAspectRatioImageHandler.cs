@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image.CropLab
 {
-    [ExportImageRibbonId("CropToAspectRatioDynamicMenu")]
+    [ExportImageRibbonId(TextCollection.CropToAspectRatioId + TextCollection.RibbonMenu)]
     class CropToAspectRatioImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

@@ -317,7 +317,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
-            <button id="MoveCropShapeButton"
+            <button id="CropToShapeButton"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
@@ -332,7 +332,7 @@
                     getImage="GetImage"
                     getSupertip="GetSupertip"
                     onAction="onAction"/>
-            <dynamicMenu id="CropToAspectRatioDynamicMenu"
+            <dynamicMenu id="CropToAspectRatioMenu"
                     getContent="GetContent"
                     getLabel="GetLabel"
                     getImage="GetImage"

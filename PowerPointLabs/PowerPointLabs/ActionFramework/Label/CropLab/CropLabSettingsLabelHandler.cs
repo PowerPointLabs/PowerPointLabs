@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.CropLab
 {
-    [ExportLabelRibbonId("CropLabSettingsButton")]
+    [ExportLabelRibbonId(TextCollection.CropLabSettingsId + TextCollection.RibbonButton)]
     class CropLabSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

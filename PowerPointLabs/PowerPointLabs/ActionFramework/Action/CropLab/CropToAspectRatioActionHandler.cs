@@ -7,7 +7,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToAspectRatioTag)]
+    [ExportActionRibbonId(TextCollection.CropToAspectRatioId)]
     class CropToAspectRatioActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Aspect Ratio";

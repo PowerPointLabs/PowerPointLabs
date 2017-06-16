@@ -3,8 +3,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.CropLab
 {
-    [ExportSupertipRibbonId("MoveCropShapeButton")]
-    class MoveCropShapeSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId(TextCollection.CropToShapeId + TextCollection.RibbonButton)]
+    class CropToShapeSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {

@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.CropLab
 {
-    [ExportLabelRibbonId("CropOutPaddingButton")]
+    [ExportLabelRibbonId(TextCollection.CropOutPaddingId + TextCollection.RibbonButton)]
     class CropOutPaddingLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

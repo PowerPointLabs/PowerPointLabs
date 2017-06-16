@@ -7,7 +7,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
-    [ExportActionRibbonId("CropOutPaddingButton")]
+    [ExportActionRibbonId(TextCollection.CropOutPaddingId + TextCollection.RibbonButton)]
     class CropOutPaddingActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop Out Padding";

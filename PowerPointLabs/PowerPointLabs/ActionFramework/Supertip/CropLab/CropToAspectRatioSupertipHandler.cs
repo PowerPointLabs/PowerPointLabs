@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.CropLab
 {
-    [ExportSupertipRibbonId("CropToAspectRatioDynamicMenu")]
+    [ExportSupertipRibbonId(TextCollection.CropToAspectRatioId + TextCollection.RibbonMenu)]
     class CropToAspectRatioSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
