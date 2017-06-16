@@ -5,7 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image
 {
-    [ExportImageRibbonId(TextCollection.AddIntoGroupMenuId + TextCollection.MenuGroup)]
+    [ExportImageRibbonId(TextCollection.AddIntoGroupId + TextCollection.MenuGroup)]
     class MergeIntoGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

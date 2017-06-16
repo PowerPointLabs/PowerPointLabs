@@ -416,6 +416,16 @@
         public const string ContextReplaceAudioLabel = "Replace Audio";
         #endregion
 
+        #region Ribbon Content
+        public const string RibbonButton = "Button";
+
+        public const string PasteAtCursorPositionId = "PasteAtCursorPosition";
+        public const string PasteAtOriginalPositionId = "PasteAtOriginalPosition";
+        public const string PasteToFillSlideId = "PasteToFillSlide";
+        public const string ReplaceWithClipboardId = "ReplaceWithClipboard";
+        public const string PasteIntoGroupId = "PasteIntoGroup";
+        #endregion
+
         #region Context Menu Content
 
         public const string MenuShape = "MenuShape";
@@ -435,17 +445,11 @@
         public const string MenuEditSmartArt = MenuEditSmartArtBase + "SmartArt";
         public const string MenuEditSmartArtText = MenuEditSmartArtBase + "Text";
 
-        public const string PasteAtCursorPositionMenuId = "PasteAtCursorPosition";
-        public const string PasteAtOriginalPositionMenuId = "PasteAtOriginalPosition";
-        public const string PasteToFillSlideMenuId = "PasteToFillSlide";
-        public const string ReplaceWithClipboardMenuId = "ReplaceWithClipboard";
-        public const string PasteIntoGroupMenuId = "PasteIntoGroup";
-
-        public const string EditNameMenuId = "EditName";
-        public const string ConvertToPictureMenuId = "ConvertToPicture";
-        public const string HideSelectedShapeMenuId = "HideShape";
-        public const string AddCustomShapeMenuId = "AddShape";
-        public const string AddIntoGroupMenuId = "AddIntoGroup";
+        public const string EditNameId = "EditName";
+        public const string ConvertToPictureId = "ConvertToPicture";
+        public const string HideSelectedShapeId = "HideShape";
+        public const string AddCustomShapeId = "AddShape";
+        public const string AddIntoGroupId = "AddIntoGroup";
         #endregion
         #endregion
 
@@ -460,7 +464,7 @@
             "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
 
         public const string AboutInfoTitle = "About PowerPointLabs";
-        public const string RibbonButton = "Button";
+
         # endregion
 
         # region ThisAddIn

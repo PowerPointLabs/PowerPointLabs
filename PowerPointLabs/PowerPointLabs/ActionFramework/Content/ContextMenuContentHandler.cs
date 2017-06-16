@@ -51,9 +51,9 @@ namespace PowerPointLabs.ActionFramework.Content
             contextMenuGroups.Add(pasteLab);
 
             // All context menus will have these buttons
-            pasteLab.Items.Add(TextCollection.PasteAtCursorPositionMenuId);
-            pasteLab.Items.Add(TextCollection.PasteAtOriginalPositionMenuId);
-            pasteLab.Items.Add(TextCollection.PasteToFillSlideMenuId);
+            pasteLab.Items.Add(TextCollection.PasteAtCursorPositionId);
+            pasteLab.Items.Add(TextCollection.PasteAtOriginalPositionId);
+            pasteLab.Items.Add(TextCollection.PasteToFillSlideId);
 
             // Context menus other than slide will have these buttons
             if (ribbonId != TextCollection.MenuSlide)
@@ -65,25 +65,25 @@ namespace PowerPointLabs.ActionFramework.Content
                     ribbonId != TextCollection.MenuTextEdit &&
                     ribbonId != TextCollection.MenuTable)
                 {
-                    pasteLab.Items.Add(TextCollection.ReplaceWithClipboardMenuId);
+                    pasteLab.Items.Add(TextCollection.ReplaceWithClipboardId);
                 }
 
-                shortcuts.Items.Add(TextCollection.EditNameMenuId);
+                shortcuts.Items.Add(TextCollection.EditNameId);
 
                 // Context menus other than picture will have these buttons
                 if (ribbonId != TextCollection.MenuPicture)
                 {
-                    shortcuts.Items.Add(TextCollection.ConvertToPictureMenuId);
+                    shortcuts.Items.Add(TextCollection.ConvertToPictureId);
                 }
 
-                shortcuts.Items.Add(TextCollection.HideSelectedShapeMenuId);
-                shortcuts.Items.Add(TextCollection.AddCustomShapeMenuId);
+                shortcuts.Items.Add(TextCollection.HideSelectedShapeId);
+                shortcuts.Items.Add(TextCollection.AddCustomShapeId);
 
                 // Context menu group will have these buttons
                 if (ribbonId == TextCollection.MenuGroup)
                 {
-                    pasteLab.Items.Add(TextCollection.PasteIntoGroupMenuId);
-                    shortcuts.Items.Add(TextCollection.AddIntoGroupMenuId);
+                    pasteLab.Items.Add(TextCollection.PasteIntoGroupId);
+                    shortcuts.Items.Add(TextCollection.AddIntoGroupId);
                 }
             }
             return contextMenuGroups;

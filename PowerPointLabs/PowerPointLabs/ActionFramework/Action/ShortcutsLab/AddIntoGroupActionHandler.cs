@@ -9,7 +9,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.Action
 {
-    [ExportActionRibbonId(TextCollection.AddIntoGroupMenuId + TextCollection.MenuGroup)]
+    [ExportActionRibbonId(TextCollection.AddIntoGroupId + TextCollection.MenuGroup)]
     class MergeIntoGroupActionHandler : BaseUtilActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

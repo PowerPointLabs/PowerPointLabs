@@ -6,20 +6,20 @@ using PowerPointLabs.Views;
 namespace PowerPointLabs.ActionFramework.Action
 {
     [ExportActionRibbonId(
-        TextCollection.EditNameMenuId + TextCollection.MenuShape,
-        TextCollection.EditNameMenuId + TextCollection.MenuLine,
-        TextCollection.EditNameMenuId + TextCollection.MenuFreeform,
-        TextCollection.EditNameMenuId + TextCollection.MenuPicture,
-        TextCollection.EditNameMenuId + TextCollection.MenuGroup,
-        TextCollection.EditNameMenuId + TextCollection.MenuInk,
-        TextCollection.EditNameMenuId + TextCollection.MenuVideo,
-        TextCollection.EditNameMenuId + TextCollection.MenuTextEdit,
-        TextCollection.EditNameMenuId + TextCollection.MenuChart,
-        TextCollection.EditNameMenuId + TextCollection.MenuTable,
-        TextCollection.EditNameMenuId + TextCollection.MenuTableCell,
-        TextCollection.EditNameMenuId + TextCollection.MenuSmartArt,
-        TextCollection.EditNameMenuId + TextCollection.MenuEditSmartArt,
-        TextCollection.EditNameMenuId + TextCollection.MenuEditSmartArtText)]
+        TextCollection.EditNameId + TextCollection.MenuShape,
+        TextCollection.EditNameId + TextCollection.MenuLine,
+        TextCollection.EditNameId + TextCollection.MenuFreeform,
+        TextCollection.EditNameId + TextCollection.MenuPicture,
+        TextCollection.EditNameId + TextCollection.MenuGroup,
+        TextCollection.EditNameId + TextCollection.MenuInk,
+        TextCollection.EditNameId + TextCollection.MenuVideo,
+        TextCollection.EditNameId + TextCollection.MenuTextEdit,
+        TextCollection.EditNameId + TextCollection.MenuChart,
+        TextCollection.EditNameId + TextCollection.MenuTable,
+        TextCollection.EditNameId + TextCollection.MenuTableCell,
+        TextCollection.EditNameId + TextCollection.MenuSmartArt,
+        TextCollection.EditNameId + TextCollection.MenuEditSmartArt,
+        TextCollection.EditNameId + TextCollection.MenuEditSmartArtText)]
     class EditNameActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

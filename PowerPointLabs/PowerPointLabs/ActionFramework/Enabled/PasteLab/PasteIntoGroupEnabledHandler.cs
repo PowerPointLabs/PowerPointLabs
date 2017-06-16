@@ -5,8 +5,8 @@ using PowerPointLabs.Utils;
 namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
 {
     [ExportEnabledRibbonId(
-        TextCollection.PasteIntoGroupMenuId + TextCollection.MenuGroup,
-        TextCollection.PasteIntoGroupMenuId + TextCollection.RibbonButton)]
+        TextCollection.PasteIntoGroupId + TextCollection.MenuGroup,
+        TextCollection.PasteIntoGroupId + TextCollection.RibbonButton)]
     class PasteIntoGroupEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

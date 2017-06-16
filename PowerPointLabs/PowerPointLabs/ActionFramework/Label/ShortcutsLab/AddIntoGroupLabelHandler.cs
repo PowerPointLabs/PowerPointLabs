@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
-    [ExportLabelRibbonId(TextCollection.AddIntoGroupMenuId + TextCollection.MenuGroup)]
+    [ExportLabelRibbonId(TextCollection.AddIntoGroupId + TextCollection.MenuGroup)]
     class MergeIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
