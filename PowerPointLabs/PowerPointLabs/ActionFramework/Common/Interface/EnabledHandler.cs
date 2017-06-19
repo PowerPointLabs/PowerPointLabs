@@ -103,13 +103,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
                     if (shape.Type == tempShape.Type)
                     {
                         isEnabled = true;
-                        //Ribbon.ZoomButtonEnabled = true;
                     }
                     if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
                         shape.AutoShapeType != tempShape.AutoShapeType)
                     {
                         isEnabled = false;
-                        //Ribbon.ZoomButtonEnabled = false;
                         break;
                     }
                 }

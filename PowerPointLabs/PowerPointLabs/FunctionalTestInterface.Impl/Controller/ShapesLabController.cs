@@ -35,7 +35,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl("AddToShapesLabMenuShape"));
+                    new RibbonControl("AddShape"));
             });
         }
 

@@ -49,34 +49,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("MoveCropShapeButton");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void AutoCropContextMenuShape()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("cutOutShapeShape");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void AutoCropContextMenuFreeform()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("cutOutShapeFreeform");
-                Ribbon.OnAction(control);
-            });
-        }
-
-        public void AutoCropContextMenuGroup()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl("cutOutShapeGroup");
+                var control = new RibbonControl("CropToShape");
                 Ribbon.OnAction(control);
             });
         }
@@ -162,27 +135,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-        public void FitToWidth()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.OnAction(new RibbonControl("fitToWidthShape"));
-            });
-        }
-
-        public void FitToHeight()
-        {
-            UIThreadExecutor.Execute(() =>
-            {
-                Ribbon.OnAction(new RibbonControl("fitToHeightShape"));
-            });
-        }
-
         public void ConvertToPic()
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("ConvertToPictureMenuShape"));
+                Ribbon.OnAction(new RibbonControl("ConvertToPicture"));
             });
         }
 
@@ -190,7 +147,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.AddZoomInButtonClick(new RibbonControl("DrillDown"));
+                Ribbon.OnAction(new RibbonControl("DrillDown"));
             });
         }
 
@@ -198,7 +155,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.AddZoomOutButtonClick(new RibbonControl("StepBack"));
+                Ribbon.OnAction(new RibbonControl("StepBack"));
             });
         }
 
@@ -392,7 +349,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteToFillSlideMenuFrame");
+                var control = new RibbonControl("PasteToFillSlide");
                 Ribbon.OnAction(control);
             });
         }
@@ -401,7 +358,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteAtCursorPositionMenuFrame");
+                var control = new RibbonControl("PasteAtCursorPosition");
                 Ribbon.OnAction(control);
             });
         }
@@ -410,7 +367,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteAtOriginalPositionMenuFrame");
+                var control = new RibbonControl("PasteAtOriginalPosition");
                 Ribbon.OnAction(control);
             });
         }
@@ -419,7 +376,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("PasteIntoGroupMenuGroup");
+                var control = new RibbonControl("PasteIntoGroup");
                 Ribbon.OnAction(control);
             });
         }
@@ -428,7 +385,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("ReplaceWithClipboardMenuShape");
+                var control = new RibbonControl("ReplaceWithClipboard");
                 Ribbon.OnAction(control);
             });
         }
