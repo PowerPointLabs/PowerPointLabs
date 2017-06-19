@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.AnimationsLab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
     [ExportActionRibbonId("AnimateInSlide")]
     class AnimateInSlideActionHandler : ActionHandler

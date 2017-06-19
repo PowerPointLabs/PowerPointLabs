@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Supertip.AnimationLab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
     [ExportSupertipRibbonId("AnimationLabSettingsButton")]
     class AnimationLabSettingsSupertipHandler : SupertipHandler

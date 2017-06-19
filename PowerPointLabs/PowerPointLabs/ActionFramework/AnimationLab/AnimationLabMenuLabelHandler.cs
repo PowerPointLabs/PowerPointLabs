@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label.AnimationLab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
     [ExportLabelRibbonId("AnimationLabMenu")]
     class AnimationLabMenuLabelHandler : LabelHandler

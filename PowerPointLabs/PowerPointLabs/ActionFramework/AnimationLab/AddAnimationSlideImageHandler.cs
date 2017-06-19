@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.AnimationLab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportImageRibbonId("AnimationLabMenu")]
-    class AnimationLabMenuImageHandler : ImageHandler
+    [ExportImageRibbonId("AddAnimationSlide")]
+    class AddAnimationSlideImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AnimationLab);
+            return new Bitmap(Properties.Resources.AddAnimation);
         }
     }
 }

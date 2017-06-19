@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.AnimationLab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
     [ExportImageRibbonId("AnimationLabSettingsButton")]
     class AnimationLabSettingsImageHandler : ImageHandler

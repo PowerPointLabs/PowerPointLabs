@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.AnimationsLab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
     [ExportSupertipRibbonId("AnimateInSlide")]
     class AnimateInSlideSupertipHandler : SupertipHandler
