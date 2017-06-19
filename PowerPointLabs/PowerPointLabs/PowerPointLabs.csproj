@@ -281,6 +281,15 @@
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\TimerLabActionHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AddAnimationSlideActionHandler .cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AnimateInSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AnimateInSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AddAnimationSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AnimateInSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AddAnimationSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AnimateInSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AddAnimationSlideSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AnimationsLab\AnimateInSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />

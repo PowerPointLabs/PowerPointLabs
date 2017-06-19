@@ -280,22 +280,6 @@ namespace PowerPointLabs
             }
         }
 
-        public void AddInSlideAnimationButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AnimateInSlide.isHighlightBullets = false;
-                AnimateInSlide.AddAnimationInSlide();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AddInSlideAnimationButtonClick");
-                throw;
-            }
-        }
-
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             try
@@ -317,15 +301,6 @@ namespace PowerPointLabs
         }
 
         # region Supertips
-        public string GetAddAnimationButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AddAnimationButtonSupertip;
-        }
-        public string GetInSlideAnimateButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.InSlideAnimateButtonSupertip;
-        }
-
         public string GetAddZoomInButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddZoomInButtonSupertip;
@@ -480,15 +455,6 @@ namespace PowerPointLabs
         public string GetCombineShapesLabel(Office.IRibbonControl control)
         {
             return TextCollection.CombineShapesLabel;
-        }
-
-        public string GetAddAnimationButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddAnimationButtonLabel;
-        }
-        public string GetInSlideAnimateButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddAnimationInSlideAnimateButtonLabel;
         }
         
         public string GetAddZoomInButtonLabel(Office.IRibbonControl control)
@@ -667,20 +633,6 @@ namespace PowerPointLabs
         # endregion
 
         //Button Click Callbacks
-        public void AddAnimationButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AutoAnimate.AddAutoAnimation();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AddAnimationButtonClick");
-                throw;
-            }
-        }
         public void ZoomBtnClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -770,18 +722,6 @@ namespace PowerPointLabs
         }
 
         # region Icon Getters
-        public Bitmap GetAddAnimationImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddAnimation);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAddAnimationImage");
-                throw;
-            }
-        }
         public Bitmap GetSpotlightImage(Office.IRibbonControl control)
         {
             try
@@ -1186,30 +1126,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetInSlideAnimationImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.InSlideAnimation);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetInSlideAnimationImage");
-                throw;
-            }
-        }
-        public Bitmap GetAddAnimationContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddAnimationContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAddAnimationContextImage");
-                throw;
-            }
-        }
 
         public Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
         {
@@ -1220,18 +1136,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetAddSpotlightContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetInSlideAnimationContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.InSlideContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetInSlideAnimationContextImage");
                 throw;
             }
         }

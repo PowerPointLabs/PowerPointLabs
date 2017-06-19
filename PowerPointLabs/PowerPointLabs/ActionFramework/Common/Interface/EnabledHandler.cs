@@ -84,6 +84,39 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             return false;
         }
 
+        protected bool IsSelectionMultipleSameShapeType()
+        {
+            bool isEnabled = false;
+            var selection = this.GetCurrentSelection();
+            if (selection.Type == PpSelectionType.ppSelectionNone ||
+                selection.Type == PpSelectionType.ppSelectionSlides)
+            {
+                return isEnabled;
+            }
+
+            var shape = selection.ShapeRange[1];
+
+            if (selection.ShapeRange.Count > 1)
+            {
+                foreach (Shape tempShape in selection.ShapeRange)
+                {
+                    if (shape.Type == tempShape.Type)
+                    {
+                        isEnabled = true;
+                        //Ribbon.ZoomButtonEnabled = true;
+                    }
+                    if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
+                        shape.AutoShapeType != tempShape.AutoShapeType)
+                    {
+                        isEnabled = false;
+                        //Ribbon.ZoomButtonEnabled = false;
+                        break;
+                    }
+                }
+            }
+            return isEnabled;
+        }
+
         protected bool IsSelectionChildShapeRange()
         {
             Selection selection = this.GetCurrentSelection();

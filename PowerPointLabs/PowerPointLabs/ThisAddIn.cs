@@ -991,23 +991,6 @@ namespace PowerPointLabs
                 {
                     Ribbon.ZoomButtonEnabled = true;
                 }
-                if (sel.ShapeRange.Count > 1)
-                {
-                    foreach (PowerPoint.Shape tempShape in sel.ShapeRange)
-                    {
-                        if (sh.Type == tempShape.Type)
-                        {
-                            Ribbon.InSlideEnabled = true;
-                            Ribbon.ZoomButtonEnabled = true;
-                        }
-                        if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
-                        {
-                            Ribbon.InSlideEnabled = false;
-                            Ribbon.ZoomButtonEnabled = false;
-                            break;
-                        }
-                    }
-                }
 
                 if (isResizePaneVisible)
                 {

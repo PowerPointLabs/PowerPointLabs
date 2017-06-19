@@ -116,7 +116,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.AddAnimationButtonClick(new RibbonControl("AutoAnimate"));
+                var control = new RibbonControl("AddAnimationSlide");
+                Ribbon.OnAction(control);
             });
         }
 
@@ -124,7 +125,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.AddInSlideAnimationButtonClick(new RibbonControl("AnimateInSlide"));
+                var control = new RibbonControl("AnimateInSlide");
+                Ribbon.OnAction(control);
             });
         }
 
