@@ -301,14 +301,6 @@ namespace PowerPointLabs
         }
 
         # region Supertips
-        public string GetAddZoomInButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AddZoomInButtonSupertip;
-        }
-        public string GetAddZoomOutButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AddZoomOutButtonSupertip;
-        }
         public string GetZoomToAreaButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.ZoomToAreaButtonSupertip;
@@ -457,14 +449,6 @@ namespace PowerPointLabs
             return TextCollection.CombineShapesLabel;
         }
         
-        public string GetAddZoomInButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddZoomInButtonLabel;
-        }
-        public string GetAddZoomOutButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddZoomOutButtonLabel;
-        }
         public string GetZoomToAreaButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.ZoomToAreaButtonLabel;
@@ -692,34 +676,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public void AddZoomInButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AutoZoom.AddDrillDownAnimation();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AddZoomInButtonClick");
-                throw;
-            }
-        }
-        public void AddZoomOutButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AutoZoom.AddStepBackAnimation();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AddZoomOutButtonClick");
-                throw;
-            }
-        }
 
         # region Icon Getters
         public Bitmap GetSpotlightImage(Office.IRibbonControl control)
@@ -809,31 +765,6 @@ namespace PowerPointLabs
             }
         }
 
-        public Bitmap GetZoomInImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ZoomIn);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomInImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetZoomOutImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ZoomOut);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomOutImage");
-                throw;
-            }
-        }
         public Bitmap GetZoomToAreaImage(Office.IRibbonControl control)
         {
             try
@@ -1136,30 +1067,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetAddSpotlightContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetZoomInContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ZoomInContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomInContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetZoomOutContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ZoomOutContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomOutContextImage");
                 throw;
             }
         }

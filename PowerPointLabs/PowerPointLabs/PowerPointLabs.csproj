@@ -455,6 +455,16 @@
     <Compile Include="ActionFramework\Supertip\ZoomLab\ZoomLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ZoomLab\ZoomLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\Util\BaseUtilActionHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\StepBackSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\StepBackLabelHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\StepBackImageHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\StepBackEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\StepBackActionHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\DrillDownEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\DrillDownActionHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\DrillDownImageHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\DrillDownLabelHandler.cs" />
+    <Compile Include="ActionFramework\ZoomLab\DrillDownSupertipHandler.cs" />
     <Compile Include="AgendaLab\AgendaLabSyncFunctions.cs" />
     <Compile Include="AgendaLab\AgendaLabTemplateSyncLogic.cs" />
     <Compile Include="AgendaLab\AgendaLabUtility.cs" />
