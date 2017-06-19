@@ -19,13 +19,13 @@ namespace PowerPointLabs.ActionFramework.Content
                 string idFriendlyAspectRatio = PRESET_ASPECT_RATIOS[i].Replace(':', '_');
                 xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
                                 feature + TextCollection.DynamicMenuOptionId + idFriendlyAspectRatio,
-                                TextCollection.CropToAspectRatioTag));
+                                TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu));
             }
 
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, feature));
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
                             feature + TextCollection.DynamicMenuButtonId + "Custom",
-                            TextCollection.CropToAspectRatioTag));
+                            TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu));
 
             return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);
         }

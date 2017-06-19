@@ -7,7 +7,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.Action.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToShapeTag + TextCollection.RibbonButton)]
+    [ExportActionRibbonId(TextCollection.CropToShapeTag)]
     class CropToShapeActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Shape";

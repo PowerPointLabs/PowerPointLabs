@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image.CropLab
 {
-    [ExportImageRibbonId(TextCollection.CropOutPaddingTag + TextCollection.RibbonButton)]
+    [ExportImageRibbonId(TextCollection.CropOutPaddingTag)]
     class CropOutPaddingImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
