@@ -327,11 +327,12 @@
                   size="large"/>
 
           <button id="ShapesLabButton"
+                  tag="ShapesLab"
                   getLabel="GetLabel"
-                  size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+                  onAction="OnAction"
+                   size="large"/>
 
           <menu id="CropLabMenu"
                 getLabel="GetLabel"

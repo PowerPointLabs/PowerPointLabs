@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label
+namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportLabelRibbonId("ShapesLabButton")]
+    [ExportLabelRibbonId(TextCollection.ShapesLabTag)]
     class ShapesLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

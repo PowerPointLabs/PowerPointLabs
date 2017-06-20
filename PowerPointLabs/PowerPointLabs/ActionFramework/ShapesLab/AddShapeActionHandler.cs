@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.ShapesLab
 {
     [ExportActionRibbonId(TextCollection.AddCustomShapeTag)]
     class AddShapeActionHandler : ShapesLabActionHandler
