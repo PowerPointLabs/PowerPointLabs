@@ -3,9 +3,9 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.SyncLab.View;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.SyncLab
 {
-    [ExportActionRibbonId("SyncLabButton")]
+    [ExportActionRibbonId(TextCollection.SyncLabTag)]
     class SyncLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

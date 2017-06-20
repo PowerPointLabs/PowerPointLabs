@@ -319,11 +319,12 @@
                   size="large"/>
 
           <button id="SyncLabButton"
+                  tag="SyncLab"
                   getLabel="GetLabel"
-                  size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+                  onAction="OnAction"
+                  size="large"/>
 
           <button id="ShapesLabButton"
                   getLabel="GetLabel"

@@ -454,6 +454,8 @@
 
         public const string ColorsLabTag = "ColorsLab";
 
+        public const string SyncLabTag = "SyncLab";
+
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";
