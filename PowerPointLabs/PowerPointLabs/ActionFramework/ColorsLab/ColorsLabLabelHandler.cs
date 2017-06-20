@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label
+namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportLabelRibbonId("ColorsLabButton")]
+    [ExportLabelRibbonId(TextCollection.ColorsLabTag)]
     class ColorsLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

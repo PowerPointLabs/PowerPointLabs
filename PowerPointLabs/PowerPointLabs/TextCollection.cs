@@ -452,6 +452,8 @@
 
         public const string ResizeLabTag = "ResizeLab";
 
+        public const string ColorsLabTag = "ColorsLab";
+
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";

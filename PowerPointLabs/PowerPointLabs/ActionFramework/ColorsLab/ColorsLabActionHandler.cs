@@ -2,9 +2,9 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportActionRibbonId("ColorsLabButton")]
+    [ExportActionRibbonId(TextCollection.ColorsLabTag)]
     class ColorsLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

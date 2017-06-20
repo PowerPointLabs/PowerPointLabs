@@ -311,11 +311,12 @@
                   size="large"/>
 
           <button id="ColorsLabButton"
+                  tag="ColorsLab"
                   getLabel="GetLabel"
-                  size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+                  onAction="OnAction"
+                  size="large"/>
 
           <button id="SyncLabButton"
                   getLabel="GetLabel"
