@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.NarrationsLab
 {
-    [ExportSupertipRibbonId("NarrationsLabSettingsButton")]
+    [ExportSupertipRibbonId(TextCollection.NarrationsLabSettingsTag)]
     class NarrationsLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

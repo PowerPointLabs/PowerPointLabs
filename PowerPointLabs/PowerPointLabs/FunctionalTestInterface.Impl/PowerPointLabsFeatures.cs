@@ -203,7 +203,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.AddAudioClick(new RibbonControl("AutoNarrate"));
+                Ribbon.OnAction(new RibbonControl("AddNarrations"));
             });
         }
 

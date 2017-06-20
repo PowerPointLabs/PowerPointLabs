@@ -651,7 +651,7 @@ namespace PowerPointLabs
                         }
 
                         Ribbon.RemoveAudioEnabled = true;
-                        Ribbon.RefreshRibbonControl("RemoveAudioButton");
+                        Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
             }

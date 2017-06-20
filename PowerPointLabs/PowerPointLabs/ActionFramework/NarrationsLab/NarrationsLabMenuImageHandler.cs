@@ -4,12 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Image.NarrationsLab
 {
-    [ExportImageRibbonId("NarrationsLabSettingsButton")]
-    class NarrationsLabSettingsImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.NarrationsLabMenuId)]
+    class NarrationsLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AgendaSettings);
+            return new Bitmap(Properties.Resources.NarrationsLab);
         }
     }
 }

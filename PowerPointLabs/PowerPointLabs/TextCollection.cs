@@ -72,13 +72,13 @@
         #region Narrations Lab
         public const string NarrationsLabMenuSupertip =
             "Use Narrations Lab to create narration from text in the Notes pane of the selected slides.";
-        public const string GenerateRecordButtonSupertip =
+        public const string AddNarrationsButtonSupertip =
             "Create synthesized narration from text in the Notes pane of the selected slides.\n\n" +
             "To perform this action, select the slide(s) with the Speaker Notes, then click this button.";
-        public const string AddRecordButtonSupertip =
+        public const string RecordNarrationsButtonSupertip =
             "Manually record audio to replace synthesized narration.\n\n" +
             "Click this button to open the Recording interface.";
-        public const string RemoveAudioButtonSupertip =
+        public const string RemoveNarrationsButtonSupertip =
             "Remove synthesized audio added using Narrations Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the narrations from, then click this button.";
         public const string NarrationsLabSettingsSupertip =
@@ -282,10 +282,9 @@
 
         # region Narrations Lab
         public const string NarrationsLabMenuLabel = "Narrations";
-        public const string AddAudioButtonLabel = "Add Audio";
-        public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
-        public const string AddRecordButtonLabel = "Record Audio Manually";
-        public const string RemoveAudioButtonLabel = "Remove Audio";
+        public const string AddNarrationsButtonLabel = "Generate Audio Automatically";
+        public const string RecordNarrationsButtonLabel = "Record Audio Manually";
+        public const string RemoveNarrationsButtonLabel = "Remove Audio";
         public const string NarrationsLabSettingsButtonLabel = "Settings";
         # endregion
 
@@ -429,6 +428,12 @@
         public const string StepBackTag = "StepBack";
         public const string ZoomToAreaTag = "ZoomToArea";
         public const string ZoomLabSettingsTag = "ZoomLabSettings";
+
+        public const string NarrationsLabMenuId = "NarrationsLabMenu";
+        public const string AddNarrationsTag = "AddNarrations";
+        public const string RecordNarrationsTag = "RecordNarrations";
+        public const string RemoveNarrationsTag = "RemoveNarrations";
+        public const string NarrationsLabSettingsTag = "NarrationsLabSettings";
 
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";

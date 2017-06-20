@@ -310,19 +310,6 @@ namespace PowerPointLabs
         {
             return TextCollection.SpotlightPropertiesButtonSupertip;
         }
-        
-        public string GetGenerateRecordButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.GenerateRecordButtonSupertip;
-        }
-        public string GetAddRecordButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AddRecordButtonSupertip;
-        }
-        public string GetRemoveAudioButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.RemoveAudioButtonSupertip;
-        }
 
         public string GetAddCaptionsButtonSupertip(Office.IRibbonControl control)
         {
@@ -455,23 +442,6 @@ namespace PowerPointLabs
         public string GetReloadSpotlightButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.ReloadSpotlightButtonLabel;
-        }
-        
-        public string GetAddAudioButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddAudioButtonLabel;
-        }
-        public string GetGenerateRecordButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.GenerateRecordButtonLabel;
-        }
-        public string GetAddRecordButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddRecordButtonLabel;
-        }
-        public string GetRemoveAudioButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.RemoveAudioButtonLabel;
         }
         
         public string GetAddCaptionsButtonLabel(Office.IRibbonControl control)
@@ -943,30 +913,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetAddAudioImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddAudio);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAddAudioImage");
-                throw;
-            }
-        }
-        public Bitmap GetRemoveAudioImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.RemoveAudio);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetRemoveAudioImage");
-                throw;
-            }
-        }
         public Bitmap GetAddCaptionsImage(Office.IRibbonControl control)
         {
             try
@@ -992,18 +938,6 @@ namespace PowerPointLabs
             }
         }
 
-        public Bitmap GetAddAudioContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddNarrationContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAddAudioContextImage");
-                throw;
-            }
-        }
         public Bitmap GetPreviewNarrationContextImage(Office.IRibbonControl control)
         {
             try
@@ -1081,10 +1015,7 @@ namespace PowerPointLabs
         {
             return RemoveCaptionsEnabled;
         }
-        public bool OnGetEnabledRemoveAudio(Office.IRibbonControl control)
-        {
-            return RemoveAudioEnabled;
-        }
+
         public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
         {
             return HighlightTextFragmentsEnabled;
@@ -1239,7 +1170,7 @@ namespace PowerPointLabs
             return EmbedAudioVisible;
         }
 
-        private bool IsValidPresentation(PowerPoint.Presentation pres)
+        public bool IsValidPresentation(PowerPoint.Presentation pres)
         {
             if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
@@ -1250,7 +1181,7 @@ namespace PowerPointLabs
             return true;
         }
 
-        private void PreviewAnimationsIfChecked()
+        public void PreviewAnimationsIfChecked()
         {
             if (_previewCurrentSlide)
             {
@@ -1340,45 +1271,6 @@ namespace PowerPointLabs
         # endregion
 
         # region Feature: Narrations Lab
-        public void AddAudioClick(Office.IRibbonControl control)
-        {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-
-            if (PowerPointCurrentPresentationInfo.SelectedSlides.Any(slide => slide.NotesPageText.Trim() != ""))
-            {
-                RemoveAudioEnabled = true;
-                RefreshRibbonControl("RemoveAudioButton");
-            }
-
-            var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null)
-            {
-                return;
-            }
-
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            if (recorder == null)
-            {
-                return;
-            }
-
-            // initialize selected slides' audio
-            recorder.InitializeAudioAndScript(PowerPointCurrentPresentationInfo.SelectedSlides.ToList(),
-                                                  allAudioFiles, true);
-
-            // if current list is visible, update the pane immediately
-            if (recorderPane.Visible)
-            {
-                recorder.UpdateLists(currentSlide.ID);
-            }
-
-            PreviewAnimationsIfChecked();
-        }
-
         public void NarrationsLabDialogButtonPressed(Office.IRibbonControl control)
         {
             try
@@ -1403,81 +1295,6 @@ namespace PowerPointLabs
                 NotesToAudio.SetDefaultVoice(voiceName);
                 _voiceSelected = _voiceNames.IndexOf(voiceName);
             }
-        }
-
-        public void ContextAddAudioClick(Office.IRibbonControl control)
-        {
-            NotesToAudio.EmbedCurrentSlideNotes();
-            PreviewAnimationsIfChecked();
-        }
-
-        public void ContextReplaceAudioClick(Office.IRibbonControl control)
-        {
-            NotesToAudio.ReplaceSelectedAudio();
-        }
-
-        public void RecManagementClick(Office.IRibbonControl control)
-        {
-            var currentPresentation = PowerPointPresentation.Current.Presentation;
-
-            if (!IsValidPresentation(currentPresentation))
-            {
-                return;
-            }
-
-            // prepare media files
-            var tempPath = Globals.ThisAddIn.PrepareTempFolder(currentPresentation);
-            Globals.ThisAddIn.PrepareMediaFiles(currentPresentation, tempPath);
-
-            Globals.ThisAddIn.RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
-
-            // if currently the pane is hidden, show the pane
-            if (recorder != null && !recorderPane.Visible)
-            {
-                // fire the pane visble change event
-                recorderPane.Visible = true;
-
-                // reload the pane
-                recorder.RecorderPaneReload();
-            }
-        }
-
-        public void RemoveAudioClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                NotesToAudio.RemoveAudioFromSelectedSlides();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
-
-            var recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null)
-            {
-                return;
-            }
-
-            var recorder = recorderPane.Control as RecorderTaskPane;
-            recorder.ClearRecordDataListForSelectedSlides();
-
-            // if current list is visible, update the pane immediately
-            if (recorderPane.Visible)
-            {
-                foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-                {
-                    recorder.UpdateLists(slide.ID);
-                }
-            }
-
-            RemoveAudioEnabled = false;
-            RefreshRibbonControl("RemoveAudioButton");
         }
 
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
