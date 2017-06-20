@@ -88,8 +88,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
         {
             bool isEnabled = false;
             var selection = this.GetCurrentSelection();
-            if (selection.Type == PpSelectionType.ppSelectionNone ||
-                selection.Type == PpSelectionType.ppSelectionSlides)
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return isEnabled;
             }
@@ -118,12 +117,11 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
         protected bool IsSelectionAllRectangle()
         {
             Selection selection = this.GetCurrentSelection();
-            if (selection.Type == PpSelectionType.ppSelectionNone ||
-                selection.Type == PpSelectionType.ppSelectionSlides)
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return false;
             }
-
+            
             ShapeRange shapes = selection.ShapeRange;
             foreach (Shape shape in shapes)
             {

@@ -949,7 +949,6 @@ namespace PowerPointLabs
                 }
             }
             
-            Ribbon.RefreshRibbonControl("AddAnimationSlideButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
@@ -995,10 +994,10 @@ namespace PowerPointLabs
 
             }
 
-            Ribbon.RefreshRibbonControl("AddSpotlightButton");
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
             Ribbon.RefreshRibbonControl("DrillDownButton");
             Ribbon.RefreshRibbonControl("StepBackButton");
+            Ribbon.RefreshRibbonControl("AddSpotlightButton");
             Ribbon.RefreshRibbonControl("AddZoomInButton");
             Ribbon.RefreshRibbonControl("AddZoomOutButton");
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
