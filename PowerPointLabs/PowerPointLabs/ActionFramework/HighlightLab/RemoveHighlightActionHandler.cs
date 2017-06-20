@@ -1,17 +1,17 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.HighlightLab;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportActionRibbonId("RemoveHighlightButton")]
-    class RemoveHighlightingHandler : ActionHandler
+    [ExportActionRibbonId(TextCollection.RemoveHighlightTag)]
+    class RemoveHighlightActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            this.GetApplication().StartNewUndoEntry();
+            this.StartNewUndoEntry();
+
             RemoveHighlighting.RemoveHighlight(this.GetCurrentSlide());
         }
     }

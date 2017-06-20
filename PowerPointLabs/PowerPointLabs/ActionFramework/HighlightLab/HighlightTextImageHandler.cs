@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image
+namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportImageRibbonId("PositionsLabButton")]
-    class PositionsLabImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.HighlightTextTag)]
+    class HighlightTextImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.PositionsLab);
+            return new Bitmap(Properties.Resources.HighlightWords);
         }
     }
 }

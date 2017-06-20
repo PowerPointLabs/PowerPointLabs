@@ -441,6 +441,13 @@
         public const string RemoveNotesTag = "RemoveNotes";
         public const string CaptionsLabSettingsTag = "CaptionsLabSettings";
 
+        public const string HighlightLabMenuId = "HighlightLabMenu";
+        public const string HighlightPointsTag = "HighlightPoints";
+        public const string HighlightBackgroundTag = "HighlightBackground";
+        public const string HighlightTextTag = "HighlightText";
+        public const string RemoveHighlightTag = "RemoveHighlight";
+        public const string HighlightLabSettingsTag = "HighlightLabSettings";
+
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";

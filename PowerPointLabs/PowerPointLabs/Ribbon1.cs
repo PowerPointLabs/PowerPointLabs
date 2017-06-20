@@ -198,88 +198,6 @@ namespace PowerPointLabs
             _voiceNames = installedVoices;
         }
 
-        public void HighlightBulletsBackgroundButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kShapeSelected;
-                }
-                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                {
-                    HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kTextSelected;
-                }
-                else
-                {
-                    HighlightBulletsBackground.userSelection = HighlightBulletsBackground.HighlightBackgroundSelection.kNoneSelected;
-                }
-
-                HighlightBulletsBackground.AddHighlightBulletsBackground();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "HighlightBulletsBackgroundButtonClick");
-                throw;
-            }
-        }
-        public void HighlightBulletsTextButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kShapeSelected;
-                }
-                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                {
-                    HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kTextSelected;
-                }
-                else
-                {
-                    HighlightBulletsText.userSelection = HighlightBulletsText.HighlightTextSelection.kNoneSelected;
-                }
-
-                HighlightBulletsText.AddHighlightBulletsText();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "HighlightBulletsTextButtonClick");
-                throw;
-            }
-        }
-        public void HighlightTextFragmentsButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
-                }
-                else if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
-                {
-                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
-                }
-                else
-                {
-                    HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kNoneSelected;
-                }
-
-                HighlightTextFragments.AddHighlightedTextFragments();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "HighlightTextFragmentsButtonClick");
-                throw;
-            }
-        }
-
         public void SpotlightBtnClick(Office.IRibbonControl control)
         {
             try
@@ -309,20 +227,6 @@ namespace PowerPointLabs
         public string GetSpotlightPropertiesButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.SpotlightPropertiesButtonSupertip;
-        }
-
-        public string GetHighlightBulletsTextButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsTextButtonSupertip;
-        }
-        public string GetHighlightBulletsBackgroundButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsBackgroundButtonSupertip;
-        }
-
-        public string GetHighlightTextFragmentsButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightTextFragmentsButtonSupertip;
         }
 
         public string GetEffectsLabSupertip(Office.IRibbonControl control)
@@ -434,18 +338,6 @@ namespace PowerPointLabs
         public string GetSpotlightPropertiesButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.SpotlightPropertiesButtonLabel;
-        }
-        public string GetHighlightBulletsTextButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsTextButtonLabel;
-        }
-        public string GetHighlightBulletsBackgroundButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightBulletsBackgroundButtonLabel;
-        }
-        public string GetHighlightTextFragmentsButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.HighlightTextFragmentsButtonLabel;
         }
 
         public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
@@ -628,68 +520,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetReloadSpotlightImage");
-                throw;
-            }
-        }
-        public Bitmap GetHighlightBulletsTextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.HighlightText);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHighlightBulletsTextImage");
-                throw;
-            }
-        }
-        public Bitmap GetHighlightBulletsBackgroundImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.HighlightBackground);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHighlightBulletsBackgroundImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetHighlightWordsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.HighlightWords);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHighlightWordsImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetHighlightBulletsTextContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.HighlightTextContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHighlightBulletsTextContextImage");
-                throw;
-            }
-        }
-        public Bitmap GetHighlightBulletsBackgroundContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.HighlightBackgroundContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHighlightBulletsBackgroundContextImage");
                 throw;
             }
         }
@@ -957,15 +787,6 @@ namespace PowerPointLabs
         public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
         {
             return InSlideEnabled;
-        }
-        public bool OnGetEnabledHighlightBullets(Office.IRibbonControl control)
-        {
-            return HighlightBulletsEnabled;
-        }
-
-        public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
-        {
-            return HighlightTextFragmentsEnabled;
         }
         # endregion
 

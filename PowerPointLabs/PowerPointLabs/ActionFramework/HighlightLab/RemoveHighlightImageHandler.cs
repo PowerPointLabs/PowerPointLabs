@@ -2,10 +2,10 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image
+namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportImageRibbonId("RemoveHighlightButton")]
-    class RemoveHighlightingImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.RemoveHighlightTag)]
+    class RemoveHighlightImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

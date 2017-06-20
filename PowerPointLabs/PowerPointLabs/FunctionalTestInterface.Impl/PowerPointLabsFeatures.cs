@@ -179,7 +179,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.HighlightBulletsTextButtonClick(new RibbonControl("HighlightPoints"));
+                Ribbon.OnAction(new RibbonControl("HighlightPoints"));
             });
         }
 
@@ -187,7 +187,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.HighlightBulletsBackgroundButtonClick(new RibbonControl("HighlightBackground"));
+                Ribbon.OnAction(new RibbonControl("HighlightBackground"));
             });
         }
 
@@ -195,7 +195,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.HighlightTextFragmentsButtonClick(new RibbonControl("HighlightFragments"));
+                Ribbon.OnAction(new RibbonControl("HighlightFragments"));
             });
         }
 

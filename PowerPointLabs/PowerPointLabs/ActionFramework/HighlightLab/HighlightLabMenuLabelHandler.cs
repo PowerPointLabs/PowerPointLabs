@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Label.HighlightLab
 {
-    [ExportLabelRibbonId("HighlightLabMenu")]
+    [ExportLabelRibbonId(TextCollection.HighlightLabMenuId)]
     class HighlightLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
