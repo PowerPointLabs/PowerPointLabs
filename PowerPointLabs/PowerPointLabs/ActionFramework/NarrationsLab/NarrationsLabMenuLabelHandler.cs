@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label.NarrationsLab
+namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
     [ExportLabelRibbonId(TextCollection.NarrationsLabMenuId)]
     class NarrationsLabMenuLabelHandler : LabelHandler

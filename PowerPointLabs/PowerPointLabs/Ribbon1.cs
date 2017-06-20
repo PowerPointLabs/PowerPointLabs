@@ -311,19 +311,6 @@ namespace PowerPointLabs
             return TextCollection.SpotlightPropertiesButtonSupertip;
         }
 
-        public string GetAddCaptionsButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AddCaptionsButtonSupertip;
-        }
-        public string GetRemoveCaptionsButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.RemoveCaptionsButtonSupertip;
-        }
-        public string GetRemoveAllNotesButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.RemoveAllNotesButtonSupertip;
-        }
-
         public string GetHighlightBulletsTextButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.HighlightBulletsTextButtonSupertip;
@@ -444,18 +431,6 @@ namespace PowerPointLabs
             return TextCollection.ReloadSpotlightButtonLabel;
         }
         
-        public string GetAddCaptionsButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddCaptionsButtonLabel;
-        }
-        public string GetRemoveCaptionsButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.RemoveCaptionsButtonLabel;
-        }
-        public string GetRemoveAllNotesButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.RemoveAllNotesButtonLabel;
-        }
         public string GetSpotlightPropertiesButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.SpotlightPropertiesButtonLabel;
@@ -913,30 +888,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-        public Bitmap GetAddCaptionsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddCaption);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAddCaptionsImage");
-                throw;
-            }
-        }
-        public Bitmap GetRemoveCaptionsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.RemoveCaption);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetRemoveCaptionsImage");
-                throw;
-            }
-        }
 
         public Bitmap GetPreviewNarrationContextImage(Office.IRibbonControl control)
         {
@@ -1010,10 +961,6 @@ namespace PowerPointLabs
         public bool OnGetEnabledHighlightBullets(Office.IRibbonControl control)
         {
             return HighlightBulletsEnabled;
-        }
-        public bool OnGetEnabledRemoveCaptions(Office.IRibbonControl control)
-        {
-            return RemoveCaptionsEnabled;
         }
 
         public bool OnGetEnabledHighlightTextFragments(Office.IRibbonControl control)
@@ -1300,40 +1247,6 @@ namespace PowerPointLabs
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
             NotesToAudio.SpeakSelectedText();
-        }
-        # endregion
-
-        # region Feature: Captions Lab
-        public void AddCaptionClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            foreach (PowerPointSlide slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-            {
-                if (slide.NotesPageText.Trim() != "")
-                {
-                    RemoveCaptionsEnabled = true;
-                    break;
-                }
-            }
-
-            NotesToCaptions.EmbedCaptionsOnSelectedSlides();
-            RefreshRibbonControl("RemoveCaptionsButton");
-        }
-
-        public void RemoveCaptionClick(Office.IRibbonControl control)
-        {
-            RemoveCaptionsEnabled = false;
-            RefreshRibbonControl("RemoveCaptionsButton");
-            NotesToCaptions.RemoveCaptionsFromSelectedSlides();
-        }
-
-        public void RemoveAllNotesClick(Office.IRibbonControl control)
-        {
-            foreach (var slide in PowerPointCurrentPresentationInfo.SelectedSlides)
-            {
-                slide.NotesPageText = string.Empty;
-            }
         }
         # endregion
 

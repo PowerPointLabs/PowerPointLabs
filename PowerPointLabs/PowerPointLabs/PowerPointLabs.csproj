@@ -296,6 +296,19 @@
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveNotesSupertipHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveNotesLabelHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveNotesImageHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveNotesActionHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\AddCaptionsActionHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveCaptionsActionHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveCaptionsEnabledHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\AddCaptionsImageHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveCaptionsImageHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\AddCaptionsLabelHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveCaptionsLabelHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\AddCaptionsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\RemoveCaptionsSupertipHandler.cs" />
     <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />
@@ -347,8 +360,7 @@
     <Compile Include="ActionFramework\Image\CropLab\CropToShapeImageHandler.cs" />
     <Compile Include="ActionFramework\Image\CropLab\CropToAspectRatioImageHandler.cs" />
     <Compile Include="ActionFramework\Enabled\EmptyEnabledHandler.cs" />
-    <Compile Include="ActionFramework\Image\CaptionsLab\CaptionsLabMenuImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\CaptionsLab\RemoveNotesImageHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\CaptionsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\HelpMenu\TutorialImageHandler.cs" />
     <Compile Include="ActionFramework\Image\HelpMenu\HelpMenuImageHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteLabMenuImageHandler.cs" />
@@ -383,7 +395,7 @@
     <Compile Include="ActionFramework\Label\CropLab\CropOutPaddingLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\HelpMenu\TutorialLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\HelpMenu\HelpMenuLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\CaptionsLab\CaptionsLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\CaptionsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\PasteLab\PasteLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\HideLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ShortcutsLab\EditNameLabelHandler.cs" />
@@ -438,7 +450,7 @@
     <Compile Include="ActionFramework\Supertip\CropLab\CropLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropToAspectRatioSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\CropLab\CropOutPaddingSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\CaptionsLab\CaptionsLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\CaptionsLab\CaptionsLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\HelpMenu\TutorialSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\HelpMenu\HelpMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\PasteLab\PasteAtOriginalPositionSupertipHandler.cs" />

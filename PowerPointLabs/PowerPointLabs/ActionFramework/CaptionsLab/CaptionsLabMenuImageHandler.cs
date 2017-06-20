@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.CaptionsLab
+namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportImageRibbonId("RemoveNotesButton")]
-    class RemoveNotesImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.CaptionsLabMenuId)]
+    class CaptionsLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.RemoveNotes);
+            return new Bitmap(Properties.Resources.CaptionsLab);
         }
     }
 }

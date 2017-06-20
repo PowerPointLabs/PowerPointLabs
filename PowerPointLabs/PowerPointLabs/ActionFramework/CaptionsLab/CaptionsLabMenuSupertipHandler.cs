@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Supertip.CaptionsLab
+namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportSupertipRibbonId("CaptionsLabMenu")]
+    [ExportSupertipRibbonId(TextCollection.CaptionsLabMenuId)]
     class CaptionsLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

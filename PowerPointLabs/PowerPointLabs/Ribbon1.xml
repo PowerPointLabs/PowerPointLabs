@@ -132,21 +132,24 @@
                 getSupertip="GetSupertip"
                 size="large">
             <button id="AddCaptionsButton"
-                    getLabel="GetAddCaptionsButtonLabel"
-                    getImage="GetAddCaptionsImage"
-                    getSupertip="GetAddCaptionsButtonSupertip"
-                    onAction="AddCaptionClick"/>
-            <button id="RemoveCaptionsButton"
-                    getLabel="GetRemoveCaptionsButtonLabel"
-                    getImage="GetRemoveCaptionsImage"
-                    getSupertip="GetRemoveCaptionsButtonSupertip"
-                    getEnabled="OnGetEnabledRemoveCaptions"
-                    onAction="RemoveCaptionClick"/>
-            <button id="RemoveNotesButton"
-                    getLabel="GetRemoveAllNotesButtonLabel"
+                    tag="AddCaptions"
+                    getLabel="GetLabel"
                     getImage="GetImage"
-                    getSupertip="GetRemoveAllNotesButtonSupertip"
-                    onAction="RemoveAllNotesClick"/>
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="RemoveCaptionsButton"
+                    tag="RemoveCaptions"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="RemoveNotesButton"
+                    tag="RemoveNotes"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
           </menu>
 
         </group>

@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.NarrationsLab
+namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportEnabledRibbonId(TextCollection.RemoveNarrationsTag)]
-    class RemoveNarrationsEnabledHandler : EnabledHandler
+    [ExportEnabledRibbonId(TextCollection.RemoveCaptionsTag)]
+    class RemoveCaptionsEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return this.GetRibbonUi().RemoveAudioEnabled;
+            return this.GetRibbonUi().RemoveCaptionsEnabled;
         }
     }
 }

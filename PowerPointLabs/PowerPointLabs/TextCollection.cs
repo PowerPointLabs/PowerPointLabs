@@ -435,6 +435,12 @@
         public const string RemoveNarrationsTag = "RemoveNarrations";
         public const string NarrationsLabSettingsTag = "NarrationsLabSettings";
 
+        public const string CaptionsLabMenuId = "CaptionsLabMenu";
+        public const string AddCaptionsTag = "AddCaptions";
+        public const string RemoveCaptionsTag = "RemoveCaptions";
+        public const string RemoveNotesTag = "RemoveNotes";
+        public const string CaptionsLabSettingsTag = "CaptionsLabSettings";
+
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";

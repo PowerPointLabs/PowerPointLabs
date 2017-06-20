@@ -107,7 +107,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.AddCaptionClick(new RibbonControl("AutoCaptions"));
+                Ribbon.OnAction(new RibbonControl("AddCaptions"));
             });
         }
 
