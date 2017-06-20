@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportSupertipRibbonId("AddAnimationSlide")]
+    [ExportSupertipRibbonId(TextCollection.AddAnimationSlideTag)]
     class AddAnimationSlideSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

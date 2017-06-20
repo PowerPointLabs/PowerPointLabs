@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportEnabledRibbonId(TextCollection.StepBackTag)]
-    class StepBackEnabledHandler : EnabledHandler
+    [ExportEnabledRibbonId(TextCollection.ZoomToAreaTag)]
+    class ZoomToAreaEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return IsSelectionSingleShape() && IsSelectionAllRectangle();
+            return IsSelectionAllRectangle();
         }
     }
 }

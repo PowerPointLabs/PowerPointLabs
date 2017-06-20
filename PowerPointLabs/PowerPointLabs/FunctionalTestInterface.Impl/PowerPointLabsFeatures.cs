@@ -163,7 +163,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.ZoomBtnClick(new RibbonControl("ZoomToArea"));
+                Ribbon.OnAction(new RibbonControl("ZoomToArea"));
             });
         }
 

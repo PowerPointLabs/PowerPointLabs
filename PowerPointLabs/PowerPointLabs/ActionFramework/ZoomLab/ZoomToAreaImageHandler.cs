@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.ZoomLab
+namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId("ZoomLabSettingsButton")]
-    class ZoomLabSettingsImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.ZoomToAreaTag)]
+    class ZoomToAreaImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AgendaSettings);
+            return new Bitmap(Properties.Resources.ZoomToArea);
         }
     }
 }

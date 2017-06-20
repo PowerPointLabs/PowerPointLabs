@@ -2,9 +2,9 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.ZoomLab
+namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId("ZoomLabMenu")]
+    [ExportImageRibbonId(TextCollection.ZoomLabMenuId)]
     class ZoomLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

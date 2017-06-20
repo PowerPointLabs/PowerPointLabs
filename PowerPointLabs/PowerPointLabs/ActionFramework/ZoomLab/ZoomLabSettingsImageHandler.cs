@@ -4,12 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId(TextCollection.StepBackTag)]
-    class StepBackImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.ZoomLabSettingsTag)]
+    class ZoomLabSettingsImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.ZoomOut);
+            return new Bitmap(Properties.Resources.AgendaSettings);
         }
     }
 }

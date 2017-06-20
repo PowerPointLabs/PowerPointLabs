@@ -300,12 +300,7 @@ namespace PowerPointLabs
             }
         }
 
-        # region Supertips
-        public string GetZoomToAreaButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ZoomToAreaButtonSupertip;
-        }
-        
+        # region Supertipsa
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -449,11 +444,6 @@ namespace PowerPointLabs
             return TextCollection.CombineShapesLabel;
         }
         
-        public string GetZoomToAreaButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ZoomToAreaButtonLabel;
-        }
-
         public string GetSpotlightMenuLabel(Office.IRibbonControl control)
         {
             return TextCollection.SpotlightMenuLabel;
@@ -617,12 +607,6 @@ namespace PowerPointLabs
         # endregion
 
         //Button Click Callbacks
-        public void ZoomBtnClick(Office.IRibbonControl control)
-        {
-            Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-            ZoomToArea.AddZoomToArea();
-        }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
             MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
@@ -761,31 +745,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetHighlightBulletsBackgroundContextImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetZoomToAreaImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ZoomToArea);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomToAreaImage");
-                throw;
-            }
-        }
-        public Bitmap GetZoomToAreaContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ZoomToAreaContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetZoomToAreaContextImage");
                 throw;
             }
         }
@@ -1113,10 +1072,6 @@ namespace PowerPointLabs
         public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
         {
             return InSlideEnabled;
-        }
-        public bool OnGetEnabledZoomButton(Office.IRibbonControl control)
-        {
-            return ZoomButtonEnabled;
         }
         public bool OnGetEnabledHighlightBullets(Office.IRibbonControl control)
         {

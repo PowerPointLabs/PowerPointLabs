@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportLabelRibbonId("AnimationLabSettingsButton")]
+    [ExportLabelRibbonId(TextCollection.AnimationLabSettingsTag)]
     class AnimationLabSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

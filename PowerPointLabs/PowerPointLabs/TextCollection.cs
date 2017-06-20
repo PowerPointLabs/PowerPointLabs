@@ -419,6 +419,17 @@
         public const string RibbonButton = "Button";
         public const string RibbonMenu = "Menu";
 
+        public const string AnimationLabMenuId = "AnimationLabMenu";
+        public const string AddAnimationSlideTag = "AddAnimationSlide";
+        public const string AnimateInSlideTag = "AnimateInSlide";
+        public const string AnimationLabSettingsTag = "AnimationLabSettings";
+
+        public const string ZoomLabMenuId = "ZoomLabMenu";
+        public const string DrillDownTag = "DrillDown";
+        public const string StepBackTag = "StepBack";
+        public const string ZoomToAreaTag = "ZoomToArea";
+        public const string ZoomLabSettingsTag = "ZoomLabSettings";
+
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";

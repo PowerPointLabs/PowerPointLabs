@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId("DrillDown")]
+    [ExportImageRibbonId(TextCollection.DrillDownTag)]
     class DrillDownImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

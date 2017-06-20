@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportLabelRibbonId("DrillDown")]
+    [ExportLabelRibbonId(TextCollection.DrillDownTag)]
     class DrillDownLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

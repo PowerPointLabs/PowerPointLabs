@@ -115,6 +115,28 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             return isEnabled;
         }
 
+        protected bool IsSelectionAllRectangle()
+        {
+            Selection selection = this.GetCurrentSelection();
+            if (selection.Type == PpSelectionType.ppSelectionNone ||
+                selection.Type == PpSelectionType.ppSelectionSlides)
+            {
+                return false;
+            }
+
+            ShapeRange shapes = selection.ShapeRange;
+            foreach (Shape shape in shapes)
+            {
+                if ((shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape ||
+                   shape.AutoShapeType != Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle) &&
+                   shape.Type != Microsoft.Office.Core.MsoShapeType.msoPicture)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         protected bool IsSelectionChildShapeRange()
         {
             Selection selection = this.GetCurrentSelection();

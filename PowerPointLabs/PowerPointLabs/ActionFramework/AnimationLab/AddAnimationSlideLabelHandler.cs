@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportLabelRibbonId("AddAnimationSlide")]
+    [ExportLabelRibbonId(TextCollection.AddAnimationSlideTag)]
     class AddAnimationSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

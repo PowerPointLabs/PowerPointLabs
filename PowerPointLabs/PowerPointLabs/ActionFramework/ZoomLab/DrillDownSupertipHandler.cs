@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportSupertipRibbonId("DrillDown")]
+    [ExportSupertipRibbonId(TextCollection.DrillDownTag)]
     class DrillDownSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

@@ -985,12 +985,6 @@ namespace PowerPointLabs
                 {
                     Ribbon.SpotlightEnabled = true;
                 }
-                if ((sh.Type == Office.MsoShapeType.msoAutoShape &&
-                     sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) ||
-                    sh.Type == Office.MsoShapeType.msoPicture)
-                {
-                    Ribbon.ZoomButtonEnabled = true;
-                }
 
                 if (isResizePaneVisible)
                 {
@@ -1003,6 +997,8 @@ namespace PowerPointLabs
 
             Ribbon.RefreshRibbonControl("AddSpotlightButton");
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
+            Ribbon.RefreshRibbonControl("DrillDownButton");
+            Ribbon.RefreshRibbonControl("StepBackButton");
             Ribbon.RefreshRibbonControl("AddZoomInButton");
             Ribbon.RefreshRibbonControl("AddZoomOutButton");
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");

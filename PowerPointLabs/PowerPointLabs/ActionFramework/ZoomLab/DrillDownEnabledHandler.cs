@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportEnabledRibbonId("DrillDown")]
+    [ExportEnabledRibbonId(TextCollection.DrillDownTag)]
     class DrillDownEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return IsSelectionMultipleSameShapeType();
+            return IsSelectionSingleShape() && IsSelectionAllRectangle();
         }
     }
 }

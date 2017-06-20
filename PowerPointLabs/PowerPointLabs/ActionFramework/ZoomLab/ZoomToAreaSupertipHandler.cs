@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportSupertipRibbonId(TextCollection.StepBackTag)]
-    class StepBackSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId(TextCollection.ZoomToAreaTag)]
+    class ZoomToAreaSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.AddZoomOutButtonSupertip;
+            return TextCollection.ZoomToAreaButtonSupertip;
         }
     }
 }

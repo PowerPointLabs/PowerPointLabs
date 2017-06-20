@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportImageRibbonId("AnimateInSlide")]
+    [ExportImageRibbonId(TextCollection.AnimateInSlideTag)]
     class AnimateInSlideImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

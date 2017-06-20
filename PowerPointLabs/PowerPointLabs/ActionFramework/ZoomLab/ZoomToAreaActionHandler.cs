@@ -4,14 +4,14 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportActionRibbonId(TextCollection.DrillDownTag)]
-    class DrillDownActionHandler : ActionHandler
+    [ExportActionRibbonId(TextCollection.ZoomToAreaTag)]
+    class ZoomToAreaActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
 
-            AutoZoom.AddDrillDownAnimation();
+            ZoomToArea.AddZoomToArea();
         }
     }
 }
