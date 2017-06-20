@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.CropLab
+namespace PowerPointLabs.ActionFramework.CropLab
 {
     [ExportImageRibbonId(TextCollection.CropToAspectRatioTag)]
     class CropToAspectRatioImageHandler : ImageHandler

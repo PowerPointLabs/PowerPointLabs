@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.CropLab;
 
-namespace PowerPointLabs.ActionFramework.Action.CropLab
+namespace PowerPointLabs.ActionFramework.CropLab
 {
     [ExportActionRibbonId(TextCollection.CropLabSettingsTag)]
     class CropLabSettingsActionHandler : CropLabActionHandler

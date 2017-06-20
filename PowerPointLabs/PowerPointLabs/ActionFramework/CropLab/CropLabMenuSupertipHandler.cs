@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Supertip.CropLab
+namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportSupertipRibbonId("CropLabMenu")]
+    [ExportSupertipRibbonId(TextCollection.CropLabMenuId)]
     class CropLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

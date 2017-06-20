@@ -332,7 +332,7 @@
                   getImage="GetImage"
                   getSupertip="GetSupertip"
                   onAction="OnAction"
-                   size="large"/>
+                  size="large"/>
 
           <menu id="CropLabMenu"
                 getLabel="GetLabel"

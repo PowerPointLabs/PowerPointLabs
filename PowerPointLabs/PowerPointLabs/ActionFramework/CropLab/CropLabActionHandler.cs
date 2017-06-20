@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Util;
 using PowerPointLabs.CropLab;
 
 
-namespace PowerPointLabs.ActionFramework.Action.CropLab
+namespace PowerPointLabs.ActionFramework.CropLab
 {
     abstract class CropLabActionHandler : BaseUtilActionHandler
     {

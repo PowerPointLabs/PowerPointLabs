@@ -458,6 +458,7 @@
 
         public const string ShapesLabTag = "ShapesLab";
 
+        public const string CropLabMenuId = "CropLabMenu";
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";
