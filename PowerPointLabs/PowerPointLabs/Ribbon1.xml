@@ -295,6 +295,7 @@
                visible="true">
 
           <button id="PositionsLabButton"
+                  tag="PositionsLab"
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
@@ -302,6 +303,7 @@
                   size="large"/>
           
           <button id="ResizeLabButton"
+                  tag="ResizeLab"
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"

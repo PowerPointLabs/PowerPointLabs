@@ -3,9 +3,9 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ResizeLab;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.ResizeLab
 {
-    [ExportActionRibbonId("ResizeLabButton")]
+    [ExportActionRibbonId(TextCollection.ResizeLabTag)]
     class ResizeLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

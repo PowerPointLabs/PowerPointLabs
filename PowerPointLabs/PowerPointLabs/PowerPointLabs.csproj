@@ -277,8 +277,8 @@
     <Compile Include="ActionFramework\Action\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\PasteLab\PasteToFillSlideActionHandler.cs" />
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
+    <Compile Include="ActionFramework\PositionsLab\PositionsLabActionHandler.cs" />
+    <Compile Include="ActionFramework\ResizeLab\ResizeLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\TimerLabActionHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AddAnimationSlideActionHandler .cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimateInSlideEnabledHandler.cs" />
@@ -393,7 +393,7 @@
     <Compile Include="ActionFramework\Enabled\PasteLab\PasteToFillSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\Image\PasteLab\PasteToFillSlideImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EffectsLabBlurSelectedImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\PositionsLabImageHandler.cs" />
+    <Compile Include="ActionFramework\PositionsLab\PositionsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\ColorsLabImageHandler.cs" />
     <Compile Include="ActionFramework\Image\EmptyImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
@@ -428,8 +428,8 @@
     <Compile Include="ActionFramework\Label\PasteLab\PasteToFillSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EffectsLabBlurSelectedLabelHandler.cs" />
-    <Compile Include="ActionFramework\Label\PositionsLabLabelHandler.cs" />
-    <Compile Include="ActionFramework\Image\ResizeLabImageHandler.cs" />
+    <Compile Include="ActionFramework\PositionsLab\PositionsLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ResizeLab\ResizeLabImageHandler.cs" />
     <Compile Include="ActionFramework\Label\ColorsLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\EmptyLabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
@@ -477,13 +477,13 @@
     <Compile Include="ActionFramework\Supertip\SyncLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EffectsLabBlurSelectedSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\PositionsLabSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Label\ResizeLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\PositionsLab\PositionsLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ResizeLab\ResizeLabLabelHandler.cs" />
     <Compile Include="ActionFramework\Supertip\ColorsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\EmptySupertipHandler.cs" />
     <Compile Include="ActionFramework\Common\Factory\SupertipHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\ResizeLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ResizeLab\ResizeLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\TimerLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabSettingsSupertipHandler.cs" />

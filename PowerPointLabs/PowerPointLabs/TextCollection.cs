@@ -448,6 +448,10 @@
         public const string RemoveHighlightTag = "RemoveHighlight";
         public const string HighlightLabSettingsTag = "HighlightLabSettings";
 
+        public const string PositionsLabTag = "PositionsLab";
+
+        public const string ResizeLabTag = "ResizeLab";
+
         public const string CropToShapeTag = "CropToShape";
         public const string CropToSlideTag = "CropToSlide";
         public const string CropToSameDimensionsTag = "CropToSame";

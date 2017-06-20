@@ -2,9 +2,9 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.PositionsLab
 {
-    [ExportActionRibbonId("PositionsLabButton")]
+    [ExportActionRibbonId(TextCollection.PositionsLabTag)]
     class PositionsLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
