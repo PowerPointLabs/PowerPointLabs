@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Views;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportActionRibbonId(TextCollection.EditNameTag)]
     class EditNameActionHandler : ActionHandler

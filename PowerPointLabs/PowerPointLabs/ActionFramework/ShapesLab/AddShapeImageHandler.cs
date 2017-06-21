@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image
+namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportImageRibbonId(TextCollection.EditNameTag)]
-    class EditNameImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.AddCustomShapeTag)]
+    class AddShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.EditNameContext);
+            return new Bitmap(Properties.Resources.AddToCustomShapes);
         }
     }
 }

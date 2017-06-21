@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportImageRibbonId(TextCollection.ConvertToPictureTag)]
     class ConvertToPictureImageHandler : ImageHandler

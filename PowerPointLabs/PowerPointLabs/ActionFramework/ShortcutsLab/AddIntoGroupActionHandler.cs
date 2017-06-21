@@ -7,7 +7,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Util;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportActionRibbonId(TextCollection.AddIntoGroupTag)]
     class MergeIntoGroupActionHandler : BaseUtilActionHandler
