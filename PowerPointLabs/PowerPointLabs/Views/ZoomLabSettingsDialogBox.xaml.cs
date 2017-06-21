@@ -9,7 +9,7 @@ namespace PowerPointLabs.Views
     public partial class ZoomLabSettingsDialogBox
     {
         public delegate void UpdateSettingsDelegate(bool slideBackgroundChecked, bool multiSlideChecked);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
 
         public ZoomLabSettingsDialogBox()
         {

@@ -13,7 +13,7 @@ namespace PowerPointLabs.Views
         public delegate void UpdateSettingsDelegate(System.Drawing.Color highlightColor, 
                                                     System.Drawing.Color defaultColor, 
                                                     System.Drawing.Color backgroundColor);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
 
         public HighlightLabSettingsDialogBox()
         {

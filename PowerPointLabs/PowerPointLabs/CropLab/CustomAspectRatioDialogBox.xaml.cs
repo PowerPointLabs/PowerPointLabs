@@ -11,7 +11,7 @@ namespace PowerPointLabs.CropLab
     public partial class CustomAspectRatioDialogBox
     {
         public delegate void UpdateSettingsDelegate(string aspectRatioRawString);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
 
         public CustomAspectRatioDialogBox(Shape refShape = null)
         {

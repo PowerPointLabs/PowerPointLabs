@@ -11,7 +11,8 @@ namespace PowerPointLabs.Views
     public partial class AnimationLabSettingsDialogBox
     {
         public delegate void UpdateSettingsDelegate(float animationDuration, bool smoothAnimationChecked);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
+
         private float lastDuration;
 
         public AnimationLabSettingsDialogBox()

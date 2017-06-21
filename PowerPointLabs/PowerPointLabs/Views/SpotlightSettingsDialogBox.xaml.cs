@@ -14,7 +14,7 @@ namespace PowerPointLabs.Views
     public partial class SpotlightSettingsDialogBox
     {
         public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge, System.Drawing.Color newColor);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
 
         private Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {

@@ -10,7 +10,7 @@ namespace PowerPointLabs.Views
     public partial class NarrationsLabSettingsDialogBox
     {
         public delegate void UpdateSettingsDelegate(string voiceName, bool preview);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
 
         public NarrationsLabSettingsDialogBox()
         {

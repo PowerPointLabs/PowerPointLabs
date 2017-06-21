@@ -10,7 +10,7 @@ namespace PowerPointLabs.EffectsLab.Views
     public partial class EffectsLabBlurDialogBox
     {
         public delegate void UpdateSettingsDelegate(int percentage, bool isTinted);
-        public UpdateSettingsDelegate SettingsHandler;
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
 
         private string currentFeature;
         private float lastBlurriness;
