@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 
+using PowerPointLabs.ActionFramework.Common.Log;
+
 namespace PowerPointLabs.EffectsLab.Views
 {
     /// <summary>
@@ -42,7 +44,8 @@ namespace PowerPointLabs.EffectsLab.Views
                     tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintBackground;
                     break;
                 default:
-                    throw new System.Exception("Invalid feature");
+                    Logger.Log(feature + " does not exist!", ActionFramework.Common.Logger.LogType.Error);
+                    break;
             }
 
             Title = properFeatureName + " Settings";

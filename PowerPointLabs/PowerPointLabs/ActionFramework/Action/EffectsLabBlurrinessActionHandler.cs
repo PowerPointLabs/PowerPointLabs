@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.EffectsLab.Views;
 
@@ -64,7 +65,8 @@ namespace PowerPointLabs.ActionFramework.Action
                     EffectsLabBlurSelected.CustomPercentageBackground = percentage;
                     break;
                 default:
-                    throw new System.Exception("Invalid feature");
+                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
+                    break;
             }
             
             this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom);
@@ -81,7 +83,8 @@ namespace PowerPointLabs.ActionFramework.Action
                 case TextCollection.EffectsLabBlurrinessFeatureBackground:
                     return EffectsLabBlurSelected.CustomPercentageBackground;
                 default:
-                    throw new System.Exception("Invalid feature");
+                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
+                    return -1;
             }
         }
 
@@ -100,7 +103,8 @@ namespace PowerPointLabs.ActionFramework.Action
                     this.GetRibbonUi().BlurBackgroundEffectClick(percentage);
                     break;
                 default:
-                    throw new System.Exception("Invalid feature");
+                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
+                    break;
             }
         }
     }

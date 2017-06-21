@@ -24,23 +24,6 @@ namespace PowerPointLabs.ActionFramework.Content
                     TextCollection.EffectsLabBlurrinessTag));
             }
 
-            int customPercentage = 0;
-            switch (feature)
-            {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    customPercentage = EffectsLabBlurSelected.CustomPercentageSelected;
-                    break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
-                    customPercentage = EffectsLabBlurSelected.CustomPercentageRemainder;
-                    break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
-                    customPercentage = EffectsLabBlurSelected.CustomPercentageBackground;
-                    break;
-                default:
-                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
-                    break;
-            }
-
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
                 feature + TextCollection.DynamicMenuSeparatorId));
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
