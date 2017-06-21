@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.HelpMenu
+namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportImageRibbonId("HelpMenu")]
-    class HelpMenuImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.FeedbackTag)]
+    class FeedbackImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.HelpMenu);
+            return new Bitmap(Properties.Resources.Feedback);
         }
     }
 }

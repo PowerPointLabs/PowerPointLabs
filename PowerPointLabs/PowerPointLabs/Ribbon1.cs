@@ -262,28 +262,6 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonSupertip;
         }
-
-        public string GetResizeLabButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.ResizeLabMenuSupertip;
-        }
-
-        public string GetHelpButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.UserGuideButtonSupertip;
-        }
-        public string GetFeedbackButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.FeedbackButtonSupertip;
-        }
-        public string GetAboutButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AboutButtonSupertip;
-        }
-        public string GetPositionsLabSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.PositionsLabMenuSupertip;
-        }
         # endregion
 
         # region Button Labels
@@ -366,24 +344,6 @@ namespace PowerPointLabs
             return TextCollection.DrawingsLabButtonLabel;
         }
 
-        public string GetPositionsLabButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.PositionsLabButtonLabel;
-        }
-
-        public string GetHelpButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.UserGuideButtonLabel;
-        }
-        public string GetFeedbackButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.FeedbackButtonLabel;
-        }
-        public string GetAboutButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AboutButtonLabel;
-        }
-
         public string GetContextSpeakSelectedTextLabel(Office.IRibbonControl control)
         {
             return TextCollection.ContextSpeakSelectedTextLabel;
@@ -403,60 +363,6 @@ namespace PowerPointLabs
         # endregion
 
         //Button Click Callbacks
-        public void AboutButtonClick(Office.IRibbonControl control)
-        {
-            MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
-        }
-        public void HelpButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Process.Start(TextCollection.HelpDocumentUrl);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "HelpButtonClick");
-                throw;
-            }
-        }
-        public void TutorialButtonClick(Office.IRibbonControl control)
-        {
-            string sourceFile = "";
-            switch (Properties.Settings.Default.ReleaseType)
-            {
-                case "dev":
-                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
-                    break;
-                case "release":
-                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
-                    break;
-            }
-
-            try
-            {
-                if (sourceFile != "")
-                {
-                    Process.Start("POWERPNT", sourceFile);
-                }
-            }
-            catch
-            {
-                Logger.Log("TutorialButtonClick: Failed to open tutorial file!", ActionFramework.Common.Logger.LogType.Error);
-            }
-        }
-        public void FeedbackButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Process.Start(TextCollection.FeedbackUrl);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "FeedbackButtonClick");
-                throw;
-            }
-        }
-
         # region Icon Getters
         public Bitmap GetSpotlightImage(Office.IRibbonControl control)
         {
@@ -569,18 +475,6 @@ namespace PowerPointLabs
             }
         }
 
-        public Bitmap GetAboutImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.About);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAboutImage");
-                throw;
-            }
-        }
         public Bitmap GetHelpImage(Office.IRibbonControl control)
         {
             try
@@ -590,18 +484,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetHelpImage");
-                throw;
-            }
-        }
-        public Bitmap GetFeedbackImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.Feedback);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetFeedbackImage");
                 throw;
             }
         }

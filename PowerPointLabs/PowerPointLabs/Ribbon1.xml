@@ -483,9 +483,8 @@
 
         </group>
         <group id="HelpGroup"
-               getImage="GetImage"
                label="Help"
-               visible="true">
+               getImage="GetImage">
           
           <menu id="HelpMenu"
                 getLabel="GetLabel"
@@ -493,25 +492,29 @@
                 getSupertip="GetSupertip"
                 size="large">
             <button id="HelpButton"
-                    getLabel="GetHelpButtonLabel"
-                    getImage="GetHelpImage"
-                    getSupertip="GetHelpButtonSupertip"
-                    onAction="HelpButtonClick"/>
-            <button id="TutorialButton"
+                    tag="Help"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
-                    onAction="TutorialButtonClick"/>
+                    onAction="OnAction"/>
+            <button id="TutorialButton"
+                    tag="Tutorial"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
             <button id="FeedbackButton"
-                    getLabel="GetFeedbackButtonLabel"
-                    getImage="GetFeedbackImage"
-                    getSupertip="GetFeedbackButtonSupertip"
-                    onAction="FeedbackButtonClick"/>
+                    tag="Feedback"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
             <button id="AboutButton"
-                    getLabel="GetAboutButtonLabel"
-                    getImage="GetAboutImage"
-                    getSupertip="GetAboutButtonSupertip"
-                    onAction="AboutButtonClick"/>
+                    tag="About"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
           </menu>
           
         </group>

@@ -484,6 +484,12 @@
         public const string UpdateAgendaTag = "UpdateAgenda";
 
         public const string PictureSlidesLabTag = "PictureSlidesLab";
+
+        public const string HelpMenuId = "HelpMenu";
+        public const string HelpTag = "Help";
+        public const string TutorialTag = "Tutorial";
+        public const string FeedbackTag = "Feedback";
+        public const string AboutTag = "About";
         #endregion
 
         #region Context Menu Content
