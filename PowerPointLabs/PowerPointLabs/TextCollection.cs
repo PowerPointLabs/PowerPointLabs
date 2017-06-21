@@ -382,7 +382,7 @@
         public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
         public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
         public const string DynamicMenuXmlTitleMenuSeparator = "<menuSeparator id=\"{0}Separator\" title=\"{1}\"/>";
-        public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
+        public const string EffectsLabBlurrinessButtonLabel = "Settings";
         public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";
         public const string EffectsLabBlurrinessCustom = "CustomPercentage";
