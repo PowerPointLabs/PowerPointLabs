@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Supertip.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportSupertipRibbonId(TextCollection.PasteIntoGroupTag)]
     class PasteIntoGroupSupertipHandler : SupertipHandler

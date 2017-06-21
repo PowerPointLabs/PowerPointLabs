@@ -9,7 +9,7 @@ using PowerPointLabs.ActionFramework.Util;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.ActionFramework.Action.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     abstract class PasteLabActionHandler : BaseUtilActionHandler
     {

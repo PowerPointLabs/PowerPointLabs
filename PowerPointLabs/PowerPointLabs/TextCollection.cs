@@ -466,6 +466,7 @@
         public const string CropOutPaddingTag = "CropOutPadding";
         public const string CropLabSettingsTag = "CropLabSettings";
 
+        public const string PasteLabMenuId = "PasteLabMenu";
         public const string PasteAtCursorPositionTag = "PasteAtCursorPosition";
         public const string PasteAtOriginalPositionTag = "PasteAtOriginalPosition";
         public const string PasteToFillSlideTag = "PasteToFillSlide";

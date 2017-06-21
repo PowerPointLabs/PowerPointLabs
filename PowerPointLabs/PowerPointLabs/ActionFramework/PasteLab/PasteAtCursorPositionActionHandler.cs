@@ -7,7 +7,7 @@ using PowerPointLabs.PasteLab;
 
 using PPExtraEventHelper;
 
-namespace PowerPointLabs.ActionFramework.Action.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportActionRibbonId(TextCollection.PasteAtCursorPositionTag)]
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler

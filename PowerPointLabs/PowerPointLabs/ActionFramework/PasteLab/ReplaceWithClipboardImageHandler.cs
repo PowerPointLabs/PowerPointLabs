@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportImageRibbonId(TextCollection.ReplaceWithClipboardTag)]
     class ReplaceWithClipboardImageHandler : ImageHandler

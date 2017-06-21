@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
 
-namespace PowerPointLabs.ActionFramework.Action.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportActionRibbonId(TextCollection.ReplaceWithClipboardTag)]
     class ReplaceWithClipboardActionHandler : PasteLabActionHandler

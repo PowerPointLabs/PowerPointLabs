@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportEnabledRibbonId(TextCollection.ReplaceWithClipboardTag)]
     class ReplaceWithClipboardEnabledHandler : EnabledHandler

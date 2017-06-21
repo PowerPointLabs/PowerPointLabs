@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportLabelRibbonId(TextCollection.PasteToFillSlideTag)]
     class PasteToFillSlideLabelHandler : LabelHandler

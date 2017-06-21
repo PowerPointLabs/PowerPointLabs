@@ -2,10 +2,10 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.ActionFramework.Enabled.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportEnabledRibbonId(TextCollection.PasteToFillSlideTag)]
-    class PasteToFillSlideEnabledHandler : EnabledHandler
+    [ExportEnabledRibbonId(TextCollection.PasteAtCursorPositionTag)]
+    class PasteAtCursorPositionEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {

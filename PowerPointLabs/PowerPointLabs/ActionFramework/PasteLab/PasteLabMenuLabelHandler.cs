@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Label.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportLabelRibbonId("PasteLabMenu")]
+    [ExportLabelRibbonId(TextCollection.PasteLabMenuId)]
     class PasteLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

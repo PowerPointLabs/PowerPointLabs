@@ -3,7 +3,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
 
-namespace PowerPointLabs.ActionFramework.Action.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportActionRibbonId(TextCollection.PasteAtOriginalPositionTag)]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler

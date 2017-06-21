@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Supertip.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportSupertipRibbonId("PasteLabMenu")]
+    [ExportSupertipRibbonId(TextCollection.PasteLabMenuId)]
     class PasteLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

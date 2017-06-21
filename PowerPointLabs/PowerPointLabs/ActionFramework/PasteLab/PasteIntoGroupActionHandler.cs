@@ -6,7 +6,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.ActionFramework.Action.PasteLab
+namespace PowerPointLabs.ActionFramework.PasteLab
 {
     [ExportActionRibbonId(TextCollection.PasteIntoGroupTag)]
     class PasteIntoGroupActionHandler : PasteLabActionHandler
