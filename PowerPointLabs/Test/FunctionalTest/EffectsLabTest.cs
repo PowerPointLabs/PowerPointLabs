@@ -1,6 +1,10 @@
 ﻿using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
+
+using PowerPointLabs.EffectsLab;
 
 namespace Test.FunctionalTest
 {

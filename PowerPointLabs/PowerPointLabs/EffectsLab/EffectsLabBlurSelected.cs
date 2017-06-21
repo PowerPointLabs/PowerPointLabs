@@ -8,6 +8,7 @@ using ImageProcessor;
 using ImageProcessor.Imaging;
 
 using PowerPointLabs.CropLab;
+using PowerPointLabs.Views;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -19,6 +20,10 @@ namespace PowerPointLabs.EffectsLab
         public static bool IsTintSelected = false;
         public static bool IsTintRemainder = false;
         public static bool IsTintBackground = false;
+
+        public static int CustomPercentageSelected = 95;
+        public static int CustomPercentageRemainder = 95;
+        public static int CustomPercentageBackground = 95;
 
         private static Models.PowerPointSlide _slide;
 
@@ -327,7 +332,7 @@ namespace PowerPointLabs.EffectsLab
             }
             else
             {
-                Views.ErrorDialogWrapper.ShowDialog(MessageBoxTitle, content, exception);
+                ErrorDialogWrapper.ShowDialog(MessageBoxTitle, content, exception);
             }
         }
     }

@@ -689,7 +689,10 @@ namespace PowerPointLabs
         }
         public void AboutButtonClick(Office.IRibbonControl control)
         {
-            MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
+            AboutDialogBox dialog = new AboutDialogBox(Properties.Settings.Default.Version, 
+                                                    Properties.Settings.Default.ReleaseDate, 
+                                                    TextCollection.PowerPointLabsWebsiteUrl);
+            dialog.ShowDialog();
         }
         public void HelpButtonClick(Office.IRibbonControl control)
         {
@@ -1346,7 +1349,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new AnimationLabDialogBox(DefaultDuration, FrameAnimationChecked);
+                AnimationLabSettingsDialogBox dialog = new AnimationLabSettingsDialogBox(DefaultDuration, FrameAnimationChecked);
                 dialog.SettingsHandler += AnimationPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1379,7 +1382,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new ZoomLabDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
+                ZoomLabSettingsDialogBox dialog = new ZoomLabSettingsDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
                 dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1411,8 +1414,9 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges,
-                    Spotlight.defaultColor);
+                SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(Spotlight.defaultTransparency, 
+                                                                                    Spotlight.defaultSoftEdges,
+                                                                                    Spotlight.defaultColor);
                 dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1457,7 +1461,9 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor, HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
+                HighlightLabSettingsDialogBox dialog = new HighlightLabSettingsDialogBox(HighlightBulletsText.highlightColor, 
+                                                                                        HighlightBulletsText.defaultColor, 
+                                                                                        HighlightBulletsBackground.backgroundColor);
                 dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -1617,8 +1623,9 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new NarrationsLabDialogBox(_voiceSelected, _voiceNames,
-                    _previewCurrentSlide);
+                NarrationsLabSettingsDialogBox dialog = new NarrationsLabSettingsDialogBox(_voiceSelected, 
+                                                                                        _voiceNames,
+                                                                                        _previewCurrentSlide);
                 dialog.SettingsHandler += NarrationsLabSettingsChanged;
                 dialog.ShowDialog();
             }

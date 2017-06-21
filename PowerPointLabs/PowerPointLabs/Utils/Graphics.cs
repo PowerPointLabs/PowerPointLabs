@@ -1066,6 +1066,26 @@ namespace PowerPointLabs.Utils
             g = (byte)((rgb >> 8) & 255);
             b = (byte)((rgb >> 16) & 255);
         }
+
+        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor)
+        {
+            return Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+        }
+
+        public static System.Windows.Media.Color MediaColorFromDrawingColor(Drawing.Color drawingColor)
+        {
+            return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
+        }
+
+        public static Drawing.Color DrawingColorFromBrush(System.Windows.Media.Brush brush)
+        {
+            return DrawingColorFromMediaColor((brush as SolidColorBrush).Color);
+        }
+
+        public static System.Windows.Media.Brush MediaBrushFromDrawingColor(Drawing.Color color)
+        {
+            return new SolidColorBrush(MediaColorFromDrawingColor(color));
+        }
         # endregion
         # endregion
 

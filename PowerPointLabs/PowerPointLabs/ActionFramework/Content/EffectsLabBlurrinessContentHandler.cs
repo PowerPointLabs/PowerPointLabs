@@ -1,5 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.EffectsLab;
 
 namespace PowerPointLabs.ActionFramework.Content
 {
@@ -11,20 +13,44 @@ namespace PowerPointLabs.ActionFramework.Content
     {
         protected override string GetContent(string ribbonId)
         {
-            var feature = ribbonId.Replace(TextCollection.DynamicMenuId, "");
+            string feature = ribbonId.Replace(TextCollection.DynamicMenuId, "");
 
-            var xmlString = new System.Text.StringBuilder();
+            System.Text.StringBuilder xmlString = new System.Text.StringBuilder();
 
             for (int i = 0; i < 7; i++)
             {
-                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, feature + TextCollection.DynamicMenuOptionId + (i + 4) + "0",
+                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
+                    feature + TextCollection.DynamicMenuOptionId + (i + 4) + "0",
                     TextCollection.EffectsLabBlurrinessTag));
             }
 
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, feature));
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlCheckBox, feature + TextCollection.DynamicMenuCheckBoxId,
-                TextCollection.EffectsLabBlurrinessTag));
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, feature + TextCollection.DynamicMenuButtonId,
+            int customPercentage = 0;
+            switch (feature)
+            {
+                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                    customPercentage = EffectsLabBlurSelected.CustomPercentageSelected;
+                    break;
+                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                    customPercentage = EffectsLabBlurSelected.CustomPercentageRemainder;
+                    break;
+                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                    customPercentage = EffectsLabBlurSelected.CustomPercentageBackground;
+                    break;
+                default:
+                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
+                    break;
+            }
+
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
+                feature + TextCollection.DynamicMenuSeparatorId));
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
+                    feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom,
+                    TextCollection.EffectsLabBlurrinessTag));
+
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
+                feature + TextCollection.DynamicMenuOptionId + TextCollection.DynamicMenuSeparatorId));
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
+                feature + TextCollection.DynamicMenuButtonId,
                 TextCollection.EffectsLabBlurrinessTag));
 
             return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);

@@ -299,7 +299,7 @@
 
         # region Highlight Lab
         public const string HighlightLabMenuLabel = "Highlight";
-        public const string SpotlightPropertiesButtonLabel = "Spotlight Properties";
+        public const string SpotlightPropertiesButtonLabel = "Settings";
         public const string SpotlightMenuLabel = "Spotlight";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
@@ -375,6 +375,7 @@
         public const string DynamicMenuButtonId = "Button";
         public const string DynamicMenuCheckBoxId = "CheckBox";
         public const string DynamicMenuOptionId = "Option";
+        public const string DynamicMenuSeparatorId = "Separator";
         public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" getLabel=\"GetLabel\" getImage=\"GetImage\" getEnabled=\"GetEnabled\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
@@ -384,6 +385,7 @@
         public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
         public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";
+        public const string EffectsLabBlurrinessCustom = "CustomPercentage";
         public const string EffectsLabBlurrinessFeatureSelected = "EffectsLabBlurSelected";
         public const string EffectsLabBlurrinessFeatureRemainder = "EffectsLabBlurRemainder";
         public const string EffectsLabBlurrinessFeatureBackground = "EffectsLabBlurBackground";
@@ -418,13 +420,6 @@
 
         public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
 
-        # endregion
-
-        # region Ribbon
-        public static readonly string AboutInfo =
-            "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
-
-        public const string AboutInfoTitle = "About PowerPointLabs";
         # endregion
 
         # region ThisAddIn

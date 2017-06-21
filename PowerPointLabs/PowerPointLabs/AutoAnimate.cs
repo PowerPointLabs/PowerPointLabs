@@ -131,8 +131,8 @@ namespace PowerPointLabs
             var addedSlide = currentSlide.CreateAutoAnimateSlide() as PowerPointAutoAnimateSlide;
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
-            AboutForm progressForm = new AboutForm();
-            progressForm.Visible = true;
+            LoadingDialogBox loadingDialog = new LoadingDialogBox(content: "Applying auto animation...");
+            loadingDialog.Show();
 
             addedSlide.MoveMotionAnimation(); //Move shapes with motion animation already added
             addedSlide.PrepareForAutoAnimate();
@@ -142,7 +142,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
             PowerPointPresentation.Current.AddAckSlide();
 
-            progressForm.Close();
+            loadingDialog.Close();
         }
 
         private static void PrepareNextSlide(PowerPointSlide nextSlide)
