@@ -24,7 +24,7 @@ namespace PowerPointLabs.EffectsLab.Views
             : this()
         {
             currentFeature = feature;
-            string properFeatureName = null;
+            string properFeatureName = "Effects Lab";
 
             switch (feature)
             {
