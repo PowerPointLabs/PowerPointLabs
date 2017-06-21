@@ -420,11 +420,12 @@
                visible="true">
           
           <button id="TimerLabButton"
+                  tag="TimerLab"
                   getLabel="GetLabel"
-                  size="large"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+                  onAction="OnAction"
+                  size="large"/>
 
           <menu id="AgendaLabsMenu"
                 getLabel="GetAgendaLabButtonLabel"

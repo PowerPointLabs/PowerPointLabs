@@ -2,9 +2,9 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Image
+namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportImageRibbonId("TimerLabButton")]
+    [ExportImageRibbonId(TextCollection.TimerLabTag)]
     class TimerLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

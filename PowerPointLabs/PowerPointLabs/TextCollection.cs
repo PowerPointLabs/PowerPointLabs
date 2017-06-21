@@ -472,6 +472,8 @@
         public const string PasteToFillSlideTag = "PasteToFillSlide";
         public const string ReplaceWithClipboardTag = "ReplaceWithClipboard";
         public const string PasteIntoGroupTag = "PasteIntoGroup";
+
+        public const string TimerLabTag = "TimerLab";
         #endregion
 
         #region Context Menu Content

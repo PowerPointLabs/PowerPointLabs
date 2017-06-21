@@ -279,7 +279,7 @@
     <Compile Include="ActionFramework\Action\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\PositionsLab\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\ResizeLab\ResizeLabActionHandler.cs" />
-    <Compile Include="ActionFramework\Action\TimerLabActionHandler.cs" />
+    <Compile Include="ActionFramework\TimerLab\TimerLabActionHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AddAnimationSlideActionHandler .cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimateInSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimateInSlideActionHandler.cs" />
@@ -399,7 +399,7 @@
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
-    <Compile Include="ActionFramework\Image\TimerLabImageHandler.cs" />
+    <Compile Include="ActionFramework\TimerLab\TimerLabImageHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropLabSettingsLabelHandler.cs" />
@@ -435,7 +435,7 @@
     <Compile Include="ActionFramework\Common\Factory\LabelHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\LabelHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportSupertipRibbonIdAttribute.cs" />
-    <Compile Include="ActionFramework\Label\TimerLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\TimerLab\TimerLabLabelHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\NarrationsLab\NarrationsLabMenuImageHandler.cs" />
@@ -484,7 +484,7 @@
     <Compile Include="ActionFramework\Common\Factory\SupertipHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\SupertipHandler.cs" />
     <Compile Include="ActionFramework\ResizeLab\ResizeLabSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Supertip\TimerLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TimerLab\TimerLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\Util\BaseUtilActionHandler.cs" />

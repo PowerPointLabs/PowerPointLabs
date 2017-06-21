@@ -3,9 +3,9 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TimerLab;
 
-namespace PowerPointLabs.ActionFramework.Action
+namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportActionRibbonId("TimerLabButton")]
+    [ExportActionRibbonId(TextCollection.TimerLabTag)]
     class TimerLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

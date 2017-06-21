@@ -1,9 +1,9 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.Supertip
+namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportSupertipRibbonId("TimerLabButton")]
+    [ExportSupertipRibbonId(TextCollection.TimerLabTag)]
     class TimerLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
