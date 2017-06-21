@@ -286,6 +286,10 @@
     <Compile Include="ActionFramework\Action\ShortcutsLab\EditNameActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ShortcutsLab\ConvertToPictureActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteLabActionHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabActionHandler .cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabImageHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\SyncLab\SyncLabActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropToShapeActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropToAspectRatioActionHandler.cs" />

@@ -86,6 +86,7 @@
         #endregion
 
         #region Picture Slides Lab
+        public const string PictureSlidesLabMenuLabel = "Picture Slides";
         public const string PictureSlidesLabMenuSupertip =
             "Use Picture Slides Lab to create better picture slides using less effort.\n\n" +
             "Click this button to open the Picture Slides Lab interface.";
@@ -481,6 +482,8 @@
         public const string BeamAgendaTag = "BeamAgenda";
         public const string RemoveAgendaTag = "RemoveAgenda";
         public const string UpdateAgendaTag = "UpdateAgenda";
+
+        public const string PictureSlidesLabTag = "PictureSlidesLab";
         #endregion
 
         #region Context Menu Content

@@ -884,37 +884,6 @@ namespace PowerPointLabs
 
         public PictureSlidesLabWindow PictureSlidesLabWindow { get; set; }
 
-        public void PictureSlidesLabButtonClick(Office.IRibbonControl control)
-        {
-            if (PictureSlidesLabWindow == null || !PictureSlidesLabWindow.IsOpen)
-            {
-                PictureSlidesLabWindow = new PictureSlidesLabWindow();
-                PictureSlidesLabWindow.Show();
-            }
-            else
-            {
-                PictureSlidesLabWindow.Activate();
-            }
-        }
-
-        public Bitmap GetPictureSlidesLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.PictureSlidesLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetPictureSlidesLabImage");
-                throw;
-            }
-        }
-
-        public string GetPictureSlidesLabSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.PictureSlidesLabMenuSupertip;
-        }
-
         #endregion
 
         # region Feature: Combine Shapes

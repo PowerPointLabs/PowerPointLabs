@@ -466,15 +466,16 @@
           </menu>
 
           <button id="PictureSlidesLabButton"
-                  label="Picture Slides"
-                  size="large"
-                  getImage="GetPictureSlidesLabImage"
-                  getSupertip="GetPictureSlidesLabSupertip"
-                  onAction="PictureSlidesLabButtonClick"/>
+                  tag="PictureSlidesLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
 
           <button id="DrawingsLabButton"
                   visible="false"
-                  getLabel="GetDrawingsLabButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
                   getImage="GetDrawingsLabImage"
                   getSupertip="GetDrawingsLabButtonSupertip"
