@@ -474,6 +474,13 @@
         public const string PasteIntoGroupTag = "PasteIntoGroup";
 
         public const string TimerLabTag = "TimerLab";
+
+        public const string AgendaLabMenuId = "AgendaLabMenu";
+        public const string TextAgendaTag = "TextAgenda";
+        public const string VisualAgendaTag = "VisualAgenda";
+        public const string BeamAgendaTag = "BeamAgenda";
+        public const string RemoveAgendaTag = "RemoveAgenda";
+        public const string UpdateAgendaTag = "UpdateAgenda";
         #endregion
 
         #region Context Menu Content

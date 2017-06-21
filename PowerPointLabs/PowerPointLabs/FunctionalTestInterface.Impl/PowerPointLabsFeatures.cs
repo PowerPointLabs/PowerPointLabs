@@ -211,7 +211,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BulletPointAgendaClick(new RibbonControl("TextAgenda"));
+                Ribbon.OnAction(new RibbonControl("TextAgenda"));
             });
         }
 
@@ -219,7 +219,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.VisualAgendaClick(new RibbonControl("VisualAgenda"));
+                Ribbon.OnAction(new RibbonControl("VisualAgenda"));
             });
         }
 
@@ -227,7 +227,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BeamAgendaClick(new RibbonControl("BeamAgenda"));
+                Ribbon.OnAction(new RibbonControl("BeamAgenda"));
             });
         }
 
@@ -235,7 +235,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.RemoveAgendaClick(new RibbonControl("RemoveAgenda"));
+                Ribbon.OnAction(new RibbonControl("RemoveAgenda"));
             });
         }
 
@@ -243,7 +243,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.UpdateAgendaClick(new RibbonControl("SyncAgenda"));
+                Ribbon.OnAction(new RibbonControl("SyncAgenda"));
             });
         }
 

@@ -258,31 +258,6 @@ namespace PowerPointLabs
             return TextCollection.EffectsLabColorizeBackgroundSupertip;
         }
 
-        public string GetAgendaLabSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabSupertip;
-        }
-        public string GetAgendaLabBulletPointSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabBulletPointSupertip;
-        }
-        public string GetAgendaLabVisualAgendaSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabVisualAgendaSupertip;
-        }
-        public string GetAgendaLabBeamAgendaSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabBeamAgendaSupertip;
-        }
-        public string GetAgendaLabUpdateAgendaSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabUpdateAgendaSupertip;
-        }
-        public string GetAgendaLabRemoveAgendaSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabRemoveAgendaSupertip;
-        }
-
         public string GetDrawingsLabButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.DrawingsLabButtonSupertip;
@@ -376,22 +351,6 @@ namespace PowerPointLabs
         public string GetAgendaLabBulletPointButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.AgendaLabBulletPointButtonLabel;
-        }
-        public string GetAgendaLabVisualAgendaButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabVisualAgendaButtonLabel;
-        }
-        public string GetAgendaLabBeamAgendaButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabBeamAgendaButtonLabel;
-        }
-        public string GetAgendaLabUpdateAgendaButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabUpdateAgendaButtonLabel;
-        }
-        public string GetAgendaLabRemoveAgendaButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabRemoveAgendaButtonLabel;
         }
         public string GetAgendaLabAgendaSettingsButtonLabel(Office.IRibbonControl control)
         {
@@ -585,78 +544,6 @@ namespace PowerPointLabs
             }
         }
 
-        public Bitmap GetAgendaLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaLabImage");
-                throw;
-            }
-        }
-        public Bitmap GetAgendaTextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaText);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaTextImage");
-                throw;
-            }
-        }
-        public Bitmap GetAgendaVisualImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaVisual);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaVisualImage");
-                throw;
-            }
-        }
-        public Bitmap GetAgendaSidebarImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaSidebar);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaSidebarImage");
-                throw;
-            }
-        }
-        public Bitmap GetAgendaRemoveImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaRemove);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaRemoveImage");
-                throw;
-            }
-        }
-        public Bitmap GetAgendaSyncImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaSync);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaSyncImage");
-                throw;
-            }
-        }
         public Bitmap GetAgendaSettingsImage(Office.IRibbonControl control)
         {
             try
@@ -1455,88 +1342,6 @@ namespace PowerPointLabs
         {
             shape.Fill.Transparency = 0.5f;
             shape.Line.Transparency = 0.5f;
-        }
-        # endregion
-
-        # region Feature: Agenda Lab
-        public void BeamAgendaClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Beam);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Unexpected error during generation", e.Message, e);
-                throw e;
-            }
-            GC.Collect();
-        }
-
-        public void BulletPointAgendaClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Bullet);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Unexpected error during generation", e.Message, e);
-                throw e;
-            }
-            GC.Collect();
-        }
-
-        public void VisualAgendaClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AgendaLab.AgendaLabMain.GenerateAgenda(AgendaLab.Type.Visual);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Unexpected error during generation", e.Message, e);
-                throw e;
-            }
-            GC.Collect();
-        }
-
-        public void RemoveAgendaClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AgendaLab.AgendaLabMain.RemoveAgenda();
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Unexpected error during removal", e.Message, e);
-                throw e;
-            }
-            GC.Collect();
-        }
-
-        public void UpdateAgendaClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                AgendaLab.AgendaLabMain.SynchroniseAgenda();
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Unexpected error during sync", e.Message, e);
-                throw e;
-            }
-            GC.Collect();
         }
         # endregion
 

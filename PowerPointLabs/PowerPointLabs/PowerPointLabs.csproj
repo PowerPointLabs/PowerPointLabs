@@ -256,6 +256,29 @@
   -->
   <ItemGroup>
     <Compile Include="ActionFramework\Action\ShortcutsLab\HideShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\AgendaLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\AgendaLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\AgendaLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\UpdateAgendaImageHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\UpdateAgendaSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\UpdateAgendaLabelHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\UpdateAgendaActionHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\RemoveAgendaSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\RemoveAgendaLabelHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\RemoveAgendaImageHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\RemoveAgendaActionHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\BeamAgendaActionHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\BeamAgendaImageHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\BeamAgendaLabelHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\BeamAgendaSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\VisualAgendaSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\VisualAgendaLabelHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\VisualAgendaImageHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\VisualAgendaActionHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\TextAgendaActionHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\TextAgendaImageHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\TextAgendaLabelHandler.cs" />
+    <Compile Include="ActionFramework\AgendaLab\TextAgendaSupertipHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropLabActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropToSameActionHandler.cs" />
