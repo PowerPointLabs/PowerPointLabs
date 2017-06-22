@@ -3,6 +3,8 @@ using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 
+using Forms = System.Windows.Forms;
+
 namespace PowerPointLabs.Views
 {
     /// <summary>
@@ -10,15 +12,21 @@ namespace PowerPointLabs.Views
     /// </summary>
     public partial class ShapesLabCategoryInfoDialogBox
     {
+        // for names, we do not allow name involves
+        // < (less than)
+        // > (greater than)
+        // : (colon)
+        // " (double quote)
+        // / (forward slash)
+        // \ (backslash)
+        // | (vertical bar or pipe)
+        // ? (question mark)
+        // * (asterisk)
+
+        // Regex = [<>:"/\\|?*]
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
-
-        public enum Option
-        {
-            Ok,
-            Cancel
-        }
-
-        public Option UserOption { get; private set; }
+        
+        public Forms.DialogResult Result { get; private set; }
         public string CategoryName { get; private set; }
         
 
@@ -32,32 +40,31 @@ namespace PowerPointLabs.Views
                 nameInput.SelectAll();
             }
 
-            UserOption = Option.Cancel;
+            Result = Forms.DialogResult.OK;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             string categoryName = nameInput.Text;
 
-            if (VerifyName(categoryName) &&
-                VerifyCategory(categoryName))
+            if (VerifyName(categoryName) && VerifyCategory(categoryName))
             {
                 CategoryName = nameInput.Text;
-                UserOption = Option.Ok;
+                Result = Forms.DialogResult.OK;
                 Close();
             }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            UserOption = Option.Cancel;
+            Result = Forms.DialogResult.Cancel;
             Close();
         }
 
         #region Helper Functions
         private bool VerifyName(string name)
         {
-            if (name.Length > 255)
+            if (Utils.Graphics.IsShapeNameOverMaximumLength(name))
             {
                 MessageBox.Show(TextCollection.ErrorNameTooLong);
                 return false;
@@ -65,8 +72,7 @@ namespace PowerPointLabs.Views
 
             var invalidChars = new Regex(InvalidCharsRegex);
 
-            if (string.IsNullOrWhiteSpace(name) ||
-                invalidChars.IsMatch(name))
+            if (string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name))
             {
                 MessageBox.Show(TextCollection.ErrorInvalidCharacter);
                 return false;

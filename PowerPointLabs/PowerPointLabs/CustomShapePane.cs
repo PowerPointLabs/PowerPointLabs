@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -315,7 +314,7 @@ namespace PowerPointLabs
 
             categoryInfoDialog.ShowDialog();
 
-            if (categoryInfoDialog.UserOption == ShapesLabCategoryInfoDialogBox.Option.Ok)
+            if (categoryInfoDialog.Result == DialogResult.OK)
             {
                 var categoryName = categoryInfoDialog.CategoryName;
 
@@ -490,7 +489,7 @@ namespace PowerPointLabs
 
             categoryInfoDialog.ShowDialog();
 
-            if (categoryInfoDialog.UserOption == ShapesLabCategoryInfoDialogBox.Option.Ok)
+            if (categoryInfoDialog.Result == DialogResult.OK)
             {
                 var categoryName = categoryInfoDialog.CategoryName;
 
@@ -541,7 +540,7 @@ namespace PowerPointLabs
 
             settingDialog.ShowDialog();
 
-            if (settingDialog.UserOption == ShapesLabSettingsDialogBox.Option.Ok)
+            if (settingDialog.Result == DialogResult.OK)
             {
                 var newPath = settingDialog.DefaultSavingPath;
 

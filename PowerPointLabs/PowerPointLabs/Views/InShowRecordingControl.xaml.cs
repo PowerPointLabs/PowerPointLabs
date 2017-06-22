@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 
@@ -10,6 +11,8 @@ using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
 using PPExtraEventHelper;
+
+using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.Views
 {
@@ -79,7 +82,7 @@ namespace PowerPointLabs.Views
             return index - _startingSlide + 1;
         }
 
-        private void RecButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void RecButton_Click(object sender, RoutedEventArgs e)
         {
             if (_recorder == null)
             {
@@ -96,7 +99,7 @@ namespace PowerPointLabs.Views
             }
             catch (COMException)
             {
-                MessageBox.Show(TextCollection.InShowControlInvalidRecCommandError);
+                Forms.MessageBox.Show(TextCollection.InShowControlInvalidRecCommandError);
                 return;
             }
 
@@ -142,7 +145,7 @@ namespace PowerPointLabs.Views
             }
         }
 
-        private void UndoButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
             if (_recorder == null)
             {

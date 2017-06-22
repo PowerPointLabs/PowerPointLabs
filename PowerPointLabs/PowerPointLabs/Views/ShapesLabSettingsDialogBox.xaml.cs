@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 using PowerPointLabs.DataSources;
 using PowerPointLabs.Utils;
+
+using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.Views
 {
@@ -13,13 +16,7 @@ namespace PowerPointLabs.Views
     /// </summary>
     public partial class ShapesLabSettingsDialogBox
     {
-        public enum Option
-        {
-            Ok,
-            Cancel
-        }
-
-        public Option UserOption { get; private set; }
+        public DialogResult Result { get; private set; }
         public string DefaultSavingPath
         {
             get
@@ -38,7 +35,7 @@ namespace PowerPointLabs.Views
         public ShapesLabSettingsDialogBox(string defaultPath)
             : this()
         {
-            savePathBrowserIconImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            savePathBrowserIconImage.Source = Imaging.CreateBitmapSourceFromHBitmap(
                     Properties.Resources.Load_icon.GetHbitmap(),
                     IntPtr.Zero,
                     Int32Rect.Empty,
@@ -49,18 +46,18 @@ namespace PowerPointLabs.Views
             savePathInput.IsReadOnly = true;
             savePathInput.Text = _settingsDataSource.DefaultSavingPath;
 
-            UserOption = Option.Cancel;
+            Result = Forms.DialogResult.Cancel;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            UserOption = Option.Ok;
+            Result = Forms.DialogResult.OK;
             Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            UserOption = Option.Cancel;
+            Result = Forms.DialogResult.Cancel;
             Close();
         }
 
@@ -81,7 +78,7 @@ namespace PowerPointLabs.Views
                 // this launcher will scroll the view to selected path
                 var result = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
 
-                if (result == System.Windows.Forms.DialogResult.OK)
+                if (result == Forms.DialogResult.OK)
                 {
                     var newPath = folderDialog.SelectedPath;
 

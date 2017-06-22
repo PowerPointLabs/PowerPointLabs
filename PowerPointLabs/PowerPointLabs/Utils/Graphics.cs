@@ -35,11 +35,12 @@ namespace PowerPointLabs.Utils
         public const float PictureExportingRatio = 96.0f / 72.0f;
         private const float TargetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+        private const int MaxShapeNameLength = 255;
 
         // Static initializer to retrieve dpi scale once
         static Graphics()
         {
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            using (Drawing.Graphics g = Drawing.Graphics.FromHwnd(IntPtr.Zero))
             {
                 dpiScale = g.DpiX / TargetDpi;
             }
@@ -48,6 +49,11 @@ namespace PowerPointLabs.Utils
 
         # region API
         # region Shape
+        public static bool IsShapeNameOverMaximumLength(string shapeName)
+        {
+            return shapeName.Length > MaxShapeNameLength;
+        }
+
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
             // in case of random corruption of shape, cut-paste a shape before using its property

@@ -98,12 +98,8 @@ namespace PowerPointLabs.EffectsLab.Views
                 {
                     lastBlurriness = enteredValue / 100;
                 }
-                blurrinessInput.Text = lastBlurriness.ToString("P0");
             }
-            else
-            {
-                blurrinessInput.Text = lastBlurriness.ToString("P0");
-            }
+            blurrinessInput.Text = lastBlurriness.ToString("P0");
         }
     }
 }
