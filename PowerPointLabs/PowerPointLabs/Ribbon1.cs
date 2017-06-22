@@ -218,7 +218,7 @@ namespace PowerPointLabs
             }
         }
 
-        # region Supertipsa
+        #region Supertips
         public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
         {
             return TextCollection.AddSpotlightButtonSupertip;
@@ -262,9 +262,9 @@ namespace PowerPointLabs
         {
             return TextCollection.DrawingsLabButtonSupertip;
         }
-        # endregion
+        #endregion
 
-        # region Button Labels
+        #region Button Labels
         public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
         {
             return TextCollection.PowerPointLabsAddInsTabLabel;
@@ -363,7 +363,7 @@ namespace PowerPointLabs
         # endregion
 
         //Button Click Callbacks
-        # region Icon Getters
+        #region Icon Getters
         public Bitmap GetSpotlightImage(Office.IRibbonControl control)
         {
             try
@@ -393,7 +393,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.EffectsLab);
+                return new Bitmap(Properties.Resources.EffectsLab);
             }
             catch (Exception e)
             {
@@ -405,7 +405,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.MakeTransparent);
+                return new Bitmap(Properties.Resources.MakeTransparent);
             }
             catch (Exception e)
             {
@@ -417,7 +417,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.Magnify);
+                return new Bitmap(Properties.Resources.Magnify);
             }
             catch (Exception e)
             {
@@ -429,7 +429,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.BlurRemainder);
+                return new Bitmap(Properties.Resources.BlurRemainder);
             }
             catch (Exception e)
             {
@@ -441,7 +441,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.RecolorRemainder);
+                return new Bitmap(Properties.Resources.RecolorRemainder);
             }
             catch (Exception e)
             {
@@ -466,7 +466,7 @@ namespace PowerPointLabs
         {
             try
             {
-                return new System.Drawing.Bitmap(Properties.Resources.DrawingLab);
+                return new Bitmap(Properties.Resources.DrawingLab);
             }
             catch (Exception e)
             {
@@ -540,7 +540,7 @@ namespace PowerPointLabs
             }
         }
 
-        # region Control Enable
+        #region Control Enable
         public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
         {
             return SpotlightEnabled;
@@ -739,10 +739,10 @@ namespace PowerPointLabs
             {
                 selectedVoice = _voiceNames.ToArray()[_voiceSelected];
             }
-            catch (IndexOutOfRangeException)
+            catch (IndexOutOfRangeException e)
             {
-                // No voices are installed.
-                // (It should be impossible for the index to be out of range otherwise.)
+                // No voices are installed (It should be impossible for the index to be out of range otherwise.)
+                Logger.LogException(e, "GetSelectedVoiceOrNull");
             }
             return selectedVoice;
         }
@@ -768,15 +768,15 @@ namespace PowerPointLabs
 
         #endregion
 
-        # region Feature: Combine Shapes
+        #region Feature: Combine Shapes
         public bool GetVisibilityForCombineShapes(Office.IRibbonControl control)
         {
             const string officeVersion2010 = "14.0";
             return Globals.ThisAddIn.Application.Version == officeVersion2010;
         }
-        # endregion
+        #endregion
 
-        # region Feature: Narrations Lab
+        #region Feature: Narrations Lab
         public void NarrationsLabDialogButtonPressed(Office.IRibbonControl control)
         {
             try
@@ -807,9 +807,9 @@ namespace PowerPointLabs
         {
             NotesToAudio.SpeakSelectedText();
         }
-        # endregion
+        #endregion
 
-        # region Feature: Effects Lab
+        #region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -1235,25 +1235,11 @@ namespace PowerPointLabs
         }
         #endregion
 
-        // TODO: Add the image for the icon on the ribbon bar
-        //public Bitmap GetPositionsLabImage(Office.IRibbonControl control)
-        //{
-        //    try
-        //    {
-        //        return new Bitmap(Properties.Resources.PositionsLab);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        PowerPointLabsGlobals.LogException(e, "GetPositionsLabImage");
-        //        throw;
-        //    }
-        //}
-
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             string[] resourceNames = asm.GetManifestResourceNames();
-            for (int i = 0; i < resourceNames.Length; ++i)
+            for (int i = 0; i < resourceNames.Length; i++)
             {
                 if (string.Compare(resourceName, resourceNames[i], StringComparison.OrdinalIgnoreCase) == 0)
                 {
