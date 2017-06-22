@@ -92,12 +92,11 @@ namespace PowerPointLabs.EffectsLab.Views
                 text = text.Substring(0, text.IndexOf("%"));
             }
 
-            if (float.TryParse(text, out enteredValue))
+            if (float.TryParse(text, out enteredValue) &&
+                enteredValue > 0 && 
+                enteredValue <= 100)
             {
-                if (enteredValue > 0 && enteredValue <= 100)
-                {
-                    lastBlurriness = enteredValue / 100;
-                }
+                lastBlurriness = enteredValue / 100;
             }
             blurrinessInput.Text = lastBlurriness.ToString("P0");
         }

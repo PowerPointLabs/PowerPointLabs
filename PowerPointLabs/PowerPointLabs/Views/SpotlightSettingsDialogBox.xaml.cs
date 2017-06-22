@@ -109,12 +109,11 @@ namespace PowerPointLabs.Views
                 text = text.Substring(0, text.IndexOf("%"));
             }
 
-            if (float.TryParse(text, out enteredValue))
+            if (float.TryParse(text, out enteredValue) &&
+                enteredValue > 0 && 
+                enteredValue <= 100)
             {
-                if (enteredValue > 0 && enteredValue <= 100)
-                {
-                    lastTransparency = enteredValue / 100;
-                }
+                lastTransparency = enteredValue / 100;
             }
             spotlightTransparencyInput.Text = lastTransparency.ToString("P0");
         }
