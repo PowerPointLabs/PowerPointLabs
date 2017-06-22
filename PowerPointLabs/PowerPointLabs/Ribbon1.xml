@@ -49,7 +49,7 @@
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
-                    onAction="AnimationLabDialogButtonPressed"/>
+                    onAction="OnAction"/>
           </menu>
 
           <menu id="ZoomLabMenu"
@@ -123,7 +123,7 @@
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
-                    onAction="NarrationsLabDialogButtonPressed"/>
+                    onAction="OnAction"/>
           </menu>
 
           <menu id="CaptionsLabMenu"
@@ -196,7 +196,7 @@
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
-                    onAction="HighlightBulletsDialogBoxPressed"/>
+                    onAction="OnACtion"/>
           </menu>
 
           <menu id="EffectLabsMenu"

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
@@ -14,7 +13,6 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.DrawingsLab;
-using PowerPointLabs.HighlightLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
@@ -144,11 +142,11 @@ namespace PowerPointLabs
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
 
-        private bool _previewCurrentSlide;
+        public bool _previewCurrentSlide;
 
-        private List<string> _voiceNames;
+        public List<string> _voiceNames;
 
-        private int _voiceSelected;
+        public int _voiceSelected;
 
         #region IRibbonExtensibility Members
 
@@ -322,40 +320,11 @@ namespace PowerPointLabs
             return TextCollection.EffectsLabRecolorBackgroundButtonLabel;
         }
 
-        public string GetAgendaLabButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabButtonLabel;
-        }
-        public string GetAgendaLabBulletPointButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabBulletPointButtonLabel;
-        }
-        public string GetAgendaLabAgendaSettingsButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabAgendaSettingsButtonLabel;
-        }
-        public string GetAgendaLabBulletAgendaSettingsButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AgendaLabBulletAgendaSettingsButtonLabel;
-        }
-
         public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
         {
             return TextCollection.DrawingsLabButtonLabel;
         }
 
-        public string GetContextSpeakSelectedTextLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ContextSpeakSelectedTextLabel;
-        }
-        public string GetContextAddCurrentSlideLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ContextAddCurrentSlideLabel;
-        }
-        public string GetContextReplaceAudioLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ContextReplaceAudioLabel;
-        }
         public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
         {
             return TextCollection.PowerPointLabsMenuLabel;
@@ -450,18 +419,6 @@ namespace PowerPointLabs
             }
         }
 
-        public Bitmap GetAgendaSettingsImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AgendaSettings);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAgendaSettingsImage");
-                throw;
-            }
-        }
         public Bitmap GetDrawingsLabImage(Office.IRibbonControl control)
         {
             try
@@ -471,45 +428,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetDrawingsLabImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetHelpImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.UserGuide);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetHelpImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetPreviewNarrationContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.SpeakTextContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetPreviewNarrationContextImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetAddSpotlightContextImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.AddSpotlightContext);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetAddSpotlightContextImage");
                 throw;
             }
         }
@@ -553,58 +471,21 @@ namespace PowerPointLabs
         {
             return AddAutoMotionEnabled;
         }
-        public bool OnGetEnabledAddInSlide(Office.IRibbonControl control)
-        {
-            return InSlideEnabled;
-        }
         # endregion
 
         //Edit Name Callbacks
-        public void ShapeNameEdited(String newName)
+        public void SpotlightDialogButtonPressed(Office.IRibbonControl control)
         {
             try
             {
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                PowerPoint.Shape selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1];
-                selectedShape.Name = newName;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "ShapeNameEdited");
-                throw;
-            }
-        }
-
-        public void AnimationLabDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                var dialog = new AnimationLabDialogBox(DefaultDuration, FrameAnimationChecked);
-                dialog.SettingsHandler += AnimationPropertiesEdited;
+                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges,
+                    Spotlight.defaultColor);
+                dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.ShowDialog();
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "AnimationLabDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void AnimationPropertiesEdited(float newDuration, bool newFrameChecked)
-        {
-            try
-            {
-                DefaultDuration = newDuration;
-                FrameAnimationChecked = newFrameChecked;
-                AnimateInSlide.defaultDuration = newDuration;
-                AnimateInSlide.frameAnimationChecked = newFrameChecked;
-                AutoAnimate.defaultDuration = newDuration;
-                AutoAnimate.frameAnimationChecked = newFrameChecked;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "AnimationPropertiesEdited");
+                Logger.LogException(e, "SpotlightDialogButtonPressed");
                 throw;
             }
         }
@@ -641,22 +522,6 @@ namespace PowerPointLabs
             }
         }
 
-        public void SpotlightDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges,
-                    Spotlight.defaultColor);
-                dialog.SettingsHandler += SpotlightPropertiesEdited;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "SpotlightDialogButtonPressed");
-                throw;
-            }
-        }
-
         public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge, Color newColor)
         {
             try
@@ -668,36 +533,6 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "SpotlightPropertiesEdited");
-                throw;
-            }
-        }
-
-        public void HighlightBulletsPropertiesEdited(Color newHighlightColor, Color newDefaultColor, Color newBackgroundColor)
-        {
-            try
-            {
-                HighlightBulletsText.highlightColor = newHighlightColor;
-                HighlightBulletsText.defaultColor = newDefaultColor;
-                HighlightBulletsBackground.backgroundColor = newBackgroundColor;
-                HighlightTextFragments.backgroundColor = newBackgroundColor;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "HighlightBulletsPropertiesEdited");
-                throw;
-            }
-        }
-        public void HighlightBulletsDialogBoxPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                var dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor, HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
-                dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "HighlightBulletsDialogBoxPressed");
                 throw;
             }
         }
@@ -777,32 +612,6 @@ namespace PowerPointLabs
         #endregion
 
         #region Feature: Narrations Lab
-        public void NarrationsLabDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                var dialog = new NarrationsLabDialogBox(_voiceSelected, _voiceNames,
-                    _previewCurrentSlide);
-                dialog.SettingsHandler += NarrationsLabSettingsChanged;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "NarrationsLabDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void NarrationsLabSettingsChanged(String voiceName, bool previewCurrentSlide)
-        {
-            _previewCurrentSlide = previewCurrentSlide;
-            if (!String.IsNullOrWhiteSpace(voiceName))
-            {
-                NotesToAudio.SetDefaultVoice(voiceName);
-                _voiceSelected = _voiceNames.IndexOf(voiceName);
-            }
-        }
-
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
             NotesToAudio.SpeakSelectedText();

@@ -255,6 +255,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\Help\About\AboutActionHandler.cs" />
     <Compile Include="ActionFramework\Help\Feedback\FeedbackActionHandler.cs" />
     <Compile Include="ActionFramework\Help\About\AboutImageHandler.cs" />
@@ -268,6 +269,8 @@
     <Compile Include="ActionFramework\Help\Help\HelpImageHandler.cs" />
     <Compile Include="ActionFramework\Help\Help\HelpLabelHandler.cs" />
     <Compile Include="ActionFramework\Help\Help\HelpSupertipHandler.cs" />
+    <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\NarrationsLab\NarrationsLabSettings\NarrationsLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuLabelHandler.cs" />

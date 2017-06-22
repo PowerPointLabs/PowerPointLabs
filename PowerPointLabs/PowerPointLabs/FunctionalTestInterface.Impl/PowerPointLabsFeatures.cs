@@ -44,8 +44,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.CropToShapeTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.CropToShapeTag));
             });
         }
 
@@ -53,8 +52,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.CropOutPaddingTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.CropOutPaddingTag));
             });
         }
 
@@ -70,22 +68,19 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public void CropToSlide()
         {
-            var control = new RibbonControl(TextCollection.CropToSlideTag);
-            Ribbon.OnAction(control);
+            Ribbon.OnAction(new RibbonControl(TextCollection.CropToSlideTag));
         }
 
         public void CropToSame()
         {
-            var control = new RibbonControl(TextCollection.CropToSameDimensionsTag);
-            Ribbon.OnAction(control);
+            Ribbon.OnAction(new RibbonControl(TextCollection.CropToSameDimensionsTag));
         }
 
         public void AutoAnimate()
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.AddAnimationSlideTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.AddAnimationSlideTag));
             });
         }
 
@@ -93,8 +88,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.AnimateInSlideTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.AnimateInSlideTag));
             });
         }
 
@@ -352,8 +346,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.PasteToFillSlideTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.PasteToFillSlideTag));
             });
         }
 
@@ -361,8 +354,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.PasteAtCursorPositionTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.PasteAtCursorPositionTag));
             });
         }
 
@@ -370,8 +362,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.PasteAtOriginalPositionTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.PasteAtOriginalPositionTag));
             });
         }
 
@@ -379,8 +370,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.PasteIntoGroupTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.PasteIntoGroupTag));
             });
         }
 
@@ -388,8 +378,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl(TextCollection.ReplaceWithClipboardTag);
-                Ribbon.OnAction(control);
+                Ribbon.OnAction(new RibbonControl(TextCollection.ReplaceWithClipboardTag));
             });
         }
     }
