@@ -24,14 +24,11 @@ namespace PowerPointLabs.Views
             : this()
         {
             durationInput.Text = defaultDuration.ToString("f");
-            durationInput.ToolTip = 
-                "The duration (in seconds) for the animations in the animation slides to be created.";
+            durationInput.ToolTip = TextCollection.AnimationLabSettingsDurationInputTooltip;
             durationInput.SelectAll();
 
             smoothAnimationCheckbox.IsChecked = smoothChecked;
-            smoothAnimationCheckbox.ToolTip = 
-                "Use a frame-based approach for smoother resize animations.\n" +
-                "This may result in larger file sizes and slower loading times for animated slides.";
+            smoothAnimationCheckbox.ToolTip = TextCollection.AnimationLabSettingsSmoothAnimationCheckboxTooltip;
 
             lastDuration = defaultDuration;
         }

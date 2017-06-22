@@ -31,16 +31,19 @@ namespace PowerPointLabs.EffectsLab.Views
                 case TextCollection.EffectsLabBlurrinessFeatureSelected:
                     properFeatureName = TextCollection.EffectsLabBlurSelectedButtonLabel;
                     lastBlurriness = EffectsLabBlurSelected.CustomPercentageSelected;
+                    tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintSelected;
                     tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintSelected;
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureRemainder:
                     properFeatureName = TextCollection.EffectsLabBlurRemainderButtonLabel;
                     lastBlurriness = EffectsLabBlurSelected.CustomPercentageRemainder;
+                    tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintRemainder;
                     tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintRemainder;
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureBackground:
                     properFeatureName = TextCollection.EffectsLabBlurBackgroundButtonLabel;
                     lastBlurriness = EffectsLabBlurSelected.CustomPercentageBackground;
+                    tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintBackground;
                     tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintBackground;
                     break;
                 default:
@@ -49,12 +52,11 @@ namespace PowerPointLabs.EffectsLab.Views
             }
 
             Title = properFeatureName + " Settings";
-
-            tintCheckbox.Content = properFeatureName.Replace("Blur", "Tint");
-            tintCheckbox.ToolTip = "Adds a tinted effect to your blur.";
+            
+            tintCheckbox.ToolTip = TextCollection.EffectsLabSettingsTintCheckboxTooltip;
 
             blurrinessInput.Text = (lastBlurriness / 100.0f).ToString("P0");
-            blurrinessInput.ToolTip = "The level of blurriness.";
+            blurrinessInput.ToolTip = TextCollection.EffectsLabSettingsBlurrinessInputTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

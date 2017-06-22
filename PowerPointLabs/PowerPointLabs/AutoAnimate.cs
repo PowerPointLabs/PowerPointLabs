@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 
-using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs
@@ -31,14 +27,16 @@ namespace PowerPointLabs
                 var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                   System.Windows.Forms.MessageBox.Show("Please select the correct slide", "Unable to Add Animations");
-                   return;
+                    MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorWrongSlide, 
+                                    TextCollection.AnimationLabAutoAnimateErrorDialogTitle);
+                    return;
                 }
 
                 PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
                 if (!GetMatchingShapeDetails(currentSlide, nextSlide))
                 {
-                    System.Windows.Forms.MessageBox.Show("No matching Shapes were found on the next slide", "Animation Not Added");
+                    MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorNoMatchingShapes,
+                                    TextCollection.AnimationLabAutoAnimateErrorDialogTitle);
                     return;
                 }
 
@@ -47,11 +45,12 @@ namespace PowerPointLabs
             catch (Exception e)
             { 
                 Logger.LogException(e, "AddAnimationButtonClick");
-                Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
+                ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
             
         }
 
+        // This method seems to be not used anymore...
         public static void ReloadAutoAnimation()
         {
             try
@@ -106,13 +105,14 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show("The current slide was not added by PowerPointLabs Auto Animate", "Error");
+                    MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorSlideNotAutoAnimate,
+                                    TextCollection.AnimationLabAutoAnimateErrorDialogTitle);
                 }
             }
             catch (Exception e)
             {
                 Logger.LogException(e, "ReloadAutoAnimation");
-                Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
+                ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
             }
         }
 
@@ -121,7 +121,8 @@ namespace PowerPointLabs
             animatedSlide.Delete();
             if (!GetMatchingShapeDetails(currentSlide, nextSlide))
             {
-                System.Windows.Forms.MessageBox.Show("No matching Shapes were found on the next slide", "Animation Not Added");
+                MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorNoMatchingShapes,
+                                TextCollection.AnimationLabAutoAnimateErrorDialogTitle);
                 return;
             }
             AddCompleteAnimations(currentSlide, nextSlide);
@@ -131,7 +132,7 @@ namespace PowerPointLabs
             var addedSlide = currentSlide.CreateAutoAnimateSlide() as PowerPointAutoAnimateSlide;
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
-            LoadingDialogBox loadingDialog = new LoadingDialogBox(content: "Applying auto animation...");
+            LoadingDialogBox loadingDialog = new LoadingDialogBox(content: TextCollection.AnimationLabAutoAnimateLoadingText);
             loadingDialog.Show();
 
             addedSlide.MoveMotionAnimation(); //Move shapes with motion animation already added

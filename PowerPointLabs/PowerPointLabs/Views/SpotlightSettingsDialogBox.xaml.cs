@@ -38,13 +38,13 @@ namespace PowerPointLabs.Views
         {
             lastTransparency = defaultTransparency;
             spotlightTransparencyInput.Text = defaultTransparency.ToString("P0");
-            spotlightTransparencyInput.ToolTip = "The transparency level of the spotlight effect to be created.";
+            spotlightTransparencyInput.ToolTip = TextCollection.SpotlightSettingsTransparencyInputTooltip;
 
             String[] keys = softEdgesMapping.Keys.ToArray();
             float[] values = softEdgesMapping.Values.ToArray();
             softEdgesSelectionInput.ItemsSource = keys;
             softEdgesSelectionInput.SelectedIndex = Array.IndexOf(values, defaultSoftEdge);
-            softEdgesSelectionInput.ToolTip = "The softness of the edges of the spotlight effect to be created.";
+            softEdgesSelectionInput.ToolTip = TextCollection.SpotlightSettingsSoftEdgesSelectionInputTooltip;
 
             spotlightColorRect.Fill = new SolidColorBrush(Graphics.MediaColorFromDrawingColor(defaultColor));
         }

@@ -1,7 +1,5 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.EffectsLab;
 
 namespace PowerPointLabs.ActionFramework.Content
 {
@@ -17,10 +15,10 @@ namespace PowerPointLabs.ActionFramework.Content
 
             System.Text.StringBuilder xmlString = new System.Text.StringBuilder();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 40; i <= 100; i += 10)
             {
                 xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
-                    feature + TextCollection.DynamicMenuOptionId + (i + 4) + "0",
+                    feature + TextCollection.DynamicMenuOptionId + i,
                     TextCollection.EffectsLabBlurrinessTag));
             }
 

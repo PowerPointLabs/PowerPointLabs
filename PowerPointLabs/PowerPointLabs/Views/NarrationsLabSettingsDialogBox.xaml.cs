@@ -22,13 +22,10 @@ namespace PowerPointLabs.Views
         {
             voiceSelectionInput.ItemsSource = voices;
             voiceSelectionInput.SelectedIndex = selectedVoice;
-            voiceSelectionInput.ToolTip =
-                "The voice to be used when generating synthesized audio. " +
-                "Use [Voice] tags to specify a different voice for a particular section of text.";
+            voiceSelectionInput.ToolTip = TextCollection.NarrationsLabSettingsVoiceSelectionInputTooltip;
 
             previewCheckbox.IsChecked = isPreviewChecked;
-            previewCheckbox.ToolTip =
-                "If checked, the current slide's audio and animations will play after the Add Audio button is clicked.";
+            previewCheckbox.ToolTip = TextCollection.NarrationsLabSettingsPreviewCheckboxTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
