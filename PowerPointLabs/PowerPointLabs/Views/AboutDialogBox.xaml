@@ -42,7 +42,7 @@
             <FlowDocument>
                 <Paragraph>
                     PowerPointLabs Version
-                    <Run x:Name="versionRunText">4.0.0.0</Run>
+                    <Run x:Name="versionRunText">9.9.9.9</Run>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
@@ -59,7 +59,7 @@
             <FlowDocument>
                 <Paragraph>
                     Release date:
-                    <Run x:Name="releaseDateRunText">16 Jun 2017</Run>
+                    <Run x:Name="releaseDateRunText">31 Jan 1980</Run>
                     <LineBreak></LineBreak>
                     <LineBreak></LineBreak>
                     Developed at School of Computing, National University of Singapore.

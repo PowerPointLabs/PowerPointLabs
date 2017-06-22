@@ -61,7 +61,7 @@ namespace PowerPointLabs.EffectsLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            BlurrinessInput_LostFocus(null, null);
+            ValidateBlurrinessInput();
             string text = blurrinessInput.Text;
             if (text.Contains("%"))
             {
@@ -79,6 +79,11 @@ namespace PowerPointLabs.EffectsLab.Views
         }
 
         private void BlurrinessInput_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidateBlurrinessInput();
+        }
+
+        private void ValidateBlurrinessInput()
         {
             float enteredValue;
             string text = blurrinessInput.Text;

@@ -33,7 +33,13 @@
         <TextBlock x:Name="softEdgesLabel" FontSize="12" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,60,0,0">
             Soft Edges
         </TextBlock>
-        <controls:SplitButton x:Name="softEdgesSelectionInput" VerticalAlignment="Top" HorizontalAlignment="Right" Height="23" Width="160" Margin="0,55,20,0"/>
+        <controls:DropDownButton x:Name="softEdgesSelectionInput" VerticalAlignment="Top" HorizontalAlignment="Right" Height="23" Width="160" Margin="0,55,20,0">
+            <controls:DropDownButton.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" MouseUp="SoftEdgesSelectionInput_Item_MouseUp" />
+                </DataTemplate>
+            </controls:DropDownButton.ItemTemplate>
+        </controls:DropDownButton>
         <TextBlock x:Name="spotlightColorLabel" FontSize="12" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,90,0,0">
             Spotlight Color
         </TextBlock>

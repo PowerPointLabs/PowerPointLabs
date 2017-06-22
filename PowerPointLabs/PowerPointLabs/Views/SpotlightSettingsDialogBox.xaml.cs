@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
 
 using PowerPointLabs.Utils;
@@ -43,7 +45,7 @@ namespace PowerPointLabs.Views
             String[] keys = softEdgesMapping.Keys.ToArray();
             float[] values = softEdgesMapping.Values.ToArray();
             softEdgesSelectionInput.ItemsSource = keys;
-            softEdgesSelectionInput.SelectedIndex = Array.IndexOf(values, defaultSoftEdge);
+            softEdgesSelectionInput.Content = keys[Array.IndexOf(values, defaultSoftEdge)];
             softEdgesSelectionInput.ToolTip = TextCollection.SpotlightSettingsSoftEdgesSelectionInputTooltip;
 
             spotlightColorRect.Fill = new SolidColorBrush(Graphics.MediaColorFromDrawingColor(defaultColor));
@@ -51,14 +53,14 @@ namespace PowerPointLabs.Views
 
         private void OkButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            SpotlightTransparencyInput_LostFocus(null, null);
+            ValidateSpotlightTransparencyInput();
             string text = spotlightTransparencyInput.Text;
             if (text.Contains("%"))
             {
                 text = text.Substring(0, text.IndexOf("%"));
             }
             SettingsHandler(float.Parse(text) / 100, 
-                            softEdgesMapping[(String)softEdgesSelectionInput.SelectedItem], 
+                            softEdgesMapping[(String)softEdgesSelectionInput.Content], 
                             Graphics.DrawingColorFromBrush(spotlightColorRect.Fill));
             Close();
         }
@@ -68,7 +70,33 @@ namespace PowerPointLabs.Views
             Close();
         }
 
+        private void SpotlightColorRect_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Color currentColor = (spotlightColorRect.Fill as SolidColorBrush).Color;
+            ColorDialog colorDialog = new ColorDialog();
+            colorDialog.Color = Graphics.DrawingColorFromMediaColor(currentColor);
+            colorDialog.FullOpen = true;
+            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
+            {
+                spotlightColorRect.Fill = Graphics.MediaBrushFromDrawingColor(colorDialog.Color);
+            }
+        }
+
+        void SoftEdgesSelectionInput_Item_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left && softEdgesSelectionInput.IsExpanded)
+            {
+                string value = ((TextBlock)e.Source).Text;
+                softEdgesSelectionInput.Content = value;
+            }
+        }
+
         private void SpotlightTransparencyInput_LostFocus(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ValidateSpotlightTransparencyInput();
+        }
+
+        private void ValidateSpotlightTransparencyInput()
         {
             float enteredValue;
             string text = spotlightTransparencyInput.Text;
@@ -88,18 +116,6 @@ namespace PowerPointLabs.Views
             else
             {
                 spotlightTransparencyInput.Text = lastTransparency.ToString("P0");
-            }
-        }
-
-        private void SpotlightColorRect_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Color currentColor = (spotlightColorRect.Fill as SolidColorBrush).Color;
-            ColorDialog colorDialog = new ColorDialog();
-            colorDialog.Color = Graphics.DrawingColorFromMediaColor(currentColor);
-            colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
-            {
-                spotlightColorRect.Fill = Graphics.MediaBrushFromDrawingColor(colorDialog.Color);
             }
         }
     }

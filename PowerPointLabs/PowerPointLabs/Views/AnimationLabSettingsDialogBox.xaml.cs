@@ -35,7 +35,7 @@ namespace PowerPointLabs.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            DurationInput_LostFocus(null, null);
+            ValidateDurationInput();
             SettingsHandler(float.Parse(durationInput.Text), smoothAnimationCheckbox.IsChecked.GetValueOrDefault());
             Close();
         }
@@ -46,6 +46,11 @@ namespace PowerPointLabs.Views
         }
 
         private void DurationInput_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidateDurationInput();
+        }
+
+        private void ValidateDurationInput()
         {
             float enteredValue;
             if (float.TryParse(durationInput.Text, out enteredValue))
