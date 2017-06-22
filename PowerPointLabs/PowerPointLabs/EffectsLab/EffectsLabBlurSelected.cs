@@ -21,9 +21,9 @@ namespace PowerPointLabs.EffectsLab
         public static bool IsTintRemainder = false;
         public static bool IsTintBackground = false;
 
-        public static int CustomPercentageSelected = 95;
-        public static int CustomPercentageRemainder = 95;
-        public static int CustomPercentageBackground = 95;
+        public static int CustomPercentageSelected = 30;
+        public static int CustomPercentageRemainder = 30;
+        public static int CustomPercentageBackground = 30;
 
         private static Models.PowerPointSlide _slide;
 

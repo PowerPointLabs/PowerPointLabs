@@ -16,24 +16,26 @@ namespace PowerPointLabs.ActionFramework.Label
 
             if (ribbonId.Contains(TextCollection.EffectsLabBlurrinessCustom))
             {
+                int percentage = 0;
                 if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureSelected))
                 {
-                    return EffectsLabBlurSelected.CustomPercentageSelected + "% " + TextCollection.EffectsLabBlurrinessTag;
+                    percentage = EffectsLabBlurSelected.CustomPercentageSelected;
                 }
                 else if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureRemainder))
                 {
-                    return EffectsLabBlurSelected.CustomPercentageRemainder + "% " + TextCollection.EffectsLabBlurrinessTag;
+                    percentage = EffectsLabBlurSelected.CustomPercentageRemainder;
                 }
                 else if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureBackground))
                 {
-                    return EffectsLabBlurSelected.CustomPercentageBackground + "% " + TextCollection.EffectsLabBlurrinessTag;
+                    percentage = EffectsLabBlurSelected.CustomPercentageBackground;
                 }
+                return TextCollection.EffectsLabBlurrinessCustomPrefixLabel + " (" + percentage + "%)";
             }
 
             int startIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId) + TextCollection.DynamicMenuOptionId.Length;
-            string percentage = ribbonId.Substring(startIndex, ribbonId.Length - startIndex);
+            string percentageText = ribbonId.Substring(startIndex, ribbonId.Length - startIndex);
 
-            return percentage + "% " + TextCollection.EffectsLabBlurrinessTag;
+            return percentageText + "% " + TextCollection.EffectsLabBlurrinessTag;
         }
     }
 }

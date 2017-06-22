@@ -21,12 +21,9 @@ namespace PowerPointLabs.ActionFramework.Content
                     feature + TextCollection.DynamicMenuOptionId + i,
                     TextCollection.EffectsLabBlurrinessTag));
             }
-
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
-                feature + TextCollection.DynamicMenuSeparatorId));
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
-                    feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom,
-                    TextCollection.EffectsLabBlurrinessTag));
+                feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom,
+                TextCollection.EffectsLabBlurrinessTag));
 
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
                 feature + TextCollection.DynamicMenuOptionId + TextCollection.DynamicMenuSeparatorId));

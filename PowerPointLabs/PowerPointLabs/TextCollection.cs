@@ -386,6 +386,7 @@
         public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";
         public const string EffectsLabBlurrinessCustom = "CustomPercentage";
+        public const string EffectsLabBlurrinessCustomPrefixLabel = "Custom";
         public const string EffectsLabBlurrinessFeatureSelected = "EffectsLabBlurSelected";
         public const string EffectsLabBlurrinessFeatureRemainder = "EffectsLabBlurRemainder";
         public const string EffectsLabBlurrinessFeatureBackground = "EffectsLabBlurBackground";
