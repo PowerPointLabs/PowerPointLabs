@@ -72,13 +72,13 @@
         #region Narrations Lab
         public const string NarrationsLabMenuSupertip =
             "Use Narrations Lab to create narration from text in the Notes pane of the selected slides.";
-        public const string GenerateRecordButtonSupertip =
+        public const string AddNarrationsButtonSupertip =
             "Create synthesized narration from text in the Notes pane of the selected slides.\n\n" +
             "To perform this action, select the slide(s) with the Speaker Notes, then click this button.";
-        public const string AddRecordButtonSupertip =
+        public const string RecordNarrationsButtonSupertip =
             "Manually record audio to replace synthesized narration.\n\n" +
             "Click this button to open the Recording interface.";
-        public const string RemoveAudioButtonSupertip =
+        public const string RemoveNarrationsButtonSupertip =
             "Remove synthesized audio added using Narrations Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the narrations from, then click this button.";
         public const string NarrationsLabSettingsSupertip =
@@ -86,6 +86,7 @@
         #endregion
 
         #region Picture Slides Lab
+        public const string PictureSlidesLabMenuLabel = "Picture Slides";
         public const string PictureSlidesLabMenuSupertip =
             "Use Picture Slides Lab to create better picture slides using less effort.\n\n" +
             "Click this button to open the Picture Slides Lab interface.";
@@ -274,7 +275,6 @@
         public const string CropLabMenuLabel = "Crop";
         public const string MoveCropShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingLabel = "Crop Out Padding";
-        public const string CropToAspectRatioTag = "CropToAspectRatio";
         public const string CropToAspectRatioLabel = "Crop To Aspect Ratio";
         public const string CropToSlideButtonLabel = "Crop To Slide";
         public const string CropToSameButtonLabel = "Crop To Same Dimensions";
@@ -283,10 +283,9 @@
 
         # region Narrations Lab
         public const string NarrationsLabMenuLabel = "Narrations";
-        public const string AddAudioButtonLabel = "Add Audio";
-        public const string GenerateRecordButtonLabel = "Generate Audio Automatically";
-        public const string AddRecordButtonLabel = "Record Audio Manually";
-        public const string RemoveAudioButtonLabel = "Remove Audio";
+        public const string AddNarrationsButtonLabel = "Generate Audio Automatically";
+        public const string RecordNarrationsButtonLabel = "Record Audio Manually";
+        public const string RemoveNarrationsButtonLabel = "Remove Audio";
         public const string NarrationsLabSettingsButtonLabel = "Settings";
         # endregion
 
@@ -377,7 +376,7 @@
         public const string DynamicMenuOptionId = "Option";
         public const string DynamicMenuSeparatorId = "Separator";
         public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
-        public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" getLabel=\"GetLabel\" getImage=\"GetImage\" getEnabled=\"GetEnabled\" onAction=\"OnAction\"/>";
+        public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getImage=\"GetImage\" getEnabled=\"GetEnabled\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
         public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
         public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
@@ -396,6 +395,9 @@
         #region Context Menu Labels
 
         public const string PowerPointLabsMenuLabel = "PowerPointLabs";
+        public const string PasteLabMenuLabel = "Paste Lab";
+        public const string ShortcutsLabMenuLabel = "Shortcuts";
+
         public const string EditNameShapeLabel = "Edit Name";
         public const string SpotlightShapeLabel = "Add Spotlight";
         public const string ZoomInContextMenuLabel = "Drill Down";
@@ -414,10 +416,113 @@
         public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";
         public const string ContextAddCurrentSlideLabel = "Add Audio (Current Slide)";
         public const string ContextReplaceAudioLabel = "Replace Audio";
-        # endregion
-        # endregion
+        #endregion
 
-        # region PowerPointSlide
+        #region Ribbon Content
+        public const string RibbonButton = "Button";
+        public const string RibbonMenu = "Menu";
+
+        public const string AnimationLabMenuId = "AnimationLabMenu";
+        public const string AddAnimationSlideTag = "AddAnimationSlide";
+        public const string AnimateInSlideTag = "AnimateInSlide";
+        public const string AnimationLabSettingsTag = "AnimationLabSettings";
+
+        public const string ZoomLabMenuId = "ZoomLabMenu";
+        public const string DrillDownTag = "DrillDown";
+        public const string StepBackTag = "StepBack";
+        public const string ZoomToAreaTag = "ZoomToArea";
+        public const string ZoomLabSettingsTag = "ZoomLabSettings";
+
+        public const string NarrationsLabMenuId = "NarrationsLabMenu";
+        public const string AddNarrationsTag = "AddNarrations";
+        public const string RecordNarrationsTag = "RecordNarrations";
+        public const string RemoveNarrationsTag = "RemoveNarrations";
+        public const string NarrationsLabSettingsTag = "NarrationsLabSettings";
+
+        public const string CaptionsLabMenuId = "CaptionsLabMenu";
+        public const string AddCaptionsTag = "AddCaptions";
+        public const string RemoveCaptionsTag = "RemoveCaptions";
+        public const string RemoveNotesTag = "RemoveNotes";
+        public const string CaptionsLabSettingsTag = "CaptionsLabSettings";
+
+        public const string HighlightLabMenuId = "HighlightLabMenu";
+        public const string HighlightPointsTag = "HighlightPoints";
+        public const string HighlightBackgroundTag = "HighlightBackground";
+        public const string HighlightTextTag = "HighlightText";
+        public const string RemoveHighlightTag = "RemoveHighlight";
+        public const string HighlightLabSettingsTag = "HighlightLabSettings";
+
+        public const string PositionsLabTag = "PositionsLab";
+
+        public const string ResizeLabTag = "ResizeLab";
+
+        public const string ColorsLabTag = "ColorsLab";
+
+        public const string SyncLabTag = "SyncLab";
+
+        public const string ShapesLabTag = "ShapesLab";
+
+        public const string CropLabMenuId = "CropLabMenu";
+        public const string CropToShapeTag = "CropToShape";
+        public const string CropToSlideTag = "CropToSlide";
+        public const string CropToSameDimensionsTag = "CropToSame";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropOutPaddingTag = "CropOutPadding";
+        public const string CropLabSettingsTag = "CropLabSettings";
+
+        public const string PasteLabMenuId = "PasteLabMenu";
+        public const string PasteAtCursorPositionTag = "PasteAtCursorPosition";
+        public const string PasteAtOriginalPositionTag = "PasteAtOriginalPosition";
+        public const string PasteToFillSlideTag = "PasteToFillSlide";
+        public const string ReplaceWithClipboardTag = "ReplaceWithClipboard";
+        public const string PasteIntoGroupTag = "PasteIntoGroup";
+
+        public const string TimerLabTag = "TimerLab";
+
+        public const string AgendaLabMenuId = "AgendaLabMenu";
+        public const string TextAgendaTag = "TextAgenda";
+        public const string VisualAgendaTag = "VisualAgenda";
+        public const string BeamAgendaTag = "BeamAgenda";
+        public const string RemoveAgendaTag = "RemoveAgenda";
+        public const string UpdateAgendaTag = "UpdateAgenda";
+
+        public const string PictureSlidesLabTag = "PictureSlidesLab";
+
+        public const string HelpMenuId = "HelpMenu";
+        public const string HelpTag = "Help";
+        public const string TutorialTag = "Tutorial";
+        public const string FeedbackTag = "Feedback";
+        public const string AboutTag = "About";
+        #endregion
+
+        #region Context Menu Content
+
+        public const string MenuShape = "MenuShape";
+        public const string MenuLine = "MenuLine";
+        public const string MenuFreeform = "MenuFreeform";
+        public const string MenuPicture = "MenuPicture";
+        public const string MenuGroup = "MenuGroup";
+        public const string MenuInk = "MenuInk";
+        public const string MenuVideo = "MenuVideo";
+        public const string MenuTextEdit = "MenuTextEdit";
+        public const string MenuChart = "MenuChart";
+        public const string MenuTable = "MenuTable";
+        public const string MenuTableCell = "MenuTableWhole";
+        public const string MenuSlide = "MenuFrame";
+        public const string MenuSmartArt = "MenuSmartArtBackground";
+        public const string MenuEditSmartArtBase = "MenuSmartArtEdit";
+        public const string MenuEditSmartArt = MenuEditSmartArtBase + "SmartArt";
+        public const string MenuEditSmartArtText = MenuEditSmartArtBase + "Text";
+
+        public const string EditNameTag = "EditName";
+        public const string ConvertToPictureTag = "ConvertToPicture";
+        public const string HideSelectedShapeTag = "HideShape";
+        public const string AddCustomShapeTag = "AddShape";
+        public const string AddIntoGroupTag = "AddIntoGroup";
+        #endregion
+        #endregion
+
+        #region PowerPointSlide
 
         public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
 
