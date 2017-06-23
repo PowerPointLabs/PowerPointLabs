@@ -390,9 +390,8 @@ namespace PowerPointLabs
     EventHandler visibleChangeEventHandler = null,
     EventHandler dockPositionChangeEventHandler = null)
         {
-            var loadingDialog = new LoadingDialog();
+            var loadingDialog = new LoadingDialogBox();
             loadingDialog.Show();
-            loadingDialog.Refresh();
 
             // note down the control's width
             var width = control.Width;
@@ -429,7 +428,7 @@ namespace PowerPointLabs
                 taskPane.DockPositionChanged += dockPositionChangeEventHandler;
             }
 
-            loadingDialog.Dispose();
+            loadingDialog.Close();
             return taskPane;
         }
 
@@ -651,7 +650,7 @@ namespace PowerPointLabs
                         }
 
                         Ribbon.RemoveAudioEnabled = true;
-                        Ribbon.RefreshRibbonControl("RemoveAudioButton");
+                        Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
             }
@@ -949,7 +948,6 @@ namespace PowerPointLabs
                 }
             }
             
-            Ribbon.RefreshRibbonControl("AddAnimationSlideButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
@@ -985,29 +983,6 @@ namespace PowerPointLabs
                 {
                     Ribbon.SpotlightEnabled = true;
                 }
-                if ((sh.Type == Office.MsoShapeType.msoAutoShape &&
-                     sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) ||
-                    sh.Type == Office.MsoShapeType.msoPicture)
-                {
-                    Ribbon.ZoomButtonEnabled = true;
-                }
-                if (sel.ShapeRange.Count > 1)
-                {
-                    foreach (PowerPoint.Shape tempShape in sel.ShapeRange)
-                    {
-                        if (sh.Type == tempShape.Type)
-                        {
-                            Ribbon.InSlideEnabled = true;
-                            Ribbon.ZoomButtonEnabled = true;
-                        }
-                        if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
-                        {
-                            Ribbon.InSlideEnabled = false;
-                            Ribbon.ZoomButtonEnabled = false;
-                            break;
-                        }
-                    }
-                }
 
                 if (isResizePaneVisible)
                 {
@@ -1018,8 +993,10 @@ namespace PowerPointLabs
 
             }
 
-            Ribbon.RefreshRibbonControl("AddSpotlightButton");
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
+            Ribbon.RefreshRibbonControl("DrillDownButton");
+            Ribbon.RefreshRibbonControl("StepBackButton");
+            Ribbon.RefreshRibbonControl("AddSpotlightButton");
             Ribbon.RefreshRibbonControl("AddZoomInButton");
             Ribbon.RefreshRibbonControl("AddZoomOutButton");
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");

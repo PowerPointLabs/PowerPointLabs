@@ -26,7 +26,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl("SyncLabButton"));
+                    new RibbonControl(TextCollection.SyncLabTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(SyncPane)).Control as SyncPane;
             });

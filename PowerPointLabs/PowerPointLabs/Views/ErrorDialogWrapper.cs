@@ -23,6 +23,8 @@ namespace PowerPointLabs.Views
 
             // Create dialog instance.
             var dialog = (Form)Activator.CreateInstance(dialogType, new PropertyGrid());
+            dialog.FormBorderStyle = FormBorderStyle.Sizable;
+
             var completeMsg = message + TextCollection.UserFeedBack + TextCollection.Email;
 
             // Populate relevant properties on the dialog instance.

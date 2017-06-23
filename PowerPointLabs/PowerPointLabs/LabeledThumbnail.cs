@@ -41,7 +41,7 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    MessageBox.Show(value.Length > 255
+                    MessageBox.Show(Utils.Graphics.IsShapeNameOverMaximumLength(value)
                                         ? TextCollection.ErrorNameTooLong
                                         : TextCollection.ErrorInvalidCharacter);
 
@@ -254,7 +254,7 @@ namespace PowerPointLabs
             
             return !(string.IsNullOrWhiteSpace(name) ||
                      invalidChars.IsMatch(name) ||
-                     name.Length > 255);
+                     Utils.Graphics.IsShapeNameOverMaximumLength(name));
         }
         # endregion
 

@@ -27,7 +27,7 @@ namespace PowerPointLabs.AgendaLab
     internal static partial class AgendaLabMain
     {
 #pragma warning disable 0618
-        private static LoadingDialog _loadDialog = new LoadingDialog();
+        private static LoadingDialogBox _loadDialog = new LoadingDialogBox();
 
         private const int SectionNameMaxLength = 180;
 
@@ -1116,16 +1116,15 @@ namespace PowerPointLabs.AgendaLab
             }
             else
             {
-                _loadDialog = new LoadingDialog(title, content);
+                _loadDialog = new LoadingDialogBox(title, content);
                 _loadDialog.Show();
-                _loadDialog.Refresh();
                 return true;
             }
         }
 
         private static void DisposeLoadingDialog()
         {
-            _loadDialog.Dispose();
+            _loadDialog.Close();
         }
 
         #endregion
