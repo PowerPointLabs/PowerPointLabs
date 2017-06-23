@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.Animationlab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var dialog = new NarrationsLabDialogBox(this.GetRibbonUi()._voiceSelected,
+            var dialog = new NarrationsLabSettingsDialogBox(this.GetRibbonUi()._voiceSelected,
                 this.GetRibbonUi()._voiceNames, this.GetRibbonUi()._previewCurrentSlide);
             dialog.SettingsHandler += NarrationsLabSettingsChanged;
             dialog.ShowDialog();

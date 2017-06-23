@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.Highlightlab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var dialog = new HighlightBulletsDialogBox(HighlightBulletsText.highlightColor,
+            var dialog = new HighlightLabSettingsDialogBox(HighlightBulletsText.highlightColor,
                 HighlightBulletsText.defaultColor, HighlightBulletsBackground.backgroundColor);
             dialog.SettingsHandler += HighlightBulletsPropertiesEdited;
             dialog.ShowDialog();

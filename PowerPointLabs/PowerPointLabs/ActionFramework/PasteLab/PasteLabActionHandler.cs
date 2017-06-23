@@ -20,7 +20,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         protected sealed override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
-
+            
             PowerPointPresentation presentation = this.GetCurrentPresentation();
             PowerPointSlide slide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();

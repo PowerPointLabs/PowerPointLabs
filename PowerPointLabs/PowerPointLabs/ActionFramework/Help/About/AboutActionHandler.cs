@@ -2,6 +2,7 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
@@ -10,7 +11,9 @@ namespace PowerPointLabs.ActionFramework.Help
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            MessageBox.Show(TextCollection.AboutInfo, TextCollection.AboutInfoTitle);
+            AboutDialogBox dialog = new AboutDialogBox(Properties.Settings.Default.Version,
+                Properties.Settings.Default.ReleaseDate, TextCollection.PowerPointLabsWebsiteUrl);
+            dialog.ShowDialog();
         }
     }
 }

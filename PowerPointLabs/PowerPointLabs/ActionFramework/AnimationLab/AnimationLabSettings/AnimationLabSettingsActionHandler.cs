@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.Animationlab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var dialog = new AnimationLabDialogBox(this.GetRibbonUi().DefaultDuration, this.GetRibbonUi().FrameAnimationChecked);
+            var dialog = new AnimationLabSettingsDialogBox(this.GetRibbonUi().DefaultDuration, this.GetRibbonUi().FrameAnimationChecked);
             dialog.SettingsHandler += AnimationPropertiesEdited;
             dialog.ShowDialog();
         }

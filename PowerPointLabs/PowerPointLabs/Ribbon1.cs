@@ -478,8 +478,9 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new SpotlightDialogBox(Spotlight.defaultTransparency, Spotlight.defaultSoftEdges,
-                    Spotlight.defaultColor);
+                SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(Spotlight.defaultTransparency, 
+                                                                                    Spotlight.defaultSoftEdges,
+                                                                                    Spotlight.defaultColor);
                 dialog.SettingsHandler += SpotlightPropertiesEdited;
                 dialog.ShowDialog();
             }
@@ -494,7 +495,7 @@ namespace PowerPointLabs
         {
             try
             {
-                var dialog = new ZoomLabDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
+                ZoomLabSettingsDialogBox dialog = new ZoomLabSettingsDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
                 dialog.SettingsHandler += ZoomPropertiesEdited;
                 dialog.ShowDialog();
             }

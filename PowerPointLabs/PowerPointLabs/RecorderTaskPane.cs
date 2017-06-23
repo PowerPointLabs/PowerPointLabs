@@ -23,7 +23,7 @@ using PPExtraEventHelper;
 namespace PowerPointLabs
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
-    internal partial class RecorderTaskPane : UserControl
+    public partial class RecorderTaskPane : UserControl
     {
 #pragma warning disable 0618
         // a collection of audio buffer, for buffering slide show time recording
@@ -807,7 +807,7 @@ namespace PowerPointLabs
         {
             if (_inShowControlBox != null)
             {
-                _inShowControlBox.Dispose();
+                _inShowControlBox.Close();
             }
         }
 
@@ -826,7 +826,7 @@ namespace PowerPointLabs
             if (_recButtonStatus != RecorderStatus.Idle)
             {
                 if (_inShowControlBox != null &&
-                    _inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Idle)
+                    _inShowControlBox.GetCurrentStatus() != InShowRecordingControl.ButtonStatus.Idle)
                 {
                     _inShowControlBox.ForceStop();
                 }
@@ -905,7 +905,7 @@ namespace PowerPointLabs
 
         private Stopwatch _stopwatch;
 
-        private InShowControl _inShowControlBox;
+        private InShowRecordingControl _inShowControlBox;
 
         // delgates to make thread safe control calls
         private delegate void SetLabelTextCallBack(Label label, string text);
@@ -1107,7 +1107,7 @@ namespace PowerPointLabs
 
             // track the on going script index if not in slide show mode
             if (_inShowControlBox == null ||
-                _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Idle)
+                _inShowControlBox.GetCurrentStatus() == InShowRecordingControl.ButtonStatus.Idle)
             {
                 // if there's a corresponding script
                 if (scriptDisplay.SelectedIndices.Count > 0)
@@ -1221,7 +1221,7 @@ namespace PowerPointLabs
 
                 // prompt to the user only when escaping the slide show while recording
                 if (_inShowControlBox != null && 
-                    _inShowControlBox.GetCurrentStatus() == InShowControl.ButtonStatus.Estop)
+                    _inShowControlBox.GetCurrentStatus() == InShowRecordingControl.ButtonStatus.Estop)
                 {
                     if (currentPlayback == null)
                     {
@@ -1306,7 +1306,7 @@ namespace PowerPointLabs
                         // 2. current slide == null during slide show, use in show box status to guard
                         // null ptr exception.
                         if (_inShowControlBox == null ||
-                            (_inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
+                            (_inShowControlBox.GetCurrentStatus() != InShowRecordingControl.ButtonStatus.Rec &&
                             relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID)))
                         {
                             UpdateRecordList(recordIndex, displayName, newRec.Length);
@@ -1339,7 +1339,7 @@ namespace PowerPointLabs
 
                         // update the whole record display list if not in slide show mode
                         if (_inShowControlBox == null ||
-                            (_inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
+                            (_inShowControlBox.GetCurrentStatus() != InShowRecordingControl.ButtonStatus.Rec &&
                             relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID)))
                         {
                             UpdateRecordList(relativeSlideId);
@@ -1355,7 +1355,7 @@ namespace PowerPointLabs
                     // update the script list if not in slide show mode
                     if (scriptIndex != -1 && 
                         (_inShowControlBox == null ||
-                            (_inShowControlBox.GetCurrentStatus() != InShowControl.ButtonStatus.Rec &&
+                            (_inShowControlBox.GetCurrentStatus() != InShowRecordingControl.ButtonStatus.Rec &&
                             relativeSlideId == GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID))))
                     {
                         UpdateScriptList(scriptIndex, null, ScriptStatus.Recorded);
@@ -1596,7 +1596,7 @@ namespace PowerPointLabs
             slideShowWindow.View.PointerType = PpSlideShowPointerType.ppSlideShowPointerArrow;
 
             // init the in-show control
-            _inShowControlBox = new InShowControl(this);
+            _inShowControlBox = new InShowRecordingControl(this);
             _inShowControlBox.Show();
 
             // activate the show
