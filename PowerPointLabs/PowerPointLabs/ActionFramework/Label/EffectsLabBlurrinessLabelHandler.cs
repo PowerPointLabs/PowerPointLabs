@@ -1,5 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.EffectsLab;
 
 namespace PowerPointLabs.ActionFramework.Label
 {
@@ -13,18 +14,28 @@ namespace PowerPointLabs.ActionFramework.Label
                 return TextCollection.EffectsLabBlurrinessButtonLabel;
             }
 
-            if (ribbonId.Contains(TextCollection.DynamicMenuCheckBoxId))
+            if (ribbonId.Contains(TextCollection.EffectsLabBlurrinessCustom))
             {
-                var checkBoxStartIndex = ribbonId.IndexOf("Blur") + 4;
-                var length = ribbonId.IndexOf(TextCollection.DynamicMenuCheckBoxId) - checkBoxStartIndex;
-                var checkBoxFeatureLabel = ribbonId.Substring(checkBoxStartIndex, length);
-                return TextCollection.EffectsLabBlurrinessCheckBoxLabel + checkBoxFeatureLabel;
+                int percentage = 0;
+                if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureSelected))
+                {
+                    percentage = EffectsLabBlurSelected.CustomPercentageSelected;
+                }
+                else if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureRemainder))
+                {
+                    percentage = EffectsLabBlurSelected.CustomPercentageRemainder;
+                }
+                else if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureBackground))
+                {
+                    percentage = EffectsLabBlurSelected.CustomPercentageBackground;
+                }
+                return TextCollection.EffectsLabBlurrinessCustomPrefixLabel + " (" + percentage + "%)";
             }
 
-            var startIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId) + TextCollection.DynamicMenuOptionId.Length;
-            var percentage = ribbonId.Substring(startIndex, ribbonId.Length - startIndex);
+            int startIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId) + TextCollection.DynamicMenuOptionId.Length;
+            string percentageText = ribbonId.Substring(startIndex, ribbonId.Length - startIndex);
 
-            return percentage + "% " + TextCollection.EffectsLabBlurrinessTag;
+            return percentageText + "% " + TextCollection.EffectsLabBlurrinessTag;
         }
     }
 }

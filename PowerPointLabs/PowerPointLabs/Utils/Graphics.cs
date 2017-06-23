@@ -35,11 +35,12 @@ namespace PowerPointLabs.Utils
         public const float PictureExportingRatio = 96.0f / 72.0f;
         private const float TargetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+        private const int MaxShapeNameLength = 255;
 
         // Static initializer to retrieve dpi scale once
         static Graphics()
         {
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            using (Drawing.Graphics g = Drawing.Graphics.FromHwnd(IntPtr.Zero))
             {
                 dpiScale = g.DpiX / TargetDpi;
             }
@@ -48,6 +49,11 @@ namespace PowerPointLabs.Utils
 
         # region API
         # region Shape
+        public static bool IsShapeNameOverMaximumLength(string shapeName)
+        {
+            return shapeName.Length > MaxShapeNameLength;
+        }
+
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
             // in case of random corruption of shape, cut-paste a shape before using its property
@@ -1065,6 +1071,26 @@ namespace PowerPointLabs.Utils
             r = (byte)(rgb & 255);
             g = (byte)((rgb >> 8) & 255);
             b = (byte)((rgb >> 16) & 255);
+        }
+
+        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor)
+        {
+            return Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+        }
+
+        public static System.Windows.Media.Color MediaColorFromDrawingColor(Drawing.Color drawingColor)
+        {
+            return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
+        }
+
+        public static Drawing.Color DrawingColorFromBrush(System.Windows.Media.Brush brush)
+        {
+            return DrawingColorFromMediaColor((brush as SolidColorBrush).Color);
+        }
+
+        public static System.Windows.Media.Brush MediaBrushFromDrawingColor(Drawing.Color color)
+        {
+            return new SolidColorBrush(MediaColorFromDrawingColor(color));
         }
         # endregion
         # endregion

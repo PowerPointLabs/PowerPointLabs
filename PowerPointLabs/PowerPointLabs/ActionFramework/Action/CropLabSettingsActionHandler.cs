@@ -8,7 +8,7 @@ namespace PowerPointLabs.ActionFramework.Action
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var dialog = new CropLabSettingsDialog();
+            CropLabSettingsDialogBox dialog = new CropLabSettingsDialogBox();
             dialog.ShowDialog();
         }
     }

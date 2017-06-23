@@ -18,7 +18,7 @@ namespace Test.Util
             int retryInterval = timeLimit/pollCount;
             for (int i = 0; i <= pollCount; ++i)
             {
-                var spotlightDialog = NativeUtil.FindWindow(null, "Spotlight Properties");
+                var spotlightDialog = NativeUtil.FindWindow(null, lpWindowName);
                 if (spotlightDialog != IntPtr.Zero) return;
                 ThreadUtil.WaitFor(retryInterval);
             }

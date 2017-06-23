@@ -299,7 +299,7 @@
 
         # region Highlight Lab
         public const string HighlightLabMenuLabel = "Highlight";
-        public const string SpotlightPropertiesButtonLabel = "Spotlight Properties";
+        public const string SpotlightPropertiesButtonLabel = "Settings";
         public const string SpotlightMenuLabel = "Spotlight";
         public const string AddSpotlightButtonLabel = "Create Spotlight";
         public const string ReloadSpotlightButtonLabel = "Recreate Spotlight";
@@ -375,15 +375,18 @@
         public const string DynamicMenuButtonId = "Button";
         public const string DynamicMenuCheckBoxId = "CheckBox";
         public const string DynamicMenuOptionId = "Option";
+        public const string DynamicMenuSeparatorId = "Separator";
         public const string DynamicMenuXmlButton = "<button id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlImageButton = "<button id=\"{0}\" getLabel=\"GetLabel\" getImage=\"GetImage\" getEnabled=\"GetEnabled\" onAction=\"OnAction\"/>";
         public const string DynamicMenuXmlCheckBox = "<checkBox id=\"{0}\" tag=\"{1}\" getLabel=\"GetLabel\" getPressed=\"GetPressed\" onAction=\"OnCheckBoxAction\"/>";
         public const string DynamicMenuXmlMenu = "<menu xmlns=\"http://schemas.microsoft.com/office/2009/07/customui\">{0}</menu>";
         public const string DynamicMenuXmlMenuSeparator = "<menuSeparator id=\"{0}Separator\"/>";
         public const string DynamicMenuXmlTitleMenuSeparator = "<menuSeparator id=\"{0}Separator\" title=\"{1}\"/>";
-        public const string EffectsLabBlurrinessButtonLabel = "Blurriness Options";
+        public const string EffectsLabBlurrinessButtonLabel = "Settings";
         public const string EffectsLabBlurrinessCheckBoxLabel = "Tint ";
         public const string EffectsLabBlurrinessTag = "Blurriness";
+        public const string EffectsLabBlurrinessCustom = "CustomPercentage";
+        public const string EffectsLabBlurrinessCustomPrefixLabel = "Custom";
         public const string EffectsLabBlurrinessFeatureSelected = "EffectsLabBlurSelected";
         public const string EffectsLabBlurrinessFeatureRemainder = "EffectsLabBlurRemainder";
         public const string EffectsLabBlurrinessFeatureBackground = "EffectsLabBlurBackground";
@@ -418,13 +421,6 @@
 
         public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
 
-        # endregion
-
-        # region Ribbon
-        public static readonly string AboutInfo =
-            "          PowerPointLabs Plugin Version " + Properties.Settings.Default.Version + " [Release date: " + Properties.Settings.Default.ReleaseDate + "]\n     Developed at School of Computing, National University of Singapore.\n        For more information, visit our website " + PowerPointLabsWebsiteUrl;
-
-        public const string AboutInfoTitle = "About PowerPointLabs";
         # endregion
 
         # region ThisAddIn
@@ -604,6 +600,21 @@
         }
         #endregion
 
+        #region Animation Lab
+        // Errors
+        public const string AnimationLabAutoAnimateErrorDialogTitle = "Unable to perform action";
+        public const string AnimationLabAutoAnimateErrorWrongSlide = "Please select the correct slide.";
+        public const string AnimationLabAutoAnimateErrorNoMatchingShapes = "No matching Shapes were found on the next slide.";
+        public const string AnimationLabAutoAnimateErrorSlideNotAutoAnimate = "The current slide was not added by PowerPointLabs Auto Animate";
+
+        // Dialog Boxes
+        public const string AnimationLabAutoAnimateLoadingText = "Applying auto animation...";
+        public const string AnimationLabSettingsDurationInputTooltip = "The duration (in seconds) for the animations in the animation slides to be created.";
+        public const string AnimationLabSettingsSmoothAnimationCheckboxTooltip = 
+            "Use a frame-based approach for smoother resize animations.\n" +
+            "This may result in larger file sizes and slower loading times for animated slides.";
+        #endregion
+
         #region Agenda Lab
         // Errors
         public const string AgendaLabErrorDialogTitle = "Unable to execute action";
@@ -615,7 +626,7 @@
         public const string AgendaLabNoAgendaError = "There is no generated agenda.";
         public const string AgendaLabNoReferenceSlideError = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
         public const string AgendaLabInvalidReferenceSlideError = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
-        public static string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
+        public const string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
         // Dialog Boxes
         public const string AgendaLabGeneratingDialogTitle = "Generating...";
@@ -662,10 +673,18 @@
         # endregion
 
         # region Effects Lab
-
-        public const string EffectsLabBlurSelectedErrorNoSelection = "'Blur Selected'  requires at least one shape or text box to be selected.";
+        // Errors
+        public const string EffectsLabBlurSelectedErrorNoSelection = "'Blur Selected' requires at least one shape or text box to be selected.";
         public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
 
+        // Dialog Boxes
+        public const string EffectsLabSettingsTintCheckboxForTintSelected = "Tint Selected";
+        public const string EffectsLabSettingsTintCheckboxForTintRemainder = "Tint Remainder";
+        public const string EffectsLabSettingsTintCheckboxForTintBackground = "Tint All Except Selected";
+        public const string EffectsLabSettingsTintCheckboxTooltip = "Adds a tinted effect to your blur.";
+        public const string EffectsLabSettingsBlurrinessInputTooltip = "The level of blurriness.";
+        public const string SpotlightSettingsTransparencyInputTooltip = "The transparency level of the spotlight effect to be created.";
+        public const string SpotlightSettingsSoftEdgesSelectionInputTooltip = "The softness of the edges of the spotlight effect to be created.";
         #endregion
 
         #region Captions Lab
@@ -781,6 +800,15 @@
         public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
         #endregion
 
+        #region Narrations Lab
+        // Dialog Boxes
+        public const string NarrationsLabSettingsVoiceSelectionInputTooltip = 
+            "The voice to be used when generating synthesized audio.\n" +
+            "Use [Voice] tags to specify a different voice for a particular section of text.";
+        public const string NarrationsLabSettingsPreviewCheckboxTooltip =
+            "If checked, the current slide's audio and animations will play after the Add Audio button is clicked.";
+        #endregion
+
         #region Positions Lab
         public class PositionsLabText
         {
@@ -815,6 +843,12 @@
         public const string SyncLabCopyError = "Error: Unable to copy selected item.";
         public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
         public const string SyncLabDefaultFormatName = "Format";
+        #endregion
+
+        #region Zoom Lab
+        // Dialog Boxes
+        public const string ZoomLabSettingsSlideBackgroundCheckboxTooltip = "Include the slide background while using Zoom Lab.";
+        public const string ZoomLabSettingsSeparateSlidesCheckboxTooltip = "Use separate slides for individual animation effects of Zoom To Area.";
         #endregion
 
         #region Task Pane - Resize Lab

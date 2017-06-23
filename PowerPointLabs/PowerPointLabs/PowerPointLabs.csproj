@@ -281,7 +281,6 @@
     <Compile Include="ActionFramework\Action\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\ResizeLabActionHandler.cs" />
     <Compile Include="ActionFramework\Action\TimerLabActionHandler.cs" />
-    <Compile Include="ActionFramework\CheckBoxAction\EffectsLabBlurrinessCheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\CheckBoxAction\EmptyCheckBoxActionHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportCheckBoxActionRibbonIdAttribute.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportActionRibbonIdAttribute.cs" />
@@ -409,7 +408,6 @@
     <Compile Include="ActionFramework\Label\HighlightLab\HighlightLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ZoomLab\ZoomLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\Label\ZoomLab\ZoomLabSettingsLabelHandler.cs" />
-    <Compile Include="ActionFramework\Pressed\EffectsLabBlurrinessPressedHandler.cs" />
     <Compile Include="ActionFramework\Pressed\EmptyPressedHandler.cs" />
     <Compile Include="ActionFramework\Supertip\AnimationLab\AnimationLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\Supertip\AnimationLab\AnimationLabSettingsSupertipHandler.cs" />
@@ -484,11 +482,11 @@
     <Compile Include="CropLab\CropOutPadding.cs" />
     <Compile Include="CropLab\CropToSlide.cs" />
     <Compile Include="CropLab\CropToSame.cs" />
-    <Compile Include="CropLab\CropLabSettingsDialog.xaml.cs">
-      <DependentUpon>CropLabSettingsDialog.xaml</DependentUpon>
+    <Compile Include="CropLab\CropLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>CropLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CropLab\CustomAspectRatioDialog.xaml.cs">
-      <DependentUpon>CustomAspectRatioDialog.xaml</DependentUpon>
+    <Compile Include="CropLab\CustomAspectRatioDialogBox.xaml.cs">
+      <DependentUpon>CustomAspectRatioDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ColorPicker\Magnifier.xaml.cs">
       <DependentUpon>Magnifier.xaml</DependentUpon>
@@ -573,6 +571,9 @@
       <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="EffectsLab\EffectsLabBlurSelected.cs" />
+    <Compile Include="EffectsLab\View\EffectsLabBlurDialogBox.xaml.cs">
+      <DependentUpon>EffectsLabBlurDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FunctionalTestInterface.Impl\Controller\TimerLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\HighlightLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\SyncLabController.cs" />
@@ -917,11 +918,35 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
-    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\ZoomLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>ZoomLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.Designer.cs">
-      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
+    <Compile Include="Views\SpotlightSettingsDialogBox.xaml.cs">
+      <DependentUpon>SpotlightSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>ShapesLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
+      <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NarrationsLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>NarrationsLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InShowRecordingControl.xaml.cs">
+      <DependentUpon>InShowRecordingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HighlightLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>HighlightLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AnimationLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>AnimationLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingDialogBox.xaml.cs">
+      <DependentUpon>LoadingDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AboutDialogBox.xaml.cs">
+      <DependentUpon>AboutDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditNameDialogBox.xaml.cs">
       <DependentUpon>EditNameDialogBox.xaml</DependentUpon>
@@ -944,37 +969,13 @@
     <Compile Include="RecorderTaskPane.Designer.cs">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\AboutForm.Designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AnimateInSlide.cs" />
-    <Compile Include="Views\AnimationLabDialogBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\AnimationLabDialogBox.Designer.cs">
-      <DependentUpon>AnimationLabDialogBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ZoomLabDialogBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ZoomLabDialogBox.Designer.cs">
-      <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="DefaultMotionAnimation.cs" />
     <Compile Include="Views\FolderDialogLauncher.cs" />
     <Compile Include="FrameMotionAnimation.cs" />
     <Compile Include="HighlightLab\HighlightBulletsBackground.cs" />
     <Compile Include="HighlightLab\HighlightBulletsText.cs" />
     <Compile Include="Models\PowerPointAckSlide.cs" />
-    <Compile Include="Views\HighlightBulletsDialogBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\HighlightBulletsDialogBox.Designer.cs">
-      <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\PowerPointCurrentPresentationInfo.cs" />
     <Compile Include="Models\PowerPointSlide.cs" />
     <Compile Include="Models\PowerPointSpotlightSlide.cs" />
@@ -994,41 +995,11 @@
     <Compile Include="SpeechEngine\SynthesisState.cs" />
     <Compile Include="SpeechEngine\TextToSpeech.cs" />
     <Compile Include="Spotlight.cs" />
-    <Compile Include="Views\InShowControl.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\InShowControl.Designer.cs">
-      <DependentUpon>InShowControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\SelectionRectangle.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SelectionRectangle.Designer.cs">
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShapesLabCategoryInfoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ShapesLabCategoryInfoForm.Designer.cs">
-      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShapesLabSetting.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ShapesLabSetting.Designer.cs">
-      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SpotlightDialogBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\SpotlightDialogBox.Designer.cs">
-      <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NarrationsLabDialogBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\NarrationsLabDialogBox.Designer.cs">
-      <DependentUpon>NarrationsLabDialogBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessingStatusForm.cs">
       <SubType>Form</SubType>
@@ -1038,12 +1009,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
-    <Compile Include="Views\LoadingDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\LoadingDialog.Designer.cs">
-      <DependentUpon>LoadingDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="WPF\ClickSelectTextBox.cs" />
     <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
@@ -1092,17 +1057,11 @@
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EffectsLab\View\EffectsLabBlurrinessDialogBox.resx">
-      <DependentUpon>EffectsLabBlurrinessDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TimerLab\TimerPane.resx">
       <DependentUpon>TimerPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SyncLab\View\SyncPane.resx">
       <DependentUpon>SyncPane.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\LoadingDialog.resx">
-      <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\ColorDataSource.datasource" />
@@ -1122,40 +1081,13 @@
     <EmbeddedResource Include="RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\AnimationLabDialogBox.resx">
-      <DependentUpon>AnimationLabDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ZoomLabDialogBox.resx">
-      <DependentUpon>ZoomLabDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\HighlightBulletsDialogBox.resx">
-      <DependentUpon>HighlightBulletsDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\InShowControl.resx">
-      <DependentUpon>InShowControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\SelectionRectangle.resx">
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ShapesLabCategoryInfoForm.resx">
-      <DependentUpon>ShapesLabCategoryInfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\ShapesLabSetting.resx">
-      <DependentUpon>ShapesLabSetting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\SpotlightDialogBox.resx">
-      <DependentUpon>SpotlightDialogBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\NarrationsLabDialogBox.resx">
-      <DependentUpon>NarrationsLabDialogBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
@@ -1278,11 +1210,11 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CropLab\CropLabSettingsDialog.xaml">
+    <Page Include="CropLab\CropLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CropLab\CustomAspectRatioDialog.xaml">
+    <Page Include="CropLab\CustomAspectRatioDialogBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1317,6 +1249,10 @@
     <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EffectsLab\View\EffectsLabBlurDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="PositionsLab\AlignSettingsDialog.xaml">
       <SubType>Designer</SubType>
@@ -1375,6 +1311,46 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SyncLab\View\SyncPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ZoomLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SpotlightSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ShapesLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ShapesLabCategoryInfoDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NarrationsLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InShowRecordingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HighlightLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AnimationLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoadingDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AboutDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

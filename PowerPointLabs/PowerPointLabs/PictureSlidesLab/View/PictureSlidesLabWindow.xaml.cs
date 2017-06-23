@@ -12,8 +12,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+
 using MahApps.Metro.Controls.Dialogs;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
@@ -22,9 +25,11 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 using PowerPointLabs.WPF.Observable;
+
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using Clipboard = System.Windows.Forms.Clipboard;
 using DragEventArgs = System.Windows.DragEventArgs;
+using Forms = System.Windows.Forms;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
 using MessageBox = System.Windows.MessageBox;
@@ -677,7 +682,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                         Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
                     };
                     DisableLoadingStyleOnWindowActivate();
-                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    if (openFileDialog.ShowDialog() == Forms.DialogResult.OK)
                     {
                         ViewModel.AddImageSelectionListItem(openFileDialog.FileNames,
                             this.GetCurrentSlide().GetNativeSlide(),
