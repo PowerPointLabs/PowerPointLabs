@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
 using PPExtraEventHelper;
@@ -750,6 +751,20 @@ namespace PowerPointLabs.Utils
         public static bool IsAGroup(Shape shape)
         {
             return shape.Type == MsoShapeType.msoGroup;
+        }
+
+        public static bool IsAChild(Shape shape)
+        {
+            try
+            {
+                Shape parent = shape.ParentGroup;
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Expected exception thrown if shape does not have a parent
+                return false;
+            }
         }
 
         public static bool CanAddArrows(Shape shape)
