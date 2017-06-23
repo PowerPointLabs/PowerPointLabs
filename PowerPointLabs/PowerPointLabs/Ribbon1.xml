@@ -196,7 +196,7 @@
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
-                    onAction="OnACtion"/>
+                    onAction="OnAction"/>
           </menu>
 
           <menu id="EffectLabsMenu"
