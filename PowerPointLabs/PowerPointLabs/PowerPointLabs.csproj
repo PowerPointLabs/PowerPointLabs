@@ -383,6 +383,11 @@
     <Compile Include="ActionFramework\Content\CropToAspectRatioContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EffectsLabBlurrinessContentHandler.cs" />
     <Compile Include="ActionFramework\Content\EmptyContentHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\MoreLabsGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\FormattingGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\EffectsGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\AudioGroupImageHandler.cs" />
+    <Compile Include="ActionFramework\Image\RibbonGroups\AnimationsGroupImageHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteAtCursorPosition\PasteAtCursorPositionEnabledHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteAtOriginalPosition\PasteAtOriginalPositionEnabledHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\AddIntoGroup\AddIntoGroupEnabledHandler.cs" />
@@ -430,7 +435,6 @@
     <Compile Include="ActionFramework\PasteLab\PasteIntoGroup\PasteIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\ReplaceWithClipboard\ReplaceWithClipboardImageHandler.cs" />
     <Compile Include="ActionFramework\SyncLab\SyncLabImageHandler.cs" />
-    <Compile Include="ActionFramework\Image\PptLabsGroupImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapeLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideImageHandler.cs" />
@@ -1772,9 +1776,6 @@
     <None Include="Resources\CaptionsLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ColorsLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CropLab.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1936,7 +1937,21 @@
   <ItemGroup>
     <None Include="Resources\Tutorial.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\ColorsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AnimationsGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AudioGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EffectsGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FormattingGroup.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
