@@ -513,12 +513,16 @@
         public const string MenuEditSmartArtBase = "MenuSmartArtEdit";
         public const string MenuEditSmartArt = MenuEditSmartArtBase + "SmartArt";
         public const string MenuEditSmartArtText = MenuEditSmartArtBase + "Text";
+        public const string MenuNotes = "MenuNotes";
+
+        public const string MenuSeparator = "MenuSeparator";
 
         public const string EditNameTag = "EditName";
         public const string ConvertToPictureTag = "ConvertToPicture";
         public const string HideSelectedShapeTag = "HideShape";
         public const string AddCustomShapeTag = "AddShape";
         public const string AddIntoGroupTag = "AddIntoGroup";
+        public const string SpeakSelectedTag = "SpeakSelected";
         #endregion
         #endregion
 

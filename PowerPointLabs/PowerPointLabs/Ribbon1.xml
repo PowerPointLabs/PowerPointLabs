@@ -601,6 +601,22 @@
 	    <menuSeparator id="separatorFrame" />
 	    <dynamicMenu id="MenuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuNotesEditText">
+      <menu id="MenuNotesEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
+        <menuSeparator id="NarrationsLabContextSeparator"
+                           title="Narrations Lab"/>
+        <button id="SpeakSelectedMenuNotes"
+                tag="SpeakSelected"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                onAction="OnAction"/>
+        <button id="AddNarrationsMenuNotes"
+                tag="AddNarrations"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                onAction="OnAction"/>
+      </menu>
+    </contextMenu>
   </contextMenus>
 </customUI>
 

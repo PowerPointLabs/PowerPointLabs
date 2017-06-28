@@ -6,21 +6,11 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.Content
 {
     [ExportContentRibbonId(
-        TextCollection.MenuShape, 
-        TextCollection.MenuLine,
-        TextCollection.MenuFreeform,
-        TextCollection.MenuPicture, 
-        TextCollection.MenuSlide,
-        TextCollection.MenuGroup,
-        TextCollection.MenuInk,
-        TextCollection.MenuVideo,
-        TextCollection.MenuTextEdit,
-        TextCollection.MenuChart,
-        TextCollection.MenuTable,
-        TextCollection.MenuTableCell,
-        TextCollection.MenuSmartArt,
-        TextCollection.MenuEditSmartArt,
-        TextCollection.MenuEditSmartArtText)]
+        TextCollection.MenuShape, TextCollection.MenuLine, TextCollection.MenuFreeform,
+        TextCollection.MenuPicture, TextCollection.MenuSlide, TextCollection.MenuGroup,
+        TextCollection.MenuInk, TextCollection.MenuVideo, TextCollection.MenuTextEdit,
+        TextCollection.MenuChart, TextCollection.MenuTable, TextCollection.MenuTableCell,
+        TextCollection.MenuSmartArt, TextCollection.MenuEditSmartArt, TextCollection.MenuEditSmartArtText)]
 
     class ContextMenuContentHandler : ContentHandler
     {
@@ -32,7 +22,8 @@ namespace PowerPointLabs.ActionFramework.Content
             foreach (ContextMenuGroup group in contextMenuGroups)
             {
                 string id = group.Name.Replace(" ", "");
-                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlTitleMenuSeparator, id, group.Name));
+                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlTitleMenuSeparator,
+                    id + TextCollection.MenuSeparator, group.Name));
 
                 foreach (string groupItem in group.Items)
                 {

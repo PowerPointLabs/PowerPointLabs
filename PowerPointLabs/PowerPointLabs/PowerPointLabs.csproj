@@ -306,6 +306,9 @@
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabImageHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedActionHandler.cs" />
     <Compile Include="ActionFramework\SyncLab\SyncLabActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropToShape\CropToShapeActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropToAspectRatio\CropToAspectRatioActionHandler.cs" />
@@ -413,7 +416,7 @@
     <Compile Include="ActionFramework\HighlightLab\HighlightPoints\HighlightPointsLabelHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightBackground\HighlightBackgroundSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightPoints\HighlightPointsSupertipHandler.cs" />
-    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\EditName\EditNameImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ConvertToPicture\ConvertToPictureImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeImageHandler.cs" />
@@ -460,7 +463,7 @@
     <Compile Include="ActionFramework\Help\HelpMenu\HelpMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\CaptionsLab\CaptionsLabMenu\CaptionsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteLabMenu\PasteLabMenuLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\EditName\EditNameLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ConvertToPicture\ConvertToPictureShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeLabelHandler.cs" />
