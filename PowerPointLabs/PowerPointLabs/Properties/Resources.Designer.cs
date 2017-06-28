@@ -413,9 +413,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AnimationsGroup {
+            get {
+                object obj = ResourceManager.GetObject("AnimationsGroup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Apply_icon {
             get {
                 object obj = ResourceManager.GetObject("Apply_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AudioGroup {
+            get {
+                object obj = ResourceManager.GetObject("AudioGroup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -703,6 +723,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap EffectsGroup {
+            get {
+                object obj = ResourceManager.GetObject("EffectsGroup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap EffectsLab {
             get {
                 object obj = ResourceManager.GetObject("EffectsLab", resourceCulture);
@@ -806,6 +836,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap FlipVerticalIcon {
             get {
                 object obj = ResourceManager.GetObject("FlipVerticalIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap FormattingGroup {
+            get {
+                object obj = ResourceManager.GetObject("FormattingGroup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
