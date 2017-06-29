@@ -1029,6 +1029,9 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
+    <Compile Include="Views\SpeechPlayingDialogBox.xaml.cs">
+      <DependentUpon>SpeechPlayingDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ZoomLabSettingsDialogBox.xaml.cs">
       <DependentUpon>ZoomLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1116,10 +1119,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\ProcessingStatusForm.Designer.cs" />
-    <Compile Include="Views\SpeechPlayingForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\SpeechPlayingForm.Designer.cs" />
     <Compile Include="WPF\ClickSelectTextBox.cs" />
     <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
@@ -1201,7 +1200,6 @@
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
-    <EmbeddedResource Include="Views\SpeechPlayingForm.resx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1422,6 +1420,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SyncLab\View\SyncPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SpeechPlayingDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
