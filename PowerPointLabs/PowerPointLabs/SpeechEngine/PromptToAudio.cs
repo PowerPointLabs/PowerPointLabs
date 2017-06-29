@@ -48,11 +48,11 @@ namespace PowerPointLabs.SpeechEngine
             Prompt spokenPrompt = state.PromptBeingSynthesized;
 
             SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox(state);
-            speechPlayingDialog.Closed += (sender, e) => SpeechPlayingDialog_Closed(sender, e, synthesizer, spokenPrompt);
+            speechPlayingDialog.Closed += (sender, e) => SpeechPlayingDialog_Closed(synthesizer, spokenPrompt);
             speechPlayingDialog.ShowDialog();
         }
 
-        private static void SpeechPlayingDialog_Closed(object sender, EventArgs e, SpeechSynthesizer synthesizer, Prompt spokenPrompt)
+        private static void SpeechPlayingDialog_Closed(SpeechSynthesizer synthesizer, Prompt spokenPrompt)
         {
             try
             {
