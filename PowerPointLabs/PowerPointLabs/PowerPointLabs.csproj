@@ -307,8 +307,8 @@
     <Compile Include="ActionFramework\Help\Help\HelpSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\NarrationsLab\NarrationsLabSettings\NarrationsLabSettingsActionHandler.cs" />
-    <Compile Include="ActionFramework\RibbonGroups\MoreLabsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\FormattingGroupLabelHandler.cs" />
+    <Compile Include="ActionFramework\RibbonGroups\MoreLabsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\AudioGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\AnimationsGroupLabelHandler.cs" />
