@@ -40,6 +40,7 @@ namespace PowerPointLabs.PasteLab
                 Shape selectedChildShape = selectedChildShapes[1];
                 string originalGroupName = selectedGroup.Name;
                 int zOrder = selectedChildShape.ZOrderPosition;
+                Shape shapeAbove = null;
 
                 float posLeft = selectedChildShape.Left;
                 float posTop = selectedChildShape.Top;
@@ -57,6 +58,10 @@ namespace PowerPointLabs.PasteLab
                         continue;
                     }
                     selectedGroupShapeList.Add(shape);
+                    if (shape.ZOrderPosition - 1 == zOrder)
+                    {
+                        shapeAbove = shape;
+                    }
                 }
 
                 // Remove selected child since it is being replaced
@@ -64,7 +69,7 @@ namespace PowerPointLabs.PasteLab
                 selectedGroup.Ungroup();
                 selectedChildShape.Delete();
 
-                ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop, zOrder);
+                ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop, shapeAbove);
                 result[1].Name = originalGroupName;
                 slide.TransferAnimation(tempShapeForAnimation, result[1]);
 

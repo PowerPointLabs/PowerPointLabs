@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Content
 {
-    [ExportContentRibbonId("CropToAspectRatioDynamicMenu")]
+    [ExportContentRibbonId(TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu)]
     class CropToAspectRatioContentHandler : ContentHandler
     {
         private static readonly string[] PRESET_ASPECT_RATIOS = { "1:1", "4:3", "16:9" };
@@ -19,13 +19,13 @@ namespace PowerPointLabs.ActionFramework.Content
                 string idFriendlyAspectRatio = PRESET_ASPECT_RATIOS[i].Replace(':', '_');
                 xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
                                 feature + TextCollection.DynamicMenuOptionId + idFriendlyAspectRatio,
-                                TextCollection.CropToAspectRatioTag));
+                                TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu));
             }
 
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, feature));
             xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
                             feature + TextCollection.DynamicMenuButtonId + "Custom",
-                            TextCollection.CropToAspectRatioTag));
+                            TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu));
 
             return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);
         }

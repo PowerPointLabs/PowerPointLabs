@@ -4,9 +4,12 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
+
 using Color = System.Drawing.Color;
+using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -49,7 +52,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 FullOpen = true
             };
             DisableLoadingStyleOnWindowActivate();
-            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (colorDialog.ShowDialog() == Forms.DialogResult.OK)
             {
                 ViewModel.BindSelectedColor(colorDialog.Color,
                     this.GetCurrentSlide().GetNativeSlide(),

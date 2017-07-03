@@ -403,9 +403,19 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap AnimationLabSmall {
+        public static System.Drawing.Bitmap AnimationLab {
             get {
-                object obj = ResourceManager.GetObject("AnimationLabSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("AnimationLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AnimationsGroup {
+            get {
+                object obj = ResourceManager.GetObject("AnimationsGroup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -416,6 +426,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap Apply_icon {
             get {
                 object obj = ResourceManager.GetObject("Apply_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap AudioGroup {
+            get {
+                object obj = ResourceManager.GetObject("AudioGroup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -463,9 +483,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CaptionLabSmall {
+        public static System.Drawing.Bitmap CaptionsLab {
             get {
-                object obj = ResourceManager.GetObject("CaptionLabSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("CaptionsLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -703,6 +723,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap EffectsGroup {
+            get {
+                object obj = ResourceManager.GetObject("EffectsGroup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap EffectsLab {
             get {
                 object obj = ResourceManager.GetObject("EffectsLab", resourceCulture);
@@ -813,6 +843,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap FormattingGroup {
+            get {
+                object obj = ResourceManager.GetObject("FormattingGroup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap halfWidth {
             get {
                 object obj = ResourceManager.GetObject("halfWidth", resourceCulture);
@@ -823,19 +863,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Help {
+        public static System.Drawing.Bitmap HelpMenu {
             get {
-                object obj = ResourceManager.GetObject("Help", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap HelpSmall {
-            get {
-                object obj = ResourceManager.GetObject("HelpSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("HelpMenu", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -873,9 +903,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap HighlightLabSmall {
+        public static System.Drawing.Bitmap HighlightLab {
             get {
-                object obj = ResourceManager.GetObject("HighlightLabSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("HighlightLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1083,19 +1113,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap MoreLabs {
+        public static System.Drawing.Bitmap NarrationsLab {
             get {
-                object obj = ResourceManager.GetObject("MoreLabs", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap NarrationsLabSmall {
-            get {
-                object obj = ResourceManager.GetObject("NarrationsLabSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("NarrationsLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1113,9 +1133,49 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap PasteAtCursorPosition {
+            get {
+                object obj = ResourceManager.GetObject("PasteAtCursorPosition", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PasteAtOriginalPosition {
+            get {
+                object obj = ResourceManager.GetObject("PasteAtOriginalPosition", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PasteIntoGroup {
+            get {
+                object obj = ResourceManager.GetObject("PasteIntoGroup", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap PasteLab {
             get {
                 object obj = ResourceManager.GetObject("PasteLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PasteToFillSlide {
+            get {
+                object obj = ResourceManager.GetObject("PasteToFillSlide", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1136,6 +1196,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap PictureSlidesLab {
             get {
                 object obj = ResourceManager.GetObject("PictureSlidesLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap PictureSlidesLab1 {
+            get {
+                object obj = ResourceManager.GetObject("PictureSlidesLab1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1263,6 +1333,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap RecordAudio {
+            get {
+                object obj = ResourceManager.GetObject("RecordAudio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Reload_icon {
             get {
                 object obj = ResourceManager.GetObject("Reload_icon", resourceCulture);
@@ -1326,6 +1406,26 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap RemoveHighlighting {
             get {
                 object obj = ResourceManager.GetObject("RemoveHighlighting", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RemoveNotes {
+            get {
+                object obj = ResourceManager.GetObject("RemoveNotes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ReplaceWithClipboard {
+            get {
+                object obj = ResourceManager.GetObject("ReplaceWithClipboard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1813,9 +1913,29 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap Tutorial {
+            get {
+                object obj = ResourceManager.GetObject("Tutorial", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Up {
             get {
                 object obj = ResourceManager.GetObject("Up", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap UserGuide {
+            get {
+                object obj = ResourceManager.GetObject("UserGuide", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1853,9 +1973,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap ZoomLabSmall {
+        public static System.Drawing.Bitmap ZoomLab {
             get {
-                object obj = ResourceManager.GetObject("ZoomLabSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("ZoomLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

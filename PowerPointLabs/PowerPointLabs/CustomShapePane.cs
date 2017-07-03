@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -311,11 +310,11 @@ namespace PowerPointLabs
 
         private void ContextMenuStripAddCategoryClicked()
         {
-            var categoryInfoDialog = new ShapesLabCategoryInfoForm(string.Empty);
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
 
             categoryInfoDialog.ShowDialog();
 
-            if (categoryInfoDialog.UserOption == ShapesLabCategoryInfoForm.Option.Ok)
+            if (categoryInfoDialog.Result == DialogResult.OK)
             {
                 var categoryName = categoryInfoDialog.CategoryName;
 
@@ -486,11 +485,11 @@ namespace PowerPointLabs
 
         private void ContextMenuStripRenameCategoryClicked()
         {
-            var categoryInfoDialog = new ShapesLabCategoryInfoForm(CurrentCategory);
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(CurrentCategory);
 
             categoryInfoDialog.ShowDialog();
 
-            if (categoryInfoDialog.UserOption == ShapesLabCategoryInfoForm.Option.Ok)
+            if (categoryInfoDialog.Result == DialogResult.OK)
             {
                 var categoryName = categoryInfoDialog.CategoryName;
 
@@ -537,11 +536,11 @@ namespace PowerPointLabs
 
         private void ContextMenuStripSettingsClicked()
         {
-            var settingDialog = new ShapesLabSetting(ShapeRootFolderPath);
+            ShapesLabSettingsDialogBox settingDialog = new ShapesLabSettingsDialogBox(ShapeRootFolderPath);
 
             settingDialog.ShowDialog();
 
-            if (settingDialog.UserOption == ShapesLabSetting.Option.Ok)
+            if (settingDialog.Result == DialogResult.OK)
             {
                 var newPath = settingDialog.DefaultSavingPath;
 
@@ -831,10 +830,9 @@ namespace PowerPointLabs
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
         {
-            var loadingDialog = new LoadingDialog(TextCollection.CustomShapeMigratingDialogTitle,
-                                                  TextCollection.CustomShapeMigratingDialogContent);
+            var loadingDialog = new LoadingDialogBox(TextCollection.CustomShapeMigratingDialogTitle,
+                                                    TextCollection.CustomShapeMigratingDialogContent);
             loadingDialog.Show();
-            loadingDialog.Refresh();
 
             // close the opening presentation
             if (Globals.ThisAddIn.ShapePresentation.Opened)
@@ -845,7 +843,7 @@ namespace PowerPointLabs
             // migration only cares about if the folder has been copied to the new location entirely.
             if (!FileDir.CopyFolder(oldPath, newPath))
             {
-                loadingDialog.Dispose();
+                loadingDialog.Close();
 
                 MessageBox.Show(TextCollection.CustomShapeMigrationError);
 
@@ -867,7 +865,7 @@ namespace PowerPointLabs
             Globals.ThisAddIn.ShapePresentation.DefaultCategory = CurrentCategory;
 
             PaneReload(true);
-            loadingDialog.Dispose();
+            loadingDialog.Close();
 
             return true;
         }

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
 using PPExtraEventHelper;
@@ -35,11 +36,12 @@ namespace PowerPointLabs.Utils
         public const float PictureExportingRatio = 96.0f / 72.0f;
         private const float TargetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+        private const int MaxShapeNameLength = 255;
 
         // Static initializer to retrieve dpi scale once
         static Graphics()
         {
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(IntPtr.Zero))
+            using (Drawing.Graphics g = Drawing.Graphics.FromHwnd(IntPtr.Zero))
             {
                 dpiScale = g.DpiX / TargetDpi;
             }
@@ -48,6 +50,11 @@ namespace PowerPointLabs.Utils
 
         # region API
         # region Shape
+        public static bool IsShapeNameOverMaximumLength(string shapeName)
+        {
+            return shapeName.Length > MaxShapeNameLength;
+        }
+
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
             // in case of random corruption of shape, cut-paste a shape before using its property
@@ -158,6 +165,12 @@ namespace PowerPointLabs.Utils
             return shape.Type == MsoShapeType.msoAutoShape
                 || shape.Type == MsoShapeType.msoFreeform
                 || shape.Type == MsoShapeType.msoGroup;
+        }
+
+        public static bool IsPicture(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoPicture ||
+                   shape.Type == MsoShapeType.msoLinkedPicture;
         }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
@@ -434,6 +447,34 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
+        /// Moves shiftShape until it is at destination zOrder index.
+        /// </summary>
+        public static void MoveZTo(Shape shiftShape, int destination)
+        {
+            while (shiftShape.ZOrderPosition < destination)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+
+            while (shiftShape.ZOrderPosition > destination)
+            {
+                int currentValue = shiftShape.ZOrderPosition;
+                shiftShape.ZOrder(MsoZOrderCmd.msoSendBackward);
+                if (shiftShape.ZOrderPosition == currentValue)
+                {
+                    // Break if no change. Guards against infinite loops.
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Moves shiftShape forward until it is in front of destinationShape.
         /// (does nothing if already in front)
         /// </summary>
@@ -467,6 +508,35 @@ namespace PowerPointLabs.Utils
                     break;
                 }
             }
+        }
+
+        public static void SwapZOrder(Shape originalShape, Shape destinationShape)
+        {
+            Shape lowerZOrderShape = originalShape;
+            Shape higherZOrderShape = destinationShape;
+            if (originalShape.ZOrderPosition > destinationShape.ZOrderPosition)
+            {
+                lowerZOrderShape = destinationShape;
+                higherZOrderShape = originalShape;
+            }
+            int lowerZOrder = lowerZOrderShape.ZOrderPosition;
+            int higherZOrder = higherZOrderShape.ZOrderPosition;
+
+            // If shape is a group, our target zOrder needs to be offset by the number of items in the group
+            // This is to account for the zOrder of the items in the group
+            if (IsAGroup(lowerZOrderShape))
+            {
+                higherZOrder -= lowerZOrderShape.GroupItems.Count;
+            }
+
+            if (IsAGroup(higherZOrderShape))
+            {
+                higherZOrder += higherZOrderShape.GroupItems.Count;
+            }
+
+            MoveZTo(lowerZOrderShape, higherZOrder);
+
+            MoveZTo(higherZOrderShape, lowerZOrder);
         }
 
         /// <summary>
@@ -673,17 +743,28 @@ namespace PowerPointLabs.Utils
             return shape.Visible == MsoTriState.msoFalse;
         }
 
+        public static bool IsSelectionShapes(Selection selection)
+        {
+            return selection.Type == PpSelectionType.ppSelectionShapes;
+        }
+
         public static bool IsAGroup(Shape shape)
+        {
+            return shape.Type == MsoShapeType.msoGroup;
+        }
+
+        public static bool IsAChild(Shape shape)
         {
             try
             {
-                var groupItems = shape.GroupItems;
+                Shape parent = shape.ParentGroup;
+                return true;
             }
             catch (UnauthorizedAccessException)
             {
+                // Expected exception thrown if shape does not have a parent
                 return false;
             }
-            return true;
         }
 
         public static bool CanAddArrows(Shape shape)
@@ -1005,6 +1086,26 @@ namespace PowerPointLabs.Utils
             r = (byte)(rgb & 255);
             g = (byte)((rgb >> 8) & 255);
             b = (byte)((rgb >> 16) & 255);
+        }
+
+        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor)
+        {
+            return Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+        }
+
+        public static System.Windows.Media.Color MediaColorFromDrawingColor(Drawing.Color drawingColor)
+        {
+            return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
+        }
+
+        public static Drawing.Color DrawingColorFromBrush(System.Windows.Media.Brush brush)
+        {
+            return DrawingColorFromMediaColor((brush as SolidColorBrush).Color);
+        }
+
+        public static System.Windows.Media.Brush MediaBrushFromDrawingColor(Drawing.Color color)
+        {
+            return new SolidColorBrush(MediaColorFromDrawingColor(color));
         }
         # endregion
         # endregion

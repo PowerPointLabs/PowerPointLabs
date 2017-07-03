@@ -24,7 +24,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl("TimerLabButton"));
+                    new RibbonControl(TextCollection.TimerLabTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(TimerPane)).Control as TimerPane;
             });
