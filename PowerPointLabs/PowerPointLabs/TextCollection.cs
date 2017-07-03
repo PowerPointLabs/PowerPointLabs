@@ -208,10 +208,6 @@
             "To perform this action, click this button";
         # endregion
 
-        # region Drawing Lab
-        public const string DrawingsLabButtonSupertip = "Open the Drawing Lab Interface";
-        #endregion
-
         # region Positions Lab
         public const string PositionsLabMenuSupertip =
             "Use Positions Lab to accurately position the objects on your slide.\n\n" +
@@ -337,10 +333,6 @@
         public const string AgendaLabRemoveAgendaButtonLabel = "Remove Agenda";
         public const string AgendaLabAgendaSettingsButtonLabel = "Agenda Settings";
         public const string AgendaLabBulletAgendaSettingsButtonLabel = "Bullet Agenda Settings";
-        # endregion
-
-        # region Drawing Lab
-        public const string DrawingsLabButtonLabel = "Drawing";
         # endregion
 
         # region Positions Lab
@@ -554,7 +546,6 @@
             "ton to save.";
         public const string ShapesLabTaskPanelTitle = "Shapes Lab";
         public const string ColorsLabTaskPanelTitle = "Colors Lab";
-        public const string DrawingsLabTaskPanelTitle = "Drawing Lab";
         public const string RecManagementPanelTitle = "Record Management";
         public const string PositionsLabTaskPanelTitle = "Positions Lab";
         public const string ResizeLabsTaskPaneTitle = "Resize Lab";
@@ -760,25 +751,6 @@
         public const string AgendaLabTemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
-        # endregion
-
-        # region Drawing Lab
-
-        public const string DrawingsLabSelectExactlyOneShape = "Please select a single shape.";
-        public const string DrawingsLabSelectAtLeastOneShape = "Please select at least one shape.";
-        public const string DrawingsLabSelectExactlyTwoShapes = "Please select two shapes.";
-        public const string DrawingsLabSelectAtLeastTwoShapes = "Please select at least two shapes.";
-        public const string DrawingsLabSelectTwoSetsOfShapes = "Please select two sets of shapes.";
-        public const string DrawingsLabSelectStartAndEndShape = "Please select a start shape and an end shape";
-
-        public const string DrawingsLabErrorCannotGroup = "These shapes cannot be grouped.";
-        public const string DrawingsLabErrorNothingUngrouped = "Please select shapes that have been grouped.";
-
-        public const string DrawingsLabMultiCloneDialogText = "Number of Extra Copies";
-        public const string DrawingsLabMultiCloneDialogHeader = "Multi-Clone";
-
-        public const string DrawingsLabSetTextDialogHeader = "Set Text";
-
         # endregion
 
         # region Effects Lab

@@ -693,16 +693,6 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap DrawingLab {
-            get {
-                object obj = ResourceManager.GetObject("DrawingLab", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap DuplicateRotateIcon {
             get {
                 object obj = ResourceManager.GetObject("DuplicateRotateIcon", resourceCulture);
