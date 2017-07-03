@@ -10,7 +10,7 @@ namespace PowerPointLabs.Utils
 {
     public partial class PPShape
     {
-        private readonly PowerPoint.Shape _shape;
+        public readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedVisualLeft;
@@ -430,20 +430,6 @@ namespace PowerPointLabs.Utils
         public int ZOrderPosition
         {
             get { return _shape.ZOrderPosition; }
-            set
-            {
-                while (_shape.ZOrderPosition != value)
-                {
-                    if (_shape.ZOrderPosition < value)
-                    {
-                        _shape.ZOrder(MsoZOrderCmd.msoBringForward);
-                    }
-                    else if (_shape.ZOrderPosition > value)
-                    {
-                        _shape.ZOrder(MsoZOrderCmd.msoSendBackward);
-                    }
-                }
-            }
         }
 
         #endregion
@@ -504,26 +490,6 @@ namespace PowerPointLabs.Utils
         public void Select(MsoTriState replace)
         {
             _shape.Select(replace);
-        }
-
-        /// <summary>
-        /// Swap Z order of the two PPShapes
-        /// </summary>
-        public void SwapZOrder(PPShape shape)
-        {
-            int originalZOrder = _shape.ZOrderPosition;
-            int targetZOrder = shape.ZOrderPosition;
-
-            ZOrderPosition = targetZOrder;
-            shape.ZOrderPosition = originalZOrder;
-        }
-
-        /// <summary>
-        /// Swap Z order of the with a shape
-        /// </summary>
-        public void SwapZOrder(PowerPoint.Shape shape)
-        {
-            SwapZOrder(new PPShape(shape, false));
         }
 
         /// <summary>
