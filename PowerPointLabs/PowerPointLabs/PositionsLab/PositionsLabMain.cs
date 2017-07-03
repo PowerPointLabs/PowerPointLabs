@@ -2406,7 +2406,7 @@ namespace PowerPointLabs.PositionsLab
                     var nextPos = GetSwapReferencePoint(sortedShapes[i + 1], SwapReferencePoint);
                     currentShape.IncrementLeft(nextPos.X - currentPos.X);
                     currentShape.IncrementTop(nextPos.Y - currentPos.Y);
-                    currentShape.SwapZOrder(sortedShapes[i + 1]);
+                    Graphics.SwapZOrder(currentShape._shape, sortedShapes[i + 1]._shape);
                 }
                 else
                 {

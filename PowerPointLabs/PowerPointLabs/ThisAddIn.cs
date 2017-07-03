@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -20,7 +21,6 @@ using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
-using PowerPointLabs.SyncLab.View;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 using PPExtraEventHelper;
@@ -390,9 +390,8 @@ namespace PowerPointLabs
     EventHandler visibleChangeEventHandler = null,
     EventHandler dockPositionChangeEventHandler = null)
         {
-            var loadingDialog = new LoadingDialog();
+            var loadingDialog = new LoadingDialogBox();
             loadingDialog.Show();
-            loadingDialog.Refresh();
 
             // note down the control's width
             var width = control.Width;
@@ -429,7 +428,7 @@ namespace PowerPointLabs
                 taskPane.DockPositionChanged += dockPositionChangeEventHandler;
             }
 
-            loadingDialog.Dispose();
+            loadingDialog.Close();
             return taskPane;
         }
 
@@ -645,13 +644,13 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
+                        if (Ribbon.RemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
-                        Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
+                        Ribbon.RemoveAudioEnabled = true;
+                        Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
             }
@@ -948,53 +947,41 @@ namespace PowerPointLabs
                     Ribbon.ReloadSpotlight = false;
                 }
             }
-
-            Ribbon.RefreshRibbonControl("AddAnimationButton");
-            Ribbon.RefreshRibbonControl("ReloadButton");
-            Ribbon.RefreshRibbonControl("ReloadSpotlightButton");
-            Ribbon.RefreshRibbonControl("HighlightBulletsTextButton");
-            Ribbon.RefreshRibbonControl("HighlightBulletsBackgroundButton");
+            
+            Ribbon.RefreshRibbonControl("HighlightPointsButton");
+            Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
             Ribbon.RefreshRibbonControl("RemoveAudioButton");
         }
 
+        // To handle AccessViolationException
+        [HandleProcessCorruptedStateExceptions]
         private void ThisAddInSelectionChanged(PowerPoint.Selection sel)
         {
             Ribbon.SpotlightEnabled = false;
             Ribbon.InSlideEnabled = false;
             Ribbon.ZoomButtonEnabled = false;
+
             if (sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                PowerPoint.Shape sh = sel.ShapeRange[1];
+                PowerPoint.Shape sh = null;
+                try
+                {
+                    sh = sel.ShapeRange[1];
+                }
+                catch (AccessViolationException e)
+                {
+                    Logger.LogException(e, "ThisAddInSelectionChanged");
+                    Logger.Log("We do not have access to the ShapeRange now!");
+                    return;
+                }
+
                 if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform ||
                     sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
                     || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk ||
                     sh.Type == Office.MsoShapeType.msoGroup)
                 {
                     Ribbon.SpotlightEnabled = true;
-                }
-                if ((sh.Type == Office.MsoShapeType.msoAutoShape &&
-                     sh.AutoShapeType == Office.MsoAutoShapeType.msoShapeRectangle) ||
-                    sh.Type == Office.MsoShapeType.msoPicture)
-                {
-                    Ribbon.ZoomButtonEnabled = true;
-                }
-                if (sel.ShapeRange.Count > 1)
-                {
-                    foreach (PowerPoint.Shape tempShape in sel.ShapeRange)
-                    {
-                        if (sh.Type == tempShape.Type)
-                        {
-                            Ribbon.InSlideEnabled = true;
-                            Ribbon.ZoomButtonEnabled = true;
-                        }
-                        if (sh.Type == Office.MsoShapeType.msoAutoShape && sh.AutoShapeType != tempShape.AutoShapeType)
-                        {
-                            Ribbon.InSlideEnabled = false;
-                            Ribbon.ZoomButtonEnabled = false;
-                            break;
-                        }
-                    }
                 }
 
                 if (isResizePaneVisible)
@@ -1006,11 +993,15 @@ namespace PowerPointLabs
 
             }
 
+            Ribbon.RefreshRibbonControl("AnimateInSlideButton");
+            Ribbon.RefreshRibbonControl("DrillDownButton");
+            Ribbon.RefreshRibbonControl("StepBackButton");
             Ribbon.RefreshRibbonControl("AddSpotlightButton");
-            Ribbon.RefreshRibbonControl("InSlideAnimateButton");
             Ribbon.RefreshRibbonControl("AddZoomInButton");
             Ribbon.RefreshRibbonControl("AddZoomOutButton");
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
+            Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
+            Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
         }
 
         private void ThisAddInNewPresentation(PowerPoint.Presentation pres)
@@ -1371,6 +1362,11 @@ namespace PowerPointLabs
 
                     _copiedShapes.Sort((x, y) => (x.Id - y.Id));
                 }
+
+                Ribbon.RefreshRibbonControl("PasteToFillSlideButton");
+                Ribbon.RefreshRibbonControl("PasteAtOriginalPositionButton");
+                Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
+                Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             }
             catch
             {

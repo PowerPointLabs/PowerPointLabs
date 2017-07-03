@@ -24,7 +24,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl("PositionsLabButton"));
+                    new RibbonControl(TextCollection.PositionsLabTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(PositionsPane)).Control as PositionsPane;
             });
