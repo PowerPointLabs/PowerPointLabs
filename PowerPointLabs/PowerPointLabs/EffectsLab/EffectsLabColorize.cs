@@ -8,7 +8,7 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.EffectsLab
 {
-    public class EffectsLabColorize
+    public static class EffectsLabRecolor
     {
         public static void GreyScaleRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {

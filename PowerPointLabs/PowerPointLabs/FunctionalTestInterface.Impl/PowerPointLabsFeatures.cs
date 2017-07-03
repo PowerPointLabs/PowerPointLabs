@@ -267,7 +267,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute(() =>
             {
                 var control = new RibbonControl(feature + TextCollection.DynamicMenuCheckBoxId);
-                control.Tag = "Blurriness";
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnCheckBoxAction(control, pressed);
             });
         }
@@ -276,8 +276,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurSelectedOption90");
-                control.Tag = "Blurriness";
+                var control = new RibbonControl("BlurSelectedOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -286,8 +286,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurRemainderOption90");
-                control.Tag = "Blurriness";
+                var control = new RibbonControl("BlurRemainderOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -296,7 +296,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("GreyScaleColorizeRemainderMenu"));
+                var control = new RibbonControl("GrayScaleRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -305,7 +307,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("GothamColorizeRemainderMenu"));
+                var control = new RibbonControl("GothamRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -313,7 +317,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("SepiaColorizeRemainderMenu"));
+                var control = new RibbonControl("SepiaRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -322,8 +328,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurBackgroundOption90");
-                control.Tag = "Blurriness";
+                var control = new RibbonControl("BlurBackgroundOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -332,7 +338,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("BlackWhiteColorizeBackgroundMenu"));
+                var control = new RibbonControl("BlackAndWhiteRecolorBackgroundMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -340,7 +348,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("SepiaColorizeBackgroundMenu"));
+                var control = new RibbonControl("SepiaRecolorBackgroundMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 

@@ -4,7 +4,7 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.EffectsLab
 {
-    internal class EffectsLabSpotlightSettings
+    internal static class EffectsLabSpotlightSettings
     {
         public static void OpenSpotlightSettingsDialog()
         {

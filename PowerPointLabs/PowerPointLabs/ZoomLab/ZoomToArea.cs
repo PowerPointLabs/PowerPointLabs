@@ -11,7 +11,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ZoomLab
 {
-    class ZoomToArea
+    internal static class ZoomToArea
     {
 #pragma warning disable 0618
         public static void AddZoomToArea()

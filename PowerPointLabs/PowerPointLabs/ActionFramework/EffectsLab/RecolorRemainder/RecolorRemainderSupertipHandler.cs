@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection.ColorizeBackgroundMenuId)]
-    class ColorizeBackgroundSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId(TextCollection.RecolorRemainderMenuId)]
+    class RecolorRemainderSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.EffectsLabColorizeBackgroundSupertip;
+            return TextCollection.EffectsLabRecolorRemainderSupertip;
         }
     }
 }

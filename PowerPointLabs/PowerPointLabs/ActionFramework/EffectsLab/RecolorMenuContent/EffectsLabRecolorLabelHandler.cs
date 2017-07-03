@@ -4,8 +4,8 @@ using PowerPointLabs.EffectsLab;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection.EffectsLabColorizeTag)]
-    class EffectsLabColorizeLabelHandler : LabelHandler
+    [ExportLabelRibbonId(TextCollection.EffectsLabRecolorTag)]
+    class EffectsLabRecolorLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

@@ -2,7 +2,7 @@
 
 namespace PowerPointLabs.ZoomLab
 {
-    internal class ZoomLabSettings
+    internal static class ZoomLabSettings
     {
         public static bool BackgroundZoomChecked = true;
         public static bool MultiSlideZoomChecked = true;

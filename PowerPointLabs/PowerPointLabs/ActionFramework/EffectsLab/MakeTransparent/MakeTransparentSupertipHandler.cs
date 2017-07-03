@@ -8,7 +8,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.CropOutPaddingSupertip;
+            return TextCollection.EffectsLabMakeTransparentSupertip;
         }
     }
 }

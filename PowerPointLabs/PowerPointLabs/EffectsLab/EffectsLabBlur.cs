@@ -14,7 +14,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.EffectsLab
 {
-    public class EffectsLabBlur
+    public static class EffectsLabBlur
     {
         public static bool IsTintSelected = false;
         public static bool IsTintRemainder = false;
@@ -96,7 +96,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void BlurRemainder(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            var effectSlide = EffectsLabColorize.GenerateEffectSlide(slide, selection, true);
+            var effectSlide = EffectsLabRecolor.GenerateEffectSlide(slide, selection, true);
 
             if (effectSlide == null)
             {
@@ -109,7 +109,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void BlurBackground(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            var effectSlide = EffectsLabColorize.GenerateEffectSlide(slide, selection, false);
+            var effectSlide = EffectsLabRecolor.GenerateEffectSlide(slide, selection, false);
 
             if (effectSlide == null)
             {

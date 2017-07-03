@@ -178,10 +178,10 @@
         public const string EffectsLabBlurBackgroundSupertip =
             "Blur everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
-        public const string EffectsLabColorizeRemainderSupertip =
+        public const string EffectsLabRecolorRemainderSupertip =
             "Recolor an area of a slide to attract attention to it.\n\n" +
             "To perform this action, select the shape(s) over the area to keep, then click this button.";
-        public const string EffectsLabColorizeBackgroundSupertip =
+        public const string EffectsLabRecolorBackgroundSupertip =
             "Recolor everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
         # endregion
@@ -401,7 +401,7 @@
         public const string EffectsLabBlurrinessFeatureSelected = "BlurSelected";
         public const string EffectsLabBlurrinessFeatureRemainder = "BlurRemainder";
         public const string EffectsLabBlurrinessFeatureBackground = "BlurBackground";
-        public const string EffectsLabColorizeTag = "Colorize";
+        public const string EffectsLabRecolorTag = "Recolor";
 
         # endregion
 
@@ -477,8 +477,8 @@
         public const string BlurSelectedMenuId = "BlurSelectedMenu";
         public const string BlurRemainderMenuId = "BlurRemainderMenu";
         public const string BlurBackgroundMenuId = "BlurBackgroundMenu";
-        public const string ColorizeRemainderMenuId = "ColorizeRemainderMenu";
-        public const string ColorizeBackgroundMenuId = "ColorizeBackgroundMenu";
+        public const string RecolorRemainderMenuId = "RecolorRemainderMenu";
+        public const string RecolorBackgroundMenuId = "RecolorBackgroundMenu";
         public const string GrayScaleTag = "GrayScale";
         public const string BlackWhiteTag = "BlackAndWhite";
         public const string GothamTag = "Gotham";

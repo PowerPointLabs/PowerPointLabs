@@ -4,8 +4,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportImageRibbonId(TextCollection.ColorizeRemainderMenuId)]
-    class ColorizeRemainderImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.RecolorBackgroundMenuId)]
+    class RecolorBackgroundImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

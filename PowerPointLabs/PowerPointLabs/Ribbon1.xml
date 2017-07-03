@@ -253,12 +253,12 @@
                          getImage="GetImage"
                          getSupertip="GetSupertip"
                          getContent="GetContent"/>
-            <dynamicMenu id="ColorizeRemainderMenu"
+            <dynamicMenu id="RecolorRemainderMenu"
                          getLabel="GetLabel"
                          getSupertip="GetSupertip"
                          getImage="GetImage"
                          getContent="GetContent"/>
-            <dynamicMenu id="ColorizeBackgroundMenu"
+            <dynamicMenu id="RecolorBackgroundMenu"
                          getLabel="GetLabel"
                          getSupertip="GetSupertip"
                          getImage="GetImage"

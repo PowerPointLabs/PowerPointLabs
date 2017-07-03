@@ -3,8 +3,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection.ColorizeRemainderMenuId)]
-    class ColorizeRemainderLabelHandler : LabelHandler
+    [ExportLabelRibbonId(TextCollection.RecolorRemainderMenuId)]
+    class RecolorRemainderLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

@@ -3,8 +3,8 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportContentRibbonId(TextCollection.ColorizeRemainderMenuId, TextCollection.ColorizeBackgroundMenuId)]
-    class EffectsLabColorizeContentHandler : ContentHandler
+    [ExportContentRibbonId(TextCollection.RecolorRemainderMenuId, TextCollection.RecolorBackgroundMenuId)]
+    class EffectsLabRecolorContentHandler : ContentHandler
     {
         private static string[] features =
         {
@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             foreach (string feature in features)
             {
                 xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
-                    feature + ribbonId, TextCollection.EffectsLabColorizeTag));
+                    feature + ribbonId, TextCollection.EffectsLabRecolorTag));
             }
            
             return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);

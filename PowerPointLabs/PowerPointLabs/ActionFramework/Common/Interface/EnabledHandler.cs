@@ -145,7 +145,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
                 return false;
             }
 
-                ShapeRange shapes = selection.ShapeRange;
+            ShapeRange shapes = selection.ShapeRange;
             foreach (Shape shape in shapes)
             {
                 if (shape.Type != Office.MsoShapeType.msoAutoShape && shape.Type != Office.MsoShapeType.msoFreeform &&

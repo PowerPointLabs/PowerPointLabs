@@ -12,7 +12,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ZoomLab
 {
-    class AutoZoom
+    internal static class AutoZoom
     {
 #pragma warning disable 0618
         public static void AddDrillDownAnimation()
@@ -158,7 +158,7 @@ namespace PowerPointLabs.ZoomLab
                 {
                     previousSlidePicture = GetPreviousSlidePictureWithBackground(currentSlide, previousSlide);
                     previousSlidePicture.Apply();
-                    PreparePreviousSlidePicture(currentSlide, selectedShape, ref previousSlidePicture);
+                    PreparePreviousSlidePicture(selectedShape, ref previousSlidePicture);
 
                     addedSlide = (PowerPointStepBackSlide)previousSlide.CreateStepBackSlide();
                     addedSlide.DeleteAllShapes();
@@ -175,12 +175,12 @@ namespace PowerPointLabs.ZoomLab
                     addedSlide = (PowerPointStepBackSlide)previousSlide.CreateStepBackSlide();
                     addedSlide.DeleteAllShapes();
 
-                    shapeToZoom = GetStepBackWithoutBackgroundShapeToZoom(currentSlide, addedSlide, previousSlide);
+                    shapeToZoom = GetStepBackWithoutBackgroundShapeToZoom(addedSlide, previousSlide);
                     shapeToZoom.Apply();
                     shapeToZoom.Copy();
                     previousSlidePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     previousSlidePicture.Apply();
-                    PreparePreviousSlidePicture(currentSlide, selectedShape, ref previousSlidePicture);
+                    PreparePreviousSlidePicture(selectedShape, ref previousSlidePicture);
 
                     addedSlide.PrepareForStepBack();
                     addedSlide.AddStepBackAnimationNonBackground(shapeToZoom, previousSlidePicture);
@@ -206,12 +206,9 @@ namespace PowerPointLabs.ZoomLab
 
         private static void RemoveTextFromShape(PowerPoint.Shape shape)
         {
-            if (shape.HasTextFrame == Office.MsoTriState.msoTrue)
+            if (shape.HasTextFrame == Office.MsoTriState.msoTrue && shape.TextFrame.HasText == Office.MsoTriState.msoTrue)
             {
-                if (shape.TextFrame.HasText == Office.MsoTriState.msoTrue)
-                {
-                    shape.TextFrame.TextRange.Text = "";
-                }
+                shape.TextFrame.TextRange.Text = "";
             }
         }
 
@@ -364,7 +361,7 @@ namespace PowerPointLabs.ZoomLab
         }
 
         //Set position, size and animations of the previous slide copy
-        private static void PreparePreviousSlidePicture(PowerPointSlide currentSlide, PowerPoint.Shape selectedShape, ref PowerPoint.Shape previousSlidePicture)
+        private static void PreparePreviousSlidePicture(PowerPoint.Shape selectedShape, ref PowerPoint.Shape previousSlidePicture)
         {
             previousSlidePicture.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (selectedShape.Width > selectedShape.Height)
@@ -418,7 +415,7 @@ namespace PowerPointLabs.ZoomLab
             return previousSlidePictureCopy;
         }
 
-        private static PowerPoint.Shape GetStepBackWithoutBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPointSlide previousSlide)
+        private static PowerPoint.Shape GetStepBackWithoutBackgroundShapeToZoom(PowerPointSlide addedSlide, PowerPointSlide previousSlide)
         {
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
