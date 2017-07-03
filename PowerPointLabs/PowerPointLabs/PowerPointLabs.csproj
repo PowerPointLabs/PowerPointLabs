@@ -41,10 +41,10 @@
     </NuGetPackageImportStamp>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\initialsHL\Desktop\publish\</PublishUrl>
+    <PublishUrl>C:\Users\initialsHL\Desktop\publish-online\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>3.2.1.0</ApplicationVersion>
+    <ApplicationVersion>4.0.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
