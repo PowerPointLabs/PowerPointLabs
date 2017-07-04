@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.RecolorRemainder);
+            return new Bitmap(Properties.Resources.RecolorBackground);
         }
     }
 }

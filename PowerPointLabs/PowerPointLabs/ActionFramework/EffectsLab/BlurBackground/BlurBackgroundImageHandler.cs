@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.BlurRemainder);
+            return new Bitmap(Properties.Resources.BlurBackground);
         }
     }
 }

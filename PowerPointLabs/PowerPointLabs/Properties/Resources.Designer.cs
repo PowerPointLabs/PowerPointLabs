@@ -443,6 +443,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap BlurBackground {
+            get {
+                object obj = ResourceManager.GetObject("BlurBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap BlurRemainder {
             get {
                 object obj = ResourceManager.GetObject("BlurRemainder", resourceCulture);
@@ -1306,6 +1316,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap RadialShapeOrientationFixedIcon {
             get {
                 object obj = ResourceManager.GetObject("RadialShapeOrientationFixedIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap RecolorBackground {
+            get {
+                object obj = ResourceManager.GetObject("RecolorBackground", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
