@@ -1,5 +1,5 @@
-﻿using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Image;
+﻿using PowerPointLabs.ActionFramework.Common.Handlers;
+using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Common.Factory
 {
