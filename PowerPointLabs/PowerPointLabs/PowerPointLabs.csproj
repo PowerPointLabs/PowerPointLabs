@@ -1996,13 +1996,13 @@
     <None Include="Resources\FormattingGroup.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\BlurSelected.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\BlurRemainder.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BlurBackground.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\BlurSelected.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RecolorRemainder.png" />
