@@ -473,14 +473,6 @@
                   onAction="OnAction"
                   size="large"/>
 
-          <button id="DrawingsLabButton"
-                  visible="false"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetDrawingsLabImage"
-                  getSupertip="GetDrawingsLabButtonSupertip"
-                  onAction="DrawingsLabButtonClick"/>
-
         </group>
         <group id="HelpGroup"
                label="Help"
