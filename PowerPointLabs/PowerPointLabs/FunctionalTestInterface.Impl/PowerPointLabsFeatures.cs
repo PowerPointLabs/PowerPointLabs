@@ -2,7 +2,9 @@
 using System.Drawing;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
+using PowerPointLabs.ZoomLab;
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
@@ -104,7 +106,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.SpotlightBtnClick(new RibbonControl("Spotlight"));
+                Ribbon.OnAction(new RibbonControl("AddSpotlight"));
             });
         }
 
@@ -112,7 +114,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.SpotlightPropertiesEdited(newTransparency, newSoftEdge, newColor);
+                EffectsLabSpotlightSettings.SpotlightPropertiesEdited(newTransparency, newSoftEdge, newColor);
             });
         }
 
@@ -120,7 +122,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.SpotlightDialogButtonPressed(new RibbonControl("OpenSpotlightDialog"));
+                Ribbon.OnAction(new RibbonControl("SpotlightSettings"));
             });
         }
 
@@ -160,7 +162,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.ZoomPropertiesEdited(backgroundChecked, multiSlideChecked);
+                ZoomLabSettings.ZoomLabSettingsEdited(backgroundChecked, multiSlideChecked);
             });
         }
 
@@ -248,7 +250,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.TransparentEffectClick(new RibbonControl("TransparentEffect"));
+                Ribbon.OnAction(new RibbonControl(TextCollection.MakeTransparentTag));
             });
         }
 
@@ -256,7 +258,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.MagnifyGlassEffectClick(new RibbonControl("MagnifyingGlassEffect"));
+                Ribbon.OnAction(new RibbonControl(TextCollection.MagnifyTag));
             });
         }
         
@@ -265,7 +267,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute(() =>
             {
                 var control = new RibbonControl(feature + TextCollection.DynamicMenuCheckBoxId);
-                control.Tag = "Blurriness";
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnCheckBoxAction(control, pressed);
             });
         }
@@ -274,8 +276,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurSelectedOption90");
-                control.Tag = "Blurriness";
+                var control = new RibbonControl("BlurSelectedOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -284,8 +286,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurRemainderOption90");
-                control.Tag = "Blurriness";
+                var control = new RibbonControl("BlurRemainderOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -294,7 +296,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.GreyScaleRemainderEffectClick(new RibbonControl("GreyScaleEffect"));
+                var control = new RibbonControl("GrayScaleRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -303,7 +307,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.GothamRemainderEffectClick(new RibbonControl("GothamEffect"));
+                var control = new RibbonControl("GothamRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -311,7 +317,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.SepiaRemainderEffectClick(new RibbonControl("SepiaEffect"));
+                var control = new RibbonControl("SepiaRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -320,8 +328,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("EffectsLabBlurBackgroundOption90");
-                control.Tag = "Blurriness";
+                var control = new RibbonControl("BlurBackgroundOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -330,7 +338,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.BlackWhiteBackgroundEffectClick(new RibbonControl("BlackAndWhiteEffect"));
+                var control = new RibbonControl("BlackAndWhiteRecolorBackgroundMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 
@@ -338,7 +348,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.SepiaBackgroundEffectClick(new RibbonControl("SepiaEffect"));
+                var control = new RibbonControl("SepiaRecolorBackgroundMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
             });
         }
 

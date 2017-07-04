@@ -120,14 +120,9 @@ namespace PowerPointLabs
         private Office.IRibbonUI _ribbon;
 
         public bool FrameAnimationChecked = false;
-        public bool BackgroundZoomChecked = true;
-        public bool MultiSlideZoomChecked = true;
         public bool SpotlightDelete = true;
         public float DefaultDuration = 0.5f;
 
-        public bool SpotlightEnabled = false;
-        public bool InSlideEnabled = false;
-        public bool ZoomButtonEnabled = false;
         public bool HighlightBulletsEnabled = true;
         public bool AddAutoMotionEnabled = true;
         public bool ReloadAutoMotionEnabled = true;
@@ -194,67 +189,6 @@ namespace PowerPointLabs
             _voiceNames = installedVoices;
         }
 
-        public void SpotlightBtnClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    return;
-                }
-
-                Globals.ThisAddIn.Application.StartNewUndoEntry();
-
-                Spotlight.AddSpotlightEffect();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "SpotlightBtnClick");
-                throw;
-            }
-        }
-
-        #region Supertips
-        public string GetAddSpotlightButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.AddSpotlightButtonSupertip;
-        }
-
-        public string GetSpotlightPropertiesButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.SpotlightPropertiesButtonSupertip;
-        }
-
-        public string GetEffectsLabSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabMenuSupertip;
-        }
-        public string GetEffectsLabMakeTransparentSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabMakeTransparentSupertip;
-        }
-        public string GetEffectsLabMagnifyGlassSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabMagnifyGlassSupertip;
-        }
-        public string GetEffectsLabBlurRemainderSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabBlurRemainderSupertip;
-        }
-        public string GetEffectsLabColorizeRemainderSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabColorizeRemainderSupertip;
-        }
-        public string GetEffectsLabBlurBackgroundSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabBlurBackgroundSupertip;
-        }
-        public string GetEffectsLabColorizeBackgroundSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabColorizeBackgroundSupertip;
-        }
-        #endregion
-
         #region Button Labels
         public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
         {
@@ -265,53 +199,6 @@ namespace PowerPointLabs
         {
             return TextCollection.CombineShapesLabel;
         }
-        
-        public string GetSpotlightMenuLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.SpotlightMenuLabel;
-        }
-        public string GetAddSpotlightButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.AddSpotlightButtonLabel;
-        }
-        public string GetReloadSpotlightButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.ReloadSpotlightButtonLabel;
-        }
-        
-        public string GetSpotlightPropertiesButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.SpotlightPropertiesButtonLabel;
-        }
-
-        public string GetEffectsLabButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabButtonLabel;
-        }
-        public string GetEffectsLabMakeTransparentButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabMakeTransparentButtonLabel;
-        }
-        public string GetEffectsLabMagnifyGlassButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabMagnifyGlassButtonLabel;
-        }
-        public string GetEffectsLabBlurRemainderButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabBlurRemainderButtonLabel;
-        }
-        public string GetEffectsLabBlurBackgroundButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabBlurBackgroundButtonLabel;
-        }
-        public string GetEffectsLabRecolorRemainderButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabRecolorRemainderButtonLabel;
-        }
-        public string GetEffectsLabRecolorBackgroundButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.EffectsLabRecolorBackgroundButtonLabel;
-        }
 
         public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
         {
@@ -321,18 +208,6 @@ namespace PowerPointLabs
 
         //Button Click Callbacks
         #region Icon Getters
-        public Bitmap GetSpotlightImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.Spotlight);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetSpotlightImage");
-                throw;
-            }
-        }
         public Bitmap GetReloadSpotlightImage(Office.IRibbonControl control)
         {
             try
@@ -346,6 +221,7 @@ namespace PowerPointLabs
             }
         }
 
+<<<<<<< HEAD
         public Bitmap GetEffectsLabImage(Office.IRibbonControl control)
         {
             try
@@ -403,41 +279,23 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "GetRecolorRemainderImage");
+=======
+        public Bitmap GetDrawingsLabImage(Office.IRibbonControl control)
+        {
+            try
+            {
+                return new Bitmap(Properties.Resources.DrawingLab);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, "GetDrawingsLabImage");
+>>>>>>> refs/remotes/PowerPointLabs/dev-release
                 throw;
             }
         }
         # endregion
 
-        public void ZoomStyleChanged(Office.IRibbonControl control, bool pressed)
-        {
-            try
-            {
-                BackgroundZoomChecked = pressed;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "ZoomStyleChanged");
-                throw;
-            }
-        }
-        public bool ZoomStyleGetPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                return BackgroundZoomChecked;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "ZoomStyleGetPressed");
-                throw;
-            }
-        }
-
         #region Control Enable
-        public bool OnGetEnabledSpotlight(Office.IRibbonControl control)
-        {
-            return SpotlightEnabled;
-        }
         public bool OnGetEnabledReloadSpotlight(Office.IRibbonControl control)
         {
             return ReloadSpotlight;
@@ -449,70 +307,6 @@ namespace PowerPointLabs
         # endregion
 
         //Edit Name Callbacks
-        public void SpotlightDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(Spotlight.defaultTransparency, 
-                                                                                    Spotlight.defaultSoftEdges,
-                                                                                    Spotlight.defaultColor);
-                dialog.SettingsHandler += SpotlightPropertiesEdited;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "SpotlightDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void ZoomLabDialogButtonPressed(Office.IRibbonControl control)
-        {
-            try
-            {
-                ZoomLabSettingsDialogBox dialog = new ZoomLabSettingsDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
-                dialog.SettingsHandler += ZoomPropertiesEdited;
-                dialog.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "ZoomLabDialogButtonPressed");
-                throw;
-            }
-        }
-
-        public void ZoomPropertiesEdited(bool backgroundChecked, bool multiSlideChecked)
-        {
-            try
-            {
-                BackgroundZoomChecked = backgroundChecked;
-                MultiSlideZoomChecked = multiSlideChecked;
-                AutoZoom.backgroundZoomChecked = backgroundChecked;
-                ZoomToArea.backgroundZoomChecked = backgroundChecked;
-                ZoomToArea.multiSlideZoomChecked = multiSlideChecked;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "ZoomPropertiesEdited");
-                throw;
-            }
-        }
-
-        public void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge, Color newColor)
-        {
-            try
-            {
-                Spotlight.defaultTransparency = newTransparency;
-                Spotlight.defaultSoftEdges = newSoftEdge;
-                Spotlight.defaultColor = newColor;
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "SpotlightPropertiesEdited");
-                throw;
-            }
-        }
-
         public bool GetEmbedAudioVisiblity(Office.IRibbonControl control)
         {
             return EmbedAudioVisible;
@@ -594,6 +388,7 @@ namespace PowerPointLabs
         }
         #endregion
 
+<<<<<<< HEAD
         #region Feature: Effects Lab
         public void MagnifyGlassEffectClick(Office.IRibbonControl control)
         {
@@ -981,6 +776,47 @@ namespace PowerPointLabs
         }
         # endregion
         
+=======
+        #region Feature: Drawing Lab
+        internal DrawingLabData DrawingLabData { get; set; }
+        internal DrawingsLabMain DrawingLab { get; set; }
+
+        public void DrawingsLabButtonClick(Office.IRibbonControl control)
+        {
+            try
+            {
+                if (DrawingLabData == null)
+                {
+                    DrawingLabData = new DrawingLabData();
+                    DrawingLab = new DrawingsLabMain(DrawingLabData);
+                }
+
+                Globals.ThisAddIn.RegisterDrawingsPane(PowerPointPresentation.Current.Presentation);
+
+                var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
+                ((DrawingsPane)drawingsPane.Control).drawingsPaneWPF.TryInitialise(DrawingLabData, DrawingLab);
+
+                // if currently the pane is hidden, show the pane
+                if (!drawingsPane.Visible)
+                {
+                    // fire the pane visble change event
+                    drawingsPane.Visible = true;
+                }
+                else
+                {
+                    drawingsPane.Visible = false;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogWrapper.ShowDialog("Error in drawing lab", e.Message, e);
+                Logger.LogException(e, "DrawingsLabButtonClicked");
+                throw;
+            }
+        }
+        #endregion
+
+>>>>>>> refs/remotes/PowerPointLabs/dev-release
         private static string GetResourceText(string resourceName)
         {
             Assembly asm = Assembly.GetExecutingAssembly();

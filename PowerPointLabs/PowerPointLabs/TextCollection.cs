@@ -178,10 +178,10 @@
         public const string EffectsLabBlurBackgroundSupertip =
             "Blur everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
-        public const string EffectsLabColorizeRemainderSupertip =
+        public const string EffectsLabRecolorRemainderSupertip =
             "Recolor an area of a slide to attract attention to it.\n\n" +
             "To perform this action, select the shape(s) over the area to keep, then click this button.";
-        public const string EffectsLabColorizeBackgroundSupertip =
+        public const string EffectsLabRecolorBackgroundSupertip =
             "Recolor everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
         # endregion
@@ -246,9 +246,17 @@
 
         # region Tab Labels
         public const string PowerPointLabsAddInsTabLabel = "PowerPointLabs";
-        # endregion
+        #endregion
 
-        # region Button Labels
+        #region Group Labels
+        public const string AnimationsGroupLabel = "Animations";
+        public const string AudioGroupLabel = "Audio";
+        public const string EffectsGroupLabel = "Effects";
+        public const string FormattingGroupLabel = "Formatting";
+        public const string MoreLabsGroupLabel = "More Labs";
+        #endregion
+
+        #region Button Labels
         public const string CombineShapesLabel = "Combine Shapes";
 
         # region Animation Lab
@@ -322,6 +330,10 @@
         public const string EffectsLabBlurBackgroundButtonLabel = "Blur All Except Selected";
         public const string EffectsLabRecolorRemainderButtonLabel = "Recolor Remainder";
         public const string EffectsLabRecolorBackgroundButtonLabel = "Recolor All Except Selected";
+        public const string EffectsLabGrayScaleButtonLabel = "Gray Scale";
+        public const string EffectsLabBlackWhiteButtonLabel = "Black and White";
+        public const string EffectsLabGothamButtonLabel = "Gotham";
+        public const string EffectsLabSepiaButtonLabel = "Sepia";
         # endregion
 
         # region Agenda Lab
@@ -378,9 +390,10 @@
         public const string EffectsLabBlurrinessTag = "Blurriness";
         public const string EffectsLabBlurrinessCustom = "CustomPercentage";
         public const string EffectsLabBlurrinessCustomPrefixLabel = "Custom";
-        public const string EffectsLabBlurrinessFeatureSelected = "EffectsLabBlurSelected";
-        public const string EffectsLabBlurrinessFeatureRemainder = "EffectsLabBlurRemainder";
-        public const string EffectsLabBlurrinessFeatureBackground = "EffectsLabBlurBackground";
+        public const string EffectsLabBlurrinessFeatureSelected = "BlurSelected";
+        public const string EffectsLabBlurrinessFeatureRemainder = "BlurRemainder";
+        public const string EffectsLabBlurrinessFeatureBackground = "BlurBackground";
+        public const string EffectsLabRecolorTag = "Recolor";
 
         # endregion
 
@@ -414,6 +427,7 @@
         public const string RibbonButton = "Button";
         public const string RibbonMenu = "Menu";
 
+        public const string AnimationsGroupId = "AnimationsGroup";
         public const string AnimationLabMenuId = "AnimationLabMenu";
         public const string AddAnimationSlideTag = "AddAnimationSlide";
         public const string AnimateInSlideTag = "AnimateInSlide";
@@ -425,6 +439,7 @@
         public const string ZoomToAreaTag = "ZoomToArea";
         public const string ZoomLabSettingsTag = "ZoomLabSettings";
 
+        public const string AudioGroupId = "AudioGroup";
         public const string NarrationsLabMenuId = "NarrationsLabMenu";
         public const string AddNarrationsTag = "AddNarrations";
         public const string RecordNarrationsTag = "RecordNarrations";
@@ -437,6 +452,7 @@
         public const string RemoveNotesTag = "RemoveNotes";
         public const string CaptionsLabSettingsTag = "CaptionsLabSettings";
 
+        public const string EffectsGroupId = "EffectsGroup";
         public const string HighlightLabMenuId = "HighlightLabMenu";
         public const string HighlightPointsTag = "HighlightPoints";
         public const string HighlightBackgroundTag = "HighlightBackground";
@@ -444,6 +460,23 @@
         public const string RemoveHighlightTag = "RemoveHighlight";
         public const string HighlightLabSettingsTag = "HighlightLabSettings";
 
+        public const string EffectsLabMenuId = "EffectsLabMenu";
+        public const string MakeTransparentTag = "MakeTransparent";
+        public const string MagnifyTag = "Magnify";
+        public const string SpotlightMenuId = "SpotlightMenu";
+        public const string AddSpotlightTag = "AddSpotlight";
+        public const string SpotlightSettingsTag = "SpotlightSettings";
+        public const string BlurSelectedMenuId = "BlurSelectedMenu";
+        public const string BlurRemainderMenuId = "BlurRemainderMenu";
+        public const string BlurBackgroundMenuId = "BlurBackgroundMenu";
+        public const string RecolorRemainderMenuId = "RecolorRemainderMenu";
+        public const string RecolorBackgroundMenuId = "RecolorBackgroundMenu";
+        public const string GrayScaleTag = "GrayScale";
+        public const string BlackWhiteTag = "BlackAndWhite";
+        public const string GothamTag = "Gotham";
+        public const string SepiaTag = "Sepia";
+
+        public const string FormattingGroupId = "FormattingGroup";
         public const string PositionsLabTag = "PositionsLab";
 
         public const string ResizeLabTag = "ResizeLab";
@@ -469,6 +502,7 @@
         public const string ReplaceWithClipboardTag = "ReplaceWithClipboard";
         public const string PasteIntoGroupTag = "PasteIntoGroup";
 
+        public const string MoreLabsGroupId = "MoreLabsGroup";
         public const string TimerLabTag = "TimerLab";
 
         public const string AgendaLabMenuId = "AgendaLabMenu";

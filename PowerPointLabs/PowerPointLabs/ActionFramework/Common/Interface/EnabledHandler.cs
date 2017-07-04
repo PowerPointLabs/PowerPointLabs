@@ -5,6 +5,8 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 
+using Office = Microsoft.Office.Core;
+
 namespace PowerPointLabs.ActionFramework.Common.Interface
 {
     /// <summary>
@@ -128,6 +130,28 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
                 if ((shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape ||
                    shape.AutoShapeType != Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle) &&
                    shape.Type != Microsoft.Office.Core.MsoShapeType.msoPicture)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        protected bool IsSelectionAllShapeWithArea()
+        {
+            Selection selection = this.GetCurrentSelection();
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return false;
+            }
+
+            ShapeRange shapes = selection.ShapeRange;
+            foreach (Shape shape in shapes)
+            {
+                if (shape.Type != Office.MsoShapeType.msoAutoShape && shape.Type != Office.MsoShapeType.msoFreeform &&
+                    shape.Type != Office.MsoShapeType.msoTextBox && shape.Type != Office.MsoShapeType.msoPlaceholder &&
+                    shape.Type != Office.MsoShapeType.msoCallout && shape.Type != Office.MsoShapeType.msoInk &&
+                    shape.Type != Office.MsoShapeType.msoGroup)
                 {
                     return false;
                 }

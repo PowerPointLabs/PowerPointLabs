@@ -946,10 +946,6 @@ namespace PowerPointLabs
         [HandleProcessCorruptedStateExceptions]
         private void ThisAddInSelectionChanged(PowerPoint.Selection sel)
         {
-            Ribbon.SpotlightEnabled = false;
-            Ribbon.InSlideEnabled = false;
-            Ribbon.ZoomButtonEnabled = false;
-
             if (sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = null;
@@ -962,14 +958,6 @@ namespace PowerPointLabs
                     Logger.LogException(e, "ThisAddInSelectionChanged");
                     Logger.Log("We do not have access to the ShapeRange now!");
                     return;
-                }
-
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform ||
-                    sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
-                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk ||
-                    sh.Type == Office.MsoShapeType.msoGroup)
-                {
-                    Ribbon.SpotlightEnabled = true;
                 }
 
                 if (isResizePaneVisible)
@@ -990,6 +978,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
+            Ribbon.RefreshRibbonControl("AddSpotlight");
         }
 
         private void ThisAddInNewPresentation(PowerPoint.Presentation pres)

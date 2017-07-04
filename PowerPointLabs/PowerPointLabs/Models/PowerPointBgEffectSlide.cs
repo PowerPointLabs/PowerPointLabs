@@ -119,7 +119,7 @@ namespace PowerPointLabs.Models
         {
             if (filter == null)
             {
-                EffectsLab.EffectsLabBlurSelected.BlurImage(AnimatedBackgroundPath, percentage);
+                EffectsLab.EffectsLabBlur.BlurImage(AnimatedBackgroundPath, percentage);
             }
             else
             {
@@ -143,7 +143,7 @@ namespace PowerPointLabs.Models
 
             if (filter == null && isTint)
             {
-                var overlayShape = EffectsLab.EffectsLabBlurSelected.GenerateOverlayShape(this, newBackground);
+                var overlayShape = EffectsLab.EffectsLabBlur.GenerateOverlayShape(this, newBackground);
             }
         }
 
