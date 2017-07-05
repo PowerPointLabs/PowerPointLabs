@@ -8,7 +8,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AgendaSlidesTextBeforeSync.pptx";
+            return "AgendaLab\\AgendaSlidesTextBeforeSync.pptx";
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSyncHideUnvisited.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextAfterSyncHideUnvisited.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
 
             PpOperations.SelectShape("PptLabsAgenda_&^@ContentShape_&^@2015061916283877850").TextFrame2.TextRange.Paragraphs[3].Text = "Readd bullet format";
@@ -44,7 +44,7 @@ namespace Test.FunctionalTest
 
             actualSlides = PpOperations.FetchCurrentPresentationData();
             expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSyncUnhideUnvisited.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextAfterSyncUnhideUnvisited.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
 
         }
@@ -64,7 +64,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextAfterSync.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 

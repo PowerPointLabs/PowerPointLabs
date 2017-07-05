@@ -40,7 +40,7 @@ namespace Test.FunctionalTest
 
         protected override string GetTestingSlideName()
         {
-            return "PasteLab.pptx";
+            return "PasteLab\\PasteLab.pptx";
         }
 
         [TestMethod]

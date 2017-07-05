@@ -13,7 +13,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "EffectsLab.pptx";
+            return "EffectsLab\\EffectsLab.pptx";
         }
 
         [TestMethod]

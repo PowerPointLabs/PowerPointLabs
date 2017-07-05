@@ -16,7 +16,7 @@ namespace Test.UnitTest.CropLab
 
         protected override string GetTestingSlideName()
         {
-            return "CropLab.pptx";
+            return "CropLab\\CropLab.pptx";
         }
 
         protected PowerPoint.ShapeRange GetShapes(int slideNumber, IEnumerable<string> shapeNames)

@@ -8,7 +8,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AutoZoom.pptx";
+            return "ZoomLab\\AutoZoom.pptx";
         }
 
         [TestMethod]

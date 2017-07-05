@@ -9,7 +9,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AgendaSlidesBeamBeforeSync.pptx";
+            return "AgendaLab\\AgendaSlidesBeamBeforeSync.pptx";
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesBeamAfterSync.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesBeamAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 

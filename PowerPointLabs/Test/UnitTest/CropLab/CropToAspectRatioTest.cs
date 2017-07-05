@@ -21,7 +21,7 @@ namespace Test.UnitTest.CropLab
 
         protected override string GetTestingSlideName()
         {
-            return "CropToAspectRatio.pptx";
+            return "CropLab\\CropToAspectRatio.pptx";
         }
 
         [TestMethod]
