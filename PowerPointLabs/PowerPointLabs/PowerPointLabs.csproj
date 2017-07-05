@@ -1336,12 +1336,6 @@
     <None Include="Resources\ZoomToAreaContext.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BlurRemainder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RecolorRemainder.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\MakeTransparent.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2001,7 +1995,21 @@
   <ItemGroup>
     <None Include="Resources\FormattingGroup.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\BlurSelected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlurRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecolorRemainder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RecolorBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlurBackground.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
