@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -10,12 +11,10 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
     [ExportActionRibbonId(TextCollection.EffectsLabBlurrinessTag)]
     class EffectsLabBlurrinessActionHandler : ActionHandler
     {
-        private string feature;
-        private Microsoft.Office.Interop.PowerPoint.Selection selection;
-        private Models.PowerPointSlide slide;
-
         protected override void ExecuteAction(string ribbonId)
         {
+            this.StartNewUndoEntry();
+
             bool isButton = false;
             bool isCustom = ribbonId.Contains(TextCollection.EffectsLabBlurrinessCustom);
             int keywordIndex;
@@ -30,9 +29,9 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                 keywordIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId);
             }
 
-            feature = ribbonId.Substring(0, keywordIndex);
-            selection = this.GetCurrentSelection();
-            slide = this.GetCurrentSlide();
+            string feature = ribbonId.Substring(0, keywordIndex);
+            Selection selection = this.GetCurrentSelection();
+            Models.PowerPointSlide slide = this.GetCurrentSlide();
 
             if (isButton)
             {
@@ -43,12 +42,12 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             else
             {
                 int startIndex = keywordIndex + TextCollection.DynamicMenuOptionId.Length;
-                int percentage = isCustom ? GetCustomPercentage() : int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
-                ExecuteBlurAction(percentage);
+                int percentage = isCustom ? GetCustomPercentage(feature) : int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
+                ExecuteBlurAction(feature, selection, slide, percentage);
             }
         }
 
-        private void PropertiesEdited(int percentage, bool isTint)
+        private void PropertiesEdited(string feature, int percentage, bool isTint)
         {
             switch (feature)
             {
@@ -72,7 +71,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom);
         }
 
-        private int GetCustomPercentage()
+        private int GetCustomPercentage(string feature)
         {
             switch (feature)
             {
@@ -88,12 +87,11 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
         }
 
-        private void ExecuteBlurAction(int percentage)
+        private void ExecuteBlurAction(string feature, Selection selection, Models.PowerPointSlide slide, int percentage)
         {
             switch (feature)
             {
                 case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    this.StartNewUndoEntry();
                     EffectsLabBlur.BlurSelected(slide, selection, percentage);
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureRemainder:
