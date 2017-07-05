@@ -287,18 +287,6 @@ namespace PowerPointLabs
             RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
-        public void RegisterDrawingsPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(DrawingsPane)) != null)
-            {
-                return;
-            }
-
-            var activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new DrawingsPane(), TextCollection.DrawingsLabTaskPanelTitle, activeWindow, null, null);
-        }
-
         public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
         {
             if (GetActivePane(typeof(CustomShapePane)) != null)

@@ -669,10 +669,6 @@
     <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
-    <Compile Include="Converters\DrawingsLab\ColorToBackgroundConverter.cs" />
-    <Compile Include="Converters\DrawingsLab\EnumMatchToBooleanConverter.cs" />
-    <Compile Include="Converters\DrawingsLab\FloatToStringConverter.cs" />
-    <Compile Include="Converters\DrawingsLab\IntToStringConverter.cs" />
     <Compile Include="CropLab\CropLabErrorHandler.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
@@ -692,38 +688,7 @@
     </Compile>
     <Compile Include="ConvertToPicture.cs" />
     <Compile Include="CropLab\CropToShape.cs" />
-    <Compile Include="DataSources\DrawingLabData.cs" />
-    <Compile Include="DataSources\DrawingsLabMultiCloneGridDataSource.cs" />
-    <Compile Include="DataSources\DrawingsLabPivotAroundDataSource.cs" />
-    <Compile Include="DataSources\DrawingsLabAlignmentDataSource.cs" />
-    <Compile Include="DataSources\DrawingsLabDataSource.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
-    <Compile Include="DrawingsLab\AlignmentDialogBoth.xaml.cs">
-      <DependentUpon>AlignmentDialogBoth.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingsLab\AlignmentDialogVertical.xaml.cs">
-      <DependentUpon>AlignmentDialogVertical.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingsLab\PivotAroundToolDialog.xaml.cs">
-      <DependentUpon>PivotAroundToolDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingsLab\MultiCloneGridDialog.xaml.cs">
-      <DependentUpon>MultiCloneGridDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingsLab\AlignmentDialogHorizontal.xaml.cs">
-      <DependentUpon>AlignmentDialogHorizontal.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingsLab\DrawingsLabDialogs.cs" />
-    <Compile Include="DrawingsLab\DrawingsLabMain.cs" />
-    <Compile Include="DrawingsLab\DrawingsPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DrawingsLab\DrawingsPane.Designer.cs">
-      <DependentUpon>DrawingsPane.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingsLab\DrawingsPaneWPF.xaml.cs">
-      <DependentUpon>DrawingsPaneWPF.xaml</DependentUpon>
-    </Compile>
     <Compile Include="EffectsLab\EffectsLabSpotlightSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabBlur.cs" />
     <Compile Include="EffectsLab\View\EffectsLabBlurDialogBox.xaml.cs">
@@ -1204,10 +1169,6 @@
       <DependentUpon>ColorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DrawingsLab\DrawingsPane.resx">
-      <DependentUpon>DrawingsPane.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -1373,30 +1334,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DrawingsLab\AlignmentDialogBoth.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DrawingsLab\AlignmentDialogVertical.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DrawingsLab\PivotAroundToolDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DrawingsLab\MultiCloneGridDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DrawingsLab\AlignmentDialogHorizontal.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DrawingsLab\DrawingsPaneWPF.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="EffectsLab\View\EffectsLabBlurDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1548,18 +1485,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\loadMore.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DrawingLabTest.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\DrawingLab\arrow.png" />
-    <Resource Include="Resources\DrawingLab\circle.png" />
-    <Resource Include="Resources\DrawingLab\line.png" />
-    <Resource Include="Resources\DrawingLab\rect.png" />
-    <Resource Include="Resources\DrawingLab\roundrect.png" />
-    <Resource Include="Resources\DrawingLab\textbox.png" />
-    <Resource Include="Resources\DrawingLab\triangle.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ImagesLab.png" />

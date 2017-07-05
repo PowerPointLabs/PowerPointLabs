@@ -10,8 +10,7 @@ using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.DataSources;
-using PowerPointLabs.DrawingsLab;
+using PowerPointLabs.CropLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.View;
 using PowerPointLabs.Views;
@@ -190,13 +189,6 @@ namespace PowerPointLabs
             _voiceNames = installedVoices;
         }
 
-        #region Supertips
-        public string GetDrawingsLabButtonSupertip(Office.IRibbonControl control)
-        {
-            return TextCollection.DrawingsLabButtonSupertip;
-        }
-        #endregion
-
         #region Button Labels
         public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
         {
@@ -208,43 +200,9 @@ namespace PowerPointLabs
             return TextCollection.CombineShapesLabel;
         }
 
-        public string GetDrawingsLabButtonLabel(Office.IRibbonControl control)
-        {
-            return TextCollection.DrawingsLabButtonLabel;
-        }
-
         public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
         {
             return TextCollection.PowerPointLabsMenuLabel;
-        }
-        # endregion
-
-        //Button Click Callbacks
-        #region Icon Getters
-        public Bitmap GetReloadSpotlightImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.ReloadSpotlight);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetReloadSpotlightImage");
-                throw;
-            }
-        }
-
-        public Bitmap GetDrawingsLabImage(Office.IRibbonControl control)
-        {
-            try
-            {
-                return new Bitmap(Properties.Resources.DrawingLab);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e, "GetDrawingsLabImage");
-                throw;
-            }
         }
         # endregion
 
@@ -338,45 +296,6 @@ namespace PowerPointLabs
         public void SpeakSelectedTextClick(Office.IRibbonControl control)
         {
             NotesToAudio.SpeakSelectedText();
-        }
-        #endregion
-
-        #region Feature: Drawing Lab
-        internal DrawingLabData DrawingLabData { get; set; }
-        internal DrawingsLabMain DrawingLab { get; set; }
-
-        public void DrawingsLabButtonClick(Office.IRibbonControl control)
-        {
-            try
-            {
-                if (DrawingLabData == null)
-                {
-                    DrawingLabData = new DrawingLabData();
-                    DrawingLab = new DrawingsLabMain(DrawingLabData);
-                }
-
-                Globals.ThisAddIn.RegisterDrawingsPane(PowerPointPresentation.Current.Presentation);
-
-                var drawingsPane = Globals.ThisAddIn.GetActivePane(typeof(DrawingsPane));
-                ((DrawingsPane)drawingsPane.Control).drawingsPaneWPF.TryInitialise(DrawingLabData, DrawingLab);
-
-                // if currently the pane is hidden, show the pane
-                if (!drawingsPane.Visible)
-                {
-                    // fire the pane visble change event
-                    drawingsPane.Visible = true;
-                }
-                else
-                {
-                    drawingsPane.Visible = false;
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorDialogWrapper.ShowDialog("Error in drawing lab", e.Message, e);
-                Logger.LogException(e, "DrawingsLabButtonClicked");
-                throw;
-            }
         }
         #endregion
 
