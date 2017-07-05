@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using Test.Util;
@@ -23,8 +21,8 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         public void TestSerialization()
         {
             option.OptionName = "Test Option Name";
-            option.Save(PathUtil.GetDocTestPath() + "option.user");
-            var loadedOption = StyleOption.Load(PathUtil.GetDocTestPath() + "option.user");
+            option.Save(PathUtil.GetDocTestPath() + "PictureSlidesLab\\option.user");
+            var loadedOption = StyleOption.Load(PathUtil.GetDocTestPath() + "PictureSlidesLab\\option.user");
             Assert.AreEqual("Test Option Name", loadedOption.OptionName);
         }
 
