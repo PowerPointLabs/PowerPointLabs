@@ -2002,13 +2002,13 @@
     <None Include="Resources\BlurRemainder.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BlurBackground.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\RecolorRemainder.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RecolorBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlurBackground.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
