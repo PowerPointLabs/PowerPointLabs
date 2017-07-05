@@ -30,21 +30,21 @@ namespace PowerPointLabs.EffectsLab.Views
             {
                 case TextCollection.EffectsLabBlurrinessFeatureSelected:
                     properFeatureName = TextCollection.EffectsLabBlurSelectedButtonLabel;
-                    lastBlurriness = EffectsLabBlurSelected.CustomPercentageSelected;
+                    lastBlurriness = EffectsLabBlur.CustomPercentageSelected;
                     tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintSelected;
-                    tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintSelected;
+                    tintCheckbox.IsChecked = EffectsLabBlur.IsTintSelected;
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureRemainder:
                     properFeatureName = TextCollection.EffectsLabBlurRemainderButtonLabel;
-                    lastBlurriness = EffectsLabBlurSelected.CustomPercentageRemainder;
+                    lastBlurriness = EffectsLabBlur.CustomPercentageRemainder;
                     tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintRemainder;
-                    tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintRemainder;
+                    tintCheckbox.IsChecked = EffectsLabBlur.IsTintRemainder;
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureBackground:
                     properFeatureName = TextCollection.EffectsLabBlurBackgroundButtonLabel;
-                    lastBlurriness = EffectsLabBlurSelected.CustomPercentageBackground;
+                    lastBlurriness = EffectsLabBlur.CustomPercentageBackground;
                     tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintBackground;
-                    tintCheckbox.IsChecked = EffectsLabBlurSelected.IsTintBackground;
+                    tintCheckbox.IsChecked = EffectsLabBlur.IsTintBackground;
                     break;
                 default:
                     Logger.Log(feature + " does not exist!", ActionFramework.Common.Logger.LogType.Error);
