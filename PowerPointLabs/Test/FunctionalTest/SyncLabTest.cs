@@ -33,7 +33,7 @@ namespace Test.FunctionalTest
 
         protected override string GetTestingSlideName()
         {
-            return "SyncLab.pptx";
+            return "SyncLab\\SyncLab.pptx";
         }
 
         [TestMethod]

@@ -9,7 +9,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "CropToSlide.pptx";
+            return "CropLab\\CropToSlide.pptx";
         }
 
         [TestMethod]

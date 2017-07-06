@@ -11,7 +11,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AutoCaptions.pptx";
+            return "CaptionsLab\\AutoCaptions.pptx";
         }
 
         [TestMethod]

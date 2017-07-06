@@ -13,7 +13,7 @@ namespace Test.UnitTest.ResizeLab
 
         protected override string GetTestingSlideName()
         {
-            return "ResizeLab.pptm";
+            return "ResizeLab\\ResizeLab.pptx";
         }
 
         protected void InitOriginalShapes(int slideNumber, List<string> shapeNames)

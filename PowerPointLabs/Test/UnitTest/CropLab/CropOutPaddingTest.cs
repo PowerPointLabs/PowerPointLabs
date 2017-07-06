@@ -21,7 +21,7 @@ namespace Test.UnitTest.CropLab
 
         protected override string GetTestingSlideName()
         {
-            return "CropOutPadding.pptx";
+            return "CropLab\\CropOutPadding.pptx";
         }
 
         [TestMethod]
