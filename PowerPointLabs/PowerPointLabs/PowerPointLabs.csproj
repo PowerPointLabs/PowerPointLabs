@@ -617,6 +617,7 @@
     <Compile Include="AutoUpdate\Downloader.cs" />
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
