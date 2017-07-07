@@ -1763,19 +1763,10 @@
     <None Include="Resources\NarrationsLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\PasteLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\PictureSlidesLab.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\PositionsLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ResizeLab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ShapesLab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SyncLab.png" />
@@ -1936,7 +1927,15 @@
   <ItemGroup>
     <None Include="Resources\BlurBackground.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\PictureSlidesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ShapesLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteLab.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
