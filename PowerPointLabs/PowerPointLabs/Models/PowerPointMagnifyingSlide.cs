@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using PowerPointLabs.AnimationLab;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.ZoomLab;
 

@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 
+using PowerPointLabs.SyncLab.Views;
+
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
     public class SyncFormatConstants

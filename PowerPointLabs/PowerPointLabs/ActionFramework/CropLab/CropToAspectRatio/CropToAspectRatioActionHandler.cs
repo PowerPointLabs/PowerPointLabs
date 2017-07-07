@@ -3,6 +3,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
+using PowerPointLabs.CropLab.Views;
 using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.CropLab

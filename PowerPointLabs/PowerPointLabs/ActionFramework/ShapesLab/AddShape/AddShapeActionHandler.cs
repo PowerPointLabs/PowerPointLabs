@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ShortcutsLab;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-using PowerPointLabs.Views;
+using PowerPointLabs.EffectsLab.Views;
 
 namespace PowerPointLabs.EffectsLab
 {

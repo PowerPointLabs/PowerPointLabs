@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
+
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.EffectsLab;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -170,7 +172,12 @@ namespace PowerPointLabs.Models
 
         private void AddRectangleShape()
         {
-            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (SoftEdgePadding * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (SoftEdgePadding * Spotlight.defaultSoftEdges)));
+            PowerPoint.Shape rectangleShape = Shapes.AddShape(
+                    Office.MsoAutoShapeType.msoShapeRectangle, 
+                    (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), 
+                    (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), 
+                    (PowerPointPresentation.Current.SlideWidth + (SoftEdgePadding * Spotlight.defaultSoftEdges)), 
+                    (PowerPointPresentation.Current.SlideHeight + (SoftEdgePadding * Spotlight.defaultSoftEdges)));
             rectangleShape.Fill.Solid();
             rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
             rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;

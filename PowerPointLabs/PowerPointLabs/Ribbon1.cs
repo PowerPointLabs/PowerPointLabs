@@ -10,10 +10,8 @@ using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.CropLab;
-using PowerPointLabs.Models;
-using PowerPointLabs.PictureSlidesLab.View;
-using PowerPointLabs.Views;
+using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.PictureSlidesLab.Views;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;

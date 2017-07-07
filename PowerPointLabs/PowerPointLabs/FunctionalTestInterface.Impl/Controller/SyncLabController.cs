@@ -4,8 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.SyncLab;
-using PowerPointLabs.SyncLab.View;
+using PowerPointLabs.SyncLab.Views;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller

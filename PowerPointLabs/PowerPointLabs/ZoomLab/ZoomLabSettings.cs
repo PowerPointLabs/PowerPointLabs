@@ -1,4 +1,4 @@
-﻿using PowerPointLabs.Views;
+﻿using PowerPointLabs.ZoomLab.Views;
 
 namespace PowerPointLabs.ZoomLab
 {

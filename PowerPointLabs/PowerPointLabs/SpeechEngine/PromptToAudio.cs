@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Speech.Synthesis;
-using System.Windows.Forms;
-using PowerPointLabs.Views;
+
+using PowerPointLabs.NarrationsLab.Views;
 
 namespace PowerPointLabs.SpeechEngine
 {

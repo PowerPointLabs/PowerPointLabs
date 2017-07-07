@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ShapesLab;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
