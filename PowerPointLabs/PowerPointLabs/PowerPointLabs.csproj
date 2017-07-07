@@ -367,7 +367,7 @@
     <Compile Include="ActionFramework\PositionsLab\PositionsLabActionHandler.cs" />
     <Compile Include="ActionFramework\ResizeLab\ResizeLabActionHandler.cs" />
     <Compile Include="ActionFramework\TimerLab\TimerLabActionHandler.cs" />
-    <Compile Include="ActionFramework\AnimationLab\AddAnimation\AddAnimationSlideActionHandler .cs" />
+    <Compile Include="ActionFramework\AnimationLab\AddAnimation\AddAnimationSlideActionHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimateInSlide\AnimateInSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimateInSlide\AnimateInSlideActionHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AddAnimation\AddAnimationSlideImageHandler.cs" />
