@@ -312,6 +312,10 @@
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\AudioGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\AnimationsGroupLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesMenuActionHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuLabelHandler.cs" />
@@ -360,7 +364,6 @@
     <Compile Include="ActionFramework\ShortcutsLab\AddIntoGroup\AddIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteIntoGroup\PasteIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\ReplaceWithClipboard\ReplaceWithClipboardActionHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapeLab\ShapeMenuActionHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideActionHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurMenuContent\EffectsLabBlurrinessActionHandler.cs" />
@@ -478,7 +481,6 @@
     <Compile Include="ActionFramework\PasteLab\PasteIntoGroup\PasteIntoGroupImageHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\ReplaceWithClipboard\ReplaceWithClipboardImageHandler.cs" />
     <Compile Include="ActionFramework\SyncLab\SyncLabImageHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapeLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideEnabledHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideImageHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurSelected\BlurSelectedImageHandler.cs" />
@@ -513,7 +515,6 @@
     <Compile Include="ActionFramework\PasteLab\PasteAtOriginalPosition\PasteAtOriginalPositionLabelHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\ReplaceWithClipboard\ReplaceWithClipboardLabelHandler.cs" />
     <Compile Include="ActionFramework\SyncLab\SyncLabLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapeLab\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurMenuContent\EffectsLabBlurrinessLabelHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurSelected\BlurSelectedLabelHandler.cs" />
@@ -563,7 +564,6 @@
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteLabMenu\PasteLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\SyncLab\SyncLabSupertipHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapeLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurSelected\BlurSelectedSupertipHandler.cs" />
     <Compile Include="ActionFramework\PositionsLab\PositionsLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ResizeLab\ResizeLabLabelHandler.cs" />
