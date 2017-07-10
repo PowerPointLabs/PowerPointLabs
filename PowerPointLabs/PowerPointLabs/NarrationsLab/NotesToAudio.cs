@@ -18,7 +18,7 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.NarrationsLab
 {
-    class NotesToAudio
+    internal static class NotesToAudio
     {
 #pragma warning disable 0618
         private static string TempFolderName
