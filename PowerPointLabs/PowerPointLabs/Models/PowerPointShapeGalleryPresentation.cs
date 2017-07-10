@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Microsoft.Office.Core;
+
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+
+using Office = Microsoft.Office.Core;
 
 namespace PowerPointLabs.Models
 {
@@ -98,7 +99,7 @@ namespace PowerPointLabs.Models
             }
             else
             {
-                categoryNameBox = newSlide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
+                categoryNameBox = newSlide.Shapes.AddTextbox(Office.MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
                                                              SlideWidth, 0);
                 categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, name);
             }
@@ -115,11 +116,11 @@ namespace PowerPointLabs.Models
             ActionProtection();
         }
 
-        public string AddShape(Selection selection, string name, string category = "", bool fromClipBoard = false)
+        public string AddShape(ShapeRange shapeRange, string name, string category = "", bool fromClipBoard = false)
         {
             if (!fromClipBoard)
             {
-                selection.ShapeRange.Copy();
+                shapeRange.Copy();
             }
 
             var categorySlide = _defaultCategory;
@@ -369,7 +370,7 @@ namespace PowerPointLabs.Models
                 // for case 1 & 2, we need to add a new text box into the slie.
                 // For case 1, the text of category box should be slide.Name;
                 // For case 2, the text of category box should be next untitled name;
-                categoryNameBox = category.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
+                categoryNameBox = category.Shapes.AddTextbox(Office.MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
                                                              SlideWidth, 0);
 
                 var defaultSlideNameRegex = new Regex(DefaultSlideNameSearchPattern);
@@ -531,7 +532,7 @@ namespace PowerPointLabs.Models
             foreach (Shape shape in category.Shapes)
             {
                 // skip category name box
-                if (shape.Type == MsoShapeType.msoTextBox &&
+                if (shape.Type == Office.MsoShapeType.msoTextBox &&
                     _categoryNameBoxCollection.Contains(shape))
                 {
                     continue;
@@ -646,7 +647,7 @@ namespace PowerPointLabs.Models
 
         private Shape RetrieveCategoryNameBox(PowerPointSlide slide)
         {
-            var nameBoxCandidate = slide.GetShapesWithTypeAndRule(MsoShapeType.msoTextBox, new Regex(".+"));
+            var nameBoxCandidate = slide.GetShapesWithTypeAndRule(Office.MsoShapeType.msoTextBox, new Regex(".+"));
 
             if (nameBoxCandidate.Count == 0)
             {
