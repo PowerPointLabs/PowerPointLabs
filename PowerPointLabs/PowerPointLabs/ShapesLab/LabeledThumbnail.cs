@@ -25,7 +25,7 @@ namespace PowerPointLabs.ShapesLab
         # region Properties
         public bool Highlighed { get; set; }
 
-        public string NameLable
+        public string NameLabel
         {
             get
             {
@@ -87,7 +87,6 @@ namespace PowerPointLabs.ShapesLab
             if (!labelTextBox.Enabled)
             {
                 labelTextBox.BackColor = Color.FromKnownColor(KnownColor.LightBlue);
-                //labelTextBox.ForeColor = Color.White;
             }
 
             Highlighed = true;
@@ -137,7 +136,7 @@ namespace PowerPointLabs.ShapesLab
             }
 
             _nameFinishHandled = true;
-            NameLable = labelTextBox.Text;
+            NameLabel = labelTextBox.Text;
 
             var oldName = Path.GetFileNameWithoutExtension(ImagePath);
 
@@ -149,7 +148,7 @@ namespace PowerPointLabs.ShapesLab
                 labelTextBox.Enabled = false;
                 NameEditFinish(this, oldName);
 
-                SetToolTip(NameLable);
+                SetToolTip(NameLabel);
             }
             else
             {
@@ -160,10 +159,10 @@ namespace PowerPointLabs.ShapesLab
         public void RenameWithoutEdit(string newName)
         {
             labelTextBox.Enabled = true;
-            NameLable = newName;
+            NameLabel = newName;
             labelTextBox.Enabled = false;
 
-            SetToolTip(NameLable);
+            SetToolTip(NameLabel);
         }
         # endregion
 
@@ -195,17 +194,18 @@ namespace PowerPointLabs.ShapesLab
             labelTextBox.DoubleClick += (sender, e) => labelTextBox.SelectAll();
             labelTextBox.EnabledChanged += EnableChangedHandler;
             labelTextBox.KeyPress += EnterKeyWhileEditing;
-            labelTextBox.LostFocus += NameLableLostFocus;
+            labelTextBox.LostFocus += NameLabelLostFocus;
 
-            var customPaintTextBox = new CustomPaintTextBox(labelTextBox);
+            // Not sure if this is needed...
+            CustomPaintTextBox customPaintTextBox = new CustomPaintTextBox(labelTextBox);
         }
 
         private void Initialize(string imagePath, string nameLable)
         {
             Initialize();
 
-            NameLable = nameLable;
-            SetToolTip(NameLable);
+            NameLabel = nameLable;
+            SetToolTip(NameLabel);
 
             ImagePath = imagePath;
 
@@ -225,12 +225,12 @@ namespace PowerPointLabs.ShapesLab
         {
             // if the name hasn't changed, we don't need to check for duplicate name
             // since the default name/ old name is confirmed unique.
-            if (oldName == NameLable)
+            if (oldName == NameLabel)
             {
                 return false;
             }
 
-            var newPath = ImagePath.Replace(oldName, NameLable);
+            var newPath = ImagePath.Replace(oldName, NameLabel);
 
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
@@ -269,16 +269,16 @@ namespace PowerPointLabs.ShapesLab
 
         private void EnableChangedHandler(object sender, EventArgs e)
         {
+            labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
+
             if (labelTextBox.Enabled == false)
             {
-                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
                 labelTextBox.Text = string.Empty;
             }
             else
             {
-                labelTextBox.BackColor = Color.FromKnownColor(KnownColor.Window);
                 labelTextBox.ForeColor = Color.Black;
-                labelTextBox.Text = NameLable;
+                labelTextBox.Text = NameLabel;
             }
         }
 
@@ -291,7 +291,7 @@ namespace PowerPointLabs.ShapesLab
             }
         }
 
-        private void NameLableLostFocus(object sender, EventArgs args)
+        private void NameLabelLostFocus(object sender, EventArgs args)
         {
             FinishNameEdit();
         }

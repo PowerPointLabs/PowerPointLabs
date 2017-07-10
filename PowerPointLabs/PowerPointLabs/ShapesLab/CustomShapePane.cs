@@ -75,7 +75,7 @@ namespace PowerPointLabs.ShapesLab
                     return null;
                 }
 
-                return _selectedThumbnail[0].NameLable;
+                return _selectedThumbnail[0].NameLabel;
             }
         }
 
@@ -92,7 +92,7 @@ namespace PowerPointLabs.ShapesLab
                 }
 
                 shapeList.AddRange(from LabeledThumbnail labelThumbnail in myShapeFlowLayout.Controls
-                                   select labelThumbnail.NameLable);
+                                   select labelThumbnail.NameLabel);
 
                 return shapeList;
             }
@@ -307,7 +307,7 @@ namespace PowerPointLabs.ShapesLab
             }
 
             // all selected shape will be added to the slide
-            Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLable));
+            Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
             currentSlide.Shapes.Paste();
         }
 
@@ -465,7 +465,7 @@ namespace PowerPointLabs.ShapesLab
             while (_selectedThumbnail.Count > 0)
             {
                 var thumbnail = _selectedThumbnail[0];
-                var removedShapename = thumbnail.NameLable;
+                var removedShapename = thumbnail.NameLabel;
 
                 // remove shape from shape gallery
                 Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
@@ -598,7 +598,7 @@ namespace PowerPointLabs.ShapesLab
 
             return
                 myShapeFlowLayout.Controls.Cast<LabeledThumbnail>().FirstOrDefault(
-                    labeledThumbnail => labeledThumbnail.NameLable == name);
+                    labeledThumbnail => labeledThumbnail.NameLabel == name);
         }
 
         private int FindLabeledThumbnailIndex(string name)
@@ -621,13 +621,13 @@ namespace PowerPointLabs.ShapesLab
                 }
 
                 // skip itself
-                if (control.NameLable == name)
+                if (control.NameLabel == name)
                 {
                     thisControlPosition = i;
                     continue;
                 }
                 
-                if (_stringComparer.Compare(control.NameLable, name) > 0)
+                if (_stringComparer.Compare(control.NameLabel, name) > 0)
                 {
                     // immediate next control's name is still bigger than current control, do
                     // not need to reorder
@@ -1026,24 +1026,24 @@ namespace PowerPointLabs.ShapesLab
 
         private void RenameThumbnail(string oldName, LabeledThumbnail labeledThumbnail)
         {
-            if (oldName == labeledThumbnail.NameLable)
+            if (oldName == labeledThumbnail.NameLabel)
             {
                 return;
             }
 
-            var newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLable);
+            var newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLabel);
 
             File.Move(labeledThumbnail.ImagePath, newPath);
             labeledThumbnail.ImagePath = newPath;
 
-            Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLable);
+            Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLabel);
 
-            Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLable, CurrentCategory);
+            Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLabel, CurrentCategory);
         }
 
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
         {
-            var index = FindLabeledThumbnailIndex(labeledThumbnail.NameLable);
+            var index = FindLabeledThumbnailIndex(labeledThumbnail.NameLabel);
 
             // if the current control is the only control or something goes wrong, don't need
             // to reorder
@@ -1144,7 +1144,7 @@ namespace PowerPointLabs.ShapesLab
 
             foreach (var thumbnail in _selectedThumbnail)
             {
-                var shapeName = thumbnail.NameLable;
+                var shapeName = thumbnail.NameLabel;
 
                 var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
                 var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
@@ -1305,7 +1305,7 @@ namespace PowerPointLabs.ShapesLab
 
             if (_selectedThumbnail.Count != 0)
             {
-                _selectedThumbnail = _selectedThumbnail.OrderBy(item => item.NameLable, _stringComparer).ToList();
+                _selectedThumbnail = _selectedThumbnail.OrderBy(item => item.NameLabel, _stringComparer).ToList();
             }
         }
 
@@ -1374,7 +1374,7 @@ namespace PowerPointLabs.ShapesLab
 
             var clickedThumbnail = sender as LabeledThumbnail;
 
-            var shapeName = clickedThumbnail.NameLable;
+            var shapeName = clickedThumbnail.NameLabel;
             var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             
             if (currentSlide != null)
@@ -1450,7 +1450,7 @@ namespace PowerPointLabs.ShapesLab
 
             foreach (var thumbnail in _selectedThumbnail)
             {
-                var shapeName = thumbnail.NameLable;
+                var shapeName = thumbnail.NameLabel;
 
                 var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
                 var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";

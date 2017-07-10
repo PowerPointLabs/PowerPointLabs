@@ -13,9 +13,9 @@ namespace PowerPointLabs.EffectsLab
     internal static class Spotlight
     {
 #pragma warning disable 0618
-        public static float defaultSoftEdges = 10;
-        public static float defaultTransparency = 0.25f;
-        public static System.Drawing.Color defaultColor = Color.Black;
+        public static float softEdges = 10;
+        public static float transparency = 0.25f;
+        public static Color color = Color.Black;
         public static Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
             {"None", 0},
@@ -30,10 +30,10 @@ namespace PowerPointLabs.EffectsLab
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-                
-                var addedSlide = currentSlide.CreateSpotlightSlide() as PowerPointSpotlightSlide;
+
+                PowerPointSpotlightSlide addedSlide = currentSlide.CreateSpotlightSlide() as PowerPointSpotlightSlide;
                 List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
 
                 addedSlide.DeleteShapesWithPrefix("SpotlightShape");

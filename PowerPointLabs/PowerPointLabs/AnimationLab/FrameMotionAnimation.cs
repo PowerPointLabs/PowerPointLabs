@@ -6,7 +6,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.AnimationLab
 {
-    class FrameMotionAnimation
+    internal static class FrameMotionAnimation
     {
 #pragma warning disable 0618
         public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan, kZoomToAreaDeMagnify };

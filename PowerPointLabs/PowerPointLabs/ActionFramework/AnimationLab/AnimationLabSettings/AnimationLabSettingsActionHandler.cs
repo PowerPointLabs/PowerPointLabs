@@ -20,7 +20,7 @@ namespace PowerPointLabs.ActionFramework.Animationlab
         {
             this.GetRibbonUi().DefaultDuration = newDuration;
             this.GetRibbonUi().FrameAnimationChecked = newFrameChecked;
-            AnimateInSlide.defaultDuration = newDuration;
+            AnimateInSlide.animationDuration = newDuration;
             AnimateInSlide.frameAnimationChecked = newFrameChecked;
             AutoAnimate.defaultDuration = newDuration;
             AutoAnimate.frameAnimationChecked = newFrameChecked;

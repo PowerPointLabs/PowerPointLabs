@@ -9,7 +9,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.AnimationLab
 {
-    class AutoAnimate
+    internal static class AutoAnimate
     {
 #pragma warning disable 0618
         public static float defaultDuration = 0.5f;

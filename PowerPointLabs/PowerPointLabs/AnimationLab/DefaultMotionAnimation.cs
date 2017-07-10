@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.AnimationLab
 {
-    class DefaultMotionAnimation
+    internal static class DefaultMotionAnimation
     {
 #pragma warning disable 0618
         //Use initial shape and final shape to calculate intial and final positions

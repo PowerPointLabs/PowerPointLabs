@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ShortcutsLab
 {
-    class ConvertToPicture
+    internal static class ConvertToPicture
     {
 #pragma warning disable 0618
         public static void Convert(PowerPoint.Selection selection)

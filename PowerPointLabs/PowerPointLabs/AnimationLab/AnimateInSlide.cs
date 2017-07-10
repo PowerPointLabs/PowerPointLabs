@@ -1,29 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.AnimationLab
 {
 #pragma warning disable 0618
-    class AnimateInSlide
+    internal static class AnimateInSlide
     {
-        public static float defaultDuration = 0.5f;
+        public static float animationDuration = 0.5f;
         public static bool frameAnimationChecked = false;
         public static bool isHighlightBullets = false;
         public static bool isHighlightTextFragments = false;
+
         public static void AddAnimationInSlide()
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
-                var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange as PowerPoint.ShapeRange;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
 
                 currentSlide.RemoveAnimationsForShapes(selectedShapes.Cast<PowerPoint.Shape>().ToList());
 
@@ -132,7 +131,7 @@ namespace PowerPointLabs.AnimationLab
             if (NeedsFrameAnimation(shape1, shape2))
             {
                 FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
-                FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, defaultDuration);
+                FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, animationDuration);
             }
             else
             {
@@ -140,7 +139,7 @@ namespace PowerPointLabs.AnimationLab
                     currentSlide,
                     shape1,
                     shape2,
-                    defaultDuration,
+                    animationDuration,
                     PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             }
         }
