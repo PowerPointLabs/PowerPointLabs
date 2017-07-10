@@ -13,7 +13,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (exception != null)
             {
-                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+                Views.ErrorDialogBox.ShowDialog("Error", content, exception);
             }
             else
             {

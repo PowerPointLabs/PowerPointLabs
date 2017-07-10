@@ -169,7 +169,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog("Error", e.Message, e);
                 return null;
             }
         }

@@ -210,14 +210,14 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                    ErrorDialogBox.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
                 }
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
+                ErrorDialogBox.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
             }
         }
 
@@ -241,7 +241,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
+                ErrorDialogBox.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
             }
             finally
             {
@@ -754,7 +754,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
+                ErrorDialogBox.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
             }
         }
 

@@ -45,7 +45,7 @@ namespace PowerPointLabs
             catch (Exception e)
             { 
                 Logger.LogException(e, "AddAnimationButtonClick");
-                ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
+                ErrorDialogBox.ShowDialog("PowerPointLabs", e.Message, e);
             }
             
         }
@@ -112,7 +112,7 @@ namespace PowerPointLabs
             catch (Exception e)
             {
                 Logger.LogException(e, "ReloadAutoAnimation");
-                ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
+                ErrorDialogBox.ShowDialog("PowerPointLabs", e.Message, e);
             }
         }
 
