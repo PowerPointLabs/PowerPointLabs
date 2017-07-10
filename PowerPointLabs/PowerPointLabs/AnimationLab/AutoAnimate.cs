@@ -12,7 +12,7 @@ namespace PowerPointLabs.AnimationLab
     internal static class AutoAnimate
     {
 #pragma warning disable 0618
-        public static float defaultDuration = 0.5f;
+        public static float duration = 0.5f;
         public static bool frameAnimationChecked = false;
 
         private static PowerPoint.Shape[] currentSlideShapes;
@@ -24,7 +24,7 @@ namespace PowerPointLabs.AnimationLab
             try
             {
                 //Get References of current and next slides
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
                     MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorWrongSlide, 

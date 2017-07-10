@@ -13,7 +13,7 @@ namespace PowerPointLabs.EffectsLab
     internal static class Spotlight
     {
 #pragma warning disable 0618
-        public static float softEdges = 10;
+        public static float softEdges = 10.0f;
         public static float transparency = 0.25f;
         public static Color color = Color.Black;
         public static Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
@@ -26,6 +26,7 @@ namespace PowerPointLabs.EffectsLab
             {"25 Points", 25},
             {"50 Points", 50}
         };
+
         public static void AddSpotlightEffect()
         {
             try
