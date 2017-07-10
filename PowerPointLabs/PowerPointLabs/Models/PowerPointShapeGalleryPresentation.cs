@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;

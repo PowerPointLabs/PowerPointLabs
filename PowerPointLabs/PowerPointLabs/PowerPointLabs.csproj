@@ -315,8 +315,7 @@
     <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabSupertipHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesMenuActionHandler.cs" />
-    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuSupertipHandler.cs" />
@@ -364,7 +363,7 @@
     <Compile Include="ActionFramework\ShortcutsLab\AddIntoGroup\AddIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteIntoGroup\PasteIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\ReplaceWithClipboard\ReplaceWithClipboardActionHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideActionHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurMenuContent\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\PositionsLab\PositionsLabActionHandler.cs" />
@@ -459,7 +458,7 @@
     <Compile Include="ActionFramework\HighlightLab\HighlightPoints\HighlightPointsLabelHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightBackground\HighlightBackgroundSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightPoints\HighlightPointsSupertipHandler.cs" />
-    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\EditName\EditNameImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ConvertToPicture\ConvertToPictureImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeImageHandler.cs" />
@@ -505,7 +504,7 @@
     <Compile Include="ActionFramework\Help\HelpMenu\HelpMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\CaptionsLab\CaptionsLabMenu\CaptionsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteLabMenu\PasteLabMenuLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShortcutsLab\Hide\HideShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\EditName\EditNameLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ConvertToPicture\ConvertToPictureShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeLabelHandler.cs" />

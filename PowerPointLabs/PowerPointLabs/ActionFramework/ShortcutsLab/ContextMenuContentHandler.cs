@@ -67,7 +67,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
                     shortcuts.Items.Add(TextCollection.ConvertToPictureTag);
                 }
 
-                shortcuts.Items.Add(TextCollection.HideSelectedShapeTag);
+                shortcuts.Items.Add(TextCollection.HideShapeTag);
                 shortcuts.Items.Add(TextCollection.AddCustomShapeTag);
 
                 // Context menu group will have these buttons
