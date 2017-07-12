@@ -312,9 +312,10 @@
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\AudioGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\AnimationsGroupLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabImageHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuLabelHandler.cs" />
@@ -363,7 +364,6 @@
     <Compile Include="ActionFramework\ShortcutsLab\AddIntoGroup\AddIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteIntoGroup\PasteIntoGroupActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\ReplaceWithClipboard\ReplaceWithClipboardActionHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabPane\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteToFillSlide\PasteToFillSlideActionHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurMenuContent\EffectsLabBlurrinessActionHandler.cs" />
     <Compile Include="ActionFramework\PositionsLab\PositionsLabActionHandler.cs" />
