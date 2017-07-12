@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -122,18 +123,19 @@ namespace PowerPointLabs.NarrationsLab
         {
             try
             {
-                var selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text.Trim();
-                var splitScript = (new TaggedText(selected)).SplitByClicks();
+                string selected = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.Text.Trim();
+                List<string> splitScript = (new TaggedText(selected)).SplitByClicks();
 
-                var completeText = string.Empty;
-                var reg = new Regex("\\.+\\s*");
+                StringBuilder completeTextBuilder = new StringBuilder();
+                Regex reg = new Regex("\\.+\\s*");
 
-                foreach (var text in splitScript)
+                foreach (string text in splitScript)
                 {
-                    completeText += reg.Replace(text, string.Empty) + ". ";
+                    completeTextBuilder.Append(reg.Replace(text, string.Empty));
+                    completeTextBuilder.Append(". ");
                 }
 
-                SpeakText(completeText);
+                SpeakText(completeTextBuilder.ToString());
             }
             catch (COMException)
             {

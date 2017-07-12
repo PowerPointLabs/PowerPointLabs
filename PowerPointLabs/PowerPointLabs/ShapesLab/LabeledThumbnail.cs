@@ -195,8 +195,8 @@ namespace PowerPointLabs.ShapesLab
             labelTextBox.EnabledChanged += EnableChangedHandler;
             labelTextBox.KeyPress += EnterKeyWhileEditing;
             labelTextBox.LostFocus += NameLabelLostFocus;
-
-            // Not sure if this is needed...
+            
+            // This is required for the thumbnail labels to show
             CustomPaintTextBox customPaintTextBox = new CustomPaintTextBox(labelTextBox);
         }
 
