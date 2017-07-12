@@ -5,8 +5,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 
-using Microsoft.Office.Interop.PowerPoint;
-
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
 
@@ -55,7 +53,7 @@ namespace PowerPointLabs.CropLab
                 TakeScreenshotProxy(currentSlide, shapeRange);
 
                 var ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(currentSlide, shapeRange);
-                List<Shape> shapeList = new List<Shape>();
+                List<PowerPoint.Shape> shapeList = new List<PowerPoint.Shape>();
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
@@ -181,38 +179,6 @@ namespace PowerPointLabs.CropLab
             shapeRange.Visible = Office.MsoTriState.msoFalse;
             Utils.Graphics.ExportSlide(currentSlide, SlidePicture);
             shapeRange.Visible = Office.MsoTriState.msoTrue;
-        }
-
-        private static PowerPoint.ShapeRange UngroupAllForShapeRange(PowerPointSlide currentSlide, PowerPoint.ShapeRange range)
-        {
-            var ungroupedShapeNames = new List<string>();
-            var queue = new Queue<PowerPoint.Shape>();
-
-            foreach (var item in range)
-            {
-                queue.Enqueue(item as PowerPoint.Shape);
-            }
-            while (queue.Count != 0)
-            {
-                var shape = queue.Dequeue();
-                if (shape.Type == Office.MsoShapeType.msoGroup)
-                {
-                    var subRange = shape.Ungroup();
-                    foreach (var item in subRange)
-                    {
-                        queue.Enqueue(item as PowerPoint.Shape);
-                    }
-                }
-                else if (!IsShape(shape))
-                {
-                    throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForSelectionNonShape);
-                }
-                else
-                {
-                    ungroupedShapeNames.Add(shape.Name);
-                }
-            }
-            return currentSlide.Shapes.Range(ungroupedShapeNames.ToArray());
         }
 
         private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
