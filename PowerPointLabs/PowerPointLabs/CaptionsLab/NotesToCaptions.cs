@@ -13,7 +13,7 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.CaptionsLab
 {
-    class NotesToCaptions
+    internal static class NotesToCaptions
     {
 #pragma warning disable 0618
         public static void EmbedCaptionsOnSelectedSlides()
