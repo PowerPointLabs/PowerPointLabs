@@ -20,8 +20,7 @@ namespace PowerPointLabs.EffectsLab
         internal static ShapeRange UngroupAllShapeRange(PowerPointSlide curSlide, ShapeRange shapeRange)
         {
             var ungroupedShapeNames = new List<string>();
-            var queue = new Queue<Shape>();
-            string blurEffectSuffix = DateTime.Now.ToString("_yyyyMMddHHmmssffff_");
+            List<Shape> shapeList = new List<Shape>();
 
             for (int i = 1; i <= shapeRange.Count; i++)
             {
@@ -30,29 +29,25 @@ namespace PowerPointLabs.EffectsLab
                 {
                     shape = Utils.Graphics.CorruptionCorrection(shape, curSlide);
                 }
-                shape.Name = shape.Name + blurEffectSuffix;
-                queue.Enqueue(shape);
+                shapeList.Add(shape);
             }
 
-            while (queue.Count != 0)
+            for (int i = 0; i < shapeList.Count; i++)
             {
-                var shape = queue.Dequeue();
-
-                if (shape.Type == Office.MsoShapeType.msoGroup)
+                if (shapeList[i].Type == Office.MsoShapeType.msoGroup)
                 {
-                    var subRange = shape.Ungroup();
+                    var subRange = shapeList[i].Ungroup();
                     foreach (Shape item in subRange)
                     {
-                        item.Name = item.Name + blurEffectSuffix;
-                        queue.Enqueue(item);
+                        shapeList.Add(item);
                     }
                 }
-                else if (shape.Type == Office.MsoShapeType.msoPlaceholder
-                    || shape.Type == Office.MsoShapeType.msoTextBox
-                    || shape.Type == Office.MsoShapeType.msoAutoShape
-                    || shape.Type == Office.MsoShapeType.msoFreeform)
+                else if (shapeList[i].Type == Office.MsoShapeType.msoPlaceholder ||
+                    shapeList[i].Type == Office.MsoShapeType.msoTextBox ||
+                    shapeList[i].Type == Office.MsoShapeType.msoAutoShape ||
+                    shapeList[i].Type == Office.MsoShapeType.msoFreeform)
                 {
-                    ungroupedShapeNames.Add(shape.Name);
+                    ungroupedShapeNames.Add(shapeList[i].Name);
                 }
                 else
                 {
@@ -60,7 +55,7 @@ namespace PowerPointLabs.EffectsLab
                 }
             }
 
-            var ungroupedShapeRange = curSlide.Shapes.Range(ungroupedShapeNames.ToArray());
+            var ungroupedShapeRange = curSlide.ToShapeRange(shapeList);
 
             return ungroupedShapeRange;
         }
@@ -71,7 +66,8 @@ namespace PowerPointLabs.EffectsLab
 
             try
             {
-                ShapeRange shapeRange = UngroupAllShapeRange(curSlide, selection.ShapeRange);
+                ShapeRange shapeRange = selection.ShapeRange;
+
                 if (shapeRange.Count != 0)
                 {
                     dupSlide = curSlide.Duplicate();

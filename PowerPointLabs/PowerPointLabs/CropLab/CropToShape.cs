@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
-using PowerPointLabs.ActionFramework.Common.Attribute;
-using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Common.Log;
+
+using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
 namespace PowerPointLabs.CropLab
 {
     public class CropToShape
@@ -55,23 +54,23 @@ namespace PowerPointLabs.CropLab
 
                 TakeScreenshotProxy(currentSlide, shapeRange);
 
-                var ungroupedRange = UngroupAllForShapeRange(currentSlide, shapeRange);
-                var shapeNames = new string[ungroupedRange.Count];
+                var ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(currentSlide, shapeRange);
+                List<Shape> shapeList = new List<Shape>();
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
                     var filledShape = FillInShapeWithImage(currentSlide, SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
-                    shapeNames[i - 1] = filledShape.Name;
+                    shapeList.Add(filledShape);
                 }
-
-                var croppedRange = currentSlide.Shapes.Range(shapeNames);
+                
+                var croppedRange = currentSlide.ToShapeRange(shapeList);
                 var croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
 
                 return croppedShape;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new CropLabException(TextCollection.CropToShapeText.ErrorMessageForUndefined);
+                throw new CropLabException(e.Message);
             }
         }
 
