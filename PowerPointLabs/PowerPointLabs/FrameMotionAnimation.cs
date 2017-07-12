@@ -132,12 +132,11 @@ namespace PowerPointLabs
             for (int i = 1; i <= numFrames; i++)
             {
                 PowerPoint.Shape dupShape = initialShape.Duplicate()[1];
-                if (i != 1 && animationType != FrameMotionAnimationType.kZoomToAreaDeMagnify)
-                {
-                    sequence[sequence.Count].Delete();
-                }
 
-                if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan || animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify)
+                if (animationType == FrameMotionAnimationType.kInSlideAnimate || 
+                    animationType == FrameMotionAnimationType.kZoomToAreaPan || 
+                    animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify ||
+                    (i != 1 && animationType != FrameMotionAnimationType.kZoomToAreaDeMagnify))
                 {
                     animationSlide.DeleteShapeAnimations(dupShape);
                 }
