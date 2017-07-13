@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 
-namespace PowerPointLabs.ActionFramework.ShortcutsLab
+namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportImageRibbonId(TextCollection.HideSelectedShapeTag)]
-    class HideShapeImageHandler : ImageHandler
+    [ExportImageRibbonId(TextCollection.ShapesLabTag)]
+    class ShapesLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.HideShape);
+            return new Bitmap(Properties.Resources.ShapesLab);
         }
     }
 }

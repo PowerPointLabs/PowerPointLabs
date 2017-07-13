@@ -31,7 +31,14 @@ namespace PowerPointLabs.ShortcutsLab
         {
             if (IsSelectionShapeOrText(selection))
             {
-                Graphics.ExportShape(selection.ShapeRange, fileName);
+                if (selection.HasChildShapeRange)
+                {
+                    Graphics.ExportShape(selection.ChildShapeRange, fileName);
+                }
+                else
+                {
+                    Graphics.ExportShape(selection.ShapeRange, fileName);
+                }
             }
             else
             {
