@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
 using PPExtraEventHelper;

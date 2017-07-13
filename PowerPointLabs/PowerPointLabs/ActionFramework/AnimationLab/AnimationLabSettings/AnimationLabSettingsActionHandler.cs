@@ -1,7 +1,8 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Views;
+using PowerPointLabs.AnimationLab;
+using PowerPointLabs.AnimationLab.Views;
 
 namespace PowerPointLabs.ActionFramework.Animationlab
 {
@@ -19,9 +20,9 @@ namespace PowerPointLabs.ActionFramework.Animationlab
         {
             this.GetRibbonUi().DefaultDuration = newDuration;
             this.GetRibbonUi().FrameAnimationChecked = newFrameChecked;
-            AnimateInSlide.defaultDuration = newDuration;
+            AnimateInSlide.animationDuration = newDuration;
             AnimateInSlide.frameAnimationChecked = newFrameChecked;
-            AutoAnimate.defaultDuration = newDuration;
+            AutoAnimate.duration = newDuration;
             AutoAnimate.frameAnimationChecked = newFrameChecked;
         }
     }

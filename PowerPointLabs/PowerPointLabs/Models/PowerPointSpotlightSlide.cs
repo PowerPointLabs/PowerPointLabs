@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
+
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.EffectsLab;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -170,10 +172,15 @@ namespace PowerPointLabs.Models
 
         private void AddRectangleShape()
         {
-            PowerPoint.Shape rectangleShape = Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (-SoftEdgePadding/2 * Spotlight.defaultSoftEdges), (PowerPointPresentation.Current.SlideWidth + (SoftEdgePadding * Spotlight.defaultSoftEdges)), (PowerPointPresentation.Current.SlideHeight + (SoftEdgePadding * Spotlight.defaultSoftEdges)));
+            PowerPoint.Shape rectangleShape = Shapes.AddShape(
+                    Office.MsoAutoShapeType.msoShapeRectangle, 
+                    (-SoftEdgePadding/2 * Spotlight.softEdges), 
+                    (-SoftEdgePadding/2 * Spotlight.softEdges), 
+                    (PowerPointPresentation.Current.SlideWidth + (SoftEdgePadding * Spotlight.softEdges)), 
+                    (PowerPointPresentation.Current.SlideHeight + (SoftEdgePadding * Spotlight.softEdges)));
             rectangleShape.Fill.Solid();
-            rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.defaultColor);
-            rectangleShape.Fill.Transparency = Spotlight.defaultTransparency;
+            rectangleShape.Fill.ForeColor.RGB = ColorTranslator.ToWin32(Spotlight.color);
+            rectangleShape.Fill.Transparency = Spotlight.transparency;
             rectangleShape.Line.Visible = Office.MsoTriState.msoFalse;
             rectangleShape.Name = "SpotlightShape1";
             rectangleShape.ZOrder(Office.MsoZOrderCmd.msoSendToBack);
@@ -210,13 +217,13 @@ namespace PowerPointLabs.Models
         {
             spotlightPicture.PictureFormat.TransparencyColor = 0xffffff;
             spotlightPicture.PictureFormat.TransparentBackground = Office.MsoTriState.msoTrue;
-            spotlightPicture.Left = -SoftEdgePadding/2 * Spotlight.defaultSoftEdges;
-            spotlightPicture.Top = -SoftEdgePadding/2 * Spotlight.defaultSoftEdges;
+            spotlightPicture.Left = -SoftEdgePadding/2 * Spotlight.softEdges;
+            spotlightPicture.Top = -SoftEdgePadding/2 * Spotlight.softEdges;
             spotlightPicture.LockAspectRatio = Office.MsoTriState.msoFalse;
-            float incrementWidth = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Width;
-            float incrementHeight = (SoftEdgePadding * Spotlight.defaultSoftEdges) / spotlightPicture.Height;
+            float incrementWidth = (SoftEdgePadding * Spotlight.softEdges) / spotlightPicture.Width;
+            float incrementHeight = (SoftEdgePadding * Spotlight.softEdges) / spotlightPicture.Height;
 
-            spotlightPicture.SoftEdge.Radius = Spotlight.defaultSoftEdges;
+            spotlightPicture.SoftEdge.Radius = Spotlight.softEdges;
             spotlightPicture.Shadow.Size = 0;
 
             spotlightPicture.Name = "SpotlightShape1";

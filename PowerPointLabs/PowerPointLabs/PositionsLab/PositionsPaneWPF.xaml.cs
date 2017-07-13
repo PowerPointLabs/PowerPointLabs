@@ -7,11 +7,13 @@ using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.PositionsLab.Views;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Views;
+
 using PPExtraEventHelper;
 
 using Graphics = PowerPointLabs.Utils.Graphics;
-using Media = System.Windows.Media;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -1024,7 +1026,7 @@ namespace PowerPointLabs.PositionsLab
             }
             else
             {
-                Views.ErrorDialogBox.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog("Error", content, exception);
             }
         }
 

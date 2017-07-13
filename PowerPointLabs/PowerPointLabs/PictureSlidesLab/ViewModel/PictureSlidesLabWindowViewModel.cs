@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.Models;
@@ -21,8 +22,8 @@ using PowerPointLabs.PictureSlidesLab.Service.Interface;
 using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Util;
-using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
+using PowerPointLabs.PictureSlidesLab.Views.Interface;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 

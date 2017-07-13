@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using PowerPointLabs.AnimationLab;
 using PowerPointLabs.ZoomLab;
 
 using Office = Microsoft.Office.Core;

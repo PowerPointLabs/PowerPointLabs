@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AnimationLab;
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 

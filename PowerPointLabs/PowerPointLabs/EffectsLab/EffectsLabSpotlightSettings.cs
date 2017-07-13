@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-using PowerPointLabs.Views;
+using PowerPointLabs.EffectsLab.Views;
 
 namespace PowerPointLabs.EffectsLab
 {
@@ -8,18 +8,18 @@ namespace PowerPointLabs.EffectsLab
     {
         public static void OpenSpotlightSettingsDialog()
         {
-            SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(Spotlight.defaultTransparency,
-                                                                                    Spotlight.defaultSoftEdges,
-                                                                                    Spotlight.defaultColor);
+            SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(Spotlight.transparency,
+                                                                                    Spotlight.softEdges,
+                                                                                    Spotlight.color);
             dialog.SettingsHandler += SpotlightPropertiesEdited;
             dialog.ShowDialog();
         }
 
         public static void SpotlightPropertiesEdited(float newTransparency, float newSoftEdge, Color newColor)
         {
-            Spotlight.defaultTransparency = newTransparency;
-            Spotlight.defaultSoftEdges = newSoftEdge;
-            Spotlight.defaultColor = newColor;
+            Spotlight.transparency = newTransparency;
+            Spotlight.softEdges = newSoftEdge;
+            Spotlight.color = newColor;
         }
     }
 }

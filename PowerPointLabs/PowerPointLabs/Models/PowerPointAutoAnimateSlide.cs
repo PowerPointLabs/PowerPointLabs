@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+using PowerPointLabs.AnimationLab;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -62,11 +63,11 @@ namespace PowerPointLabs.Models
                         if (NeedsFrameAnimation(sh, nextSlideSlideShapes[matchingShapeIndex]))
                         {
                             FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kAutoAnimate;
-                            FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration);
+                            FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.duration);
                         }
                         else
                         {
-                            DefaultMotionAnimation.AddDefaultMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.defaultDuration, trigger);
+                            DefaultMotionAnimation.AddDefaultMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.duration, trigger);
                         }
                     }
                 }
@@ -85,7 +86,7 @@ namespace PowerPointLabs.Models
                         DeleteShapeAnimations(sh);
                         PowerPoint.Effect effectFade = _slide.TimeLine.MainSequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                         effectFade.Exit = Office.MsoTriState.msoTrue;
-                        effectFade.Timing.Duration = AutoAnimate.defaultDuration;
+                        effectFade.Timing.Duration = AutoAnimate.duration;
                         //fadeFlag = true;
                     }
                     else

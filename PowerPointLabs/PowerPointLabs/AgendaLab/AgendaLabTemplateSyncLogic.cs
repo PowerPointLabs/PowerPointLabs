@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
