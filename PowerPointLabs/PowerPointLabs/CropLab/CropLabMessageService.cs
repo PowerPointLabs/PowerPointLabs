@@ -12,7 +12,7 @@ namespace PowerPointLabs.CropLab
         {
             if (exception != null)
             {
-                Views.ErrorDialogBox.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog("Error", content, exception);
             }
             else
             {
