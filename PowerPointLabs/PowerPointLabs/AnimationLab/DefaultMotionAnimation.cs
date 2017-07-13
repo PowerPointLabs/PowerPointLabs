@@ -311,12 +311,13 @@ namespace PowerPointLabs.AnimationLab
         {
             // Add a 180 degree rotated line to offset its pivot shift caused by arrowhead
             PowerPoint.Shape transparentLine = line.Duplicate()[1];
+            animationSlide.RemoveAnimationsForShape(transparentLine);
             transparentLine.Line.Transparency = 1.0f;
             transparentLine.Rotation = 180.0f;
             transparentLine.Left = line.Left;
             transparentLine.Top = line.Top;
 
-            PowerPoint.Shape tempAnimationHolder = line.Duplicate()[1];
+            PowerPoint.Shape tempAnimationHolder = animationSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, 0, 0, 1, 1);
             animationSlide.TransferAnimation(line, tempAnimationHolder);
 
             List<PowerPoint.Shape> toGroup = new List<PowerPoint.Shape> { line, transparentLine };
