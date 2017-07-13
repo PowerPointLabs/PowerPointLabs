@@ -49,7 +49,7 @@ namespace PowerPointLabs.PositionsLab.Views
             }
             else
             {
-                ErrorDialogWrapper.ShowDialog("Error", content, exception);
+                Views.ErrorDialogBox.ShowDialog("Error", content, exception);
             }
         }
 

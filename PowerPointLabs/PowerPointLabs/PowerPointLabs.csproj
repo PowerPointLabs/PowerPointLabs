@@ -618,6 +618,9 @@
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
+    <Compile Include="Views\ErrorDialogBox.xaml.cs">
+      <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>
@@ -1075,7 +1078,6 @@
       <DependentUpon>EditNameDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomPaintTextBox.cs" />
-    <Compile Include="Views\ErrorDialogWrapper.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
@@ -1400,6 +1402,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml">
+    <Page Include="Views\ErrorDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -112,7 +112,7 @@ namespace PowerPointLabs.ZoomLab
             catch (Exception e)
             {
                 Logger.LogException(e, "AddDrillDownAnimation");
-                ErrorDialogWrapper.ShowDialog("Error when adding drill down animation", "An error occurred when adding drill down animation.", e);
+                ErrorDialogBox.ShowDialog("Error when adding drill down animation", "An error occurred when adding drill down animation.", e);
                 throw;
             }
         }
@@ -199,7 +199,7 @@ namespace PowerPointLabs.ZoomLab
             catch (Exception e)
             {
                 Logger.LogException(e, "AddStepBackAnimation");
-                ErrorDialogWrapper.ShowDialog("Error when adding step back animation", "An error occurred when adding step back animation.", e);
+                ErrorDialogBox.ShowDialog("Error when adding step back animation", "An error occurred when adding step back animation.", e);
                 throw;
             }
         }

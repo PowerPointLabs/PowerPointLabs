@@ -43,7 +43,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             try
             {
-                ShowErrorTextDialog(content + TextCollection.UserFeedBack + TextCollection.Email + "\r\n\r\n"
+                ShowErrorTextDialog(content + TextCollection.UserFeedBack + TextCollection.ReportIssueEmail + "\r\n\r\n"
                                                + e.Message + " " + e.GetType() + "\r\n"
                                                + e.StackTrace);
             }

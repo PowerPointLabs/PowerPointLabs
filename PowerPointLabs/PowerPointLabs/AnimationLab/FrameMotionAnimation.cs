@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -11,6 +13,7 @@ namespace PowerPointLabs.AnimationLab
 #pragma warning disable 0618
         public enum FrameMotionAnimationType { kAutoAnimate, kInSlideAnimate, kStepBackWithBackground, kZoomToAreaPan, kZoomToAreaDeMagnify };
         public static FrameMotionAnimationType animationType = FrameMotionAnimationType.kAutoAnimate;
+        
         public static void AddFrameMotionAnimation(PowerPointSlide animationSlide, PowerPoint.Shape initialShape, PowerPoint.Shape finalShape, float duration)
         {
             float initialX = (initialShape.Left + (initialShape.Width) / 2);
@@ -132,12 +135,11 @@ namespace PowerPointLabs.AnimationLab
             for (int i = 1; i <= numFrames; i++)
             {
                 PowerPoint.Shape dupShape = initialShape.Duplicate()[1];
-                if (i != 1 && animationType != FrameMotionAnimationType.kZoomToAreaDeMagnify)
-                {
-                    sequence[sequence.Count].Delete();
-                }
-
-                if (animationType == FrameMotionAnimationType.kInSlideAnimate || animationType == FrameMotionAnimationType.kZoomToAreaPan || animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify)
+                
+                if (animationType == FrameMotionAnimationType.kInSlideAnimate || 
+                    animationType == FrameMotionAnimationType.kZoomToAreaPan || 
+                    animationType == FrameMotionAnimationType.kZoomToAreaDeMagnify ||
+                    (i != 1 && animationType != FrameMotionAnimationType.kZoomToAreaDeMagnify))
                 {
                     animationSlide.DeleteShapeAnimations(dupShape);
                 }
