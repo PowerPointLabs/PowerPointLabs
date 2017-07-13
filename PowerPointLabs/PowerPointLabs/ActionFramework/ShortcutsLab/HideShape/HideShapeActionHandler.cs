@@ -4,12 +4,18 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.HideSelectedShapeTag)]
+    [ExportActionRibbonId(TextCollection.HideShapeTag)]
     class HideShapeActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var selectedShapes = this.GetCurrentSelection().ShapeRange;
+            var selection = this.GetCurrentSelection();
+            var selectedShapes = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
+            {
+                selectedShapes = selection.ChildShapeRange;
+            }
+
             selectedShapes.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
         }
     }
