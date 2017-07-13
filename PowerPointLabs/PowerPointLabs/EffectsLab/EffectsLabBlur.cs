@@ -358,7 +358,7 @@ namespace PowerPointLabs.EffectsLab
             }
             else
             {
-                ErrorDialogWrapper.ShowDialog(MessageBoxTitle, content, exception);
+                ErrorDialogBox.ShowDialog(MessageBoxTitle, content, exception);
             }
         }
     }

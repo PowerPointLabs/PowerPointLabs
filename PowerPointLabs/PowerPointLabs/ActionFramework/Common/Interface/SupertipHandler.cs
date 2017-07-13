@@ -16,7 +16,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
             catch (Exception e)
             {
                 Log.Logger.LogException(e, ribbonId);
-                Views.ErrorDialogWrapper.ShowDialog("PowerPointLabs", e.Message, e);
+                Views.ErrorDialogBox.ShowDialog("PowerPointLabs", e.Message, e);
                 return "";
             }
         }

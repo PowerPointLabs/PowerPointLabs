@@ -964,7 +964,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
             }
         }
 
@@ -988,7 +988,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
             }
         }
 

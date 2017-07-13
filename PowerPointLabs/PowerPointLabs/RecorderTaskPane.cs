@@ -110,14 +110,14 @@ namespace PowerPointLabs
                     }
                     catch (Exception e)
                     {
-                        ErrorDialogWrapper.ShowDialog("Error when stopping", "File writing stops with error.", e);
+                        ErrorDialogBox.ShowDialog("Error when stopping", "File writing stops with error.", e);
                         // eat exception locally
                     }
                 }
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error when resource releasing",
+                ErrorDialogBox.ShowDialog("Error when resource releasing",
                                               "Resources cannot be released successfully.", e);
                 throw;
             }
@@ -153,7 +153,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error during recording", "Audio record cannot be started.", e);
+                ErrorDialogBox.ShowDialog("Error during recording", "Audio record cannot be started.", e);
                 throw;
             }
         }
@@ -169,7 +169,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error when Stopping", "Audio recording stops with error.", e);
+                ErrorDialogBox.ShowDialog("Error when Stopping", "Audio recording stops with error.", e);
                 throw;
             }
         }
@@ -231,7 +231,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error when Merging", "Audios cannot be merged.", e);
+                ErrorDialogBox.ShowDialog("Error when Merging", "Audios cannot be merged.", e);
                 throw;
             }
         }
@@ -858,7 +858,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error", "Error during setup", e);
+                ErrorDialogBox.ShowDialog("Error", "Error during setup", e);
                 throw;
             }
         }
@@ -1385,7 +1385,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Record cannot be saved\n",
+                ErrorDialogBox.ShowDialog("Record cannot be saved\n",
                                               "Error when saving the file", e);
                 throw;
             }

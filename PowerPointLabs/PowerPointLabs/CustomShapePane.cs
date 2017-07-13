@@ -783,7 +783,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog("Error", e.Message, e);
 
                 return false;
             }

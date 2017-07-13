@@ -51,7 +51,7 @@ namespace PowerPointLabs.ZoomLab
             catch (Exception e)
             {
                 Logger.LogException(e, "AddZoomToArea");
-                ErrorDialogWrapper.ShowDialog("Error when adding zoom to area", "An error occurred when adding zoom to area.", e);
+                ErrorDialogBox.ShowDialog("Error when adding zoom to area", "An error occurred when adding zoom to area.", e);
                 throw;
             }
         }
