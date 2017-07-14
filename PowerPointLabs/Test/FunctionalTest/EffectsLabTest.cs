@@ -4,13 +4,32 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Test.Util;
 
-using PowerPointLabs.EffectsLab;
-
 namespace Test.FunctionalTest
 {
     [TestClass]
     public class EffectsLabTest : BaseFunctionalTest
     {
+        private const int ZIndexRecolorTestSlide = 54;
+        private const int ZIndexBlurTestSlide = 51;
+        private const int BlurSelectedShapeTestSlide = 49;
+        private const int BlurSelectedShapeWithTextTestSlide = 47;
+        private const int BlurSelectedTextBoxTestSide = 45;
+        private const int BlurSelectedGroupTestSlide = 43;
+        private const int BlurRemainderShapeTestSlide = 40;
+        private const int BlurRemainderShapeWithTextTestSlide = 37;
+        private const int BlurBackgroundTextBoxTestSlide = 34;
+        private const int BlurBackgroundGroupTestSlide = 31;
+        private const int RecolorSepiaTestSlide = 28;
+        private const int RecolorGothamTestSlide = 25;
+        private const int RecolorBlackAndWhiteTestSlide = 22;
+        private const int RecolorGreyScaleTestSlide = 19;
+        private const int TintBlurSelectedShapeTestSlide = 17;
+        private const int TintBlurRemainderTextBoxTestSlide = 14;
+        private const int TintBlurRemainderGroupTestSlide = 11;
+        private const int TintBlurBackgroundShapeWithTextTestSlide = 8;
+        private const int MagnifyTestSlide = 6;
+        private const int TransparentTestSlide = 4;
+
         protected override string GetTestingSlideName()
         {
             return "EffectsLab\\EffectsLab.pptx";
@@ -20,33 +39,42 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_EffectsLabTest()
         {
-            PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", true);
-            TestRemainderEffect(52, PplFeatures.SepiaBackgroundEffect);
-            TestRemainderEffect(49, PplFeatures.BlurBackgroundEffect);
-            TestRemainderEffect(46, PplFeatures.BlurBackgroundEffect);
-            PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", true);
-            TestRemainderEffect(43, PplFeatures.BlurRemainderEffect);
-            TestRemainderEffect(40, PplFeatures.BlurRemainderEffect);
-            TestRemainderEffect(37, PplFeatures.SepiaBackgroundEffect);
-            PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", false);
-            TestRemainderEffect(34, PplFeatures.BlurBackgroundEffect);
-            TestRemainderEffect(31, PplFeatures.SepiaRemainderEffect);
-            TestRemainderEffect(28, PplFeatures.SepiaRemainderEffect);
-            TestRemainderEffect(25, PplFeatures.GothamRemainderEffect);
-            TestRemainderEffect(22, PplFeatures.BlackAndWhiteBackgroundEffect);
-            TestRemainderEffect(19, PplFeatures.GreyScaleRemainderEffect);
-            PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", false);
-            TestRemainderEffect(16, PplFeatures.BlurRemainderEffect);
-            TestEffect(14, PplFeatures.BlurSelectedEffect);
-            TestEffect(12, PplFeatures.BlurSelectedEffect);
-            PplFeatures.BlurrinessOverlay("EffectsLabBlurSelected", true);
-            TestEffect(10, PplFeatures.BlurSelectedEffect);
-            TestEffect(8, PplFeatures.BlurSelectedEffect);
-            TestEffect(6, PplFeatures.MagnifyingGlassEffect);
-            TestEffect(4, PplFeatures.TransparentEffect);
+            TestGeneratedSlideEffect(ZIndexRecolorTestSlide, PplFeatures.SepiaBackgroundEffect);
+            TestGeneratedSlideEffect(ZIndexBlurTestSlide, PplFeatures.BlurBackgroundEffect);
+
+            TestSlideEffect(BlurSelectedShapeTestSlide, PplFeatures.BlurSelectedEffect);
+            TestSlideEffect(BlurSelectedShapeWithTextTestSlide, PplFeatures.BlurSelectedEffect);
+            TestSlideEffect(BlurSelectedTextBoxTestSide, PplFeatures.BlurSelectedEffect);
+            TestSlideEffect(BlurSelectedGroupTestSlide, PplFeatures.BlurSelectedEffect);
+
+            TestGeneratedSlideEffect(BlurRemainderShapeTestSlide, PplFeatures.BlurRemainderEffect);
+            TestGeneratedSlideEffect(BlurRemainderShapeWithTextTestSlide, PplFeatures.BlurRemainderEffect);
+            TestGeneratedSlideEffect(BlurBackgroundTextBoxTestSlide, PplFeatures.BlurBackgroundEffect);
+            TestGeneratedSlideEffect(BlurBackgroundGroupTestSlide, PplFeatures.BlurBackgroundEffect);
+
+            // recolor
+            TestGeneratedSlideEffect(RecolorSepiaTestSlide, PplFeatures.SepiaRemainderEffect);
+            TestGeneratedSlideEffect(RecolorGothamTestSlide, PplFeatures.GothamRemainderEffect);
+            TestGeneratedSlideEffect(RecolorBlackAndWhiteTestSlide, PplFeatures.BlackAndWhiteBackgroundEffect);
+            TestGeneratedSlideEffect(RecolorGreyScaleTestSlide, PplFeatures.GreyScaleBackgroundEffect);
+
+            // tinted
+            PplFeatures.SetTintForBlurSelected(true);
+            TestSlideEffect(TintBlurSelectedShapeTestSlide, PplFeatures.BlurSelectedEffect);
+
+            PplFeatures.SetTintForBlurRemainder(true);
+            TestGeneratedSlideEffect(TintBlurRemainderTextBoxTestSlide, PplFeatures.BlurRemainderEffect);
+            TestGeneratedSlideEffect(TintBlurRemainderGroupTestSlide, PplFeatures.BlurRemainderEffect);
+
+            PplFeatures.SetTintForBlurBackground(true);
+            TestGeneratedSlideEffect(TintBlurBackgroundShapeWithTextTestSlide, PplFeatures.BlurBackgroundEffect);
+
+            // other effects
+            TestSlideEffect(MagnifyTestSlide, PplFeatures.MagnifyingGlassEffect);
+            TestSlideEffect(TransparentTestSlide, PplFeatures.TransparentEffect);
         }
 
-        private void TestRemainderEffect(int startIdx, Action effectAction)
+        private void TestGeneratedSlideEffect(int startIdx, Action effectAction)
         {
             PpOperations.SelectSlide(startIdx);
             PpOperations.SelectShape("selectMe");
@@ -55,7 +83,7 @@ namespace Test.FunctionalTest
             AssertIsSame(startIdx + 1, startIdx + 3);
         }
 
-        private void TestEffect(int startIdx, Action effectAction)
+        private void TestSlideEffect(int startIdx, Action effectAction)
         {
             PpOperations.SelectSlide(startIdx);
             PpOperations.SelectShape("selectMe");
@@ -67,7 +95,7 @@ namespace Test.FunctionalTest
         {
             var actualSlide = PpOperations.SelectSlide(actualSlideIndex);
             var expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
-            SlideUtil.IsSameLooking(expectedSlide, actualSlide);
+            SlideUtil.IsSameLooking(expectedSlide, actualSlide, 0.999);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
         }
     }

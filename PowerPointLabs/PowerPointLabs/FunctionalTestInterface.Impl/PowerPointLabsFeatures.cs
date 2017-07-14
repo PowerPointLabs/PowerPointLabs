@@ -261,15 +261,20 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 Ribbon.OnAction(new RibbonControl(TextCollection.MagnifyTag));
             });
         }
-        
-        public void BlurrinessOverlay(string feature, bool pressed)
+
+        public void SetTintForBlurSelected(bool isTinted)
         {
-            UIThreadExecutor.Execute(() =>
-            {
-                var control = new RibbonControl(feature + TextCollection.DynamicMenuCheckBoxId);
-                control.Tag = TextCollection.EffectsLabBlurrinessTag;
-                Ribbon.OnCheckBoxAction(control, pressed);
-            });
+            EffectsLabBlur.IsTintSelected = isTinted;
+        }
+
+        public void SetTintForBlurRemainder(bool isTinted)
+        {
+            EffectsLabBlur.IsTintRemainder = isTinted;
+        }
+
+        public void SetTintForBlurBackground(bool isTinted)
+        {
+            EffectsLabBlur.IsTintBackground = isTinted;
         }
 
         public void BlurSelectedEffect()
@@ -292,6 +297,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void BlurBackgroundEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("BlurBackgroundOption90");
+                control.Tag = TextCollection.EffectsLabBlurrinessTag;
+                Ribbon.OnAction(control);
+            });
+        }
+
         public void GreyScaleRemainderEffect()
         {
             UIThreadExecutor.Execute(() =>
@@ -302,6 +317,15 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        public void BlackAndWhiteRemainderEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("BlackAndWhiteRecolorRemainderMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
+            });
+        }
 
         public void GothamRemainderEffect()
         {
@@ -323,13 +347,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
-
-        public void BlurBackgroundEffect()
+        public void GreyScaleBackgroundEffect()
         {
             UIThreadExecutor.Execute(() =>
             {
-                var control = new RibbonControl("BlurBackgroundOption90");
-                control.Tag = TextCollection.EffectsLabBlurrinessTag;
+                var control = new RibbonControl("GrayScaleRecolorBackgroundMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
                 Ribbon.OnAction(control);
             });
         }
@@ -339,6 +362,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute(() =>
             {
                 var control = new RibbonControl("BlackAndWhiteRecolorBackgroundMenu");
+                control.Tag = TextCollection.EffectsLabRecolorTag;
+                Ribbon.OnAction(control);
+            });
+        }
+
+        public void GothamBackgroundEffect()
+        {
+            UIThreadExecutor.Execute(() =>
+            {
+                var control = new RibbonControl("GothamRecolorBackgroundMenu");
                 control.Tag = TextCollection.EffectsLabRecolorTag;
                 Ribbon.OnAction(control);
             });
