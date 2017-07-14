@@ -610,6 +610,7 @@
     <Compile Include="AgendaLab\Templates\BulletAgendaTemplate.cs" />
     <Compile Include="AgendaLab\Templates\TemplateIndexTable.cs" />
     <Compile Include="AgendaLab\Templates\VisualAgendaTemplate.cs" />
+    <Compile Include="AnimationLab\AnimationLabSettings.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AnimationLab\AutoAnimate.cs" />

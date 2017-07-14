@@ -98,13 +98,10 @@ namespace PowerPointLabs.HighlightLab
 
         private static void RunAnimateInSlide()
         {
-            bool oldFrameAnimationChecked = AnimateInSlide.frameAnimationChecked;
-            AnimateInSlide.frameAnimationChecked = false;
-            AnimateInSlide.isHighlightBullets = false;
-            AnimateInSlide.isHighlightTextFragments = true;
-            AnimateInSlide.AddAnimationInSlide();
-            AnimateInSlide.isHighlightTextFragments = false;
-            AnimateInSlide.frameAnimationChecked = oldFrameAnimationChecked;
+            bool oldFrameAnimationChecked = AnimationLabSettings.IsUseFrameAnimation;
+            AnimationLabSettings.IsUseFrameAnimation = false;
+            AnimateInSlide.AddAnimationInSlide(isHighlightTextFragments: true);
+            AnimationLabSettings.IsUseFrameAnimation = oldFrameAnimationChecked;
         }
 
         private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide)

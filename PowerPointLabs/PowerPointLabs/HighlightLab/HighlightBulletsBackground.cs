@@ -63,13 +63,10 @@ namespace PowerPointLabs.HighlightLab
 
                 if (newShapesAdded)
                 {
-                    bool oldValue = AnimateInSlide.frameAnimationChecked;
-                    AnimateInSlide.frameAnimationChecked = false;
-                    AnimateInSlide.isHighlightBullets = true;
-                    AnimateInSlide.isHighlightTextFragments = false;
-                    AnimateInSlide.AddAnimationInSlide();
-                    AnimateInSlide.isHighlightBullets = false;
-                    AnimateInSlide.frameAnimationChecked = oldValue;
+                    bool oldValue = AnimationLabSettings.IsUseFrameAnimation;
+                    AnimationLabSettings.IsUseFrameAnimation = false;
+                    AnimateInSlide.AddAnimationInSlide(isHighlightBullets: true);
+                    AnimationLabSettings.IsUseFrameAnimation = oldValue;
                     PowerPointPresentation.Current.AddAckSlide();
                 }
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();

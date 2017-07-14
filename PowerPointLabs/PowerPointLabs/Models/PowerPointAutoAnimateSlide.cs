@@ -63,11 +63,11 @@ namespace PowerPointLabs.Models
                         if (NeedsFrameAnimation(sh, nextSlideSlideShapes[matchingShapeIndex]))
                         {
                             FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kAutoAnimate;
-                            FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.duration);
+                            FrameMotionAnimation.AddFrameMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AnimationLabSettings.AnimationDuration);
                         }
                         else
                         {
-                            DefaultMotionAnimation.AddDefaultMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AutoAnimate.duration, trigger);
+                            DefaultMotionAnimation.AddDefaultMotionAnimation(this, sh, nextSlideSlideShapes[matchingShapeIndex], AnimationLabSettings.AnimationDuration, trigger);
                         }
                     }
                 }
@@ -86,8 +86,7 @@ namespace PowerPointLabs.Models
                         DeleteShapeAnimations(sh);
                         PowerPoint.Effect effectFade = _slide.TimeLine.MainSequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                         effectFade.Exit = Office.MsoTriState.msoTrue;
-                        effectFade.Timing.Duration = AutoAnimate.duration;
-                        //fadeFlag = true;
+                        effectFade.Timing.Duration = AnimationLabSettings.AnimationDuration;
                     }
                     else
                     {
@@ -106,16 +105,18 @@ namespace PowerPointLabs.Models
             float finalFont = 0.0f;
             float initialFont = 0.0f;
 
-            if (shape1.HasTextFrame == Office.MsoTriState.msoTrue && (shape1.TextFrame.HasText == Office.MsoTriState.msoTriStateMixed || shape1.TextFrame.HasText == Office.MsoTriState.msoTrue) && shape1.TextFrame.TextRange.Font.Size != shape2.TextFrame.TextRange.Font.Size)
+            if (shape1.HasTextFrame == Office.MsoTriState.msoTrue && 
+                (shape1.TextFrame.HasText == Office.MsoTriState.msoTriStateMixed || shape1.TextFrame.HasText == Office.MsoTriState.msoTrue) && 
+                shape1.TextFrame.TextRange.Font.Size != shape2.TextFrame.TextRange.Font.Size)
             {
                 finalFont = shape2.TextFrame.TextRange.Font.Size;
                 initialFont = shape1.TextFrame.TextRange.Font.Size;
             }
 
-            if ((AutoAnimate.frameAnimationChecked && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
-                || ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
-                || (!Utils.Graphics.IsStraightLine(shape1) && (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip))
-                || finalFont != initialFont)
+            if ((AnimationLabSettings.IsUseFrameAnimation && (shape2.Height != shape1.Height || shape2.Width != shape1.Width)) || 
+                ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width)) || 
+                (!Utils.Graphics.IsStraightLine(shape1) && (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip)) || 
+                finalFont != initialFont)
             {
                 return true;
             }

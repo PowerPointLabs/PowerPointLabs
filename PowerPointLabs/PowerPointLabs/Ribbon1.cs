@@ -116,10 +116,8 @@ namespace PowerPointLabs
 
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
-
-        public bool FrameAnimationChecked = false;
+        
         public bool SpotlightDelete = true;
-        public float DefaultDuration = 0.5f;
 
         public bool HighlightBulletsEnabled = true;
         public bool AddAutoMotionEnabled = true;

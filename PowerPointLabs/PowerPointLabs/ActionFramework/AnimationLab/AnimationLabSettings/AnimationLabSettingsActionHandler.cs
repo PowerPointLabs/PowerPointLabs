@@ -11,19 +11,15 @@ namespace PowerPointLabs.ActionFramework.Animationlab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var dialog = new AnimationLabSettingsDialogBox(this.GetRibbonUi().DefaultDuration, this.GetRibbonUi().FrameAnimationChecked);
+            var dialog = new AnimationLabSettingsDialogBox(AnimationLabSettings.AnimationDuration, AnimationLabSettings.IsUseFrameAnimation);
             dialog.SettingsHandler += AnimationPropertiesEdited;
             dialog.ShowDialog();
         }
 
         private void AnimationPropertiesEdited(float newDuration, bool newFrameChecked)
         {
-            this.GetRibbonUi().DefaultDuration = newDuration;
-            this.GetRibbonUi().FrameAnimationChecked = newFrameChecked;
-            AnimateInSlide.animationDuration = newDuration;
-            AnimateInSlide.frameAnimationChecked = newFrameChecked;
-            AutoAnimate.duration = newDuration;
-            AutoAnimate.frameAnimationChecked = newFrameChecked;
+            AnimationLabSettings.AnimationDuration = newDuration;
+            AnimationLabSettings.IsUseFrameAnimation = newFrameChecked;
         }
     }
 }
