@@ -545,7 +545,7 @@
 
         public const string EditNameTag = "EditName";
         public const string ConvertToPictureTag = "ConvertToPicture";
-        public const string HideSelectedShapeTag = "HideShape";
+        public const string HideShapeTag = "HideShape";
         public const string AddCustomShapeTag = "AddShape";
         public const string AddIntoGroupTag = "AddIntoGroup";
         public const string SpeakSelectedTag = "SpeakSelected";

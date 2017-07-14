@@ -2,7 +2,7 @@
 using Moq;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
-using PowerPointLabs.PictureSlidesLab.View.Interface;
+using PowerPointLabs.PictureSlidesLab.Views.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 
 namespace Test.UnitTest.PictureSlidesLab.ViewModel

@@ -1,9 +1,10 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.EffectsLab
 {
-    public static class EffectsLabRecolor
+    internal static class EffectsLabRecolor
     {
         public static void GreyScaleRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {

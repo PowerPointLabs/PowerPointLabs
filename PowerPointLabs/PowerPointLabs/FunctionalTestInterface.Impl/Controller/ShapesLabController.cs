@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ShapesLab;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller

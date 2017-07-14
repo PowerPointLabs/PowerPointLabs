@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;

@@ -14,15 +14,19 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Tools;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
+using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.ShapesLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+
 using PPExtraEventHelper;
 
 using MessageBox = System.Windows.Forms.MessageBox;

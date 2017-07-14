@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Models;
+using PowerPointLabs.CaptionsLab;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {

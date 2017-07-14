@@ -1,5 +1,5 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
-using PowerPointLabs.CropLab;
+using PowerPointLabs.CropLab.Views;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {

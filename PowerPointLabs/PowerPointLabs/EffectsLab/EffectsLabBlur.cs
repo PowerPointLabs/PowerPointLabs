@@ -5,6 +5,7 @@ using System.IO;
 
 using ImageProcessor;
 using ImageProcessor.Imaging;
+
 using PowerPointLabs.CropLab;
 
 using Office = Microsoft.Office.Core;
@@ -12,7 +13,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.EffectsLab
 {
-    public static class EffectsLabBlur
+    internal static class EffectsLabBlur
     {
         public static bool IsTintSelected = false;
         public static bool IsTintRemainder = false;
