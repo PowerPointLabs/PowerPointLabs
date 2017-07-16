@@ -4,6 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.NarrationsLab.Views;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
@@ -49,7 +50,10 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 recorder.UpdateLists(currentSlide.ID);
             }
 
-            this.GetRibbonUi().PreviewAnimationsIfChecked();
+            if (NarrationsLabSettings.IsPreviewEnabled)
+            {
+                NotesToAudio.PreviewAnimations();
+            }
         }
     }
 }

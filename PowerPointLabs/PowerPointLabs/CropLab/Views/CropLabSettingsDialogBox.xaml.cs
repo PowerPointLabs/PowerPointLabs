@@ -7,9 +7,19 @@ namespace PowerPointLabs.CropLab.Views
     /// </summary>
     public partial class CropLabSettingsDialogBox
     {
+        public delegate void UpdateSettingsDelegate(AnchorPosition anchorPosition);
+        public UpdateSettingsDelegate SettingsHandler { get; set; }
+
         public CropLabSettingsDialogBox()
         {
-            SelectedAnchor = CropLabSettings.AnchorPosition;
+            // Special case: Anchor point must be set before InitializeComponent
+            //InitializeComponent();
+        }
+
+        public CropLabSettingsDialogBox(AnchorPosition anchorPosition)
+            : this()
+        {
+            SelectedAnchor = anchorPosition;
             InitializeComponent();
         }
 
@@ -17,7 +27,7 @@ namespace PowerPointLabs.CropLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            CropLabSettings.AnchorPosition = SelectedAnchor;
+            SettingsHandler(SelectedAnchor);
             Close();
         }
     }

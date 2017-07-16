@@ -63,6 +63,6 @@
             <Rectangle x:Name="backgroundHighlightColorRect" Height="23" Width="60" MouseLeftButtonDown="BackgroundHighlightColorRect_MouseLeftButtonDown"/>
         </Border>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
     </Grid>
 </controls:MetroWindow>

@@ -5,9 +5,9 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.MiscFeatures
+namespace PowerPointLabs.ShortcutsLab
 {
-    static internal class MergeIntoGroup
+    internal static class AddIntoGroup
     {
         public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, Selection selection)
         {

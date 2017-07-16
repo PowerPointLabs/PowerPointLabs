@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -15,9 +14,9 @@ namespace PowerPointLabs.HighlightLab
     class HighlightBulletsBackground
     {
 #pragma warning disable 0618
-        public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightBackgroundSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightBackgroundSelection userSelection = HighlightBackgroundSelection.kNoneSelected;
+
         public static void AddHighlightBulletsBackground()
         {
             try
@@ -144,7 +143,7 @@ namespace PowerPointLabs.HighlightLab
                                                             paragraph.BoundWidth,
                                                             paragraph.BoundHeight);
             highlightShape.Adjustments[1] = 0.25f;
-            highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
+            highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.bulletsBackgroundColor);
             highlightShape.Fill.Transparency = 0.50f;
             highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
             Utils.Graphics.MoveZToJustBehind(highlightShape, sh);

@@ -34,12 +34,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             SettingsHandler(voiceSelectionInput.Content.ToString(), previewCheckbox.IsChecked.GetValueOrDefault());
             Close();
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
+        
         void VoiceSelectionInput_Item_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && voiceSelectionInput.IsExpanded)

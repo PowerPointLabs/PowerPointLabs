@@ -44,11 +44,6 @@ namespace PowerPointLabs.HighlightLab.Views
             Close();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void TextHighlightColorRect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Color currentColor = (textHighlightColorRect.Fill as SolidColorBrush).Color;

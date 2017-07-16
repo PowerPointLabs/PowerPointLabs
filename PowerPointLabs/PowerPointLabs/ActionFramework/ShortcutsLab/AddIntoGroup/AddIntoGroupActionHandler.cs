@@ -6,11 +6,12 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Handlers;
 using PowerPointLabs.Models;
+using PowerPointLabs.ShortcutsLab;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportActionRibbonId(TextCollection.AddIntoGroupTag)]
-    class MergeIntoGroupActionHandler : BaseUtilActionHandler
+    class AddIntoGroupActionHandler : BaseUtilActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
@@ -23,8 +24,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
                 MessageBox.Show("Please select more than one shape.", "Error");
                 return;
             }
-
-            ShapeRange result = MiscFeatures.MergeIntoGroup.Execute(presentation, slide, selection);
+            
+            ShapeRange result = AddIntoGroup.Execute(presentation, slide, selection);
             result.Select();
         }
     }

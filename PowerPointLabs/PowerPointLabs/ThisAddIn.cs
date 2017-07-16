@@ -20,7 +20,7 @@ using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.ShapesLab;

@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportImageRibbonId(TextCollection.AddIntoGroupTag)]
-    class MergeIntoGroupImageHandler : ImageHandler
+    class AddIntoGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

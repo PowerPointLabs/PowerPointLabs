@@ -162,7 +162,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                ZoomLabSettings.ZoomLabSettingsEdited(backgroundChecked, multiSlideChecked);
+                ZoomLabSettings.BackgroundZoomChecked = backgroundChecked;
+                ZoomLabSettings.MultiSlideZoomChecked = multiSlideChecked;
             });
         }
 

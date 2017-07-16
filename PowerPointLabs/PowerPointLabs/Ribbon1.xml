@@ -83,7 +83,7 @@
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
-                    onAction="ZoomLabDialogButtonPressed"/>
+                    onAction="OnAction"/>
           </menu>
 
         </group>

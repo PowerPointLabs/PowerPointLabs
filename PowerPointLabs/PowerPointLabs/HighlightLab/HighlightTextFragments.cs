@@ -14,9 +14,9 @@ namespace PowerPointLabs.HighlightLab
     class HighlightTextFragments
     {
 #pragma warning disable 0618
-        public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
+
         public static void AddHighlightedTextFragments()
         {
             try
@@ -127,7 +127,7 @@ namespace PowerPointLabs.HighlightLab
                     line.BoundHeight);
 
                 highlightShape.Adjustments[1] = 0.25f;
-                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
+                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.textFragmentsBackgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 if (isTextBoxTransparent)

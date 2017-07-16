@@ -40,11 +40,6 @@ namespace PowerPointLabs.AnimationLab.Views
             Close();
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void DurationInput_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidateDurationInput();
