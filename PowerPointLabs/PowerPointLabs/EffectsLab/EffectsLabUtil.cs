@@ -67,6 +67,10 @@ namespace PowerPointLabs.EffectsLab
             try
             {
                 ShapeRange shapeRange = selection.ShapeRange;
+                if (selection.HasChildShapeRange)
+                {
+                    shapeRange = selection.ChildShapeRange;
+                }
 
                 if (shapeRange.Count != 0)
                 {
@@ -151,6 +155,11 @@ namespace PowerPointLabs.EffectsLab
         internal static void ShowNoSelectionErrorMessage()
         {
             ShowErrorMessageBox(ErrorMessageNoSelection);
+        }
+
+        internal static void ShowIncorrectSelectionErrorMessage()
+        {
+            ShowErrorMessageBox(ErrorMessageNonShapeOrTextBox);
         }
     }
 }

@@ -28,14 +28,14 @@ namespace PowerPointLabs.EffectsLab
 
         private static readonly string BlurPicture = Path.GetTempPath() + @"\blur.png";
 
-        public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
+        public static PowerPoint.ShapeRange ExecuteBlurSelected(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
             if (!IsValidSelection(selection))
             {
                 return null;
             }
 
-            var range = BlurSelected(slide, selection.ShapeRange, percentage);
+            var range = BlurSelected(slide, selection, percentage);
             if (range != null)
             {
                 range.Select();
@@ -44,11 +44,12 @@ namespace PowerPointLabs.EffectsLab
             return range;
         }
 
-        public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.ShapeRange shapeRange, int percentage)
+        public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            if (!IsValidShapeRange(shapeRange))
+            var shapeRange = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
             {
-                return null;
+                shapeRange = selection.ChildShapeRange;
             }
 
             try
@@ -85,7 +86,7 @@ namespace PowerPointLabs.EffectsLab
             }
         }
 
-        public static void BlurRemainder(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
+        public static void ExecuteBlurRemainder(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
             var effectSlide = EffectsLabUtil.GenerateEffectSlide(slide, selection, true);
 
@@ -98,7 +99,7 @@ namespace PowerPointLabs.EffectsLab
             effectSlide.GetNativeSlide().Select();
         }
 
-        public static void BlurBackground(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
+        public static void ExecuteBlurBackground(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
             var effectSlide = EffectsLabUtil.GenerateEffectSlide(slide, selection, false);
 
@@ -169,10 +170,15 @@ namespace PowerPointLabs.EffectsLab
 
         public static bool IsValidSelection(PowerPoint.Selection selection)
         {
+            if (selection.HasChildShapeRange)
+            {
+                return IsValidShapeRange(selection.ChildShapeRange);
+            }
+
             if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
                 || selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
             {
-                return true;
+                return IsValidShapeRange(selection.ShapeRange);
             }
 
             EffectsLabUtil.ShowNoSelectionErrorMessage();
@@ -183,11 +189,24 @@ namespace PowerPointLabs.EffectsLab
         {
             if (shapeRange.Count > 0)
             {
-                return true;
+                for (int i = 1; i <= shapeRange.Count; i++)
+                {
+                    if (shapeRange[i].Type != Office.MsoShapeType.msoPlaceholder &&
+                        shapeRange[i].Type != Office.MsoShapeType.msoTextBox &&
+                        shapeRange[i].Type != Office.MsoShapeType.msoAutoShape &&
+                        shapeRange[i].Type != Office.MsoShapeType.msoFreeform)
+                    {
+                        EffectsLabUtil.ShowIncorrectSelectionErrorMessage();
+                        return false;
+                    }
+                }
             }
-
-            EffectsLabUtil.ShowNoSelectionErrorMessage();
-            return false;
+            else
+            {
+                EffectsLabUtil.ShowNoSelectionErrorMessage();
+                return false;
+            }
+            return true;
         }
 
         private static List<string> ApplyBlurEffect(Models.PowerPointSlide slide, string imageFile, PowerPoint.ShapeRange shapeRange)

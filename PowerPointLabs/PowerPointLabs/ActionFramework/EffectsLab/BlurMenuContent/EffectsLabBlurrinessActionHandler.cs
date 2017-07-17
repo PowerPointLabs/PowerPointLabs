@@ -92,13 +92,13 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             switch (feature)
             {
                 case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    EffectsLabBlur.BlurSelected(slide, selection, percentage);
+                    EffectsLabBlur.ExecuteBlurSelected(slide, selection, percentage);
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureRemainder:
-                    EffectsLabBlur.BlurRemainder(slide, selection, percentage);
+                    EffectsLabBlur.ExecuteBlurRemainder(slide, selection, percentage);
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureBackground:
-                    EffectsLabBlur.BlurBackground(slide, selection, percentage);
+                    EffectsLabBlur.ExecuteBlurBackground(slide, selection, percentage);
                     break;
                 default:
                     Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
