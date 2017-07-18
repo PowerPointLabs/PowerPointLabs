@@ -10,7 +10,7 @@ namespace PowerPointLabs.AnimationLab
         public static void ShowSettingsDialog()
         {
             AnimationLabSettingsDialogBox dialog = new AnimationLabSettingsDialogBox(AnimationDuration, IsUseFrameAnimation);
-            dialog.SettingsHandler += OnSettingsDialogConfirmed;
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 

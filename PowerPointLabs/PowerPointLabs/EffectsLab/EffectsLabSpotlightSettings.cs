@@ -11,7 +11,7 @@ namespace PowerPointLabs.EffectsLab
             SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(Spotlight.transparency,
                                                                                     Spotlight.softEdges,
                                                                                     Spotlight.color);
-            dialog.SettingsHandler += SpotlightPropertiesEdited;
+            dialog.DialogConfirmedHandler += SpotlightPropertiesEdited;
             dialog.ShowDialog();
         }
 

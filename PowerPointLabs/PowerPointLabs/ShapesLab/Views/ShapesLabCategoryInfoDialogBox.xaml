@@ -31,7 +31,7 @@
         </TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
         <TextBox x:Name="nameInput" HorizontalAlignment="Left" Height="23" Width="270" TextWrapping="NoWrap" TextAlignment="Left"  Text="" VerticalAlignment="Center" Margin="10,0,10,0"/>
     </Grid>
 </controls:MetroWindow>

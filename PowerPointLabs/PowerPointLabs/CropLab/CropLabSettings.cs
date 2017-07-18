@@ -65,7 +65,7 @@ namespace PowerPointLabs.CropLab
         public static void ShowSettingsDialog()
         {
             CropLabSettingsDialogBox dialog = new CropLabSettingsDialogBox(AnchorPosition);
-            dialog.SettingsHandler += OnSettingsDialogConfirmed;
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 

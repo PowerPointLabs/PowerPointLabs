@@ -3,8 +3,6 @@ using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 
-using Forms = System.Windows.Forms;
-
 namespace PowerPointLabs.ShapesLab.Views
 {
     /// <summary>
@@ -12,6 +10,9 @@ namespace PowerPointLabs.ShapesLab.Views
     /// </summary>
     public partial class ShapesLabCategoryInfoDialogBox
     {
+        public delegate void DialogConfirmedDelegate(string categoryName);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
+
         // for names, we do not allow name involves
         // < (less than)
         // > (greater than)
@@ -25,40 +26,31 @@ namespace PowerPointLabs.ShapesLab.Views
 
         // Regex = [<>:"/\\|?*]
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
-        
-        public Forms.DialogResult Result { get; private set; }
-        public string CategoryName { get; private set; }
-        
 
-        public ShapesLabCategoryInfoDialogBox(string name)
+        public ShapesLabCategoryInfoDialogBox()
         {
             InitializeComponent();
-            
-            if (!string.IsNullOrEmpty(name))
+        }
+
+        public ShapesLabCategoryInfoDialogBox(string categoryName)
+            : this()
+        {
+            if (!string.IsNullOrEmpty(categoryName))
             {
-                nameInput.Text = name;
+                nameInput.Text = categoryName;
                 nameInput.SelectAll();
             }
-
-            Result = Forms.DialogResult.OK;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            string categoryName = nameInput.Text;
+            string name = nameInput.Text;
 
-            if (VerifyName(categoryName) && VerifyCategory(categoryName))
+            if (VerifyName(name) && VerifyCategory(name))
             {
-                CategoryName = nameInput.Text;
-                Result = Forms.DialogResult.OK;
+                DialogConfirmedHandler(name);
                 Close();
             }
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Result = Forms.DialogResult.Cancel;
-            Close();
         }
 
         #region Helper Functions

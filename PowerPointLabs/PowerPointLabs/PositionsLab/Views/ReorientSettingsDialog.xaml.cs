@@ -7,61 +7,43 @@ namespace PowerPointLabs.PositionsLab.Views
     /// </summary>
     public partial class ReorientSettingsDialog
     {
-        //Flag to trigger
-        public bool IsOpen { get; set; }
+        public delegate void DialogConfirmedDelegate(PositionsLabSettings.RadialShapeOrientationObject reorientShapeOrientation);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public ReorientSettingsDialog()
         {
-            IsOpen = true;
             InitializeComponent();
         }
 
-        #region On-Load Settings
-        private void ReorientShapeOrientationFixedButton_Load(object sender, RoutedEventArgs e)
+        public ReorientSettingsDialog(PositionsLabSettings.RadialShapeOrientationObject reorientShapeOrientation)
+            : this()
         {
-            if (PositionsLabMain.ReorientShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Fixed)
+            switch (reorientShapeOrientation)
             {
-                reorientShapeOrientationFixedButton.IsChecked = true;
+                case PositionsLabSettings.RadialShapeOrientationObject.Fixed:
+                    reorientShapeOrientationFixedButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.RadialShapeOrientationObject.Dynamic:
+                    reorientShapeOrientationDynamicButton.IsChecked = true;
+                    break;
             }
         }
 
-        private void ReorientShapeOrientationDynamicButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.ReorientShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Dynamic)
-            {
-                reorientShapeOrientationDynamicButton.IsChecked = true;
-            }
-        }
-        #endregion
-
-        #region Button actions
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            // Checks for radial shape orientation
+            PositionsLabSettings.RadialShapeOrientationObject reorientShapeOrientation;
+
             if (reorientShapeOrientationFixedButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.ReorientShapeOrientationToFixed();
+                reorientShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
             }
-
-            if (reorientShapeOrientationDynamicButton.IsChecked.GetValueOrDefault())
+            else
             {
-                PositionsLabMain.ReorientShapeOrientationToDynamic();
+                reorientShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
             }
 
-            IsOpen = false;
+            DialogConfirmedHandler(reorientShapeOrientation);
             Close();
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            IsOpen = false;
-            Close();
-        }
-
-        private void ReorientSettingsDialong_Closed(object sender, System.EventArgs e)
-        {
-            IsOpen = false;
-        }
-        #endregion
     }
 }

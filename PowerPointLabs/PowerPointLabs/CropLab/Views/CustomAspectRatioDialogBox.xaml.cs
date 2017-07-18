@@ -10,8 +10,8 @@ namespace PowerPointLabs.CropLab.Views
     /// </summary>
     public partial class CustomAspectRatioDialogBox
     {
-        public delegate void UpdateSettingsDelegate(string aspectRatioRawString);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(string aspectRatioRawString);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public CustomAspectRatioDialogBox(Shape refShape = null)
         {
@@ -26,7 +26,7 @@ namespace PowerPointLabs.CropLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsHandler(textBoxWidthInput.Text + ":" + textBoxHeightInput.Text);
+            DialogConfirmedHandler(textBoxWidthInput.Text + ":" + textBoxHeightInput.Text);
             Close();
         }
 

@@ -29,13 +29,13 @@
             Default Shape Saving Path
         </TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
-        <TextBox x:Name="savePathInput" VerticalAlignment="Top" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" TextAlignment="Center" Text="" Width="260"  Margin="20,55,0,0"/>
+        <TextBox x:Name="savePathInput" VerticalAlignment="Top" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" TextAlignment="Left" Text="" Width="260"  Margin="20,55,0,0"/>
         <Button x:Name="savePathBrowserButton" VerticalAlignment="Top" HorizontalAlignment="Right" Height="40" Width="40" Margin="0,48,20,0" Click="SavePathBrowserButton_Click">
             <StackPanel>
-                <Image x:Name="savePathBrowserIconImage" Source="pack://application:,,,/Resources/Load_icon.png" Width="25"/>
+                <Image x:Name="savePathBrowserIconImage" Source="..\..\Resources\Load_icon.png" Width="25"/>
             </StackPanel>
         </Button>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
     </Grid>
 </controls:MetroWindow>

@@ -621,6 +621,8 @@
     <Compile Include="EffectsLab\EffectsLabSpotlightSettings.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="PositionsLab\PositionsLabSettings.cs" />
+    <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1032,7 +1034,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="ShapesLab\ShapesLabConfig.cs" />
+    <Compile Include="ShapesLab\ShapesLabConfigSaveFile.cs" />
     <Compile Include="TextCollection.cs" />
     <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\Common.cs" />

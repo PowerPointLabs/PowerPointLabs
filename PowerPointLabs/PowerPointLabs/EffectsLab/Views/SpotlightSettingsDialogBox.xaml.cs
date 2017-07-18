@@ -19,8 +19,8 @@ namespace PowerPointLabs.EffectsLab.Views
     /// </summary>
     public partial class SpotlightSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge, Drawing.Color newColor);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(float spotlightTransparency, float softEdge, Drawing.Color newColor);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         private Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
         {
@@ -63,7 +63,7 @@ namespace PowerPointLabs.EffectsLab.Views
             {
                 text = text.Substring(0, text.IndexOf("%"));
             }
-            SettingsHandler(float.Parse(text) / 100, 
+            DialogConfirmedHandler(float.Parse(text) / 100, 
                             softEdgesMapping[(String)softEdgesSelectionInput.Content], 
                             Graphics.DrawingColorFromBrush(spotlightColorRect.Fill));
             Close();

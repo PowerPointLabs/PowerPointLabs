@@ -15,10 +15,10 @@ namespace PowerPointLabs.HighlightLab.Views
     /// </summary>
     public partial class HighlightLabSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(Drawing.Color highlightColor, 
+        public delegate void DialogConfirmedDelegate(Drawing.Color highlightColor, 
                                                     Drawing.Color defaultColor, 
                                                     Drawing.Color backgroundColor);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public HighlightLabSettingsDialogBox()
         {
@@ -40,7 +40,7 @@ namespace PowerPointLabs.HighlightLab.Views
             Drawing.Color textHighlightColor = Graphics.DrawingColorFromBrush(textHighlightColorRect.Fill);
             Drawing.Color textDefaultColor = Graphics.DrawingColorFromBrush(textDefaultColorRect.Fill);
             Drawing.Color backgroundHighlightColor = Graphics.DrawingColorFromBrush(backgroundHighlightColorRect.Fill);
-            SettingsHandler(textHighlightColor, textDefaultColor, backgroundHighlightColor);
+            DialogConfirmedHandler(textHighlightColor, textDefaultColor, backgroundHighlightColor);
             Close();
         }
 

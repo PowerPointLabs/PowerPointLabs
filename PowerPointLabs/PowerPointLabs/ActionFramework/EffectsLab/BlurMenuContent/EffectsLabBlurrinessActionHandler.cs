@@ -37,7 +37,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             if (isButton)
             {
                 EffectsLabBlurDialogBox dialog = new EffectsLabBlurDialogBox(feature);
-                dialog.SettingsHandler += PropertiesEdited;
+                dialog.DialogConfirmedHandler += PropertiesEdited;
                 dialog.ShowDialog();
             }
             else

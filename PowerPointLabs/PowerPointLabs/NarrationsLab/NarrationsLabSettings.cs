@@ -17,7 +17,7 @@ namespace PowerPointLabs.NarrationsLab
                 VoiceSelectedIndex,
                 VoiceNameList,
                 IsPreviewEnabled);
-            dialog.SettingsHandler += OnSettingsDialogConfirmed;
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 

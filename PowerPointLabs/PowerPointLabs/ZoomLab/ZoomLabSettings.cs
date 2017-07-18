@@ -10,7 +10,7 @@ namespace PowerPointLabs.ZoomLab
         public static void ShowSettingsDialog()
         {
             ZoomLabSettingsDialogBox dialog = new ZoomLabSettingsDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
-            dialog.SettingsHandler += OnSettingsDialogConfirmed;
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 

@@ -7,67 +7,46 @@ namespace PowerPointLabs.PositionsLab.Views
     /// </summary>
     public partial class AlignSettingsDialog
     {
-        //Flag to trigger
-        public bool IsOpen { get; set; }
+        public delegate void DialogConfirmedDelegate(PositionsLabSettings.AlignReferenceObject alignReference);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public AlignSettingsDialog()
         {
-            IsOpen = true;
             InitializeComponent();
         }
 
-        private void AlignToSlideButton_Load(object sender, RoutedEventArgs e)
+        public AlignSettingsDialog(PositionsLabSettings.AlignReferenceObject alignReference)
+            : this()
         {
-            if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.Slide)
+            switch (alignReference)
             {
-                alignToSlideButton.IsChecked = true;
-            }
-        }
-
-        private void AlignToShapeButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.SelectedShape)
-            {
-                alignToShapeButton.IsChecked = true;
-            }
-        }
-
-        private void PowerpointAlignButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
-            {
-                alignPowerpointDefaultsButton.IsChecked = true;
+                case PositionsLabSettings.AlignReferenceObject.Slide:
+                    alignToSlideButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.AlignReferenceObject.SelectedShape:
+                    alignToShapeButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.AlignReferenceObject.PowerpointDefaults:
+                    alignPowerpointDefaultsButton.IsChecked = true;
+                    break;
             }
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            if (alignToShapeButton.IsChecked.GetValueOrDefault())
+            if (alignToSlideButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.AlignReferToShape();
+                DialogConfirmedHandler(PositionsLabSettings.AlignReferenceObject.Slide);
             }
-            else if (alignToSlideButton.IsChecked.GetValueOrDefault())
+            else if (alignToShapeButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.AlignReferToSlide();
+                DialogConfirmedHandler(PositionsLabSettings.AlignReferenceObject.SelectedShape);
             }
             else
             {
-                PositionsLabMain.AlignReferToPowerpointDefaults();
+                DialogConfirmedHandler(PositionsLabSettings.AlignReferenceObject.PowerpointDefaults);
             }
-
-            IsOpen = false;
             Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            IsOpen = false;
-            Close();
-        }
-
-        private void AlignSettingsDialong_Closed(object sender, System.EventArgs e)
-        {
-            IsOpen = false;
         }
     }
 }

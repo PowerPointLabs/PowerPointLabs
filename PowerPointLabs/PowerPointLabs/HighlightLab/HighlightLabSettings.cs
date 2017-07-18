@@ -19,7 +19,7 @@ namespace PowerPointLabs.HighlightLab
                 bulletsTextHighlightColor, 
                 bulletsTextDefaultColor, 
                 bulletsBackgroundColor);
-            dialog.SettingsHandler += OnSettingsDialogConfirmed;
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 

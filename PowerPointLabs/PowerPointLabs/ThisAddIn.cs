@@ -46,7 +46,7 @@ namespace PowerPointLabs
 
         public Ribbon1 Ribbon;
 
-        internal ShapesLabConfig ShapesLabConfigs;
+        internal ShapesLabConfigSaveFile ShapesLabConfig;
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
@@ -145,7 +145,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
+            var shapeRootFolderPath = ShapesLabSettings.SaveFolderPath;
 
             ShapePresentation =
                 new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName);
@@ -159,32 +159,32 @@ namespace PowerPointLabs
                 return;
             }
 
-            if (ShapePresentation.HasCategory(ShapesLabConfigs.DefaultCategory))
+            if (ShapePresentation.HasCategory(ShapesLabConfig.DefaultCategory))
             {
-                ShapePresentation.DefaultCategory = ShapesLabConfigs.DefaultCategory;
+                ShapePresentation.DefaultCategory = ShapesLabConfig.DefaultCategory;
 
                 return;
             }
 
             // if we do not have the default category, create and add it to ShapeGallery
-            ShapePresentation.AddCategory(ShapesLabConfigs.DefaultCategory);
+            ShapePresentation.AddCategory(ShapesLabConfig.DefaultCategory);
             ShapePresentation.Save();
         }
 
         public void InitializeShapesLabConfig()
         {
             // if ShapesLabConfig has already been intialized, do nothing
-            if (ShapesLabConfigs != null)
+            if (ShapesLabConfig != null)
             {
                 return;
             }
 
-            ShapesLabConfigs = new ShapesLabConfig(AppDataFolder);
+            ShapesLabConfig = new ShapesLabConfigSaveFile(AppDataFolder);
 
             // create a directory under specified location if the location does not exist
-            if (!Directory.Exists(ShapesLabConfigs.ShapeRootFolder))
+            if (!Directory.Exists(ShapesLabSettings.SaveFolderPath))
             {
-                Directory.CreateDirectory(ShapesLabConfigs.ShapeRootFolder);
+                Directory.CreateDirectory(ShapesLabSettings.SaveFolderPath);
             }
         }
 
@@ -301,7 +301,7 @@ namespace PowerPointLabs
             var activeWindow = presentation.Application.ActiveWindow;
 
             RegisterTaskPane(
-                new CustomShapePane(ShapesLabConfigs.ShapeRootFolder, ShapesLabConfigs.DefaultCategory),
+                new CustomShapePane(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
                 TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 
@@ -832,9 +832,9 @@ namespace PowerPointLabs
                 ShapePresentation != null &&
                 ShapePresentation.Opened)
             {
-                if (string.IsNullOrEmpty(ShapesLabConfigs.DefaultCategory))
+                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
                 {
-                    ShapesLabConfigs.DefaultCategory = ShapePresentation.Categories[0];
+                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
                 }
 
                 ShapePresentation.Close();

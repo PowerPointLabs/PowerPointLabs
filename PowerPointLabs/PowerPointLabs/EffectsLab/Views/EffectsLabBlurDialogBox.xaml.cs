@@ -9,8 +9,8 @@ namespace PowerPointLabs.EffectsLab.Views
     /// </summary>
     public partial class EffectsLabBlurDialogBox
     {
-        public delegate void UpdateSettingsDelegate(int percentage, bool isTinted);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(int percentage, bool isTinted);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         private string currentFeature;
         private float lastBlurriness;
@@ -69,7 +69,7 @@ namespace PowerPointLabs.EffectsLab.Views
             }
             int percentage = int.Parse(text);
 
-            SettingsHandler(percentage, tintCheckbox.IsChecked.GetValueOrDefault());
+            DialogConfirmedHandler(percentage, tintCheckbox.IsChecked.GetValueOrDefault());
             Close();
         }
 
