@@ -20,27 +20,22 @@ namespace PowerPointLabs.CropLab
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape ExecuteCrop(PowerPointSlide currentSlide, PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
-                                            bool handleError = true)
-        {
-            var croppedShape = Crop(currentSlide, selection, isInPlace: isInPlace, handleError: handleError);
-            if (croppedShape != null)
-            {
-                croppedShape.Select();
-            }
-
-            return croppedShape;
-        }
-
-        public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.Selection selection, double magnifyRatio = 1.0, bool isInPlace = false,
-            bool handleError = true)
+        public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.Selection selection,
+                                            double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
         {
             var shapeRange = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
                 shapeRange = selection.ChildShapeRange;
             }
-            return Crop(currentSlide, shapeRange, magnifyRatio, isInPlace, handleError);
+
+            var croppedShape = Crop(currentSlide, shapeRange, isInPlace: isInPlace, handleError: handleError);
+            if (croppedShape != null)
+            {
+                croppedShape.Select();
+            }
+
+            return croppedShape;
         }
 
         public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
