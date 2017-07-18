@@ -35,14 +35,19 @@ namespace TestInterface
         // Effects Lab
         void TransparentEffect();
         void MagnifyingGlassEffect();
-        void BlurrinessOverlay(string feature, bool pressed);
+        void SetTintForBlurSelected(bool isTinted);
+        void SetTintForBlurRemainder(bool isTinted);
+        void SetTintForBlurBackground(bool isTinted);
         void BlurSelectedEffect();
         void BlurRemainderEffect();
+        void BlurBackgroundEffect();
         void GreyScaleRemainderEffect();
+        void BlackAndWhiteRemainderEffect();
         void GothamRemainderEffect();
         void SepiaRemainderEffect();
-        void BlurBackgroundEffect();
+        void GreyScaleBackgroundEffect();
         void BlackAndWhiteBackgroundEffect();
+        void GothamBackgroundEffect();
         void SepiaBackgroundEffect();
 
         // Paste lab

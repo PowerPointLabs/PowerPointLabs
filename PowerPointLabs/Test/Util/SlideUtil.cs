@@ -116,7 +116,8 @@ namespace Test.Util
         //
         // You may need to call PpOperations.ExportSelectedShapes()
         // to get FileInfo of the exported shape in pic
-        public static void IsSameLooking(Shape expShape, FileInfo expFileInfo, Shape actualShape, FileInfo actualFileInfo)
+        public static void IsSameLooking(Shape expShape, FileInfo expFileInfo, Shape actualShape,
+            FileInfo actualFileInfo, double similarityTolerance = 0.95)
         {
             IsSameShape(expShape, actualShape);
 
@@ -124,31 +125,32 @@ namespace Test.Util
             var expShapeInPic = new ComparableImage(expFileInfo);
 
             var similarity = actualShapeInPic.CalculateSimilarity(expShapeInPic);
-            Assert.IsTrue(similarity > 0.95, "The shapes look different. Similarity = " + similarity);
+            Assert.IsTrue(similarity > similarityTolerance, "The shapes look different. Similarity = " + similarity);
         }
 
-        public static void IsSameLooking(Slide expSlide, Slide actualSlide)
+        public static void IsSameLooking(Slide expSlide, Slide actualSlide, double similarityTolerance = 0.95)
         {
             var hashCode = DateTime.Now.GetHashCode();
             actualSlide.Export(PathUtil.GetTempPath("actualSlide" + hashCode + ".png"), "PNG");
             expSlide.Export(PathUtil.GetTempPath("expSlide" + hashCode + ".png"), "PNG");
 
-            IsSameLooking("expSlide" + hashCode + ".png", "actualSlide" + hashCode + ".png");
+            IsSameLooking("expSlide" + hashCode + ".png", "actualSlide" + hashCode + ".png", similarityTolerance);
         }
 
-        public static void IsSameLooking(string expSlideImage, string actualSlideImage)
+        public static void IsSameLooking(string expSlideImage, string actualSlideImage, double similarityTolerance = 0.95)
         {
             IsSameLooking(new FileInfo(PathUtil.GetTempPath(expSlideImage)), 
-                new FileInfo(PathUtil.GetTempPath(actualSlideImage)));
+                new FileInfo(PathUtil.GetTempPath(actualSlideImage)),
+                similarityTolerance);
         }
 
-        public static void IsSameLooking(FileInfo expSlideImage, FileInfo actualSlideImage)
+        public static void IsSameLooking(FileInfo expSlideImage, FileInfo actualSlideImage, double similarityTolerance = 0.95)
         {
             var actualSlideInPic = new ComparableImage(actualSlideImage);
             var expSlideInPic = new ComparableImage(expSlideImage);
 
             var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
-            Assert.IsTrue(similarity > 0.95, "The slides look different. Similarity = " + similarity);
+            Assert.IsTrue(similarity > similarityTolerance, "The slides look different. Similarity = " + similarity);
         }
 
         public static void IsSameAnimations(Slide expSlide, Slide actualSlide)
