@@ -120,7 +120,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
 
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes);
                 }
@@ -167,7 +167,7 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension);
                 }
@@ -208,7 +208,7 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension1, dimension2);
                 }
