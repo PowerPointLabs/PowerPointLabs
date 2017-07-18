@@ -175,8 +175,8 @@ namespace PowerPointLabs.EffectsLab
                 return IsValidShapeRange(selection.ChildShapeRange);
             }
 
-            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
-                || selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes ||
+                selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
             {
                 return IsValidShapeRange(selection.ShapeRange);
             }
@@ -194,7 +194,8 @@ namespace PowerPointLabs.EffectsLab
                     if (shapeRange[i].Type != Office.MsoShapeType.msoPlaceholder &&
                         shapeRange[i].Type != Office.MsoShapeType.msoTextBox &&
                         shapeRange[i].Type != Office.MsoShapeType.msoAutoShape &&
-                        shapeRange[i].Type != Office.MsoShapeType.msoFreeform)
+                        shapeRange[i].Type != Office.MsoShapeType.msoFreeform &&
+                        shapeRange[i].Type != Office.MsoShapeType.msoGroup)
                     {
                         EffectsLabUtil.ShowIncorrectSelectionErrorMessage();
                         return false;
