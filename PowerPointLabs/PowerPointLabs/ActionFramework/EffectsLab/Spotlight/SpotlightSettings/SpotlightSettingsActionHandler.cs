@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            EffectsLabSpotlightSettings.OpenSpotlightSettingsDialog();
+            EffectsLabSettings.ShowSpotlightSettingsDialog();
         }
     }
 }

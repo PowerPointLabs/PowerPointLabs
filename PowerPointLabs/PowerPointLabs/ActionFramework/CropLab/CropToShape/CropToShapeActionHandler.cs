@@ -14,6 +14,8 @@ namespace PowerPointLabs.ActionFramework.CropLab
 
         protected override void ExecuteAction(string ribbonId)
         {
+            this.StartNewUndoEntry();
+
             IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             if (!IsSelectionShapes(this.GetCurrentSelection()))

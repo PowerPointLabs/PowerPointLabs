@@ -617,8 +617,9 @@
     <Compile Include="AutoUpdate\Downloader.cs" />
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="EffectsLab\EffectsLabSettings.cs" />
+    <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
-    <Compile Include="EffectsLab\EffectsLabSpotlightSettings.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
@@ -698,8 +699,8 @@
     <Compile Include="CropLab\CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
     <Compile Include="EffectsLab\EffectsLabBlur.cs" />
-    <Compile Include="EffectsLab\Views\EffectsLabBlurDialogBox.xaml.cs">
-      <DependentUpon>EffectsLabBlurDialogBox.xaml</DependentUpon>
+    <Compile Include="EffectsLab\Views\BlurSettingsDialogBox.xaml.cs">
+      <DependentUpon>BlurSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="FunctionalTestInterface.Impl\Controller\TimerLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\SyncLabController.cs" />
@@ -1341,7 +1342,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EffectsLab\Views\EffectsLabBlurDialogBox.xaml">
+    <Page Include="EffectsLab\Views\BlurSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
