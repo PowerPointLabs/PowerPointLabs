@@ -34,17 +34,17 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 
 Mentors: Damith C. Rajapakse, Xie Kai
 
-Team Leads: Yan Min Oo, Yu Ting
+Team Leads: Ian Teo, Ong Heng Le
 
-Senior Devs: Fiona Chang, Hanyang Liu, Victor Hazali, Oh Shunhao 
+Senior Devs: Ang Shi Ya, Jamos Tay, Kenneth Loh, Syed Abdullah
 
 Area | Responsibilities | Lead | Co-Lead | Past Leads
 -----|------------------|------|---------|-----|
-Community | communit growth, user support | Kenneth Loh | HengLe | Fiona |
-Docs | Website, tutorials, dev docs | Jamos Tay | Shi Ya | Fiona|
-DevOps | Installer, issue tracker, releases, CI | Syed Abdullah | Kenneth | Hanyang|
-Quality | code quality, design quality | Ong Heng Le | Jamos | Kai|
-Testing | test coverage, test automation | Ian Teo | Syed | Kai|
+Community | Community growth, user support | Kenneth Loh | Heng Le | Fiona |
+Docs | Website, tutorials, dev docs | Jamos Tay | Shi Ya | Fiona |
+DevOps | Installer, issue tracker, releases, CI | Syed Abdullah | Kenneth | Hanyang |
+Quality | Code quality, design quality | Heng Le | Jamos | Kai |
+Testing | Test coverage, test automation | Ian Teo | Syed | Kai |
 UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
 
 Feature  | Lead | Co-Lead | Past Leads
@@ -52,18 +52,19 @@ Feature  | Lead | Co-Lead | Past Leads
 AgendaLab | Syed |  | Shunhao, Huang Da
 AnimationLab (d) | Ian |  | Raunak
 CaptionsLab | Kenneth |  | Jerome
-ColorsLab | Ian |  | Karan
-CropLab | Jamos | Heng Le | Raunak
-EffectsLab | Heng Le |  | Fiona
+ColorsLab | Ian | Heng Le | Karan
+CropLab | Heng Le | Jamos | Raunak
+EffectsLab | ian | Heng Le | Fiona
 HighlightLab | Syed |  | Karan
 NarrationsLab | Kenneth |  | Jerome
-PasteLab | Syed |  |
+PasteLab | Syed | Heng Le |
 PictureSlideLab | Shi Ya |  | Xie Kai
 PositionsLab | Jamos |  | Oswell, Victor
 ResizeLab | Min Oo | Yu Ting |  
 ShapesLab (d) | Ian | Kenneth | Huang Da
-ShortcutsLab |  |  | Raunak
-SyncLab | Kenneth | Ian |
+ShortcutsLab | Heng Le | Ian | Raunak
+SyncLab | Ian | Kenneth |
+TimerLab | Shi Ya | Heng Le |
 ZoomLab | Shi Ya |  | Raunak
 
 Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
