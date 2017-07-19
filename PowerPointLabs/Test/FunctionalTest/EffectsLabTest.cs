@@ -1,6 +1,10 @@
 ﻿using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
+
+using PowerPointLabs.EffectsLab;
 
 namespace Test.FunctionalTest
 {
@@ -17,12 +21,16 @@ namespace Test.FunctionalTest
         public void FT_EffectsLabTest()
         {
             PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", true);
-            TestRemainderEffect(40, PplFeatures.BlurBackgroundEffect);
+            TestRemainderEffect(52, PplFeatures.SepiaBackgroundEffect);
+            TestRemainderEffect(49, PplFeatures.BlurBackgroundEffect);
+            TestRemainderEffect(46, PplFeatures.BlurBackgroundEffect);
             PplFeatures.BlurrinessOverlay("EffectsLabBlurRemainder", true);
-            TestRemainderEffect(37, PplFeatures.BlurRemainderEffect);
-            TestRemainderEffect(34, PplFeatures.SepiaBackgroundEffect);
+            TestRemainderEffect(43, PplFeatures.BlurRemainderEffect);
+            TestRemainderEffect(40, PplFeatures.BlurRemainderEffect);
+            TestRemainderEffect(37, PplFeatures.SepiaBackgroundEffect);
             PplFeatures.BlurrinessOverlay("EffectsLabBlurBackground", false);
-            TestRemainderEffect(31, PplFeatures.BlurBackgroundEffect);
+            TestRemainderEffect(34, PplFeatures.BlurBackgroundEffect);
+            TestRemainderEffect(31, PplFeatures.SepiaRemainderEffect);
             TestRemainderEffect(28, PplFeatures.SepiaRemainderEffect);
             TestRemainderEffect(25, PplFeatures.GothamRemainderEffect);
             TestRemainderEffect(22, PplFeatures.BlackAndWhiteBackgroundEffect);

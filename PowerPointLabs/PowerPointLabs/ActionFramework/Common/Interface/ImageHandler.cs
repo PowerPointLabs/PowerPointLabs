@@ -6,7 +6,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
     /// <summary>
     /// Handler that handles GetImage call
     /// </summary>
-    public abstract class ImageHandler
+    public abstract class ImageHandler : BaseHandler
     {
         public Bitmap Get(string ribbonId)
         {

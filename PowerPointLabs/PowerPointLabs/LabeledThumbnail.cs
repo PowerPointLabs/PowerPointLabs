@@ -3,8 +3,9 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using TestInterface;
+
 using PowerPointLabs.Views;
+using TestInterface;
 
 namespace PowerPointLabs
 {
@@ -40,7 +41,7 @@ namespace PowerPointLabs
                 }
                 else
                 {
-                    MessageBox.Show(value.Length > 255
+                    MessageBox.Show(Utils.Graphics.IsShapeNameOverMaximumLength(value)
                                         ? TextCollection.ErrorNameTooLong
                                         : TextCollection.ErrorInvalidCharacter);
 
@@ -130,7 +131,10 @@ namespace PowerPointLabs
             // has chance to be triggered mulitple times. To avoid this,
             // a flag will be set on the first time the function is called,
             // and skip the function by checking if the flag has been set.
-            if (_nameFinishHandled) return;
+            if (_nameFinishHandled)
+            {
+                return;
+            }
 
             _nameFinishHandled = true;
             NameLable = labelTextBox.Text;
@@ -221,7 +225,10 @@ namespace PowerPointLabs
         {
             // if the name hasn't changed, we don't need to check for duplicate name
             // since the default name/ old name is confirmed unique.
-            if (oldName == NameLable) return false;
+            if (oldName == NameLable)
+            {
+                return false;
+            }
 
             var newPath = ImagePath.Replace(oldName, NameLable);
 
@@ -247,7 +254,7 @@ namespace PowerPointLabs
             
             return !(string.IsNullOrWhiteSpace(name) ||
                      invalidChars.IsMatch(name) ||
-                     name.Length > 255);
+                     Utils.Graphics.IsShapeNameOverMaximumLength(name));
         }
         # endregion
 

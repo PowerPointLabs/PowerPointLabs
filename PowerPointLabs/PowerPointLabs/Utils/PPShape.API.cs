@@ -1,14 +1,16 @@
 using System;
-using Microsoft.Office.Core;
-using System.Drawing;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using System.Collections.Generic;
+using System.Drawing;
+
+using Microsoft.Office.Core;
+
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
 {
     public partial class PPShape
     {
-        private readonly PowerPoint.Shape _shape;
+        public readonly PowerPoint.Shape _shape;
         private float _absoluteWidth;
         private float _absoluteHeight;
         private float _rotatedVisualLeft;
@@ -422,9 +424,13 @@ namespace PowerPointLabs.Utils
         public List<PointF> Points => _points;
 
         /// <summary>
-        /// Returns the position of the specified shape in the z-order. Read-only.
+        /// Return or set the position of the specified shape in the z-order
+        /// Read/write
         /// </summary>
-        public int ZOrderPosition => _shape.ZOrderPosition;
+        public int ZOrderPosition
+        {
+            get { return _shape.ZOrderPosition; }
+        }
 
         #endregion
 
@@ -491,7 +497,10 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public void ResetNodes()
         {
-            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1) return;
+            if (_shape.Type != MsoShapeType.msoFreeform || _shape.Nodes.Count < 1)
+            {
+                return;
+            }
 
             var isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
                                          (_originalRotation >= 270 && _originalRotation < 360);

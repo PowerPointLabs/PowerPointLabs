@@ -19,192 +19,186 @@
     <tabs>
       <tab id="PowerPointLabsAddIns"
            getLabel="GetPowerPointLabsAddInsTabLabel">
-        <group id="AutoMotionGroup"
-               getLabel="GetAnimationLabGroupLabel"
-               visible ="true">
-          <button id="AddAnimationButton"
-                  getLabel="GetAddAnimationButtonLabel"
-                  size="large"
-                  getImage="GetAddAnimationImage"
-                  getSupertip="GetAddAnimationButtonSupertip"
-                  getEnabled="OnGetEnabledAddAutoMotion"
-                  onAction="AddAnimationButtonClick"/>
-          <button id="InSlideAnimateButton"
-                   getLabel="GetInSlideAnimateButtonLabel"
-                   size="large"
-                   getImage="GetInSlideAnimationImage"
-                   getSupertip="GetInSlideAnimateButtonSupertip"
-                   getEnabled="OnGetEnabledAddInSlide"
-                   onAction="AddInSlideAnimationButtonClick"/>
-          <dialogBoxLauncher>
-            <button id ="AnimationLabDialogBox"
-                    onAction="AnimationLabDialogButtonPressed"/>
-          </dialogBoxLauncher>
-        </group>
-        <group id="ZoomLabGroup"
-               getLabel="GetZoomLabGroupLabel"
-               visible ="true">
-          <button id="AddZoomInButton"
-                 getLabel ="GetAddZoomInButtonLabel"
-                 size ="large"
-                 getImage="GetZoomInImage"
-                 getSupertip="GetAddZoomInButtonSupertip"
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="AddZoomInButtonClick"/>
-          <button id="AddZoomOutButton"
-                 getLabel ="GetAddZoomOutButtonLabel"
-                 size ="large"
-                 getImage="GetZoomOutImage"
-                 getSupertip="GetAddZoomOutButtonSupertip"
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="AddZoomOutButtonClick"/>
-          <button id="ZoomToAreaButton"
-                 getLabel ="GetZoomToAreaButtonLabel"
-                 size ="large"
-                 getImage="GetZoomToAreaImage"
-                 getSupertip="GetZoomToAreaButtonSupertip"
-                 getEnabled="OnGetEnabledZoomButton"
-                 onAction="ZoomBtnClick"/>
-          <dialogBoxLauncher>
-            <button id ="ZoomLabDialogBox"
+
+        <group id="AnimationsGroup"
+               getImage="GetImage"
+               label="Animations"
+               visible="true">
+
+          <menu id="AnimationLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="AnimateInSlideButton"
+                    tag="AnimateInSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="AddAnimationSlideButton"
+                    tag="AddAnimationSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <menuSeparator id="AnimationLabSettingsSeparator"/>
+            <button id="AnimationLabSettingsButton"
+                    tag="AnimationLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+
+          <menu id="ZoomLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="DrillDownButton"
+                    tag="DrillDown"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="StepBackButton"
+                    tag="StepBack"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="ZoomToAreaButton"
+                    tag="ZoomToArea"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <menuSeparator id="ZoomLabSettingsSeparator"/>
+            <button id="ZoomLabSettingsButton"
+                    tag="ZoomLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
                     onAction="ZoomLabDialogButtonPressed"/>
-          </dialogBoxLauncher>
+          </menu>
+
         </group>
-        <group id="CropLabGroup"
-               getLabel="GetCropLabGroupLabel"
+        <group id="AudioGroup"
+               getImage="GetImage"
+               label="Audio"
                visible="true">
-          <button id="MoveCropShapeButton"
-                  getLabel ="GetMoveCropShapeButtonLabel"
-                  size ="large"
-                  getImage="GetCropShapeImage"
-                  getSupertip="GetMoveCropShapeButtonSupertip"
-                  onAction="CropShapeButtonClick"/>
-        </group>
-        <group id="embedAudio"
-               getLabel="GetEmbedAudioGroupLabel">
-          <splitButton id="addAudioSplit" size="large">
-            <button id="AddAudioButton"
-                  getLabel="GetAddAudioButtonLabel"
-                  onAction="AddAudioClick"
-                  keytip="NA"
-                  getSupertip="GetAddAudioButtonSupertip"
-                  getImage="GetAddAudioImage" />
-            <menu id="menu">
-              <button id="GenerateRecordButton"
-                      getLabel="GetGenerateRecordButtonLabel"
-                      onAction="AddAudioClick"
-                      keytip="NA"
-                      getSupertip="GetGenerateRecordButtonSupertip"/>
-              <button id="AddRecordButton"
-                      getLabel="GetAddRecordButtonLabel"
-                      onAction="RecManagementClick"
-                      keytip="NA"
-                      getSupertip="GetAddRecordButtonSupertip"/>
-            </menu>
-          </splitButton>
-          <button id="RemoveAudioButton"
-                  getLabel="GetRemoveAudioButtonLabel"
-                  onAction="RemoveAudioClick"
-                  getSupertip="GetRemoveAudioButtonSupertip"
-                  keytip="NR"
-                  getEnabled="OnGetEnabledRemoveAudio"
-                  getImage="GetRemoveAudioImage"
-                  size="large" />
-          <dialogBoxLauncher>
-            <button id="NarrationsLabDialogBox"
-                    onAction="NarrationsLabDialogButtonPressed"/>
-          </dialogBoxLauncher>
-        </group>
-        <group id="embedCaptions"
-               getLabel="GetEmbedCaptionGroupLabel">
-          <button id="AddCaptionsButton"
-                  getLabel="GetAddCaptionsButtonLabel"
-                  keytip="CA"
-                  getSupertip="GetAddCaptionsButtonSupertip"
-                  onAction="AddCaptionClick"
-                  getImage="GetAddCaptionsImage"
-                  size="large" />
-          <splitButton id ="removeCaptionSplit" size ="large">  
+          
+          <menu id="NarrationsLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="AddNarrationsButton"
+                    tag="AddNarrations"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="RecordNarrationsButton"
+                    tag="RecordNarrations"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="RemoveNarrationsButton"
+                    tag="RemoveNarrations"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <menuSeparator id="NarrationsLabSettingsSeparator"/>
+            <button id="NarrationsLabSettingsButton"
+                    tag="NarrationsLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+
+          <menu id="CaptionsLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="AddCaptionsButton"
+                    tag="AddCaptions"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
             <button id="RemoveCaptionsButton"
-                    getLabel="GetRemoveCaptionsButtonLabel"
-                    keytip="CR"
-                    getSupertip="GetRemoveCaptionsButtonSupertip"
-                    onAction="RemoveCaptionClick"
-                    getImage="GetRemoveCaptionsImage"
-                    getEnabled="OnGetEnabledRemoveCaptions"/>
-            <menu id ="removeCaptionMenu">
-               <button id="RemoveAllNotesButton"
-                      getLabel="GetRemoveAllNotesButtonLabel"
-                      getSupertip="GetRemoveAllNotesButtonSupertip"
-                      onAction="RemoveAllNotesClick"/>
-             </menu>
-          </splitButton>
+                    tag="RemoveCaptions"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="RemoveNotesButton"
+                    tag="RemoveNotes"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+
         </group>
-        <group id="HighlightBullets"
-               getLabel="GetHighlightLabGroupLabel"
+        <group id="EffectsGroup"
+               getImage="GetImage"
+               label="Effects"
                visible="true">
-          <splitButton id ="addSpotlight" size ="large">  
-            <button id="AddSpotlightButton"
-                    getLabel="GetAddSpotlightButtonLabel"
-                    getSupertip="GetAddSpotlightButtonSupertip"
-                    getImage="GetSpotlightImage"
-                    getEnabled="OnGetEnabledSpotlight"
-                    onAction="SpotlightBtnClick"/>
-            <menu id ="spotlightPropertiesMenu">
-               <button id="SpotlightPropertiesButton"
-                      getLabel="GetSpotlightPropertiesButtonLabel"
-                      getSupertip="GetSpotlightPropertiesButtonSupertip"
-                      onAction="SpotlightDialogButtonPressed"/>
-            </menu>
-          </splitButton>
-          <button id="HighlightBulletsTextButton"
-                 getLabel ="GetHighlightBulletsTextButtonLabel"
-                 size ="large"
-                 getImage="GetHighlightBulletsTextImage"
-                 getSupertip="GetHighlightBulletsTextButtonSupertip"
-                 getEnabled="OnGetEnabledHighlightBullets"
-                 onAction="HighlightBulletsTextButtonClick"/>
-          <button id="HighlightBulletsBackgroundButton"
-                 getLabel ="GetHighlightBulletsBackgroundButtonLabel"
-                 size ="large"
-                 getImage="GetHighlightBulletsBackgroundImage"
-                 getSupertip="GetHighlightBulletsBackgroundButtonSupertip"
-                 getEnabled="OnGetEnabledHighlightBullets"
-                 onAction="HighlightBulletsBackgroundButtonClick"/>
-          <button id="HighlightTextFragmentsButton"
-                  getLabel="GetHighlightTextFragmentsButtonLabel"
-                  size="large"
-                  getImage="GetHighlightWordsImage"
-                  getSupertip="GetHighlightTextFragmentsButtonSupertip"
-                  getEnabled="OnGetEnabledHighlightTextFragments"
-                  onAction="HighlightTextFragmentsButtonClick"/>
-          <dialogBoxLauncher>
-            <button id="HighlightBulletsDialogBox"
-                    onAction="HighlightBulletsDialogBoxPressed"/>
-          </dialogBoxLauncher>
-        </group>
-        <group id="Labs"
-               getLabel="GetLabsGroupLabel"
-               visible="true">
-          <button id="ColorsLabButton"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <button id="PictureSlidesLabButton"
-                  label="Picture Slides Lab"
-                  size="large"
-                  getImage="GetPictureSlidesLabImage"
-                  getSupertip="GetPictureSlidesLabSupertip"
-                  onAction="PictureSlidesLabButtonClick"
-                  />
-          <button id="ShapesLabButton"
-                  getLabel="GetCustomeShapeButtonLabel"
-                  size="large"
-                  getImage="GetShapesLabImage"
-                  getSupertip="GetCustomeShapeButtonSupertip"
-                  onAction="CustomShapeButtonClick"/>
+
+          <menu id="HighlightLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="HighlightPointsButton"
+                    tag="HighlightPoints"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="HighlightBackgroundButton"
+                    tag="HighlightBackground"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="HighlightTextButton"
+                    tag="HighlightText"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="RemoveHighlightButton"
+                    tag="RemoveHighlight"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <menuSeparator id="HighlightLabSettingsSeparator"/>
+            <button id="HighlightLabSettingsButton"
+                    tag="HighlightLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+
           <menu id="EffectLabsMenu"
                 getLabel="GetEffectsLabButtonLabel"
                 getImage="GetEffectsLabImage"
@@ -212,12 +206,12 @@
                 size="large">
             <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
-              <gallery idMso="PictureSharpenSoftenGallery"/>
-              <gallery idMso="PictureBrightnessAndContrastGallery"/>
-              <gallery idMso="PictureEffectsSoftEdgesGallery"/>
-              <gallery idMso="PictureRecolorGallery"/>
-              <gallery idMso="PictureArtisticEffectsGallery"/>
-            <menuSeparator id="newEffectSeparator"
+            <gallery idMso="PictureSharpenSoftenGallery"/>
+            <gallery idMso="PictureBrightnessAndContrastGallery"/>
+            <gallery idMso="PictureEffectsSoftEdgesGallery"/>
+            <gallery idMso="PictureRecolorGallery"/>
+            <gallery idMso="PictureArtisticEffectsGallery"/>
+            <menuSeparator id="NewEffectsSeparator"
                            title="New Effects"/>
             <button id="transparentEffect"
                     getLabel="GetEffectsLabMakeTransparentButtonLabel"
@@ -229,6 +223,20 @@
                     getImage="GetMagnifyImage"
                     getSupertip="GetEffectsLabMagnifyGlassSupertip"
                     onAction="MagnifyGlassEffectClick"/>
+            <menu id="spotlightMenu"
+                  getLabel="GetSpotlightMenuLabel"
+                  getImage="GetSpotlightImage">
+              <button id="AddSpotlightButton"
+                      getLabel="GetAddSpotlightButtonLabel"
+                      getSupertip="GetAddSpotlightButtonSupertip"
+                      getEnabled="OnGetEnabledSpotlight"
+                      onAction="SpotlightBtnClick"/>
+              <menuSeparator id="SpotlightPropertiesSeparator"/>
+              <button id="SpotlightPropertiesButton"
+                      getLabel="GetSpotlightPropertiesButtonLabel"
+                      getSupertip="GetSpotlightPropertiesButtonSupertip"
+                      onAction="SpotlightDialogButtonPressed"/>
+            </menu>
             <dynamicMenu id="EffectsLabBlurSelectedDynamicMenu"
                          getLabel="GetLabel"
                          getImage="GetImage"
@@ -245,9 +253,9 @@
                          getSupertip="GetEffectsLabBlurBackgroundSupertip"
                          getContent="GetContent"/>
             <menu id="colorizeRemainderEffect"
-                getLabel="GetEffectsLabRecolorRemainderButtonLabel"
-                getSupertip="GetEffectsLabColorizeRemainderSupertip"
-                getImage="GetRecolorRemainderImage">
+                  getLabel="GetEffectsLabRecolorRemainderButtonLabel"
+                  getSupertip="GetEffectsLabColorizeRemainderSupertip"
+                  getImage="GetRecolorRemainderImage">
               <button id="greyScaleRemainderEffect"
                       label="Grey Scale"
                       onAction="GreyScaleRemainderEffectClick"/>
@@ -262,9 +270,9 @@
                       onAction="SepiaRemainderEffectClick"/>
             </menu>
             <menu id="colorizeBackgroundEffect"
-                getLabel="GetEffectsLabRecolorBackgroundButtonLabel"
-                getSupertip="GetEffectsLabColorizeBackgroundSupertip"
-                getImage="GetRecolorRemainderImage">
+                  getLabel="GetEffectsLabRecolorBackgroundButtonLabel"
+                  getSupertip="GetEffectsLabColorizeBackgroundSupertip"
+                  getImage="GetRecolorRemainderImage">
               <button id="greyScaleBackgroundEffect"
                       label="Grey Scale"
                       onAction="GreyScaleBackgroundEffectClick"/>
@@ -279,688 +287,335 @@
                       onAction="SepiaBackgroundEffectClick"/>
             </menu>
           </menu>
-          <menu id="AgendaLabsMenu"
-                getLabel="GetAgendaLabButtonLabel"
-                getSupertip="GetAgendaLabSupertip"
-                getImage="GetAgendaLabImage"
+
+        </group>
+        <group id="FormattingGroup"
+               getImage="GetImage"
+               label="Formatting"
+               visible="true">
+
+          <button id="PositionsLabButton"
+                  tag="PositionsLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+          
+          <button id="ResizeLabButton"
+                  tag="ResizeLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+
+          <button id="ColorsLabButton"
+                  tag="ColorsLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+
+          <button id="SyncLabButton"
+                  tag="SyncLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+
+          <button id="ShapesLabButton"
+                  tag="ShapesLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+
+          <menu id="CropLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
                 size="large">
-            <button id="bulletPointAgenda"
-                    getImage="GetAgendaTextImage"
-                    getLabel="GetAgendaLabBulletPointButtonLabel"
-                    getSupertip="GetAgendaLabBulletPointSupertip"
-                    onAction="BulletPointAgendaClick"/>
-            <button id="visualAgenda"
-                    getImage="GetAgendaVisualImage"
-                    getLabel="GetAgendaLabVisualAgendaButtonLabel"
-                    getSupertip="GetAgendaLabVisualAgendaSupertip"
-                    onAction="VisualAgendaClick"/>
-            <button id="beamAgenda"
-                    getImage="GetAgendaSidebarImage"
-                    getLabel="GetAgendaLabBeamAgendaButtonLabel"
-                    getSupertip="GetAgendaLabBeamAgendaSupertip"
-                    onAction="BeamAgendaClick"/>
-            <menuSeparator id="miscAgendaseparator" />
-            <button id="removeAgenda"
-                    getImage="GetAgendaRemoveImage"
-                    getLabel="GetAgendaLabRemoveAgendaButtonLabel"
-                    getSupertip="GetAgendaLabRemoveAgendaSupertip"
-                    onAction="RemoveAgendaClick"/>
-            <button id="updateAgenda"
-                    getImage="GetAgendaSyncImage"
-                    getLabel="GetAgendaLabUpdateAgendaButtonLabel"
-                    getSupertip="GetAgendaLabUpdateAgendaSupertip"
-                    onAction="UpdateAgendaClick"/>
+            <button id="CropToShapeButton"
+                    tag="CropToShape"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="CropToSlideButton"
+                    tag="CropToSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="CropToSameButton"
+                    tag="CropToSame"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <dynamicMenu id="CropToAspectRatioMenu"
+                    tag="CropToAspectRatio"
+                    getContent="GetContent"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"/>
+            <button id="CropOutPaddingButton"
+                    tag="CropOutPadding"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <menuSeparator id="CropLabSettingsSeparator"/>
+            <button id="CropLabSettingsButton"
+                    tag="CropLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
           </menu>
+          
+          <menu id="PasteLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="PasteAtOriginalPositionButton"
+                    tag="PasteAtOriginalPosition"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="PasteToFillSlideButton"
+                    tag="PasteToFillSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="ReplaceWithClipboardButton"
+                    tag="ReplaceWithClipboard"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="PasteIntoGroupButton"
+                    tag="PasteIntoGroup"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+          </menu>
+
+        </group>
+        <group id="MoreLabsGroup"
+               getImage="GetImage"
+               label="More Labs"
+               visible="true">
+          
+          <button id="TimerLabButton"
+                  tag="TimerLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+
+          <menu id="AgendaLabMenu"
+                getLabel="GetLabel"
+                getSupertip="GetSupertip"
+                getImage="GetImage"
+                size="large">
+            <button id="TextAgendaButton"
+                    tag="TextAgenda"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="VisualAgendaButton"
+                    tag="VisualAgenda"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="BeamAgendaButton"
+                    tag="BeamAgenda"
+                    getLabel="GetLabel"
+                    getImage="GetImage"                   
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <menuSeparator id="MiscAgendaSeparator"/>
+            <button id="RemoveAgendaButton"
+                    tag="RemoveAgenda"
+                    getLabel="GetLabel"
+                    getImage="GetImage"                  
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="UpdateAgendaButton"
+                    tag="UpdateAgenda"
+                    getLabel="GetLabel"
+                    getImage="GetImage"     
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+
+          <button id="PictureSlidesLabButton"
+                  tag="PictureSlidesLab"
+                  getLabel="GetLabel"
+                  getImage="GetImage"
+                  getSupertip="GetSupertip"
+                  onAction="OnAction"
+                  size="large"/>
+
           <button id="DrawingsLabButton"
                   visible="false"
-                  getLabel="GetDrawingsLabButtonLabel"
+                  getLabel="GetLabel"
                   size="large"
                   getImage="GetDrawingsLabImage"
                   getSupertip="GetDrawingsLabButtonSupertip"
                   onAction="DrawingsLabButtonClick"/>
-          <button id="PositionsLabButton"
-                  visible="false"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
-          <button id="ResizeLabButton"
-                  visible="false"
-                  getLabel="GetLabel"
-                  size="large"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"/>
+
         </group>
-        <group id="PPTLabsHelp"
-               getLabel="GetPPTLabsHelpGroupLabel"
-               visible="true">
-          <button id="HelpButton"
-                  getLabel="GetHelpButtonLabel"
-                  size="large"
-                  getImage="GetHelpImage"
-                  getSupertip="GetHelpButtonSupertip"
-                  onAction="HelpButtonClick"/>
-          <button id="FeedbackButton"
-                  getLabel="GetFeedbackButtonLabel"
-                  size="large"
-                  getImage="GetFeedbackImage"
-                  getSupertip="GetFeedbackButtonSupertip"
-                  onAction="FeedbackButtonClick"/>
-          <button id="AboutButton"
-                  getLabel="GetAboutButtonLabel"
-                  size="large"
-                  getImage="GetAboutImage"
-                  getSupertip="GetAboutButtonSupertip"
-                  onAction="AboutButtonClick"/>
+        <group id="HelpGroup"
+               label="Help"
+               getImage="GetImage">
+          
+          <menu id="HelpMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <button id="HelpButton"
+                    tag="Help"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="TutorialButton"
+                    tag="Tutorial"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="FeedbackButton"
+                    tag="Feedback"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="AboutButton"
+                    tag="About"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+          
         </group>
+        
       </tab>
     </tabs>
   </ribbon>
+  
   <contextMenus>
     <contextMenu idMso="ContextMenuShape">
       <menuSeparator id="separatorShape"/>
-      <menu id="menuShape" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditShape"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="spotlightShape"
-                getLabel="GetSpotlightShapeLabel"
-                getImage="GetAddSpotlightContextImage"
-                onAction="SpotlightBtnClick"/>
-        <button id="zoomInContextMenu"
-                getLabel ="GetZoomInContextMenuLabel"
-                getImage="GetZoomInContextImage"
-                getEnabled="OnGetEnabledZoomButton"
-                onAction="AddZoomInButtonClick"/>
-        <button id="zoomOutContextMenu"
-               getLabel ="GetZoomOutContextMenuLabel"
-               getImage="GetZoomOutContextImage"
-               getEnabled="OnGetEnabledZoomButton"
-               onAction="AddZoomOutButtonClick"/>
-        <button id="ZoomToAreaContextMenu"
-               getLabel ="GetZoomToAreaContextMenuLabel"
-               getImage="GetZoomToAreaContextImage"
-               getEnabled="OnGetEnabledZoomButton"
-               onAction="ZoomBtnClick"/>
-        <menu id="HighlightBulletsMenuShape"
-              getLabel="GetHighlightBulletsMenuShapeLabel"
-              getImage="GetHighlightBulletsBackgroundContextImage">
-          <button id="HighlightBulletsTextShape"
-                getLabel ="GetHighlightBulletsTextShapeLabel"
-                getImage="GetHighlightBulletsTextContextImage"
-                onAction="HighlightBulletsTextButtonClick"/>
-          <button id="HighlightBulletsBackgroundShape"
-                 getLabel ="GetHighlightBulletsBackgroundShapeLabel"
-                 getImage="GetHighlightBulletsBackgroundContextImage"
-                 onAction="HighlightBulletsBackgroundButtonClick"/>
-        </menu>
-        <button id="ConvertToPictureShape"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeShape"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-        <button id="cutOutShapeShape"
-                getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
-                onAction="CropShapeButtonClick"/>
-        <button id="fitToWidthShape"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToHeightShape"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="hideShapeShape"
-              getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetHideShapeImage"
-              onAction="HideShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuShape" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuShapeConnector">
+	    <menuSeparator id="separatorShapeConnector" />
+	    <dynamicMenu id="MenuLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuShapeFreeform">
       <menuSeparator id="separatorFreeform"/>
-      <menu id="menuFreeform" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditFreeform"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="spotlightFreeform"
-                getLabel="GetSpotlightShapeLabel"
-                getImage="GetAddSpotlightContextImage"
-                onAction="SpotlightBtnClick"/>
-        <button id="ConvertToPictureFreeform"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeFreeform"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-        <button id="cutOutShapeFreeform"
-                getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
-                onAction="CropShapeButtonClick"/>
-        <button id="fitToWidthFreeform"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToHeightFreeform"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-      <button id="hideShapeFreeform"
-              getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetHideShapeImage"
-              onAction="HideShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuFreeform" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuPicture">
       <menuSeparator id="separatorPicture"/>
-      <menu id="menuPicture" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditPicture"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="zoomInContextMenuPicture"
-                getLabel ="GetZoomInContextMenuLabel"
-                getImage="GetZoomInContextImage"
-                getEnabled="OnGetEnabledZoomButton"
-                onAction="AddZoomInButtonClick"/>
-        <button id="zoomOutContextMenuPicture"
-               getLabel ="GetZoomOutContextMenuLabel"
-               getImage="GetZoomOutContextImage"
-               getEnabled="OnGetEnabledZoomButton"
-               onAction="AddZoomOutButtonClick"/>
-        <button id="fitToWidthPicture"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToHeightPicture"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="addCustomShapePicture"
-                getLabel ="GetAddCustomShapeShapeLabel"
-                getImage="GetAddToCustomShapeContextImage"
-                onAction="AddShapeButtonClick"/>
-        <button id="hideShape"
-               getLabel ="GetHideSelectedShapeLabel"
-               getImage="GetHideShapeImage"
-               onAction="HideShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuPicture" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTextEdit">
+      <menuSeparator id="separatorTextEdit"/>
+      <dynamicMenu id="MenuTextEdit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuChartArea">
       <menuSeparator id="separatorChart"/>
-      <menu id="menuChartArea" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditChart"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="ConvertToPictureChart"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeChart"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-        <button id="fitToWidthChart"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToHeightChart"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-      </menu>
+      <dynamicMenu id="MenuChart" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuTable">
       <menuSeparator id="separatorTable"/>
-      <menu id="menuTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditTable"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="fitToWidthTable"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="fitToHeightTable"
-                getLabel="GetLabel"
-                getImage="GetImage"
-                onAction="OnAction"/>
-        <button id="addCustomShapeTable"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuTableWhole">
+	    <menuSeparator id="separatorTableWhole" />
+	    <dynamicMenu id="MenuTableWhole" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>
-      <menu id="menuGroup" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditGroup"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="spotlightGroup"
-                getLabel="GetSpotlightShapeLabel"
-                getImage="GetAddSpotlightContextImage"
-                onAction="SpotlightBtnClick"/>
-        <button id="inSlideAnimateGroup"
-                getLabel="GetInSlideAnimateGroupLabel"
-                getImage="GetInSlideAnimationContextImage"
-                getEnabled="OnGetEnabledAddInSlide"
-                onAction="AddInSlideAnimationButtonClick"/>
-        <button id="ZoomToAreaContextMenuGroup"
-               getLabel ="GetZoomToAreaContextMenuLabel"
-               getImage="GetZoomToAreaContextImage"
-               getEnabled="OnGetEnabledZoomButton"
-               onAction="ZoomBtnClick"/>
-        <menu id="HighlightBulletsMenuGroup"
-              getLabel="GetHighlightBulletsMenuShapeLabel"
-              getImage="GetHighlightBulletsBackgroundContextImage">
-          <button id="HighlightBulletsTextGroup"
-              getLabel ="GetHighlightBulletsTextShapeLabel"
-              getImage="GetHighlightBulletsTextContextImage"
-              onAction="HighlightBulletsTextButtonClick"/>
-          <button id="HighlightBulletsBackgroundGroup"
-                 getLabel ="GetHighlightBulletsBackgroundShapeLabel"
-                 getImage="GetHighlightBulletsBackgroundContextImage"
-                 onAction="HighlightBulletsBackgroundButtonClick"/>
-        </menu>
-        <button id="ConvertToPictureGroup"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapePictureGroup"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-        <button id="cutOutShapeGroup"
-                getLabel="GetCutOutShapeShapeLabel"
-                getImage="GetCutOutShapeMenuImage"
-                onAction="CropShapeButtonClick"/>
-        <button id="hideShapeGroup"
-              getLabel ="GetHideSelectedShapeLabel"
-              getImage="GetHideShapeImage"
-              onAction="HideShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuGroup" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <contextMenu idMso="ContextMenuInk">
       <menuSeparator id="separatorInk"/>
-      <menu id="menuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditInk"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="ConvertToPictureInk"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeInk"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuVideo">
+      <menuSeparator id="separatorVideo"/>
+      <dynamicMenu id="MenuVideo" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
-      <menu id="menuSmartArtBackground" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="nameEditSmartArt"
-                getLabel="GetNameEditShapeLabel"
-                getImage="GetEditNameContextImage"
-                onAction="NameEditBtnClick"/>
-        <button id="ConvertToPictureSmartArt"
-               getLabel ="GetConvertToPictureShapeLabel"
-               getImage="GetConvertToPicMenuImage"
-               onAction="ConvertToPictureButtonClick"/>
-        <button id="addCustomShapeSmartArt"
-               getLabel ="GetAddCustomShapeShapeLabel"
-               getImage="GetAddToCustomShapeContextImage"
-               onAction="AddShapeButtonClick"/>
-      </menu>
+      <dynamicMenu id="MenuSmartArtBackground" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
-    <contextMenu idMso="ContextMenuThumbnail">
-      <menuSeparator id="separatorThumbnail"/>
-      <menu id="menuThumbnail" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="applyAutoMotionThumbnail"
-                getLabel="GetApplyAutoMotionThumbnailLabel"
-                getImage="GetAddAnimationContextImage"
-                onAction="AddAnimationButtonClick"/>
-        <menu id="HighlightBulletsMenuThumbnail"
-              getLabel="GetHighlightBulletsMenuShapeLabel"
-              getImage="GetHighlightBulletsBackgroundContextImage">
-          <button id="HighlightBulletsTextThumbnail"
-                getLabel ="GetHighlightBulletsTextShapeLabel"
-                getImage="GetHighlightBulletsTextContextImage"
-                getEnabled="OnGetEnabledHighlightBullets"
-                onAction="HighlightBulletsTextButtonClick"/>
-          <button id="HighlightBulletsBackgroundThumbnail"
-                 getLabel ="GetHighlightBulletsBackgroundShapeLabel"
-                 getImage="GetHighlightBulletsBackgroundContextImage"
-                 getEnabled="OnGetEnabledHighlightBullets"
-                 onAction="HighlightBulletsBackgroundButtonClick"/>
-        </menu>
-      </menu>
+    <contextMenu idMso="ContextMenuSmartArtEditSmartArt">
+      <menuSeparator id="separatorSmartArtEditSmartArt"/>
+      <dynamicMenu id="MenuSmartArtEditSmartArt" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
-    <contextMenu idMso="ContextMenuNotesEditText">
-      <menuSeparator id="separatorNotes" />
-      <menu id="menuEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
-        <button id="contextSpeakSelectedText"
-                getLabel="GetContextSpeakSelectedTextLabel"
-                getImage="GetPreviewNarrationContextImage"
-                onAction="SpeakSelectedTextClick"/>
-        <button id="contextAddCurrentSlide"
-                getLabel="GetContextAddCurrentSlideLabel"
-                getImage="GetAddAudioContextImage"
-                onAction="ContextAddAudioClick"/>
-      </menu>
+    <contextMenu idMso="ContextMenuSmartArtEditText">
+      <menuSeparator id="separatorSmartArtEditText"/>
+      <dynamicMenu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
-    <contextMenu idMso="ContextMenuActiveXControl">
-	    <menuSeparator id="separatorActiveXControl" />
-	    <menu id="menuActiveXControl" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartAxis">
-	    <menuSeparator id="separatorChartAxis" />
-	    <menu id="menuChartAxis" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartAxisTitle">
-	    <menuSeparator id="separatorChartAxisTitle" />
-	    <menu id="menuChartAxisTitle" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartBackWall">
-	    <menuSeparator id="separatorChartBackWall" />
-	    <menu id="menuChartBackWall" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataLabel">
-	    <menuSeparator id="separatorChartDataLabel" />
-	    <menu id="menuChartDataLabel" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataLabels">
-	    <menuSeparator id="separatorChartDataLabels" />
-	    <menu id="menuChartDataLabels" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataPoint">
-	    <menuSeparator id="separatorChartDataPoint" />
-	    <menu id="menuChartDataPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataSeries">
-	    <menuSeparator id="separatorChartDataSeries" />
-	    <menu id="menuChartDataSeries" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDataTable">
-	    <menuSeparator id="separatorChartDataTable" />
-	    <menu id="menuChartDataTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDisplayUnit">
-	    <menuSeparator id="separatorChartDisplayUnit" />
-	    <menu id="menuChartDisplayUnit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDownBars">
-	    <menuSeparator id="separatorChartDownBars" />
-	    <menu id="menuChartDownBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartDropLines">
-	    <menuSeparator id="separatorChartDropLines" />
-	    <menu id="menuChartDropLines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartErrorBars">
-	    <menuSeparator id="separatorChartErrorBars" />
-	    <menu id="menuChartErrorBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartFloor">
-	    <menuSeparator id="separatorChartFloor" />
-	    <menu id="menuChartFloor" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartGridlines">
-	    <menuSeparator id="separatorChartGridlines" />
-	    <menu id="menuChartGridlines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartHighLowLine">
-	    <menuSeparator id="separatorChartHighLowLine" />
-	    <menu id="menuChartHighLowLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartLeaderLines">
-	    <menuSeparator id="separatorChartLeaderLines" />
-	    <menu id="menuChartLeaderLines" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartLegend">
-	    <menuSeparator id="separatorChartLegend" />
-	    <menu id="menuChartLegend" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartLegendEntry">
-	    <menuSeparator id="separatorChartLegendEntry" />
-	    <menu id="menuChartLegendEntry" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartPlotArea">
-	    <menuSeparator id="separatorChartPlotArea" />
-	    <menu id="menuChartPlotArea" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartSeriesLine">
-	    <menuSeparator id="separatorChartSeriesLine" />
-	    <menu id="menuChartSeriesLine" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartSideWall">
-	    <menuSeparator id="separatorChartSideWall" />
-	    <menu id="menuChartSideWall" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartTitle">
-	    <menuSeparator id="separatorChartTitle" />
-	    <menu id="menuChartTitle" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartTrendline">
-	    <menuSeparator id="separatorChartTrendline" />
-	    <menu id="menuChartTrendline" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartTrendlineLabel">
-	    <menuSeparator id="separatorChartTrendlineLabel" />
-	    <menu id="menuChartTrendlineLabel" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartUpBars">
-	    <menuSeparator id="separatorChartUpBars" />
-	    <menu id="menuChartUpBars" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuChartWalls">
-	    <menuSeparator id="separatorChartWalls" />
-	    <menu id="menuChartWalls" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuCommentMarker">
-	    <menuSeparator id="separatorCommentMarker" />
-	    <menu id="menuCommentMarker" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
+    
     <contextMenu idMso="ContextMenuCurve">
 	    <menuSeparator id="separatorCurve" />
-	    <menu id="menuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    <menu id="MenuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuDrawnObject">
 	    <menuSeparator id="separatorDrawnObject" />
-	    <menu id="menuDrawnObject" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    <menu id="MenuDrawnObject" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuEndShow">
 	    <menuSeparator id="separatorEndShow" />
-	    <menu id="menuEndShow" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
+	    <menu id="MenuEndShow" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
 	    </menu>
     </contextMenu>
     <contextMenu idMso="ContextMenuFrame">
 	    <menuSeparator id="separatorFrame" />
-	    <menu id="menuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
+	    <dynamicMenu id="MenuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
-    <contextMenu idMso="ContextMenuGraphicOleClassic">
-	    <menuSeparator id="separatorGraphicOleClassic" />
-	    <menu id="menuGraphicOleClassic" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuGraphicsCompatibility">
-	    <menuSeparator id="separatorGraphicsCompatibility" />
-	    <menu id="menuGraphicsCompatibility" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuLabelSection">
-	    <menuSeparator id="separatorLabelSection" />
-	    <menu id="menuLabelSection" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuMotionPath">
-	    <menuSeparator id="separatorMotionPath" />
-	    <menu id="menuMotionPath" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuObjectEditPoint">
-	    <menuSeparator id="separatorObjectEditPoint" />
-	    <menu id="menuObjectEditPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuObjectEditSegment">
-	    <menuSeparator id="separatorObjectEditSegment" />
-	    <menu id="menuObjectEditSegment" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuOfficePreviewHandlerPowerPoint">
-	    <menuSeparator id="separatorOfficePreviewHandlerPowerPoint" />
-	    <menu id="menuOfficePreviewHandlerPowerPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuPathPoint">
-	    <menuSeparator id="separatorPathPoint" />
-	    <menu id="menuPathPoint" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuPathSegment">
-	    <menuSeparator id="separatorPathSegment" />
-	    <menu id="menuPathSegment" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuRevision">
-	    <menuSeparator id="separatorRevision" />
-	    <menu id="menuRevision" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuRightDragDrop">
-	    <menuSeparator id="separatorRightDragDrop" />
-	    <menu id="menuRightDragDrop" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuShapeConnector">
-	    <menuSeparator id="separatorShapeConnector" />
-	    <menu id="menuShapeConnector" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuShowBrowse">
-	    <menuSeparator id="separatorShowBrowse" />
-	    <menu id="menuShowBrowse" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuShowHyperlink">
-	    <menuSeparator id="separatorShowHyperlink" />
-	    <menu id="menuShowHyperlink" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuShowPointerOptions">
-	    <menuSeparator id="separatorShowPointerOptions" />
-	    <menu id="menuShowPointerOptions" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSlideGap">
-	    <menuSeparator id="separatorSlideGap" />
-	    <menu id="menuSlideGap" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSlideShow">
-	    <menuSeparator id="separatorSlideShow" />
-	    <menu id="menuSlideShow" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSlideSorter">
-	    <menuSeparator id="separatorSlideSorter" />
-	    <menu id="menuSlideSorter" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSlideSync">
-	    <menuSeparator id="separatorSlideSync" />
-	    <menu id="menuSlideSync" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSmartArtContentPane">
-	    <menuSeparator id="separatorSmartArtContentPane" />
-	    <menu id="menuSmartArtContentPane" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSmartArtEdit1DShape">
-	    <menuSeparator id="separatorSmartArtEdit1DShape" />
-	    <menu id="menuSmartArtEdit1DShape" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSmartArtEdit1DShapeText">
-	    <menuSeparator id="separatorSmartArtEdit1DShapeText" />
-	    <menu id="menuSmartArtEdit1DShapeText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSmartArtEditSmartArt">
-	    <menuSeparator id="separatorSmartArtEditSmartArt" />
-	    <menu id="menuSmartArtEditSmartArt" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSmartArtEditText">
-	    <menuSeparator id="separatorSmartArtEditText" />
-	    <menu id="menuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuSpell">
-	    <menuSeparator id="separatorSpell" />
-	    <menu id="menuSpell" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuTableWhole">
-	    <menuSeparator id="separatorTableWhole" />
-	    <menu id="menuTableWhole" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuTextEdit">
-	    <menuSeparator id="separatorTextEdit" />
-	    <menu id="menuTextEdit" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
-    </contextMenu>
-    <contextMenu idMso="ContextMenuTextEditOutline">
-	    <menuSeparator id="separatorTextEditOutline" />
-	    <menu id="menuTextEditOutline" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
-	    </menu>
+    <contextMenu idMso="ContextMenuNotesEditText">
+      <menu id="MenuNotesEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
+        <menuSeparator id="NarrationsLabContextSeparator"
+                           title="Narrations Lab"/>
+        <button id="SpeakSelectedMenuNotes"
+                tag="SpeakSelected"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                onAction="OnAction"/>
+        <button id="AddNarrationsMenuNotes"
+                tag="AddNarrations"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                onAction="OnAction"/>
+      </menu>
     </contextMenu>
   </contextMenus>
 </customUI>

@@ -9,6 +9,11 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
     [Export(typeof(IStyleVariants))]
     class OverlayStyleVariants : BaseStyleVariants
     {
+        public override string GetStyleName()
+        {
+            return TextCollection.PictureSlidesLabText.StyleNameOverlay;
+        }
+
         protected override IList<IVariantWorker> GetRequiredVariantWorkers()
         {
             return new List<IVariantWorker>
@@ -18,11 +23,6 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
                 new GeneralSpecialEffectsVariantWorker(),
                 new BlurVariantWorker()
             };
-        }
-
-        public override string GetStyleName()
-        {
-            return TextCollection.PictureSlidesLabText.StyleNameOverlay;
         }
     }
 }

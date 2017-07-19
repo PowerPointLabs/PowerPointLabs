@@ -43,6 +43,7 @@
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f" />
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -74,6 +75,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -102,19 +104,29 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\PasteLabTest.cs" />
+    <Compile Include="FunctionalTest\SyncLabTest.cs" />
+    <Compile Include="FunctionalTest\TimerLabTest.cs" />
+    <Compile Include="FunctionalTest\NarrationsLabTest.cs" />
+    <Compile Include="FunctionalTest\PositionsLabDuplicateAndRotateTest.cs" />
     <Compile Include="FunctionalTest\ColorsLabTest.cs" />
     <Compile Include="FunctionalTest\ConvertToPictureTest.cs" />
     <Compile Include="FunctionalTest\EffectsLabTest.cs" />
-    <Compile Include="FunctionalTest\FitToSlideTest.cs" />
     <Compile Include="FunctionalTest\HighlightBulletsTest.cs" />
     <Compile Include="FunctionalTest\QuickPropertyTest.cs" />
     <Compile Include="FunctionalTest\ShapesLabTest.cs" />
     <Compile Include="FunctionalTest\SpotlightTest.cs" />
     <Compile Include="FunctionalTest\TextFragmentsTest.cs" />
+    <Compile Include="FunctionalTest\CropToSlideTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="Base\TestAssemblyFixture.cs" />
     <Compile Include="UnitTest\BaseUnitTest.cs" />
+    <Compile Include="UnitTest\CropLab\BaseCropLabTest.cs" />
+    <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
+    <Compile Include="UnitTest\CropLab\CropOutPaddingTest.cs" />
+    <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
+    <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleVariantsFactoryTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Model\ImageItemTest.cs" />
@@ -147,6 +159,12 @@
     <Compile Include="UnitTest\ResizeLab\SlideNo.cs" />
     <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
+    <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabPositionTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabFormatTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />
@@ -181,6 +199,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

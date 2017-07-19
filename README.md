@@ -7,7 +7,7 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 [![Build status](https://img.shields.io/appveyor/ci/kai33/powerpointlabs/master.svg)](https://ci.appveyor.com/project/kai33/powerpointlabs)
 
 ### Contributing To PowerPointLabs
-Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/doc/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
+Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
 
 ### Dev Prerequisites
 0. Install Office 2016 or 2013 with PowerPoint.
@@ -22,7 +22,7 @@ Interested to contribute? Please take a moment to review the [guidelines for con
 1. Turn off *Office Version Upgrading*: Open the solution `PowerPointLabs\PowerPointLabs.sln` >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’.
 2. Set up *External Office Program*: Open ‘PowerPointLabs’ Properties >> Debug >> select ‘Start external program’ and choose `POWERPNT.exe` in the Office folder. Ensure that both **Debug** and **Release** configurations have set up this.
 3. Run the solution by pressing F5 and then PowerPointLabs tab will appear in the PowerPoint ribbon. If you have installed PowerPointLabs add-in, you may have to uninstall it first and rebuild the solution.
-4. If failed to build PowerPointLabs solution, try to install `VSTO for PowerPoint` from the link inside [this file](https://github.com/PowerPointLabs/PowerPointLabs-Website/blob/master/vsto-redirect.html).
+4. If failed to build PowerPointLabs solution, try to install `VSTO for PowerPoint` from [this link](http://powerpointlabs.info/vsto-redirect.html).
 
 ### Testing
 0. Click Build (menu) >> Rebuild Solution.

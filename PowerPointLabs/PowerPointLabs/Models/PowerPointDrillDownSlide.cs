@@ -17,7 +17,9 @@ namespace PowerPointLabs.Models
         public static PowerPointSlide FromSlideFactory(PowerPoint.Slide slide)
         {
             if (slide == null)
+            {
                 return null;
+            }
 
             return new PowerPointDrillDownSlide(slide);
         }

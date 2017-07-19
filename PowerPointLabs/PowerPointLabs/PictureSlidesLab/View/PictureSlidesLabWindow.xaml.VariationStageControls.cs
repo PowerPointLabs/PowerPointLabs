@@ -4,9 +4,12 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
+
 using Color = System.Drawing.Color;
+using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.PictureSlidesLab.View
 {
@@ -38,7 +41,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         private void VariantsColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var panel = sender as Border;
-            if (panel == null) return;
+            if (panel == null)
+            {
+                return;
+            }
 
             var colorDialog = new ColorDialog
             {
@@ -46,7 +52,7 @@ namespace PowerPointLabs.PictureSlidesLab.View
                 FullOpen = true
             };
             DisableLoadingStyleOnWindowActivate();
-            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (colorDialog.ShowDialog() == Forms.DialogResult.OK)
             {
                 ViewModel.BindSelectedColor(colorDialog.Color,
                     this.GetCurrentSlide().GetNativeSlide(),
@@ -106,7 +112,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
         #region Helper funcs
         private void UpdateVariantFontPanelVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null) return;
+            if (VariantsComboBox.SelectedValue == null)
+            {
+                return;
+            }
 
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
@@ -126,7 +135,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdateVariantsColorPanelVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null) return;
+            if (VariantsComboBox.SelectedValue == null)
+            {
+                return;
+            }
 
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
@@ -146,7 +158,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdateVariantsSliderVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null) return;
+            if (VariantsComboBox.SelectedValue == null)
+            {
+                return;
+            }
 
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
@@ -166,7 +181,10 @@ namespace PowerPointLabs.PictureSlidesLab.View
 
         private void UpdatePictureAspectRefreshButtonVisibility()
         {
-            if (VariantsComboBox.SelectedValue == null) return;
+            if (VariantsComboBox.SelectedValue == null)
+            {
+                return;
+            }
 
             var currentCategory = (string) VariantsComboBox.SelectedValue;
             if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)

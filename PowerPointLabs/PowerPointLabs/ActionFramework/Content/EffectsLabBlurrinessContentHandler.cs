@@ -11,20 +11,24 @@ namespace PowerPointLabs.ActionFramework.Content
     {
         protected override string GetContent(string ribbonId)
         {
-            var feature = ribbonId.Replace(TextCollection.DynamicMenuId, "");
+            string feature = ribbonId.Replace(TextCollection.DynamicMenuId, "");
 
-            var xmlString = new System.Text.StringBuilder();
+            System.Text.StringBuilder xmlString = new System.Text.StringBuilder();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 40; i <= 100; i += 10)
             {
-                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, feature + TextCollection.DynamicMenuOptionId + (i + 4) + "0",
+                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
+                    feature + TextCollection.DynamicMenuOptionId + i,
                     TextCollection.EffectsLabBlurrinessTag));
             }
-
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, feature));
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlCheckBox, feature + TextCollection.DynamicMenuCheckBoxId,
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
+                feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom,
                 TextCollection.EffectsLabBlurrinessTag));
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, feature + TextCollection.DynamicMenuButtonId,
+
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
+                feature + TextCollection.DynamicMenuOptionId + TextCollection.DynamicMenuSeparatorId));
+            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
+                feature + TextCollection.DynamicMenuButtonId,
                 TextCollection.EffectsLabBlurrinessTag));
 
             return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);

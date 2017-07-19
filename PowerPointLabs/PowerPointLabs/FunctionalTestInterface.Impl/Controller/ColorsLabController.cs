@@ -22,7 +22,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl("ColorsLabButton"));
+                    new RibbonControl(TextCollection.ColorsLabTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(ColorPane)).Control as ColorPane;
             });
@@ -37,7 +37,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return null;
         }
 
-        public Button GetFontColorButton()
+        public Panel GetFontColorButton()
         {
             if (_pane != null)
             {
@@ -46,7 +46,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return null;
         }
 
-        public Button GetLineColorButton()
+        public Panel GetLineColorButton()
         {
             if (_pane != null)
             {
@@ -55,11 +55,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return null;
         }
 
-        public Button GetFillCollorButton()
+        public Panel GetFillColorButton()
         {
             if (_pane != null)
             {
-                return _pane.GetFillCollorButton();
+                return _pane.GetFillColorButton();
             }
             return null;
         }

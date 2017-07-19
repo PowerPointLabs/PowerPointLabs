@@ -1,4 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using PowerPointLabs;
+
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -25,6 +28,19 @@ namespace Test.FunctionalTest
 
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        [TestMethod]
+        [TestCategory("FT")]
+        public void FT_CaptionsMessageOneEmptySlide()
+        {
+            var actualSlide = PpOperations.SelectSlide(6);
+            ThreadUtil.WaitFor(1000);
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                TextCollection.CaptionsLabErrorDialogTitle,
+                "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.",
+                PplFeatures.AutoCaptions);
         }
     }
 }

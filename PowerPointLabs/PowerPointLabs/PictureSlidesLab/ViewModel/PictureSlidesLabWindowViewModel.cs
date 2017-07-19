@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
@@ -18,13 +22,11 @@ using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.View.Interface;
+using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
+
 using Fonts = System.Windows.Media.Fonts;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel
 {
@@ -132,104 +134,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             container.ComposeParts(this);
 
             Logger.Log("Init PSL View Model done");
-        }
-
-        private void InitFontFamilies()
-        {
-            FontFamilies = new ObservableCollection<string>();
-            foreach (var fontFamily in Fonts.SystemFontFamilies)
-            {
-                FontFamilies.Add(fontFamily.Source);
-            }
-
-            // add font family not in Fonts.SystemFontFamilies
-            FontFamilies.Add("Segoe UI Light");
-            FontFamilies.Add("Calibri Light");
-            FontFamilies.Add("Arial Black");
-            FontFamilies.Add("Times New Roman Italic");
-
-            FontFamilies = new ObservableCollection<string>(FontFamilies.OrderBy(i => i));
-        }
-
-        private void CleanUnusedPersistentData()
-        {
-            var imageFilesInUse = new HashSet<string>();
-            foreach (var imageItem in ImageSelectionList)
-            {
-                imageFilesInUse.Add(imageItem.ImageFile);
-                imageFilesInUse.Add(imageItem.FullSizeImageFile);
-                if (imageItem.CroppedImageFile != null)
-                {
-                    imageFilesInUse.Add(imageItem.CroppedImageFile);
-                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
-                }
-            }
-            StoragePath.CleanPersistentFolder(imageFilesInUse);
-        }
-
-        private void InitUiModels()
-        {
-            StylesVariationList = new ObservableCollection<ImageItem>();
-            StylesVariationListSelectedId = new ObservableInt {Number = -1};
-            StylesVariationListSelectedItem = new ObservableImageItem();
-            CurrentVariantCategory = new ObservableString();
-            CurrentVariantCategoryId = new ObservableInt {Number = -1};
-            VariantsCategory = new ObservableCollection<string>();
-            SelectedFontId = new ObservableInt();
-            SelectedFontFamily = new ObservableFont();
-            SelectedSliderValue = new ObservableInt();
-            IsSliderValueChanged = new ObservableBoolean { Flag = false };
-            SelectedSliderMaximum = new ObservableInt();
-            SelectedSliderTickFrequency = new ObservableInt();
-
-            StylesPreviewList = new ObservableCollection<ImageItem>();
-            StylesPreviewListSelectedId = new ObservableInt {Number = -1};
-            StylesPreviewListSelectedItem = new ObservableImageItem();
-
-            ImageSelectionList = new ObservableCollection<ImageItem>();
-            ImageSelectionList.Add(CreateChoosePicturesItem());
-
-            Settings = StoragePath.LoadSettings();
-
-            if (StoragePath.IsFirstTimeUsage())
-            {
-                Logger.Log("First time use PSL");
-                ImageSelectionList.Add(CreateSamplePic1Item());
-                ImageSelectionList.Add(CreateSamplePic2Item());
-            }
-            else
-            {
-                var loadedImageSelectionList = StoragePath.LoadPictures();
-                foreach (var item in loadedImageSelectionList)
-                {
-                    if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile != null)
-                    {
-                        item.FullSizeImageFile = item.BackupFullSizeImageFile;
-                    }
-                    else if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile == null)
-                    {
-                        Logger.Log("Corrupted picture found. To be removed");
-                        continue;
-                    }
-                    ImageSelectionList.Add(item);
-                }
-            }
-
-            ImageSelectionListSelectedId = new ObservableInt {Number = -1};
-            ImageSelectionListSelectedItem = new ObservableImageItem();
-            IsActiveDownloadProgressRing = new ObservableBoolean {Flag = false};
-        }
-
-        private void InitStorage()
-        {
-            var isTempPathInit = Util.TempPath.InitTempFolder();
-            var isStoragePathInit = StoragePath.InitPersistentFolder();
-            if (!isTempPathInit || !isStoragePathInit)
-            {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
-                Logger.Log("Failed to init storage");
-            }
-            Logger.Log("Init storage done");
         }
 
         public void CleanUp()
@@ -462,7 +366,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             StylesVariationList.Clear();
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
+            {
                 return;
+            }
 
             InitStylesVariationCategories(givenOptions, givenVariants, targetStyleItem.Tooltip);
             if (Settings.GetDefaultAspectWhenCustomize() == Aspect.PictureAspect)
@@ -501,7 +407,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
+            {
                 return;
+            }
 
             StylesVariationListSelectedId.Number = selectedId < 0 ? 0 : selectedId;
 
@@ -528,7 +436,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("current variation list selected id is " + StylesVariationListSelectedId.Number);
             Logger.Log("variants category count is " + VariantsCategory.Count);
             if (StylesVariationListSelectedId.Number < 0
-                || VariantsCategory.Count == 0) return;
+                || VariantsCategory.Count == 0)
+            {
+                return;
+            }
 
             Logger.Log("Step by step preview begins");
             var targetVariationSelectedIndex = StylesVariationListSelectedId.Number;
@@ -751,9 +662,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("Check for update selected picture in picture aspect");
             Logger.Log("is in picture aspect: " + IsInPictureVariation());
             Logger.Log("variation list selectedId is: " + StylesVariationListSelectedId.Number);
-            if (!IsInPictureVariation() 
+            if (!IsInPictureVariation()
                 || StylesVariationListSelectedId.Number == -1)
+            {
                 return;
+            }
 
             try
             {
@@ -773,7 +686,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("is in picture aspect: " + IsInPictureVariation());
             Logger.Log("new pic is null: " + (newPicture == null));
             if (!IsInPictureVariation() || newPicture == null)
+            {
                 return;
+            }
 
             for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
             {
@@ -791,7 +706,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             Logger.Log("Check for update picture in picture aspect when deleted some");
             Logger.Log("is in picture aspect: " + IsInPictureVariation());
             if (!IsInPictureVariation())
+            {
                 return;
+            }
 
             for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
             {
@@ -809,9 +726,27 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             _8PicturesInPictureVariation = GetLast8Pictures(selectedIdOfVariationList);
         }
 
+        #endregion
+
+        #endregion
+
+        #region Add Picture Citation Slide
+
+        public void AddPictureCitationSlide(Slide slide, List<PowerPointSlide> allSlides)
+        {
+            new PictureCitationSlide(slide, allSlides).CreatePictureCitations();
+        }
+
+        #endregion
+
+        #region Helper funcs
+
         private List<ImageItem> GetLast8Pictures(int selectedIdOfVariationList)
         {
-            if (!IsInPictureVariation()) return new List<ImageItem>();
+            if (!IsInPictureVariation())
+            {
+                return new List<ImageItem>();
+            }
 
             try
             {
@@ -839,7 +774,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     result[selectedIdOfVariationList] = View.CreateDefaultPictureItem();
                 }
                 else if (selectedIdOfVariationList >= 0)
-                    // contains selected item, need swap to selected index
+                // contains selected item, need swap to selected index
                 {
                     var indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
                     var tempItem = result[selectedIdOfVariationList];
@@ -855,21 +790,6 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return new List<ImageItem>();
             }
         }
-
-        #endregion
-
-        #endregion
-
-        #region Add Picture Citation Slide
-
-        public void AddPictureCitationSlide(Slide slide, List<PowerPointSlide> allSlides)
-        {
-            new PictureCitationSlide(slide, allSlides).CreatePictureCitations();
-        }
-
-        #endregion
-
-        #region Helper funcs
 
         private static IList<object> LoadClipboardPicture()
         {
@@ -907,7 +827,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 Logger.Log("Save clipboard begins.");
                 foreach (var copiedObj in copiedObjs)
                 {
-                    if (copiedObj == null) continue;
+                    if (copiedObj == null)
+                    {
+                        continue;
+                    }
 
                     if (copiedObj is Image)
                     {
@@ -946,7 +869,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             StylesPreviewList.Clear();
 
             if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
+            {
                 return;
+            }
 
             var copiedPicture = LoadClipboardPicture();
             try
@@ -1156,6 +1081,106 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 ContextLink = "https://flic.kr/p/5fKBTq",
                 Source = "https://flic.kr/p/5fKBTq"
             };
+        }
+        #endregion
+
+        #region Private Lifecycle
+        private void InitFontFamilies()
+        {
+            FontFamilies = new ObservableCollection<string>();
+            foreach (var fontFamily in Fonts.SystemFontFamilies)
+            {
+                FontFamilies.Add(fontFamily.Source);
+            }
+
+            // add font family not in Fonts.SystemFontFamilies
+            FontFamilies.Add("Segoe UI Light");
+            FontFamilies.Add("Calibri Light");
+            FontFamilies.Add("Arial Black");
+            FontFamilies.Add("Times New Roman Italic");
+
+            FontFamilies = new ObservableCollection<string>(FontFamilies.OrderBy(i => i));
+        }
+
+        private void CleanUnusedPersistentData()
+        {
+            var imageFilesInUse = new HashSet<string>();
+            foreach (var imageItem in ImageSelectionList)
+            {
+                imageFilesInUse.Add(imageItem.ImageFile);
+                imageFilesInUse.Add(imageItem.FullSizeImageFile);
+                if (imageItem.CroppedImageFile != null)
+                {
+                    imageFilesInUse.Add(imageItem.CroppedImageFile);
+                    imageFilesInUse.Add(imageItem.CroppedThumbnailImageFile);
+                }
+            }
+            StoragePath.CleanPersistentFolder(imageFilesInUse);
+        }
+
+        private void InitUiModels()
+        {
+            StylesVariationList = new ObservableCollection<ImageItem>();
+            StylesVariationListSelectedId = new ObservableInt { Number = -1 };
+            StylesVariationListSelectedItem = new ObservableImageItem();
+            CurrentVariantCategory = new ObservableString();
+            CurrentVariantCategoryId = new ObservableInt { Number = -1 };
+            VariantsCategory = new ObservableCollection<string>();
+            SelectedFontId = new ObservableInt();
+            SelectedFontFamily = new ObservableFont();
+            SelectedSliderValue = new ObservableInt();
+            IsSliderValueChanged = new ObservableBoolean { Flag = false };
+            SelectedSliderMaximum = new ObservableInt();
+            SelectedSliderTickFrequency = new ObservableInt();
+
+            StylesPreviewList = new ObservableCollection<ImageItem>();
+            StylesPreviewListSelectedId = new ObservableInt { Number = -1 };
+            StylesPreviewListSelectedItem = new ObservableImageItem();
+
+            ImageSelectionList = new ObservableCollection<ImageItem>();
+            ImageSelectionList.Add(CreateChoosePicturesItem());
+
+            Settings = StoragePath.LoadSettings();
+
+            if (StoragePath.IsFirstTimeUsage())
+            {
+                Logger.Log("First time use PSL");
+                ImageSelectionList.Add(CreateSamplePic1Item());
+                ImageSelectionList.Add(CreateSamplePic2Item());
+            }
+            else
+            {
+                var loadedImageSelectionList = StoragePath.LoadPictures();
+                foreach (var item in loadedImageSelectionList)
+                {
+                    if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile != null)
+                    {
+                        item.FullSizeImageFile = item.BackupFullSizeImageFile;
+                    }
+                    else if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile == null)
+                    {
+                        Logger.Log("Corrupted picture found. To be removed");
+                        continue;
+                    }
+                    ImageSelectionList.Add(item);
+                }
+            }
+
+            ImageSelectionListSelectedId = new ObservableInt { Number = -1 };
+            ImageSelectionListSelectedItem = new ObservableImageItem();
+            IsActiveDownloadProgressRing = new ObservableBoolean { Flag = false };
+        }
+
+        private void InitStorage()
+        {
+            var isTempPathInit = Util.TempPath.InitTempFolder();
+            var isStoragePathInit = StoragePath.InitPersistentFolder();
+            if (!isTempPathInit || !isStoragePathInit)
+            {
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
+                Logger.Log("Failed to init storage");
+            }
+            Logger.Log("Init storage done");
         }
         #endregion
     }

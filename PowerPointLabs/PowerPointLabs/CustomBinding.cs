@@ -19,7 +19,9 @@ namespace PowerPointLabs
             : base(propertyName, dataSource, dataMember)
         {
             if (valueConverter != null)
+            {
                 this._converter = valueConverter;
+            }
 
             this.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
             this.FormattingEnabled = false;
@@ -33,7 +35,9 @@ namespace PowerPointLabs
             : base(propertyName, dataSource, dataMember)
         {
             if (valueConverter != null)
+            {
                 this._converter = valueConverter;
+            }
 
             this._converterCulture = Thread.CurrentThread.CurrentUICulture;
             this._converterParameter = converterParameter;
@@ -49,7 +53,10 @@ namespace PowerPointLabs
                                                               _converterCulture);
                 cevent.Value = converterdValue;
             }
-            else base.OnFormat(cevent);
+            else
+            {
+                base.OnFormat(cevent);
+            }
         }
 
         protected override void OnParse(ConvertEventArgs cevent)
@@ -61,7 +68,10 @@ namespace PowerPointLabs
 
                 cevent.Value = converterdValue;
             }
-            else base.OnParse(cevent);
+            else
+            {
+                base.OnParse(cevent);
+            }
         }
     }
 }
