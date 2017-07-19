@@ -1541,8 +1541,11 @@ namespace PowerPointLabs.PositionsLab
             }
             finally
             {
-                simulatedShapes.Delete();
-                GC.Collect();
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
             }
         }
 
