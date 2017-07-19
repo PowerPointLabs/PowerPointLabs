@@ -7,14 +7,14 @@ namespace PowerPointLabs.ZoomLab
         public static bool BackgroundZoomChecked = true;
         public static bool MultiSlideZoomChecked = true;
 
-        public static void OpenZoomLabSettingsDialog()
+        public static void ShowSettingsDialog()
         {
             ZoomLabSettingsDialogBox dialog = new ZoomLabSettingsDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
-            dialog.SettingsHandler += ZoomLabSettingsEdited;
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 
-        public static void ZoomLabSettingsEdited(bool backgroundChecked, bool multiSlideChecked)
+        private static void OnSettingsDialogConfirmed(bool backgroundChecked, bool multiSlideChecked)
         {
             BackgroundZoomChecked = backgroundChecked;
             MultiSlideZoomChecked = multiSlideChecked;

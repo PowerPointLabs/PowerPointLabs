@@ -116,10 +116,8 @@ namespace PowerPointLabs
 
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
-
-        public bool FrameAnimationChecked = false;
+        
         public bool SpotlightDelete = true;
-        public float DefaultDuration = 0.5f;
 
         public bool HighlightBulletsEnabled = true;
         public bool AddAutoMotionEnabled = true;
@@ -132,12 +130,6 @@ namespace PowerPointLabs
 
         public bool EmbedAudioVisible = true;
         public bool RecorderPaneVisible = false;
-
-        public bool _previewCurrentSlide;
-
-        public List<string> _voiceNames;
-
-        public int _voiceSelected;
 
         #region IRibbonExtensibility Members
 
@@ -181,11 +173,33 @@ namespace PowerPointLabs
             }
         }
 
+        #region Narrations Lab initialization
         private void SetVoicesFromInstalledOptions()
         {
-            var installedVoices = NotesToAudio.GetVoices().ToList();
-            _voiceNames = installedVoices;
+            NarrationsLabSettings.VoiceNameList = NotesToAudio.GetVoices().ToList();
         }
+
+        private void SetCoreVoicesToSelections()
+        {
+            string defaultVoice = GetSelectedVoiceOrNull();
+            NotesToAudio.SetDefaultVoice(defaultVoice);
+        }
+
+        private string GetSelectedVoiceOrNull()
+        {
+            string selectedVoice = null;
+            try
+            {
+                selectedVoice = NarrationsLabSettings.VoiceNameList.ToArray()[NarrationsLabSettings.VoiceSelectedIndex];
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                // No voices are installed (It should be impossible for the index to be out of range otherwise.)
+                Logger.LogException(e, "GetSelectedVoiceOrNull");
+            }
+            return selectedVoice;
+        }
+        #endregion
 
         #region Button Labels
         public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
@@ -230,35 +244,6 @@ namespace PowerPointLabs
             }
 
             return true;
-        }
-
-        public void PreviewAnimationsIfChecked()
-        {
-            if (_previewCurrentSlide)
-            {
-                NotesToAudio.PreviewAnimations();
-            }
-        }
-
-        private void SetCoreVoicesToSelections()
-        {
-            string defaultVoice = GetSelectedVoiceOrNull();
-            NotesToAudio.SetDefaultVoice(defaultVoice);
-        }
-
-        private string GetSelectedVoiceOrNull()
-        {
-            string selectedVoice = null;
-            try
-            {
-                selectedVoice = _voiceNames.ToArray()[_voiceSelected];
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                // No voices are installed (It should be impossible for the index to be out of range otherwise.)
-                Logger.LogException(e, "GetSelectedVoiceOrNull");
-            }
-            return selectedVoice;
         }
 
         public Bitmap GetContextMenuImage(Office.IRibbonControl control)

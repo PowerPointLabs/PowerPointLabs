@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.ZoomLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            ZoomLabSettings.OpenZoomLabSettingsDialog();
+            ZoomLabSettings.ShowSettingsDialog();
         }
     }
 }

@@ -10,8 +10,8 @@ namespace PowerPointLabs.NarrationsLab.Views
     /// </summary>
     public partial class NarrationsLabSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(string voiceName, bool preview);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(string voiceName, bool preview);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public NarrationsLabSettingsDialogBox()
         {
@@ -31,15 +31,10 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsHandler(voiceSelectionInput.Content.ToString(), previewCheckbox.IsChecked.GetValueOrDefault());
+            DialogConfirmedHandler(voiceSelectionInput.Content.ToString(), previewCheckbox.IsChecked.GetValueOrDefault());
             Close();
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
+        
         void VoiceSelectionInput_Item_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && voiceSelectionInput.IsExpanded)

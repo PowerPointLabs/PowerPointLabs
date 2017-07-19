@@ -8,8 +8,8 @@ namespace PowerPointLabs.ZoomLab.Views
     /// </summary>
     public partial class ZoomLabSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(bool slideBackgroundChecked, bool multiSlideChecked);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(bool slideBackgroundChecked, bool multiSlideChecked);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public ZoomLabSettingsDialogBox()
         {
@@ -28,13 +28,8 @@ namespace PowerPointLabs.ZoomLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingsHandler(slideBackgroundCheckbox.IsChecked.GetValueOrDefault(), 
+            DialogConfirmedHandler(slideBackgroundCheckbox.IsChecked.GetValueOrDefault(), 
                             separateSlidesCheckbox.IsChecked.GetValueOrDefault());
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
             Close();
         }
     }

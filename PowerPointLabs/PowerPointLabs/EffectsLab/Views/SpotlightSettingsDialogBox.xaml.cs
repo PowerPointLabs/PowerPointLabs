@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,19 +18,9 @@ namespace PowerPointLabs.EffectsLab.Views
     /// </summary>
     public partial class SpotlightSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(float spotlightTransparency, float softEdge, Drawing.Color newColor);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
-
-        private Dictionary<String, float> softEdgesMapping = new Dictionary<string, float>
-        {
-            {"None", 0},
-            {"1 Point", 1},
-            {"2.5 Points", 2.5f},
-            {"5 Points", 5},
-            {"10 Points", 10},
-            {"25 Points", 25},
-            {"50 Points", 50}
-        };
+        public delegate void DialogConfirmedDelegate(float spotlightTransparency, float spotlightSoftEdges, Drawing.Color spotlightColor);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
+        
         private float lastTransparency;
 
         public SpotlightSettingsDialogBox()
@@ -39,20 +28,20 @@ namespace PowerPointLabs.EffectsLab.Views
             InitializeComponent();
         }
 
-        public SpotlightSettingsDialogBox(float defaultTransparency, float defaultSoftEdge, Drawing.Color defaultColor)
+        public SpotlightSettingsDialogBox(float spotlightTransparency, float spotlightSoftEdges, Drawing.Color spotlightColor)
             : this()
         {
-            lastTransparency = defaultTransparency;
-            spotlightTransparencyInput.Text = defaultTransparency.ToString("P0");
+            lastTransparency = spotlightTransparency;
+            spotlightTransparencyInput.Text = spotlightTransparency.ToString("P0");
             spotlightTransparencyInput.ToolTip = TextCollection.SpotlightSettingsTransparencyInputTooltip;
 
-            String[] keys = softEdgesMapping.Keys.ToArray();
-            float[] values = softEdgesMapping.Values.ToArray();
+            String[] keys = EffectsLabSettings.SpotlightSoftEdgesMapping.Keys.ToArray();
+            float[] values = EffectsLabSettings.SpotlightSoftEdgesMapping.Values.ToArray();
             softEdgesSelectionInput.ItemsSource = keys;
-            softEdgesSelectionInput.Content = keys[Array.IndexOf(values, defaultSoftEdge)];
+            softEdgesSelectionInput.Content = keys[Array.IndexOf(values, spotlightSoftEdges)];
             softEdgesSelectionInput.ToolTip = TextCollection.SpotlightSettingsSoftEdgesSelectionInputTooltip;
 
-            spotlightColorRect.Fill = new SolidColorBrush(Graphics.MediaColorFromDrawingColor(defaultColor));
+            spotlightColorRect.Fill = new SolidColorBrush(Graphics.MediaColorFromDrawingColor(spotlightColor));
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
@@ -63,14 +52,9 @@ namespace PowerPointLabs.EffectsLab.Views
             {
                 text = text.Substring(0, text.IndexOf("%"));
             }
-            SettingsHandler(float.Parse(text) / 100, 
-                            softEdgesMapping[(String)softEdgesSelectionInput.Content], 
+            DialogConfirmedHandler(float.Parse(text) / 100,
+                            EffectsLabSettings.SpotlightSoftEdgesMapping[(String)softEdgesSelectionInput.Content], 
                             Graphics.DrawingColorFromBrush(spotlightColorRect.Fill));
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
             Close();
         }
 
@@ -86,7 +70,7 @@ namespace PowerPointLabs.EffectsLab.Views
             }
         }
 
-        void SoftEdgesSelectionInput_Item_MouseUp(object sender, MouseButtonEventArgs e)
+        private void SoftEdgesSelectionInput_Item_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && softEdgesSelectionInput.IsExpanded)
             {

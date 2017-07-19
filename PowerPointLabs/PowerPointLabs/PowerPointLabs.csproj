@@ -610,14 +610,20 @@
     <Compile Include="AgendaLab\Templates\BulletAgendaTemplate.cs" />
     <Compile Include="AgendaLab\Templates\TemplateIndexTable.cs" />
     <Compile Include="AgendaLab\Templates\VisualAgendaTemplate.cs" />
+    <Compile Include="AnimationLab\AnimationLabSettings.cs" />
     <Compile Include="AudioMisc\Audio.cs" />
     <Compile Include="AudioMisc\AudioHelper.cs" />
     <Compile Include="AnimationLab\AutoAnimate.cs" />
     <Compile Include="AutoUpdate\Downloader.cs" />
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
+    <Compile Include="HighlightLab\HighlightLabSettings.cs" />
+    <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="PositionsLab\PositionsLabSettings.cs" />
+    <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
@@ -692,10 +698,9 @@
     <Compile Include="ShortcutsLab\ConvertToPicture.cs" />
     <Compile Include="CropLab\CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
-    <Compile Include="EffectsLab\EffectsLabSpotlightSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabBlur.cs" />
-    <Compile Include="EffectsLab\Views\EffectsLabBlurDialogBox.xaml.cs">
-      <DependentUpon>EffectsLabBlurDialogBox.xaml</DependentUpon>
+    <Compile Include="EffectsLab\Views\BlurSettingsDialogBox.xaml.cs">
+      <DependentUpon>BlurSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="FunctionalTestInterface.Impl\Controller\TimerLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\SyncLabController.cs" />
@@ -711,7 +716,7 @@
     <Compile Include="FunctionalTestInterface.Impl\PowerPointLabsFT.cs" />
     <Compile Include="FunctionalTestInterface.Impl\PowerPointOperations.cs" />
     <Compile Include="FunctionalTestInterface.Impl\SlideData.cs" />
-    <Compile Include="MiscFeatures\MergeIntoGroup.cs" />
+    <Compile Include="ShortcutsLab\AddIntoGroup.cs" />
     <Compile Include="PasteLab\PasteAtCursorPosition.cs" />
     <Compile Include="PasteLab\PasteIntoGroup.cs" />
     <Compile Include="PasteLab\PasteLabConstants.cs" />
@@ -1030,7 +1035,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="ShapesLab\ShapesLabConfig.cs" />
+    <Compile Include="ShapesLab\ShapesLabConfigSaveFile.cs" />
     <Compile Include="TextCollection.cs" />
     <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\Common.cs" />
@@ -1088,10 +1093,10 @@
     <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="LegacyShapeUtil.cs" />
-    <Compile Include="NarrationsLab\RecorderTaskPane.cs">
+    <Compile Include="NarrationsLab\Views\RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NarrationsLab\RecorderTaskPane.Designer.cs">
+    <Compile Include="NarrationsLab\Views\RecorderTaskPane.Designer.cs">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </Compile>
     <Compile Include="AnimationLab\AnimateInSlide.cs" />
@@ -1196,7 +1201,7 @@
       <DependentUpon>CustomShapePane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NarrationsLab\RecorderTaskPane.resx">
+    <EmbeddedResource Include="NarrationsLab\Views\RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -1337,7 +1342,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EffectsLab\Views\EffectsLabBlurDialogBox.xaml">
+    <Page Include="EffectsLab\Views\BlurSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -7,167 +7,127 @@ namespace PowerPointLabs.PositionsLab.Views
     /// </summary>
     public partial class DistributeSettingsDialog
     {
-        //Flag to trigger
-        public bool IsOpen { get; set; }
+        public delegate void DialogConfirmedDelegate(PositionsLabSettings.DistributeReferenceObject distributeReference,
+                                                    PositionsLabSettings.DistributeRadialReferenceObject radialReference,
+                                                    PositionsLabSettings.DistributeSpaceReferenceObject spaceReference,
+                                                    PositionsLabSettings.RadialShapeOrientationObject orientationReference);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public DistributeSettingsDialog()
         {
-            IsOpen = true;
             InitializeComponent();
         }
 
-        #region On-Load Settings
-        private void DistributeToSlideButton_Load(object sender, RoutedEventArgs e)
+        public DistributeSettingsDialog(PositionsLabSettings.DistributeReferenceObject distributeReference,
+                                        PositionsLabSettings.DistributeRadialReferenceObject radialReference,
+                                        PositionsLabSettings.DistributeSpaceReferenceObject spaceReference,
+                                        PositionsLabSettings.RadialShapeOrientationObject orientationReference)
+            : this()
         {
-            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.Slide)
+            switch (distributeReference)
             {
-                distributeToSlideButton.IsChecked = true;
+                case PositionsLabSettings.DistributeReferenceObject.Slide:
+                    distributeToSlideButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.DistributeReferenceObject.FirstShape:
+                    distributeToFirstShapeButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes:
+                    distributeToFirstTwoShapesButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.DistributeReferenceObject.ExtremeShapes:
+                    distributeToExtremeShapesButton.IsChecked = true;
+                    break;
+            }
+
+            switch (radialReference)
+            {
+                case PositionsLabSettings.DistributeRadialReferenceObject.AtSecondShape:
+                    distributeAtSecondShapeButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.DistributeRadialReferenceObject.SecondThirdShape:
+                    distributeToSecondThirdShapeButton.IsChecked = true;
+                    break;
+            }
+
+            switch (spaceReference)
+            {
+                case PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary:
+                    distributeByBoundariesButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter:
+                    distributeByShapeCenterButton.IsChecked = true;
+                    break;
+            }
+
+            switch (orientationReference)
+            {
+                case PositionsLabSettings.RadialShapeOrientationObject.Fixed:
+                    distributeShapeOrientationFixedButton.IsChecked = true;
+                    break;
+                case PositionsLabSettings.RadialShapeOrientationObject.Dynamic:
+                    distributeShapeOrientationDynamicButton.IsChecked = true;
+                    break;
             }
         }
-
-        private void DistributeToFirstShapeButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.FirstShape)
-            {
-                distributeToFirstShapeButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeToFirstTwoShapesButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.FirstTwoShapes)
-            {
-                distributeToFirstTwoShapesButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeExtremeShapesButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeReference == PositionsLabMain.DistributeReferenceObject.ExtremeShapes)
-            {
-                distributeToExtremeShapesButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeAtSecondShapeButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeRadialReference == PositionsLabMain.DistributeRadialReferenceObject.AtSecondShape)
-            {
-                distributeAtSecondShapeButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeToSecondThirdShapeButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeRadialReference == PositionsLabMain.DistributeRadialReferenceObject.SecondThirdShape)
-            {
-                distributeToSecondThirdShapeButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeByBoundariesButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectBoundary)
-            {
-                distributeByBoundariesButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeByShapeCenterButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeSpaceReference == PositionsLabMain.DistributeSpaceReferenceObject.ObjectCenter)
-            {
-                distributeByShapeCenterButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeShapeOrientationFixedButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Fixed)
-            {
-                distributeShapeOrientationFixedButton.IsChecked = true;
-            }
-        }
-
-        private void DistributeShapeOrientationDynamicButton_Load(object sender, RoutedEventArgs e)
-        {
-            if (PositionsLabMain.DistributeShapeOrientation == PositionsLabMain.RadialShapeOrientationObject.Dynamic)
-            {
-                distributeShapeOrientationDynamicButton.IsChecked = true;
-            }
-        }
-        #endregion
-
-        #region Button actions
+        
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
+            PositionsLabSettings.DistributeReferenceObject distributeReference;
+            PositionsLabSettings.DistributeRadialReferenceObject radialReference;
+            PositionsLabSettings.DistributeSpaceReferenceObject spaceReference;
+            PositionsLabSettings.RadialShapeOrientationObject orientationReference;
+            
             // Checks for boundary reference
             if (distributeToSlideButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeReferToSlide();
+                distributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
             }
-
-            if (distributeToFirstShapeButton.IsChecked.GetValueOrDefault())
+            else if (distributeToFirstShapeButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeReferToFirstShape();
+                distributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
             }
-
-            if (distributeToFirstTwoShapesButton.IsChecked.GetValueOrDefault())
+            else if (distributeToFirstTwoShapesButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeReferToFirstTwoShapes();
+                distributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
             }
-
-            if (distributeToExtremeShapesButton.IsChecked.GetValueOrDefault())
+            else
             {
-                PositionsLabMain.DistributeReferToExtremeShapes();
+                distributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
             }
 
+            // Checks for radial boundary reference
             if (distributeAtSecondShapeButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeReferAtSecondShape();
+                radialReference = PositionsLabSettings.DistributeRadialReferenceObject.AtSecondShape;
             }
-
-            if (distributeToSecondThirdShapeButton.IsChecked.GetValueOrDefault())
+            else
             {
-                PositionsLabMain.DistributeReferToSecondThirdShape();
+                radialReference = PositionsLabSettings.DistributeRadialReferenceObject.SecondThirdShape;
             }
 
             // Checks for space calculation reference
             if (distributeByBoundariesButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeSpaceByBoundaries();
+                spaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
             }
-
-            if (distributeByShapeCenterButton.IsChecked.GetValueOrDefault())
+            else
             {
-                PositionsLabMain.DistributeSpaceByCenter();
+                spaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
             }
 
             // Checks for radial shape orientation
             if (distributeShapeOrientationFixedButton.IsChecked.GetValueOrDefault())
             {
-                PositionsLabMain.DistributeShapeOrientationToFixed();
+                orientationReference = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
             }
-
-            if (distributeShapeOrientationDynamicButton.IsChecked.GetValueOrDefault())
+            else
             {
-                PositionsLabMain.DistributeShapeOrientationToDynamic();
+                orientationReference = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
             }
 
-            IsOpen = false;
+            DialogConfirmedHandler(distributeReference, radialReference, spaceReference, orientationReference);
             Close();
         }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            IsOpen = false;
-            Close();
-        }
-
-        private void DistributeSettingsDialong_Closed(object sender, System.EventArgs e)
-        {
-            IsOpen = false;
-        }
-        #endregion
     }
 }

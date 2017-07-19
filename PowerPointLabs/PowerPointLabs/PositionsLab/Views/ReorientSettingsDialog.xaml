@@ -12,7 +12,6 @@
                       ResizeMode="NoResize"
                       Title="Reorient Settings"
                       WindowStartupLocation="CenterScreen"
-                      Closed="ReorientSettingsDialong_Closed"
                       WindowTransitionsEnabled="False">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -29,20 +28,20 @@
         <TextBlock x:Name="radialShapeOrientationLabel" FontSize="12" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0"><Run Text="How Orientation of Shapes Change When They Rotate"/></TextBlock>
         <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="335"/>
         <WrapPanel HorizontalAlignment="Left" Height="65" Margin="0,30,0,0" VerticalAlignment="Top" Width="342">
-            <RadioButton x:Name="reorientShapeOrientationFixedButton" ToolTip="Rotate functions will retain the orientation of shapes when moving them" HorizontalAlignment="Left" Margin="54,6,0,0" VerticalAlignment="Top" IsChecked="True" Loaded="ReorientShapeOrientationFixedButton_Load">
+            <RadioButton x:Name="reorientShapeOrientationFixedButton" ToolTip="Rotate functions will retain the orientation of shapes when moving them" HorizontalAlignment="Left" Margin="54,6,0,0" VerticalAlignment="Top" IsChecked="True">
                 <StackPanel>
-                    <Image Source="..\Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" Width="41" Height="41" />
+                    <Image Source="..\..\Resources\PositionsLab\RadialShapeOrientationFixedIcon.png" Width="41" Height="41" />
                     <TextBlock Text="Fixed" HorizontalAlignment="Center" />
                 </StackPanel>
             </RadioButton>
-            <RadioButton x:Name="reorientShapeOrientationDynamicButton" ToolTip="Rotate functions will rotate shapes when moving them" HorizontalAlignment="Left" Margin="71,6,0,0" VerticalAlignment="Top" Loaded="ReorientShapeOrientationDynamicButton_Load">
+            <RadioButton x:Name="reorientShapeOrientationDynamicButton" ToolTip="Rotate functions will rotate shapes when moving them" HorizontalAlignment="Left" Margin="71,6,0,0" VerticalAlignment="Top">
                 <StackPanel>
-                    <Image Source="..\Resources\PositionsLab\RadialShapeOrientationDynamicIcon.png" Width="41" Height="41" />
+                    <Image Source="..\..\Resources\PositionsLab\RadialShapeOrientationDynamicIcon.png" Width="41" Height="41" />
                     <TextBlock Text="Dynamic" HorizontalAlignment="Center" />
                 </StackPanel>
             </RadioButton>
         </WrapPanel>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
     </Grid>
 </controls:MetroWindow>

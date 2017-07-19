@@ -30,6 +30,6 @@
         <TextBox x:Name="durationInput" VerticalAlignment="Top" HorizontalAlignment="Right" Height="23" TextWrapping="NoWrap" TextAlignment="Center" Text="" Width="60" Margin="0,25,20,0" LostFocus="DurationInput_LostFocus"/>
         <CheckBox x:Name="smoothAnimationCheckbox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,80,0,0">Use Smoother Animation</CheckBox>
         <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True" Click="CancelButton_Click"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
     </Grid>
 </controls:MetroWindow>

@@ -5,57 +5,50 @@ using PowerPointLabs.ActionFramework.Common.Log;
 namespace PowerPointLabs.EffectsLab.Views
 {
     /// <summary>
-    /// Interaction logic for EffectsLabBlurDialogBox.xaml
+    /// Interaction logic for BlurSettingsDialogBox.xaml
     /// </summary>
-    public partial class EffectsLabBlurDialogBox
+    public partial class BlurSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(string feature, int percentage, bool isTinted);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(string feature, bool isTint, int customPercentage);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
-        private string currentFeature;
-        private float lastBlurriness;
+        private string _currentFeature;
+        private float _blurCustomPercentage;
 
-        public EffectsLabBlurDialogBox()
+        public BlurSettingsDialogBox()
         {
             InitializeComponent();
         }
         
-        public EffectsLabBlurDialogBox(string feature)
+        public BlurSettingsDialogBox(string feature, bool isTint, int customPercentage)
             : this()
         {
-            currentFeature = feature;
-            string properFeatureName = "Effects Lab";
+            _currentFeature = feature;
 
             switch (feature)
             {
                 case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    properFeatureName = TextCollection.EffectsLabBlurSelectedButtonLabel;
-                    lastBlurriness = EffectsLabBlur.CustomPercentageSelected;
+                    Title = TextCollection.EffectsLabBlurSelectedButtonLabel + " Settings";
                     tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintSelected;
-                    tintCheckbox.IsChecked = EffectsLabBlur.IsTintSelected;
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureRemainder:
-                    properFeatureName = TextCollection.EffectsLabBlurRemainderButtonLabel;
-                    lastBlurriness = EffectsLabBlur.CustomPercentageRemainder;
+                    Title = TextCollection.EffectsLabBlurRemainderButtonLabel + " Settings";
                     tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintRemainder;
-                    tintCheckbox.IsChecked = EffectsLabBlur.IsTintRemainder;
                     break;
                 case TextCollection.EffectsLabBlurrinessFeatureBackground:
-                    properFeatureName = TextCollection.EffectsLabBlurBackgroundButtonLabel;
-                    lastBlurriness = EffectsLabBlur.CustomPercentageBackground;
+                    Title = TextCollection.EffectsLabBlurBackgroundButtonLabel + " Settings";
                     tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintBackground;
-                    tintCheckbox.IsChecked = EffectsLabBlur.IsTintBackground;
                     break;
                 default:
                     Logger.Log(feature + " does not exist!", ActionFramework.Common.Logger.LogType.Error);
                     break;
             }
 
-            Title = properFeatureName + " Settings";
-            
+            tintCheckbox.IsChecked = isTint;
             tintCheckbox.ToolTip = TextCollection.EffectsLabSettingsTintCheckboxTooltip;
 
-            blurrinessInput.Text = (lastBlurriness / 100.0f).ToString("P0");
+            _blurCustomPercentage = customPercentage;
+            blurrinessInput.Text = (customPercentage / 100.0f).ToString("P0");
             blurrinessInput.ToolTip = TextCollection.EffectsLabSettingsBlurrinessInputTooltip;
         }
 
@@ -69,12 +62,7 @@ namespace PowerPointLabs.EffectsLab.Views
             }
             int percentage = int.Parse(text);
 
-            SettingsHandler(currentFeature, percentage, tintCheckbox.IsChecked.GetValueOrDefault());
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
+            DialogConfirmedHandler(_currentFeature, tintCheckbox.IsChecked.GetValueOrDefault(), percentage);
             Close();
         }
 
@@ -96,9 +84,10 @@ namespace PowerPointLabs.EffectsLab.Views
                 enteredValue > 0 && 
                 enteredValue <= 100)
             {
-                lastBlurriness = enteredValue / 100;
+                _blurCustomPercentage = enteredValue;
             }
-            blurrinessInput.Text = lastBlurriness.ToString("P0");
+
+            blurrinessInput.Text = (_blurCustomPercentage / 100.0f).ToString("P0");
         }
     }
 }

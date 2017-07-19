@@ -17,23 +17,15 @@ namespace PowerPointLabs.ShapesLab.Views
     /// </summary>
     public partial class ShapesLabSettingsDialogBox
     {
-        public DialogResult Result { get; private set; }
-        public string DefaultSavingPath
-        {
-            get
-            {
-                return _settingsDataSource.DefaultSavingPath;
-            }
-        }
-
-        private readonly ShapesLabSettingsDataSource _settingsDataSource = new ShapesLabSettingsDataSource();
+        public delegate void DialogConfirmedDelegate(string savePath);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public ShapesLabSettingsDialogBox()
         {
             InitializeComponent();
         }
         
-        public ShapesLabSettingsDialogBox(string defaultPath)
+        public ShapesLabSettingsDialogBox(string savePath)
             : this()
         {
             savePathBrowserIconImage.Source = Imaging.CreateBitmapSourceFromHBitmap(
@@ -41,47 +33,35 @@ namespace PowerPointLabs.ShapesLab.Views
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
-
-            _settingsDataSource.DefaultSavingPath = defaultPath;
             
             savePathInput.IsReadOnly = true;
-            savePathInput.Text = _settingsDataSource.DefaultSavingPath;
-
-            Result = Forms.DialogResult.Cancel;
+            savePathInput.Text = savePath;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            Result = Forms.DialogResult.OK;
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Result = Forms.DialogResult.Cancel;
+            DialogConfirmedHandler(savePathInput.Text);
             Close();
         }
 
         private void SavePathBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            var folderDialog = new FolderBrowserDialog
+            FolderBrowserDialog folderDialog = new FolderBrowserDialog
             {
                 ShowNewFolderButton = true,
-                SelectedPath = _settingsDataSource.DefaultSavingPath,
+                SelectedPath = savePathInput.Text,
                 Description = TextCollection.FolderDialogDescription
             };
 
-            var selectEmptyFolder = false;
-
             // loop until user chooses an empty folder, or click "Cancel" button
-            while (!selectEmptyFolder)
+            while (true)
             {
                 // this launcher will scroll the view to selected path
-                var result = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+                DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
 
-                if (result == Forms.DialogResult.OK)
+                if (folderDialogResult == Forms.DialogResult.OK)
                 {
-                    var newPath = folderDialog.SelectedPath;
+                    string newPath = folderDialog.SelectedPath;
 
                     if (!FileDir.IsDirectoryEmpty(newPath))
                     {
@@ -89,14 +69,13 @@ namespace PowerPointLabs.ShapesLab.Views
                     }
                     else
                     {
-                        selectEmptyFolder = true;
-                        _settingsDataSource.DefaultSavingPath = newPath;
-                        savePathInput.Text = _settingsDataSource.DefaultSavingPath;
+                        savePathInput.Text = newPath;
+                        break;
                     }
                 }
                 else
                 {
-                    // if user cancel the dialog, break the loop
+                    // if user cancels the dialog, break the loop
                     break;
                 }
             }

@@ -11,8 +11,7 @@ namespace PowerPointLabs.ActionFramework.AnimationLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
-
-            AnimateInSlide.isHighlightBullets = false;
+            
             AnimateInSlide.AddAnimationInSlide();
         }
     }

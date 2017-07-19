@@ -15,14 +15,6 @@ namespace PowerPointLabs.EffectsLab
 {
     internal static class EffectsLabBlur
     {
-        public static bool IsTintSelected = false;
-        public static bool IsTintRemainder = false;
-        public static bool IsTintBackground = false;
-
-        public static int CustomPercentageSelected = 30;
-        public static int CustomPercentageRemainder = 30;
-        public static int CustomPercentageBackground = 30;
-
         private const string HexColor = "#000000";
         private const float Transparency = 0.8f;
 
@@ -95,7 +87,7 @@ namespace PowerPointLabs.EffectsLab
                 return;
             }
 
-            effectSlide.BlurBackground(percentage, IsTintRemainder);
+            effectSlide.BlurBackground(percentage, EffectsLabSettings.IsTintRemainder);
             effectSlide.GetNativeSlide().Select();
         }
 
@@ -108,7 +100,7 @@ namespace PowerPointLabs.EffectsLab
                 return;
             }
 
-            effectSlide.BlurBackground(percentage, IsTintBackground);
+            effectSlide.BlurBackground(percentage, EffectsLabSettings.IsTintBackground);
             effectSlide.GetNativeSlide().Select();
         }
 
@@ -250,7 +242,7 @@ namespace PowerPointLabs.EffectsLab
             CropToShape.FillInShapeWithImage(slide, imageFile, blurShape, isInPlace: true);
             shapeNames.Add(blurShape.Name);
             
-            if (IsTintSelected)
+            if (EffectsLabSettings.IsTintSelected)
             {
                 var overlayShape = GenerateOverlayShape(slide, blurShape);
                 shapeNames.Add(overlayShape.Name);
@@ -287,7 +279,7 @@ namespace PowerPointLabs.EffectsLab
             shape.TextFrame2.DeleteText();
             CropToShape.FillInShapeWithImage(slide, imageFile, shape, isInPlace: true);
 
-            if (IsTintSelected)
+            if (EffectsLabSettings.IsTintSelected)
             {
                 var overlayShape = GenerateOverlayShape(slide, shape);
                 shapeNames.Add(overlayShape.Name);

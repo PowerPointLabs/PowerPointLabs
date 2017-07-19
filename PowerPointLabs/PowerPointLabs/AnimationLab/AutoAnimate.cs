@@ -12,9 +12,6 @@ namespace PowerPointLabs.AnimationLab
     internal static class AutoAnimate
     {
 #pragma warning disable 0618
-        public static float duration = 0.5f;
-        public static bool frameAnimationChecked = false;
-
         private static PowerPoint.Shape[] currentSlideShapes;
         private static PowerPoint.Shape[] nextSlideShapes;
         private static int[] matchingShapeIDs;
@@ -23,7 +20,7 @@ namespace PowerPointLabs.AnimationLab
         {
             try
             {
-                //Get References of current and next slides
+                // Get References of current and next slides
                 PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
@@ -57,7 +54,7 @@ namespace PowerPointLabs.AnimationLab
             LoadingDialogBox loadingDialog = new LoadingDialogBox(content: TextCollection.AnimationLabAutoAnimateLoadingText);
             loadingDialog.Show();
 
-            addedSlide.MoveMotionAnimation(); //Move shapes with motion animation already added
+            addedSlide.MoveMotionAnimation(); // Move shapes with motion animation already added
             addedSlide.PrepareForAutoAnimate();
             RenameCurrentSlide(currentSlide);
             PrepareNextSlide(nextSlide);

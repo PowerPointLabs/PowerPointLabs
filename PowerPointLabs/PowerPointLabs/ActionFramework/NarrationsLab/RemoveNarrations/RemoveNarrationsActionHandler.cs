@@ -3,6 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.NarrationsLab.Views;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {

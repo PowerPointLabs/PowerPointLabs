@@ -114,7 +114,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                EffectsLabSpotlightSettings.SpotlightPropertiesEdited(newTransparency, newSoftEdge, newColor);
+                EffectsLabSettings.SpotlightTransparency = newTransparency;
+                EffectsLabSettings.SpotlightSoftEdges = newSoftEdge;
+                EffectsLabSettings.SpotlightColor = newColor;
             });
         }
 
@@ -162,7 +164,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                ZoomLabSettings.ZoomLabSettingsEdited(backgroundChecked, multiSlideChecked);
+                ZoomLabSettings.BackgroundZoomChecked = backgroundChecked;
+                ZoomLabSettings.MultiSlideZoomChecked = multiSlideChecked;
             });
         }
 
@@ -264,17 +267,17 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public void SetTintForBlurSelected(bool isTinted)
         {
-            EffectsLabBlur.IsTintSelected = isTinted;
+            EffectsLabSettings.IsTintSelected = isTinted;
         }
 
         public void SetTintForBlurRemainder(bool isTinted)
         {
-            EffectsLabBlur.IsTintRemainder = isTinted;
+            EffectsLabSettings.IsTintRemainder = isTinted;
         }
 
         public void SetTintForBlurBackground(bool isTinted)
         {
-            EffectsLabBlur.IsTintBackground = isTinted;
+            EffectsLabSettings.IsTintBackground = isTinted;
         }
 
         public void BlurSelectedEffect()

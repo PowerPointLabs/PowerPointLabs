@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportLabelRibbonId(TextCollection.AddIntoGroupTag)]
-    class MergeIntoGroupLabelHandler : LabelHandler
+    class AddIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

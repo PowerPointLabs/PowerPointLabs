@@ -76,7 +76,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignLeftToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
@@ -93,7 +93,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignRightToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -111,7 +111,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignTopToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
@@ -128,7 +128,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignBottomToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -146,7 +146,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignHorizontalToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -164,7 +164,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignVerticalToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -182,7 +182,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignCenterToSlide()
         {
-            PositionsLabMain.AlignReferToSlide();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.Slide;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -201,7 +201,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignLeftToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
@@ -218,7 +218,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignRightToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -236,7 +236,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignTopToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
@@ -253,7 +253,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignBottomToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -271,7 +271,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignHorizontalToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -289,7 +289,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignVerticalToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -307,7 +307,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignCenterToRefShape()
         {
-            PositionsLabMain.AlignReferToShape();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
             _shapeNames = new List<string> { RotatedRectangle, UnrotatedRectangle, Oval, RotatedArrow };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -326,7 +326,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneLeftDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             PositionsLabMain.AlignLeft(actualShapes);
@@ -341,7 +341,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneRightDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -357,7 +357,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneTopDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             PositionsLabMain.AlignTop(actualShapes);
@@ -372,7 +372,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneBottomDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -388,7 +388,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneHorizontalDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -404,7 +404,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneVerticalDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -420,7 +420,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignOneCenterDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -437,7 +437,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignLeftDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             PositionsLabMain.AlignLeft(actualShapes);
@@ -452,7 +452,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignRightDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -468,7 +468,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignTopDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             PositionsLabMain.AlignTop(actualShapes);
@@ -483,7 +483,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignBottomDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -499,7 +499,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignHorizontalDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -515,7 +515,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignVerticalDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -531,7 +531,7 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestAlignCenterDefault()
         {
-            PositionsLabMain.AlignReferToPowerpointDefaults();
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;

@@ -19,15 +19,15 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                 int percentage = 0;
                 if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureSelected))
                 {
-                    percentage = EffectsLabBlur.CustomPercentageSelected;
+                    percentage = EffectsLabSettings.CustomPercentageSelected;
                 }
                 else if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureRemainder))
                 {
-                    percentage = EffectsLabBlur.CustomPercentageRemainder;
+                    percentage = EffectsLabSettings.CustomPercentageRemainder;
                 }
                 else if (ribbonId.StartsWith(TextCollection.EffectsLabBlurrinessFeatureBackground))
                 {
-                    percentage = EffectsLabBlur.CustomPercentageBackground;
+                    percentage = EffectsLabSettings.CustomPercentageBackground;
                 }
                 return TextCollection.EffectsLabBlurrinessCustomPrefixLabel + " (" + percentage + "%)";
             }

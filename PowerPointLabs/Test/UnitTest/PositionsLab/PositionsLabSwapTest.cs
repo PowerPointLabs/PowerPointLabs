@@ -51,8 +51,8 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestSwapLeftToRight()
         {
-            PositionsLabMain.IsSwapByClickOrder = false;
-            PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleCenter;
+            PositionsLabSettings.IsSwapByClickOrder = false;
+            PositionsLabSettings.SwapReferencePoint = PositionsLabSettings.SwapReference.MiddleCenter;
             
             var shapesToSwap = GetShapes(OriginalShapesSlideNo, _swapShapes);
 
@@ -83,8 +83,8 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestSwapClickOrder()
         {
-            PositionsLabMain.IsSwapByClickOrder = true;
-            PositionsLabMain.SwapReferencePoint = PositionsLabMain.SwapReference.MiddleCenter;
+            PositionsLabSettings.IsSwapByClickOrder = true;
+            PositionsLabSettings.SwapReferencePoint = PositionsLabSettings.SwapReference.MiddleCenter;
 
             var shapesToSwap = GetShapes(OriginalShapesSlideNo, _swapShapes);
 

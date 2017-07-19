@@ -54,12 +54,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void ReorientFixed()
         {
-            PositionsLabMain.ReorientShapeOrientationToFixed();
+            PositionsLabSettings.ReorientShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
         }
 
         public void ReorientDynamic()
         {
-            PositionsLabMain.ReorientShapeOrientationToDynamic();
+            PositionsLabSettings.ReorientShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
         }
     }
 }

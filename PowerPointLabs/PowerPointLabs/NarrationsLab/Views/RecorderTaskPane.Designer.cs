@@ -1,4 +1,4 @@
-﻿namespace PowerPointLabs.NarrationsLab
+﻿namespace PowerPointLabs.NarrationsLab.Views
 {
     partial class RecorderTaskPane
     {

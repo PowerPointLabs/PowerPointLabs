@@ -1,5 +1,5 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
-using PowerPointLabs.CropLab.Views;
+using PowerPointLabs.CropLab;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
@@ -8,8 +8,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            CropLabSettingsDialogBox dialog = new CropLabSettingsDialogBox();
-            dialog.ShowDialog();
+            CropLabSettings.ShowSettingsDialog();
         }
     }
 }

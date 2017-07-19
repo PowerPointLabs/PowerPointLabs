@@ -9,7 +9,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ShapesLab
 {
-    internal class ShapesLabConfig
+    internal class ShapesLabConfigSaveFile
     {
 #pragma warning disable 0618
         private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
@@ -22,16 +22,15 @@ namespace PowerPointLabs.ShapesLab
         private string _configFilePath;
 
         # region Properties
-        public string ShapeRootFolder { get; set; }
         public string DefaultCategory { get; set; }
         # endregion
 
         # region Constructor
-        public ShapesLabConfig(string appDataFolder)
+        public ShapesLabConfigSaveFile(string appDataFolder)
         {
             if (!PowerPointLabsFT.IsFunctionalTestOn)
             {
-                ShapeRootFolder = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
+                ShapesLabSettings.SaveFolderPath = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
                 DefaultCategory = DefaultShapeCategoryName;
 
                 ReadShapeLabConfig(appDataFolder);
@@ -41,7 +40,7 @@ namespace PowerPointLabs.ShapesLab
                 // if it's in FT, use new temp shape root folder every time
                 var tmpPath = TempPath.GetTempTestFolder();
                 var hash = DateTime.Now.GetHashCode();
-                ShapeRootFolder = tmpPath + DefaultShapeMasterFolderName + hash;
+                ShapesLabSettings.SaveFolderPath = tmpPath + DefaultShapeMasterFolderName + hash;
                 DefaultCategory = DefaultShapeCategoryName + hash;
                 _configFilePath = tmpPath + "ShapeRootFolder" + hash;
             }
@@ -49,12 +48,12 @@ namespace PowerPointLabs.ShapesLab
         # endregion
 
         # region Destructor
-        ~ShapesLabConfig()
+        ~ShapesLabConfigSaveFile()
         {
             // flush shape root folder & default category info to the file
             using (var fileWriter = File.CreateText(_configFilePath))
             {
-                fileWriter.WriteLine(ShapeRootFolder);
+                fileWriter.WriteLine(ShapesLabSettings.SaveFolderPath);
                 fileWriter.WriteLine(DefaultCategory);
                 
                 fileWriter.Close();
@@ -72,7 +71,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 using (var reader = new StreamReader(_configFilePath))
                 {
-                    ShapeRootFolder = reader.ReadLine();
+                    ShapesLabSettings.SaveFolderPath = reader.ReadLine();
                     
                     // if we have a default category setting
                     if (reader.Peek() != -1)

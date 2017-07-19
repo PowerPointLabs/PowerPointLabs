@@ -4,7 +4,6 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
-using PowerPointLabs.EffectsLab.Views;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
@@ -35,9 +34,8 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             if (isButton)
             {
-                EffectsLabBlurDialogBox dialog = new EffectsLabBlurDialogBox(feature);
-                dialog.SettingsHandler += PropertiesEdited;
-                dialog.ShowDialog();
+                EffectsLabSettings.ShowBlurSettingsDialog(feature);
+                this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom);
             }
             else
             {
@@ -47,40 +45,16 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
         }
 
-        private void PropertiesEdited(string feature, int percentage, bool isTint)
-        {
-            switch (feature)
-            {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    EffectsLabBlur.IsTintSelected = isTint;
-                    EffectsLabBlur.CustomPercentageSelected = percentage;
-                    break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
-                    EffectsLabBlur.IsTintRemainder = isTint;
-                    EffectsLabBlur.CustomPercentageRemainder = percentage;
-                    break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
-                    EffectsLabBlur.IsTintBackground = isTint;
-                    EffectsLabBlur.CustomPercentageBackground = percentage;
-                    break;
-                default:
-                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
-                    break;
-            }
-            
-            this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom);
-        }
-
         private int GetCustomPercentage(string feature)
         {
             switch (feature)
             {
                 case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    return EffectsLabBlur.CustomPercentageSelected;
+                    return EffectsLabSettings.CustomPercentageSelected;
                 case TextCollection.EffectsLabBlurrinessFeatureRemainder:
-                    return EffectsLabBlur.CustomPercentageRemainder;
+                    return EffectsLabSettings.CustomPercentageRemainder;
                 case TextCollection.EffectsLabBlurrinessFeatureBackground:
-                    return EffectsLabBlur.CustomPercentageBackground;
+                    return EffectsLabSettings.CustomPercentageBackground;
                 default:
                     Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
                     return -1;

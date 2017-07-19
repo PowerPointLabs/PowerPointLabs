@@ -39,7 +39,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
             if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
             {
                 CustomAspectRatioDialogBox dialog = new CustomAspectRatioDialogBox(shapeRange[1]);
-                dialog.SettingsHandler += ExecuteCropToAspectRatio;
+                dialog.DialogConfirmedHandler += ExecuteCropToAspectRatio;
                 dialog.ShowDialog();
             }
             else if (ribbonId.Contains(TextCollection.DynamicMenuOptionId))

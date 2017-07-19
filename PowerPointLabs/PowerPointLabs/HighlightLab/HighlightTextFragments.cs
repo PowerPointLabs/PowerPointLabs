@@ -14,9 +14,9 @@ namespace PowerPointLabs.HighlightLab
     class HighlightTextFragments
     {
 #pragma warning disable 0618
-        public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
+
         public static void AddHighlightedTextFragments()
         {
             try
@@ -98,13 +98,10 @@ namespace PowerPointLabs.HighlightLab
 
         private static void RunAnimateInSlide()
         {
-            bool oldFrameAnimationChecked = AnimateInSlide.frameAnimationChecked;
-            AnimateInSlide.frameAnimationChecked = false;
-            AnimateInSlide.isHighlightBullets = false;
-            AnimateInSlide.isHighlightTextFragments = true;
-            AnimateInSlide.AddAnimationInSlide();
-            AnimateInSlide.isHighlightTextFragments = false;
-            AnimateInSlide.frameAnimationChecked = oldFrameAnimationChecked;
+            bool oldFrameAnimationChecked = AnimationLabSettings.IsUseFrameAnimation;
+            AnimationLabSettings.IsUseFrameAnimation = false;
+            AnimateInSlide.AddAnimationInSlide(isHighlightTextFragments: true);
+            AnimationLabSettings.IsUseFrameAnimation = oldFrameAnimationChecked;
         }
 
         private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide)
@@ -130,7 +127,7 @@ namespace PowerPointLabs.HighlightLab
                     line.BoundHeight);
 
                 highlightShape.Adjustments[1] = 0.25f;
-                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
+                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.textFragmentsBackgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 if (isTextBoxTransparent)

@@ -18,13 +18,12 @@ using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.Views;
 using PowerPointLabs.XMLMisc;
 
 using PPExtraEventHelper;
 
-namespace PowerPointLabs.NarrationsLab
+namespace PowerPointLabs.NarrationsLab.Views
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     public partial class RecorderTaskPane : UserControl

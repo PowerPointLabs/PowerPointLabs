@@ -1,4 +1,6 @@
-﻿namespace PowerPointLabs.CropLab
+﻿using PowerPointLabs.CropLab.Views;
+
+namespace PowerPointLabs.CropLab
 {
     public enum AnchorPosition
     {
@@ -25,18 +27,18 @@
                 case AnchorPosition.TopLeft:
                 case AnchorPosition.MiddleLeft:
                 case AnchorPosition.BottomLeft:
-                    return 0;
+                    return 0.0f;
                 case AnchorPosition.Top:
                 case AnchorPosition.Middle:
                 case AnchorPosition.Bottom:
                 case AnchorPosition.Reference:
-                    return 0.5F;
+                    return 0.5f;
                 case AnchorPosition.TopRight:
                 case AnchorPosition.MiddleRight:
                 case AnchorPosition.BottomRight:
-                    return 1;
+                    return 1.0f;
             }
-            return 0;
+            return 0.0f;
         }
 
         public static float GetAnchorY()
@@ -46,19 +48,30 @@
                 case AnchorPosition.TopLeft:
                 case AnchorPosition.Top:
                 case AnchorPosition.TopRight:
-                    return 0;
+                    return 0.0f;
                 case AnchorPosition.MiddleLeft:
                 case AnchorPosition.Middle:
                 case AnchorPosition.MiddleRight:
                 case AnchorPosition.Reference:
-                    return 0.5F;
+                    return 0.5f;
                 case AnchorPosition.BottomLeft:
                 case AnchorPosition.Bottom:
                 case AnchorPosition.BottomRight:
-                    return 1;
+                    return 1.0f;
             }
-            return 0;
+            return 0.0f;
+        }
+        
+        public static void ShowSettingsDialog()
+        {
+            CropLabSettingsDialogBox dialog = new CropLabSettingsDialogBox(AnchorPosition);
+            dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
+            dialog.ShowDialog();
+        }
+
+        private static void OnSettingsDialogConfirmed(AnchorPosition anchorPosition)
+        {
+            AnchorPosition = anchorPosition;
         }
     }
-    
 }

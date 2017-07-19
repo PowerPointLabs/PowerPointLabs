@@ -12,12 +12,7 @@ namespace PowerPointLabs.AnimationLab
 #pragma warning disable 0618
     internal static class AnimateInSlide
     {
-        public static float animationDuration = 0.5f;
-        public static bool frameAnimationChecked = false;
-        public static bool isHighlightBullets = false;
-        public static bool isHighlightTextFragments = false;
-
-        public static void AddAnimationInSlide()
+        public static void AddAnimationInSlide(bool isHighlightBullets = false, bool isHighlightTextFragments = false)
         {
             try
             {
@@ -28,7 +23,7 @@ namespace PowerPointLabs.AnimationLab
 
                 if (!isHighlightBullets && !isHighlightTextFragments)
                 {
-                    FormatInSlideAnimateShapes(selectedShapes);
+                    FormatInSlideAnimateShapes(selectedShapes, isHighlightTextFragments);
                 }
 
                 if (selectedShapes.Count == 1)
@@ -37,7 +32,7 @@ namespace PowerPointLabs.AnimationLab
                 }
                 else
                 {
-                    InSlideAnimateMultiShape(currentSlide, selectedShapes);
+                    InSlideAnimateMultiShape(currentSlide, selectedShapes, isHighlightTextFragments);
                 }
 
                 if (!isHighlightBullets && !isHighlightTextFragments)
@@ -53,7 +48,7 @@ namespace PowerPointLabs.AnimationLab
             }
         }
 
-        private static void FormatInSlideAnimateShapes(PowerPoint.ShapeRange shapes)
+        private static void FormatInSlideAnimateShapes(PowerPoint.ShapeRange shapes, bool isHighlightTextFragments)
         {
             foreach (PowerPoint.Shape sh in shapes) 
             {
@@ -82,7 +77,8 @@ namespace PowerPointLabs.AnimationLab
             disappear.Exit = Office.MsoTriState.msoTrue;
         }
 
-        private static void InSlideAnimateMultiShape(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapesToAnimate)
+        private static void InSlideAnimateMultiShape(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapesToAnimate, 
+                                                    bool isHighlightTextFragments)
         {
             for (int num = 1; num <= shapesToAnimate.Count - 1; num++)
             {
@@ -92,11 +88,6 @@ namespace PowerPointLabs.AnimationLab
                 if (shape1 == null || shape2 == null)
                 {
                     return;
-                }
-
-                if (!isHighlightTextFragments)
-                {
-                    AnimateMovementBetweenShapes(currentSlide, shape1, shape2);
                 }
 
                 if (isHighlightTextFragments)
@@ -110,6 +101,8 @@ namespace PowerPointLabs.AnimationLab
                 }
                 else
                 {
+                    AnimateMovementBetweenShapes(currentSlide, shape1, shape2);
+
                     //Transition from shape1 to shape2 with fade
                     PowerPoint.Effect shape2Appear = currentSlide.TimeLine.MainSequence.AddEffect(
                         shape2,
@@ -131,7 +124,7 @@ namespace PowerPointLabs.AnimationLab
             if (NeedsFrameAnimation(shape1, shape2))
             {
                 FrameMotionAnimation.animationType = FrameMotionAnimation.FrameMotionAnimationType.kInSlideAnimate;
-                FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, animationDuration);
+                FrameMotionAnimation.AddFrameMotionAnimation(currentSlide, shape1, shape2, AnimationLabSettings.AnimationDuration);
             }
             else
             {
@@ -139,7 +132,7 @@ namespace PowerPointLabs.AnimationLab
                     currentSlide,
                     shape1,
                     shape2,
-                    animationDuration,
+                    AnimationLabSettings.AnimationDuration,
                     PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
             }
         }
@@ -149,16 +142,18 @@ namespace PowerPointLabs.AnimationLab
             float finalFont = 0.0f;
             float initialFont = 0.0f;
 
-            if (shape1.HasTextFrame == Office.MsoTriState.msoTrue && (shape1.TextFrame.HasText == Office.MsoTriState.msoTriStateMixed || shape1.TextFrame.HasText == Office.MsoTriState.msoTrue) && shape1.TextFrame.TextRange.Font.Size != shape2.TextFrame.TextRange.Font.Size)
+            if (shape1.HasTextFrame == Office.MsoTriState.msoTrue && 
+                (shape1.TextFrame.HasText == Office.MsoTriState.msoTriStateMixed || shape1.TextFrame.HasText == Office.MsoTriState.msoTrue) && 
+                shape1.TextFrame.TextRange.Font.Size != shape2.TextFrame.TextRange.Font.Size)
             {
                 finalFont = shape2.TextFrame.TextRange.Font.Size;
                 initialFont = shape1.TextFrame.TextRange.Font.Size;
             }
 
-            if ((frameAnimationChecked && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
-                || ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width))
-                || (!Utils.Graphics.IsStraightLine(shape1) && (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip))
-                || finalFont != initialFont)
+            if ((AnimationLabSettings.IsUseFrameAnimation && (shape2.Height != shape1.Height || shape2.Width != shape1.Width)) || 
+                ((shape2.Rotation != shape1.Rotation || shape1.Rotation % 90 != 0) && (shape2.Height != shape1.Height || shape2.Width != shape1.Width)) || 
+                (!Utils.Graphics.IsStraightLine(shape1) && (shape1.HorizontalFlip != shape2.HorizontalFlip || shape1.VerticalFlip != shape2.VerticalFlip)) || 
+                finalFont != initialFont)
             {
                 return true;
             }

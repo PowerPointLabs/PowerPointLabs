@@ -10,8 +10,8 @@ namespace PowerPointLabs.AnimationLab.Views
     /// </summary>
     public partial class AnimationLabSettingsDialogBox
     {
-        public delegate void UpdateSettingsDelegate(float animationDuration, bool smoothAnimationChecked);
-        public UpdateSettingsDelegate SettingsHandler { get; set; }
+        public delegate void DialogConfirmedDelegate(float animationDuration, bool smoothAnimationChecked);
+        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         private float lastDuration;
 
@@ -36,12 +36,7 @@ namespace PowerPointLabs.AnimationLab.Views
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             ValidateDurationInput();
-            SettingsHandler(float.Parse(durationInput.Text), smoothAnimationCheckbox.IsChecked.GetValueOrDefault());
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
+            DialogConfirmedHandler(float.Parse(durationInput.Text), smoothAnimationCheckbox.IsChecked.GetValueOrDefault());
             Close();
         }
 

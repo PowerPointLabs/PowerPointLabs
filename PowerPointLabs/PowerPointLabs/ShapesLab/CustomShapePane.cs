@@ -314,19 +314,15 @@ namespace PowerPointLabs.ShapesLab
         private void ContextMenuStripAddCategoryClicked()
         {
             ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
-
-            categoryInfoDialog.ShowDialog();
-
-            if (categoryInfoDialog.Result == DialogResult.OK)
+            categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
-                var categoryName = categoryInfoDialog.CategoryName;
+                Globals.ThisAddIn.ShapePresentation.AddCategory(newCategoryName);
 
-                Globals.ThisAddIn.ShapePresentation.AddCategory(categoryName);
-
-                _categoryBinding.Add(categoryName);
+                _categoryBinding.Add(newCategoryName);
 
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
-            }
+            };
+            categoryInfoDialog.ShowDialog();
 
             myShapeFlowLayout.Focus();
         }
@@ -411,7 +407,7 @@ namespace PowerPointLabs.ShapesLab
             var categoryIndex = categoryBox.SelectedIndex;
             var categoryName = _categoryBinding[categoryIndex].ToString();
             var categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
-            var isDefaultCategory = Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory == CurrentCategory;
+            var isDefaultCategory = Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory;
 
             if (isDefaultCategory)
             {
@@ -447,7 +443,7 @@ namespace PowerPointLabs.ShapesLab
 
             if (isDefaultCategory)
             {
-                Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = (string)_categoryBinding[0];
+                Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = (string)_categoryBinding[0];
             }
         }
 
@@ -488,26 +484,21 @@ namespace PowerPointLabs.ShapesLab
 
         private void ContextMenuStripRenameCategoryClicked()
         {
-            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(CurrentCategory);
-
-            categoryInfoDialog.ShowDialog();
-
-            if (categoryInfoDialog.Result == DialogResult.OK)
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
+            categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
-                var categoryName = categoryInfoDialog.CategoryName;
-
                 // if current category is the default category, change ShapeConfig
-                if (Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory == CurrentCategory)
+                if (Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory)
                 {
-                    Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = categoryName;
+                    Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = newCategoryName;
                 }
 
                 // rename the category in ShapeGallery
-                Globals.ThisAddIn.ShapePresentation.RenameCategory(categoryName);
-                
+                Globals.ThisAddIn.ShapePresentation.RenameCategory(newCategoryName);
+
                 // rename the category on the disk
-                var newPath = Path.Combine(ShapeRootFolderPath, categoryName);
-                
+                var newPath = Path.Combine(ShapeRootFolderPath, newCategoryName);
+
                 try
                 {
                     Directory.Move(CurrentShapeFolderPath, newPath);
@@ -519,18 +510,19 @@ namespace PowerPointLabs.ShapesLab
 
                 // rename the category in combo box
                 var categoryIndex = categoryBox.SelectedIndex;
-                _categoryBinding[categoryIndex] = categoryName;
+                _categoryBinding[categoryIndex] = newCategoryName;
 
                 // update current category reference
-                CurrentCategory = categoryName;
-            }
+                CurrentCategory = newCategoryName;
+            };
+            categoryInfoDialog.ShowDialog();
 
             myShapeFlowLayout.Focus();
         }
 
         private void ContextMenuStripSetAsDefaultCategoryClicked()
         {
-            Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory = CurrentCategory;
+            Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = CurrentCategory;
 
             categoryBox.Refresh();
 
@@ -539,26 +531,22 @@ namespace PowerPointLabs.ShapesLab
 
         private void ContextMenuStripSettingsClicked()
         {
-            ShapesLabSettingsDialogBox settingDialog = new ShapesLabSettingsDialogBox(ShapeRootFolderPath);
-
-            settingDialog.ShowDialog();
-
-            if (settingDialog.Result == DialogResult.OK)
+            ShapesLabSettingsDialogBox settingsDialog = new ShapesLabSettingsDialogBox(ShapeRootFolderPath);
+            settingsDialog.DialogConfirmedHandler += (string newSavePath) =>
             {
-                var newPath = settingDialog.DefaultSavingPath;
-
-                if (!MigrateShapeFolder(ShapeRootFolderPath, newPath))
+                if (!MigrateShapeFolder(ShapeRootFolderPath, newSavePath))
                 {
                     return;
                 }
 
-                Globals.ThisAddIn.ShapesLabConfigs.ShapeRootFolder = newPath;
+                ShapesLabSettings.SaveFolderPath = newSavePath;
 
                 MessageBox.Show(
-                    string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newPath),
+                    string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newSavePath),
                     TextCollection.CustomShapeSaveLocationChangedSuccessTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
-            }
+            };
+            settingsDialog.ShowDialog();
         }
 
         private Rectangle CreateRect(Point loc1, Point loc2)
@@ -1092,7 +1080,7 @@ namespace PowerPointLabs.ShapesLab
             var font = comboBox.Font;
             var text = (string)_categoryBinding[e.Index];
 
-            if (text == Globals.ThisAddIn.ShapesLabConfigs.DefaultCategory)
+            if (text == Globals.ThisAddIn.ShapesLabConfig.DefaultCategory)
             {
                 text += " (default)";
                 font = new Font(font, FontStyle.Bold);
