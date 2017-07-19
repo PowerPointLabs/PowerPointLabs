@@ -40,12 +40,12 @@ Senior Devs: Ang Shi Ya, Jamos Tay, Kenneth Loh, Syed Abdullah
 
 Area | Responsibilities | Lead | Co-Lead | Past Leads
 -----|------------------|------|---------|-----|
-Community | Community growth, user support | Kenneth Loh | Heng Le | Fiona |
-Docs | Website, tutorials, dev docs | Jamos Tay | Shi Ya | Fiona |
-DevOps | Installer, issue tracker, releases, CI | Syed Abdullah | Kenneth | Hanyang |
+Community | Community growth, user support | Kenneth | Heng Le | Fiona |
+Docs | Website, tutorials, dev docs | Jamos | Shi Ya | Fiona |
+DevOps | Installer, issue tracker, releases, CI | Syed | Kenneth | Hanyang |
 Quality | Code quality, design quality | Heng Le | Jamos | Kai |
-Testing | Test coverage, test automation | Ian Teo | Syed | Kai |
-UI/UX | UI matters, UX matters | Ang Shi Ya | Ian | |
+Testing | Test coverage, test automation | Ian | Syed | Kai |
+UI/UX | UI matters, UX matters | Shi Ya | Ian |  |
 
 Feature  | Lead | Co-Lead | Past Leads
 -----|------|---------|-----|
@@ -54,7 +54,7 @@ AnimationLab (d) | Ian |  | Raunak
 CaptionsLab | Kenneth |  | Jerome
 ColorsLab | Ian | Heng Le | Karan
 CropLab | Heng Le | Jamos | Raunak
-EffectsLab | ian | Heng Le | Fiona
+EffectsLab | Ian | Heng Le | Fiona
 HighlightLab | Syed |  | Karan
 NarrationsLab | Kenneth |  | Jerome
 PasteLab | Syed | Heng Le |
