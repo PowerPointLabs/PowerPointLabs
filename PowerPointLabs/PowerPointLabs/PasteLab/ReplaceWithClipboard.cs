@@ -25,7 +25,7 @@ namespace PowerPointLabs.PasteLab
                 }
                 pastingShape.Left = selectedShape.Left;
                 pastingShape.Top = selectedShape.Top;
-                Graphics.MoveZToJustInFront(pastingShape, selectedShape);
+                ShapesUtil.MoveZToJustInFront(pastingShape, selectedShape);
 
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);

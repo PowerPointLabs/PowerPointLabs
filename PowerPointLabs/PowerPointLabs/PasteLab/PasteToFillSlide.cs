@@ -9,7 +9,7 @@ namespace PowerPointLabs.PasteLab
     {
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
-            pastingShapes = Graphics.GetShapesWhenTypeNotMatches(slide, pastingShapes, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
+            pastingShapes = ShapesUtil.GetShapesWhenTypeNotMatches(slide, pastingShapes, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
             if (pastingShapes.Count == 0)
             {
                 return;

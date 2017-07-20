@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return !Graphics.IsClipboardEmpty() && IsSelectionSingleShape();
+            return !GraphicsUtil.IsClipboardEmpty() && IsSelectionSingleShape();
         }
     }
 }

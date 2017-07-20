@@ -33,11 +33,11 @@ namespace PowerPointLabs.ShortcutsLab
             {
                 if (selection.HasChildShapeRange)
                 {
-                    Graphics.ExportShape(selection.ChildShapeRange, fileName);
+                    GraphicsUtil.ExportShape(selection.ChildShapeRange, fileName);
                 }
                 else
                 {
-                    Graphics.ExportShape(selection.ShapeRange, fileName);
+                    GraphicsUtil.ExportShape(selection.ShapeRange, fileName);
                 }
             }
             else

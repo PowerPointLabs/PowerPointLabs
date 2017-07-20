@@ -6,6 +6,7 @@ using System.Linq;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
+using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -138,8 +139,8 @@ namespace PowerPointLabs.Models
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
         {
-            float scaleFactorWidth = PowerPointLabs.Utils.Graphics.GetScaleWidth(shapeToCrop);
-            float scaleFactorHeight = PowerPointLabs.Utils.Graphics.GetScaleHeight(shapeToCrop);
+            float scaleFactorWidth = ShapesUtil.GetScaleWidth(shapeToCrop);
+            float scaleFactorHeight = ShapesUtil.GetScaleHeight(shapeToCrop);
 
             if (shapeToCrop.Left < 0)
             {

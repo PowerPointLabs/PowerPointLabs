@@ -127,12 +127,12 @@ namespace PowerPointLabs.HighlightLab
                     line.BoundHeight);
 
                 highlightShape.Adjustments[1] = 0.25f;
-                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.textFragmentsBackgroundColor);
+                highlightShape.Fill.ForeColor.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.textFragmentsBackgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 if (isTextBoxTransparent)
                 {
-                    Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
+                    Utils.ShapesUtil.MoveZToJustBehind(highlightShape, shape);
                 }
                 highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);

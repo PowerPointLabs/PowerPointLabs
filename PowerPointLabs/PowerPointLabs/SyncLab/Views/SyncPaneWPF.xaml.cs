@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Interop.PowerPoint;
 
 using static PowerPointLabs.ActionFramework.Common.Extension.ContentControlExtensions;
-using PowerPointLabs.SyncLab.ObjectFormats;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -145,7 +145,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             SyncFormatPaneItem item = new SyncFormatPaneItem(this, shapeKey, shapeStorage, formats);
             item.Text = name;
-            item.Image = new System.Drawing.Bitmap(Utils.Graphics.ShapeToBitmap(shape));
+            item.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
         }

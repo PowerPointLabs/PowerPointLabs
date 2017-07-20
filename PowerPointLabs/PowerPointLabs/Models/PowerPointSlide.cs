@@ -538,7 +538,7 @@ namespace PowerPointLabs.Models
             var oldNames = shapeList.Select(shape => shape.Name).ToList();
 
             var currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
-            var unusedNames = Common.GetUnusedStrings(currentShapeNames, shapeList.Count);
+            var unusedNames = CommonUtil.GetUnusedStrings(currentShapeNames, shapeList.Count);
             shapeList.Zip(unusedNames, (shape, name) => shape.Name = name).ToList();
 
 
@@ -562,7 +562,7 @@ namespace PowerPointLabs.Models
                 newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
                 newShape.Top = shape.Top;
-                Graphics.MoveZToJustInFront(newShape, shape);
+                ShapesUtil.MoveZToJustInFront(newShape, shape);
 
                 DeleteShapeAnimations(newShape);
                 TransferAnimation(shape, newShape);
@@ -906,7 +906,7 @@ namespace PowerPointLabs.Models
             markerShape.Top = slideHeight - markerShape.Height;
             markerShape.Name = PptLabsTemplateMarkerShapeName;
 
-            Utils.Graphics.MakeShapeViewTimeInvisible(markerShape, _slide);
+            ShapesUtil.MakeShapeViewTimeInvisible(markerShape, _slide);
             return markerShape;
         }
 
@@ -1164,9 +1164,9 @@ namespace PowerPointLabs.Models
             var shapes = _slide.Shapes.Cast<Shape>();
             foreach (var shape in shapes)
             {
-                if (Graphics.HasDefaultName(shape))
+                if (ShapesUtil.HasDefaultName(shape))
                 {
-                    shape.Name = UnnamedShapeName + Common.UniqueDigitString();
+                    shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }
             }
         }
@@ -1190,7 +1190,7 @@ namespace PowerPointLabs.Models
             {
                 if (currentNames.Contains(shape.Name))
                 {
-                    shape.Name = UnnamedShapeName + Common.UniqueDigitString();
+                    shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }
                 currentNames.Add(shape.Name);
             }
@@ -1221,7 +1221,7 @@ namespace PowerPointLabs.Models
             indicatorShape.Height = 84;
             indicatorShape.Name = PptLabsIndicatorShapeName + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-            Utils.Graphics.MakeShapeViewTimeInvisible(indicatorShape, _slide);
+            ShapesUtil.MakeShapeViewTimeInvisible(indicatorShape, _slide);
 
             return indicatorShape;
         }

@@ -624,6 +624,7 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="Utils\ShapesUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1038,10 +1039,10 @@
     <Compile Include="ShapesLab\ShapesLabConfigSaveFile.cs" />
     <Compile Include="TextCollection.cs" />
     <Compile Include="Utils\BoolUtil.cs" />
-    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\CommonUtil.cs" />
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
-    <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\GraphicsUtil.cs" />
     <Compile Include="Utils\PPShape.API.cs" />
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />

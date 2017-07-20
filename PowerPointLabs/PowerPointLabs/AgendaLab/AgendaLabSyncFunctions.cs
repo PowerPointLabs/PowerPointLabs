@@ -8,9 +8,10 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.ZoomLab;
 
-using Graphics = PowerPointLabs.Utils.Graphics;
+using GraphicsUtil = PowerPointLabs.Utils.GraphicsUtil;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -76,9 +77,9 @@ namespace PowerPointLabs.AgendaLab
             var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
-            Graphics.SetText(targetContentShape, sections.Where(section => section.Index > 1)
+            ShapesUtil.SetText(targetContentShape, sections.Where(section => section.Index > 1)
                 .Select(section => section.Name));
-            Graphics.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
+            ShapesUtil.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);
 
             ApplyBulletFormats(targetContentShape.TextFrame2.TextRange, bulletFormats, currentSection);
@@ -103,15 +104,15 @@ namespace PowerPointLabs.AgendaLab
 
                 if (i == focusIndex)
                 {
-                    Graphics.SyncTextRange(bulletFormats.Highlighted, currentParagraph, pickupTextContent: false);
+                    ShapesUtil.SyncTextRange(bulletFormats.Highlighted, currentParagraph, pickupTextContent: false);
                 }
                 else if (i < focusIndex)
                 {
-                    Graphics.SyncTextRange(bulletFormats.Visited, currentParagraph, pickupTextContent: false);
+                    ShapesUtil.SyncTextRange(bulletFormats.Visited, currentParagraph, pickupTextContent: false);
                 }
                 else
                 {
-                    Graphics.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
+                    ShapesUtil.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
                 }
             }
         }
@@ -185,7 +186,7 @@ namespace PowerPointLabs.AgendaLab
                 var sectionEndSlide = FindSectionLastNonAgendaSlide(i);
                 var snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
-                Graphics.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
+                ShapesUtil.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
                 imageShape.Delete();
             }
         }
@@ -251,7 +252,7 @@ namespace PowerPointLabs.AgendaLab
 
             candidate.Layout = refSlide.Layout;
             
-            candidate.Design = Graphics.GetDesign("Agenda Template");
+            candidate.Design = GraphicsUtil.GetDesign("Agenda Template");
             candidate.GetNativeSlide().FollowMasterBackground = MsoTriState.msoTrue;
 
             // synchronize extra shapes other than visual items in reference slide
@@ -280,7 +281,7 @@ namespace PowerPointLabs.AgendaLab
             foreach (var refShape in sameShapes)
             {
                 var candidateShape = candidateSlideShapes[refShape.Name];
-                Graphics.SyncWholeShape(refShape, ref candidateShape, candidate);
+                ShapesUtil.SyncWholeShape(refShape, ref candidateShape, candidate);
 
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
             }
@@ -336,7 +337,7 @@ namespace PowerPointLabs.AgendaLab
                 var shape = entry.Value;
                 if (lastShape != null)
                 {
-                    Graphics.MoveZUntilBehind(shape, lastShape);
+                    ShapesUtil.MoveZUntilBehind(shape, lastShape);
                 }
                 lastShape = shape;
             }

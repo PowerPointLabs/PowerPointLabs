@@ -143,10 +143,10 @@ namespace PowerPointLabs.HighlightLab
                                                             paragraph.BoundWidth,
                                                             paragraph.BoundHeight);
             highlightShape.Adjustments[1] = 0.25f;
-            highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.bulletsBackgroundColor);
+            highlightShape.Fill.ForeColor.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsBackgroundColor);
             highlightShape.Fill.Transparency = 0.50f;
             highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-            Utils.Graphics.MoveZToJustBehind(highlightShape, sh);
+            Utils.ShapesUtil.MoveZToJustBehind(highlightShape, sh);
             highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             highlightShape.Tags.Add("HighlightBackground", sh.Name);
             highlightShape.Select(Office.MsoTriState.msoFalse);

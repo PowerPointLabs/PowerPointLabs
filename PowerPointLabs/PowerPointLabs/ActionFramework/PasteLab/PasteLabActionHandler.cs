@@ -25,7 +25,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             PowerPointSlide slide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            if (Graphics.IsClipboardEmpty())
+            if (GraphicsUtil.IsClipboardEmpty())
             {
                 Logger.Log(ribbonId + " failed. Clipboard is empty.");
                 return;
@@ -65,7 +65,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 }
 
                 // Corruption correction
-                ShapeRange correctedShapes = Graphics.CorruptionCorrection(selectedShapes, slide);
+                ShapeRange correctedShapes = ShapesUtil.CorruptionCorrection(selectedShapes, slide);
 
                 // Reselect the preserved selections
                 List<Shape> correctedShapeList = new List<Shape>();
@@ -73,7 +73,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 foreach (Shape shape in correctedShapes)
                 {
                     correctedShapeList.Add(shape);
-                    correctedChildShapeList.AddRange(Graphics.GetChildrenWithNonEmptyTag(shape, SelectChildOrderTagName));
+                    correctedChildShapeList.AddRange(ShapesUtil.GetChildrenWithNonEmptyTag(shape, SelectChildOrderTagName));
                 }
                 correctedShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectOrderTagName]) - int.Parse(sh2.Tags[SelectOrderTagName]));
                 correctedChildShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectChildOrderTagName]) - int.Parse(sh2.Tags[SelectChildOrderTagName]));
@@ -81,8 +81,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 passedSelectedChildShapes = slide.ToShapeRange(correctedChildShapeList);
 
                 // Remove the tags after they have been used
-                Graphics.DeleteTagFromShapes(passedSelectedShapes, SelectOrderTagName);
-                Graphics.DeleteTagFromShapes(passedSelectedChildShapes, SelectChildOrderTagName);
+                ShapesUtil.DeleteTagFromShapes(passedSelectedShapes, SelectOrderTagName);
+                ShapesUtil.DeleteTagFromShapes(passedSelectedChildShapes, SelectChildOrderTagName);
 
                 // Revert clipboard
                 tempClipboardShapes.Copy();

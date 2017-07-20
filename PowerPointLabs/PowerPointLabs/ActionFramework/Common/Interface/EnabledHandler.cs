@@ -78,7 +78,7 @@ namespace PowerPointLabs.ActionFramework.Common.Interface
                 return true;
             }
 
-            if (Graphics.IsAGroup(selection.ShapeRange[1]))
+            if (ShapesUtil.IsAGroup(selection.ShapeRange[1]))
             {
                 return true;
             }

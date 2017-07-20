@@ -30,7 +30,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                         left, top, width, height);
                     ChangeName(overlayShape, EffectName.TextBox);
-                    Graphics.MoveZToJustBehind(overlayShape, shape);
+                    ShapesUtil.MoveZToJustBehind(overlayShape, shape);
                 }
             }
         }

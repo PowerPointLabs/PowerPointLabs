@@ -38,8 +38,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                         left, top, width, height);
                     ChangeName(overlayShape, EffectName.TextBox);
 
-                    Graphics.MoveZToJustBehind(blurTextBox, shape);
-                    Graphics.MoveZToJustBehind(overlayShape, shape);
+                    ShapesUtil.MoveZToJustBehind(blurTextBox, shape);
+                    ShapesUtil.MoveZToJustBehind(overlayShape, shape);
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             ChangeName(overlayShape, EffectName.Banner);
             ChangeName(blurBanner, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            Graphics.MoveZToJustBehind(blurBanner, overlayShape);
+            ShapesUtil.MoveZToJustBehind(blurBanner, overlayShape);
 
             var range = Shapes.Range(new[] {blurBanner.Name, overlayShape.Name});
             var resultShape = range.Group();

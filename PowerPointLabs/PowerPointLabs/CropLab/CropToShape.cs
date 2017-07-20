@@ -145,10 +145,10 @@ namespace PowerPointLabs.CropLab
         private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
             var croppedImage = KiCut(slideImage,
-                shape.Left * Utils.Graphics.PictureExportingRatio,
-                shape.Top * Utils.Graphics.PictureExportingRatio,
-                shape.Width * Utils.Graphics.PictureExportingRatio,
-                shape.Height * Utils.Graphics.PictureExportingRatio,
+                shape.Left * Utils.GraphicsUtil.PictureExportingRatio,
+                shape.Top * Utils.GraphicsUtil.PictureExportingRatio,
+                shape.Width * Utils.GraphicsUtil.PictureExportingRatio,
+                shape.Height * Utils.GraphicsUtil.PictureExportingRatio,
                 magnifyRatio);
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
@@ -156,8 +156,8 @@ namespace PowerPointLabs.CropLab
         private static void CreateRotatedFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
             var rotatedShape = new Utils.PPShape(shape, false);
-            var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * Utils.Graphics.PictureExportingRatio,
-                rotatedShape.ActualTopLeft.Y * Utils.Graphics.PictureExportingRatio);
+            var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * Utils.GraphicsUtil.PictureExportingRatio,
+                rotatedShape.ActualTopLeft.Y * Utils.GraphicsUtil.PictureExportingRatio);
 
             Bitmap rotatedImage = new Bitmap(slideImage.Width, slideImage.Height);
 
@@ -175,15 +175,15 @@ namespace PowerPointLabs.CropLab
                 }
             }
 
-            var magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * Utils.Graphics.PictureExportingRatio,
-                shape.Height * Utils.Graphics.PictureExportingRatio, magnifyRatio);
+            var magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * Utils.GraphicsUtil.PictureExportingRatio,
+                shape.Height * Utils.GraphicsUtil.PictureExportingRatio, magnifyRatio);
             magnifiedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
         private static void TakeScreenshotProxy(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange)
         {
             shapeRange.Visible = Office.MsoTriState.msoFalse;
-            Utils.Graphics.ExportSlide(currentSlide, SlidePicture);
+            Utils.GraphicsUtil.ExportSlide(currentSlide, SlidePicture);
             shapeRange.Visible = Office.MsoTriState.msoTrue;
         }
 

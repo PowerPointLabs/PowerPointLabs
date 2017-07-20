@@ -23,11 +23,11 @@ namespace PowerPointLabs.ShortcutsLab
             bool isFirstSelectionGroup = false;
             List<Shape> newShapesList = new List<Shape>();
 
-            if (Graphics.IsCorrupted(firstSelectedShape))
+            if (ShapesUtil.IsCorrupted(firstSelectedShape))
             {
-                firstSelectedShape = Graphics.CorruptionCorrection(firstSelectedShape, slide);
+                firstSelectedShape = ShapesUtil.CorruptionCorrection(firstSelectedShape, slide);
             }
-            if (Graphics.IsAGroup(firstSelectedShape))
+            if (ShapesUtil.IsAGroup(firstSelectedShape))
             {
                 isFirstSelectionGroup = true;
                 ShapeRange ungroupedShapes = firstSelectedShape.Ungroup();
@@ -45,9 +45,9 @@ namespace PowerPointLabs.ShortcutsLab
             for (int i = 2; i <= selectedShapes.Count; i++)
             {
                 Shape shape = selectedShapes[i];
-                if (Graphics.IsCorrupted(shape))
+                if (ShapesUtil.IsCorrupted(shape))
                 {
-                    shape = Graphics.CorruptionCorrection(shape, slide);
+                    shape = ShapesUtil.CorruptionCorrection(shape, slide);
                 }
                 newShapesList.Add(shape);
             }

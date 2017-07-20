@@ -54,8 +54,8 @@ namespace PowerPointLabs.NarrationsLab.Views
             Native.RECT rec;
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
             
-            Left = rec.Right / Graphics.GetDpiScale() - Width;
-            Top = rec.Bottom / Graphics.GetDpiScale() - Height;
+            Left = rec.Right / GraphicsUtil.GetDpiScale() - Width;
+            Top = rec.Bottom / GraphicsUtil.GetDpiScale() - Height;
             _status = ButtonStatus.Idle;
 
             // disable undo button by default, enable only when there has something to undo

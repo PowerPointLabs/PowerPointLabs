@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using Office = Microsoft.Office.Core;
@@ -25,9 +26,9 @@ namespace PowerPointLabs.EffectsLab
             for (int i = 1; i <= shapeRange.Count; i++)
             {
                 var shape = shapeRange[i];
-                if (Utils.Graphics.IsCorrupted(shape))
+                if (ShapesUtil.IsCorrupted(shape))
                 {
-                    shape = Utils.Graphics.CorruptionCorrection(shape, curSlide);
+                    shape = ShapesUtil.CorruptionCorrection(shape, curSlide);
                 }
                 originalShapeList.Add(shape);
             }

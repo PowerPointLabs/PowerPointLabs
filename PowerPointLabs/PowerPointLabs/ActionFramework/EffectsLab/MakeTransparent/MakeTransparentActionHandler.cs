@@ -4,6 +4,7 @@ using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -71,7 +72,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             var tempPicPath = Path.Combine(Path.GetTempPath(), "tempPic.png");
 
-            Utils.Graphics.ExportShape(picture, tempPicPath);
+            GraphicsUtil.ExportShape(picture, tempPicPath);
 
             var shapeHolder =
                 this.GetCurrentSlide().Shapes.AddShape(
