@@ -689,7 +689,7 @@ namespace PowerPointLabs.Utils
                 {
                     return false;
                 }
-                shape.Line.BeginArrowheadStyle = shape.Line.BeginArrowheadStyle;
+                MsoArrowheadStyle style = shape.Line.BeginArrowheadStyle;
                 return true;
             }
             catch (ArgumentException)

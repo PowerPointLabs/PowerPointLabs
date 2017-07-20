@@ -179,7 +179,7 @@ namespace PowerPointLabs.Utils
         public static void SquashSlides(IEnumerable<PowerPointSlide> slides)
         {
             PowerPointSlide firstSlide = null;
-            List<Shape> previousShapes = null;
+            ShapeRange previousShapes = null;
             EffectTransition slideTransition = new EffectTransition();
 
             foreach (var slide in slides)
@@ -191,28 +191,29 @@ namespace PowerPointLabs.Utils
 
                     firstSlide.Transition.AdvanceOnClick = MsoTriState.msoTrue;
                     firstSlide.Transition.AdvanceOnTime = MsoTriState.msoFalse;
-
-                    //TODO: Check if there will be an exception when there are empty placeholder shapes in firstSlide.
-                    previousShapes = firstSlide.Shapes.Cast<Shape>().ToList();
+                    
+                    previousShapes = ShapesUtil.GetShapesWhenTypeNotMatches(firstSlide, firstSlide.Shapes.Range(), MsoShapeType.msoPlaceholder);
                     continue;
                 }
 
                 var effectSequence = firstSlide.GetNativeSlide().TimeLine.MainSequence;
                 int effectStartIndex = effectSequence.Count + 1;
-
-
+                
                 slide.DeleteIndicator();
-                var newShapeRange = firstSlide.CopyShapesToSlide(slide.Shapes.Range());
+                ShapeRange newShapeRange = firstSlide.CopyShapesToSlide(slide.Shapes.Range());
                 newShapeRange.ZOrder(MsoZOrderCmd.msoSendToBack);
-
-
-                var newShapes = newShapeRange.Cast<Shape>().ToList();
-                newShapes.ForEach(shape => AddAppearAnimation(shape, firstSlide, effectStartIndex));
-                previousShapes.ForEach(shape => AddDisappearAnimation(shape, firstSlide, effectStartIndex));
+                
+                foreach (Shape shape in newShapeRange)
+                {
+                    AddAppearAnimation(shape, firstSlide, effectStartIndex);
+                }
+                foreach (Shape shape in previousShapes)
+                {
+                    AddDisappearAnimation(shape, firstSlide, effectStartIndex);
+                }
                 slideTransition.ApplyTransition(effectSequence[effectStartIndex]);
-
-
-                previousShapes = newShapes;
+                
+                previousShapes = newShapeRange;
                 slideTransition = GetTransitionFromSlide(slide);
                 slide.Delete();
             }
