@@ -1,5 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
@@ -8,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.CaptionsLab
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection1.AddCaptionsButtonLabel;
+            return CaptionsLabText.AddCaptionsButtonLabel;
         }
     }
 }

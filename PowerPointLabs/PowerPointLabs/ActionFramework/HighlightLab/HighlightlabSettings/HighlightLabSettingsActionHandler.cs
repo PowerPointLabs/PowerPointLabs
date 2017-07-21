@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.HighlightLab;
 
-namespace PowerPointLabs.ActionFramework.Highlightlab
+namespace PowerPointLabs.ActionFramework.HighlightLab
 {
     [ExportActionRibbonId(TextCollection1.HighlightLabSettingsTag)]
     class HighlightLabSettingsActionHandler : ActionHandler

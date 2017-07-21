@@ -1,5 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
@@ -8,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.AgendaLab
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection1.AgendaLabBulletPointSupertip;
+            return AgendaLabText.BulletPointSupertip;
         }
     }
 }

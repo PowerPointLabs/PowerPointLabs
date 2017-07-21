@@ -2,6 +2,11 @@
 {
     internal static class SyncLabText
     {
+        public const string RibbonMenuLabel = "Sync";
+        public const string RibbonMenuSupertip =
+            "Use Sync Lab to make your slides look more consistent.\n\n" +
+            "Click this button to open the Sync Lab interface.";
+
         public const string StorageFileName = "Sync Lab - Do not edit";
         public const string DefaultFormatName = "Format";
 

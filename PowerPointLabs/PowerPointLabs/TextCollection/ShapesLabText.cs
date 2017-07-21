@@ -2,6 +2,11 @@
 {
     internal static class ShapesLabText
     {
+        public const string RibbonMenuLabel = "Shapes";
+        public const string RibbonMenuSupertip =
+           "Use Shapes Lab to manage your custom shapes.\n\n" +
+           "Click this button to open the Shapes Lab interface.";
+
         public const string FileNameInvalid = "Invalid shape name.";
         public const string NoShapeTextFirstLine = "No shapes saved yet.";
         public const string NoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";

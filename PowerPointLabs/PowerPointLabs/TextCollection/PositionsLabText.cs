@@ -2,6 +2,11 @@
 {
     internal static class PositionsLabText
     {
+        public const string RibbonMenuLabel = "Positions";
+        public const string RibbonMenuSupertip =
+            "Use Positions Lab to accurately position the objects on your slide.\n\n" +
+            "Click this button to open the Positions Lab interface.";
+
         public const string ErrorUndefined = "Undefined error in Positions Lab";
 
         public const string ErrorDialogTitle = "Unable to execute action";

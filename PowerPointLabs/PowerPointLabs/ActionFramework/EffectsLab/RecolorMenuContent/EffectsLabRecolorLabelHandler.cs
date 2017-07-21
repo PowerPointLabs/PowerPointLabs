@@ -1,6 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.EffectsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
@@ -12,19 +12,19 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             string label = "";
             if (ribbonId.Contains(TextCollection1.GrayScaleTag))
             {
-                label = TextCollection1.EffectsLabGrayScaleButtonLabel;
+                label = EffectsLabText.GrayScaleButtonLabel;
             }
             else if (ribbonId.Contains(TextCollection1.BlackWhiteTag))
             {
-                label = TextCollection1.EffectsLabBlackWhiteButtonLabel;
+                label = EffectsLabText.BlackWhiteButtonLabel;
             }
             else if (ribbonId.Contains(TextCollection1.GothamTag))
             {
-                label = TextCollection1.EffectsLabGothamButtonLabel;
+                label = EffectsLabText.GothamButtonLabel;
             }
             else if (ribbonId.Contains(TextCollection1.SepiaTag))
             {
-                label = TextCollection1.EffectsLabSepiaButtonLabel;
+                label = EffectsLabText.SepiaButtonLabel;
             }
             return label;
         }

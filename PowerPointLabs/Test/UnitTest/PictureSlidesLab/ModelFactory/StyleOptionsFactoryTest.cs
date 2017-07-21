@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.TextCollection;

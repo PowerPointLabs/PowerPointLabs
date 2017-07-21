@@ -2,6 +2,11 @@
 {
     internal static class ColorsLabText
     {
+        public const string RibbonMenuLabel = "Colors";
+        public const string RibbonMenuSupertip =
+            "Use Colors Lab to add beautiful colors to your slide.\n\n" +
+            "Click this button to open the Colors Lab interface.";
+
         public const string MainColorBoxTooltip = "Choose the main color: " +
                                    "\r\nDrag the button to pick a color, " +
                                    "\r\nor click it to choose one from the Color dialog.";

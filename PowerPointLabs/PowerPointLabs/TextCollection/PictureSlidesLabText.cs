@@ -2,6 +2,11 @@
 {
     internal static class PictureSlidesLabText
     {
+        public const string RibbonMenuLabel = "Picture Slides";
+        public const string RibbonMenuSupertip =
+            "Use Picture Slides Lab to create better picture slides using less effort.\n\n" +
+            "Click this button to open the Picture Slides Lab interface.";
+
         /// <summary>
         /// Styles Variation Category Name
         ///

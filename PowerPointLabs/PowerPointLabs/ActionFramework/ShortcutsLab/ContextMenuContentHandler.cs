@@ -2,6 +2,7 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
@@ -37,8 +38,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         private List<ContextMenuGroup> GetContextMenuGroups(string ribbonId)
         {
             List<ContextMenuGroup> contextMenuGroups = new List<ContextMenuGroup>();
-            ContextMenuGroup pasteLab = new ContextMenuGroup(TextCollection1.PasteLabMenuLabel, new List<string>());
-            ContextMenuGroup shortcuts = new ContextMenuGroup(TextCollection1.ShortcutsLabMenuLabel, new List<string>());
+            ContextMenuGroup pasteLab = new ContextMenuGroup(ShortcutsLabText.PasteMenuLabel, new List<string>());
+            ContextMenuGroup shortcuts = new ContextMenuGroup(ShortcutsLabText.ShortcutsMenuLabel, new List<string>());
             contextMenuGroups.Add(pasteLab);
 
             // All context menus will have these buttons

@@ -633,6 +633,12 @@
     <Compile Include="TextCollection\ShapesLabText.cs" />
     <Compile Include="TextCollection\AgendaLabText.cs" />
     <Compile Include="TextCollection\PictureSlidesLabText.cs" />
+    <Compile Include="TextCollection\NarrationsLabText.cs" />
+    <Compile Include="TextCollection\HighlightLabText.cs" />
+    <Compile Include="TextCollection\ResizeLabText.cs" />
+    <Compile Include="TextCollection\HelpText.cs" />
+    <Compile Include="TextCollection\ShortcutsLab.cs" />
+    <Compile Include="TextCollection\TimerLabText.cs" />
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />

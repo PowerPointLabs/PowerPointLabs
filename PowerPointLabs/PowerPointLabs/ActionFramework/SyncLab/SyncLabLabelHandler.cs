@@ -1,5 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SyncLab
 {
@@ -8,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.SyncLab
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection1.SyncLabButtonLabel;
+            return SyncLabText.RibbonMenuLabel;
         }
     }
 }

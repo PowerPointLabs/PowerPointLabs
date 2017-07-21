@@ -1,5 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PictureSlidesLab
 {
@@ -8,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.PictureSlidesLab
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection1.PictureSlidesLabMenuSupertip;
+            return PictureSlidesLabText.RibbonMenuSupertip;
         }
     }
 }
