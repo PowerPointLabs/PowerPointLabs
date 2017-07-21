@@ -562,7 +562,7 @@ namespace PowerPointLabs.Models
                 newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
                 newShape.Top = shape.Top;
-                ShapesUtil.MoveZToJustInFront(newShape, shape);
+                ShapeUtil.MoveZToJustInFront(newShape, shape);
 
                 DeleteShapeAnimations(newShape);
                 TransferAnimation(shape, newShape);
@@ -906,7 +906,7 @@ namespace PowerPointLabs.Models
             markerShape.Top = slideHeight - markerShape.Height;
             markerShape.Name = PptLabsTemplateMarkerShapeName;
 
-            ShapesUtil.MakeShapeViewTimeInvisible(markerShape, _slide);
+            ShapeUtil.MakeShapeViewTimeInvisible(markerShape, _slide);
             return markerShape;
         }
 
@@ -1164,7 +1164,7 @@ namespace PowerPointLabs.Models
             var shapes = _slide.Shapes.Cast<Shape>();
             foreach (var shape in shapes)
             {
-                if (ShapesUtil.HasDefaultName(shape))
+                if (ShapeUtil.HasDefaultName(shape))
                 {
                     shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }
@@ -1221,7 +1221,7 @@ namespace PowerPointLabs.Models
             indicatorShape.Height = 84;
             indicatorShape.Name = PptLabsIndicatorShapeName + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-            ShapesUtil.MakeShapeViewTimeInvisible(indicatorShape, _slide);
+            ShapeUtil.MakeShapeViewTimeInvisible(indicatorShape, _slide);
 
             return indicatorShape;
         }

@@ -574,7 +574,6 @@
     <Compile Include="ActionFramework\TimerLab\TimerLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenu\HighlightLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Common\Handlers\BaseUtilActionHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuSupertipHandler.cs" />
@@ -624,7 +623,8 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
-    <Compile Include="Utils\ShapesUtil.cs" />
+    <Compile Include="Utils\ShapeUtil.cs" />
+    <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>

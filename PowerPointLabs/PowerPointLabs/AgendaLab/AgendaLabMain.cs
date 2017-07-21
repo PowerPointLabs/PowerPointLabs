@@ -468,12 +468,12 @@ namespace PowerPointLabs.AgendaLab
             var contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
-            ShapesUtil.SetText(titleShape, TextCollection.AgendaLabTitleContent);
-            ShapesUtil.SetText(contentShape, TextCollection.AgendaLabBulletVisitedContent,
+            ShapeUtil.SetText(titleShape, TextCollection.AgendaLabTitleContent);
+            ShapeUtil.SetText(contentShape, TextCollection.AgendaLabBulletVisitedContent,
                                             TextCollection.AgendaLabBulletHighlightedContent,
                                             TextCollection.AgendaLabBulletUnvisitedContent);
 
-            var paragraphs = ShapesUtil.GetParagraphs(contentShape);
+            var paragraphs = ShapeUtil.GetParagraphs(contentShape);
             paragraphs[0].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Gray);
             paragraphs[1].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Red);
             paragraphs[2].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Black);
@@ -500,7 +500,7 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             var titleBar = refSlide.Shapes.Placeholders[1];
-            ShapesUtil.SetText(titleBar, TextCollection.AgendaLabTitleContent);
+            ShapeUtil.SetText(titleBar, TextCollection.AgendaLabTitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
 
@@ -586,7 +586,7 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape previousImageShape)
         {
             var snapshotShape = CreateSectionImage(refSlide, section);
-            ShapesUtil.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
+            ShapeUtil.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
             previousImageShape.Delete();
         }
         
@@ -901,7 +901,7 @@ namespace PowerPointLabs.AgendaLab
                 {
                     // Reuse old textbox
                     var textbox = textboxAssignment[index];
-                    ShapesUtil.SetText(textbox, section.Name);
+                    ShapeUtil.SetText(textbox, section.Name);
                     AgendaShape.SetShapeName(textbox, ShapePurpose.BeamShapeText, section);
                     reassignedTextboxIndexes.Add(index);
                 }
@@ -910,7 +910,7 @@ namespace PowerPointLabs.AgendaLab
                     // Create new textbox
                     var textbox = PrepareBeamAgendaBeamItem(refSlide, section);
                     var referenceTextFormat = beamFormats.Regular;
-                    ShapesUtil.SyncTextRange(referenceTextFormat, textbox.TextFrame2.TextRange, pickupTextContent: false);
+                    ShapeUtil.SyncTextRange(referenceTextFormat, textbox.TextFrame2.TextRange, pickupTextContent: false);
                     newTextboxes.Add(textbox);
                 }
             }
@@ -967,7 +967,7 @@ namespace PowerPointLabs.AgendaLab
                     referenceTextFormat = oldTextBoxes[i].TextFrame2.TextRange;
                 }
 
-                ShapesUtil.SyncTextRange(referenceTextFormat, newTextBoxes[i].TextFrame2.TextRange, pickupTextContent: false);
+                ShapeUtil.SyncTextRange(referenceTextFormat, newTextBoxes[i].TextFrame2.TextRange, pickupTextContent: false);
             }
 
             oldTextBoxes.ForEach(shape => shape.Delete());
@@ -1073,7 +1073,7 @@ namespace PowerPointLabs.AgendaLab
                                                 .FirstOrDefault();
             var currentSectionText = currentSectionTextBox.TextFrame2.TextRange;
 
-            ShapesUtil.SyncTextRange(beamFormats.Highlighted, currentSectionText, pickupTextContent: false);
+            ShapeUtil.SyncTextRange(beamFormats.Highlighted, currentSectionText, pickupTextContent: false);
         }
         #endregion
 

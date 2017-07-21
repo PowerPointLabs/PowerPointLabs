@@ -36,7 +36,7 @@ namespace PowerPointLabs.ZoomLab
                 var addedSlides = AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
                 if (!ZoomLabSettings.MultiSlideZoomChecked)
                 {
-                    GraphicsUtil.SquashSlides(addedSlides);
+                    SlideUtil.SquashSlides(addedSlides);
                 }
 
                 MakeVisible(zoomRectangles);
@@ -113,7 +113,7 @@ namespace PowerPointLabs.ZoomLab
                 shapeCount++;
             }
 
-            GraphicsUtil.SortByIndex(addedSlides);
+            SlideUtil.SortByIndex(addedSlides);
             return addedSlides;
         }
 

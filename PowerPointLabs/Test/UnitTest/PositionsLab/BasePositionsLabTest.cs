@@ -31,8 +31,8 @@ namespace Test.UnitTest.PositionsLab
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapesUtil.GetCenterPoint(simulatedShape).X - ShapesUtil.GetCenterPoint(selectedShape).X);
-                selectedShape.IncrementTop(ShapesUtil.GetCenterPoint(simulatedShape).Y - ShapesUtil.GetCenterPoint(selectedShape).Y);
+                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
+                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
                 selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
@@ -44,8 +44,8 @@ namespace Test.UnitTest.PositionsLab
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapesUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(ShapesUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
                 SwapZOrder(selectedShape, simulatedShape);
             }
         }

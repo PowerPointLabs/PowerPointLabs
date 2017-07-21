@@ -77,9 +77,9 @@ namespace PowerPointLabs.AgendaLab
             var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
-            ShapesUtil.SetText(targetContentShape, sections.Where(section => section.Index > 1)
+            ShapeUtil.SetText(targetContentShape, sections.Where(section => section.Index > 1)
                 .Select(section => section.Name));
-            ShapesUtil.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
+            ShapeUtil.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);
 
             ApplyBulletFormats(targetContentShape.TextFrame2.TextRange, bulletFormats, currentSection);
@@ -104,15 +104,15 @@ namespace PowerPointLabs.AgendaLab
 
                 if (i == focusIndex)
                 {
-                    ShapesUtil.SyncTextRange(bulletFormats.Highlighted, currentParagraph, pickupTextContent: false);
+                    ShapeUtil.SyncTextRange(bulletFormats.Highlighted, currentParagraph, pickupTextContent: false);
                 }
                 else if (i < focusIndex)
                 {
-                    ShapesUtil.SyncTextRange(bulletFormats.Visited, currentParagraph, pickupTextContent: false);
+                    ShapeUtil.SyncTextRange(bulletFormats.Visited, currentParagraph, pickupTextContent: false);
                 }
                 else
                 {
-                    ShapesUtil.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
+                    ShapeUtil.SyncTextRange(bulletFormats.Unvisited, currentParagraph, pickupTextContent: false);
                 }
             }
         }
@@ -186,7 +186,7 @@ namespace PowerPointLabs.AgendaLab
                 var sectionEndSlide = FindSectionLastNonAgendaSlide(i);
                 var snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
-                ShapesUtil.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
+                ShapeUtil.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
                 imageShape.Delete();
             }
         }
@@ -281,7 +281,7 @@ namespace PowerPointLabs.AgendaLab
             foreach (var refShape in sameShapes)
             {
                 var candidateShape = candidateSlideShapes[refShape.Name];
-                ShapesUtil.SyncWholeShape(refShape, ref candidateShape, candidate);
+                ShapeUtil.SyncWholeShape(refShape, ref candidateShape, candidate);
 
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
             }
@@ -337,7 +337,7 @@ namespace PowerPointLabs.AgendaLab
                 var shape = entry.Value;
                 if (lastShape != null)
                 {
-                    ShapesUtil.MoveZUntilBehind(shape, lastShape);
+                    ShapeUtil.MoveZUntilBehind(shape, lastShape);
                 }
                 lastShape = shape;
             }

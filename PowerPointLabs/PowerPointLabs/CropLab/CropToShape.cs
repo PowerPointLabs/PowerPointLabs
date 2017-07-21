@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Selection = Microsoft.Office.Interop.PowerPoint.Selection;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.CropLab
 {
@@ -20,8 +22,8 @@ namespace PowerPointLabs.CropLab
         private static readonly string SlidePicture = Path.GetTempPath() + @"\slide.png";
         private static readonly string FillInBackgroundPicture = Path.GetTempPath() + @"\currentFillInBg.png";
 
-        public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.Selection selection,
-                                            double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
+        public static Shape Crop(PowerPointSlide currentSlide, Selection selection,
+                                double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
         {
             var shapeRange = selection.ShapeRange;
             if (selection.HasChildShapeRange)
@@ -38,8 +40,8 @@ namespace PowerPointLabs.CropLab
             return croppedShape;
         }
 
-        public static PowerPoint.Shape Crop(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange, double magnifyRatio = 1.0, bool isInPlace = false,
-            bool handleError = true)
+        public static Shape Crop(PowerPointSlide currentSlide, ShapeRange shapeRange, 
+                                double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
         {
             try
             {
@@ -59,7 +61,7 @@ namespace PowerPointLabs.CropLab
                 TakeScreenshotProxy(currentSlide, shapeRange);
 
                 var ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(currentSlide, shapeRange);
-                List<PowerPoint.Shape> shapeList = new List<PowerPoint.Shape>();
+                List<Shape> shapeList = new List<Shape>();
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
@@ -78,8 +80,8 @@ namespace PowerPointLabs.CropLab
             }
         }
 
-        public static PowerPoint.Shape FillInShapeWithImage(PowerPointSlide currentSlide, string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0,
-            bool isInPlace = false)
+        public static Shape FillInShapeWithImage(PowerPointSlide currentSlide, string imageFile, Shape shape, 
+                                                double magnifyRatio = 1.0, bool isInPlace = false)
         {
             CreateFillInBackgroundForShape(imageFile, shape, magnifyRatio);
             shape.Fill.UserPicture(FillInBackgroundPicture);
@@ -127,7 +129,7 @@ namespace PowerPointLabs.CropLab
             }
         }
 
-        private static void CreateFillInBackgroundForShape(string imageFile, PowerPoint.Shape shape, double magnifyRatio = 1.0)
+        private static void CreateFillInBackgroundForShape(string imageFile, Shape shape, double magnifyRatio = 1.0)
         {
             using (var slideImage = (Bitmap)Image.FromFile(imageFile))
             {
@@ -142,22 +144,22 @@ namespace PowerPointLabs.CropLab
             }
         }
 
-        private static void CreateFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
+        private static void CreateFillInBackground(Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
             var croppedImage = KiCut(slideImage,
-                shape.Left * Utils.GraphicsUtil.PictureExportingRatio,
-                shape.Top * Utils.GraphicsUtil.PictureExportingRatio,
-                shape.Width * Utils.GraphicsUtil.PictureExportingRatio,
-                shape.Height * Utils.GraphicsUtil.PictureExportingRatio,
+                shape.Left * GraphicsUtil.PictureExportingRatio,
+                shape.Top * GraphicsUtil.PictureExportingRatio,
+                shape.Width * GraphicsUtil.PictureExportingRatio,
+                shape.Height * GraphicsUtil.PictureExportingRatio,
                 magnifyRatio);
             croppedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        private static void CreateRotatedFillInBackground(PowerPoint.Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
+        private static void CreateRotatedFillInBackground(Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
-            var rotatedShape = new Utils.PPShape(shape, false);
-            var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * Utils.GraphicsUtil.PictureExportingRatio,
-                rotatedShape.ActualTopLeft.Y * Utils.GraphicsUtil.PictureExportingRatio);
+            var rotatedShape = new PPShape(shape, false);
+            var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * GraphicsUtil.PictureExportingRatio,
+                rotatedShape.ActualTopLeft.Y * GraphicsUtil.PictureExportingRatio);
 
             Bitmap rotatedImage = new Bitmap(slideImage.Width, slideImage.Height);
 
@@ -175,28 +177,16 @@ namespace PowerPointLabs.CropLab
                 }
             }
 
-            var magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * Utils.GraphicsUtil.PictureExportingRatio,
-                shape.Height * Utils.GraphicsUtil.PictureExportingRatio, magnifyRatio);
+            var magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * GraphicsUtil.PictureExportingRatio,
+                shape.Height * GraphicsUtil.PictureExportingRatio, magnifyRatio);
             magnifiedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }
 
-        private static void TakeScreenshotProxy(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange)
+        private static void TakeScreenshotProxy(PowerPointSlide currentSlide, ShapeRange shapeRange)
         {
             shapeRange.Visible = Office.MsoTriState.msoFalse;
-            Utils.GraphicsUtil.ExportSlide(currentSlide, SlidePicture);
+            GraphicsUtil.ExportSlide(currentSlide, SlidePicture);
             shapeRange.Visible = Office.MsoTriState.msoTrue;
-        }
-
-        private static bool IsShapeForSelection(PowerPoint.ShapeRange shapeRange)
-        {
-            return (from PowerPoint.Shape shape in shapeRange select shape).All(IsShape);
-        }
-
-        private static bool IsShape(PowerPoint.Shape shape)
-        {
-            return shape.Type == Office.MsoShapeType.msoAutoShape 
-                || shape.Type == Office.MsoShapeType.msoFreeform 
-                || shape.Type == Office.MsoShapeType.msoGroup;
         }
     }
 }

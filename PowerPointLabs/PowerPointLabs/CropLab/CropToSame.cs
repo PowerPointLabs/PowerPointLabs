@@ -17,15 +17,15 @@ namespace PowerPointLabs.CropLab
 
             Shape refObj = shapeRange[1];
 
-            float refScaleWidth = ShapesUtil.GetScaleWidth(refObj);
-            float refScaleHeight = ShapesUtil.GetScaleHeight(refObj);
+            float refScaleWidth = ShapeUtil.GetScaleWidth(refObj);
+            float refScaleHeight = ShapeUtil.GetScaleHeight(refObj);
 
             float cropTop = Epsilon;
             float cropBottom = Epsilon;
             float cropLeft = Epsilon;
             float cropRight = Epsilon;
 
-            if (!ShapesUtil.IsShape(refObj))
+            if (!ShapeUtil.IsShape(refObj))
             {
                 cropTop = Math.Max(refObj.PictureFormat.CropTop, Epsilon);
                 cropBottom = Math.Max(refObj.PictureFormat.CropBottom, Epsilon);
@@ -46,8 +46,8 @@ namespace PowerPointLabs.CropLab
                 }
                 hasChange = true;
 
-                float scaleWidth = ShapesUtil.GetScaleWidth(shapeRange[i]);
-                float scaleHeight = ShapesUtil.GetScaleHeight(shapeRange[i]);
+                float scaleWidth = ShapeUtil.GetScaleWidth(shapeRange[i]);
+                float scaleHeight = ShapeUtil.GetScaleHeight(shapeRange[i]);
                 if (CropLabSettings.AnchorPosition == AnchorPosition.Reference)
                 {
                     shapeRange[i].PictureFormat.CropTop += Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);

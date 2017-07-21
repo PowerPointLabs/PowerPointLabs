@@ -139,8 +139,8 @@ namespace PowerPointLabs.Models
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
         {
-            float scaleFactorWidth = ShapesUtil.GetScaleWidth(shapeToCrop);
-            float scaleFactorHeight = ShapesUtil.GetScaleHeight(shapeToCrop);
+            float scaleFactorWidth = ShapeUtil.GetScaleWidth(shapeToCrop);
+            float scaleFactorHeight = ShapeUtil.GetScaleHeight(shapeToCrop);
 
             if (shapeToCrop.Left < 0)
             {

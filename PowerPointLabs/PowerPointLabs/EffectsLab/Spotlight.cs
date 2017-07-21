@@ -80,7 +80,7 @@ namespace PowerPointLabs.EffectsLab
             spotShape.Line.Visible = Office.MsoTriState.msoTrue;
             spotShape.Line.ForeColor.RGB = 0x000000;
 
-            Utils.ShapesUtil.MakeShapeViewTimeInvisible(spotShape, currentSlide);
+            Utils.ShapeUtil.MakeShapeViewTimeInvisible(spotShape, currentSlide);
         }
         
         private static void CreateSpotlightDuplicate(PowerPoint.Shape spotlightShape)

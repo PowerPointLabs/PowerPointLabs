@@ -146,7 +146,7 @@ namespace PowerPointLabs.HighlightLab
             highlightShape.Fill.ForeColor.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsBackgroundColor);
             highlightShape.Fill.Transparency = 0.50f;
             highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-            Utils.ShapesUtil.MoveZToJustBehind(highlightShape, sh);
+            Utils.ShapeUtil.MoveZToJustBehind(highlightShape, sh);
             highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             highlightShape.Tags.Add("HighlightBackground", sh.Name);
             highlightShape.Select(Office.MsoTriState.msoFalse);

@@ -33,7 +33,7 @@ namespace PowerPointLabs.AnimationLab
             float finalWidth = finalShape.Width;
             float finalHeight = finalShape.Height;
 
-            if (Utils.ShapesUtil.IsStraightLine(initialShape))
+            if (Utils.ShapeUtil.IsStraightLine(initialShape))
             {
                 double initialAngle = GetLineAngle(initialShape);
                 double finalAngle = GetLineAngle(finalShape);

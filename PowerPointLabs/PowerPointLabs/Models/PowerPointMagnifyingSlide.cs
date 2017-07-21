@@ -150,7 +150,7 @@ namespace PowerPointLabs.Models
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             zoomSlideCroppedShapes.Name = "PPTLabsMagnifyAreaGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            Utils.ShapesUtil.FitShapeToSlide(ref zoomSlideCroppedShapes);
+            Utils.ShapeUtil.FitShapeToSlide(ref zoomSlideCroppedShapes);
             zoomSlideCopy.Delete();
         }
 

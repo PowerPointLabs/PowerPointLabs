@@ -132,7 +132,7 @@ namespace PowerPointLabs.HighlightLab
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 if (isTextBoxTransparent)
                 {
-                    Utils.ShapesUtil.MoveZToJustBehind(highlightShape, shape);
+                    Utils.ShapeUtil.MoveZToJustBehind(highlightShape, shape);
                 }
                 highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);

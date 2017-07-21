@@ -68,7 +68,7 @@ namespace PowerPointLabs.ZoomLab
                     currentSlide.Copy();
                     var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     backgroundShape.Apply();
-                    ShapesUtil.FitShapeToSlide(ref backgroundShape);
+                    ShapeUtil.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
                     backgroundShape.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -92,7 +92,7 @@ namespace PowerPointLabs.ZoomLab
                     currentSlide.Copy();
                     var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     backgroundShape.Apply();
-                    ShapesUtil.FitShapeToSlide(ref backgroundShape);
+                    ShapeUtil.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
                     backgroundShape.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -267,7 +267,7 @@ namespace PowerPointLabs.ZoomLab
             List<PowerPoint.Shape> shapesOnNextSlide = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                if (!nextSlide.HasEntryAnimation(sh) && !ShapesUtil.IsHidden(sh))
+                if (!nextSlide.HasEntryAnimation(sh) && !ShapeUtil.IsHidden(sh))
                 {
                     shapesOnNextSlide.Add(sh);
                 }
@@ -390,7 +390,7 @@ namespace PowerPointLabs.ZoomLab
         {
             currentSlide.Copy();
             PowerPoint.Shape currentSlideCopy = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            ShapesUtil.FitShapeToSlide(ref currentSlideCopy);
+            ShapeUtil.FitShapeToSlide(ref currentSlideCopy);
             currentSlideCopy.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
             previousSlidePicture.Copy();
@@ -423,7 +423,7 @@ namespace PowerPointLabs.ZoomLab
             var copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
-                if (!previousSlide.HasExitAnimation(sh) && !ShapesUtil.IsHidden(sh))
+                if (!previousSlide.HasExitAnimation(sh) && !ShapeUtil.IsHidden(sh))
                 {
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];

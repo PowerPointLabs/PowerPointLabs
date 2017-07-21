@@ -41,7 +41,7 @@ namespace PowerPointLabs.ShapesLab
                 }
                 else
                 {
-                    MessageBox.Show(Utils.ShapesUtil.IsShapeNameOverMaximumLength(value)
+                    MessageBox.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(value)
                                         ? TextCollection.ErrorNameTooLong
                                         : TextCollection.ErrorInvalidCharacter);
 
@@ -254,7 +254,7 @@ namespace PowerPointLabs.ShapesLab
             
             return !(string.IsNullOrWhiteSpace(name) ||
                      invalidChars.IsMatch(name) ||
-                     Utils.ShapesUtil.IsShapeNameOverMaximumLength(name));
+                     Utils.ShapeUtil.IsShapeNameOverMaximumLength(name));
         }
         # endregion
 
