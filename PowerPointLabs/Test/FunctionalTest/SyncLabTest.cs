@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using TestInterface;
-using Microsoft.Office.Interop.PowerPoint;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Test.Util;
-using Point = System.Drawing.Point;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs;
+using PowerPointLabs.TextCollection;
+
+using TestInterface;
+
+using Test.Util;
 
 namespace Test.FunctionalTest
 {
@@ -52,18 +53,18 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(OriginalSyncGroupToShapeSlideNo);
 
             // no selection copy
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 "Please select one shape to copy.", syncLab.Copy, "Ok");
 
             // 2 item selected copy
             List<String> shapes = new List<string> { Line, RotatedArrow };
             PpOperations.SelectShapes(shapes);
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 "Please select one shape to copy.", syncLab.Copy, "Ok");
 
             // group selected copy
             PpOperations.SelectShape(Group);
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 "Please select one shape to copy.", syncLab.Copy, "Ok");
 
             // copy blank item for the paste error dialog test
@@ -72,8 +73,8 @@ namespace Test.FunctionalTest
 
             // no selection sync
             PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(TextCollection.SyncLabErrorDialogTitle,
-                "Please select at least one item to apply.", () => syncLab.Sync(0), "Ok");
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
+                "Please select at least one item to apply this format to.", () => syncLab.Sync(0), "Ok");
         }
 
         private void TestSync(ISyncLabController syncLab)

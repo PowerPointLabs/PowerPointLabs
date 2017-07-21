@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using Drawing = System.Drawing;
@@ -33,13 +34,13 @@ namespace PowerPointLabs.EffectsLab.Views
         {
             lastTransparency = spotlightTransparency;
             spotlightTransparencyInput.Text = spotlightTransparency.ToString("P0");
-            spotlightTransparencyInput.ToolTip = TextCollection.SpotlightSettingsTransparencyInputTooltip;
+            spotlightTransparencyInput.ToolTip = EffectsLabText.SettingsTransparencyInputTooltip;
 
             String[] keys = EffectsLabSettings.SpotlightSoftEdgesMapping.Keys.ToArray();
             float[] values = EffectsLabSettings.SpotlightSoftEdgesMapping.Values.ToArray();
             softEdgesSelectionInput.ItemsSource = keys;
             softEdgesSelectionInput.Content = keys[Array.IndexOf(values, spotlightSoftEdges)];
-            softEdgesSelectionInput.ToolTip = TextCollection.SpotlightSettingsSoftEdgesSelectionInputTooltip;
+            softEdgesSelectionInput.ToolTip = EffectsLabText.SettingsSoftEdgesSelectionInputTooltip;
 
             spotlightColorRect.Fill = new SolidColorBrush(Graphics.MediaColorFromDrawingColor(spotlightColor));
         }

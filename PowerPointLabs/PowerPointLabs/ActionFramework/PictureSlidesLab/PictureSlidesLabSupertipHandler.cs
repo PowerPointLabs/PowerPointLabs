@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.PictureSlidesLab
 {
-    [ExportSupertipRibbonId(TextCollection.PictureSlidesLabTag)]
+    [ExportSupertipRibbonId(TextCollection1.PictureSlidesLabTag)]
     class PictureSlidesLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.PictureSlidesLabMenuSupertip;
+            return TextCollection1.PictureSlidesLabMenuSupertip;
         }
     }
 }

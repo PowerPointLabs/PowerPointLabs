@@ -11,8 +11,8 @@ namespace PowerPointLabs.AutoUpdate
     {
         private readonly string _vstoAddress;
         private readonly string _offlineInstallerAddress;
-        private readonly string _destVstoAddress = Path.Combine(Path.GetTempPath(), TextCollection.VstoName);
-        private readonly string _destOfflineInstallerAddress = Path.Combine(Path.GetTempPath(), TextCollection.InstallerName);
+        private readonly string _destVstoAddress = Path.Combine(Path.GetTempPath(), TextCollection1.VstoName);
+        private readonly string _destOfflineInstallerAddress = Path.Combine(Path.GetTempPath(), TextCollection1.InstallerName);
         private readonly string _targetInstallFolder;
 
         public Updater()
@@ -21,12 +21,12 @@ namespace PowerPointLabs.AutoUpdate
             switch (Properties.Settings.Default.ReleaseType)
             {
                 case "dev":
-                    _vstoAddress = Properties.Settings.Default.DevAddr + TextCollection.VstoName;
-                    _offlineInstallerAddress = Properties.Settings.Default.DevAddr + TextCollection.InstallerName;
+                    _vstoAddress = Properties.Settings.Default.DevAddr + TextCollection1.VstoName;
+                    _offlineInstallerAddress = Properties.Settings.Default.DevAddr + TextCollection1.InstallerName;
                     break;
                 case "release":
-                    _vstoAddress = Properties.Settings.Default.ReleaseAddr + TextCollection.VstoName;
-                    _offlineInstallerAddress = Properties.Settings.Default.ReleaseAddr + TextCollection.InstallerName;
+                    _vstoAddress = Properties.Settings.Default.ReleaseAddr + TextCollection1.VstoName;
+                    _offlineInstallerAddress = Properties.Settings.Default.ReleaseAddr + TextCollection1.InstallerName;
                     break;
                 default:
                     _vstoAddress = "";

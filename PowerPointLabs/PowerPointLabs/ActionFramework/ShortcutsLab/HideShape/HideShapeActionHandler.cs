@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.HideShapeTag)]
+    [ExportActionRibbonId(TextCollection1.HideShapeTag)]
     class HideShapeActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

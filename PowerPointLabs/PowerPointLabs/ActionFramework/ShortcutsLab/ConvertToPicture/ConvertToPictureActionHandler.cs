@@ -5,7 +5,7 @@ using PowerPointLabs.ShortcutsLab;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.ConvertToPictureTag)]
+    [ExportActionRibbonId(TextCollection1.ConvertToPictureTag)]
     class ConvertToPictureActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

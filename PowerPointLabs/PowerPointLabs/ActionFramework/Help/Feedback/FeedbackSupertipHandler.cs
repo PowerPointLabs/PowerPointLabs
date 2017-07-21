@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportSupertipRibbonId(TextCollection.FeedbackTag)]
+    [ExportSupertipRibbonId(TextCollection1.FeedbackTag)]
     class FeedbackSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.FeedbackButtonSupertip;
+            return TextCollection1.FeedbackButtonSupertip;
         }
     }
 }

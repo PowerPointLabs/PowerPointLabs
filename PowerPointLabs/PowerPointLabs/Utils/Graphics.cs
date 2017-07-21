@@ -106,7 +106,7 @@ namespace PowerPointLabs.Utils
             // we need a lock here to prevent race conditions on the temporary file
             lock (fileLock)
             {
-                string fileName = TextCollection.TemporaryImageStorageFileName;
+                string fileName = TextCollection1.TemporaryImageStorageFileName;
                 string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
                 ExportShape(shape, tempPicPath);
 

@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection.HideShapeTag)]
+    [ExportLabelRibbonId(TextCollection1.HideShapeTag)]
     class HideShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.HideSelectedShapeLabel;
+            return TextCollection1.HideSelectedShapeLabel;
         }
     }
 }

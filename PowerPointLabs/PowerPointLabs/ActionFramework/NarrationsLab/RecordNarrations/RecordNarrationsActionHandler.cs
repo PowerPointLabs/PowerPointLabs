@@ -8,7 +8,7 @@ using PowerPointLabs.NarrationsLab.Views;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportActionRibbonId(TextCollection.RecordNarrationsTag)]
+    [ExportActionRibbonId(TextCollection1.RecordNarrationsTag)]
     class RecordNarrationsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportSupertipRibbonId(TextCollection.TimerLabTag)]
+    [ExportSupertipRibbonId(TextCollection1.TimerLabTag)]
     class TimerLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.TimerLabMenuSupertip;
+            return TextCollection1.TimerLabMenuSupertip;
         }
     }
 }

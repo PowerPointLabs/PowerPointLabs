@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportLabelRibbonId(TextCollection.TimerLabTag)]
+    [ExportLabelRibbonId(TextCollection1.TimerLabTag)]
     class TimerLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.TimerLabButtonLabel;
+            return TextCollection1.TimerLabButtonLabel;
         }
     }
 }

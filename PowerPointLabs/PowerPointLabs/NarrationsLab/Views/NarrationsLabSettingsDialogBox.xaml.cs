@@ -22,11 +22,11 @@ namespace PowerPointLabs.NarrationsLab.Views
             : this()
         {
             voiceSelectionInput.ItemsSource = voices;
-            voiceSelectionInput.ToolTip = TextCollection.NarrationsLabSettingsVoiceSelectionInputTooltip;
+            voiceSelectionInput.ToolTip = TextCollection1.NarrationsLabSettingsVoiceSelectionInputTooltip;
             voiceSelectionInput.Content = voices[selectedVoiceIndex];
 
             previewCheckbox.IsChecked = isPreviewChecked;
-            previewCheckbox.ToolTip = TextCollection.NarrationsLabSettingsPreviewCheckboxTooltip;
+            previewCheckbox.ToolTip = TextCollection1.NarrationsLabSettingsPreviewCheckboxTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

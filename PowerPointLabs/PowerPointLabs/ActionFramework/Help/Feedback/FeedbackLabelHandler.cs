@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportLabelRibbonId(TextCollection.FeedbackTag)]
+    [ExportLabelRibbonId(TextCollection1.FeedbackTag)]
     class FeedbackLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.FeedbackButtonLabel;
+            return TextCollection1.FeedbackButtonLabel;
         }
     }
 }

@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportImageRibbonId(TextCollection.ShapesLabTag)]
+    [ExportImageRibbonId(TextCollection1.ShapesLabTag)]
     class ShapesLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

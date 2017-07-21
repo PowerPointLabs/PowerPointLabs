@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportLabelRibbonId(TextCollection.AddCustomShapeTag)]
+    [ExportLabelRibbonId(TextCollection1.AddCustomShapeTag)]
     class AddShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.AddCustomShapeShapeLabel;
+            return TextCollection1.AddCustomShapeShapeLabel;
         }
     }
 }

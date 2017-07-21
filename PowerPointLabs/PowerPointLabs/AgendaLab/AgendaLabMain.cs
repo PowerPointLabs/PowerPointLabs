@@ -11,6 +11,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -106,8 +107,8 @@ namespace PowerPointLabs.AgendaLab
 
                 if (AgendaPresent())
                 {
-                    var confirm = MessageBox.Show(TextCollection.AgendaLabAgendaExistError,
-                                                  TextCollection.AgendaLabAgendaExistErrorCaption,
+                    var confirm = MessageBox.Show(AgendaLabText.AgendaExistError,
+                                                  AgendaLabText.AgendaExistErrorCaption,
                                                   MessageBoxButtons.OKCancel);
                     if (confirm != DialogResult.OK)
                     {
@@ -126,8 +127,8 @@ namespace PowerPointLabs.AgendaLab
 
                 slideTracker.DeleteAcknowledgementSlideAndTrack();
 
-                dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabGeneratingDialogTitle,
-                                                    TextCollection.AgendaLabGeneratingDialogContent);
+                dialogOpen = DisplayLoadingDialog(AgendaLabText.GeneratingDialogTitle,
+                                                    AgendaLabText.GeneratingDialogContent);
                 currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 switch (type)
@@ -167,7 +168,7 @@ namespace PowerPointLabs.AgendaLab
 
                 if (!AgendaPresent())
                 {
-                    ShowErrorMessage(TextCollection.AgendaLabNoAgendaError);
+                    ShowErrorMessage(AgendaLabText.NoAgendaError);
                     return;
                 }
 
@@ -223,8 +224,8 @@ namespace PowerPointLabs.AgendaLab
                 }
 
                 slideTracker.DeleteAcknowledgementSlideAndTrack();
-                dialogOpen = DisplayLoadingDialog(TextCollection.AgendaLabSynchronizingDialogTitle,
-                                                    TextCollection.AgendaLabSynchronizingDialogContent);
+                dialogOpen = DisplayLoadingDialog(AgendaLabText.SynchronizingDialogTitle,
+                                                    AgendaLabText.SynchronizingDialogContent);
                 currentWindow.ViewType = PpViewType.ppViewNormal;
 
                 BringToFront(refSlide);
@@ -303,8 +304,8 @@ namespace PowerPointLabs.AgendaLab
             {
                 // If only one slide selected, ask whether the user wants to generate on all slides.
                 var confirmResult = MessageBox.Show(new Form { TopMost = true },
-                                                    TextCollection.AgendaLabBeamGenerateSingleSlideDialogContent,
-                                                    TextCollection.AgendaLabBeamGenerateSingleSlideDialogTitle,
+                                                    AgendaLabText.BeamGenerateSingleSlideDialogContent,
+                                                    AgendaLabText.BeamGenerateSingleSlideDialogTitle,
                                                     MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
                 {
@@ -418,7 +419,7 @@ namespace PowerPointLabs.AgendaLab
             AgendaShape.SetShapeName(textBox, ShapePurpose.BeamShapeHighlightedText, AgendaSection.None);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
-            textBox.TextFrame.TextRange.Text = TextCollection.AgendaLabBeamHighlightedText;
+            textBox.TextFrame.TextRange.Text = AgendaLabText.BeamHighlightedText;
             textBox.TextFrame.TextRange.Font.Color.RGB = Graphics.ConvertColorToRgb(Color.Yellow);
 
             return textBox;
@@ -468,10 +469,10 @@ namespace PowerPointLabs.AgendaLab
             var contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
-            Graphics.SetText(titleShape, TextCollection.AgendaLabTitleContent);
-            Graphics.SetText(contentShape, TextCollection.AgendaLabBulletVisitedContent,
-                                            TextCollection.AgendaLabBulletHighlightedContent,
-                                            TextCollection.AgendaLabBulletUnvisitedContent);
+            Graphics.SetText(titleShape, AgendaLabText.TitleContent);
+            Graphics.SetText(contentShape, AgendaLabText.BulletVisitedContent,
+                                            AgendaLabText.BulletHighlightedContent,
+                                            AgendaLabText.BulletUnvisitedContent);
 
             var paragraphs = Graphics.GetParagraphs(contentShape);
             paragraphs[0].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Gray);
@@ -500,7 +501,7 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             var titleBar = refSlide.Shapes.Placeholders[1];
-            Graphics.SetText(titleBar, TextCollection.AgendaLabTitleContent);
+            Graphics.SetText(titleBar, AgendaLabText.TitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
 
@@ -868,8 +869,8 @@ namespace PowerPointLabs.AgendaLab
 
 
             var confirmResult = MessageBox.Show(new Form() { TopMost = true },
-                                                TextCollection.AgendaLabReorganiseSidebarContent,
-                                                TextCollection.AgendaLabReorganiseSidebarTitle,
+                                                AgendaLabText.ReorganiseSidebarContent,
+                                                AgendaLabText.ReorganiseSidebarTitle,
                                                 MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
@@ -1136,25 +1137,25 @@ namespace PowerPointLabs.AgendaLab
 
             if (sections.Count == 0)
             {
-                ShowErrorMessage(TextCollection.AgendaLabNoSectionError);
+                ShowErrorMessage(AgendaLabText.NoSectionError);
                 return false;
             }
 
             if (sections.Count == 1)
             {
-                ShowErrorMessage(TextCollection.AgendaLabSingleSectionError);
+                ShowErrorMessage(AgendaLabText.SingleSectionError);
                 return false;
             }
 
             if (HasEmptySection())
             {
-                ShowErrorMessage(TextCollection.AgendaLabEmptySectionError);
+                ShowErrorMessage(AgendaLabText.EmptySectionError);
                 return false;
             }
 
             if (HasTooLongSectionName())
             {
-                ShowErrorMessage(TextCollection.AgendaLabSectionNameTooLongError);
+                ShowErrorMessage(AgendaLabText.SectionNameTooLongError);
                 return false;
             }
 
@@ -1194,19 +1195,19 @@ namespace PowerPointLabs.AgendaLab
         {
             if (!AgendaPresent())
             {
-                ShowErrorMessage(TextCollection.AgendaLabNoAgendaError);
+                ShowErrorMessage(AgendaLabText.NoAgendaError);
                 return false;
             }
 
             if (refSlide == null)
             {
-                ShowErrorMessage(TextCollection.AgendaLabNoReferenceSlideError);
+                ShowErrorMessage(AgendaLabText.NoReferenceSlideError);
                 return false;
             }
 
             if (InvalidReferenceSlide(type, refSlide))
             {
-                ShowErrorMessage(TextCollection.AgendaLabInvalidReferenceSlideError);
+                ShowErrorMessage(AgendaLabText.InvalidReferenceSlideError);
                 return false;
             }
 
@@ -1272,7 +1273,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static void ShowErrorMessage(string message)
         {
-            MessageBox.Show(message, TextCollection.AgendaLabErrorDialogTitle);
+            MessageBox.Show(message, AgendaLabText.ErrorDialogTitle);
         }
 
         private static string CreateInDocHyperLink(PowerPointSlide slide)

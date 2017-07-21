@@ -629,7 +629,7 @@ namespace PowerPointLabs.Models
             if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
                 !IsImportedFile)
             {
-                MessageBox.Show(TextCollection.ShapeCorruptedError);
+                MessageBox.Show(TextCollection1.ShapeCorruptedError);
 
                 return false;
             }

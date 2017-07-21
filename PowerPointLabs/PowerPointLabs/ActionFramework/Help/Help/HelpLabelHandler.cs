@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportLabelRibbonId(TextCollection.HelpTag)]
+    [ExportLabelRibbonId(TextCollection1.HelpTag)]
     class HelpLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.UserGuideButtonLabel;
+            return TextCollection1.UserGuideButtonLabel;
         }
     }
 }

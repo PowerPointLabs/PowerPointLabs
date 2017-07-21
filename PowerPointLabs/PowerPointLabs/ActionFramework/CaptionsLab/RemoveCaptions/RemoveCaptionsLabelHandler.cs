@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportLabelRibbonId(TextCollection.RemoveCaptionsTag)]
+    [ExportLabelRibbonId(TextCollection1.RemoveCaptionsTag)]
     class RemoveCaptionsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.RemoveCaptionsButtonLabel;
+            return TextCollection1.RemoveCaptionsButtonLabel;
         }
     }
 }

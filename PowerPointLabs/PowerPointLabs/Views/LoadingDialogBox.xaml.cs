@@ -6,8 +6,8 @@ namespace PowerPointLabs.Views
     /// </summary>
     public partial class LoadingDialogBox
     {
-        public LoadingDialogBox(string title = TextCollection.LoadingDialogDefaultTitle,
-                                string content = TextCollection.LoadingDialogDefaultContent)
+        public LoadingDialogBox(string title = TextCollection1.LoadingDialogDefaultTitle,
+                                string content = TextCollection1.LoadingDialogDefaultContent)
         {
             InitializeComponent();
             Title = title;

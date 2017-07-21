@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Supertip.HighlightLab
 {
-    [ExportSupertipRibbonId(TextCollection.HighlightLabSettingsTag)]
+    [ExportSupertipRibbonId(TextCollection1.HighlightLabSettingsTag)]
     class HighlightLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.HighlightLabSettingsSupertip;
+            return TextCollection1.HighlightLabSettingsSupertip;
         }
     }
 }

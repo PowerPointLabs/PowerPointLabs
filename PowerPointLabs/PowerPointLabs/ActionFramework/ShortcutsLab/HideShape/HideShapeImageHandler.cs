@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportImageRibbonId(TextCollection.HideShapeTag)]
+    [ExportImageRibbonId(TextCollection1.HideShapeTag)]
     class HideShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

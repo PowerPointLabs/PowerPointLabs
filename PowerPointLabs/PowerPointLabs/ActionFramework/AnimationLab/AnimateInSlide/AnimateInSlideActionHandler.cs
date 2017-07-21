@@ -5,7 +5,7 @@ using PowerPointLabs.AnimationLab;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportActionRibbonId(TextCollection.AnimateInSlideTag)]
+    [ExportActionRibbonId(TextCollection1.AnimateInSlideTag)]
     class AnimateInSlideActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

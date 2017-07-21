@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection.EditNameTag)]
+    [ExportLabelRibbonId(TextCollection1.EditNameTag)]
     class EditNameLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.EditNameShapeLabel;
+            return TextCollection1.EditNameShapeLabel;
         }
     }
 }

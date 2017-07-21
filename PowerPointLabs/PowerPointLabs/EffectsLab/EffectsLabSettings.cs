@@ -36,15 +36,15 @@ namespace PowerPointLabs.EffectsLab
 
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                case TextCollection1.EffectsLabBlurrinessFeatureSelected:
                     isTint = IsTintSelected;
                     customPercentage = CustomPercentageSelected;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                case TextCollection1.EffectsLabBlurrinessFeatureRemainder:
                     isTint = IsTintRemainder;
                     customPercentage = CustomPercentageRemainder;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                case TextCollection1.EffectsLabBlurrinessFeatureBackground:
                     isTint = IsTintBackground;
                     customPercentage = CustomPercentageBackground;
                     break;
@@ -68,15 +68,15 @@ namespace PowerPointLabs.EffectsLab
         {
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                case TextCollection1.EffectsLabBlurrinessFeatureSelected:
                     IsTintSelected = isTint;
                     CustomPercentageSelected = customPercentage;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                case TextCollection1.EffectsLabBlurrinessFeatureRemainder:
                     IsTintRemainder = isTint;
                     CustomPercentageRemainder = customPercentage;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                case TextCollection1.EffectsLabBlurrinessFeatureBackground:
                     IsTintBackground = isTint;
                     CustomPercentageBackground = customPercentage;
                     break;

@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportLabelRibbonId(TextCollection.RemoveHighlightTag)]
+    [ExportLabelRibbonId(TextCollection1.RemoveHighlightTag)]
     class RemoveHighlightLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.RemoveHighlightButtonLabel;
+            return TextCollection1.RemoveHighlightButtonLabel;
         }
     }
 }

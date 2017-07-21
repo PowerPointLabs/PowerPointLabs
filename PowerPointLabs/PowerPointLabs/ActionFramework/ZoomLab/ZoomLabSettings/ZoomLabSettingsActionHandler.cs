@@ -4,7 +4,7 @@ using PowerPointLabs.ZoomLab;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportActionRibbonId(TextCollection.ZoomLabSettingsTag)]
+    [ExportActionRibbonId(TextCollection1.ZoomLabSettingsTag)]
     class ZoomLabSettingsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -19,13 +19,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void OpenPane()
         {
-            UIThreadExecutor.Execute(() =>
+            UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection.ColorsLabTag));
+                    new RibbonControl(TextCollection1.ColorsLabTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(ColorPane)).Control as ColorPane;
-            });
+            }));
         }
 
         public Panel GetDropletPanel()

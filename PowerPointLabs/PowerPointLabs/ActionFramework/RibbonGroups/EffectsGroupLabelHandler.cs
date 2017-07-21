@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.RibbonGroups
 {
-    [ExportLabelRibbonId(TextCollection.EffectsGroupId)]
+    [ExportLabelRibbonId(TextCollection1.EffectsGroupId)]
     class EffectsGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.EffectsGroupLabel;
+            return TextCollection1.EffectsGroupLabel;
         }
     }
 }

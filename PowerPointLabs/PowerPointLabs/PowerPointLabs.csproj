@@ -624,6 +624,18 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="TextCollection\PasteLabText.cs" />
+    <Compile Include="TextCollection\AnimationLabText.cs" />
+    <Compile Include="TextCollection\ColorsLabText.cs" />
+    <Compile Include="TextCollection\CaptionsLabText.cs" />
+    <Compile Include="TextCollection\EffectsLabText.cs" />
+    <Compile Include="TextCollection\PositionsLabText.cs" />
+    <Compile Include="TextCollection\ShapesLabText.cs" />
+    <Compile Include="TextCollection\AgendaLabText.cs" />
+    <Compile Include="TextCollection\PictureSlidesLabText.cs" />
+    <Compile Include="TextCollection\ZoomLabText.cs" />
+    <Compile Include="TextCollection\SyncLabText.cs" />
+    <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>

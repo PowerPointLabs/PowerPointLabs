@@ -2,9 +2,9 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.AnimationLab;
 
-namespace PowerPointLabs.ActionFramework.Animationlab
+namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportActionRibbonId(TextCollection.AnimationLabSettingsTag)]
+    [ExportActionRibbonId(TextCollection1.AnimationLabSettingsTag)]
     class AnimationLabSettingsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

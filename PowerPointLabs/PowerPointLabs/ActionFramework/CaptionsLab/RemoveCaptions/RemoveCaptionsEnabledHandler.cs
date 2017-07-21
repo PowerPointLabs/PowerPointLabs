@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportEnabledRibbonId(TextCollection.RemoveCaptionsTag)]
+    [ExportEnabledRibbonId(TextCollection1.RemoveCaptionsTag)]
     class RemoveCaptionsEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

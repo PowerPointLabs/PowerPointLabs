@@ -5,7 +5,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportActionRibbonId(TextCollection.RemoveNotesTag)]
+    [ExportActionRibbonId(TextCollection1.RemoveNotesTag)]
     class RemoveNotesActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

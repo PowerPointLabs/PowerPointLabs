@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportSupertipRibbonId(TextCollection.NarrationsLabMenuId)]
+    [ExportSupertipRibbonId(TextCollection1.NarrationsLabMenuId)]
     class NarrationsLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.NarrationsLabMenuSupertip;
+            return TextCollection1.NarrationsLabMenuSupertip;
         }
     }
 }

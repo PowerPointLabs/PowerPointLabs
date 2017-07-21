@@ -2,6 +2,7 @@
 using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ShapesLab.Views
 {
@@ -58,7 +59,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             if (Utils.Graphics.IsShapeNameOverMaximumLength(name))
             {
-                MessageBox.Show(TextCollection.ErrorNameTooLong);
+                MessageBox.Show(TextCollection1.ErrorNameTooLong);
                 return false;
             }
 
@@ -66,7 +67,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name))
             {
-                MessageBox.Show(TextCollection.ErrorInvalidCharacter);
+                MessageBox.Show(TextCollection1.ErrorInvalidCharacter);
                 return false;
             }
 
@@ -77,7 +78,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             if (this.GetAddIn().ShapePresentation.HasCategory(name))
             {
-                MessageBox.Show(TextCollection.CustomShapeDuplicateCategoryNameError);
+                MessageBox.Show(ShapesLabText.DuplicateCategoryNameError);
                 return false;
             }
 

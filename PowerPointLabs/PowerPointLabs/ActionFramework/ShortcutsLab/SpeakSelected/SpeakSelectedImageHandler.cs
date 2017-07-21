@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportImageRibbonId(TextCollection.SpeakSelectedTag)]
+    [ExportImageRibbonId(TextCollection1.SpeakSelectedTag)]
     class SpeakSelectedImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

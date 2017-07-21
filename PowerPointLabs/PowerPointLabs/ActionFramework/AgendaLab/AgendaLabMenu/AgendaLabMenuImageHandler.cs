@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportImageRibbonId(TextCollection.AgendaLabMenuId)]
+    [ExportImageRibbonId(TextCollection1.AgendaLabMenuId)]
     class AgendaLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

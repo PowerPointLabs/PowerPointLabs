@@ -4,12 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.PositionsLab
 {
-    [ExportActionRibbonId(TextCollection.PositionsLabTag)]
+    [ExportActionRibbonId(TextCollection1.PositionsLabTag)]
     class PositionsLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            this.RegisterTaskPane(typeof(PositionsPane), TextCollection.PositionsLabTaskPanelTitle);
+            this.RegisterTaskPane(typeof(PositionsPane), TextCollection1.PositionsLabTaskPanelTitle);
             var positionsPane = this.GetTaskPane(typeof(PositionsPane));
             // if currently the pane is hidden, show the pane
             if (!positionsPane.Visible)

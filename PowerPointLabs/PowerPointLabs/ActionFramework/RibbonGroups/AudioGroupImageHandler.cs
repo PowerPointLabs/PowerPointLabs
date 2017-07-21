@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.RibbonGroups
 {
-    [ExportImageRibbonId(TextCollection.AudioGroupId)]
+    [ExportImageRibbonId(TextCollection1.AudioGroupId)]
     class AudioGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

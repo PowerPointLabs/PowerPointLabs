@@ -20,10 +20,10 @@ namespace PowerPointLabs.ZoomLab.Views
             : this()
         {
             slideBackgroundCheckbox.IsChecked = backgroundChecked;
-            slideBackgroundCheckbox.ToolTip = TextCollection.ZoomLabSettingsSlideBackgroundCheckboxTooltip;
+            slideBackgroundCheckbox.ToolTip = TextCollection1.ZoomLabSettingsSlideBackgroundCheckboxTooltip;
 
             separateSlidesCheckbox.IsChecked = multiChecked;
-            separateSlidesCheckbox.ToolTip = TextCollection.ZoomLabSettingsSeparateSlidesCheckboxTooltip;
+            separateSlidesCheckbox.ToolTip = TextCollection1.ZoomLabSettingsSeparateSlidesCheckboxTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

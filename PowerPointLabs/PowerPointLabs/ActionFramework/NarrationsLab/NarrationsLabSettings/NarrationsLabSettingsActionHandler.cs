@@ -4,7 +4,7 @@ using PowerPointLabs.NarrationsLab;
 
 namespace PowerPointLabs.ActionFramework.Animationlab
 {
-    [ExportActionRibbonId(TextCollection.NarrationsLabSettingsTag)]
+    [ExportActionRibbonId(TextCollection1.NarrationsLabSettingsTag)]
     class NarrationsLabSettingsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

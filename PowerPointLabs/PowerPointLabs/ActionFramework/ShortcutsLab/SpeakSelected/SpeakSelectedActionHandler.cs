@@ -4,7 +4,7 @@ using PowerPointLabs.NarrationsLab;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.SpeakSelectedTag)]
+    [ExportActionRibbonId(TextCollection1.SpeakSelectedTag)]
     class SpeakSelectedActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

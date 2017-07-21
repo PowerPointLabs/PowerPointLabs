@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportImageRibbonId(TextCollection.BlurRemainderMenuId)]
+    [ExportImageRibbonId(TextCollection1.BlurRemainderMenuId)]
     class BlurRemainderImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

@@ -11,7 +11,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.MagnifyTag)]
+    [ExportActionRibbonId(TextCollection1.MagnifyTag)]
     class MagnifyActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.Office.Core;
+
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using AutoShape = Microsoft.Office.Core.MsoAutoShapeType;
@@ -29,19 +30,6 @@ namespace PowerPointLabs.PositionsLab
         private const int Up = 3;
         private const int Leftorright = 4;
         private const int Upordown = 5;
-
-        //Error Messages
-        private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
-        private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
-        private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
-        private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
-        private const string ErrorMessageFunctionNotSupportedForExtremeShapes =
-            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
-        private const string ErrorMessageFunctionNotSupportedForSlide =
-            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
-        private const string ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter =
-            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter;
-        private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
         
         private class ShapeAngleInfo
         {
@@ -108,7 +96,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -153,7 +141,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -198,7 +186,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -241,7 +229,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -286,7 +274,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -329,7 +317,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -373,7 +361,7 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(ErrorMessageFewerThanTwoSelection);
+                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -407,7 +395,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 3)
             {
-                throw new Exception(ErrorMessageFewerThanThreeSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
             }
                     
             var origin = Graphics.GetCenterPoint(selectedShapes[1]);
@@ -433,7 +421,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var refShape = selectedShapes[0];
@@ -474,7 +462,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var refShape = selectedShapes[0];
@@ -531,7 +519,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 1)
                 {
-                    throw new Exception(ErrorMessageNoSelection);
+                    throw new Exception(PositionsLabText.ErrorNoSelection);
                 }
 
                 startingPoint = 0;
@@ -583,7 +571,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 1)
                 {
-                    throw new Exception(ErrorMessageNoSelection);
+                    throw new Exception(PositionsLabText.ErrorNoSelection);
                 }
 
                 startingPoint = 0;
@@ -636,7 +624,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -690,7 +678,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -745,7 +733,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -791,7 +779,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -838,7 +826,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
@@ -876,7 +864,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = Graphics.SortShapesByLeft(selectedShapes);
@@ -927,7 +915,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 1)
                 {
-                    throw new Exception(ErrorMessageNoSelection);
+                    throw new Exception(PositionsLabText.ErrorNoSelection);
                 }
 
                 startingPoint = 0;
@@ -978,7 +966,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 1)
                 {
-                    throw new Exception(ErrorMessageNoSelection);
+                    throw new Exception(PositionsLabText.ErrorNoSelection);
                 }
 
                 startingPoint = 0;
@@ -1031,7 +1019,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -1085,7 +1073,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 2)
                 {
-                    throw new Exception(ErrorMessageFewerThanTwoSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -1140,7 +1128,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -1186,7 +1174,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = new List<PPShape>(selectedShapes);
@@ -1233,7 +1221,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = Graphics.SortShapesByTop(selectedShapes);
@@ -1271,7 +1259,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 shapesToDistribute = Graphics.SortShapesByTop(selectedShapes);
@@ -1315,12 +1303,12 @@ namespace PowerPointLabs.PositionsLab
         {
             if (PositionsLabSettings.DistributeReference == PositionsLabSettings.DistributeReferenceObject.ExtremeShapes)
             {
-                throw new Exception(ErrorMessageFunctionNotSupportedForExtremeShapes);
+                throw new Exception(PositionsLabText.ErrorFunctionNotSupportedForWithinShapes);
             }
 
             if (PositionsLabSettings.DistributeReference == PositionsLabSettings.DistributeReferenceObject.Slide)
             {
-                throw new Exception(ErrorMessageFunctionNotSupportedForSlide);
+                throw new Exception(PositionsLabText.ErrorFunctionNotSupportedForSlide);
             }
 
             int rowLength = numOfCols;
@@ -1498,7 +1486,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var startingAnchor = selectedShapes[0].VisualCenter;
@@ -1563,7 +1551,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var numShapes = selectedShapes.Count;
@@ -1693,7 +1681,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var startingAnchor = selectedShapes[0].VisualCenter;
@@ -1847,7 +1835,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var numShapes = selectedShapes.Count;
@@ -1957,7 +1945,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
@@ -1968,7 +1956,7 @@ namespace PowerPointLabs.PositionsLab
 
                 if (startingAngle == 0 && boundaryAngles[1] == 360)
                 {
-                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+                    throw new Exception(PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter);
                 }
 
                 referenceAngle = endingAngle - startingAngle;
@@ -1989,7 +1977,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 3)
                 {
-                    throw new Exception(ErrorMessageFewerThanThreeSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
                 
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
@@ -2003,7 +1991,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 4)
                 {
-                    throw new Exception(ErrorMessageFewerThanFourSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanFourSelection);
                 }
 
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
@@ -2015,7 +2003,7 @@ namespace PowerPointLabs.PositionsLab
                 if ((startingAngle == 0 && startingShapeBoundaryAngles[1] == 360)
                     || (endingShapeBoundaryAngles[0] == 0 && endingAngle == 360))
                 {
-                    throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+                    throw new Exception(PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter);
                 }
 
                 var startingShapeAngle = startingShapeBoundaryAngles[1] - startingAngle;
@@ -2043,7 +2031,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (selectedShapes.Count < 4)
                 {
-                    throw new Exception(ErrorMessageFewerThanFourSelection);
+                    throw new Exception(PositionsLabText.ErrorFewerThanFourSelection);
                 }
 
                 origin = Graphics.GetCenterPoint(selectedShapes[1]);
@@ -2159,7 +2147,7 @@ namespace PowerPointLabs.PositionsLab
             var boundaryAnglesFromStart = GetShapeBoundaryAngles(origin, shape);
             if (boundaryAnglesFromStart[0] == 0 && boundaryAnglesFromStart[1] == 360)
             {
-                throw new Exception(ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter);
+                throw new Exception(PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter);
             }
 
             boundaryAnglesFromStart[0] = (boundaryAnglesFromStart[0] + (360 - startingAngle)) % 360;
@@ -2182,7 +2170,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var sortedShapes = selectedShapes;
@@ -2281,7 +2269,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (shapes.Count < 2)
             {
-                throw new Exception(ErrorMessageFewerThanTwoSelection);
+                throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
             var refShapeCenter = Graphics.GetCenterPoint(shapes[0]);
@@ -2422,7 +2410,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 1)
             {
-                throw new Exception(ErrorMessageNoSelection);
+                throw new Exception(PositionsLabText.ErrorNoSelection);
             }
 
             for (var i = 1; i <= selectedShapes.Count; i++)
@@ -2438,7 +2426,7 @@ namespace PowerPointLabs.PositionsLab
         {
             if (selectedShapes.Count < 1)
             {
-                throw new Exception(ErrorMessageNoSelection);
+                throw new Exception(PositionsLabText.ErrorNoSelection);
             }
 
             for (var i = 1; i <= selectedShapes.Count; i++)

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
 
 using Office = Microsoft.Office.Core;
@@ -13,10 +14,6 @@ namespace PowerPointLabs.EffectsLab
 {
     public static class EffectsLabUtil
     {
-        private const string MessageBoxTitle = "Error";
-        private const string ErrorMessageNoSelection = TextCollection.EffectsLabBlurSelectedErrorNoSelection;
-        private const string ErrorMessageNonShapeOrTextBox = TextCollection.EffectsLabBlurSelectedErrorNonShapeOrTextBox;
-
         internal static ShapeRange UngroupAllShapeRange(PowerPointSlide curSlide, ShapeRange shapeRange)
         {
             List<Shape> originalShapeList = new List<Shape>();
@@ -51,7 +48,7 @@ namespace PowerPointLabs.EffectsLab
                 }
                 else
                 {
-                    throw new Exception(ErrorMessageNonShapeOrTextBox);
+                    throw new Exception(EffectsLabText.ErrorBlurSelectedNonShapeOrTextBox);
                 }
             }
 
@@ -141,25 +138,25 @@ namespace PowerPointLabs.EffectsLab
         internal static void ShowErrorMessageBox(string content, Exception exception = null)
         {
             if (exception == null
-                || content.Equals(ErrorMessageNoSelection)
-                || content.Equals(ErrorMessageNonShapeOrTextBox))
+                || content.Equals(EffectsLabText.ErrorBlurSelectedNoSelection)
+                || content.Equals(EffectsLabText.ErrorBlurSelectedNonShapeOrTextBox))
             {
-                MessageBox.Show(content, MessageBoxTitle);
+                MessageBox.Show(content, EffectsLabText.ErrorDialogTitle);
             }
             else
             {
-                ErrorDialogBox.ShowDialog(MessageBoxTitle, content, exception);
+                ErrorDialogBox.ShowDialog(EffectsLabText.ErrorDialogTitle, content, exception);
             }
         }
 
         internal static void ShowNoSelectionErrorMessage()
         {
-            ShowErrorMessageBox(ErrorMessageNoSelection);
+            ShowErrorMessageBox(EffectsLabText.ErrorBlurSelectedNoSelection);
         }
 
         internal static void ShowIncorrectSelectionErrorMessage()
         {
-            ShowErrorMessageBox(ErrorMessageNonShapeOrTextBox);
+            ShowErrorMessageBox(EffectsLabText.ErrorBlurSelectedNonShapeOrTextBox);
         }
     }
 }

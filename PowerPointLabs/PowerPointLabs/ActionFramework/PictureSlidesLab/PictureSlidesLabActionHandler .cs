@@ -5,7 +5,7 @@ using PowerPointLabs.PictureSlidesLab.Views;
 
 namespace PowerPointLabs.ActionFramework.PictureSlidesLab
 {
-    [ExportActionRibbonId(TextCollection.PictureSlidesLabTag)]
+    [ExportActionRibbonId(TextCollection1.PictureSlidesLabTag)]
     class PictureSlidesLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

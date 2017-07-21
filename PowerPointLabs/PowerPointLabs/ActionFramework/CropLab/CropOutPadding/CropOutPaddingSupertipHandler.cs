@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportSupertipRibbonId(TextCollection.CropOutPaddingTag)]
+    [ExportSupertipRibbonId(TextCollection1.CropOutPaddingTag)]
     class CropOutPaddingSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.CropOutPaddingSupertip;
+            return TextCollection1.CropOutPaddingSupertip;
         }
     }
 }

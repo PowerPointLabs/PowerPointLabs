@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportImageRibbonId(TextCollection.RemoveNarrationsTag)]
+    [ExportImageRibbonId(TextCollection1.RemoveNarrationsTag)]
     class RemoveNarrationsImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

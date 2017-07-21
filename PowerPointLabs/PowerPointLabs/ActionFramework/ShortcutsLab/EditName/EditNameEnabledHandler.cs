@@ -4,7 +4,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportEnabledRibbonId(TextCollection.EditNameTag)]
+    [ExportEnabledRibbonId(TextCollection1.EditNameTag)]
     class EditNameEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

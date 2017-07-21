@@ -4,7 +4,7 @@ using PowerPointLabs.EffectsLab;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.SpotlightSettingsTag)]
+    [ExportActionRibbonId(TextCollection1.SpotlightSettingsTag)]
     class SpotlightSettingsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

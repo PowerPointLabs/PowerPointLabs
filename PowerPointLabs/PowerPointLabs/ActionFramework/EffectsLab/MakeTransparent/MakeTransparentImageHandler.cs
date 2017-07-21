@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportImageRibbonId(TextCollection.MakeTransparentTag)]
+    [ExportImageRibbonId(TextCollection1.MakeTransparentTag)]
     class MakeTransparentImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

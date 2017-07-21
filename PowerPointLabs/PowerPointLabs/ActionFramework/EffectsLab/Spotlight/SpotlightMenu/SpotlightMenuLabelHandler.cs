@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection.SpotlightMenuId)]
+    [ExportLabelRibbonId(TextCollection1.SpotlightMenuId)]
     class SpotlightMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.SpotlightMenuLabel;
+            return TextCollection1.SpotlightMenuLabel;
         }
     }
 }

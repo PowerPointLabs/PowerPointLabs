@@ -5,7 +5,7 @@ using PowerPointLabs.ZoomLab;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportActionRibbonId(TextCollection.StepBackTag)]
+    [ExportActionRibbonId(TextCollection1.StepBackTag)]
     class StepBackActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

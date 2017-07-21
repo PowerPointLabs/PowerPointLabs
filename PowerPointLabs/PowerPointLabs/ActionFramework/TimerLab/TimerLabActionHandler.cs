@@ -5,12 +5,12 @@ using PowerPointLabs.TimerLab;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportActionRibbonId(TextCollection.TimerLabTag)]
+    [ExportActionRibbonId(TextCollection1.TimerLabTag)]
     class TimerLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            this.RegisterTaskPane(typeof(TimerPane), TextCollection.TimerLabTaskPaneTitle);
+            this.RegisterTaskPane(typeof(TimerPane), TextCollection1.TimerLabTaskPaneTitle);
             var timerPane = this.GetTaskPane(typeof(TimerPane));
             // if currently the pane is hidden, show the pane
             if (!timerPane.Visible)

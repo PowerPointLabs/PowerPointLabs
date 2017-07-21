@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportSupertipRibbonId(TextCollection.VisualAgendaTag)]
+    [ExportSupertipRibbonId(TextCollection1.VisualAgendaTag)]
     class VisualAgendaSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.AgendaLabVisualAgendaSupertip;
+            return TextCollection1.AgendaLabVisualAgendaSupertip;
         }
     }
 }

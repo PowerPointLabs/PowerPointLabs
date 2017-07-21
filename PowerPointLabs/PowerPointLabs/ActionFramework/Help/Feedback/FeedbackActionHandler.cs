@@ -5,12 +5,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportActionRibbonId(TextCollection.FeedbackTag)]
+    [ExportActionRibbonId(TextCollection1.FeedbackTag)]
     class FeedbackActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Process.Start(TextCollection.FeedbackUrl);
+            Process.Start(TextCollection1.FeedbackUrl);
         }
     }
 }

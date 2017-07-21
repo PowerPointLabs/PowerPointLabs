@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.SyncLab
 {
-    [ExportImageRibbonId(TextCollection.SyncLabTag)]
+    [ExportImageRibbonId(TextCollection1.SyncLabTag)]
     class SyncLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

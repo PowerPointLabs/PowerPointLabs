@@ -6,7 +6,7 @@ using PowerPointLabs.ShapesLab;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportActionRibbonId(TextCollection.ShapesLabTag)]
+    [ExportActionRibbonId(TextCollection1.ShapesLabTag)]
     class ShapesLabActionHandler : ActionHandler
     {
         public CustomShapePane InitCustomShapePane()

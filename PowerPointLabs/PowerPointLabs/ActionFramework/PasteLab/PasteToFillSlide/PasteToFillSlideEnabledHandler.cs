@@ -4,7 +4,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportEnabledRibbonId(TextCollection.PasteToFillSlideTag)]
+    [ExportEnabledRibbonId(TextCollection1.PasteToFillSlideTag)]
     class PasteToFillSlideEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

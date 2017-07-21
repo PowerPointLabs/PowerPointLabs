@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportImageRibbonId(TextCollection.PasteAtOriginalPositionTag)]
+    [ExportImageRibbonId(TextCollection1.PasteAtOriginalPositionTag)]
     class PasteAtOriginalPositionImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

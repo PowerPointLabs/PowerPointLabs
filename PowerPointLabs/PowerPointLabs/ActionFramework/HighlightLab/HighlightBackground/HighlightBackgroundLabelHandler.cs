@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportLabelRibbonId(TextCollection.HighlightBackgroundTag)]
+    [ExportLabelRibbonId(TextCollection1.HighlightBackgroundTag)]
     class HighlightBackgroundLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.HighlightBulletsBackgroundButtonLabel;
+            return TextCollection1.HighlightBulletsBackgroundButtonLabel;
         }
     }
 }

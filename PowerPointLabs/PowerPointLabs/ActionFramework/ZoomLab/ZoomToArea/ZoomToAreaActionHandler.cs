@@ -5,7 +5,7 @@ using PowerPointLabs.ZoomLab;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportActionRibbonId(TextCollection.ZoomToAreaTag)]
+    [ExportActionRibbonId(TextCollection1.ZoomToAreaTag)]
     class ZoomToAreaActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportImageRibbonId(TextCollection.HighlightPointsTag)]
+    [ExportImageRibbonId(TextCollection1.HighlightPointsTag)]
     class HighlightPointsImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

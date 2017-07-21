@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.SyncLab
 {
-    [ExportSupertipRibbonId(TextCollection.SyncLabTag)]
+    [ExportSupertipRibbonId(TextCollection1.SyncLabTag)]
     class SyncLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.SyncLabMenuSupertip;
+            return TextCollection1.SyncLabMenuSupertip;
         }
     }
 }

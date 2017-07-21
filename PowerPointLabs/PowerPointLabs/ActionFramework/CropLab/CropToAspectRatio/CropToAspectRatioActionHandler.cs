@@ -8,7 +8,7 @@ using PowerPointLabs.CustomControls;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu)]
+    [ExportActionRibbonId(TextCollection1.CropToAspectRatioTag + TextCollection1.RibbonMenu)]
     class CropToAspectRatioActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Aspect Ratio";
@@ -36,16 +36,16 @@ namespace PowerPointLabs.ActionFramework.CropLab
                 return;
             }
 
-            if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
+            if (ribbonId.Contains(TextCollection1.DynamicMenuButtonId))
             {
                 CustomAspectRatioDialogBox dialog = new CustomAspectRatioDialogBox(shapeRange[1]);
                 dialog.DialogConfirmedHandler += ExecuteCropToAspectRatio;
                 dialog.ShowDialog();
             }
-            else if (ribbonId.Contains(TextCollection.DynamicMenuOptionId))
+            else if (ribbonId.Contains(TextCollection1.DynamicMenuOptionId))
             {
-                int optionRawStringStartIndex = ribbonId.LastIndexOf(TextCollection.DynamicMenuButtonId) +
-                                                TextCollection.DynamicMenuOptionId.Length;
+                int optionRawStringStartIndex = ribbonId.LastIndexOf(TextCollection1.DynamicMenuButtonId) +
+                                                TextCollection1.DynamicMenuOptionId.Length;
                 string optionRawString = ribbonId.Substring(optionRawStringStartIndex).Replace('_', ':');
                 ExecuteCropToAspectRatio(optionRawString);
             }

@@ -155,7 +155,7 @@ namespace PowerPointLabs
             {
                 // if the presentation gets some error during opening, and the error could not
                 // be resolved by consistency check, prompt the user about the error
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
+                MessageBox.Show(TextCollection1.ShapeGalleryInitErrorMsg);
                 return;
             }
 
@@ -214,14 +214,14 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogBox.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                    ErrorDialogBox.ShowDialog(TextCollection1.AccessTempFolderErrorMsg, string.Empty, e);
                 }
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
+                ErrorDialogBox.ShowDialog(TextCollection1.PrepareMediaErrorMsg, "Files cannot be linked.", e);
             }
         }
 
@@ -245,7 +245,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
+                ErrorDialogBox.ShowDialog(TextCollection1.CreatTempFolderErrorMsg, string.Empty, e);
             }
             finally
             {
@@ -264,7 +264,7 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ResizeLabPane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow,
+            RegisterTaskPane(new ResizeLabPane(), TextCollection1.ResizeLabsTaskPaneTitle, activeWindow,
                 ResizeTaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -275,7 +275,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            RegisterTaskPane(new RecorderTaskPane(tempFullPath), TextCollection.RecManagementPanelTitle, activeWindow,
+            RegisterTaskPane(new RecorderTaskPane(tempFullPath), TextCollection1.RecManagementPanelTitle, activeWindow,
                 TaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -288,7 +288,7 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), TextCollection1.ColorsLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
@@ -302,7 +302,7 @@ namespace PowerPointLabs
 
             RegisterTaskPane(
                 new CustomShapePane(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
-                TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
+                TextCollection1.ShapesLabTaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
@@ -758,7 +758,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
+                ErrorDialogBox.ShowDialog(TextCollection1.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
             }
         }
 
@@ -1385,7 +1385,7 @@ namespace PowerPointLabs
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
             {
-                MessageBox.Show(TextCollection.TabActivateErrorDescription, TextCollection.TabActivateErrorTitle);
+                MessageBox.Show(TextCollection1.TabActivateErrorDescription, TextCollection1.TabActivateErrorTitle);
             }
         }
 

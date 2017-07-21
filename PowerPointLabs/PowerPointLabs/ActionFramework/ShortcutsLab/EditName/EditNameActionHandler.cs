@@ -5,7 +5,7 @@ using PowerPointLabs.ShortcutsLab.Views;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.EditNameTag)]
+    [ExportActionRibbonId(TextCollection1.EditNameTag)]
     class EditNameActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

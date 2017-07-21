@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportEnabledRibbonId(TextCollection.RemoveNarrationsTag)]
+    [ExportEnabledRibbonId(TextCollection1.RemoveNarrationsTag)]
     class RemoveNarrationsEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

@@ -4,7 +4,7 @@ using PowerPointLabs.HighlightLab;
 
 namespace PowerPointLabs.ActionFramework.Highlightlab
 {
-    [ExportActionRibbonId(TextCollection.HighlightLabSettingsTag)]
+    [ExportActionRibbonId(TextCollection1.HighlightLabSettingsTag)]
     class HighlightLabSettingsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

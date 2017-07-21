@@ -10,7 +10,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.MakeTransparentTag)]
+    [ExportActionRibbonId(TextCollection1.MakeTransparentTag)]
     class MakeTransparentActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

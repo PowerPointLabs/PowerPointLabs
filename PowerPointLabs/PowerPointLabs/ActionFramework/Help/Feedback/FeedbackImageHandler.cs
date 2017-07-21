@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportImageRibbonId(TextCollection.FeedbackTag)]
+    [ExportImageRibbonId(TextCollection1.FeedbackTag)]
     class FeedbackImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

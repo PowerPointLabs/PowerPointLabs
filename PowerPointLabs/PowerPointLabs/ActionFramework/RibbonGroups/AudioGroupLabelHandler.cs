@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.RibbonGroups
 {
-    [ExportLabelRibbonId(TextCollection.AudioGroupId)]
+    [ExportLabelRibbonId(TextCollection1.AudioGroupId)]
     class AudioGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.AudioGroupLabel;
+            return TextCollection1.AudioGroupLabel;
         }
     }
 }

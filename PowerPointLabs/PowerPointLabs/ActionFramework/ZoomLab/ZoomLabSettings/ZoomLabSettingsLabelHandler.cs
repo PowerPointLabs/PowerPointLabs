@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportLabelRibbonId(TextCollection.ZoomLabSettingsTag)]
+    [ExportLabelRibbonId(TextCollection1.ZoomLabSettingsTag)]
     class ZoomLabSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ZoomLabSettingsButtonLabel;
+            return ZoomLabText.ZoomLabSettingsButtonLabel;
         }
     }
 }

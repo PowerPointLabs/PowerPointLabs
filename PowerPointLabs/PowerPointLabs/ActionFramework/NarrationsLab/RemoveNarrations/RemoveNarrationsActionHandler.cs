@@ -7,7 +7,7 @@ using PowerPointLabs.NarrationsLab.Views;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportActionRibbonId(TextCollection.RemoveNarrationsTag)]
+    [ExportActionRibbonId(TextCollection1.RemoveNarrationsTag)]
     class RemoveNarrationsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

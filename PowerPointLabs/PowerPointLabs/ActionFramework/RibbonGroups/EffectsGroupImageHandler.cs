@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.RibbonGroups
 {
-    [ExportImageRibbonId(TextCollection.EffectsGroupId)]
+    [ExportImageRibbonId(TextCollection1.EffectsGroupId)]
     class EffectsGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

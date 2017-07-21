@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportImageRibbonId(TextCollection.CaptionsLabMenuId)]
+    [ExportImageRibbonId(TextCollection1.CaptionsLabMenuId)]
     class CaptionsLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

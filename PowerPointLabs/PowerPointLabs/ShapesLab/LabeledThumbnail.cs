@@ -42,8 +42,8 @@ namespace PowerPointLabs.ShapesLab
                 else
                 {
                     MessageBox.Show(Utils.Graphics.IsShapeNameOverMaximumLength(value)
-                                        ? TextCollection.ErrorNameTooLong
-                                        : TextCollection.ErrorInvalidCharacter);
+                                        ? TextCollection1.ErrorNameTooLong
+                                        : TextCollection1.ErrorInvalidCharacter);
 
                     labelTextBox.SelectAll();
                     _isGoodName = false;
@@ -235,7 +235,7 @@ namespace PowerPointLabs.ShapesLab
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
             {
-                MessageBox.Show(TextCollection.ErrorFileNameExist);
+                MessageBox.Show(TextCollection1.ErrorFileNameExist);
                 return true;
             }
 

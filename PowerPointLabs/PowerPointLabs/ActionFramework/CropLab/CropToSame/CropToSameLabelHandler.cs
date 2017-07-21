@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection.CropToSameDimensionsTag)]
+    [ExportLabelRibbonId(TextCollection1.CropToSameDimensionsTag)]
     class CropToSameLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.CropToSameButtonLabel;
+            return TextCollection1.CropToSameButtonLabel;
         }
     }
 }

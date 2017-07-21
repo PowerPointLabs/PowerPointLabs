@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportEnabledRibbonId(TextCollection.AddSpotlightTag)]
+    [ExportEnabledRibbonId(TextCollection1.AddSpotlightTag)]
     class AddSpotlightEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

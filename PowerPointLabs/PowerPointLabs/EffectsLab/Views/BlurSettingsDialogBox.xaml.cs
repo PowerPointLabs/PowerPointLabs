@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.EffectsLab.Views
 {
@@ -27,17 +28,17 @@ namespace PowerPointLabs.EffectsLab.Views
 
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
-                    Title = TextCollection.EffectsLabBlurSelectedButtonLabel + " Settings";
-                    tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintSelected;
+                case TextCollection1.EffectsLabBlurrinessFeatureSelected:
+                    Title = TextCollection1.EffectsLabBlurSelectedButtonLabel + " Settings";
+                    tintCheckbox.Content = EffectsLabText.SettingsTintSelectedCheckboxLabel;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
-                    Title = TextCollection.EffectsLabBlurRemainderButtonLabel + " Settings";
-                    tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintRemainder;
+                case TextCollection1.EffectsLabBlurrinessFeatureRemainder:
+                    Title = TextCollection1.EffectsLabBlurRemainderButtonLabel + " Settings";
+                    tintCheckbox.Content = EffectsLabText.SettingsTintRemainderCheckboxLabel;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
-                    Title = TextCollection.EffectsLabBlurBackgroundButtonLabel + " Settings";
-                    tintCheckbox.Content = TextCollection.EffectsLabSettingsTintCheckboxForTintBackground;
+                case TextCollection1.EffectsLabBlurrinessFeatureBackground:
+                    Title = TextCollection1.EffectsLabBlurBackgroundButtonLabel + " Settings";
+                    tintCheckbox.Content = EffectsLabText.SettingsTintBackgroundCheckboxLabel;
                     break;
                 default:
                     Logger.Log(feature + " does not exist!", ActionFramework.Common.Logger.LogType.Error);
@@ -45,11 +46,11 @@ namespace PowerPointLabs.EffectsLab.Views
             }
 
             tintCheckbox.IsChecked = isTint;
-            tintCheckbox.ToolTip = TextCollection.EffectsLabSettingsTintCheckboxTooltip;
+            tintCheckbox.ToolTip = EffectsLabText.SettingsTintCheckboxTooltip;
 
             _blurCustomPercentage = customPercentage;
             blurrinessInput.Text = (customPercentage / 100.0f).ToString("P0");
-            blurrinessInput.ToolTip = TextCollection.EffectsLabSettingsBlurrinessInputTooltip;
+            blurrinessInput.ToolTip = EffectsLabText.SettingsBlurrinessInputTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

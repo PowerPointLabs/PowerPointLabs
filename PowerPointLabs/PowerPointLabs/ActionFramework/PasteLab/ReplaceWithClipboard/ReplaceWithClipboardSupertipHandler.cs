@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportSupertipRibbonId(TextCollection.ReplaceWithClipboardTag)]
+    [ExportSupertipRibbonId(TextCollection1.ReplaceWithClipboardTag)]
     class ReplaceWithClipboardButtonSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.ReplaceWithClipboardSupertip;
+            return PasteLabText.ReplaceWithClipboardSupertip;
         }
     }
 }

@@ -4,7 +4,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportEnabledRibbonId(TextCollection.PasteIntoGroupTag)]
+    [ExportEnabledRibbonId(TextCollection1.PasteIntoGroupTag)]
     class PasteIntoGroupEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

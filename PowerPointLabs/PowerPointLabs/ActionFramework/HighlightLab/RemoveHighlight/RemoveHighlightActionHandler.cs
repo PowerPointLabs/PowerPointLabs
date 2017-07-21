@@ -5,7 +5,7 @@ using PowerPointLabs.HighlightLab;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportActionRibbonId(TextCollection.RemoveHighlightTag)]
+    [ExportActionRibbonId(TextCollection1.RemoveHighlightTag)]
     class RemoveHighlightActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

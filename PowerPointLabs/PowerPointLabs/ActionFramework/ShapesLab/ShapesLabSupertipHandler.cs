@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportSupertipRibbonId(TextCollection.ShapesLabTag)]
+    [ExportSupertipRibbonId(TextCollection1.ShapesLabTag)]
     class ShapesLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.CustomShapeButtonSupertip;
+            return TextCollection1.CustomShapeButtonSupertip;
         }
     }
 }

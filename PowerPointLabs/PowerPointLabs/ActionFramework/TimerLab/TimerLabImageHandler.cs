@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportImageRibbonId(TextCollection.TimerLabTag)]
+    [ExportImageRibbonId(TextCollection1.TimerLabTag)]
     class TimerLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

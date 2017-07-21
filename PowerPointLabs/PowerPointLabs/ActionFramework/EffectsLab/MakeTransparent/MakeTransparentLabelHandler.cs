@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection.MakeTransparentTag)]
+    [ExportLabelRibbonId(TextCollection1.MakeTransparentTag)]
     class MakeTransparentLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.EffectsLabMakeTransparentButtonLabel;
+            return TextCollection1.EffectsLabMakeTransparentButtonLabel;
         }
     }
 }

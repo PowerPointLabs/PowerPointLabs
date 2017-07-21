@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection.SpeakSelectedTag)]
+    [ExportLabelRibbonId(TextCollection1.SpeakSelectedTag)]
     class SpeakSelectedLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ContextSpeakSelectedTextLabel;
+            return TextCollection1.ContextSpeakSelectedTextLabel;
         }
     }
 }

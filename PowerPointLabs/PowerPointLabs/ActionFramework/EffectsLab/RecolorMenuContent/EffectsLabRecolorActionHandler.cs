@@ -8,7 +8,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.EffectsLabRecolorTag)]
+    [ExportActionRibbonId(TextCollection1.EffectsLabRecolorTag)]
     class EffectsLabRecolorActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
@@ -18,21 +18,21 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             PowerPointSlide curSlide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            if (ribbonId.Contains(TextCollection.RecolorRemainderMenuId))
+            if (ribbonId.Contains(TextCollection1.RecolorRemainderMenuId))
             {
-                if (ribbonId.Contains(TextCollection.GrayScaleTag))
+                if (ribbonId.Contains(TextCollection1.GrayScaleTag))
                 {
                     EffectsLabRecolor.GreyScaleRemainderEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.BlackWhiteTag))
+                else if (ribbonId.Contains(TextCollection1.BlackWhiteTag))
                 {
                     EffectsLabRecolor.BlackWhiteRemainderEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.GothamTag))
+                else if (ribbonId.Contains(TextCollection1.GothamTag))
                 {
                     EffectsLabRecolor.GothamRemainderEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.SepiaTag))
+                else if (ribbonId.Contains(TextCollection1.SepiaTag))
                 {
                     EffectsLabRecolor.SepiaRemainderEffect(curSlide, selection);
                 }
@@ -41,21 +41,21 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                     Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
                 }
             }
-            else if (ribbonId.Contains(TextCollection.RecolorBackgroundMenuId))
+            else if (ribbonId.Contains(TextCollection1.RecolorBackgroundMenuId))
             {
-                if (ribbonId.Contains(TextCollection.GrayScaleTag))
+                if (ribbonId.Contains(TextCollection1.GrayScaleTag))
                 {
                     EffectsLabRecolor.GreyScaleBackgroundEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.BlackWhiteTag))
+                else if (ribbonId.Contains(TextCollection1.BlackWhiteTag))
                 {
                     EffectsLabRecolor.BlackWhiteBackgroundEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.GothamTag))
+                else if (ribbonId.Contains(TextCollection1.GothamTag))
                 {
                     EffectsLabRecolor.GothamBackgroundEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.SepiaTag))
+                else if (ribbonId.Contains(TextCollection1.SepiaTag))
                 {
                     EffectsLabRecolor.SepiaBackgroundEffect(curSlide, selection);
                 }

@@ -5,7 +5,7 @@ using PowerPointLabs.AgendaLab;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportActionRibbonId(TextCollection.RemoveAgendaTag)]
+    [ExportActionRibbonId(TextCollection1.RemoveAgendaTag)]
     class RemoveAgendaActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

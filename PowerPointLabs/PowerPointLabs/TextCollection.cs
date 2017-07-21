@@ -1,6 +1,6 @@
 ﻿namespace PowerPointLabs
 {
-    public class TextCollection
+    public class TextCollection1
     {
         # region Common Error
         public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
@@ -17,35 +17,7 @@
 
         # region Ribbon XML
         # region Supertips
-        # region Animation Lab
-        public const string AnimationLabMenuSupertip =
-            "Use Animation Lab to add animations your slides easily.";
-        public const string AddAnimationButtonSupertip =
-            "Create an animation slide to transition from the currently selected slide to the next slide.\n\n" +
-            "To perform this action, duplicate the currently selected slide, move the objects to the desired position, select the original slide, then click this button.";
-        public const string InSlideAnimateButtonSupertip =
-            "Moves a shape around the slide in multiple steps.\n\n" +
-            "To perform this action, copy the shape to locations where it should stop, select the copies in the order they should appear, then click this button.";
-        public const string AnimationLabSettingsSupertip =
-            "Configure the settings for Animation Lab.";
-        # endregion
 
-        # region Zoom Lab
-        public const string ZoomLabMenuSupertip =
-            "Use Zoom Lab to creating zoom in and out effects for your slides easily.";
-        public const string AddZoomInButtonSupertip =
-            "Create an animation slide with a zoom-in effect from the currently selected shape to the next slide.\n\n" +
-            "To perform this action, select a rectangle shape on the slide to drill down from, then click this button.";
-        public const string AddZoomOutButtonSupertip =
-            "Create an animation slide with a zoom-out effect from the previous slide to the currently selected shape.\n\n" +
-            "To perform this action, select a rectangle shape on the slide to step back to, then click this button.";
-        public const string ZoomToAreaButtonSupertip =
-            "Zoom into an area of a slide or picture.\n\n" +
-            "To perform this action, place a rectangle shape on the portion to magnify, then click this button.\n\n" +
-            "This feature works best with high-resolution images.";
-        public const string ZoomLabSettingsSupertip =
-            "Configure the settings for Zoom Lab.";
-        # endregion
 
         # region Crop Lab
         public const string CropLabMenuSupertip =
@@ -128,23 +100,6 @@
             "To perform this action, click this button.";
         public const string HighlightLabSettingsSupertip =
             "Configure the settings for Highlight Lab.";
-        #endregion
-
-        #region Paste Lab
-        public const string PasteLabMenuSupertip =
-            "Use Paste Lab to customize how you paste your copied objects.";
-        public const string PasteToFillSlideSupertip =
-            "Paste your copied objects to fill the current slide.\n\n" +
-            "To perform this action, with object(s) copied, click this button.";
-        public const string PasteAtOriginalPositionSupertip =
-            "Paste your copied objects at their original positions when they were copied.\n\n" +
-            "To perform this action, with object(s) copied, click this button.";
-        public const string ReplaceWithClipboardSupertip =
-            "Paste your copied objects over your selection while preserving its animations.\n\n" +
-            "To perform this action, select an object on the slide, then with object(s) copied, click this button.";
-        public const string PasteIntoGroupSupertip =
-            "Paste your copied objects into an existing group.\n\n" +
-            "To perform this action, select a group on the slide, then with object(s) copied, click this button.";
         #endregion
 
         #region More Labs
@@ -258,22 +213,6 @@
 
         #region Button Labels
         public const string CombineShapesLabel = "Combine Shapes";
-
-        # region Animation Lab
-        public const string AnimationLabMenuLabel = "Animation";
-        public const string AddAnimationButtonLabel = "Add Animation Slide";
-        public const string AddAnimationReloadButtonLabel = "Recreate Animation";
-        public const string AddAnimationInSlideAnimateButtonLabel = "Animate In Slide";
-        public const string AnimationLabSettingsButtonLabel = "Settings";
-        # endregion
-
-        # region Zoom Lab
-        public const string ZoomLabMenuLabel = "Zoom";
-        public const string AddZoomInButtonLabel = "Drill Down";
-        public const string AddZoomOutButtonLabel = "Step Back";
-        public const string ZoomToAreaButtonLabel = "Zoom To Area";
-        public const string ZoomLabSettingsButtonLabel = "Settings";
-        # endregion
 
         # region Crop Lab
         public const string CropLabMenuLabel = "Crop";
@@ -596,221 +535,9 @@
             "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
         # endregion
 
-        # region CropToShape
-
-        public class CropToShapeText
-        {
-            //------------ Msg -------------
-            public const string ErrorMessageForSelectionCountZero = "'Crop To Shape' requires at least one shape to be selected.";
-            public const string ErrorMessageForSelectionNonShape = "'Crop To Shape' only supports shape objects.";
-            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Shape'.";
-        }
-
-        #endregion
-
-        #region CropToSlide
-
-        public class CropToSlideText
-        {
-            //------------ Msg -------------
-            public const string ErrorMessageForSelectionCountZero = "'Crop To Slide' requires at least one shape to be selected.";
-            public const string ErrorMessageForSelectionNonPicture = "'Crop To Slide' only supports picture objects.";
-            public const string ErrorMessageForUndefined = "Undefined error in 'Crop To Slide'.";
-        }
-
-        #endregion
-
-        #region CropLab
-
-        public class CropLabText
-        {
-            public const string ErrorSelectionIsInvalid = "You need to select at least {1} {2} before applying '{0}'.";
-            public const string ErrorSelectionMustBeShape = "'{0}' only supports shape objects.";
-            public const string ErrorSelectionMustBePicture = "'{0}' only supports picture objects.";
-            public const string ErrorSelectionMustBeShapeOrPicture = "'{0}' only supports shape or picture objects.";
-            public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
-            public const string ErrorUndefined = "'Undefined error in Crop Lab'.";
-            public const string ErrorMessageNoShapeOverBoundary = "All selected objects are inside the slide boundary. No cropping was done.";
-            public const string ErrorMessageNoDimensionCropped = "All selected pictures are smaller than reference shape. No cropping was done.";
-            public const string ErrorMessageNoPaddingCropped = "All selected pictures have no transparent padding. No cropping was done.";
-            public const string ErrorMessageNoAspectRatioCropped = "All selected pictures are already in the given aspect ratio. No cropping was done.";
-        }
-
-        #endregion
-
         #region ConvertToPicture
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
-        # endregion
-
-        #region PictureSlidesLab
-        public class PictureSlidesLabText
-        {
-            /// <summary>
-            /// Styles Variation Category Name
-            ///
-            /// Leave OptionName to be ColorNoEffect to hide color panel & picker
-            ///
-            /// Color category's name (without spaces) should be equal to corresponding style option's
-            /// property name, so that the color picker can work properly
-            /// </summary>
-            public const string NoEffect = "No Effect";
-            public const string ColorHasEffect = "Color";
-            public const string TransparencyHasEffect = "Transparency";
-            public const string BannerHasEffect = "Banner";
-            public const string TextBoxHasEffect = "TextBox";
-            public const string VariantCategoryOverlayColor = "Overlay Color";
-            public const string VariantCategoryFontColor = "Font Color";
-            public const string VariantCategoryTextGlowColor = "Text Glow Color";
-            public const string VariantCategoryBannerColor = "Banner Color";
-            public const string VariantCategoryTextBoxColor = "TextBox Color";
-            public const string VariantCategoryFrostedGlassTextBoxColor = "TextBox Color";
-            public const string VariantCategoryFrostedGlassBannerColor = "Banner Color";
-            public const string VariantCategoryFrameColor = "Frame Color";
-            public const string VariantCategoryCircleColor = "Circle Color";
-            public const string VariantCategoryTriangleColor = "Triangle Color";
-            public const string VariantCategoryOutlineColor = "Outline Color";
-            public const string VariantCategoryTextPosition = "Text Position";
-            public const string VariantCategoryFontFamily = "Font";
-            public const string VariantCategorySpecialEffects = "Special Effects";
-            public const string VariantCategoryBlurriness = "Blurriness";
-            public const string VariantCategoryBrightness = "Brightness";
-            public const string VariantCategoryFrostedGlassTextBoxTransparency = "TextBox Transparency";
-            public const string VariantCategoryFrostedGlassBannerTransparency = "Banner Transparency";
-            public const string VariantCategoryFontSizeIncrease = "Font Size";
-            public const string VariantCategoryPicture = "Picture";
-            public const string VariantCategoryImageReference = "Picture Citation";
-            public const string VariantCategoryOverlayTransparency = "Overlay Transparency";
-            public const string VariantCategoryBannerTransparency = "Banner Transparency";
-            public const string VariantCategoryTextBoxTransparency = "TextBox Transparency";
-            public const string VariantCategoryFrameTransparency = "Frame Transparency";
-            public const string VariantCategoryCircleTransparency = "Circle Transparency";
-            public const string VariantCategoryTriangleTransparency = "Triangle Transparency";
-            public const string VariantCategoryTextTransparency = "Text Transparency";
-
-            /// <summary>
-            /// Styles Preview Name
-            /// </summary>
-            public const string StyleNameDirectText = "Direct Text Style";
-            public const string StyleNameBlur = "Blur Style";
-            public const string StyleNameTextBox = "TextBox Style";
-            public const string StyleNameBanner = "Banner Style";
-            public const string StyleNameSpecialEffect = "Special Effect Style";
-            public const string StyleNameOverlay = "Overlay Style";
-            public const string StyleNameOutline = "Outline Style";
-            public const string StyleNameFrame = "Frame Style";
-            public const string StyleNameCircle = "Circle Style";
-            public const string StyleNameTriangle = "Triangle Style";
-            public const string StyleNameFrostedGlassTextBox = "Frosted Glass TextBox Style";
-            public const string StyleNameFrostedGlassBanner = "Frosted Glass Banner Style";
-
-            /// <summary>
-            /// Messages
-            /// </summary>
-            public const string ErrorImageCorrupted =
-                "Failed to load image. The image file is corrupted.";
-            public const string ErrorImageDownloadCorrupted =
-                "Failed to load image. Please try again.";
-            public const string ErrorFailedToLoad =
-                "Failed to load image. ";
-            public const string ErrorUrlLinkIncorrect =
-                "The download link is not in the correct format. Did the link miss out 'http://'?";
-            public const string ErrorNoSelectedSlide =
-                "Cannot apply styles. Please select a slide first.";
-            public const string ErrorFailToInitTempFolder =
-                "Failed to initialize Picture Slides Lab. Please verify that sufficient permissions have been granted by Administrator.";
-            public const string ErrorNoEmbeddedStyleInfo =
-                "No Picture Slides Lab styles are detected for the current slide.";
-            public const string ErrorWhenInitialize =
-                "Failed to initialize Picture Slides Lab. Some functions may not work.";
-
-            public const string DragAndDropInstruction =
-                "Drag and Drop here to get image.";
-
-            public const string InfoPasteNothing = "No picture to paste.";
-            public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";
-            public const string InfoAddPictureCitationSlide = "Added successfully!";
-            public const string InfoDeleteAllImage = "Do you want to delete all pictures?";
-        }
-        #endregion
-
-        #region Animation Lab
-        // Errors
-        public const string AnimationLabAutoAnimateErrorDialogTitle = "Unable to perform action";
-        public const string AnimationLabAutoAnimateErrorWrongSlide = "Please select the correct slide.";
-        public const string AnimationLabAutoAnimateErrorNoMatchingShapes = "No matching Shapes were found on the next slide.";
-        public const string AnimationLabAutoAnimateErrorSlideNotAutoAnimate = "The current slide was not added by PowerPointLabs Auto Animate";
-
-        // Dialog Boxes
-        public const string AnimationLabAutoAnimateLoadingText = "Applying auto animation...";
-        public const string AnimationLabSettingsDurationInputTooltip = "The duration (in seconds) for the animations in the animation slides to be created.";
-        public const string AnimationLabSettingsSmoothAnimationCheckboxTooltip = 
-            "Use a frame-based approach for smoother resize animations.\n" +
-            "This may result in larger file sizes and slower loading times for animated slides.";
-        #endregion
-
-        #region Agenda Lab
-        // Errors
-        public const string AgendaLabErrorDialogTitle = "Unable to execute action";
-        public const string AgendaLabNoSectionError = "Please group the slides into sections before generating agenda.";
-        public const string AgendaLabSingleSectionError = "Please divide the slides into two or more sections.";
-        public const string AgendaLabEmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
-        public const string AgendaLabAgendaExistError = "Agenda already exists. The previous agenda will be removed and regenerated. Do you want to proceed?";
-        public const string AgendaLabAgendaExistErrorCaption = "Confirm Update";
-        public const string AgendaLabNoAgendaError = "There is no generated agenda.";
-        public const string AgendaLabNoReferenceSlideError = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
-        public const string AgendaLabInvalidReferenceSlideError = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
-        public const string AgendaLabSectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
-
-        // Dialog Boxes
-        public const string AgendaLabGeneratingDialogTitle = "Generating...";
-        public const string AgendaLabGeneratingDialogContent = "Agenda is generating, please wait...";
-        public const string AgendaLabSynchronizingDialogTitle = "Synchronizing...";
-        public const string AgendaLabSynchronizingDialogContent = "Agenda is being synchronized, please wait...";
-
-        public const string AgendaLabReorganiseSidebarTitle = "Reorganise Sidebar";
-        public const string AgendaLabReorganiseSidebarContent = "The sections have been changed. Do you wish to reorganise the items in the sidebar?";
-
-        public const string AgendaLabBeamGenerateSingleSlideDialogTitle = "Generate on all slides";
-        public const string AgendaLabBeamGenerateSingleSlideDialogContent = "Only one slide is selected. Would you like to generate the sidebar on all slides instead?";
-
-        // Agenda Content
-        public const string AgendaLabTitleContent = "Agenda";
-
-        public const string AgendaLabBulletVisitedContent = "Visited bullet format";
-        public const string AgendaLabBulletHighlightedContent = "Highlighted bullet format";
-        public const string AgendaLabBulletUnvisitedContent = "Unvisited bullet format";
-        public const string AgendaLabBeamHighlightedText = "Highlighted";
-
-        public const string AgendaLabTemplateSlideInstructions =
-                            "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
-                            "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
-        # endregion
-
-        # region Effects Lab
-        // Errors
-        public const string EffectsLabBlurSelectedErrorNoSelection = "'Blur Selected' requires at least one shape or text box to be selected.";
-        public const string EffectsLabBlurSelectedErrorNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";
-
-        // Dialog Boxes
-        public const string EffectsLabSettingsTintCheckboxForTintSelected = "Tint Selected";
-        public const string EffectsLabSettingsTintCheckboxForTintRemainder = "Tint Remainder";
-        public const string EffectsLabSettingsTintCheckboxForTintBackground = "Tint All Except Selected";
-        public const string EffectsLabSettingsTintCheckboxTooltip = "Adds a tinted effect to your blur.";
-        public const string EffectsLabSettingsBlurrinessInputTooltip = "The level of blurriness.";
-        public const string SpotlightSettingsTransparencyInputTooltip = "The transparency level of the spotlight effect to be created.";
-        public const string SpotlightSettingsSoftEdgesSelectionInputTooltip = "The softness of the edges of the spotlight effect to be created.";
-        #endregion
-
-        #region Captions Lab
-
-        public const string CaptionsLabErrorDialogTitle = "Unable to perform action";
-        public const string CaptionsLabErrorNoSelection = "Select at least one slide to apply captions.";
-        public const string CaptionsLabErrorNoNotes = "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.";
-        public const string CaptionsLabErrorNoSelectionLog = "No slide in selection";
-        public const string CaptionsLabErrorNoCurrentSlideLog = "No current slide";
-        public const string CaptionsLabErrorNoNotesLog = "No notes on slide";
-
         # endregion
 
         #region Task Pane - Recorder
@@ -835,86 +562,6 @@
         public const string RecorderInvalidOperation = "Invalid Operation";
         # endregion
 
-        # region Task Pane - Colors Lab
-
-        public class ColorsLabText
-        {
-            //----------- Tooltips -----------
-            public const string MainColorBoxTooltips = "Choose the main color: " +
-                                       "\r\nDrag the button to pick a color, " +
-                                       "\r\nor click it to choose one from the Color dialog.";
-            public const string FontColorButtonTooltips = "Change the font color of the selected shapes: " +
-                                                     "\r\nDrag the button to pick a color, " +
-                                                     "\r\nor click it to choose one from the Color dialog.";
-            public const string LineColorButtonTooltips = "Change the line color of the selected shapes: " +
-                                                     "\r\nDrag the button to pick a color, " +
-                                                     "\r\nor click it to choose one from the Color dialog.";
-            public const string FillColorButtonTooltips = "Change the fill color of the selected shapes: " +
-                                                     "\r\nDrag the button to pick a color, " +
-                                                     "\r\nor click it to choose one from the Color dialog.";
-            public const string BrightnessSliderTooltips = "Move the slider to adjust the main color’s brightness.";
-            public const string SaturationSliderTooltips = "Move the slider to adjust the main color’s saturation.";
-            public const string SaveFavoriteColorsButtonTooltips = "Save the favorite color palette.";
-            public const string LoadFavoriteColorsButtonTooltips = "Load an existing favorite color palette.";
-            public const string ResetFavoriteColorsButtonTooltips = "Reset the current favorite color palette to those last loaded.";
-            public const string EmptyFavoriteColorsButtonTooltips = "Empty the favorite color palette.";
-            public const string ColorRectangleTooltips = "Click the color to select it as the main color. You can drag-and-drop these colors into the favorites palette.";
-            public const string ThemeColorRectangleTooltips = "Click the color to select it as the main color.";
-
-            //------------ Msg ------------
-            public const string InfoHowToActivateFeature = "To use this feature, select at least one shape.";
-        }
-
-        # endregion
-
-        # region Task Pane - Shapes Lab
-        public const string CustomShapeFileNameInvalid = "Invalid shape name.";
-        public const string CustomShapeNoShapeTextFirstLine = "No shapes saved yet.";
-        public const string CustomShapeNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
-        public const string CustomShapeNoPanelSelectedError = "No shape selected.";
-        public const string CustomShapeViewTypeNotSupported = "Shapes Lab does not support the current view type.";
-        public const string CustomeShapeSaveLocationChangedSuccessFormat =
-            "Default saving path has been changed to \n{0}\nAll shapes have been moved to the new location.";
-        public const string CustomeShapeSetAsDefaultCategorySuccessFormat = "{0} has been set as default category.";
-        public const string CustomShapeSaveLocationChangedSuccessTitle = "Success";
-        public const string CustomShapeMigrationError =
-            "The folder cannot be migrated entirely. Please check if your destination location forbids this action.";
-        public const string CustomShapeOriginalFolderDeletionError =
-            "The original folder could not be deleted because some of the files in folder is still in use. You could " +
-            "try to delete this folder manually when those files are closed.";
-        public const string CustomShapeMigratingDialogTitle = "Migrating...";
-        public const string CustomShapeMigratingDialogContent = "Shapes are being migrated, please wait...";
-        public const string CustomShapeRemoveLastCategoryError = "Removing the last category is not allowed.";
-        public const string CustomShapeDuplicateCategoryNameError = "The name has already been used.";
-        public const string CustomShapeRemoveDefaultCategoryMessage =
-            "You are removing your default category. After removing this category, the first category will be made " +
-            "as default category. Continue?";
-        public const string CustomShapeRemoveDefaultCategoryCaption = "Removing Default Category";
-        public const string CustomShapeImportFileError = "Import File could not be opened.";
-        public const string CustomShapeImportNoSlideError = "Import File is empty.";
-        public const string CustomShapeImportAppendCategoryError = "Your computer does not support this feature.";
-        public const string CustomShapeImportSingleCategoryErrorFormat =
-            "{0} contains multiple categories. Try \"Import Category\" instead.";
-        public const string CustomShapeImportSuccess = "Successfully imported";
-
-        public const string CustomShapeImportShapeFileDialogTitle = "Import Shapes";
-        public const string CustomShapeImportLibraryFileDialogTitle = "Import Library";
-
-        public const string CustomShapeShapeContextStripAddToSlide = "Add To Slide";
-        public const string CustomShapeShapeContextStripEditName = "Edit Name";
-        public const string CustomShapeShapeContextStripMoveShape = "Move Shape To";
-        public const string CustomShapeShapeContextStripRemoveShape = "Remove Shape";
-        public const string CustomShapeShapeContextStripCopyShape = "Copy Shape To";
-
-        public const string CustomShapeCategoryContextStripAddCategory = "Add Category";
-        public const string CustomShapeCategoryContextStripRemoveCategory = "Remove Category";
-        public const string CustomShapeCategoryContextStripRenameCategory = "Rename Category";
-        public const string CustomShapeCategoryContextStripImportCategory = "Import Library";
-        public const string CustomShapeCategoryContextStripImportShapes = "Import Shapes";
-        public const string CustomShapeCategoryContextStripSetAsDefaultCategory = "Set as Default Category";
-        public const string CustomShapeCategoryContextStripCategorySettings = "Shapes Lab Settings";
-        #endregion
-
         #region Narrations Lab
         // Dialog Boxes
         public const string NarrationsLabSettingsVoiceSelectionInputTooltip = 
@@ -922,42 +569,6 @@
             "Use [Voice] tags to specify a different voice for a particular section of text.";
         public const string NarrationsLabSettingsPreviewCheckboxTooltip =
             "If checked, the current slide's audio and animations will play after the Add Audio button is clicked.";
-        #endregion
-
-        #region Positions Lab
-        public class PositionsLabText
-        {
-            public const string ErrorNoSelection = "Please select at least a shape before using this feature";
-            public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature";
-            public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature";
-            public const string ErrorFewerThanFourSelection = "Please select at least four shapes before using this feature";
-            public const string ErrorFunctionNotSupportedForWithinShapes = "This function is not supported for Within Corner Most Objects Setting.";
-            public const string ErrorFunctionNotSupportedForSlide = "This function is not supported for Within Slide Setting.";
-            public const string ErrorFunctionNotSupportedForOverlapRefShapeCenter = "This function is not supported for shapes that overlap the center of the reference shape.";
-            public const string ErrorUndefined = "'Undefined error in Resize Lab'";
-        }
-        #endregion
-
-        #region Paste Lab
-        public class PasteLabText
-        {
-            public const string PasteLabMenu = "Paste";
-            public const string PasteToFillSlide = "Paste To Fill Slide";
-            public const string ReplaceWithClipboard = "Replace With Clipboard";
-            public const string PasteIntoGroup = "Paste Into Group";
-            public const string PasteAtCursorPosition = "Paste At Cursor Position";
-            public const string PasteAtOriginalPosition = "Paste At Original Position";
-        }
-        #endregion
-
-        #region Sync Lab
-        public const string SyncLabErrorDialogTitle = "Unable to execute action";
-        public const string SyncLabCopySelectError = "Please select one shape to copy.";
-        public const string SyncLabPasteSelectError = "Please select at least one item to apply.";
-        public const string SyncLabShapeDeletedError = "Error in loading shape formats. Removing invalid formats from the list.";
-        public const string SyncLabCopyError = "Error: Unable to copy selected item.";
-        public const string SyncLabStorageFileName = "Sync Lab - Do not edit";
-        public const string SyncLabDefaultFormatName = "Format";
         #endregion
 
         #region Zoom Lab

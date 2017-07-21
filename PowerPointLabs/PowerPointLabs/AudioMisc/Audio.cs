@@ -67,7 +67,7 @@ namespace PowerPointLabs.AudioMisc
             var temp = shape.Name.Split(new[] { ' ' });
             if (temp.Length < 3)
             {
-                throw new FormatException(TextCollection.RecorderUnrecognizeAudio);
+                throw new FormatException(TextCollection1.RecorderUnrecognizeAudio);
             }
             this.MatchScriptID = Int32.Parse(temp[2]);
 

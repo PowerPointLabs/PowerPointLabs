@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportImageRibbonId(TextCollection.HelpMenuId)]
+    [ExportImageRibbonId(TextCollection1.HelpMenuId)]
     class HelpMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

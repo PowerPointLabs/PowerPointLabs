@@ -7,7 +7,7 @@ using PowerPointLabs.EffectsLab;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.EffectsLabBlurrinessTag)]
+    [ExportActionRibbonId(TextCollection1.EffectsLabBlurrinessTag)]
     class EffectsLabBlurrinessActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
@@ -15,17 +15,17 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             this.StartNewUndoEntry();
 
             bool isButton = false;
-            bool isCustom = ribbonId.Contains(TextCollection.EffectsLabBlurrinessCustom);
+            bool isCustom = ribbonId.Contains(TextCollection1.EffectsLabBlurrinessCustom);
             int keywordIndex;
 
-            if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
+            if (ribbonId.Contains(TextCollection1.DynamicMenuButtonId))
             {
                 isButton = true;
-                keywordIndex = ribbonId.IndexOf(TextCollection.DynamicMenuButtonId);
+                keywordIndex = ribbonId.IndexOf(TextCollection1.DynamicMenuButtonId);
             }
             else
             {
-                keywordIndex = ribbonId.IndexOf(TextCollection.DynamicMenuOptionId);
+                keywordIndex = ribbonId.IndexOf(TextCollection1.DynamicMenuOptionId);
             }
 
             string feature = ribbonId.Substring(0, keywordIndex);
@@ -35,11 +35,11 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             if (isButton)
             {
                 EffectsLabSettings.ShowBlurSettingsDialog(feature);
-                this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom);
+                this.GetRibbonUi().RefreshRibbonControl(feature + TextCollection1.DynamicMenuOptionId + TextCollection1.EffectsLabBlurrinessCustom);
             }
             else
             {
-                int startIndex = keywordIndex + TextCollection.DynamicMenuOptionId.Length;
+                int startIndex = keywordIndex + TextCollection1.DynamicMenuOptionId.Length;
                 int percentage = isCustom ? GetCustomPercentage(feature) : int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
                 ExecuteBlurAction(feature, selection, slide, percentage);
             }
@@ -49,11 +49,11 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
         {
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                case TextCollection1.EffectsLabBlurrinessFeatureSelected:
                     return EffectsLabSettings.CustomPercentageSelected;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                case TextCollection1.EffectsLabBlurrinessFeatureRemainder:
                     return EffectsLabSettings.CustomPercentageRemainder;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                case TextCollection1.EffectsLabBlurrinessFeatureBackground:
                     return EffectsLabSettings.CustomPercentageBackground;
                 default:
                     Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
@@ -65,13 +65,13 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
         {
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                case TextCollection1.EffectsLabBlurrinessFeatureSelected:
                     EffectsLabBlur.ExecuteBlurSelected(slide, selection, percentage);
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                case TextCollection1.EffectsLabBlurrinessFeatureRemainder:
                     EffectsLabBlur.ExecuteBlurRemainder(slide, selection, percentage);
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                case TextCollection1.EffectsLabBlurrinessFeatureBackground:
                     EffectsLabBlur.ExecuteBlurBackground(slide, selection, percentage);
                     break;
                 default:

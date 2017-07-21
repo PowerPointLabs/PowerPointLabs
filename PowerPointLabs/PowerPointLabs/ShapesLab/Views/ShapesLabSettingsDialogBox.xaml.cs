@@ -50,7 +50,7 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 ShowNewFolderButton = true,
                 SelectedPath = savePathInput.Text,
-                Description = TextCollection.FolderDialogDescription
+                Description = TextCollection1.FolderDialogDescription
             };
 
             // loop until user chooses an empty folder, or click "Cancel" button
@@ -65,7 +65,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
                     if (!FileDir.IsDirectoryEmpty(newPath))
                     {
-                        System.Windows.MessageBox.Show(TextCollection.FolderNonEmptyErrorMsg);
+                        System.Windows.MessageBox.Show(TextCollection1.FolderNonEmptyErrorMsg);
                     }
                     else
                     {

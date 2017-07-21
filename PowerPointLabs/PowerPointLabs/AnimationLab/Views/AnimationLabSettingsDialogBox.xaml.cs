@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
-using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.AnimationLab.Views
 {
@@ -24,11 +23,11 @@ namespace PowerPointLabs.AnimationLab.Views
             : this()
         {
             durationInput.Text = defaultDuration.ToString("f");
-            durationInput.ToolTip = TextCollection.AnimationLabSettingsDurationInputTooltip;
+            durationInput.ToolTip = AnimationLabText.SettingsDurationInputTooltip;
             durationInput.SelectAll();
 
             smoothAnimationCheckbox.IsChecked = smoothChecked;
-            smoothAnimationCheckbox.ToolTip = TextCollection.AnimationLabSettingsSmoothAnimationCheckboxTooltip;
+            smoothAnimationCheckbox.ToolTip = AnimationLabText.SettingsSmoothAnimationCheckboxTooltip;
 
             lastDuration = defaultDuration;
         }

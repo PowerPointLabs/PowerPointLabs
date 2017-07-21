@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportImageRibbonId(TextCollection.EffectsLabMenuId)]
+    [ExportImageRibbonId(TextCollection1.EffectsLabMenuId)]
     class EffectsLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

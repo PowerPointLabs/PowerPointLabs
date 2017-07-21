@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportImageRibbonId(TextCollection.ConvertToPictureTag)]
+    [ExportImageRibbonId(TextCollection1.ConvertToPictureTag)]
     class ConvertToPictureImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

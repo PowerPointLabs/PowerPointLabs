@@ -204,17 +204,17 @@ namespace PowerPointLabs
         #region Button Labels
         public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
         {
-            return TextCollection.PowerPointLabsAddInsTabLabel;
+            return TextCollection1.PowerPointLabsAddInsTabLabel;
         }
 
         public string GetCombineShapesLabel(Office.IRibbonControl control)
         {
-            return TextCollection.CombineShapesLabel;
+            return TextCollection1.CombineShapesLabel;
         }
 
         public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
         {
-            return TextCollection.PowerPointLabsMenuLabel;
+            return TextCollection1.PowerPointLabsMenuLabel;
         }
         # endregion
 
@@ -239,7 +239,7 @@ namespace PowerPointLabs
         {
             if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
-                MessageBox.Show(TextCollection.VersionNotCompatibleErrorMsg);
+                MessageBox.Show(TextCollection1.VersionNotCompatibleErrorMsg);
                 return false;
             }
 

@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportEnabledRibbonId(TextCollection.HighlightBackgroundTag)]
+    [ExportEnabledRibbonId(TextCollection1.HighlightBackgroundTag)]
     class HighlightBackgroundEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)

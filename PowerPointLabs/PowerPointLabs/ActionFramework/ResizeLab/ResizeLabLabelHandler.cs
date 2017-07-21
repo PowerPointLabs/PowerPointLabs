@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ResizeLab
 {
-    [ExportLabelRibbonId(TextCollection.ResizeLabTag)]
+    [ExportLabelRibbonId(TextCollection1.ResizeLabTag)]
     class ResizeLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ResizeLabButtonLabel;
+            return TextCollection1.ResizeLabButtonLabel;
         }
     }
 }

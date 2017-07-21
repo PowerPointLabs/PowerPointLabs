@@ -9,7 +9,7 @@ using PPExtraEventHelper;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection.PasteAtCursorPositionTag)]
+    [ExportActionRibbonId(TextCollection1.PasteAtCursorPositionTag)]
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

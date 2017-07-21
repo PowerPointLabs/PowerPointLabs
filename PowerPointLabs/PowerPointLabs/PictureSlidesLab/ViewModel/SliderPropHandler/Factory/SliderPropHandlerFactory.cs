@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory
 {
@@ -14,10 +16,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory
 
         public ISliderPropHandler GetSliderPropHandler(string propHandlerName)
         {
-            if (propHandlerName.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect))
+            if (propHandlerName.Contains(PictureSlidesLabText.TransparencyHasEffect))
             {
                 var transparencyPropHandler = (TransparencySliderPropHandler)ImportedSliderPropHandlers
-                    .Where(propHandler => propHandler.Metadata.PropHandlerName == TextCollection.PictureSlidesLabText.TransparencyHasEffect)
+                    .Where(propHandler => propHandler.Metadata.PropHandlerName == PictureSlidesLabText.TransparencyHasEffect)
                     .Select(propHandler => propHandler.Value)
                     .FirstOrDefault();
                 transparencyPropHandler.PropName = propHandlerName;

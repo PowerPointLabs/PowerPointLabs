@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.PictureSlidesLab
 {
-    [ExportLabelRibbonId(TextCollection.PictureSlidesLabTag)]
+    [ExportLabelRibbonId(TextCollection1.PictureSlidesLabTag)]
     class PictureSlidesLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.PictureSlidesLabMenuLabel;
+            return TextCollection1.PictureSlidesLabMenuLabel;
         }
     }
 }

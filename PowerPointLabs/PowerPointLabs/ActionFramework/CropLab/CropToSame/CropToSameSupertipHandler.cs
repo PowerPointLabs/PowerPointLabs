@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportSupertipRibbonId(TextCollection.CropToSameDimensionsTag)]
+    [ExportSupertipRibbonId(TextCollection1.CropToSameDimensionsTag)]
     class CropToSameSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.CropToSameButtonSupertip;
+            return TextCollection1.CropToSameButtonSupertip;
         }
     }
 }

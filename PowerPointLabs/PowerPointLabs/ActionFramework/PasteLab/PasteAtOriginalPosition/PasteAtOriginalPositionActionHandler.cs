@@ -5,7 +5,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection.PasteAtOriginalPositionTag)]
+    [ExportActionRibbonId(TextCollection1.PasteAtOriginalPositionTag)]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

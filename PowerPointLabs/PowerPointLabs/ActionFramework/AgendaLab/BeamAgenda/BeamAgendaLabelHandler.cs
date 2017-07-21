@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportLabelRibbonId(TextCollection.BeamAgendaTag)]
+    [ExportLabelRibbonId(TextCollection1.BeamAgendaTag)]
     class BeamAgendaLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.AgendaLabBeamAgendaButtonLabel;
+            return TextCollection1.AgendaLabBeamAgendaButtonLabel;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
             else
             {
-                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
+                MessageBox.Show(TextCollection1.ErrorTypeNotSupported, TextCollection1.ErrorWindowTitle);
             }
         }
 
@@ -42,7 +42,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
             else
             {
-                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
+                MessageBox.Show(TextCollection1.ErrorTypeNotSupported, TextCollection1.ErrorWindowTitle);
             }
         }
 

@@ -5,7 +5,7 @@ using PowerPointLabs.HighlightLab;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportActionRibbonId(TextCollection.HighlightBackgroundTag)]
+    [ExportActionRibbonId(TextCollection1.HighlightBackgroundTag)]
     class HighlightBackgroundActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

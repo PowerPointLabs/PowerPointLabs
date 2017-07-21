@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportLabelRibbonId(TextCollection.RecordNarrationsTag)]
+    [ExportLabelRibbonId(TextCollection1.RecordNarrationsTag)]
     class RecordNarrationsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.RecordNarrationsButtonLabel;
+            return TextCollection1.RecordNarrationsButtonLabel;
         }
     }
 }

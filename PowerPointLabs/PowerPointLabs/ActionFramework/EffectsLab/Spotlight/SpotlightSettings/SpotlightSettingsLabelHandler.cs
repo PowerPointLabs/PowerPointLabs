@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection.SpotlightSettingsTag)]
+    [ExportLabelRibbonId(TextCollection1.SpotlightSettingsTag)]
     class SpotlightSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.SpotlightPropertiesButtonLabel;
+            return TextCollection1.SpotlightPropertiesButtonLabel;
         }
     }
 }

@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection.MakeTransparentTag)]
+    [ExportSupertipRibbonId(TextCollection1.MakeTransparentTag)]
     class MakeTransparentSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.EffectsLabMakeTransparentSupertip;
+            return TextCollection1.EffectsLabMakeTransparentSupertip;
         }
     }
 }

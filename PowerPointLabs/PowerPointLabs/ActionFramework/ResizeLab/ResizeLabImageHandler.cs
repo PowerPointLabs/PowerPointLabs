@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ResizeLab
 {
-    [ExportImageRibbonId(TextCollection.ResizeLabTag)]
+    [ExportImageRibbonId(TextCollection1.ResizeLabTag)]
     class ResizeLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

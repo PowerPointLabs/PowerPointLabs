@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId(TextCollection.ZoomLabMenuId)]
+    [ExportImageRibbonId(TextCollection1.ZoomLabMenuId)]
     class ZoomLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

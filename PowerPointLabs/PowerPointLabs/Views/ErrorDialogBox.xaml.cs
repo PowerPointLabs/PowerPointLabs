@@ -33,8 +33,8 @@ namespace PowerPointLabs.Views
 
             errorMessageText.Text = message;
 
-            emailHyperlink.NavigateUri = new Uri("mailto:" + TextCollection.ReportIssueEmail);
-            emailHyperlinkRunText.Text = TextCollection.ReportIssueEmail;
+            emailHyperlink.NavigateUri = new Uri("mailto:" + TextCollection1.ReportIssueEmail);
+            emailHyperlinkRunText.Text = TextCollection1.ReportIssueEmail;
 
             fullMessageText.Text = exception.GetType() + "\r\n" +
                                     exception.Message + "\r\n" +

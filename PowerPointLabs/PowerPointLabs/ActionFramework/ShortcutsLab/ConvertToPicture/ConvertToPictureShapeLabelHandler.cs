@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection.ConvertToPictureTag)]
+    [ExportLabelRibbonId(TextCollection1.ConvertToPictureTag)]
     class ConvertToPictureShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ConvertToPictureShapeLabel;
+            return TextCollection1.ConvertToPictureShapeLabel;
         }
     }
 }

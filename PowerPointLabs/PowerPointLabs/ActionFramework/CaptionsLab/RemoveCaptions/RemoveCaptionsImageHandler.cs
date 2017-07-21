@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportImageRibbonId(TextCollection.RemoveCaptionsTag)]
+    [ExportImageRibbonId(TextCollection1.RemoveCaptionsTag)]
     class RemoveCaptionsImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

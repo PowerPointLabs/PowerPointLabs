@@ -24,13 +24,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void OpenPane()
         {
-            UIThreadExecutor.Execute(() =>
+            UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection.ShapesLabTag));
+                    new RibbonControl(TextCollection1.ShapesLabTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(CustomShapePane)).Control as CustomShapePane;
-            });
+            }));
         }
 
         public void SaveSelectedShapes()

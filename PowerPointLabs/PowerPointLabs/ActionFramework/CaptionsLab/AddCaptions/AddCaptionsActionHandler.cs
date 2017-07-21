@@ -6,7 +6,7 @@ using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportActionRibbonId(TextCollection.AddCaptionsTag)]
+    [ExportActionRibbonId(TextCollection1.AddCaptionsTag)]
     class AddCaptionsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

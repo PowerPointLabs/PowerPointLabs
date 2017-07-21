@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.PositionsLab
 {
-    [ExportImageRibbonId(TextCollection.PositionsLabTag)]
+    [ExportImageRibbonId(TextCollection1.PositionsLabTag)]
     class PositionsLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

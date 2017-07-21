@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId(TextCollection.ZoomToAreaTag)]
+    [ExportImageRibbonId(TextCollection1.ZoomToAreaTag)]
     class ZoomToAreaImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

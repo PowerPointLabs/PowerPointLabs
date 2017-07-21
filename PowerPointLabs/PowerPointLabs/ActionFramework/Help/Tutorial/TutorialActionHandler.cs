@@ -6,7 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportActionRibbonId(TextCollection.TutorialTag)]
+    [ExportActionRibbonId(TextCollection1.TutorialTag)]
     class TutorialActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
@@ -15,10 +15,10 @@ namespace PowerPointLabs.ActionFramework.Help
             switch (Properties.Settings.Default.ReleaseType)
             {
                 case "dev":
-                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
+                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection1.QuickTutorialFileName;
                     break;
                 case "release":
-                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
+                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection1.QuickTutorialFileName;
                     break;
             }
 

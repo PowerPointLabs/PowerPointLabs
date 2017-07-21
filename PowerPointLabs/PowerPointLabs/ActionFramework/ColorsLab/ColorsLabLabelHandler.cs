@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportLabelRibbonId(TextCollection.ColorsLabTag)]
+    [ExportLabelRibbonId(TextCollection1.ColorsLabTag)]
     class ColorsLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ColorPickerButtonLabel;
+            return TextCollection1.ColorPickerButtonLabel;
         }
     }
 }

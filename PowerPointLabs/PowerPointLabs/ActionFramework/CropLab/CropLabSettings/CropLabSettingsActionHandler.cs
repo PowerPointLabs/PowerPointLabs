@@ -3,7 +3,7 @@ using PowerPointLabs.CropLab;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropLabSettingsTag)]
+    [ExportActionRibbonId(TextCollection1.CropLabSettingsTag)]
     class CropLabSettingsActionHandler : CropLabActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -14,10 +14,10 @@ namespace PowerPointLabs
             switch (Properties.Settings.Default.ReleaseType)
             {
                 case "dev":
-                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
+                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection1.QuickTutorialFileName;
                     break;
                 case "release":
-                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
+                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection1.QuickTutorialFileName;
                     break;
             }
 

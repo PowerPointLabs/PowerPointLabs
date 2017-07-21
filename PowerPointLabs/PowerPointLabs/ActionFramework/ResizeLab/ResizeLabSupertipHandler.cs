@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ResizeLab
 {
-    [ExportSupertipRibbonId(TextCollection.ResizeLabTag)]
+    [ExportSupertipRibbonId(TextCollection1.ResizeLabTag)]
     class ResizeLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.ResizeLabMenuSupertip;
+            return TextCollection1.ResizeLabMenuSupertip;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
@@ -11,7 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
     {
         public string GetVariantName()
         {
-            return TextCollection.PictureSlidesLabText.VariantCategoryTextTransparency;
+            return PictureSlidesLabText.VariantCategoryTextTransparency;
         }
 
         public List<StyleVariant> GetVariants()

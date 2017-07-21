@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportSupertipRibbonId(TextCollection.RemoveCaptionsTag)]
+    [ExportSupertipRibbonId(TextCollection1.RemoveCaptionsTag)]
     class RemoveCaptionsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.RemoveCaptionsButtonSupertip;
+            return TextCollection1.RemoveCaptionsButtonSupertip;
         }
     }
 }

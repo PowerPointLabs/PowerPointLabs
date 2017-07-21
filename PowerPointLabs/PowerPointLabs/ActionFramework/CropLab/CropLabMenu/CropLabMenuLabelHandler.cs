@@ -3,12 +3,12 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection.CropLabMenuId)]
+    [ExportLabelRibbonId(TextCollection1.CropLabMenuId)]
     class CropLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.CropLabMenuLabel;
+            return TextCollection1.CropLabMenuLabel;
         }
     }
 }

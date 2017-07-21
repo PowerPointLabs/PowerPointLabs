@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportImageRibbonId(TextCollection.CropToShapeTag)]
+    [ExportImageRibbonId(TextCollection1.CropToShapeTag)]
     class CropToShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

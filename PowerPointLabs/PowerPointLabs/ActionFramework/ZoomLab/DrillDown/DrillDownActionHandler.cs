@@ -5,7 +5,7 @@ using PowerPointLabs.ZoomLab;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportActionRibbonId(TextCollection.DrillDownTag)]
+    [ExportActionRibbonId(TextCollection1.DrillDownTag)]
     class DrillDownActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

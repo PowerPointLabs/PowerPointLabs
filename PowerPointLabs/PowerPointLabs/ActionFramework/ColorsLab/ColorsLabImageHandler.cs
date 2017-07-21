@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 
 namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportImageRibbonId(TextCollection.ColorsLabTag)]
+    [ExportImageRibbonId(TextCollection1.ColorsLabTag)]
     class ColorsLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
