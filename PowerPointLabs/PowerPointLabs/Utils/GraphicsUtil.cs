@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
@@ -18,7 +17,6 @@ using PPExtraEventHelper;
 using Drawing = System.Drawing;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
-using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 
 namespace PowerPointLabs.Utils
 {
@@ -110,22 +108,6 @@ namespace PowerPointLabs.Utils
 
         #endregion
 
-        #region Text
-        public static TextRange ConvertTextRange2ToTextRange(TextRange2 textRange2)
-        {
-            var textFrame2 = textRange2.Parent as TextFrame2;
-
-            if (textFrame2 == null)
-            {
-                return null;
-            }
-
-            var shape = textFrame2.Parent as Shape;
-
-            return shape == null ? null : shape.TextFrame.TextRange;
-        }
-        # endregion
-
         # region Slide
         public static void ExportSlide(Slide slide, string exportPath, float magnifyRatio = 1.0f)
         {
@@ -184,39 +166,7 @@ namespace PowerPointLabs.Utils
             control.Refresh();
         }
         # endregion
-
-        # region Design
-
-        public static Design CreateDesign(string designName)
-        {
-            return PowerPointPresentation.Current.Presentation.Designs.Add(designName);
-        }
-
-        public static Design GetDesign(string designName)
-        {
-            foreach (Design design in PowerPointPresentation.Current.Presentation.Designs)
-            {
-                if (design.Name.Equals(designName))
-                {
-                    return design;
-                }
-            }
-            return null;
-        }
-
-        public static void CopyToDesign(string designName, PowerPointSlide refSlide)
-        {
-            var design = GetDesign(designName);
-            if (design == null)
-            {
-                design = CreateDesign(designName);
-            }
-            design.SlideMaster.Background.Fill.ForeColor = refSlide.GetNativeSlide().Background.Fill.ForeColor;
-            design.SlideMaster.Background.Fill.BackColor = refSlide.GetNativeSlide().Background.Fill.BackColor;
-        }
-
-        # endregion
-
+        
         # region Color
         public static int ConvertColorToRgb(Drawing.Color argb)
         {
@@ -258,22 +208,6 @@ namespace PowerPointLabs.Utils
         public static System.Windows.Media.Brush MediaBrushFromDrawingColor(Drawing.Color color)
         {
             return new SolidColorBrush(MediaColorFromDrawingColor(color));
-        }
-        #endregion
-
-        #region Transformations
-        public static PointF RotatePoint(PointF p, PointF origin, float rotation)
-        {
-            var rotationInRadian = DegreeToRadian(rotation);
-            var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
-            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
-
-            return new PointF((float)rotatedX, (float)rotatedY);
-        }
-
-        public static double DegreeToRadian(float angle)
-        {
-            return angle / 180.0 * Math.PI;
         }
         #endregion
 

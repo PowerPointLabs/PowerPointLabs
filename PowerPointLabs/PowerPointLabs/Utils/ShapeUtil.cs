@@ -11,6 +11,7 @@ using PowerPointLabs.Models;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 
 namespace PowerPointLabs.Utils
 {
@@ -966,8 +967,22 @@ namespace PowerPointLabs.Utils
             return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
 
+        public static TextRange ConvertTextRange2ToTextRange(TextRange2 textRange2)
+        {
+            var textFrame2 = textRange2.Parent as TextFrame2;
+
+            if (textFrame2 == null)
+            {
+                return null;
+            }
+
+            var shape = textFrame2.Parent as Shape;
+
+            return shape == null ? null : shape.TextFrame.TextRange;
+        }
+
         #endregion
-        
+
         #endregion
 
         #region Helper Methods

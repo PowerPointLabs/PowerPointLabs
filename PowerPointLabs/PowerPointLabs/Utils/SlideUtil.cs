@@ -12,7 +12,11 @@ namespace PowerPointLabs.Utils
 {
     internal static class SlideUtil
     {
+#pragma warning disable 0618
+
         #region API
+
+        #region Slide Methods
 
         /// <summary>
         /// Sort by increasing index.
@@ -90,6 +94,40 @@ namespace PowerPointLabs.Utils
                 slide.Delete();
             }
         }
+
+        #endregion
+
+        #region Slide Design
+
+        public static Design CreateDesign(string designName)
+        {
+            return PowerPointPresentation.Current.Presentation.Designs.Add(designName);
+        }
+
+        public static Design GetDesign(string designName)
+        {
+            foreach (Design design in PowerPointPresentation.Current.Presentation.Designs)
+            {
+                if (design.Name.Equals(designName))
+                {
+                    return design;
+                }
+            }
+            return null;
+        }
+
+        public static void CopyToDesign(string designName, PowerPointSlide refSlide)
+        {
+            var design = GetDesign(designName);
+            if (design == null)
+            {
+                design = CreateDesign(designName);
+            }
+            design.SlideMaster.Background.Fill.ForeColor = refSlide.GetNativeSlide().Background.Fill.ForeColor;
+            design.SlideMaster.Background.Fill.BackColor = refSlide.GetNativeSlide().Background.Fill.BackColor;
+        }
+
+        # endregion
 
         #endregion
 

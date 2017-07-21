@@ -15,7 +15,6 @@ using PowerPointLabs.Views;
 
 using PPExtraEventHelper;
 
-using GraphicsUtil = PowerPointLabs.Utils.GraphicsUtil;
 using Office = Microsoft.Office.Core;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -807,7 +806,7 @@ namespace PowerPointLabs.PositionsLab
             var epsilon = 0.00001f;
 
             var centerPoint = ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(shape));
-            var rotatedMousePos = GraphicsUtil.RotatePoint(p, centerPoint, -shape.Rotation);
+            var rotatedMousePos = CommonUtil.RotatePoint(p, centerPoint, -shape.Rotation);
 
             var x1 = PointsToScreenPixelsX(shape.Left);
             var y1 = PointsToScreenPixelsY(shape.Top);

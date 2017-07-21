@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.Office.Core;
@@ -2246,7 +2245,7 @@ namespace PowerPointLabs.PositionsLab
         public static void Rotate(Shape shape, Drawing.PointF origin, float angle, PositionsLabSettings.RadialShapeOrientationObject shapeOrientation)
         {
             var unrotatedCenter = ShapeUtil.GetCenterPoint(shape);
-            var rotatedCenter = GraphicsUtil.RotatePoint(unrotatedCenter, origin, angle);
+            var rotatedCenter = CommonUtil.RotatePoint(unrotatedCenter, origin, angle);
 
             shape.Left += (rotatedCenter.X - unrotatedCenter.X);
             shape.Top += (rotatedCenter.Y - unrotatedCenter.Y);

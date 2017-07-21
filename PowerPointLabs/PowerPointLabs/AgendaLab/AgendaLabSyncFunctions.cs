@@ -252,7 +252,7 @@ namespace PowerPointLabs.AgendaLab
 
             candidate.Layout = refSlide.Layout;
             
-            candidate.Design = GraphicsUtil.GetDesign("Agenda Template");
+            candidate.Design = SlideUtil.GetDesign("Agenda Template");
             candidate.GetNativeSlide().FollowMasterBackground = MsoTriState.msoTrue;
 
             // synchronize extra shapes other than visual items in reference slide

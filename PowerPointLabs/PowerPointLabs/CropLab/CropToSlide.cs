@@ -5,9 +5,9 @@ using System.IO;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.CropLab
 {
@@ -36,9 +36,9 @@ namespace PowerPointLabs.CropLab
             {
                 return false;
             }
-            if (!Utils.ShapeUtil.IsPicture(shape) || shape.Rotation != 0)
+            if (!ShapeUtil.IsPicture(shape) || shape.Rotation != 0)
             {
-                Utils.GraphicsUtil.ExportShape(shape, ShapePicture);
+                GraphicsUtil.ExportShape(shape, ShapePicture);
                 var newShape = currentSlide.Shapes.AddPicture(ShapePicture,
                     Office.MsoTriState.msoFalse,
                     Office.MsoTriState.msoTrue,
@@ -57,7 +57,7 @@ namespace PowerPointLabs.CropLab
 
         private static RectangleF GetAbsoluteBounds(Shape shape)
         {
-            float rotation = (float)Utils.GraphicsUtil.DegreeToRadian(shape.Rotation);
+            float rotation = (float)CommonUtil.DegreeToRadian(shape.Rotation);
             PointF[] corners = new PointF[]
             {
                 new PointF(-shape.Width / 2, -shape.Height / 2),

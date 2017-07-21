@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -130,6 +131,7 @@ namespace PowerPointLabs.Utils
         }
 
         #region Math
+
         /// <summary>
         /// Computes ceil(dividend / divisor)
         /// </summary>
@@ -137,10 +139,24 @@ namespace PowerPointLabs.Utils
         {
             return (dividend + divisor - 1) / divisor;
         }
-        
-        # endregion
 
-        # region Helper Function
+        public static PointF RotatePoint(PointF p, PointF origin, float rotation)
+        {
+            var rotationInRadian = DegreeToRadian(rotation);
+            var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
+            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+
+            return new PointF((float)rotatedX, (float)rotatedY);
+        }
+
+        public static double DegreeToRadian(float angle)
+        {
+            return angle / 180.0 * Math.PI;
+        }
+
+        #endregion
+
+        #region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
             var namePattern = new Regex(string.Format("{0}(?: (\\d+))*", name));
