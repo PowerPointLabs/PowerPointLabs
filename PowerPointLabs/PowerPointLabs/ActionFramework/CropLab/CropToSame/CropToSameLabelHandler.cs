@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection1.CropToSameDimensionsTag)]
+    [ExportLabelRibbonId(CropLabText.CropToSameDimensionsTag)]
     class CropToSameLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

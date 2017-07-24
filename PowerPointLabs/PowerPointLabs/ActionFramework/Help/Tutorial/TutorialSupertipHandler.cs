@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportSupertipRibbonId(TextCollection1.TutorialTag)]
+    [ExportSupertipRibbonId(HelpText.TutorialTag)]
     class TutorialSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

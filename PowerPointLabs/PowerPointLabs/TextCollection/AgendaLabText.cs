@@ -2,6 +2,16 @@
 {
     internal static class AgendaLabText
     {
+        #region Action Framework Tags
+        public const string RibbonMenuId = "AgendaLabMenu";
+        public const string TextAgendaTag = "TextAgenda";
+        public const string VisualAgendaTag = "VisualAgenda";
+        public const string BeamAgendaTag = "BeamAgenda";
+        public const string RemoveAgendaTag = "RemoveAgenda";
+        public const string UpdateAgendaTag = "UpdateAgenda";
+        #endregion
+
+        #region GUI Text
         public const string RibbonMenuLabel = "Agenda";
         public const string BulletPointButtonLabel = "Create Text Agenda";
         public const string VisualAgendaButtonLabel = "Create Visual Agenda";
@@ -63,5 +73,6 @@
         public const string TemplateSlideInstructions =
                             "This slide is used as a ‘Template' for generating agenda slides. Please do not delete this slide.\r" +
                             "Adjust the design of this slide and click the 'Sync Agenda' (in Agenda Lab) to replicate the design in the other slides.";
+        #endregion
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System.Drawing;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportImageRibbonId(TextCollection1.MagnifyTag)]
+    [ExportImageRibbonId(EffectsLabText.MagnifyTag)]
     class MagnifyImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.TextCollection;
 
 using TestInterface;
 
@@ -27,7 +28,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection1.ShapesLabTag));
+                    new RibbonControl(ShapesLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(CustomShapePane)).Control as CustomShapePane;
             }));

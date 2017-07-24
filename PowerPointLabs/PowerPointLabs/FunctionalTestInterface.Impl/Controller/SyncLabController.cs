@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SyncLab.Views;
+using PowerPointLabs.TextCollection;
 
 using TestInterface;
 
@@ -26,7 +27,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection1.SyncLabTag));
+                    new RibbonControl(SyncLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(SyncPane)).Control as SyncPane;
             }));

@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.AgendaLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportActionRibbonId(TextCollection1.UpdateAgendaTag)]
+    [ExportActionRibbonId(AgendaLabText.UpdateAgendaTag)]
     class UpdateAgendaActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.AnimationLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportActionRibbonId(TextCollection1.AnimateInSlideTag)]
+    [ExportActionRibbonId(AnimationLabText.AnimateInSlideTag)]
     class AnimateInSlideActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

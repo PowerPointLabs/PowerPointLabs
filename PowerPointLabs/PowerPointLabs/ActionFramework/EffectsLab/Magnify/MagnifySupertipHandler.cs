@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.MagnifyTag)]
+    [ExportSupertipRibbonId(EffectsLabText.MagnifyTag)]
     class MagnifySupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

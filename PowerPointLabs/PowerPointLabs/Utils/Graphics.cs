@@ -15,6 +15,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 using PPExtraEventHelper;
 
@@ -106,7 +107,7 @@ namespace PowerPointLabs.Utils
             // we need a lock here to prevent race conditions on the temporary file
             lock (fileLock)
             {
-                string fileName = TextCollection1.TemporaryImageStorageFileName;
+                string fileName = CommonText.TemporaryImageStorageFileName;
                 string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
                 ExportShape(shape, tempPicPath);
 

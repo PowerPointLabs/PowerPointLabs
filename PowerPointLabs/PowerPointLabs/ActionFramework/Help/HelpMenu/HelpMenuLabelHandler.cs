@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportLabelRibbonId(TextCollection1.HelpMenuId)]
+    [ExportLabelRibbonId(HelpText.RibbonMenuId)]
     class HelpMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

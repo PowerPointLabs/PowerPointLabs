@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.EffectsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection1.AddSpotlightTag)]
+    [ExportActionRibbonId(EffectsLabText.AddSpotlightTag)]
     class AddSpotlightActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

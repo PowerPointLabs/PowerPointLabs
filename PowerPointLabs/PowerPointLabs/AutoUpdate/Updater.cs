@@ -2,7 +2,10 @@
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
+
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.TextCollection;
+
 using Path = System.IO.Path;
 
 namespace PowerPointLabs.AutoUpdate
@@ -11,8 +14,8 @@ namespace PowerPointLabs.AutoUpdate
     {
         private readonly string _vstoAddress;
         private readonly string _offlineInstallerAddress;
-        private readonly string _destVstoAddress = Path.Combine(Path.GetTempPath(), TextCollection1.VstoName);
-        private readonly string _destOfflineInstallerAddress = Path.Combine(Path.GetTempPath(), TextCollection1.InstallerName);
+        private readonly string _destVstoAddress = Path.Combine(Path.GetTempPath(), CommonText.VstoName);
+        private readonly string _destOfflineInstallerAddress = Path.Combine(Path.GetTempPath(), CommonText.InstallerName);
         private readonly string _targetInstallFolder;
 
         public Updater()
@@ -21,12 +24,12 @@ namespace PowerPointLabs.AutoUpdate
             switch (Properties.Settings.Default.ReleaseType)
             {
                 case "dev":
-                    _vstoAddress = Properties.Settings.Default.DevAddr + TextCollection1.VstoName;
-                    _offlineInstallerAddress = Properties.Settings.Default.DevAddr + TextCollection1.InstallerName;
+                    _vstoAddress = Properties.Settings.Default.DevAddr + CommonText.VstoName;
+                    _offlineInstallerAddress = Properties.Settings.Default.DevAddr + CommonText.InstallerName;
                     break;
                 case "release":
-                    _vstoAddress = Properties.Settings.Default.ReleaseAddr + TextCollection1.VstoName;
-                    _offlineInstallerAddress = Properties.Settings.Default.ReleaseAddr + TextCollection1.InstallerName;
+                    _vstoAddress = Properties.Settings.Default.ReleaseAddr + CommonText.VstoName;
+                    _offlineInstallerAddress = Properties.Settings.Default.ReleaseAddr + CommonText.InstallerName;
                     break;
                 default:
                     _vstoAddress = "";

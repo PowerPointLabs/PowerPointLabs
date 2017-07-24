@@ -2,6 +2,9 @@
 {
     internal static class ShapesLabText
     {
+        public const string PaneTag = "ShapesLab";
+
+        public const string TaskPanelTitle = "Shapes Lab";
         public const string RibbonMenuLabel = "Shapes";
         public const string RibbonMenuSupertip =
            "Use Shapes Lab to manage your custom shapes.\n\n" +
@@ -52,5 +55,10 @@
         public const string CategoryContextStripImportShapes = "Import Shapes";
         public const string CategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CategoryContextStripCategorySettings = "Shapes Lab Settings";
+
+        public const string ShapeCorruptedError = "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
+
+        public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
+        public const string FolderNonEmptyErrorMsg = "Please select an empty folder as default saving folder.";
     }
 }

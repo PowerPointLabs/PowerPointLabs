@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportLabelRibbonId(TextCollection1.DrillDownTag)]
+    [ExportLabelRibbonId(ZoomLabText.DrillDownTag)]
     class DrillDownLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

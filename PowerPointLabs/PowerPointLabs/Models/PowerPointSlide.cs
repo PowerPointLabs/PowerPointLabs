@@ -123,18 +123,18 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void StoreDataInNotes(string data)
         {
-            NotesPageText = TextCollection1.NotesPageStorageText + data;
+            NotesPageText = CommonText.NotesPageStorageText + data;
         }
 
         public string RetrieveDataFromNotes()
         {
             var text = NotesPageText;
-            if (!text.StartsWith(TextCollection1.NotesPageStorageText))
+            if (!text.StartsWith(CommonText.NotesPageStorageText))
             {
                 return "";
             }
 
-            return text.Substring(TextCollection1.NotesPageStorageText.Length);
+            return text.Substring(CommonText.NotesPageStorageText.Length);
         }
 
         public Shapes Shapes

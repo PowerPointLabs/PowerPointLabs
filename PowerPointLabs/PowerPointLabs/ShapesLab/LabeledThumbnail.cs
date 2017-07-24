@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
 using TestInterface;
 
@@ -42,8 +43,8 @@ namespace PowerPointLabs.ShapesLab
                 else
                 {
                     MessageBox.Show(Utils.Graphics.IsShapeNameOverMaximumLength(value)
-                                        ? TextCollection1.ErrorNameTooLong
-                                        : TextCollection1.ErrorInvalidCharacter);
+                                        ? CommonText.ErrorNameTooLong
+                                        : CommonText.ErrorInvalidCharacter);
 
                     labelTextBox.SelectAll();
                     _isGoodName = false;
@@ -235,7 +236,7 @@ namespace PowerPointLabs.ShapesLab
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
             {
-                MessageBox.Show(TextCollection1.ErrorFileNameExist);
+                MessageBox.Show(CommonText.ErrorFileNameExist);
                 return true;
             }
 

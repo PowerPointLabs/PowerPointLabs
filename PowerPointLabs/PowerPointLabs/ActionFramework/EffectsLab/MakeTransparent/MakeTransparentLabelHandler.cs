@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.MakeTransparentTag)]
+    [ExportLabelRibbonId(EffectsLabText.MakeTransparentTag)]
     class MakeTransparentLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

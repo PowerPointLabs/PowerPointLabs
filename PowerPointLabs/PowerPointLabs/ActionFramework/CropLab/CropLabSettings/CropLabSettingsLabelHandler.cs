@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection1.CropLabSettingsTag)]
+    [ExportLabelRibbonId(CropLabText.SettingsTag)]
     class CropLabSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

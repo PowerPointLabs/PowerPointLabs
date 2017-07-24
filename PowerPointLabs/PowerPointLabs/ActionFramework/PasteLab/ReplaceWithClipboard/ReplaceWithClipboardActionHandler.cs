@@ -5,10 +5,11 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection1.ReplaceWithClipboardTag)]
+    [ExportActionRibbonId(PasteLabText.ReplaceWithClipboardTag)]
     class ReplaceWithClipboardActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

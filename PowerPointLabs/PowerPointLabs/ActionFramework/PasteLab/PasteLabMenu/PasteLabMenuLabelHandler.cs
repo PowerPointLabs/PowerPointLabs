@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportLabelRibbonId(TextCollection1.PasteLabMenuId)]
+    [ExportLabelRibbonId(PasteLabText.RibbonMenuId)]
     class PasteLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return PasteLabText.PasteLabMenuLabel;
+            return PasteLabText.RibbonMenuLabel;
         }
     }
 }

@@ -2,14 +2,25 @@
 {
     internal static class NarrationsLabText
     {
-        public const string NarrationsLabMenuLabel = "Narrations";
+        #region Action Framework Tags
+        public const string RibbonMenuId = "NarrationsLabMenu";
+        public const string AddNarrationsTag = "AddNarrations";
+        public const string RecordNarrationsTag = "RecordNarrations";
+        public const string RemoveNarrationsTag = "RemoveNarrations";
+        public const string SettingsTag = "NarrationsLabSettings";
+        #endregion
+
+        #region GUI Text
+        public const string RecManagementPanelTitle = "Record Management";
+
+        public const string RibbonMenuLabel = "Narrations";
         public const string AddNarrationsButtonLabel = "Generate Audio Automatically";
         public const string RecordNarrationsButtonLabel = "Record Audio Manually";
         public const string RemoveNarrationsButtonLabel = "Remove Audio";
-        public const string NarrationsLabSettingsButtonLabel = "Settings";
+        public const string SettingsButtonLabel = "Settings";
 
-        public const string NarrationsLabMenuSupertip =
-                    "Use Narrations Lab to create narration from text in the Notes pane of the selected slides.";
+        public const string RibbonMenuSupertip =
+            "Use Narrations Lab to create narration from text in the Notes pane of the selected slides.";
         public const string AddNarrationsButtonSupertip =
             "Create synthesized narration from text in the Notes pane of the selected slides.\n\n" +
             "To perform this action, select the slide(s) with the Speaker Notes, then click this button.";
@@ -19,7 +30,39 @@
         public const string RemoveNarrationsButtonSupertip =
             "Remove synthesized audio added using Narrations Lab from the selected slides.\n\n" +
             "To perform this action, select the slide(s) to remove the narrations from, then click this button.";
-        public const string NarrationsLabSettingsSupertip =
-            "Configure the settings for Narrations Lab.";
+        public const string SettingsButtonSupertip = "Configure the settings for Narrations Lab.";
+
+        public const string SettingsVoiceSelectionInputTooltip =
+            "The voice to be used when generating synthesized audio.\n" +
+            "Use [Voice] tags to specify a different voice for a particular section of text.";
+        public const string SettingsPreviewCheckboxTooltip =
+            "If checked, the current slide's audio and animations will play after the Add Audio button is clicked.";
+
+        #region Recorder
+        public const string RecorderInitialTimer = "00:00:00";
+        public const string RecorderReadyStatusLabel = "Ready.";
+        public const string RecorderRecordingStatusLabel = "Recording...";
+        public const string RecorderPlayingStatusLabel = "Playing...";
+        public const string RecorderPauseStatusLabel = "Pause";
+        public const string RecorderUnrecognizeAudio = "Unrecognized Embedded Audio";
+        public const string RecorderScriptStatusNoAudio = "No Audio";
+        public const string RecorderWndMessageError = "Fatal error";
+        public const string RecorderNoScriptDetail = "No Script Available";
+        public const string RecorderNoInputDeviceMsg = "No audio input device was found.\n" +
+                                                       "Check that a microphone or other audio input device is attached " +
+                                                       "and working.";
+        public const string RecorderNoInputDeviceMsgBoxTitle = "Input Device Not Found";
+        public const string RecorderSaveRecordMsg = "Do you want to save the recording?";
+        public const string RecorderSaveRecordMsgBoxTitle = "Save Recording";
+        public const string RecorderReplaceRecordMsgFormat = "Do you want to replace\n{0}\nwith the current recording?";
+        public const string RecorderReplaceRecordMsgBoxTitle = "Replace Audio";
+        public const string RecorderNoRecordToPlayError = "There are no recordings to play.";
+        public const string RecorderInvalidOperation = "Invalid Operation";
+
+        public const string InShowControlInvalidRecCommandError = "Invalid Recording Command";
+        public const string InShowControlRecButtonIdleText = "Stop and Advance";
+        public const string InShowControlRecButtonRecText = "Start Recording";
+        #endregion
+        #endregion
     }
 }

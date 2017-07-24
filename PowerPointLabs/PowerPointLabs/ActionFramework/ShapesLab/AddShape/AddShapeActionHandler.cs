@@ -4,10 +4,11 @@ using System.Windows.Forms;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ShortcutsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportActionRibbonId(TextCollection1.AddCustomShapeTag)]
+    [ExportActionRibbonId(ShortcutsLabText.AddCustomShapeTag)]
     class AddShapeActionHandler : ShapesLabActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
@@ -18,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
             // first of all we check if the shape gallery has been opened correctly
             if (!addIn.ShapePresentation.Opened)
             {
-                MessageBox.Show(TextCollection1.ShapeGalleryInitErrorMsg);
+                MessageBox.Show(CommonText.ShapeGalleryInitErrorMsg);
                 return;
             }
 

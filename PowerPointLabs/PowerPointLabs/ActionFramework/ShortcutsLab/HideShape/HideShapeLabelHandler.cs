@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection1.HideShapeTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.HideShapeTag)]
     class HideShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

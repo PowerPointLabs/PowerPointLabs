@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PictureSlidesLab
 {
-    [ExportLabelRibbonId(TextCollection1.PictureSlidesLabTag)]
+    [ExportLabelRibbonId(PictureSlidesLabText.PaneTag)]
     class PictureSlidesLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

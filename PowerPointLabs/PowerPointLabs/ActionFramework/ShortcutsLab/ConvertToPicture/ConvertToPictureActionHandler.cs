@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ShortcutsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection1.ConvertToPictureTag)]
+    [ExportActionRibbonId(ShortcutsLabText.ConvertToPictureTag)]
     class ConvertToPictureActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

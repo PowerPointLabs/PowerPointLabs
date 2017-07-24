@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.NarrationsLabSettingsTag)]
+    [ExportSupertipRibbonId(NarrationsLabText.SettingsTag)]
     class NarrationsLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return NarrationsLabText.NarrationsLabSettingsSupertip;
+            return NarrationsLabText.SettingsButtonSupertip;
         }
     }
 }

@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection1.SpeakSelectedTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.SpeakSelectedTag)]
     class SpeakSelectedLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

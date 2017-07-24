@@ -4,10 +4,11 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection1.CropToShapeTag)]
+    [ExportActionRibbonId(CropLabText.CropToShapeTag)]
     class CropToShapeActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Shape";

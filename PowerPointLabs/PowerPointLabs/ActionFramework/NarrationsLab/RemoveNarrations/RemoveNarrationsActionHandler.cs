@@ -4,10 +4,11 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.NarrationsLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportActionRibbonId(TextCollection1.RemoveNarrationsTag)]
+    [ExportActionRibbonId(NarrationsLabText.RemoveNarrationsTag)]
     class RemoveNarrationsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

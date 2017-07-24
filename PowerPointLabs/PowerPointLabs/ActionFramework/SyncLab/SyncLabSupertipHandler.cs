@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SyncLab
 {
-    [ExportSupertipRibbonId(TextCollection1.SyncLabTag)]
+    [ExportSupertipRibbonId(SyncLabText.PaneTag)]
     class SyncLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

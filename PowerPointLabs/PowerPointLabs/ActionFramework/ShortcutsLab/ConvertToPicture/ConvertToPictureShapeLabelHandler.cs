@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection1.ConvertToPictureTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.ConvertToPictureTag)]
     class ConvertToPictureShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

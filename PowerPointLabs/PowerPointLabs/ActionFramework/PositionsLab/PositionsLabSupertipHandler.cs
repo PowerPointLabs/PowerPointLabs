@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PositionsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.PositionsLabTag)]
+    [ExportSupertipRibbonId(PositionsLabText.PaneTag)]
     class PositionsLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

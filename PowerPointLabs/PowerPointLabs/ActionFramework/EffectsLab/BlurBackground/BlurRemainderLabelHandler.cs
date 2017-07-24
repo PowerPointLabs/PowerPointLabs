@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.BlurBackgroundMenuId)]
+    [ExportLabelRibbonId(EffectsLabText.BlurBackgroundMenuId)]
     class BlurBackgroundLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

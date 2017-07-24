@@ -2,6 +2,8 @@
 {
     internal static class PictureSlidesLabText
     {
+        public const string PaneTag = "PictureSlidesLab";
+
         public const string RibbonMenuLabel = "Picture Slides";
         public const string RibbonMenuSupertip =
             "Use Picture Slides Lab to create better picture slides using less effort.\n\n" +

@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportSupertipRibbonId(TextCollection1.BeamAgendaTag)]
+    [ExportSupertipRibbonId(AgendaLabText.BeamAgendaTag)]
     class BeamAgendaSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

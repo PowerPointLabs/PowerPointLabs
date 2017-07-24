@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Supertip.HighlightLab
 {
-    [ExportSupertipRibbonId(TextCollection1.HighlightLabSettingsTag)]
+    [ExportSupertipRibbonId(HighlightLabText.SettingsTag)]
     class HighlightLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

@@ -157,7 +157,7 @@ namespace PowerPointLabs.ShapesLab
             myShapeFlowLayout.MouseUp += FlowLayoutMouseUpHandler;
             myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
 
-            singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(TextCollection1.SingleShapeDownloadUrl);
+            singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
         }
         # endregion
 

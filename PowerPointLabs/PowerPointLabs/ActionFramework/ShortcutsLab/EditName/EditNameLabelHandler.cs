@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection1.EditNameTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.EditNameTag)]
     class EditNameLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

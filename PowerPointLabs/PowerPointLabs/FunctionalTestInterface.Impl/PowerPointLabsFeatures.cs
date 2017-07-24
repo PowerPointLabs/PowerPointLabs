@@ -4,6 +4,7 @@ using System.Drawing;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.ZoomLab;
 using TestInterface;
 
@@ -46,7 +47,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.CropToShapeTag));
+                Ribbon.OnAction(new RibbonControl(CropLabText.CropToShapeTag));
             }));
         }
 
@@ -54,7 +55,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.CropOutPaddingTag));
+                Ribbon.OnAction(new RibbonControl(CropLabText.CropOutPaddingTag));
             }));
         }
 
@@ -63,26 +64,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("CropToAspectRatioOption1_10");
-                control.Tag = TextCollection1.CropToAspectRatioTag;
+                control.Tag = CropLabText.CropToAspectRatioTag;
                 Ribbon.OnAction(control);
             }));
         }
 
         public void CropToSlide()
         {
-            Ribbon.OnAction(new RibbonControl(TextCollection1.CropToSlideTag));
+            Ribbon.OnAction(new RibbonControl(CropLabText.CropToSlideTag));
         }
 
         public void CropToSame()
         {
-            Ribbon.OnAction(new RibbonControl(TextCollection1.CropToSameDimensionsTag));
+            Ribbon.OnAction(new RibbonControl(CropLabText.CropToSameDimensionsTag));
         }
 
         public void AutoAnimate()
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.AddAnimationSlideTag));
+                Ribbon.OnAction(new RibbonControl(AnimationLabText.AddAnimationSlideTag));
             }));
         }
 
@@ -90,7 +91,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.AnimateInSlideTag));
+                Ribbon.OnAction(new RibbonControl(AnimationLabText.AnimateInSlideTag));
             }));
         }
 
@@ -98,7 +99,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.AddCaptionsTag));
+                Ribbon.OnAction(new RibbonControl(CaptionsLabText.AddCaptionsTag));
             }));
         }
 
@@ -132,7 +133,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.ConvertToPictureTag));
+                Ribbon.OnAction(new RibbonControl(ShortcutsLabText.ConvertToPictureTag));
             }));
         }
 
@@ -140,7 +141,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.DrillDownTag));
+                Ribbon.OnAction(new RibbonControl(ZoomLabText.DrillDownTag));
             }));
         }
 
@@ -148,7 +149,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.StepBackTag));
+                Ribbon.OnAction(new RibbonControl(ZoomLabText.StepBackTag));
             }));
         }
 
@@ -156,7 +157,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.ZoomToAreaTag));
+                Ribbon.OnAction(new RibbonControl(ZoomLabText.ZoomToAreaTag));
             }));
         }
 
@@ -173,7 +174,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.HighlightPointsTag));
+                Ribbon.OnAction(new RibbonControl(HighlightLabText.HighlightPointsTag));
             }));
         }
 
@@ -181,7 +182,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.HighlightBackgroundTag));
+                Ribbon.OnAction(new RibbonControl(HighlightLabText.HighlightBackgroundTag));
             }));
         }
 
@@ -189,7 +190,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.HighlightTextTag));
+                Ribbon.OnAction(new RibbonControl(HighlightLabText.HighlightTextTag));
             }));
         }
 
@@ -197,7 +198,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.RemoveHighlightTag));
+                Ribbon.OnAction(new RibbonControl(HighlightLabText.RemoveHighlightTag));
             }));
         }
 
@@ -205,7 +206,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.AddNarrationsTag));
+                Ribbon.OnAction(new RibbonControl(NarrationsLabText.AddNarrationsTag));
             }));
         }
 
@@ -213,7 +214,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.TextAgendaTag));
+                Ribbon.OnAction(new RibbonControl(AgendaLabText.TextAgendaTag));
             }));
         }
 
@@ -221,7 +222,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.VisualAgendaTag));
+                Ribbon.OnAction(new RibbonControl(AgendaLabText.VisualAgendaTag));
             }));
         }
 
@@ -229,7 +230,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.BeamAgendaTag));
+                Ribbon.OnAction(new RibbonControl(AgendaLabText.BeamAgendaTag));
             }));
         }
 
@@ -237,7 +238,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.RemoveAgendaTag));
+                Ribbon.OnAction(new RibbonControl(AgendaLabText.RemoveAgendaTag));
             }));
         }
 
@@ -245,7 +246,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.UpdateAgendaTag));
+                Ribbon.OnAction(new RibbonControl(AgendaLabText.UpdateAgendaTag));
             }));
         }
 
@@ -253,7 +254,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.MakeTransparentTag));
+                Ribbon.OnAction(new RibbonControl(EffectsLabText.MakeTransparentTag));
             }));
         }
 
@@ -261,7 +262,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.MagnifyTag));
+                Ribbon.OnAction(new RibbonControl(EffectsLabText.MagnifyTag));
             }));
         }
 
@@ -285,7 +286,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("BlurSelectedOption90");
-                control.Tag = TextCollection1.EffectsLabBlurrinessTag;
+                control.Tag = EffectsLabText.BlurrinessTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -295,7 +296,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("BlurRemainderOption90");
-                control.Tag = TextCollection1.EffectsLabBlurrinessTag;
+                control.Tag = EffectsLabText.BlurrinessTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -305,7 +306,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("BlurBackgroundOption90");
-                control.Tag = TextCollection1.EffectsLabBlurrinessTag;
+                control.Tag = EffectsLabText.BlurrinessTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -315,7 +316,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("GrayScaleRecolorRemainderMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -325,7 +326,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("BlackAndWhiteRecolorRemainderMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -335,7 +336,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("GothamRecolorRemainderMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -345,7 +346,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("SepiaRecolorRemainderMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -355,7 +356,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("GrayScaleRecolorBackgroundMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -365,7 +366,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("BlackAndWhiteRecolorBackgroundMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -375,7 +376,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("GothamRecolorBackgroundMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -385,7 +386,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 var control = new RibbonControl("SepiaRecolorBackgroundMenu");
-                control.Tag = TextCollection1.EffectsLabRecolorTag;
+                control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
         }
@@ -394,7 +395,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.PasteToFillSlideTag));
+                Ribbon.OnAction(new RibbonControl(PasteLabText.PasteToFillSlideTag));
             }));
         }
 
@@ -402,7 +403,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.PasteAtCursorPositionTag));
+                Ribbon.OnAction(new RibbonControl(PasteLabText.PasteAtCursorPositionTag));
             }));
         }
 
@@ -410,7 +411,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.PasteAtOriginalPositionTag));
+                Ribbon.OnAction(new RibbonControl(PasteLabText.PasteAtOriginalPositionTag));
             }));
         }
 
@@ -418,7 +419,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.PasteIntoGroupTag));
+                Ribbon.OnAction(new RibbonControl(PasteLabText.PasteIntoGroupTag));
             }));
         }
 
@@ -426,7 +427,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                Ribbon.OnAction(new RibbonControl(TextCollection1.ReplaceWithClipboardTag));
+                Ribbon.OnAction(new RibbonControl(PasteLabText.ReplaceWithClipboardTag));
             }));
         }
     }

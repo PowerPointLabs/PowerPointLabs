@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportLabelRibbonId(TextCollection1.ZoomToAreaTag)]
+    [ExportLabelRibbonId(ZoomLabText.ZoomToAreaTag)]
     class ZoomToAreaLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

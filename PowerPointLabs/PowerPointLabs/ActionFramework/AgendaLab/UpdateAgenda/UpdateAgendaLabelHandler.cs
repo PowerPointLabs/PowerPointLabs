@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportLabelRibbonId(TextCollection1.UpdateAgendaTag)]
+    [ExportLabelRibbonId(AgendaLabText.UpdateAgendaTag)]
     class UpdateAgendaLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

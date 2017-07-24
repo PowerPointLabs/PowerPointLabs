@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.RecordNarrationsTag)]
+    [ExportSupertipRibbonId(NarrationsLabText.RecordNarrationsTag)]
     class RecordNarrationsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

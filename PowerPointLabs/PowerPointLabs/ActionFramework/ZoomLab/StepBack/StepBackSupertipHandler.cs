@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportSupertipRibbonId(TextCollection1.StepBackTag)]
+    [ExportSupertipRibbonId(ZoomLabText.StepBackTag)]
     class StepBackSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportLabelRibbonId(TextCollection1.ZoomLabMenuId)]
+    [ExportLabelRibbonId(ZoomLabText.RibbonMenuId)]
     class ZoomLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return ZoomLabText.ZoomLabMenuLabel;
+            return ZoomLabText.RibbonMenuLabel;
         }
     }
 }

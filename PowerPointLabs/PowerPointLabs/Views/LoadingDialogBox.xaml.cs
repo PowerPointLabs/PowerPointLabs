@@ -1,4 +1,5 @@
-﻿
+﻿using PowerPointLabs.TextCollection;
+
 namespace PowerPointLabs.Views
 {
     /// <summary>
@@ -6,8 +7,8 @@ namespace PowerPointLabs.Views
     /// </summary>
     public partial class LoadingDialogBox
     {
-        public LoadingDialogBox(string title = TextCollection1.LoadingDialogDefaultTitle,
-                                string content = TextCollection1.LoadingDialogDefaultContent)
+        public LoadingDialogBox(string title = CommonText.LoadingDialogDefaultTitle,
+                                string content = CommonText.LoadingDialogDefaultContent)
         {
             InitializeComponent();
             Title = title;

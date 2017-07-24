@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportLabelRibbonId(TextCollection1.RemoveNotesTag)]
+    [ExportLabelRibbonId(CaptionsLabText.RemoveNotesTag)]
     class RemoveNotesLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

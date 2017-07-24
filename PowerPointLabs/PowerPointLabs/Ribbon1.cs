@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
@@ -12,6 +11,7 @@ using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.PictureSlidesLab.Views;
+using PowerPointLabs.TextCollection;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -201,6 +201,23 @@ namespace PowerPointLabs
         }
         #endregion
 
+        #region Button Labels
+        public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)
+        {
+            return CommonText.PowerPointLabsAddInsTabLabel;
+        }
+
+        public string GetCombineShapesLabel(Office.IRibbonControl control)
+        {
+            return CommonText.CombineShapesLabel;
+        }
+
+        public string GetPowerPointLabsMenuLabel(Office.IRibbonControl control)
+        {
+            return CommonText.PowerPointLabsMenuLabel;
+        }
+        # endregion
+
         #region Control Enable
         public bool OnGetEnabledReloadSpotlight(Office.IRibbonControl control)
         {
@@ -222,7 +239,7 @@ namespace PowerPointLabs
         {
             if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
-                MessageBox.Show(TextCollection1.VersionNotCompatibleErrorMsg);
+                MessageBox.Show(CommonText.VersionNotCompatibleErrorMsg);
                 return false;
             }
 

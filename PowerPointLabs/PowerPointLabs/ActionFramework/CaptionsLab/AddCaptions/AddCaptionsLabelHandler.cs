@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportLabelRibbonId(TextCollection1.AddCaptionsTag)]
+    [ExportLabelRibbonId(CaptionsLabText.AddCaptionsTag)]
     class AddCaptionsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportSupertipRibbonId(TextCollection1.ZoomLabSettingsTag)]
+    [ExportSupertipRibbonId(ZoomLabText.SettingsTag)]
     class ZoomLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return ZoomLabText.ZoomLabSettingsSupertip;
+            return ZoomLabText.SettingsButtonSupertip;
         }
     }
 }

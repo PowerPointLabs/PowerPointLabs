@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.RemoveNotesTag)]
+    [ExportSupertipRibbonId(CaptionsLabText.RemoveNotesTag)]
     class RemoveNotesSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

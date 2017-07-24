@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportLabelRibbonId(TextCollection1.FeedbackTag)]
+    [ExportLabelRibbonId(HelpText.FeedbackTag)]
     class FeedbackLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

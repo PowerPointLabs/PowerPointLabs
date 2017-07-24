@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportLabelRibbonId(TextCollection1.PasteAtOriginalPositionTag)]
+    [ExportLabelRibbonId(PasteLabText.PasteAtOriginalPositionTag)]
     class PasteAtOriginalPositionLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

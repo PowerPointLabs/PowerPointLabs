@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportSupertipRibbonId(TextCollection1.PasteToFillSlideTag)]
+    [ExportSupertipRibbonId(PasteLabText.PasteToFillSlideTag)]
     class PasteToFillSlideSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

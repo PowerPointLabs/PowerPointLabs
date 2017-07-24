@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SyncLab
 {
-    [ExportLabelRibbonId(TextCollection1.SyncLabTag)]
+    [ExportLabelRibbonId(SyncLabText.PaneTag)]
     class SyncLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

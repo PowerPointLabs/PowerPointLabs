@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.BlurSelectedMenuId)]
+    [ExportLabelRibbonId(EffectsLabText.BlurSelectedMenuId)]
     class BlurSelectedLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

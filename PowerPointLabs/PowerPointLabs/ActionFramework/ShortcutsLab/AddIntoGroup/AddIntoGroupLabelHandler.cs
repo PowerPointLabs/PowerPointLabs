@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection1.AddIntoGroupTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.AddIntoGroupTag)]
     class AddIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

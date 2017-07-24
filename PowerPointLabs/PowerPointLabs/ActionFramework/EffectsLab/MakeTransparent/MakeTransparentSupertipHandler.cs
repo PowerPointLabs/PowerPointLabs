@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.MakeTransparentTag)]
+    [ExportSupertipRibbonId(EffectsLabText.MakeTransparentTag)]
     class MakeTransparentSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportLabelRibbonId(TextCollection1.PasteToFillSlideTag)]
+    [ExportLabelRibbonId(PasteLabText.PasteToFillSlideTag)]
     class PasteToFillSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

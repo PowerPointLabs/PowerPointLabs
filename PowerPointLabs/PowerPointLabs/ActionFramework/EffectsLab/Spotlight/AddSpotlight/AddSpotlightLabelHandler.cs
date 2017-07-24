@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.AddSpotlightTag)]
+    [ExportLabelRibbonId(EffectsLabText.AddSpotlightTag)]
     class AddSpotlightLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

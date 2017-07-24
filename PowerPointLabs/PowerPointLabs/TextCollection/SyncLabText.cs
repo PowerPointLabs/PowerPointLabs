@@ -2,6 +2,9 @@
 {
     internal static class SyncLabText
     {
+        public const string PaneTag = "SyncLab";
+
+        public const string TaskPanelTitle = "Sync Lab";
         public const string RibbonMenuLabel = "Sync";
         public const string RibbonMenuSupertip =
             "Use Sync Lab to make your slides look more consistent.\n\n" +

@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportSupertipRibbonId(TextCollection1.PasteAtOriginalPositionTag)]
+    [ExportSupertipRibbonId(PasteLabText.PasteAtOriginalPositionTag)]
     class PasteAtOriginalPositionSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

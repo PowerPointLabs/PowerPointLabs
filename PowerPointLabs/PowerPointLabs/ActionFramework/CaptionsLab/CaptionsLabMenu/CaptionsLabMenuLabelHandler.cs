@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportLabelRibbonId(TextCollection1.CaptionsLabMenuId)]
+    [ExportLabelRibbonId(CaptionsLabText.RibbonMenuId)]
     class CaptionsLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.RecolorRemainderMenuId)]
+    [ExportLabelRibbonId(EffectsLabText.RecolorRemainderMenuId)]
     class RecolorRemainderLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

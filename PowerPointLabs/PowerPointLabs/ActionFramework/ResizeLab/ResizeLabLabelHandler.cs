@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ResizeLab
 {
-    [ExportLabelRibbonId(TextCollection1.ResizeLabTag)]
+    [ExportLabelRibbonId(ResizeLabText.PaneTag)]
     class ResizeLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

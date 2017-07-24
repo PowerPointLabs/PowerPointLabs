@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.CaptionsLabMenuId)]
+    [ExportSupertipRibbonId(CaptionsLabText.RibbonMenuId)]
     class CaptionsLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

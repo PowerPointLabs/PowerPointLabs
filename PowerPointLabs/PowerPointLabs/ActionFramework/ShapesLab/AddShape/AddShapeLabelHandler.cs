@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportLabelRibbonId(TextCollection1.AddCustomShapeTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.AddCustomShapeTag)]
     class AddShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

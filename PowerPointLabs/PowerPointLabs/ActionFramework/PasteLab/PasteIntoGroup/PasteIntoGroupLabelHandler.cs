@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportLabelRibbonId(TextCollection1.PasteIntoGroupTag)]
+    [ExportLabelRibbonId(PasteLabText.PasteIntoGroupTag)]
     class PasteIntoGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

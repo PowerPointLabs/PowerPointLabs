@@ -4,25 +4,25 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.EffectsLabRecolorTag)]
+    [ExportLabelRibbonId(EffectsLabText.RecolorTag)]
     class EffectsLabRecolorLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
             string label = "";
-            if (ribbonId.Contains(TextCollection1.GrayScaleTag))
+            if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
             {
                 label = EffectsLabText.GrayScaleButtonLabel;
             }
-            else if (ribbonId.Contains(TextCollection1.BlackWhiteTag))
+            else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
             {
                 label = EffectsLabText.BlackWhiteButtonLabel;
             }
-            else if (ribbonId.Contains(TextCollection1.GothamTag))
+            else if (ribbonId.Contains(EffectsLabText.GothamTag))
             {
                 label = EffectsLabText.GothamButtonLabel;
             }
-            else if (ribbonId.Contains(TextCollection1.SepiaTag))
+            else if (ribbonId.Contains(EffectsLabText.SepiaTag))
             {
                 label = EffectsLabText.SepiaButtonLabel;
             }

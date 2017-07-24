@@ -1,12 +1,14 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection1.CropToSlideTag)]
+    [ExportActionRibbonId(CropLabText.CropToSlideTag)]
     class CropToSlideActionHandler : CropLabActionHandler
     {
 

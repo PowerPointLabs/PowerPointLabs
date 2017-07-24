@@ -1054,7 +1054,7 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLab\ShapesLabConfigSaveFile.cs" />
-    <Compile Include="TextCollection.cs" />
+    <Compile Include="TextCollection\CommonText.cs" />
     <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\Common.cs" />
     <Compile Include="Utils\Comparers.cs" />

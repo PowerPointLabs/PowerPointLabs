@@ -4,12 +4,13 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
+using PowerPointLabs.TextCollection;
 
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection1.PasteAtCursorPositionTag)]
+    [ExportActionRibbonId(PasteLabText.PasteAtCursorPositionTag)]
     class PasteAtCursorPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

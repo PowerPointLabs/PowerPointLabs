@@ -1,13 +1,14 @@
-﻿using System.IO;
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection1.CropToSameDimensionsTag)]
+    [ExportActionRibbonId(CropLabText.CropToSameDimensionsTag)]
     class CropToSameActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Same Dimensions";

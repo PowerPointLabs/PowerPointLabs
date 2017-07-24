@@ -2,6 +2,9 @@
 {
     internal static class PositionsLabText
     {
+        public const string PaneTag = "PositionsLab";
+
+        public const string TaskPanelTitle = "Positions Lab";
         public const string RibbonMenuLabel = "Positions";
         public const string RibbonMenuSupertip =
             "Use Positions Lab to accurately position the objects on your slide.\n\n" +

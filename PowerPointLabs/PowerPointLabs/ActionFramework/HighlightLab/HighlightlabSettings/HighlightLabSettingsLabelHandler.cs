@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Label.HighlightLab
 {
-    [ExportLabelRibbonId(TextCollection1.HighlightLabSettingsTag)]
+    [ExportLabelRibbonId(HighlightLabText.SettingsTag)]
     class HighlightLabSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

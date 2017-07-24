@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportSupertipRibbonId(TextCollection1.TimerLabTag)]
+    [ExportSupertipRibbonId(TimerLabText.PaneTag)]
     class TimerLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

@@ -28,15 +28,15 @@ namespace PowerPointLabs.EffectsLab.Views
 
             switch (feature)
             {
-                case TextCollection1.EffectsLabBlurrinessFeatureSelected:
+                case EffectsLabText.BlurrinessFeatureSelected:
                     Title = EffectsLabText.BlurSelectedButtonLabel + " Settings";
                     tintCheckbox.Content = EffectsLabText.SettingsTintSelectedCheckboxLabel;
                     break;
-                case TextCollection1.EffectsLabBlurrinessFeatureRemainder:
+                case EffectsLabText.BlurrinessFeatureRemainder:
                     Title = EffectsLabText.BlurRemainderButtonLabel + " Settings";
                     tintCheckbox.Content = EffectsLabText.SettingsTintRemainderCheckboxLabel;
                     break;
-                case TextCollection1.EffectsLabBlurrinessFeatureBackground:
+                case EffectsLabText.BlurrinessFeatureBackground:
                     Title = EffectsLabText.BlurBackgroundButtonLabel + " Settings";
                     tintCheckbox.Content = EffectsLabText.SettingsTintBackgroundCheckboxLabel;
                     break;

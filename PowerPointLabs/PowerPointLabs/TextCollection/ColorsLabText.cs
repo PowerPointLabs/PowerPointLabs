@@ -2,6 +2,9 @@
 {
     internal static class ColorsLabText
     {
+        public const string PaneTag = "ColorsLab";
+
+        public const string TaskPanelTitle = "Colors Lab";
         public const string RibbonMenuLabel = "Colors";
         public const string RibbonMenuSupertip =
             "Use Colors Lab to add beautiful colors to your slide.\n\n" +

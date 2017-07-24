@@ -2,6 +2,25 @@
 {
     internal static class EffectsLabText
     {
+        #region Action Framework Tags
+        public const string RibbonMenuId = "EffectsLabMenu";
+        public const string MakeTransparentTag = "MakeTransparent";
+        public const string MagnifyTag = "Magnify";
+        public const string SpotlightMenuId = "SpotlightMenu";
+        public const string AddSpotlightTag = "AddSpotlight";
+        public const string SpotlightSettingsTag = "SpotlightSettings";
+        public const string BlurSelectedMenuId = "BlurSelectedMenu";
+        public const string BlurRemainderMenuId = "BlurRemainderMenu";
+        public const string BlurBackgroundMenuId = "BlurBackgroundMenu";
+        public const string RecolorRemainderMenuId = "RecolorRemainderMenu";
+        public const string RecolorBackgroundMenuId = "RecolorBackgroundMenu";
+        public const string GrayScaleTag = "GrayScale";
+        public const string BlackWhiteTag = "BlackAndWhite";
+        public const string GothamTag = "Gotham";
+        public const string SepiaTag = "Sepia";
+        #endregion
+
+        #region GUI Text
         public const string RibbonMenuLabel = "Effects";
         public const string MakeTransparentButtonLabel = "Make Transparent";
         public const string MagnifyGlassButtonLabel = "Magnifying Glass";
@@ -17,6 +36,16 @@
         public const string BlackWhiteButtonLabel = "Black and White";
         public const string GothamButtonLabel = "Gotham";
         public const string SepiaButtonLabel = "Sepia";
+
+        public const string BlurrinessButtonLabel = "Settings";
+        public const string BlurrinessCheckBoxLabel = "Tint ";
+        public const string BlurrinessTag = "Blurriness";
+        public const string BlurrinessCustom = "CustomPercentage";
+        public const string BlurrinessCustomPrefixLabel = "Custom";
+        public const string BlurrinessFeatureSelected = "BlurSelected";
+        public const string BlurrinessFeatureRemainder = "BlurRemainder";
+        public const string BlurrinessFeatureBackground = "BlurBackground";
+        public const string RecolorTag = "Recolor";
 
         public const string RibbonMenuSupertip = "Use Effects Lab to apply elegant effects to your shapes.";
         public const string MakeTransparentSupertip =
@@ -57,5 +86,6 @@
         public const string SettingsBlurrinessInputTooltip = "The level of blurriness";
         public const string SettingsTransparencyInputTooltip = "The transparency level of the spotlight effect to be created";
         public const string SettingsSoftEdgesSelectionInputTooltip = "The softness of the edges of the spotlight effect to be created";
+        #endregion
     }
 }

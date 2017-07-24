@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportLabelRibbonId(TextCollection1.StepBackTag)]
+    [ExportLabelRibbonId(ZoomLabText.StepBackTag)]
     class StepBackLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

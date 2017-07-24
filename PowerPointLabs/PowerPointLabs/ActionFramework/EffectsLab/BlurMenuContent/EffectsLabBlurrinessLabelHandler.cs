@@ -1,41 +1,42 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.EffectsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.EffectsLabBlurrinessTag)]
+    [ExportLabelRibbonId(EffectsLabText.BlurrinessTag)]
     class EffectsLabBlurrinessLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            if (ribbonId.Contains(TextCollection1.DynamicMenuButtonId))
+            if (ribbonId.Contains(CommonText.DynamicMenuButtonId))
             {
-                return TextCollection1.EffectsLabBlurrinessButtonLabel;
+                return EffectsLabText.BlurrinessButtonLabel;
             }
 
-            if (ribbonId.Contains(TextCollection1.EffectsLabBlurrinessCustom))
+            if (ribbonId.Contains(EffectsLabText.BlurrinessCustom))
             {
                 int percentage = 0;
-                if (ribbonId.StartsWith(TextCollection1.EffectsLabBlurrinessFeatureSelected))
+                if (ribbonId.StartsWith(EffectsLabText.BlurrinessFeatureSelected))
                 {
                     percentage = EffectsLabSettings.CustomPercentageSelected;
                 }
-                else if (ribbonId.StartsWith(TextCollection1.EffectsLabBlurrinessFeatureRemainder))
+                else if (ribbonId.StartsWith(EffectsLabText.BlurrinessFeatureRemainder))
                 {
                     percentage = EffectsLabSettings.CustomPercentageRemainder;
                 }
-                else if (ribbonId.StartsWith(TextCollection1.EffectsLabBlurrinessFeatureBackground))
+                else if (ribbonId.StartsWith(EffectsLabText.BlurrinessFeatureBackground))
                 {
                     percentage = EffectsLabSettings.CustomPercentageBackground;
                 }
-                return TextCollection1.EffectsLabBlurrinessCustomPrefixLabel + " (" + percentage + "%)";
+                return EffectsLabText.BlurrinessCustomPrefixLabel + " (" + percentage + "%)";
             }
 
-            int startIndex = ribbonId.IndexOf(TextCollection1.DynamicMenuOptionId) + TextCollection1.DynamicMenuOptionId.Length;
+            int startIndex = ribbonId.IndexOf(CommonText.DynamicMenuOptionId) + CommonText.DynamicMenuOptionId.Length;
             string percentageText = ribbonId.Substring(startIndex, ribbonId.Length - startIndex);
 
-            return percentageText + "% " + TextCollection1.EffectsLabBlurrinessTag;
+            return percentageText + "% " + EffectsLabText.BlurrinessTag;
         }
     }
 }

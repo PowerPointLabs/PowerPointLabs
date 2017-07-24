@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportLabelRibbonId(TextCollection1.RecordNarrationsTag)]
+    [ExportLabelRibbonId(NarrationsLabText.RecordNarrationsTag)]
     class RecordNarrationsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

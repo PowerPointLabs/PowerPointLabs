@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportSupertipRibbonId(TextCollection1.AnimationLabMenuId)]
+    [ExportSupertipRibbonId(AnimationLabText.RibbonMenuId)]
     class AnimationLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return AnimationLabText.AnimationLabMenuSupertip;
+            return AnimationLabText.RibbonMenuSupertip;
         }
     }
 }

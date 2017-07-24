@@ -2,6 +2,16 @@
 {
     internal static class HighlightLabText
     {
+        #region Action Framework Tags
+        public const string RibbonMenuId = "HighlightLabMenu";
+        public const string HighlightPointsTag = "HighlightPoints";
+        public const string HighlightBackgroundTag = "HighlightBackground";
+        public const string HighlightTextTag = "HighlightText";
+        public const string RemoveHighlightTag = "RemoveHighlight";
+        public const string SettingsTag = "HighlightLabSettings";
+        #endregion
+
+        #region GUI Text
         public const string RibbonMenuLabel = "Highlight";
         public const string HighlightBulletsTextButtonLabel = "Highlight Points";
         public const string HighlightBulletsBackgroundButtonLabel = "Highlight Background";
@@ -23,5 +33,6 @@
             "Remove all Highlighting from the current slide.\n\n" +
             "To perform this action, click this button.";
         public const string SettingsButtonSupertip = "Configure the settings for Highlight Lab.";
+        #endregion
     }
 }

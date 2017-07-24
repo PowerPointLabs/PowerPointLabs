@@ -2,10 +2,11 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportImageRibbonId(TextCollection1.BlurBackgroundMenuId)]
+    [ExportImageRibbonId(EffectsLabText.BlurBackgroundMenuId)]
     class BlurBackgroundImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

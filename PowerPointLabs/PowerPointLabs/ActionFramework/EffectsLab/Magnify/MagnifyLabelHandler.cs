@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.MagnifyTag)]
+    [ExportLabelRibbonId(EffectsLabText.MagnifyTag)]
     class MagnifyLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

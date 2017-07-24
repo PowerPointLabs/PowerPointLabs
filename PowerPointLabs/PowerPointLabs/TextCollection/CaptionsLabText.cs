@@ -2,6 +2,14 @@
 {
     internal static class CaptionsLabText
     {
+        #region Action Framework Tags
+        public const string RibbonMenuId = "CaptionsLabMenu";
+        public const string AddCaptionsTag = "AddCaptions";
+        public const string RemoveCaptionsTag = "RemoveCaptions";
+        public const string RemoveNotesTag = "RemoveNotes";
+        #endregion
+
+        #region GUI Text
         public const string RibbonMenuLabel = "Captions";
         public const string AddCaptionsButtonLabel = "Add Captions";
         public const string RemoveCaptionsButtonLabel = "Remove Captions";
@@ -25,5 +33,6 @@
         public const string ErrorNoSelectionLog = "No slide in selection.";
         public const string ErrorNoCurrentSlideLog = "No current slide.";
         public const string ErrorNoNotesLog = "No notes on slide.";
+        #endregion
     }
 }

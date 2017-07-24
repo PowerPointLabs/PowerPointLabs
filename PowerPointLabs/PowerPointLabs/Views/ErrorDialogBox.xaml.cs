@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Navigation;
 
+using PowerPointLabs.TextCollection;
+
 namespace PowerPointLabs.Views
 {
     /// <summary>
@@ -33,8 +35,8 @@ namespace PowerPointLabs.Views
 
             errorMessageText.Text = message;
 
-            emailHyperlink.NavigateUri = new Uri("mailto:" + TextCollection1.ReportIssueEmail);
-            emailHyperlinkRunText.Text = TextCollection1.ReportIssueEmail;
+            emailHyperlink.NavigateUri = new Uri("mailto:" + CommonText.ReportIssueEmail);
+            emailHyperlinkRunText.Text = CommonText.ReportIssueEmail;
 
             fullMessageText.Text = exception.GetType() + "\r\n" +
                                     exception.Message + "\r\n" +

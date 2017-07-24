@@ -2,6 +2,17 @@
 {
     internal static class CropLabText
     {
+        #region Action Framework Tags
+        public const string RibbonMenuId = "CropLabMenu";
+        public const string CropToShapeTag = "CropToShape";
+        public const string CropToSlideTag = "CropToSlide";
+        public const string CropToSameDimensionsTag = "CropToSame";
+        public const string CropToAspectRatioTag = "CropToAspectRatio";
+        public const string CropOutPaddingTag = "CropOutPadding";
+        public const string SettingsTag = "CropLabSettings";
+        #endregion
+
+        #region GUI Text
         public const string RibbonMenuLabel = "Crop";
         public const string CropToShapeButtonLabel = "Crop To Shape";
         public const string CropOutPaddingButtonLabel = "Crop Out Padding";
@@ -44,5 +55,6 @@
         public const string ErrorNoAspectRatioCropped = "All selected pictures are already in the given aspect ratio. No cropping was done.";
 
         public const string ErrorAspectRatioIsInvalid = "The given aspect ratio is invalid. Please enter positive numbers for the width to height ratio.";
+        #endregion
     }
 }

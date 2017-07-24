@@ -2,15 +2,16 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportActionRibbonId(TextCollection1.HelpTag)]
+    [ExportActionRibbonId(HelpText.HelpTag)]
     class HelpActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Process.Start(TextCollection1.HelpDocumentUrl);
+            Process.Start(CommonText.HelpDocumentUrl);
         }
     }
 }

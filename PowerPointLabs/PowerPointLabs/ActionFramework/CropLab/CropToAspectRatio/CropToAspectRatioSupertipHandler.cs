@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportSupertipRibbonId(TextCollection1.CropToAspectRatioTag)]
+    [ExportSupertipRibbonId(CropLabText.CropToAspectRatioTag)]
     class CropToAspectRatioSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

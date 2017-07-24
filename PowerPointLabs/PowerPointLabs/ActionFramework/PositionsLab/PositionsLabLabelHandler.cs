@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PositionsLab
 {
-    [ExportLabelRibbonId(TextCollection1.PositionsLabTag)]
+    [ExportLabelRibbonId(PositionsLabText.PaneTag)]
     class PositionsLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

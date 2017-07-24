@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PositionsLab;
+using PowerPointLabs.TextCollection;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
@@ -24,7 +24,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection1.PositionsLabTag));
+                    new RibbonControl(PositionsLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(PositionsPane)).Control as PositionsPane;
             }));

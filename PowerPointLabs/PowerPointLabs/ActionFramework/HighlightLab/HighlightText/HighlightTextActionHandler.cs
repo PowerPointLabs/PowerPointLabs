@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.HighlightLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
 {
-    [ExportActionRibbonId(TextCollection1.HighlightTextTag)]
+    [ExportActionRibbonId(HighlightLabText.HighlightTextTag)]
     class HighlightTextActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

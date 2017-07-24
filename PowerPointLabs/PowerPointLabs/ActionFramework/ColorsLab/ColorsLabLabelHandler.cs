@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportLabelRibbonId(TextCollection1.ColorsLabTag)]
+    [ExportLabelRibbonId(ColorsLabText.PaneTag)]
     class ColorsLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

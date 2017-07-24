@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.AddSpotlightTag)]
+    [ExportSupertipRibbonId(EffectsLabText.AddSpotlightTag)]
     class AddSpotlightSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

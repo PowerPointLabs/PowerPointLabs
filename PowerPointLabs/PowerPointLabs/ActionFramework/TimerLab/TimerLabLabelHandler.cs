@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportLabelRibbonId(TextCollection1.TimerLabTag)]
+    [ExportLabelRibbonId(TimerLabText.PaneTag)]
     class TimerLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

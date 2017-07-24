@@ -2,10 +2,11 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportImageRibbonId(TextCollection1.AddIntoGroupTag)]
+    [ExportImageRibbonId(ShortcutsLabText.AddIntoGroupTag)]
     class AddIntoGroupImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

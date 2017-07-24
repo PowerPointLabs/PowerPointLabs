@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportSupertipRibbonId(TextCollection1.DrillDownTag)]
+    [ExportSupertipRibbonId(ZoomLabText.DrillDownTag)]
     class DrillDownSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

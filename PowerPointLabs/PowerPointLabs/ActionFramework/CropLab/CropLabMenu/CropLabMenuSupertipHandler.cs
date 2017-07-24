@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportSupertipRibbonId(TextCollection1.CropLabMenuId)]
+    [ExportSupertipRibbonId(CropLabText.RibbonMenuId)]
     class CropLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

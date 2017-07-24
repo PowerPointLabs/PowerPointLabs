@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.RibbonGroups
 {
-    [ExportLabelRibbonId(TextCollection1.MoreLabsGroupId)]
+    [ExportLabelRibbonId(CommonText.MoreLabsGroupId)]
     class MoreLabsGroupLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection1.MoreLabsGroupLabel;
+            return CommonText.MoreLabsGroupLabel;
         }
     }
 }

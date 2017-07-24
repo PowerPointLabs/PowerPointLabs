@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.RecolorRemainderMenuId)]
+    [ExportSupertipRibbonId(EffectsLabText.RecolorRemainderMenuId)]
     class RecolorRemainderSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

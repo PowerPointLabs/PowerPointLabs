@@ -59,7 +59,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             if (Utils.Graphics.IsShapeNameOverMaximumLength(name))
             {
-                MessageBox.Show(TextCollection1.ErrorNameTooLong);
+                MessageBox.Show(CommonText.ErrorNameTooLong);
                 return false;
             }
 
@@ -67,7 +67,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name))
             {
-                MessageBox.Show(TextCollection1.ErrorInvalidCharacter);
+                MessageBox.Show(CommonText.ErrorInvalidCharacter);
                 return false;
             }
 

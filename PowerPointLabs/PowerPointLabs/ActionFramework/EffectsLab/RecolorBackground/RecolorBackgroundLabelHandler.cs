@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection1.RecolorBackgroundMenuId)]
+    [ExportLabelRibbonId(EffectsLabText.RecolorBackgroundMenuId)]
     class RecolorBackgroundLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)

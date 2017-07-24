@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.CaptionsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportActionRibbonId(TextCollection1.RemoveCaptionsTag)]
+    [ExportActionRibbonId(CaptionsLabText.RemoveCaptionsTag)]
     class RemoveCaptionsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

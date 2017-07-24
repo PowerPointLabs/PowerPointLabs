@@ -4,7 +4,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection1.BlurSelectedMenuId)]
+    [ExportSupertipRibbonId(EffectsLabText.BlurSelectedMenuId)]
     class BlurSelectedSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)

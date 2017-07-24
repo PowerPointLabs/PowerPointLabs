@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportLabelRibbonId(TextCollection1.AnimateInSlideTag)]
+    [ExportLabelRibbonId(AnimationLabText.AnimateInSlideTag)]
     class AnimateInSlideLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return AnimationLabText.AnimateInSlideLabel;
+            return AnimationLabText.AnimateInSlideButtonLabel;
         }
     }
 }
