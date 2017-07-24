@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
+
 using MahApps.Metro.Controls.Dialogs;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 using PowerPointLabs.PictureSlidesLab.Util;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.Views
 {
@@ -43,7 +46,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             try
             {
-                ShowErrorTextDialog(content + TextCollection.UserFeedBack + TextCollection.ReportIssueEmail + "\r\n\r\n"
+                ShowErrorTextDialog(content + CommonText.UserFeedBack + CommonText.ReportIssueEmail + "\r\n\r\n"
                                                + e.Message + " " + e.GetType() + "\r\n"
                                                + e.StackTrace);
             }

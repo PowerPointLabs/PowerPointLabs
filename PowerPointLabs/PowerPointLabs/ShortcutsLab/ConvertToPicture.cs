@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
@@ -23,7 +24,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
             else
             {
-                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
+                MessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
             }
         }
 
@@ -42,7 +43,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
             else
             {
-                MessageBox.Show(TextCollection.ErrorTypeNotSupported, TextCollection.ErrorWindowTitle);
+                MessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
             }
         }
 

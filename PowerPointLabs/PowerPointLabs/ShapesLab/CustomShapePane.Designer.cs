@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
+using PowerPointLabs.TextCollection;
+
 namespace PowerPointLabs.ShapesLab
 {
     partial class CustomShapePane
@@ -241,7 +243,7 @@ namespace PowerPointLabs.ShapesLab
                                  (int)(11 * Utils.GraphicsUtil.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(212, 24),
-            Text = TextCollection.CustomShapeNoShapeTextFirstLine
+            Text = ShapesLabText.ErrorNoShapeTextFirstLine
         };
 
         private readonly Label _noShapeLabelSecondLine = new Label
@@ -255,7 +257,7 @@ namespace PowerPointLabs.ShapesLab
                                  (int)(41 * Utils.GraphicsUtil.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(242, 24),
-            Text = TextCollection.CustomShapeNoShapeTextSecondLine
+            Text = ShapesLabText.ErrorNoShapeTextSecondLine
         };
 
         private readonly Panel _noShapePanel = new Panel

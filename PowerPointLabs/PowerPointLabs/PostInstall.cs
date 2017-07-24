@@ -1,5 +1,6 @@
-﻿using System.Windows.Forms;
-using Microsoft.VisualStudio.Tools.Applications.Deployment;
+﻿using Microsoft.VisualStudio.Tools.Applications.Deployment;
+
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs
 {
@@ -14,10 +15,10 @@ namespace PowerPointLabs
             switch (Properties.Settings.Default.ReleaseType)
             {
                 case "dev":
-                    sourceFile = Properties.Settings.Default.DevAddr + TextCollection.QuickTutorialFileName;
+                    sourceFile = Properties.Settings.Default.DevAddr + CommonText.QuickTutorialFileName;
                     break;
                 case "release":
-                    sourceFile = Properties.Settings.Default.ReleaseAddr + TextCollection.QuickTutorialFileName;
+                    sourceFile = Properties.Settings.Default.ReleaseAddr + CommonText.QuickTutorialFileName;
                     break;
             }
 

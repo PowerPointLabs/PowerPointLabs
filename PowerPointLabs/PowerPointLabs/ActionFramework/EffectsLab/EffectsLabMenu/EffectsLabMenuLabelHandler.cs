@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection.EffectsLabMenuId)]
+    [ExportLabelRibbonId(EffectsLabText.RibbonMenuId)]
     class EffectsLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.EffectsLabButtonLabel;
+            return EffectsLabText.RibbonMenuLabel;
         }
     }
 }

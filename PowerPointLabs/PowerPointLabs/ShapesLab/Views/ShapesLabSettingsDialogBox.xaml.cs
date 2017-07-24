@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-using PowerPointLabs.DataSources;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -50,7 +50,7 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 ShowNewFolderButton = true,
                 SelectedPath = savePathInput.Text,
-                Description = TextCollection.FolderDialogDescription
+                Description = ShapesLabText.FolderDialogDescription
             };
 
             // loop until user chooses an empty folder, or click "Cancel" button
@@ -65,7 +65,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
                     if (!FileDir.IsDirectoryEmpty(newPath))
                     {
-                        System.Windows.MessageBox.Show(TextCollection.FolderNonEmptyErrorMsg);
+                        System.Windows.MessageBox.Show(ShapesLabText.ErrorFolderNonEmpty);
                     }
                     else
                     {

@@ -5,11 +5,12 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CropLab.Views;
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToAspectRatioTag + TextCollection.RibbonMenu)]
+    [ExportActionRibbonId(CropLabText.CropToAspectRatioTag + CommonText.RibbonMenu)]
     class CropToAspectRatioActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Aspect Ratio";
@@ -37,16 +38,16 @@ namespace PowerPointLabs.ActionFramework.CropLab
                 return;
             }
 
-            if (ribbonId.Contains(TextCollection.DynamicMenuButtonId))
+            if (ribbonId.Contains(CommonText.DynamicMenuButtonId))
             {
                 CustomAspectRatioDialogBox dialog = new CustomAspectRatioDialogBox(shapeRange[1]);
                 dialog.DialogConfirmedHandler += ExecuteCropToAspectRatio;
                 dialog.ShowDialog();
             }
-            else if (ribbonId.Contains(TextCollection.DynamicMenuOptionId))
+            else if (ribbonId.Contains(CommonText.DynamicMenuOptionId))
             {
-                int optionRawStringStartIndex = ribbonId.LastIndexOf(TextCollection.DynamicMenuButtonId) +
-                                                TextCollection.DynamicMenuOptionId.Length;
+                int optionRawStringStartIndex = ribbonId.LastIndexOf(CommonText.DynamicMenuButtonId) +
+                                                CommonText.DynamicMenuOptionId.Length;
                 string optionRawString = ribbonId.Substring(optionRawStringStartIndex).Replace('_', ':');
                 ExecuteCropToAspectRatio(optionRawString);
             }

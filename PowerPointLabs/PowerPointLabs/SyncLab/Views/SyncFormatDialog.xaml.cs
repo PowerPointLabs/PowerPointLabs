@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.SyncLab.ObjectFormats;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -34,7 +35,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             else
             {
-                originalName = TextCollection.SyncLabDefaultFormatName;
+                originalName = SyncLabText.DefaultFormatName;
             }
             originalName = formatName;
             ObjectName = originalName;

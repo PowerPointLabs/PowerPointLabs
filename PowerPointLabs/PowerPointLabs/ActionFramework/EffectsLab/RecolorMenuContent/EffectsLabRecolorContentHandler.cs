@@ -1,15 +1,16 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportContentRibbonId(TextCollection.RecolorRemainderMenuId, TextCollection.RecolorBackgroundMenuId)]
+    [ExportContentRibbonId(EffectsLabText.RecolorRemainderMenuId, EffectsLabText.RecolorBackgroundMenuId)]
     class EffectsLabRecolorContentHandler : ContentHandler
     {
         private static string[] features =
         {
-            TextCollection.GrayScaleTag, TextCollection.BlackWhiteTag,
-            TextCollection.GothamTag, TextCollection.SepiaTag
+            EffectsLabText.GrayScaleTag, EffectsLabText.BlackWhiteTag,
+            EffectsLabText.GothamTag, EffectsLabText.SepiaTag
         };
 
         protected override string GetContent(string ribbonId)
@@ -18,11 +19,11 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             foreach (string feature in features)
             {
-                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
-                    feature + ribbonId, TextCollection.EffectsLabRecolorTag));
+                xmlString.Append(string.Format(CommonText.DynamicMenuXmlButton,
+                    feature + ribbonId, EffectsLabText.RecolorTag));
             }
            
-            return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);
+            return string.Format(CommonText.DynamicMenuXmlMenu, xmlString);
         }
     }
 }

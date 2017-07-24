@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportLabelRibbonId(TextCollection.CropOutPaddingTag)]
+    [ExportLabelRibbonId(CropLabText.CropOutPaddingTag)]
     class CropOutPaddingLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.CropOutPaddingLabel;
+            return CropLabText.CropOutPaddingButtonLabel;
         }
     }
 }

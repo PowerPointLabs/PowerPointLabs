@@ -7,6 +7,7 @@ using System.Windows.Media;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
+using PowerPointLabs.TextCollection;
 
 using Color = System.Drawing.Color;
 using Forms = System.Windows.Forms;
@@ -120,9 +121,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
             var currentCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily
+            if (currentCategory == PictureSlidesLabText.VariantCategoryFontFamily
                 && selectedItem != null
-                && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.NoEffect)
+                && selectedItem.Tooltip != PictureSlidesLabText.NoEffect)
             {
                 FontPanel.Visibility = Visibility.Visible;
                 ViewModel.BindStyleToFontPanel();
@@ -143,9 +144,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
             var currentCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentCategory.Contains(TextCollection.PictureSlidesLabText.ColorHasEffect)
+            if (currentCategory.Contains(PictureSlidesLabText.ColorHasEffect)
                  && selectedItem != null
-                 && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.NoEffect)
+                 && selectedItem.Tooltip != PictureSlidesLabText.NoEffect)
             {
                 VariantsColorPanel.Visibility = Visibility.Visible;
                 ViewModel.BindStyleToColorPanel();
@@ -168,7 +169,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             var currentCategory = (string)VariantsComboBox.SelectedValue;
             if (IsSliderSupported(currentCategory)
                  && selectedItem != null
-                 && selectedItem.Tooltip != TextCollection.PictureSlidesLabText.NoEffect)
+                 && selectedItem.Tooltip != PictureSlidesLabText.NoEffect)
             {
                 VariantsSlider.Visibility = Visibility.Visible;
                 ViewModel.BindStyleToSlider();
@@ -187,7 +188,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
 
             var currentCategory = (string) VariantsComboBox.SelectedValue;
-            if (currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)
+            if (currentCategory == PictureSlidesLabText.VariantCategoryPicture)
             {
                 PictureAspectRefreshButton.Visibility = Visibility.Visible;
             }
@@ -204,9 +205,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private bool IsSliderSupported(string currentCategory)
         {
-            return currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBlurriness
-                 || currentCategory == TextCollection.PictureSlidesLabText.VariantCategoryBrightness
-                 || currentCategory.Contains(TextCollection.PictureSlidesLabText.TransparencyHasEffect);
+            return currentCategory == PictureSlidesLabText.VariantCategoryBlurriness
+                 || currentCategory == PictureSlidesLabText.VariantCategoryBrightness
+                 || currentCategory.Contains(PictureSlidesLabText.TransparencyHasEffect);
         }
         #endregion
     }

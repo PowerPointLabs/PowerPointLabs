@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection.BlurRemainderMenuId)]
+    [ExportLabelRibbonId(EffectsLabText.BlurRemainderMenuId)]
     class BlurRemainderLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.EffectsLabBlurRemainderButtonLabel;
+            return EffectsLabText.BlurRemainderButtonLabel;
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
+using PowerPointLabs.TextCollection;
 
 namespace Test.UnitTest.PictureSlidesLab.ModelFactory
 {
@@ -38,11 +40,10 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetDirectTextOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameDirectText);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameDirectText, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameDirectText);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameDirectText, option.StyleName);
 
-            var options = GetOptions(TextCollection.PictureSlidesLabText.StyleNameDirectText);
+            var options = GetOptions(PictureSlidesLabText.StyleNameDirectText);
             Assert.AreEqual(8, 
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseOverlayStyle"), true));
@@ -53,12 +54,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetBlurOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameBlur);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameBlur, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameBlur);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameBlur, option.StyleName);
             Assert.IsTrue(option.IsUseBlurStyle);
             
-            var options = GetOptions(TextCollection.PictureSlidesLabText.StyleNameBlur);
+            var options = GetOptions(PictureSlidesLabText.StyleNameBlur);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseBlurStyle"), true));
@@ -69,13 +69,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetTextBoxOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameTextBox);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameTextBox, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameTextBox);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameTextBox, option.StyleName);
             Assert.IsTrue(option.IsUseTextBoxStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameTextBox);
+            var options = GetOptions(PictureSlidesLabText.StyleNameTextBox);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseTextBoxStyle"), true));
@@ -86,13 +84,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetBannerOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameBanner);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameBanner, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameBanner);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameBanner, option.StyleName);
             Assert.IsTrue(option.IsUseBannerStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameBanner);
+            var options = GetOptions(PictureSlidesLabText.StyleNameBanner);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseBannerStyle"), true));
@@ -103,13 +99,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetSpecialEffectOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameSpecialEffect, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameSpecialEffect);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameSpecialEffect, option.StyleName);
             Assert.IsTrue(option.IsUseSpecialEffectStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
+            var options = GetOptions(PictureSlidesLabText.StyleNameSpecialEffect);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseSpecialEffectStyle"), true));
@@ -120,13 +114,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetOverlayOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameOverlay);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameOverlay, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameOverlay);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameOverlay, option.StyleName);
             Assert.IsTrue(option.IsUseOverlayStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameOverlay);
+            var options = GetOptions(PictureSlidesLabText.StyleNameOverlay);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseOverlayStyle"), true));
@@ -140,13 +132,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetOutlineOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameOutline);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameOutline, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameOutline);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameOutline, option.StyleName);
             Assert.IsTrue(option.IsUseOutlineStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameOutline);
+            var options = GetOptions(PictureSlidesLabText.StyleNameOutline);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseOutlineStyle"), true));
@@ -157,13 +147,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetFrameOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameFrame);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameFrame, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameFrame);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameFrame, option.StyleName);
             Assert.IsTrue(option.IsUseFrameStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameFrame);
+            var options = GetOptions(PictureSlidesLabText.StyleNameFrame);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseFrameStyle"), true));
@@ -174,13 +162,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetCircleOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameCircle);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameCircle, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameCircle);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameCircle, option.StyleName);
             Assert.IsTrue(option.IsUseCircleStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameCircle);
+            var options = GetOptions(PictureSlidesLabText.StyleNameCircle);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseCircleStyle"), true));
@@ -191,13 +177,11 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetTriangleOptions()
         {
-            var option = _factory.GetStylesPreviewOption(
-                TextCollection.PictureSlidesLabText.StyleNameTriangle);
-            Assert.AreEqual(TextCollection.PictureSlidesLabText.StyleNameTriangle, option.StyleName);
+            var option = _factory.GetStylesPreviewOption(PictureSlidesLabText.StyleNameTriangle);
+            Assert.AreEqual(PictureSlidesLabText.StyleNameTriangle, option.StyleName);
             Assert.IsTrue(option.IsUseTriangleStyle);
 
-            var options = GetOptions(
-                TextCollection.PictureSlidesLabText.StyleNameTriangle);
+            var options = GetOptions(PictureSlidesLabText.StyleNameTriangle);
             Assert.AreEqual(8,
                 GetExpectedCount(
                     GetOptionsProperty(options, "IsUseTriangleStyle"), true));

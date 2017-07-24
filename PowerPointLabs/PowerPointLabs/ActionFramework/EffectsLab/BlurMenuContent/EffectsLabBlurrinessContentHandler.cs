@@ -1,12 +1,13 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
     [ExportContentRibbonId(
-        TextCollection.BlurSelectedMenuId,
-        TextCollection.BlurRemainderMenuId,
-        TextCollection.BlurBackgroundMenuId)]
+        EffectsLabText.BlurSelectedMenuId,
+        EffectsLabText.BlurRemainderMenuId,
+        EffectsLabText.BlurBackgroundMenuId)]
     class EffectsLabBlurrinessContentHandler : ContentHandler
     {
         protected override string GetContent(string ribbonId)
@@ -17,21 +18,21 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             for (int i = 40; i <= 100; i += 10)
             {
-                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
-                    feature + TextCollection.DynamicMenuOptionId + i,
-                    TextCollection.EffectsLabBlurrinessTag));
+                xmlString.Append(string.Format(CommonText.DynamicMenuXmlButton, 
+                    feature + CommonText.DynamicMenuOptionId + i,
+                    EffectsLabText.BlurrinessTag));
             }
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton,
-                feature + TextCollection.DynamicMenuOptionId + TextCollection.EffectsLabBlurrinessCustom,
-                TextCollection.EffectsLabBlurrinessTag));
+            xmlString.Append(string.Format(CommonText.DynamicMenuXmlButton,
+                feature + CommonText.DynamicMenuOptionId + EffectsLabText.BlurrinessCustom,
+                EffectsLabText.BlurrinessTag));
 
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlMenuSeparator, 
-                feature + TextCollection.DynamicMenuOptionId + TextCollection.DynamicMenuSeparatorId));
-            xmlString.Append(string.Format(TextCollection.DynamicMenuXmlButton, 
-                feature + TextCollection.DynamicMenuButtonId,
-                TextCollection.EffectsLabBlurrinessTag));
+            xmlString.Append(string.Format(CommonText.DynamicMenuXmlMenuSeparator, 
+                feature + CommonText.DynamicMenuOptionId + CommonText.DynamicMenuSeparatorId));
+            xmlString.Append(string.Format(CommonText.DynamicMenuXmlButton, 
+                feature + CommonText.DynamicMenuButtonId,
+                EffectsLabText.BlurrinessTag));
 
-            return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);
+            return string.Format(CommonText.DynamicMenuXmlMenu, xmlString);
         }
     }
 }

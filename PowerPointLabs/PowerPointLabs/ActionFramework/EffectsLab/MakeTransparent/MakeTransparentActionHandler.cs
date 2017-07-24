@@ -4,6 +4,7 @@ using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
@@ -11,7 +12,7 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.MakeTransparentTag)]
+    [ExportActionRibbonId(EffectsLabText.MakeTransparentTag)]
     class MakeTransparentActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

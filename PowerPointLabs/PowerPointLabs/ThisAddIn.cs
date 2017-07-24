@@ -24,6 +24,7 @@ using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -155,7 +156,7 @@ namespace PowerPointLabs
             {
                 // if the presentation gets some error during opening, and the error could not
                 // be resolved by consistency check, prompt the user about the error
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
 
@@ -214,14 +215,14 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogBox.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                    ErrorDialogBox.ShowDialog(CommonText.ErrorAccessTempFolder, string.Empty, e);
                 }
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorPrepareMedia, "Files cannot be linked.", e);
             }
         }
 
@@ -245,7 +246,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorCreateTempFolder, string.Empty, e);
             }
             finally
             {
@@ -264,7 +265,7 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ResizeLabPane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow,
+            RegisterTaskPane(new ResizeLabPane(), ResizeLabText.TaskPaneTitle, activeWindow,
                 ResizeTaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -275,7 +276,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            RegisterTaskPane(new RecorderTaskPane(tempFullPath), TextCollection.RecManagementPanelTitle, activeWindow,
+            RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
                 TaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -288,7 +289,7 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), ColorsLabText.TaskPanelTitle, activeWindow, null, null);
         }
 
         public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
@@ -302,7 +303,7 @@ namespace PowerPointLabs
 
             RegisterTaskPane(
                 new CustomShapePane(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
-                TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
+                ShapesLabText.TaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
@@ -758,7 +759,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorExtract, "Archived files cannot be retrieved.", e);
             }
         }
 
@@ -846,8 +847,6 @@ namespace PowerPointLabs
         {
             if (pres != null)
             {
-                Ribbon.EmbedAudioVisible = !pres.Name.EndsWith(".ppt");
-
                 var customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
 
                 // make sure ShapeGallery's default category is consistent with current presentation
@@ -892,16 +891,10 @@ namespace PowerPointLabs
             BreakRecorderEvents();
 
             // ribbon function init
-            Ribbon.AddAutoMotionEnabled = true;
-            Ribbon.ReloadAutoMotionEnabled = true;
-            Ribbon.ReloadSpotlight = true;
             Ribbon.HighlightBulletsEnabled = true;
 
             if (sldRange.Count != 1)
             {
-                Ribbon.AddAutoMotionEnabled = false;
-                Ribbon.ReloadAutoMotionEnabled = false;
-                Ribbon.ReloadSpotlight = false;
                 Ribbon.HighlightBulletsEnabled = false;
             }
             else
@@ -920,23 +913,6 @@ namespace PowerPointLabs
                 if (slideIndex > 1)
                 {
                     prev = presentation.Slides[slideIndex - 1];
-                }
-
-                if (!((tmp.Name.StartsWith("PPSlideAnimated"))
-                      || ((tmp.Name.StartsWith("PPSlideStart"))
-                          && (next.Name.StartsWith("PPSlideAnimated")))
-                      || ((tmp.Name.StartsWith("PPSlideEnd"))
-                          && (prev.Name.StartsWith("PPSlideAnimated")))
-                      || ((tmp.Name.StartsWith("PPSlideMulti"))
-                          && ((prev.Name.StartsWith("PPSlideAnimated"))
-                              || (next.Name.StartsWith("PPSlideAnimated"))))))
-                {
-                    Ribbon.ReloadAutoMotionEnabled = false;
-                }
-
-                if (!(tmp.Name.Contains("PPTLabsSpotlight")))
-                {
-                    Ribbon.ReloadSpotlight = false;
                 }
             }
             
@@ -1385,7 +1361,7 @@ namespace PowerPointLabs
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
             {
-                MessageBox.Show(TextCollection.TabActivateErrorDescription, TextCollection.TabActivateErrorTitle);
+                MessageBox.Show(CommonText.ErrorTabActivate, CommonText.ErrorTabActivateTitle);
             }
         }
 

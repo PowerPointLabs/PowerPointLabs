@@ -7,11 +7,12 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShortcutsLab;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.AddIntoGroupTag)]
+    [ExportActionRibbonId(ShortcutsLabText.AddIntoGroupTag)]
     class AddIntoGroupActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

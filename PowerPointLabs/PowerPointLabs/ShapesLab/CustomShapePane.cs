@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.ShapesLab.Views;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -156,7 +157,7 @@ namespace PowerPointLabs.ShapesLab
             myShapeFlowLayout.MouseUp += FlowLayoutMouseUpHandler;
             myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
 
-            singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(TextCollection.SingleShapeDownloadUrl);
+            singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
         }
         # endregion
 
@@ -302,7 +303,7 @@ namespace PowerPointLabs.ShapesLab
 
             if (currentSlide == null)
             {
-                MessageBox.Show(TextCollection.CustomShapeViewTypeNotSupported);
+                MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
                 return;
             }
 
@@ -331,7 +332,7 @@ namespace PowerPointLabs.ShapesLab
         {
             if (_selectedThumbnail == null)
             {
-                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
+                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected);
                 return;
             }
 
@@ -351,7 +352,7 @@ namespace PowerPointLabs.ShapesLab
                                  {
                                      Filter = ImportLibraryFileDialogFilter,
                                      Multiselect = false,
-                                     Title = TextCollection.CustomShapeImportLibraryFileDialogTitle
+                                     Title = ShapesLabText.ImportLibraryFileDialogTitle
                                  };
 
             flowlayoutContextMenuStrip.Hide();
@@ -363,7 +364,7 @@ namespace PowerPointLabs.ShapesLab
 
             ImportShapes(fileDialog.FileName, true);
 
-            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
+            MessageBox.Show(ShapesLabText.SuccessImport);
         }
 
         private void ContextMenuStripImportShapesClicked()
@@ -372,7 +373,7 @@ namespace PowerPointLabs.ShapesLab
                                  {
                                      Filter = ImportShapesFileDialogFilter,
                                      Multiselect = true,
-                                     Title = TextCollection.CustomShapeImportShapeFileDialogTitle
+                                     Title = ShapesLabText.ImportShapeFileDialogTitle
                                  };
 
             flowlayoutContextMenuStrip.Hide();
@@ -392,7 +393,7 @@ namespace PowerPointLabs.ShapesLab
             }
             
             PaneReload(true);
-            MessageBox.Show(TextCollection.CustomShapeImportSuccess);
+            MessageBox.Show(ShapesLabText.SuccessImport);
         }
 
         private void ContextMenuStripRemoveCategoryClicked()
@@ -400,7 +401,7 @@ namespace PowerPointLabs.ShapesLab
             // remove the last category will not be entertained
             if (_categoryBinding.Count == 1)
             {
-                MessageBox.Show(TextCollection.CustomShapeRemoveLastCategoryError);
+                MessageBox.Show(ShapesLabText.ErrorRemoveLastCategory);
                 return;
             }
 
@@ -412,8 +413,8 @@ namespace PowerPointLabs.ShapesLab
             if (isDefaultCategory)
             {
                 var result =
-                    MessageBox.Show(TextCollection.CustomShapeRemoveDefaultCategoryMessage,
-                                    TextCollection.CustomShapeRemoveDefaultCategoryCaption,
+                    MessageBox.Show(ShapesLabText.RemoveDefaultCategoryMessage,
+                                    ShapesLabText.RemoveDefaultCategoryCaption,
                                     MessageBoxButtons.OKCancel);
 
                 if (result == DialogResult.Cancel)
@@ -452,7 +453,7 @@ namespace PowerPointLabs.ShapesLab
             if (_selectedThumbnail == null ||
                 _selectedThumbnail.Count == 0)
             {
-                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
+                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected);
                 return;
             }
 
@@ -526,7 +527,7 @@ namespace PowerPointLabs.ShapesLab
 
             categoryBox.Refresh();
 
-            MessageBox.Show(string.Format(TextCollection.CustomeShapeSetAsDefaultCategorySuccessFormat, CurrentCategory));
+            MessageBox.Show(string.Format(ShapesLabText.SuccessSetAsDefaultCategory, CurrentCategory));
         }
 
         private void ContextMenuStripSettingsClicked()
@@ -542,8 +543,8 @@ namespace PowerPointLabs.ShapesLab
                 ShapesLabSettings.SaveFolderPath = newSavePath;
 
                 MessageBox.Show(
-                    string.Format(TextCollection.CustomeShapeSaveLocationChangedSuccessFormat, newSavePath),
-                    TextCollection.CustomShapeSaveLocationChangedSuccessTitle, MessageBoxButtons.OK,
+                    string.Format(ShapesLabText.SuccessSaveLocationChanged, newSavePath),
+                    ShapesLabText.SuccessSaveLocationChangedTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             };
             settingsDialog.ShowDialog();
@@ -707,28 +708,28 @@ namespace PowerPointLabs.ShapesLab
 
         private void InitializeContextMenu()
         {
-            addToSlideToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripAddToSlide;
-            editNameToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripEditName;
-            moveShapeToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripMoveShape;
-            removeShapeToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripRemoveShape;
-            copyToToolStripMenuItem.Text = TextCollection.CustomShapeShapeContextStripCopyShape;
+            addToSlideToolStripMenuItem.Text = ShapesLabText.ShapeContextStripAddToSlide;
+            editNameToolStripMenuItem.Text = ShapesLabText.ShapeContextStripEditName;
+            moveShapeToolStripMenuItem.Text = ShapesLabText.ShapeContextStripMoveShape;
+            removeShapeToolStripMenuItem.Text = ShapesLabText.ShapeContextStripRemoveShape;
+            copyToToolStripMenuItem.Text = ShapesLabText.ShapeContextStripCopyShape;
 
-            addCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripAddCategory;
-            removeCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripRemoveCategory;
-            renameCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripRenameCategory;
-            setAsDefaultToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripSetAsDefaultCategory;
-            settingsToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripCategorySettings;
-            importCategoryToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripImportCategory;
-            importShapesToolStripMenuItem.Text = TextCollection.CustomShapeCategoryContextStripImportShapes;
+            addCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripAddCategory;
+            removeCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripRemoveCategory;
+            renameCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripRenameCategory;
+            setAsDefaultToolStripMenuItem.Text = ShapesLabText.CategoryContextStripSetAsDefaultCategory;
+            settingsToolStripMenuItem.Text = ShapesLabText.CategoryContextStripCategorySettings;
+            importCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripImportCategory;
+            importShapesToolStripMenuItem.Text = ShapesLabText.CategoryContextStripImportShapes;
 
             foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
             {
-                if (contextMenu.Text != TextCollection.CustomShapeShapeContextStripMoveShape)
+                if (contextMenu.Text != ShapesLabText.ShapeContextStripMoveShape)
                 {
                     contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
                 }
                 
-                if (contextMenu.Text != TextCollection.CustomShapeShapeContextStripCopyShape)
+                if (contextMenu.Text != ShapesLabText.ShapeContextStripCopyShape)
                 {
                     contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
                 }
@@ -743,11 +744,11 @@ namespace PowerPointLabs.ShapesLab
             {
                 if (!importShapeGallery.Open(withWindow: false, focus: false))
                 {
-                    MessageBox.Show(TextCollection.CustomShapeImportFileError);
+                    MessageBox.Show(ShapesLabText.ErrorImportFile);
                 }
                 else if (importShapeGallery.Slides.Count == 0)
                 {
-                    MessageBox.Show(TextCollection.CustomShapeImportNoSlideError);
+                    MessageBox.Show(ShapesLabText.ErrorImportNoSlide);
                 }
                 else
                 {
@@ -756,7 +757,7 @@ namespace PowerPointLabs.ShapesLab
                     if (!fromLibrary && importShapeGallery.Categories.Count > 1)
                     {
                         MessageBox.Show(
-                            string.Format(TextCollection.CustomShapeImportSingleCategoryErrorFormat,
+                            string.Format(ShapesLabText.ErrorImportSingleCategory,
                                           importShapeGallery.Name));
                         return false;
                     }
@@ -821,8 +822,8 @@ namespace PowerPointLabs.ShapesLab
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
         {
-            var loadingDialog = new LoadingDialogBox(TextCollection.CustomShapeMigratingDialogTitle,
-                                                    TextCollection.CustomShapeMigratingDialogContent);
+            var loadingDialog = new LoadingDialogBox(ShapesLabText.MigratingDialogTitle,
+                                                    ShapesLabText.MigratingDialogContent);
             loadingDialog.Show();
 
             // close the opening presentation
@@ -836,7 +837,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 loadingDialog.Close();
 
-                MessageBox.Show(TextCollection.CustomShapeMigrationError);
+                MessageBox.Show(ShapesLabText.ErrorMigration);
 
                 return false;
             }
@@ -845,7 +846,7 @@ namespace PowerPointLabs.ShapesLab
             // because some of the using files, such as some opening shapes, and the evil thumb.db
             if (!FileDir.DeleteFolder(oldPath))
             {
-                MessageBox.Show(TextCollection.CustomShapeOriginalFolderDeletionError);
+                MessageBox.Show(ShapesLabText.ErrorOriginalFolderDeletion);
             }
 
             ShapeRootFolderPath = newPath;
@@ -958,7 +959,7 @@ namespace PowerPointLabs.ShapesLab
 
                 if (shapeName == null)
                 {
-                    MessageBox.Show(TextCollection.CustomShapeFileNameInvalid);
+                    MessageBox.Show(ShapesLabText.ErrorFileNameInvalid);
                     continue;
                 }
 
@@ -1324,7 +1325,7 @@ namespace PowerPointLabs.ShapesLab
         {
             if (sender == null || !(sender is LabeledThumbnail))
             {
-                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
+                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected);
                 return;
             }
 
@@ -1356,7 +1357,7 @@ namespace PowerPointLabs.ShapesLab
         {
             if (sender == null || !(sender is LabeledThumbnail))
             {
-                MessageBox.Show(TextCollection.CustomShapeNoPanelSelectedError);
+                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected);
                 return;
             }
 
@@ -1374,7 +1375,7 @@ namespace PowerPointLabs.ShapesLab
             }
             else
             {
-                MessageBox.Show(TextCollection.CustomShapeViewTypeNotSupported);
+                MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
             }
         }
 

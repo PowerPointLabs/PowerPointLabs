@@ -4,11 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    [ExportActionRibbonId(TextCollection.CropToSameDimensionsTag)]
+    [ExportActionRibbonId(CropLabText.CropToSameDimensionsTag)]
     class CropToSameActionHandler : CropLabActionHandler
     {
         private static readonly string FeatureName = "Crop To Same Dimensions";

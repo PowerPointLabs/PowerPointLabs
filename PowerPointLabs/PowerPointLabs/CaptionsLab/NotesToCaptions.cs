@@ -8,6 +8,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -21,8 +22,8 @@ namespace PowerPointLabs.CaptionsLab
             if (PowerPointCurrentPresentationInfo.SelectedSlides == null ||
                 !PowerPointCurrentPresentationInfo.SelectedSlides.Any())
             {
-                Logger.Log(String.Format("{0} in EmbedCaptionsOnSelectedSlides", TextCollection.CaptionsLabErrorNoSelectionLog));
-                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection, TextCollection.CaptionsLabErrorDialogTitle);
+                Logger.Log(String.Format("{0} in EmbedCaptionsOnSelectedSlides", CaptionsLabText.ErrorNoSelectionLog));
+                MessageBox.Show(CaptionsLabText.ErrorNoSelection, CaptionsLabText.ErrorDialogTitle);
                 return;
             }
             EmbedCaptionsOnSlides(PowerPointCurrentPresentationInfo.SelectedSlides.ToList());
@@ -36,8 +37,8 @@ namespace PowerPointLabs.CaptionsLab
                 bool captionAdded = EmbedCaptionsOnSlide(slide);
                 if (!captionAdded && slides.Count == 1)
                 {
-                    Logger.Log(String.Format("{0} in EmbedCaptionsOnSlides", TextCollection.CaptionsLabErrorNoNotesLog));
-                    MessageBox.Show(TextCollection.CaptionsLabErrorNoNotes, TextCollection.CaptionsLabErrorDialogTitle);
+                    Logger.Log(String.Format("{0} in EmbedCaptionsOnSlides", CaptionsLabText.ErrorNoNotesLog));
+                    MessageBox.Show(CaptionsLabText.ErrorNoNotes, CaptionsLabText.ErrorDialogTitle);
                     ShowNotesPane();
                 }
             }
@@ -53,8 +54,8 @@ namespace PowerPointLabs.CaptionsLab
             }
             else
             {
-                Logger.Log(String.Format("{0} in EmbedCaptionsOnCurrentSlide", TextCollection.CaptionsLabErrorNoCurrentSlideLog));
-                MessageBox.Show(TextCollection.CaptionsLabErrorNoSelection, TextCollection.CaptionsLabErrorDialogTitle);
+                Logger.Log(String.Format("{0} in EmbedCaptionsOnCurrentSlide", CaptionsLabText.ErrorNoCurrentSlideLog));
+                MessageBox.Show(CaptionsLabText.ErrorNoSelection, CaptionsLabText.ErrorDialogTitle);
             }
         }
 

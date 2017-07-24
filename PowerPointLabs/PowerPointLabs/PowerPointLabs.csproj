@@ -623,6 +623,24 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="TextCollection\PasteLabText.cs" />
+    <Compile Include="TextCollection\AnimationLabText.cs" />
+    <Compile Include="TextCollection\ColorsLabText.cs" />
+    <Compile Include="TextCollection\CaptionsLabText.cs" />
+    <Compile Include="TextCollection\EffectsLabText.cs" />
+    <Compile Include="TextCollection\PositionsLabText.cs" />
+    <Compile Include="TextCollection\ShapesLabText.cs" />
+    <Compile Include="TextCollection\AgendaLabText.cs" />
+    <Compile Include="TextCollection\PictureSlidesLabText.cs" />
+    <Compile Include="TextCollection\NarrationsLabText.cs" />
+    <Compile Include="TextCollection\HighlightLabText.cs" />
+    <Compile Include="TextCollection\ResizeLabText.cs" />
+    <Compile Include="TextCollection\HelpText.cs" />
+    <Compile Include="TextCollection\ShortcutsLab.cs" />
+    <Compile Include="TextCollection\TimerLabText.cs" />
+    <Compile Include="TextCollection\ZoomLabText.cs" />
+    <Compile Include="TextCollection\SyncLabText.cs" />
+    <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
@@ -1037,7 +1055,7 @@
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="ShapesLab\ShapesLabConfigSaveFile.cs" />
-    <Compile Include="TextCollection.cs" />
+    <Compile Include="TextCollection\CommonText.cs" />
     <Compile Include="Utils\BoolUtil.cs" />
     <Compile Include="Utils\CommonUtil.cs" />
     <Compile Include="Utils\Comparers.cs" />

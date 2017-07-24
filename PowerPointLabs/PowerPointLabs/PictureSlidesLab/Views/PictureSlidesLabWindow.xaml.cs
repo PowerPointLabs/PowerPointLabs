@@ -24,6 +24,7 @@ using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 using PowerPointLabs.PictureSlidesLab.Views.Interface;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.WPF.Observable;
 
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
@@ -113,7 +114,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             catch (Exception e)
             {
-                ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
+                ShowErrorMessageBox(PictureSlidesLabText.ErrorWhenInitialize, e);
                 Logger.LogException(e, "Init");
             }
         }
@@ -160,7 +161,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             catch (Exception e)
             {
-                ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorWhenInitialize, e);
+                ShowErrorMessageBox(PictureSlidesLabText.ErrorWhenInitialize, e);
                 Logger.LogException(e, "InitStyleing");
             }
             finally
@@ -187,7 +188,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void InitDragAndDrop()
         {
-            DragAndDropInstructionText = new ObservableString { Text = TextCollection.PictureSlidesLabText.DragAndDropInstruction };
+            DragAndDropInstructionText = new ObservableString { Text = PictureSlidesLabText.DragAndDropInstruction };
             DragAndDropInstructions.DataContext = DragAndDropInstructionText;
             Logger.Log("PSL init drag and drop done");
         }
@@ -326,11 +327,11 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 {
                     if (isUsingWinformMsgBox)
                     {
-                        MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteNothing, "PowerPointLabs");
+                        MessageBox.Show(PictureSlidesLabText.InfoPasteNothing, "PowerPointLabs");
                     }
                     else
                     {
-                        ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteNothing);
+                        ShowInfoMessageBox(PictureSlidesLabText.InfoPasteNothing);
                     }
                     Logger.Log("Nothing to paste");
                     return;
@@ -354,11 +355,11 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                     {
                         if (isUsingWinformMsgBox)
                         {
-                            MessageBox.Show(TextCollection.PictureSlidesLabText.InfoPasteThumbnail, "PowerPointLabs");
+                            MessageBox.Show(PictureSlidesLabText.InfoPasteThumbnail, "PowerPointLabs");
                         }
                         else
                         {
-                            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoPasteThumbnail);
+                            ShowInfoMessageBox(PictureSlidesLabText.InfoPasteThumbnail);
                         }
                     }
                 }
@@ -702,7 +703,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void MenuItemDeleteAllImages_OnClick(object sender, RoutedEventArgs e)
         {
-            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoDeleteAllImage, 
+            ShowInfoMessageBox(PictureSlidesLabText.InfoDeleteAllImage, 
                 MessageDialogStyle.AffirmativeAndNegative)
                 .ContinueWith(task =>
                 {
@@ -896,7 +897,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 ViewModel.AddPictureCitationSlide(slide, presentation.Slides);
             }
             presentation.AddAckSlide();
-            ShowInfoMessageBox(TextCollection.PictureSlidesLabText.InfoAddPictureCitationSlide);
+            ShowInfoMessageBox(PictureSlidesLabText.InfoAddPictureCitationSlide);
         }
 
         private void OpenSettingsButton_OnClick(object sender, RoutedEventArgs e)
@@ -1201,7 +1202,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                     // and it's at the variation stage,
                     // directly jump to picture variation to select picture
                     var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
-                        TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+                        PictureSlidesLabText.VariantCategoryPicture);
                     if (VariantsComboBox.SelectedIndex != picVariationIndex)
                     {
                         VariantsComboBox.SelectedIndex = picVariationIndex;

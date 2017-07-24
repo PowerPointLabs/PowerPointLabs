@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
+
 using MahApps.Metro.Controls.Dialogs;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
@@ -12,6 +15,8 @@ using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
+using PowerPointLabs.TextCollection;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Views
@@ -75,7 +80,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             // if no original shape, show info
             if (originalShapeList.Count == 0)
             {
-                ShowInfoMessageBox(TextCollection.PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
+                ShowInfoMessageBox(PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
             }
             else
             {
@@ -129,7 +134,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             // if no original shape, show info
             if (originalShapeList.Count == 0)
             {
-                ShowInfoMessageBox(TextCollection.PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
+                ShowInfoMessageBox(PictureSlidesLabText.ErrorNoEmbeddedStyleInfo);
             }
             else
             {

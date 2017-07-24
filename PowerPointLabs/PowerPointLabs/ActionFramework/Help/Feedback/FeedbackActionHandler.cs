@@ -2,15 +2,16 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportActionRibbonId(TextCollection.FeedbackTag)]
+    [ExportActionRibbonId(HelpText.FeedbackTag)]
     class FeedbackActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Process.Start(TextCollection.FeedbackUrl);
+            Process.Start(CommonText.FeedbackUrl);
         }
     }
 }

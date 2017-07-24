@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using PowerPointLabs.TextCollection;
+
 namespace PowerPointLabs.NarrationsLab.Views
 {
     /// <summary>
@@ -22,11 +24,11 @@ namespace PowerPointLabs.NarrationsLab.Views
             : this()
         {
             voiceSelectionInput.ItemsSource = voices;
-            voiceSelectionInput.ToolTip = TextCollection.NarrationsLabSettingsVoiceSelectionInputTooltip;
+            voiceSelectionInput.ToolTip = NarrationsLabText.SettingsVoiceSelectionInputTooltip;
             voiceSelectionInput.Content = voices[selectedVoiceIndex];
 
             previewCheckbox.IsChecked = isPreviewChecked;
-            previewCheckbox.ToolTip = TextCollection.NarrationsLabSettingsPreviewCheckboxTooltip;
+            previewCheckbox.ToolTip = NarrationsLabText.SettingsPreviewCheckboxTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

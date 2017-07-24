@@ -2,10 +2,11 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ShortcutsLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportActionRibbonId(TextCollection.EditNameTag)]
+    [ExportActionRibbonId(ShortcutsLabText.EditNameTag)]
     class EditNameActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

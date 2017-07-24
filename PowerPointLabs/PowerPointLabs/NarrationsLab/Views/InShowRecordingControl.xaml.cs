@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Media;
 
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using PPExtraEventHelper;
@@ -99,7 +99,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             catch (COMException)
             {
-                Forms.MessageBox.Show(TextCollection.InShowControlInvalidRecCommandError);
+                Forms.MessageBox.Show(NarrationsLabText.InShowControlErrorInvalidRecCommand);
                 return;
             }
 
@@ -111,14 +111,14 @@ namespace PowerPointLabs.NarrationsLab.Views
                     _recordStartClick = click;
                     _recordStartSlide = currentSlide;
 
-                    recButton.Content = TextCollection.InShowControlRecButtonIdleText;
+                    recButton.Content = NarrationsLabText.InShowControlRecButtonIdleText;
                     recButton.Foreground = new SolidColorBrush(Colors.Red);
                     _recorder.RecButtonIdleHandler();
                     _slideShowWindow.Activate();
                     break;
 
                 case ButtonStatus.Rec:
-                    recButton.Content = TextCollection.InShowControlRecButtonRecText;
+                    recButton.Content = NarrationsLabText.InShowControlRecButtonRecText;
                     undoButton.IsEnabled = true;
                     recButton.Foreground = new SolidColorBrush(Colors.Black);
 

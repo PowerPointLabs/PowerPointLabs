@@ -10,6 +10,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
@@ -122,18 +123,18 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void StoreDataInNotes(string data)
         {
-            NotesPageText = TextCollection.NotesPageStorageText + data;
+            NotesPageText = CommonText.NotesPageStorageText + data;
         }
 
         public string RetrieveDataFromNotes()
         {
             var text = NotesPageText;
-            if (!text.StartsWith(TextCollection.NotesPageStorageText))
+            if (!text.StartsWith(CommonText.NotesPageStorageText))
             {
                 return "";
             }
 
-            return text.Substring(TextCollection.NotesPageStorageText.Length);
+            return text.Substring(CommonText.NotesPageStorageText.Length);
         }
 
         public Shapes Shapes
@@ -892,7 +893,7 @@ namespace PowerPointLabs.Models
 
             markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-            markerShape.TextFrame2.TextRange.Text = TextCollection.AgendaLabTemplateSlideInstructions;
+            markerShape.TextFrame2.TextRange.Text = AgendaLabText.TemplateSlideInstructions;
             markerShape.Fill.ForeColor.RGB = 0x0000C0;
             markerShape.TextFrame2.TextRange.Font.Bold = MsoTriState.msoTrue;
             markerShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0x00FFFF;

@@ -1,30 +1,30 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.EffectsLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportLabelRibbonId(TextCollection.EffectsLabRecolorTag)]
+    [ExportLabelRibbonId(EffectsLabText.RecolorTag)]
     class EffectsLabRecolorLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
             string label = "";
-            if (ribbonId.Contains(TextCollection.GrayScaleTag))
+            if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
             {
-                label = TextCollection.EffectsLabGrayScaleButtonLabel;
+                label = EffectsLabText.GrayScaleButtonLabel;
             }
-            else if (ribbonId.Contains(TextCollection.BlackWhiteTag))
+            else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
             {
-                label = TextCollection.EffectsLabBlackWhiteButtonLabel;
+                label = EffectsLabText.BlackWhiteButtonLabel;
             }
-            else if (ribbonId.Contains(TextCollection.GothamTag))
+            else if (ribbonId.Contains(EffectsLabText.GothamTag))
             {
-                label = TextCollection.EffectsLabGothamButtonLabel;
+                label = EffectsLabText.GothamButtonLabel;
             }
-            else if (ribbonId.Contains(TextCollection.SepiaTag))
+            else if (ribbonId.Contains(EffectsLabText.SepiaTag))
             {
-                label = TextCollection.EffectsLabSepiaButtonLabel;
+                label = EffectsLabText.SepiaButtonLabel;
             }
             return label;
         }

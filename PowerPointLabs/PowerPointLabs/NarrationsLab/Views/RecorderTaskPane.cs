@@ -18,6 +18,7 @@ using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
 using PowerPointLabs.XMLMisc;
 
@@ -257,8 +258,8 @@ namespace PowerPointLabs.NarrationsLab.Views
         private void ResetRecorder()
         {
             soundTrackBar.Value = 0;
-            timerLabel.Text = TextCollection.RecorderInitialTimer;
-            statusLabel.Text = TextCollection.RecorderReadyStatusLabel;
+            timerLabel.Text = NarrationsLabText.RecorderInitialTimer;
+            statusLabel.Text = NarrationsLabText.RecorderReadyStatusLabel;
 
             recButton.Image = Properties.Resources.Record;
             playButton.Image = Properties.Resources.Play;
@@ -270,7 +271,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         private void ResetTimer()
         {
             _timerCnt = 0;
-            timerLabel.Text = TextCollection.RecorderInitialTimer;
+            timerLabel.Text = NarrationsLabText.RecorderInitialTimer;
             if (_timer != null)
             {
                 _timer.Dispose();
@@ -439,8 +440,8 @@ namespace PowerPointLabs.NarrationsLab.Views
 
                 if (audio.Type == Audio.AudioType.Unrecognized)
                 {
-                    Logger.Log(String.Format("{0} in MapShapesWithAudio", TextCollection.RecorderUnrecognizeAudio));
-                    MessageBox.Show(TextCollection.RecorderUnrecognizeAudio);
+                    Logger.Log(String.Format("{0} in MapShapesWithAudio", NarrationsLabText.RecorderUnrecognizeAudio));
+                    MessageBox.Show(NarrationsLabText.RecorderUnrecognizeAudio);
                 }
 
                 // maintain a sorted audio list
@@ -561,7 +562,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
                 if (status == ScriptStatus.Untracked)
                 {
-                    displayStatus = TextCollection.RecorderScriptStatusNoAudio;
+                    displayStatus = NarrationsLabText.RecorderScriptStatusNoAudio;
                 }
                 else
                 {
@@ -579,7 +580,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
                     if (status == ScriptStatus.Untracked)
                     {
-                        displayStatus = TextCollection.RecorderScriptStatusNoAudio;
+                        displayStatus = NarrationsLabText.RecorderScriptStatusNoAudio;
                     }
                     else
                     {
@@ -921,7 +922,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         // call when the pane becomes visible for the first time
         private void RecorderPaneLoad(object sender, EventArgs e)
         {
-            statusLabel.Text = TextCollection.RecorderReadyStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderReadyStatusLabel;
             statusLabel.Visible = true;
             ResetRecorder();
 
@@ -944,7 +945,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         // call when the pane becomes visible from the second time onwards
         public void RecorderPaneReload()
         {
-            statusLabel.Text = TextCollection.RecorderReadyStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderReadyStatusLabel;
             statusLabel.Visible = true;
             ResetRecorder();
 
@@ -1086,7 +1087,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // check input device, abort if no input device connected
             if (!NInputDeviceExists())
             {
-                MessageBox.Show(TextCollection.RecorderNoInputDeviceMsg, TextCollection.RecorderNoInputDeviceMsgBoxTitle,
+                MessageBox.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderErrorNoInputDeviceTitle,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return;
@@ -1094,7 +1095,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             // UI settings
             ResetRecorder();
-            statusLabel.Text = TextCollection.RecorderRecordingStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderRecordingStatusLabel;
             statusLabel.Visible = true;
             recButton.Image = Properties.Resources.Pause;
             // disable control of playing
@@ -1149,7 +1150,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             // change the status to pause and change the button text to resume
             _recButtonStatus = RecorderStatus.Pause;
-            statusLabel.Text = TextCollection.RecorderPauseStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderPauseStatusLabel;
             recButton.Image = Properties.Resources.Record;
 
             // stop the sound, increase clip counter, add current clip length to
@@ -1183,7 +1184,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // change the status to recording and change the button text to
             // pause
             _recButtonStatus = RecorderStatus.Recording;
-            statusLabel.Text = TextCollection.RecorderRecordingStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderRecordingStatusLabel;
             recButton.Image = Properties.Resources.Pause;
 
             // start a new recording, name it after clip counter and restart the timer
@@ -1201,7 +1202,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // and stop timer
             _recButtonStatus = RecorderStatus.Idle;
             recButton.Image = Properties.Resources.Record;
-            statusLabel.Text = TextCollection.RecorderReadyStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderReadyStatusLabel;
             ResetTimer();
 
             // get current playback, can be null if there's no matched audio
@@ -1228,16 +1229,16 @@ namespace PowerPointLabs.NarrationsLab.Views
                 {
                     if (currentPlayback == null)
                     {
-                        result = MessageBox.Show(TextCollection.RecorderSaveRecordMsg,
-                                                 TextCollection.RecorderSaveRecordMsgBoxTitle, MessageBoxButtons.YesNo,
+                        result = MessageBox.Show(NarrationsLabText.RecorderErrorSaveRecord,
+                                                 NarrationsLabText.RecorderErrorSaveRecordTitle, MessageBoxButtons.YesNo,
                                                  MessageBoxIcon.Question);
                     }
                     else
                     {
                         result =
                             MessageBox.Show(
-                                string.Format(TextCollection.RecorderReplaceRecordMsgFormat, currentPlayback.Name),
-                                TextCollection.RecorderReplaceRecordMsgBoxTitle, MessageBoxButtons.YesNo,
+                                string.Format(NarrationsLabText.RecorderErrorReplaceRecordFormat, currentPlayback.Name),
+                                NarrationsLabText.RecorderErrorReplaceRecordTitle, MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Question);
                     }
                 }
@@ -1413,7 +1414,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             ResetSession();
             _playButtonStatus = RecorderStatus.Idle;
             playButton.Image = Properties.Resources.Play;
-            statusLabel.Text = TextCollection.RecorderReadyStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderReadyStatusLabel;
             // enable both lists
             recDisplay.Enabled = true;
             scriptDisplay.Enabled = true;
@@ -1432,12 +1433,12 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             if (playback == null)
             {
-                MessageBox.Show(TextCollection.RecorderNoRecordToPlayError);
+                MessageBox.Show(NarrationsLabText.RecorderErrorNoRecordToPlay);
             }
             else
             {
                 // UI settings
-                statusLabel.Text = TextCollection.RecorderPlayingStatusLabel;
+                statusLabel.Text = NarrationsLabText.RecorderPlayingStatusLabel;
                 statusLabel.Visible = true;
                 // enable stop button
                 stopButton.Enabled = true;
@@ -1470,7 +1471,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             // change the status to pause and change the text to resume
             _playButtonStatus = RecorderStatus.Pause;
-            statusLabel.Text = TextCollection.RecorderPauseStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderPauseStatusLabel;
             playButton.Image = Properties.Resources.Play;
 
             // pause the sound, timer and trackbar
@@ -1500,7 +1501,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // change the status to playing and change the button text to
             // pause
             _playButtonStatus = RecorderStatus.Playing;
-            statusLabel.Text = TextCollection.RecorderPlayingStatusLabel;
+            statusLabel.Text = NarrationsLabText.RecorderPlayingStatusLabel;
             playButton.Image = Properties.Resources.Pause;
 
             // resume recording, restart the timer and continue the track bar
@@ -1526,7 +1527,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     RecButtonPauseHandler();
                     break;
                 default:
-                    MessageBox.Show(TextCollection.RecorderInvalidOperation);
+                    MessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
                     break;
             }
         }
@@ -1545,7 +1546,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             else
             {
-                MessageBox.Show(TextCollection.RecorderInvalidOperation);
+                MessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
             }
         }
 
@@ -1563,7 +1564,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     PlayButtonPauseHandler();
                     break;
                 default:
-                    MessageBox.Show(TextCollection.RecorderInvalidOperation);
+                    MessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
                     break;
             }
         }
@@ -1630,7 +1631,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 {
                     scriptDetailTextBox.ForeColor = Color.Red;
                     scriptDetailTextBox.Font = new System.Drawing.Font(scriptDetailTextBox.Font, FontStyle.Bold);
-                    scriptDetailTextBox.Text = TextCollection.RecorderNoScriptDetail;
+                    scriptDetailTextBox.Text = NarrationsLabText.RecorderNoScriptDetail;
                 }
             }
             else
@@ -1823,7 +1824,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 {
                     case AudioHelper.MCI_NOTIFY_SUCCESS:
                         // UI settings
-                        statusLabel.Text = TextCollection.RecorderReadyStatusLabel;
+                        statusLabel.Text = NarrationsLabText.RecorderReadyStatusLabel;
                         playButton.Image = Properties.Resources.Play;
                         _playButtonStatus = RecorderStatus.Idle;
                         // disable stop button
@@ -1841,7 +1842,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                         ResetTrackbar(0);
                         break;
                     default:
-                        MessageBox.Show(TextCollection.RecorderWndMessageError);
+                        MessageBox.Show(NarrationsLabText.RecorderWndMessageError);
                         break;
                 }
             }

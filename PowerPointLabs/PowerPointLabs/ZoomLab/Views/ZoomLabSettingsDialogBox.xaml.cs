@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
+
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ZoomLab.Views
 {
@@ -20,10 +21,10 @@ namespace PowerPointLabs.ZoomLab.Views
             : this()
         {
             slideBackgroundCheckbox.IsChecked = backgroundChecked;
-            slideBackgroundCheckbox.ToolTip = TextCollection.ZoomLabSettingsSlideBackgroundCheckboxTooltip;
+            slideBackgroundCheckbox.ToolTip = ZoomLabText.SettingsSlideBackgroundCheckboxTooltip;
 
             separateSlidesCheckbox.IsChecked = multiChecked;
-            separateSlidesCheckbox.ToolTip = TextCollection.ZoomLabSettingsSeparateSlidesCheckboxTooltip;
+            separateSlidesCheckbox.ToolTip = ZoomLabText.SettingsSeparateSlidesCheckboxTooltip;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

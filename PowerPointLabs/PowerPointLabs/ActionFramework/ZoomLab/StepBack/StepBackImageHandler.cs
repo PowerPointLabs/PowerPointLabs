@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportImageRibbonId(TextCollection.StepBackTag)]
+    [ExportImageRibbonId(ZoomLabText.StepBackTag)]
     class StepBackImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

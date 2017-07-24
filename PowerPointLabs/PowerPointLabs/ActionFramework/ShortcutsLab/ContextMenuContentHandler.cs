@@ -2,15 +2,16 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportContentRibbonId(
-        TextCollection.MenuShape, TextCollection.MenuLine, TextCollection.MenuFreeform,
-        TextCollection.MenuPicture, TextCollection.MenuSlide, TextCollection.MenuGroup,
-        TextCollection.MenuInk, TextCollection.MenuVideo, TextCollection.MenuTextEdit,
-        TextCollection.MenuChart, TextCollection.MenuTable, TextCollection.MenuTableCell,
-        TextCollection.MenuSmartArt, TextCollection.MenuEditSmartArt, TextCollection.MenuEditSmartArtText)]
+        ShortcutsLabText.MenuShape, ShortcutsLabText.MenuLine, ShortcutsLabText.MenuFreeform,
+        ShortcutsLabText.MenuPicture, ShortcutsLabText.MenuSlide, ShortcutsLabText.MenuGroup,
+        ShortcutsLabText.MenuInk, ShortcutsLabText.MenuVideo, ShortcutsLabText.MenuTextEdit,
+        ShortcutsLabText.MenuChart, ShortcutsLabText.MenuTable, ShortcutsLabText.MenuTableCell,
+        ShortcutsLabText.MenuSmartArt, ShortcutsLabText.MenuEditSmartArt, ShortcutsLabText.MenuEditSmartArtText)]
 
     class ContextMenuContentHandler : ContentHandler
     {
@@ -22,59 +23,59 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             foreach (ContextMenuGroup group in contextMenuGroups)
             {
                 string id = group.Name.Replace(" ", "");
-                xmlString.Append(string.Format(TextCollection.DynamicMenuXmlTitleMenuSeparator,
-                    id + TextCollection.MenuSeparator, group.Name));
+                xmlString.Append(string.Format(CommonText.DynamicMenuXmlTitleMenuSeparator,
+                    id + ShortcutsLabText.MenuSeparator, group.Name));
 
                 foreach (string groupItem in group.Items)
                 {
-                    xmlString.Append(string.Format(TextCollection.DynamicMenuXmlImageButton, groupItem + ribbonId, groupItem));
+                    xmlString.Append(string.Format(CommonText.DynamicMenuXmlImageButton, groupItem + ribbonId, groupItem));
                 }
             }
 
-            return string.Format(TextCollection.DynamicMenuXmlMenu, xmlString);
+            return string.Format(CommonText.DynamicMenuXmlMenu, xmlString);
         }
 
         private List<ContextMenuGroup> GetContextMenuGroups(string ribbonId)
         {
             List<ContextMenuGroup> contextMenuGroups = new List<ContextMenuGroup>();
-            ContextMenuGroup pasteLab = new ContextMenuGroup(TextCollection.PasteLabMenuLabel, new List<string>());
-            ContextMenuGroup shortcuts = new ContextMenuGroup(TextCollection.ShortcutsLabMenuLabel, new List<string>());
+            ContextMenuGroup pasteLab = new ContextMenuGroup(ShortcutsLabText.PasteMenuLabel, new List<string>());
+            ContextMenuGroup shortcuts = new ContextMenuGroup(ShortcutsLabText.ShortcutsMenuLabel, new List<string>());
             contextMenuGroups.Add(pasteLab);
 
             // All context menus will have these buttons
-            pasteLab.Items.Add(TextCollection.PasteAtCursorPositionTag);
-            pasteLab.Items.Add(TextCollection.PasteAtOriginalPositionTag);
-            pasteLab.Items.Add(TextCollection.PasteToFillSlideTag);
+            pasteLab.Items.Add(PasteLabText.PasteAtCursorPositionTag);
+            pasteLab.Items.Add(PasteLabText.PasteAtOriginalPositionTag);
+            pasteLab.Items.Add(PasteLabText.PasteToFillSlideTag);
 
             // Context menus other than slide will have these buttons
-            if (ribbonId != TextCollection.MenuSlide)
+            if (ribbonId != ShortcutsLabText.MenuSlide)
             {
                 // We only add shortcuts group if context menu is not for slide
                 contextMenuGroups.Add(shortcuts);
 
-                if (!ribbonId.Contains(TextCollection.MenuEditSmartArtBase) &&
-                    ribbonId != TextCollection.MenuTextEdit &&
-                    ribbonId != TextCollection.MenuTable)
+                if (!ribbonId.Contains(ShortcutsLabText.MenuEditSmartArtBase) &&
+                    ribbonId != ShortcutsLabText.MenuTextEdit &&
+                    ribbonId != ShortcutsLabText.MenuTable)
                 {
-                    pasteLab.Items.Add(TextCollection.ReplaceWithClipboardTag);
+                    pasteLab.Items.Add(PasteLabText.ReplaceWithClipboardTag);
                 }
 
-                shortcuts.Items.Add(TextCollection.EditNameTag);
+                shortcuts.Items.Add(ShortcutsLabText.EditNameTag);
 
                 // Context menus other than picture will have these buttons
-                if (ribbonId != TextCollection.MenuPicture)
+                if (ribbonId != ShortcutsLabText.MenuPicture)
                 {
-                    shortcuts.Items.Add(TextCollection.ConvertToPictureTag);
+                    shortcuts.Items.Add(ShortcutsLabText.ConvertToPictureTag);
                 }
 
-                shortcuts.Items.Add(TextCollection.HideShapeTag);
-                shortcuts.Items.Add(TextCollection.AddCustomShapeTag);
+                shortcuts.Items.Add(ShortcutsLabText.HideShapeTag);
+                shortcuts.Items.Add(ShortcutsLabText.AddCustomShapeTag);
 
                 // Context menu group will have these buttons
-                if (ribbonId == TextCollection.MenuGroup)
+                if (ribbonId == ShortcutsLabText.MenuGroup)
                 {
-                    pasteLab.Items.Add(TextCollection.PasteIntoGroupTag);
-                    shortcuts.Items.Add(TextCollection.AddIntoGroupTag);
+                    pasteLab.Items.Add(PasteLabText.PasteIntoGroupTag);
+                    shortcuts.Items.Add(ShortcutsLabText.AddIntoGroupTag);
                 }
             }
             return contextMenuGroups;

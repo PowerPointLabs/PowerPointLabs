@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 
-using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.Utils;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.PositionsLab.Views
@@ -21,14 +17,6 @@ namespace PowerPointLabs.PositionsLab.Views
                                                     float gridMarginLeft, float gridMarginRight);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
-        //Error Messages
-        private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
-        private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
-        private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
-        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
-        private const string ErrorMessageFunctionNotSupportedForSlide = TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
-        private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
-
         //Private variables
         private int _numShapesSelected;
 
@@ -38,18 +26,18 @@ namespace PowerPointLabs.PositionsLab.Views
 
             if (exception == null)
             {
-                MessageBox.Show(content, "Error");
+                MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
                 return;
             }
 
             var errorMessage = GetErrorMessage(exception.Message);
-            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
+            if (!string.Equals(errorMessage, PositionsLabText.ErrorUndefined, StringComparison.Ordinal))
             {
-                MessageBox.Show(content, "Error");
+                MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
             }
             else
             {
-                ErrorDialogBox.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog(PositionsLabText.ErrorDialogTitle, content, exception);
             }
         }
 
@@ -57,18 +45,18 @@ namespace PowerPointLabs.PositionsLab.Views
         {
             switch (errorMsg)
             {
-                case ErrorMessageNoSelection:
-                    return ErrorMessageNoSelection;
-                case ErrorMessageFewerThanTwoSelection:
-                    return ErrorMessageFewerThanTwoSelection;
-                case ErrorMessageFewerThanThreeSelection:
-                    return ErrorMessageFewerThanThreeSelection;
-                case ErrorMessageFunctionNotSupportedForExtremeShapes:
-                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
-                case ErrorMessageFunctionNotSupportedForSlide:
-                    return ErrorMessageFunctionNotSupportedForSlide;
+                case PositionsLabText.ErrorNoSelection:
+                    return PositionsLabText.ErrorNoSelection;
+                case PositionsLabText.ErrorFewerThanTwoSelection:
+                    return PositionsLabText.ErrorFewerThanTwoSelection;
+                case PositionsLabText.ErrorFewerThanThreeSelection:
+                    return PositionsLabText.ErrorFewerThanThreeSelection;
+                case PositionsLabText.ErrorFunctionNotSupportedForWithinShapes:
+                    return PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+                case PositionsLabText.ErrorFunctionNotSupportedForSlide:
+                    return PositionsLabText.ErrorFunctionNotSupportedForSlide;
                 default:
-                    return ErrorMessageUndefined;
+                    return PositionsLabText.ErrorUndefined;
             }
         }
 

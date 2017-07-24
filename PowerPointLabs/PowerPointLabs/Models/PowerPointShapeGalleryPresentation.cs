@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
@@ -629,7 +630,7 @@ namespace PowerPointLabs.Models
             if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
                 !IsImportedFile)
             {
-                MessageBox.Show(TextCollection.ShapeCorruptedError);
+                MessageBox.Show(ShapesLabText.ErrorShapeCorrupted);
 
                 return false;
             }

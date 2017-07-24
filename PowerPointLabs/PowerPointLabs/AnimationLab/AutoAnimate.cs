@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
+using PowerPointLabs.TextCollection;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -24,16 +25,16 @@ namespace PowerPointLabs.AnimationLab
                 PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorWrongSlide, 
-                                    TextCollection.AnimationLabAutoAnimateErrorDialogTitle);
+                    MessageBox.Show(AnimationLabText.ErrorAutoAnimateWrongSlide,
+                                    AnimationLabText.ErrorAutoAnimateDialogTitle);
                     return;
                 }
 
                 PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
                 if (!GetMatchingShapeDetails(currentSlide, nextSlide))
                 {
-                    MessageBox.Show(TextCollection.AnimationLabAutoAnimateErrorNoMatchingShapes,
-                                    TextCollection.AnimationLabAutoAnimateErrorDialogTitle);
+                    MessageBox.Show(AnimationLabText.ErrorAutoAnimateNoMatchingShapes,
+                                    AnimationLabText.ErrorAutoAnimateDialogTitle);
                     return;
                 }
 
@@ -51,7 +52,7 @@ namespace PowerPointLabs.AnimationLab
             var addedSlide = currentSlide.CreateAutoAnimateSlide() as PowerPointAutoAnimateSlide;
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
-            LoadingDialogBox loadingDialog = new LoadingDialogBox(content: TextCollection.AnimationLabAutoAnimateLoadingText);
+            LoadingDialogBox loadingDialog = new LoadingDialogBox(content: AnimationLabText.AutoAnimateLoadingText);
             loadingDialog.Show();
 
             addedSlide.MoveMotionAnimation(); // Move shapes with motion animation already added

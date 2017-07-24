@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportSupertipRibbonId(TextCollection.BlurSelectedMenuId)]
+    [ExportSupertipRibbonId(EffectsLabText.BlurSelectedMenuId)]
     class BlurSelectedSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.EffectsLabBlurSelectedSupertip;
+            return EffectsLabText.BlurSelectedSupertip;
         }
     }
 }

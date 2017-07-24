@@ -5,10 +5,11 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
-    [ExportActionRibbonId(TextCollection.EffectsLabRecolorTag)]
+    [ExportActionRibbonId(EffectsLabText.RecolorTag)]
     class EffectsLabRecolorActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
@@ -18,21 +19,21 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             PowerPointSlide curSlide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            if (ribbonId.Contains(TextCollection.RecolorRemainderMenuId))
+            if (ribbonId.Contains(EffectsLabText.RecolorRemainderMenuId))
             {
-                if (ribbonId.Contains(TextCollection.GrayScaleTag))
+                if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
                 {
                     EffectsLabRecolor.GreyScaleRemainderEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.BlackWhiteTag))
+                else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
                 {
                     EffectsLabRecolor.BlackWhiteRemainderEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.GothamTag))
+                else if (ribbonId.Contains(EffectsLabText.GothamTag))
                 {
                     EffectsLabRecolor.GothamRemainderEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.SepiaTag))
+                else if (ribbonId.Contains(EffectsLabText.SepiaTag))
                 {
                     EffectsLabRecolor.SepiaRemainderEffect(curSlide, selection);
                 }
@@ -41,21 +42,21 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                     Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
                 }
             }
-            else if (ribbonId.Contains(TextCollection.RecolorBackgroundMenuId))
+            else if (ribbonId.Contains(EffectsLabText.RecolorBackgroundMenuId))
             {
-                if (ribbonId.Contains(TextCollection.GrayScaleTag))
+                if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
                 {
                     EffectsLabRecolor.GreyScaleBackgroundEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.BlackWhiteTag))
+                else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
                 {
                     EffectsLabRecolor.BlackWhiteBackgroundEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.GothamTag))
+                else if (ribbonId.Contains(EffectsLabText.GothamTag))
                 {
                     EffectsLabRecolor.GothamBackgroundEffect(curSlide, selection);
                 }
-                else if (ribbonId.Contains(TextCollection.SepiaTag))
+                else if (ribbonId.Contains(EffectsLabText.SepiaTag))
                 {
                     EffectsLabRecolor.SepiaBackgroundEffect(curSlide, selection);
                 }

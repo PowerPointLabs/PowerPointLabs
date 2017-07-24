@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using PowerPointLabs.EffectsLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.EffectsLab
 {
@@ -36,15 +37,15 @@ namespace PowerPointLabs.EffectsLab
 
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                case EffectsLabText.BlurrinessFeatureSelected:
                     isTint = IsTintSelected;
                     customPercentage = CustomPercentageSelected;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                case EffectsLabText.BlurrinessFeatureRemainder:
                     isTint = IsTintRemainder;
                     customPercentage = CustomPercentageRemainder;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                case EffectsLabText.BlurrinessFeatureBackground:
                     isTint = IsTintBackground;
                     customPercentage = CustomPercentageBackground;
                     break;
@@ -68,15 +69,15 @@ namespace PowerPointLabs.EffectsLab
         {
             switch (feature)
             {
-                case TextCollection.EffectsLabBlurrinessFeatureSelected:
+                case EffectsLabText.BlurrinessFeatureSelected:
                     IsTintSelected = isTint;
                     CustomPercentageSelected = customPercentage;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureRemainder:
+                case EffectsLabText.BlurrinessFeatureRemainder:
                     IsTintRemainder = isTint;
                     CustomPercentageRemainder = customPercentage;
                     break;
-                case TextCollection.EffectsLabBlurrinessFeatureBackground:
+                case EffectsLabText.BlurrinessFeatureBackground:
                     IsTintBackground = isTint;
                     CustomPercentageBackground = customPercentage;
                     break;
