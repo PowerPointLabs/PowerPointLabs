@@ -1,6 +1,10 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
@@ -9,7 +13,8 @@ namespace PowerPointLabs.ActionFramework.AnimationLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return IsSelectionAllRectangle();
+            Selection currentSelection = this.GetCurrentSelection();
+            return ShapeUtil.IsSelectionAllRectangle(currentSelection);
         }
     }
 }

@@ -6,6 +6,7 @@ using PowerPointLabs.CropLab;
 using PowerPointLabs.CropLab.Views;
 using PowerPointLabs.CustomControls;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
             var selection = this.GetCurrentSelection();
 
-            if (!IsSelectionShapes(selection))
+            if (!ShapeUtil.IsSelectionShape(selection))
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
                 return;
@@ -31,7 +32,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
                 return;
             }
-            if (!IsAllPicture(shapeRange))
+            if (!ShapeUtil.IsAllPicture(shapeRange))
             {
                 HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;

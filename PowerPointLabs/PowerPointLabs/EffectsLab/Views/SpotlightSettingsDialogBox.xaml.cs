@@ -42,7 +42,7 @@ namespace PowerPointLabs.EffectsLab.Views
             softEdgesSelectionInput.Content = keys[Array.IndexOf(values, spotlightSoftEdges)];
             softEdgesSelectionInput.ToolTip = EffectsLabText.SettingsSoftEdgesSelectionInputTooltip;
 
-            spotlightColorRect.Fill = new SolidColorBrush(Graphics.MediaColorFromDrawingColor(spotlightColor));
+            spotlightColorRect.Fill = new SolidColorBrush(GraphicsUtil.MediaColorFromDrawingColor(spotlightColor));
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
@@ -55,7 +55,7 @@ namespace PowerPointLabs.EffectsLab.Views
             }
             DialogConfirmedHandler(float.Parse(text) / 100,
                             EffectsLabSettings.SpotlightSoftEdgesMapping[(String)softEdgesSelectionInput.Content], 
-                            Graphics.DrawingColorFromBrush(spotlightColorRect.Fill));
+                            GraphicsUtil.DrawingColorFromBrush(spotlightColorRect.Fill));
             Close();
         }
 
@@ -63,11 +63,11 @@ namespace PowerPointLabs.EffectsLab.Views
         {
             Color currentColor = (spotlightColorRect.Fill as SolidColorBrush).Color;
             ColorDialog colorDialog = new ColorDialog();
-            colorDialog.Color = Graphics.DrawingColorFromMediaColor(currentColor);
+            colorDialog.Color = GraphicsUtil.DrawingColorFromMediaColor(currentColor);
             colorDialog.FullOpen = true;
             if (colorDialog.ShowDialog() != Forms.DialogResult.Cancel)
             {
-                spotlightColorRect.Fill = Graphics.MediaBrushFromDrawingColor(colorDialog.Color);
+                spotlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(colorDialog.Color);
             }
         }
 

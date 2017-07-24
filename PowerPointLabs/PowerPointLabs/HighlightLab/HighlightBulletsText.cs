@@ -267,7 +267,7 @@ namespace PowerPointLabs.HighlightLab
             {
                 effect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                 // TODO: Orange text bug occurs on this line. effect.EffectParameters.Color2.RGB is not changed for some reason.
-                effect.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.bulletsTextHighlightColor);
+                effect.EffectParameters.Color2.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsTextHighlightColor);
                 effect.Timing.Duration = 0.1f;
                 effect.Timing.TriggerDelayTime = 0.1f;
             }
@@ -285,7 +285,7 @@ namespace PowerPointLabs.HighlightLab
             foreach (var effect in disappearEffects)
             {
                 effect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                effect.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(HighlightLabSettings.bulletsTextDefaultColor);
+                effect.EffectParameters.Color2.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsTextDefaultColor);
                 effect.Timing.Duration = 0.1f;
                 effect.Timing.TriggerDelayTime = 0.1f;
             }

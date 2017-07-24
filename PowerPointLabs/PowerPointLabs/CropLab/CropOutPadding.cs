@@ -56,7 +56,7 @@ namespace PowerPointLabs.CropLab
                 Rectangle origImageRect = new Rectangle();
                 Rectangle croppedImageRect = new Rectangle();
 
-                Utils.Graphics.ExportShape(shape, TempPngFileExportPath);
+                Utils.GraphicsUtil.ExportShape(shape, TempPngFileExportPath);
                 using (Bitmap shapeBitmap = new Bitmap(TempPngFileExportPath))
                 {
                     origImageRect = new Rectangle(0, 0, shapeBitmap.Width, shapeBitmap.Height);

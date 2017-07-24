@@ -16,7 +16,7 @@ namespace PowerPointLabs.ShortcutsLab
 #pragma warning disable 0618
         public static void Convert(PowerPoint.Selection selection)
         {
-            if (IsSelectionShapeOrText(selection))
+            if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
                 var shape = GetShapeFromSelection(selection);
                 shape = CutPasteShape(shape);
@@ -30,15 +30,15 @@ namespace PowerPointLabs.ShortcutsLab
 
         public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
         {
-            if (IsSelectionShapeOrText(selection))
+            if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
                 if (selection.HasChildShapeRange)
                 {
-                    Graphics.ExportShape(selection.ChildShapeRange, fileName);
+                    GraphicsUtil.ExportShape(selection.ChildShapeRange, fileName);
                 }
                 else
                 {
-                    Graphics.ExportShape(selection.ShapeRange, fileName);
+                    GraphicsUtil.ExportShape(selection.ShapeRange, fileName);
                 }
             }
             else
@@ -96,25 +96,6 @@ namespace PowerPointLabs.ShortcutsLab
         {
             PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
             return result;
-        }
-
-        private static bool IsSelectionShapeOrText(PowerPoint.Selection selection)
-        {
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes &&
-                selection.Type != PowerPoint.PpSelectionType.ppSelectionText)
-            {
-                return false;
-            }
-
-            foreach (PowerPoint.Shape shape in selection.ShapeRange)
-            {
-                if (shape.Type == Office.MsoShapeType.msoPlaceholder)
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

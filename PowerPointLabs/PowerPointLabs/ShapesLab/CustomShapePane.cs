@@ -17,7 +17,7 @@ using PowerPointLabs.Views;
 using PPExtraEventHelper;
 
 using Font = System.Drawing.Font;
-using Graphics = PowerPointLabs.Utils.Graphics;
+using GraphicsUtil = PowerPointLabs.Utils.GraphicsUtil;
 using Point = System.Drawing.Point;
 
 namespace PowerPointLabs.ShapesLab
@@ -240,7 +240,7 @@ namespace PowerPointLabs.ShapesLab
             // double buffer starts
             if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
             {
-                Graphics.SuspendDrawing(myShapeFlowLayout);
+                GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
             }
             
             // emptize the panel and load shapes from folder
@@ -255,7 +255,7 @@ namespace PowerPointLabs.ShapesLab
             // double buffer ends
             if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
             {
-                Graphics.ResumeDrawing(myShapeFlowLayout);
+                GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
             }
 
             _firstTimeLoading = false;
@@ -457,7 +457,7 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            Graphics.SuspendDrawing(myShapeFlowLayout);
+            GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
 
             while (_selectedThumbnail.Count > 0)
             {
@@ -480,7 +480,7 @@ namespace PowerPointLabs.ShapesLab
                 _selectedThumbnail.RemoveAt(0);
             }
 
-            Graphics.ResumeDrawing(myShapeFlowLayout);
+            GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
         }
 
         private void ContextMenuStripRenameCategoryClicked()
@@ -817,7 +817,7 @@ namespace PowerPointLabs.ShapesLab
             shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
             var exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
 
-            Graphics.ExportShape(shapeRange, exportPath);
+            GraphicsUtil.ExportShape(shapeRange, exportPath);
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
@@ -1129,7 +1129,7 @@ namespace PowerPointLabs.ShapesLab
 
             var categoryName = item.Text;
 
-            Graphics.SuspendDrawing(myShapeFlowLayout);
+            GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
 
             foreach (var thumbnail in _selectedThumbnail)
             {
@@ -1158,7 +1158,7 @@ namespace PowerPointLabs.ShapesLab
                 Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, categoryName);
             }
 
-            Graphics.ResumeDrawing(myShapeFlowLayout);
+            GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
             _selectedThumbnail.Clear();
         }
 
@@ -1435,7 +1435,7 @@ namespace PowerPointLabs.ShapesLab
 
             var categoryName = item.Text;
 
-            Graphics.SuspendDrawing(myShapeFlowLayout);
+            GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
 
             foreach (var thumbnail in _selectedThumbnail)
             {
@@ -1467,7 +1467,7 @@ namespace PowerPointLabs.ShapesLab
                 Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, categoryName);
             }
 
-            Graphics.ResumeDrawing(myShapeFlowLayout);
+            GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
             _selectedThumbnail.Clear();
         }
 

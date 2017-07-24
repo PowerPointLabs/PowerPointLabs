@@ -152,7 +152,7 @@ namespace PowerPointLabs.Models
             foreach (Shape shape in shapeRange)
             {
                 float softEdgeRadius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
-                if (Graphics.IsAGroup(shape))
+                if (ShapeUtil.IsAGroup(shape))
                 {
                     for (int i = 1; i <= shape.GroupItems.Count; i++)
                     {
@@ -180,7 +180,7 @@ namespace PowerPointLabs.Models
 
             curSlide.MoveMotionAnimation();
 
-            Utils.Graphics.ExportSlide(curSlide, AnimatedBackgroundPath);
+            Utils.GraphicsUtil.ExportSlide(curSlide, AnimatedBackgroundPath);
 
             var visibleShape = curSlide.Shapes.Cast<Shape>().Where(x => x.Visible == Core.MsoTriState.msoTrue).ToList();
             
@@ -229,7 +229,7 @@ namespace PowerPointLabs.Models
                 oriShapeRange.Line.Visible = Core.MsoTriState.msoTrue;
                 oriShapeRange.Line.ForeColor.RGB = 0x000000;
 
-                Utils.Graphics.MakeShapeViewTimeInvisible(oriShapeRange, refSlide);
+                ShapeUtil.MakeShapeViewTimeInvisible(oriShapeRange, refSlide);
 
                 oriShapeRange.Select();
 

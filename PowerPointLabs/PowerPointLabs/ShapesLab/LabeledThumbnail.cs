@@ -42,7 +42,7 @@ namespace PowerPointLabs.ShapesLab
                 }
                 else
                 {
-                    MessageBox.Show(Utils.Graphics.IsShapeNameOverMaximumLength(value)
+                    MessageBox.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(value)
                                         ? CommonText.ErrorNameTooLong
                                         : CommonText.ErrorInvalidCharacter);
 
@@ -215,7 +215,7 @@ namespace PowerPointLabs.ShapesLab
             // image. Therefore, we use using keyword to ensure a collection.
             using (var bitmap = new Bitmap(ImagePath))
             {
-                thumbnailPanel.BackgroundImage = Utils.Graphics.CreateThumbnailImage(bitmap, 50, 50);
+                thumbnailPanel.BackgroundImage = Utils.GraphicsUtil.CreateThumbnailImage(bitmap, 50, 50);
             }
 
             State = Status.Idle;
@@ -255,7 +255,7 @@ namespace PowerPointLabs.ShapesLab
             
             return !(string.IsNullOrWhiteSpace(name) ||
                      invalidChars.IsMatch(name) ||
-                     Utils.Graphics.IsShapeNameOverMaximumLength(name));
+                     Utils.ShapeUtil.IsShapeNameOverMaximumLength(name));
         }
         # endregion
 

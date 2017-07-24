@@ -52,7 +52,7 @@ namespace PowerPointLabs.EffectsLab
                 var top = shape.Top;
                 shapeRange.Cut();
 
-                Utils.Graphics.ExportSlide(slide, BlurPicture);
+                Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
                 BlurImage(BlurPicture, percentage);
 
                 shapeRange = slide.Shapes.Paste();
@@ -146,9 +146,9 @@ namespace PowerPointLabs.EffectsLab
                 overlayShape = EffectsLabUtil.DuplicateShapeInPlace(blurShape);
             }
 
-            Utils.Graphics.MoveZToJustInFront(overlayShape, blurShape);
+            Utils.ShapeUtil.MoveZToJustInFront(overlayShape, blurShape);
 
-            var rgb = Utils.Graphics.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
+            var rgb = Utils.GraphicsUtil.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
 
             overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = rgb;
@@ -238,7 +238,7 @@ namespace PowerPointLabs.EffectsLab
             var blurShape = slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, textBox.Left, textBox.Top, textBox.Width,
                         textBox.Height);
             blurShape.Rotation = textBox.Rotation;
-            Utils.Graphics.MoveZToJustBehind(blurShape, textBox);
+            Utils.ShapeUtil.MoveZToJustBehind(blurShape, textBox);
             CropToShape.FillInShapeWithImage(slide, imageFile, blurShape, isInPlace: true);
             shapeNames.Add(blurShape.Name);
             
@@ -272,7 +272,7 @@ namespace PowerPointLabs.EffectsLab
                 var textBox = EffectsLabUtil.DuplicateShapeInPlace(shape);
                 textBox.Fill.Visible = Office.MsoTriState.msoFalse;
                 textBox.Line.Visible = Office.MsoTriState.msoFalse;
-                Utils.Graphics.MoveZToJustInFront(textBox, shape);
+                Utils.ShapeUtil.MoveZToJustInFront(textBox, shape);
                 shapeNames.Add(textBox.Name);
             }
 

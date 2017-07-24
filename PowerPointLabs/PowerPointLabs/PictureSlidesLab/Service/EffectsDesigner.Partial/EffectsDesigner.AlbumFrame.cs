@@ -16,7 +16,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 width, height);
             ChangeName(frameShape, EffectName.Overlay);
             frameShape.Fill.Transparency = 1f;
-            frameShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor));
+            frameShape.Line.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor));
             frameShape.Line.Transparency = (float)transparency / 100;
             frameShape.Line.Weight = 30;
             frameShape.Line.Visible = MsoTriState.msoTrue;

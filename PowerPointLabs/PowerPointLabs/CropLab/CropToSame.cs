@@ -4,8 +4,6 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Utils;
 
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-
 namespace PowerPointLabs.CropLab
 {
     public class CropToSame
@@ -19,15 +17,15 @@ namespace PowerPointLabs.CropLab
 
             Shape refObj = shapeRange[1];
 
-            float refScaleWidth = Graphics.GetScaleWidth(refObj);
-            float refScaleHeight = Graphics.GetScaleHeight(refObj);
+            float refScaleWidth = ShapeUtil.GetScaleWidth(refObj);
+            float refScaleHeight = ShapeUtil.GetScaleHeight(refObj);
 
             float cropTop = Epsilon;
             float cropBottom = Epsilon;
             float cropLeft = Epsilon;
             float cropRight = Epsilon;
 
-            if (!Graphics.IsShape(refObj))
+            if (!ShapeUtil.IsShape(refObj))
             {
                 cropTop = Math.Max(refObj.PictureFormat.CropTop, Epsilon);
                 cropBottom = Math.Max(refObj.PictureFormat.CropBottom, Epsilon);
@@ -48,8 +46,8 @@ namespace PowerPointLabs.CropLab
                 }
                 hasChange = true;
 
-                float scaleWidth = Graphics.GetScaleWidth(shapeRange[i]);
-                float scaleHeight = Graphics.GetScaleHeight(shapeRange[i]);
+                float scaleWidth = ShapeUtil.GetScaleWidth(shapeRange[i]);
+                float scaleHeight = ShapeUtil.GetScaleHeight(shapeRange[i]);
                 if (CropLabSettings.AnchorPosition == AnchorPosition.Reference)
                 {
                     shapeRange[i].PictureFormat.CropTop += Math.Max(0, heightToCrop * cropTop / refShapeCroppedHeight / scaleHeight);

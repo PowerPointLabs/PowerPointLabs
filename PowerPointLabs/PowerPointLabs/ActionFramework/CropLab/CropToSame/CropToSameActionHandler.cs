@@ -5,6 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CustomControls;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
@@ -17,7 +18,8 @@ namespace PowerPointLabs.ActionFramework.CropLab
         {
             IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
-            if (!IsSelectionShapes(this.GetCurrentSelection()))
+
+            if (!ShapeUtil.IsSelectionShape(this.GetCurrentSelection()))
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 2, errorHandler);
                 return;
@@ -28,12 +30,14 @@ namespace PowerPointLabs.ActionFramework.CropLab
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 2, errorHandler);
                 return;
             }
-            if (!IsAllPictureWithReferenceObject(shapeRange))
+            if (!ShapeUtil.IsAllPictureWithReferenceObject(shapeRange))
             {
                 HandleErrorCode(CropLabErrorHandler.ErrorCodeSelectionMustBePicture, FeatureName, errorHandler);
                 return;
             }
+
             bool hasChange = CropToSame.CropSelection(shapeRange);
+
             if (!hasChange)
             {
                 HandleErrorCode(CropLabErrorHandler.ErrorCodeNoDimensionCropped, FeatureName, errorHandler);

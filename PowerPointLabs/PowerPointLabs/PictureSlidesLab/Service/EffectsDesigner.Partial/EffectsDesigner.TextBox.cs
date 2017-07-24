@@ -9,7 +9,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public void ApplyTextboxEffect(string overlayColor, int transparency, int fontSizeToIncrease)
         {
-            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            var shape = Util.ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
             {
                 return;
@@ -30,7 +30,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                     var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                         left, top, width, height);
                     ChangeName(overlayShape, EffectName.TextBox);
-                    Graphics.MoveZToJustBehind(overlayShape, shape);
+                    Utils.ShapeUtil.MoveZToJustBehind(overlayShape, shape);
                 }
             }
         }

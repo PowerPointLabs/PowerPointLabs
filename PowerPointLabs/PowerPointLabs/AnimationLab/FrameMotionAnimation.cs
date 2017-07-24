@@ -47,7 +47,7 @@ namespace PowerPointLabs.AnimationLab
                 initialFont = initialShape.TextFrame.TextRange.Font.Size;
             }
 
-            if (Utils.Graphics.IsStraightLine(initialShape))
+            if (Utils.ShapeUtil.IsStraightLine(initialShape))
             {
                 double initialAngle = GetLineAngle(initialShape);
                 double finalAngle = GetLineAngle(finalShape);

@@ -239,8 +239,8 @@ namespace PowerPointLabs.ShapesLab
                 new Font("Arial", 15.75F, FontStyle.Bold, GraphicsUnit.Point,
                          0),
             ForeColor = SystemColors.ButtonShadow,
-            Location = new Point((int)(81 * Utils.Graphics.GetDpiScale()),
-                                 (int)(11 * Utils.Graphics.GetDpiScale())),
+            Location = new Point((int)(81 * Utils.GraphicsUtil.GetDpiScale()),
+                                 (int)(11 * Utils.GraphicsUtil.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(212, 24),
             Text = ShapesLabText.ErrorNoShapeTextFirstLine
@@ -253,8 +253,8 @@ namespace PowerPointLabs.ShapesLab
                 new Font("Arial", 10F, FontStyle.Bold, GraphicsUnit.Point,
                          0),
             ForeColor = SystemColors.ButtonShadow,
-            Location = new Point((int)(11 * Utils.Graphics.GetDpiScale()),
-                                 (int)(41 * Utils.Graphics.GetDpiScale())),
+            Location = new Point((int)(11 * Utils.GraphicsUtil.GetDpiScale()),
+                                 (int)(41 * Utils.GraphicsUtil.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(242, 24),
             Text = ShapesLabText.ErrorNoShapeTextSecondLine

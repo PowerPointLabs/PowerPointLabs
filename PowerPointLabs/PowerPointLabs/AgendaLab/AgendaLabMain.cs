@@ -15,7 +15,7 @@ using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
-using Graphics = PowerPointLabs.Utils.Graphics;
+using GraphicsUtil = PowerPointLabs.Utils.GraphicsUtil;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.AgendaLab
@@ -230,7 +230,7 @@ namespace PowerPointLabs.AgendaLab
 
                 BringToFront(refSlide);
                 
-                Graphics.CopyToDesign("Agenda Template", refSlide);
+                SlideUtil.CopyToDesign("Agenda Template", refSlide);
 
                 switch (type)
                 {
@@ -335,7 +335,7 @@ namespace PowerPointLabs.AgendaLab
             refSlide.AddTemplateSlideMarker();
             refSlide.Hidden = true;
 
-            Graphics.CopyToDesign("Agenda Template", refSlide);
+            SlideUtil.CopyToDesign("Agenda Template", refSlide);
 
             return refSlide;
         }
@@ -373,7 +373,7 @@ namespace PowerPointLabs.AgendaLab
 
             var spacing = Math.Max(itemWidth, slideWidth/textBoxes.Count);
             int columnCount = (int) (slideWidth/spacing + 0.01f); // +0.01f to cater to rounding errors.
-            int rowCount = Common.CeilingDivide(textBoxes.Count, columnCount);
+            int rowCount = CommonUtil.CeilingDivide(textBoxes.Count, columnCount);
 
             var left = 0f;
             var leftOffset = (slideWidth - columnCount*spacing)/2;
@@ -420,7 +420,7 @@ namespace PowerPointLabs.AgendaLab
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
             textBox.TextFrame.TextRange.Text = AgendaLabText.BeamHighlightedText;
-            textBox.TextFrame.TextRange.Font.Color.RGB = Graphics.ConvertColorToRgb(Color.Yellow);
+            textBox.TextFrame.TextRange.Font.Color.RGB = GraphicsUtil.ConvertColorToRgb(Color.Yellow);
 
             return textBox;
         }
@@ -431,7 +431,7 @@ namespace PowerPointLabs.AgendaLab
 
             AgendaShape.SetShapeName(background, ShapePurpose.BeamShapeBackground, AgendaSection.None);
             background.Line.Visible = MsoTriState.msoFalse;
-            background.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Black);
+            background.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Black);
             background.Width = PowerPointPresentation.Current.SlideWidth;
 
             return background;
@@ -445,7 +445,7 @@ namespace PowerPointLabs.AgendaLab
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             textBox.TextFrame.WordWrap = MsoTriState.msoFalse;
             textBox.TextFrame.TextRange.Text = section.Name;
-            textBox.TextFrame.TextRange.Font.Color.RGB = Graphics.ConvertColorToRgb(Color.White);
+            textBox.TextFrame.TextRange.Font.Color.RGB = GraphicsUtil.ConvertColorToRgb(Color.White);
 
             return textBox;
         }
@@ -469,21 +469,21 @@ namespace PowerPointLabs.AgendaLab
             var contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
-            Graphics.SetText(titleShape, AgendaLabText.TitleContent);
-            Graphics.SetText(contentShape, AgendaLabText.BulletVisitedContent,
+            ShapeUtil.SetText(titleShape, AgendaLabText.TitleContent);
+            ShapeUtil.SetText(contentShape, AgendaLabText.BulletVisitedContent,
                                             AgendaLabText.BulletHighlightedContent,
                                             AgendaLabText.BulletUnvisitedContent);
 
-            var paragraphs = Graphics.GetParagraphs(contentShape);
-            paragraphs[0].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Gray);
-            paragraphs[1].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Red);
-            paragraphs[2].Font.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(Color.Black);
+            var paragraphs = ShapeUtil.GetParagraphs(contentShape);
+            paragraphs[0].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Gray);
+            paragraphs[1].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Red);
+            paragraphs[2].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Black);
 
             AgendaSlide.SetAsReferenceSlideName(refSlide, Type.Bullet);
             refSlide.AddTemplateSlideMarker();
             refSlide.Hidden = true;
 
-            Graphics.CopyToDesign("Agenda Template", refSlide);
+            SlideUtil.CopyToDesign("Agenda Template", refSlide);
 
             return refSlide;
         }
@@ -501,7 +501,7 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             var titleBar = refSlide.Shapes.Placeholders[1];
-            Graphics.SetText(titleBar, AgendaLabText.TitleContent);
+            ShapeUtil.SetText(titleBar, AgendaLabText.TitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
 
@@ -509,7 +509,7 @@ namespace PowerPointLabs.AgendaLab
             refSlide.AddTemplateSlideMarker();
             refSlide.Hidden = true;
 
-            Graphics.CopyToDesign("Agenda Template", refSlide);
+            SlideUtil.CopyToDesign("Agenda Template", refSlide);
 
             return refSlide;
         }
@@ -540,7 +540,7 @@ namespace PowerPointLabs.AgendaLab
             float canvasLeft = (slideWidth - canvasWidth)/2;
 
             int columnCount = (int) Math.Ceiling(Math.Sqrt(sectionImages.Count));
-            int rowCount = Common.CeilingDivide(sectionImages.Count, columnCount);
+            int rowCount = CommonUtil.CeilingDivide(sectionImages.Count, columnCount);
             float panelWidth = canvasWidth/columnCount;
             float panelHeight = panelWidth/aspectRatio;
 
@@ -587,7 +587,7 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape previousImageShape)
         {
             var snapshotShape = CreateSectionImage(refSlide, section);
-            Graphics.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
+            ShapeUtil.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
             previousImageShape.Delete();
         }
         
@@ -902,7 +902,7 @@ namespace PowerPointLabs.AgendaLab
                 {
                     // Reuse old textbox
                     var textbox = textboxAssignment[index];
-                    Graphics.SetText(textbox, section.Name);
+                    ShapeUtil.SetText(textbox, section.Name);
                     AgendaShape.SetShapeName(textbox, ShapePurpose.BeamShapeText, section);
                     reassignedTextboxIndexes.Add(index);
                 }
@@ -911,7 +911,7 @@ namespace PowerPointLabs.AgendaLab
                     // Create new textbox
                     var textbox = PrepareBeamAgendaBeamItem(refSlide, section);
                     var referenceTextFormat = beamFormats.Regular;
-                    Graphics.SyncTextRange(referenceTextFormat, textbox.TextFrame2.TextRange, pickupTextContent: false);
+                    ShapeUtil.SyncTextRange(referenceTextFormat, textbox.TextFrame2.TextRange, pickupTextContent: false);
                     newTextboxes.Add(textbox);
                 }
             }
@@ -968,7 +968,7 @@ namespace PowerPointLabs.AgendaLab
                     referenceTextFormat = oldTextBoxes[i].TextFrame2.TextRange;
                 }
 
-                Graphics.SyncTextRange(referenceTextFormat, newTextBoxes[i].TextFrame2.TextRange, pickupTextContent: false);
+                ShapeUtil.SyncTextRange(referenceTextFormat, newTextBoxes[i].TextFrame2.TextRange, pickupTextContent: false);
             }
 
             oldTextBoxes.ForEach(shape => shape.Delete());
@@ -1074,7 +1074,7 @@ namespace PowerPointLabs.AgendaLab
                                                 .FirstOrDefault();
             var currentSectionText = currentSectionTextBox.TextFrame2.TextRange;
 
-            Graphics.SyncTextRange(beamFormats.Highlighted, currentSectionText, pickupTextContent: false);
+            ShapeUtil.SyncTextRange(beamFormats.Highlighted, currentSectionText, pickupTextContent: false);
         }
         #endregion
 

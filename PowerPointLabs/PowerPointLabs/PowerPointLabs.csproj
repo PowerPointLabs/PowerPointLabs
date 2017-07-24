@@ -574,7 +574,6 @@
     <Compile Include="ActionFramework\TimerLab\TimerLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenu\HighlightLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsSupertipHandler.cs" />
-    <Compile Include="ActionFramework\Common\Handlers\BaseUtilActionHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuSupertipHandler.cs" />
@@ -642,6 +641,8 @@
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />
+    <Compile Include="Utils\ShapeUtil.cs" />
+    <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1056,10 +1057,10 @@
     <Compile Include="ShapesLab\ShapesLabConfigSaveFile.cs" />
     <Compile Include="TextCollection\CommonText.cs" />
     <Compile Include="Utils\BoolUtil.cs" />
-    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\CommonUtil.cs" />
     <Compile Include="Utils\Comparers.cs" />
     <Compile Include="Utils\FileDir.cs" />
-    <Compile Include="Utils\Graphics.cs" />
+    <Compile Include="Utils\GraphicsUtil.cs" />
     <Compile Include="Utils\PPShape.API.cs" />
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />

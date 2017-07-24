@@ -4,7 +4,7 @@ using System.Drawing;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 
-using Graphics = PowerPointLabs.Utils.Graphics;
+using Graphics = PowerPointLabs.Utils.GraphicsUtil;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {

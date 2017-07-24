@@ -4,15 +4,16 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Handlers;
+using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportActionRibbonId(ShortcutsLabText.AddIntoGroupTag)]
-    class AddIntoGroupActionHandler : BaseUtilActionHandler
+    class AddIntoGroupActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             PowerPointSlide slide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            if (!IsSelectionShapes(selection) || selection.ShapeRange.Count < 2)
+            if (!ShapeUtil.IsSelectionShape(selection) || selection.ShapeRange.Count < 2)
             {
                 MessageBox.Show("Please select more than one shape.", "Error");
                 return;

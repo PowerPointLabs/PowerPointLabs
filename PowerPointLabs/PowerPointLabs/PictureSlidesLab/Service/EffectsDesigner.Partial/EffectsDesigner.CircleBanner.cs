@@ -57,9 +57,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeOval, circleLeft, circleTop,
                 circleWidth, circleWidth);
             overlayShape.Fill.Solid();
-            overlayShape.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
+            overlayShape.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Fill.Transparency = (float)transparency / 100;
-            overlayShape.Line.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
+            overlayShape.Line.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));
             overlayShape.Line.Transparency = (float)transparency / 100;
             overlayShape.Line.Weight = 5;
             if (isOutline)
