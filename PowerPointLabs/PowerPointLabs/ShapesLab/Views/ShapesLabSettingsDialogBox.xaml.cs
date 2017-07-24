@@ -65,7 +65,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
                     if (!FileDir.IsDirectoryEmpty(newPath))
                     {
-                        System.Windows.MessageBox.Show(ShapesLabText.FolderNonEmptyErrorMsg);
+                        System.Windows.MessageBox.Show(ShapesLabText.ErrorFolderNonEmpty);
                     }
                     else
                     {

@@ -40,15 +40,15 @@
             "To perform this action, click this button";
 
         public const string ErrorDialogTitle = "Unable to execute action";
-        public const string NoSectionError = "Please group the slides into sections before generating agenda.";
-        public const string SingleSectionError = "Please divide the slides into two or more sections.";
-        public const string EmptySectionError = "Presentation contains empty section(s). Please fill them up or remove them.";
-        public const string AgendaExistError = "Agenda already exists. The previous agenda will be removed and regenerated. Do you want to proceed?";
-        public const string AgendaExistErrorCaption = "Confirm Update";
-        public const string NoAgendaError = "There is no generated agenda.";
-        public const string NoReferenceSlideError = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
-        public const string InvalidReferenceSlideError = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
-        public const string SectionNameTooLongError = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
+        public const string ErrorNoSection = "Please group the slides into sections before generating agenda.";
+        public const string ErrorSingleSection = "Please divide the slides into two or more sections.";
+        public const string ErrorEmptySection = "Presentation contains empty section(s). Please fill them up or remove them.";
+        public const string ErrorAgendaExist = "Agenda already exists. The previous agenda will be removed and regenerated. Do you want to proceed?";
+        public const string ErrorAgendaExistTitle = "Confirm Update";
+        public const string ErrorNoAgenda = "There is no generated agenda.";
+        public const string ErrorNoReferenceSlide = "No reference slide could be found. Either replace the reference slide or regenerate the agenda.";
+        public const string ErrorInvalidReferenceSlide = "The current reference slide is invalid. Either replace the reference slide or regenerate the agenda.";
+        public const string ErrorSectionNameTooLong = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
         // Dialog Boxes
         public const string GeneratingDialogTitle = "Generating...";

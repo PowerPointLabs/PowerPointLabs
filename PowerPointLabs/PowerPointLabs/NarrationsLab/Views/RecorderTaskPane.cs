@@ -1087,7 +1087,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // check input device, abort if no input device connected
             if (!NInputDeviceExists())
             {
-                MessageBox.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderNoInputDeviceMsgBoxTitle,
+                MessageBox.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderErrorNoInputDeviceTitle,
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return;
@@ -1229,16 +1229,16 @@ namespace PowerPointLabs.NarrationsLab.Views
                 {
                     if (currentPlayback == null)
                     {
-                        result = MessageBox.Show(NarrationsLabText.RecorderSaveRecordMsg,
-                                                 NarrationsLabText.RecorderSaveRecordMsgBoxTitle, MessageBoxButtons.YesNo,
+                        result = MessageBox.Show(NarrationsLabText.RecorderErrorSaveRecord,
+                                                 NarrationsLabText.RecorderErrorSaveRecordTitle, MessageBoxButtons.YesNo,
                                                  MessageBoxIcon.Question);
                     }
                     else
                     {
                         result =
                             MessageBox.Show(
-                                string.Format(NarrationsLabText.RecorderReplaceRecordMsgFormat, currentPlayback.Name),
-                                NarrationsLabText.RecorderReplaceRecordMsgBoxTitle, MessageBoxButtons.YesNo,
+                                string.Format(NarrationsLabText.RecorderErrorReplaceRecordFormat, currentPlayback.Name),
+                                NarrationsLabText.RecorderErrorReplaceRecordTitle, MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Question);
                     }
                 }
@@ -1433,7 +1433,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             if (playback == null)
             {
-                MessageBox.Show(NarrationsLabText.RecorderNoRecordToPlayError);
+                MessageBox.Show(NarrationsLabText.RecorderErrorNoRecordToPlay);
             }
             else
             {
@@ -1527,7 +1527,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     RecButtonPauseHandler();
                     break;
                 default:
-                    MessageBox.Show(NarrationsLabText.RecorderInvalidOperation);
+                    MessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
                     break;
             }
         }
@@ -1546,7 +1546,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             else
             {
-                MessageBox.Show(NarrationsLabText.RecorderInvalidOperation);
+                MessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
             }
         }
 
@@ -1564,7 +1564,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     PlayButtonPauseHandler();
                     break;
                 default:
-                    MessageBox.Show(NarrationsLabText.RecorderInvalidOperation);
+                    MessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
                     break;
             }
         }

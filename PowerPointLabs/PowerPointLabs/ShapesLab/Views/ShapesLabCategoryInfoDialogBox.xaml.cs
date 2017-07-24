@@ -78,7 +78,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             if (this.GetAddIn().ShapePresentation.HasCategory(name))
             {
-                MessageBox.Show(ShapesLabText.DuplicateCategoryNameError);
+                MessageBox.Show(ShapesLabText.ErrorDuplicateCategoryName);
                 return false;
             }
 

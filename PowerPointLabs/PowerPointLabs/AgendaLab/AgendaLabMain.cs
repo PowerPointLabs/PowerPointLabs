@@ -107,8 +107,8 @@ namespace PowerPointLabs.AgendaLab
 
                 if (AgendaPresent())
                 {
-                    var confirm = MessageBox.Show(AgendaLabText.AgendaExistError,
-                                                  AgendaLabText.AgendaExistErrorCaption,
+                    var confirm = MessageBox.Show(AgendaLabText.ErrorAgendaExist,
+                                                  AgendaLabText.ErrorAgendaExistTitle,
                                                   MessageBoxButtons.OKCancel);
                     if (confirm != DialogResult.OK)
                     {
@@ -168,7 +168,7 @@ namespace PowerPointLabs.AgendaLab
 
                 if (!AgendaPresent())
                 {
-                    ShowErrorMessage(AgendaLabText.NoAgendaError);
+                    ShowErrorMessage(AgendaLabText.ErrorNoAgenda);
                     return;
                 }
 
@@ -1137,25 +1137,25 @@ namespace PowerPointLabs.AgendaLab
 
             if (sections.Count == 0)
             {
-                ShowErrorMessage(AgendaLabText.NoSectionError);
+                ShowErrorMessage(AgendaLabText.ErrorNoSection);
                 return false;
             }
 
             if (sections.Count == 1)
             {
-                ShowErrorMessage(AgendaLabText.SingleSectionError);
+                ShowErrorMessage(AgendaLabText.ErrorSingleSection);
                 return false;
             }
 
             if (HasEmptySection())
             {
-                ShowErrorMessage(AgendaLabText.EmptySectionError);
+                ShowErrorMessage(AgendaLabText.ErrorEmptySection);
                 return false;
             }
 
             if (HasTooLongSectionName())
             {
-                ShowErrorMessage(AgendaLabText.SectionNameTooLongError);
+                ShowErrorMessage(AgendaLabText.ErrorSectionNameTooLong);
                 return false;
             }
 
@@ -1195,19 +1195,19 @@ namespace PowerPointLabs.AgendaLab
         {
             if (!AgendaPresent())
             {
-                ShowErrorMessage(AgendaLabText.NoAgendaError);
+                ShowErrorMessage(AgendaLabText.ErrorNoAgenda);
                 return false;
             }
 
             if (refSlide == null)
             {
-                ShowErrorMessage(AgendaLabText.NoReferenceSlideError);
+                ShowErrorMessage(AgendaLabText.ErrorNoReferenceSlide);
                 return false;
             }
 
             if (InvalidReferenceSlide(type, refSlide))
             {
-                ShowErrorMessage(AgendaLabText.InvalidReferenceSlideError);
+                ShowErrorMessage(AgendaLabText.ErrorInvalidReferenceSlide);
                 return false;
             }
 

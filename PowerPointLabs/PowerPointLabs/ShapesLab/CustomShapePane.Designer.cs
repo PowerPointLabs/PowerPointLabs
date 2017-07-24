@@ -243,7 +243,7 @@ namespace PowerPointLabs.ShapesLab
                                  (int)(11 * Utils.Graphics.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(212, 24),
-            Text = ShapesLabText.NoShapeTextFirstLine
+            Text = ShapesLabText.ErrorNoShapeTextFirstLine
         };
 
         private readonly Label _noShapeLabelSecondLine = new Label
@@ -257,7 +257,7 @@ namespace PowerPointLabs.ShapesLab
                                  (int)(41 * Utils.Graphics.GetDpiScale())),
             Name = "noShapeLabel",
             Size = new Size(242, 24),
-            Text = ShapesLabText.NoShapeTextSecondLine
+            Text = ShapesLabText.ErrorNoShapeTextSecondLine
         };
 
         private readonly Panel _noShapePanel = new Panel

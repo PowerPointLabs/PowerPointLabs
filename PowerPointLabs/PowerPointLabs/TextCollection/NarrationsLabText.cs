@@ -51,15 +51,15 @@
         public const string RecorderNoInputDeviceMsg = "No audio input device was found.\n" +
                                                        "Check that a microphone or other audio input device is attached " +
                                                        "and working.";
-        public const string RecorderNoInputDeviceMsgBoxTitle = "Input Device Not Found";
-        public const string RecorderSaveRecordMsg = "Do you want to save the recording?";
-        public const string RecorderSaveRecordMsgBoxTitle = "Save Recording";
-        public const string RecorderReplaceRecordMsgFormat = "Do you want to replace\n{0}\nwith the current recording?";
-        public const string RecorderReplaceRecordMsgBoxTitle = "Replace Audio";
-        public const string RecorderNoRecordToPlayError = "There are no recordings to play.";
-        public const string RecorderInvalidOperation = "Invalid Operation";
+        public const string RecorderErrorNoInputDeviceTitle = "Input Device Not Found";
+        public const string RecorderErrorSaveRecord = "Do you want to save the recording?";
+        public const string RecorderErrorSaveRecordTitle = "Save Recording";
+        public const string RecorderErrorReplaceRecordFormat = "Do you want to replace\n{0}\nwith the current recording?";
+        public const string RecorderErrorReplaceRecordTitle = "Replace Audio";
+        public const string RecorderErrorNoRecordToPlay = "There are no recordings to play.";
+        public const string RecorderErrorInvalidOperation = "Invalid Operation";
 
-        public const string InShowControlInvalidRecCommandError = "Invalid Recording Command";
+        public const string InShowControlErrorInvalidRecCommand = "Invalid Recording Command";
         public const string InShowControlRecButtonIdleText = "Stop and Advance";
         public const string InShowControlRecButtonRecText = "Start Recording";
         #endregion

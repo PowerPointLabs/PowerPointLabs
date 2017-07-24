@@ -99,7 +99,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             catch (COMException)
             {
-                Forms.MessageBox.Show(NarrationsLabText.InShowControlInvalidRecCommandError);
+                Forms.MessageBox.Show(NarrationsLabText.InShowControlErrorInvalidRecCommand);
                 return;
             }
 
