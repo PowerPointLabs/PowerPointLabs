@@ -120,16 +120,9 @@ namespace PowerPointLabs
         public bool SpotlightDelete = true;
 
         public bool HighlightBulletsEnabled = true;
-        public bool AddAutoMotionEnabled = true;
-        public bool ReloadAutoMotionEnabled = true;
-        public bool ReloadSpotlight = true;
+        public bool HighlightTextFragmentsEnabled = true;
         public bool RemoveCaptionsEnabled = true;
         public bool RemoveAudioEnabled = true;
-
-        public bool HighlightTextFragmentsEnabled = true;
-
-        public bool EmbedAudioVisible = true;
-        public bool RecorderPaneVisible = false;
 
         #region IRibbonExtensibility Members
 
@@ -218,28 +211,11 @@ namespace PowerPointLabs
         }
         # endregion
 
-        #region Control Enable
-        public bool OnGetEnabledReloadSpotlight(Office.IRibbonControl control)
-        {
-            return ReloadSpotlight;
-        }
-        public bool OnGetEnabledAddAutoMotion(Office.IRibbonControl control)
-        {
-            return AddAutoMotionEnabled;
-        }
-        # endregion
-
-        //Edit Name Callbacks
-        public bool GetEmbedAudioVisiblity(Office.IRibbonControl control)
-        {
-            return EmbedAudioVisible;
-        }
-
         public bool IsValidPresentation(PowerPoint.Presentation pres)
         {
             if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
-                MessageBox.Show(CommonText.VersionNotCompatibleErrorMsg);
+                MessageBox.Show(CommonText.ErrorVersionNotCompatible);
                 return false;
             }
 
@@ -272,13 +248,6 @@ namespace PowerPointLabs
         {
             const string officeVersion2010 = "14.0";
             return Globals.ThisAddIn.Application.Version == officeVersion2010;
-        }
-        #endregion
-
-        #region Feature: Narrations Lab
-        public void SpeakSelectedTextClick(Office.IRibbonControl control)
-        {
-            NotesToAudio.SpeakSelectedText();
         }
         #endregion
 

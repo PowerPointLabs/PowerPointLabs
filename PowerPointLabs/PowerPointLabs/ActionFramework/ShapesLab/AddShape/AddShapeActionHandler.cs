@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
             // first of all we check if the shape gallery has been opened correctly
             if (!addIn.ShapePresentation.Opened)
             {
-                MessageBox.Show(CommonText.ShapeGalleryInitErrorMsg);
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
 

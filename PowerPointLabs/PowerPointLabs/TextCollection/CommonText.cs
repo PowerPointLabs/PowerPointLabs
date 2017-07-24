@@ -54,23 +54,23 @@
         public const string NotesPageStorageText = "This notes page is used to store data - Do not edit the notes. ";
         # endregion
 
-        # region ThisAddIn
-        public const string AccessTempFolderErrorMsg = "Error when accessing temp folder";
-        public const string CreatTempFolderErrorMsg = "Error when creating temp folder";
-        public const string ExtraErrorMsg = "Error when extracting";
-        public const string PrepareMediaErrorMsg = "Error when preparing media files";
-        public const string VersionNotCompatibleErrorMsg =
+        # region ThisAddIn Error Messages
+        public const string ErrorAccessTempFolder = "Error when accessing temp folder";
+        public const string ErrorCreateTempFolder = "Error when creating temp folder";
+        public const string ErrorExtract = "Error when extracting";
+        public const string ErrorPrepareMedia = "Error when preparing media files";
+        public const string ErrorVersionNotCompatible =
             "Some features of PowerPointLabs do not work with presentations saved in " +
             "the .ppt format. To use them, please resave the " +
             "presentation with the .pptx format.";
-        public const string OnlinePresentationNotCompatibleErrorMsg =
+        public const string ErrorOnlinePresentationNotCompatible =
             "Some features of PowerPointLabs do not work with online presentations. " +
             "To use them, please save the file locally.";
-        public const string ShapeGalleryInitErrorMsg =
+        public const string ErrorShapeGalleryInit =
             "Could not connect to shape database from your default location.\n\n" +
             "To check your default location, right click on the Shapes Lab's panel and select 'Settings' option.";
-        public const string TabActivateErrorTitle = "Unable to activate 'Double Click to Open Property' feature";
-        public const string TabActivateErrorDescription =
+        public const string ErrorTabActivateTitle = "Unable to activate 'Double Click to Open Property' feature";
+        public const string ErrorTabActivate =
             "To activate 'Double Click to Open Property' feature, you need to enable 'Home' tab " +
             "in Options -> Customize Ribbon -> Main Tabs -> tick the checkbox of 'Home' -> click OK but" +
             "ton to save.";
