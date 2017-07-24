@@ -56,7 +56,7 @@ namespace PowerPointLabs.ShapesLab.Views
         #region Helper Functions
         private bool VerifyName(string name)
         {
-            if (Utils.Graphics.IsShapeNameOverMaximumLength(name))
+            if (Utils.ShapeUtil.IsShapeNameOverMaximumLength(name))
             {
                 MessageBox.Show(TextCollection.ErrorNameTooLong);
                 return false;

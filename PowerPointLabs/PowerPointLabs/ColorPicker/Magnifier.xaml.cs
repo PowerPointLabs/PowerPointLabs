@@ -56,8 +56,8 @@ namespace PowerPointLabs.ColorPicker
 
             public MagnificationControlHost(double width, double height)
             {
-                hostWidth = (int)(width * Utils.Graphics.GetDpiScale());
-                hostHeight = (int)(height * Utils.Graphics.GetDpiScale());
+                hostWidth = (int)(width * Utils.GraphicsUtil.GetDpiScale());
+                hostHeight = (int)(height * Utils.GraphicsUtil.GetDpiScale());
             }
 
             protected override HandleRef BuildWindowCore(HandleRef hwndParent)
@@ -260,8 +260,8 @@ namespace PowerPointLabs.ColorPicker
             Native.InvalidateRect(hwndMag, IntPtr.Zero, true);
 
             // Update position, WPF units are affected by monitor's DPI
-            Left = (mousePosition.X / Utils.Graphics.GetDpiScale()) - actualHalfSize.Width;
-            Top = (mousePosition.Y / Utils.Graphics.GetDpiScale()) - actualHalfSize.Height;
+            Left = (mousePosition.X / Utils.GraphicsUtil.GetDpiScale()) - actualHalfSize.Width;
+            Top = (mousePosition.Y / Utils.GraphicsUtil.GetDpiScale()) - actualHalfSize.Height;
             magnifierOverlay.Left = Left;
             magnifierOverlay.Top = Top;
         }

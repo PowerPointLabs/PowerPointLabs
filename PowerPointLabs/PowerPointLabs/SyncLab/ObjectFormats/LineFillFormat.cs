@@ -3,8 +3,7 @@ using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
-
-using Graphics = PowerPointLabs.Utils.Graphics;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -32,7 +31,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     SyncFormatConstants.DisplayImageSize.Height);
             shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
             shape.Fill.ForeColor = formatShape.Line.ForeColor;
-            Bitmap image = Graphics.ShapeToBitmap(shape);
+            Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
             shape.Delete();
             return image;
         }

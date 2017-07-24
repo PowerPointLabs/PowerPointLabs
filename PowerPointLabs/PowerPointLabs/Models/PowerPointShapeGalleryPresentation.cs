@@ -150,7 +150,7 @@ namespace PowerPointLabs.Models
                                             .Distinct()
                                             .ToList();
 
-                name = Common.NextAvailableName(nameList, name);
+                name = CommonUtil.NextAvailableName(nameList, name);
             }
 
             var pastedShapeRange = categorySlide.Shapes.Paste();
@@ -551,7 +551,7 @@ namespace PowerPointLabs.Models
 
                 if (!pngShapes.Contains(shapePath))
                 {
-                    Graphics.ExportShape(shape, shapePath);
+                    GraphicsUtil.ExportShape(shape, shapePath);
                     shapeLost = true;
                 }
             }
@@ -581,7 +581,7 @@ namespace PowerPointLabs.Models
 
         private Regex GenereateNameSearchPattern(string name)
         {
-            var skippedName = Common.SkipRegexCharacter(name);
+            var skippedName = CommonUtil.SkipRegexCharacter(name);
             var searchPattern = string.Format(NameSearchPattern, skippedName, skippedName);
             return new Regex(searchPattern);
         }

@@ -2,10 +2,11 @@
 using System.Globalization;
 using System.Linq;
 using Microsoft.Office.Core;
-using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using ShapeUtil = PowerPointLabs.PictureSlidesLab.Util.ShapeUtil;
 
 
 namespace PowerPointLabs.PictureSlidesLab.Service.Effect

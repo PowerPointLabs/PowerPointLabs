@@ -67,22 +67,22 @@ namespace PowerPointLabs.TimerLab
 
         private int TimerBodyColor()
         {
-            return Graphics.PackRgbInt(68, 84, 106);
+            return GraphicsUtil.PackRgbInt(68, 84, 106);
         }
 
         private int SliderColor()
         {
-            return Graphics.PackRgbInt(247, 150, 70);
+            return GraphicsUtil.PackRgbInt(247, 150, 70);
         }
 
         private int TimeMarkerColor()
         {
-            return Graphics.PackRgbInt(90, 90, 90);
+            return GraphicsUtil.PackRgbInt(90, 90, 90);
         }
 
         private int LineMarkerColor()
         {
-            return Graphics.PackRgbInt(68, 114, 196);
+            return GraphicsUtil.PackRgbInt(68, 114, 196);
         }
         #endregion
 

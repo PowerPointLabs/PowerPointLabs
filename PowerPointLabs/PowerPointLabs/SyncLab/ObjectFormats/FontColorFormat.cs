@@ -3,8 +3,7 @@ using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
-
-using Graphics = PowerPointLabs.Utils.Graphics;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -34,7 +33,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.Fill.ForeColor.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
             shape.Fill.BackColor.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
             shape.Fill.Solid();
-            Bitmap image = Graphics.ShapeToBitmap(shape);
+            Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
             shape.Delete();
             return image;
         }

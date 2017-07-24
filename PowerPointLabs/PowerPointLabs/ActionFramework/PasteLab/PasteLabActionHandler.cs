@@ -4,14 +4,14 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Handlers;
+using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    abstract class PasteLabActionHandler : BaseUtilActionHandler
+    abstract class PasteLabActionHandler : ActionHandler
     {
         private static readonly string SelectOrderTagName = "PasteLabSelectOrder";
         private static readonly string SelectChildOrderTagName = "PasteLabSelectChildOrder";
@@ -25,7 +25,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             PowerPointSlide slide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            if (Graphics.IsClipboardEmpty())
+            if (GraphicsUtil.IsClipboardEmpty())
             {
                 Logger.Log(ribbonId + " failed. Clipboard is empty.");
                 return;
@@ -34,7 +34,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             ShapeRange passedSelectedShapes = null;
             ShapeRange passedSelectedChildShapes = null;
 
-            if (IsSelectionShapes(selection) && !IsSelectionIgnored(ribbonId))
+            if (ShapeUtil.IsSelectionShape(selection) && !IsSelectionIgnored(ribbonId))
             {
                 // Save clipboard onto a temp slide, because CorruptionCorrrection uses Copy-Paste
                 PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
@@ -65,7 +65,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 }
 
                 // Corruption correction
-                ShapeRange correctedShapes = Graphics.CorruptionCorrection(selectedShapes, slide);
+                ShapeRange correctedShapes = ShapeUtil.CorruptionCorrection(selectedShapes, slide);
 
                 // Reselect the preserved selections
                 List<Shape> correctedShapeList = new List<Shape>();
@@ -73,7 +73,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 foreach (Shape shape in correctedShapes)
                 {
                     correctedShapeList.Add(shape);
-                    correctedChildShapeList.AddRange(Graphics.GetChildrenWithNonEmptyTag(shape, SelectChildOrderTagName));
+                    correctedChildShapeList.AddRange(ShapeUtil.GetChildrenWithNonEmptyTag(shape, SelectChildOrderTagName));
                 }
                 correctedShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectOrderTagName]) - int.Parse(sh2.Tags[SelectOrderTagName]));
                 correctedChildShapeList.Sort((sh1, sh2) => int.Parse(sh1.Tags[SelectChildOrderTagName]) - int.Parse(sh2.Tags[SelectChildOrderTagName]));
@@ -81,8 +81,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 passedSelectedChildShapes = slide.ToShapeRange(correctedChildShapeList);
 
                 // Remove the tags after they have been used
-                Graphics.DeleteTagFromShapes(passedSelectedShapes, SelectOrderTagName);
-                Graphics.DeleteTagFromShapes(passedSelectedChildShapes, SelectChildOrderTagName);
+                ShapeUtil.DeleteTagFromShapes(passedSelectedShapes, SelectOrderTagName);
+                ShapeUtil.DeleteTagFromShapes(passedSelectedChildShapes, SelectChildOrderTagName);
 
                 // Revert clipboard
                 tempClipboardShapes.Copy();

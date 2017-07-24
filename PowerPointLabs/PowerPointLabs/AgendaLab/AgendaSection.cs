@@ -20,7 +20,7 @@ namespace PowerPointLabs.AgendaLab
         {
             if (IsNone())
             {
-                return Common.UniqueDigitString();
+                return CommonUtil.UniqueDigitString();
             }
             return Name + "_" + Index;
         }
