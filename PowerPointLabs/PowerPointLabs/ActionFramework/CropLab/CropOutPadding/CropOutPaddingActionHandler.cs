@@ -26,7 +26,13 @@ namespace PowerPointLabs.ActionFramework.CropLab
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
                 return;
             }
+
             ShapeRange shapeRange = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
+            {
+                shapeRange = selection.ChildShapeRange;
+            }
+
             if (shapeRange.Count < 1)
             {
                 HandleInvalidSelectionError(CropLabErrorHandler.ErrorCodeSelectionIsInvalid, FeatureName, CropLabErrorHandler.SelectionTypePicture, 1, errorHandler);
@@ -40,7 +46,8 @@ namespace PowerPointLabs.ActionFramework.CropLab
 
             try
             {
-                CropOutPadding.Crop(selection);
+                ShapeRange result = CropOutPadding.Crop(shapeRange);
+                result?.Select();
             }
             catch (CropLabException e)
             {
