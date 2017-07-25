@@ -191,14 +191,17 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionSingleShape(Selection selection)
         {
-            if (selection.HasChildShapeRange)
+            if (selection.Type != PpSelectionType.ppSelectionShapes)
             {
-                return selection.ChildShapeRange.Count == 1 &&
-                    selection.ChildShapeRange.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape;
+                return false;
             }
 
-            return selection.Type == PpSelectionType.ppSelectionShapes &&
-                selection.ShapeRange.Count == 1;
+            if (selection.HasChildShapeRange)
+            {
+                return selection.ChildShapeRange.Count == 1;
+            }
+
+            return selection.ShapeRange.Count == 1;
         }
 
         public static bool IsSelectionMultipleOrGroup(Selection selection)
