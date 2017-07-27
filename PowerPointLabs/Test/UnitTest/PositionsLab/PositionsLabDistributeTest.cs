@@ -76,8 +76,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinSlideWithEdges()
         {
-            PositionsLabMain.DistributeReferToSlide();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -95,8 +96,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinSlideWithEdges()
         {
-            PositionsLabMain.DistributeReferToSlide();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -114,8 +116,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinSlideWithEdges()
         {
-            PositionsLabMain.DistributeReferToSlide();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -133,8 +136,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinFirstWithEdges()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -152,8 +156,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinFirstWithEdges()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -171,8 +176,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinFirstWithEdges()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -191,8 +197,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinFirstAndSecondWithEdges()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -210,8 +217,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinFirstAndSecondWithEdges()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -229,8 +237,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinFirstAndSecondWithEdges()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -249,8 +258,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinCornerWithEdges()
         {
-            PositionsLabMain.DistributeReferToExtremeShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -268,8 +278,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinCornerWithEdges()
         {
-            PositionsLabMain.DistributeReferToExtremeShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -287,8 +298,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinCornerWithEdges()
         {
-            PositionsLabMain.DistributeReferToExtremeShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -307,8 +319,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinSlideWithCenter()
         {
-            PositionsLabMain.DistributeReferToSlide();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -326,8 +339,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinSlideWithCenter()
         {
-            PositionsLabMain.DistributeReferToSlide();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -345,8 +359,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinSlideWithCenter()
         {
-            PositionsLabMain.DistributeReferToSlide();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.Slide;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -364,8 +379,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinFirstWithCenter()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -383,8 +399,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinFirstWithCenter()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -402,8 +419,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinFirstWithCenter()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -422,8 +440,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinFirstAndSecondWithCenter()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -441,8 +460,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinFirstAndSecondWithCenter()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -460,8 +480,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinFirstAndSecondWithCenter()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -480,8 +501,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeHorizontalWithinCornerWithCenter()
         {
-            PositionsLabMain.DistributeReferToExtremeShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;
@@ -499,8 +521,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeVerticalWithinCornerWithCenter()
         {
-            PositionsLabMain.DistributeReferToExtremeShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideHeight = Pres.PageSetup.SlideHeight;
@@ -518,8 +541,9 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeCenterWithinCornerWithCenter()
         {
-            PositionsLabMain.DistributeReferToExtremeShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.ExtremeShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
             var slideWidth = Pres.PageSetup.SlideWidth;

@@ -10,7 +10,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "ConvertToPicture.pptx";
+            return "ShortcutsLab\\ConvertToPicture.pptx";
         }
 
         [TestMethod]

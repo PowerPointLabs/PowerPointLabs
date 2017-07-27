@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PositionsLab;
+using PowerPointLabs.TextCollection;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
@@ -21,13 +21,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void OpenPane()
         {
-            UIThreadExecutor.Execute(() =>
+            UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection.PositionsLabTag));
+                    new RibbonControl(PositionsLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(PositionsPane)).Control as PositionsPane;
-            });
+            }));
         }
 
         public void ToggleRotateButton()
@@ -54,12 +54,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void ReorientFixed()
         {
-            PositionsLabMain.ReorientShapeOrientationToFixed();
+            PositionsLabSettings.ReorientShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
         }
 
         public void ReorientDynamic()
         {
-            PositionsLabMain.ReorientShapeOrientationToDynamic();
+            PositionsLabSettings.ReorientShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
         }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Label.HighlightLab
 {
-    [ExportLabelRibbonId(TextCollection.HighlightLabMenuId)]
+    [ExportLabelRibbonId(HighlightLabText.RibbonMenuId)]
     class HighlightLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.HighlightLabMenuLabel;
+            return HighlightLabText.RibbonMenuLabel;
         }
     }
 }

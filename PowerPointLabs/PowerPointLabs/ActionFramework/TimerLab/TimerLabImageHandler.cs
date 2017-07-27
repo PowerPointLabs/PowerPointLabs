@@ -1,10 +1,12 @@
 ﻿using System.Drawing;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TimerLab
 {
-    [ExportImageRibbonId(TextCollection.TimerLabTag)]
+    [ExportImageRibbonId(TimerLabText.PaneTag)]
     class TimerLabImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

@@ -1,14 +1,20 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.AnimationLab
 {
-    [ExportEnabledRibbonId(TextCollection.AnimateInSlideTag)]
+    [ExportEnabledRibbonId(AnimationLabText.AnimateInSlideTag)]
     class AnimateInSlideEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return IsSelectionMultipleSameShapeType();
+            Selection currentSelection = this.GetCurrentSelection();
+            return ShapeUtil.IsSelectionMultipleSameShapeType(currentSelection);
         }
     }
 }

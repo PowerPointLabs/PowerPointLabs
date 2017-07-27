@@ -3,8 +3,8 @@ using System.Reflection;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs.SyncLab;
 using PowerPointLabs.SyncLab.ObjectFormats;
+using PowerPointLabs.SyncLab.Views;
 
 namespace Test.UnitTest.SyncLab
 {

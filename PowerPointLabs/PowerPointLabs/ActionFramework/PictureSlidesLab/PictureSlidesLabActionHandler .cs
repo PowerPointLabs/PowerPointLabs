@@ -1,11 +1,12 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.PictureSlidesLab.View;
+using PowerPointLabs.PictureSlidesLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PictureSlidesLab
 {
-    [ExportActionRibbonId(TextCollection.PictureSlidesLabTag)]
+    [ExportActionRibbonId(PictureSlidesLabText.PaneTag)]
     class PictureSlidesLabActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

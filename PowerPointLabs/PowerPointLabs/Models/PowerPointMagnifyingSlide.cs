@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using PowerPointLabs.AnimationLab;
 using PowerPointLabs.CropLab;
+using PowerPointLabs.ZoomLab;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -35,7 +37,7 @@ namespace PowerPointLabs.Models
         {
             PrepareForZoomToArea(zoomShape);
             PowerPoint.Shape shapeToZoom = null, referenceShape = null;
-            if (!ZoomToArea.backgroundZoomChecked)
+            if (!ZoomLabSettings.BackgroundZoomChecked)
             {
                 shapeToZoom = GetShapeToZoom(zoomShape);
                 referenceShape = GetReferenceShape(shapeToZoom);
@@ -83,7 +85,7 @@ namespace PowerPointLabs.Models
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 DeleteShapeAnimations(s);
-                if (!ZoomToArea.backgroundZoomChecked)
+                if (!ZoomLabSettings.BackgroundZoomChecked)
                 {
                     PowerPoint.Effect effectFade = _slide.TimeLine.MainSequence.AddEffect(s, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                     effectFade.Exit = Office.MsoTriState.msoTrue;
@@ -148,7 +150,7 @@ namespace PowerPointLabs.Models
 
             zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             zoomSlideCroppedShapes.Name = "PPTLabsMagnifyAreaGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            Utils.Graphics.FitShapeToSlide(ref zoomSlideCroppedShapes);
+            Utils.ShapeUtil.FitShapeToSlide(ref zoomSlideCroppedShapes);
             zoomSlideCopy.Delete();
         }
 

@@ -2,6 +2,7 @@
 using System.Windows;
 
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.CropLab
 {
@@ -11,7 +12,7 @@ namespace PowerPointLabs.CropLab
         {
             if (exception != null)
             {
-                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog("Error", content, exception);
             }
             else
             {

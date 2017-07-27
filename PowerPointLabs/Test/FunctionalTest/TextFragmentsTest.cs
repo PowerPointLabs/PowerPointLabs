@@ -10,7 +10,7 @@ namespace Test.FunctionalTest
 
         protected override string GetTestingSlideName()
         {
-            return "TextFragments.pptx";
+            return "HighlightLab\\TextFragments.pptx";
         }
 
         [TestMethod]

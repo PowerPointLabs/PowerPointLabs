@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection.ConvertToPictureTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.ConvertToPictureTag)]
     class ConvertToPictureShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ConvertToPictureShapeLabel;
+            return ShortcutsLabText.ConvertToPictureLabel;
         }
     }
 }

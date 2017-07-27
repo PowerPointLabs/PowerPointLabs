@@ -1,12 +1,11 @@
 ﻿using System.Text.RegularExpressions;
-using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Util;
-using PowerPointLabs.CropLab;
 
+using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.CropLab;
 
 namespace PowerPointLabs.ActionFramework.CropLab
 {
-    abstract class CropLabActionHandler : BaseUtilActionHandler
+    abstract class CropLabActionHandler : ActionHandler
     {
         protected static void HandleErrorCode(int errorCode, string featureName, CropLabErrorHandler errorHandler)
         {

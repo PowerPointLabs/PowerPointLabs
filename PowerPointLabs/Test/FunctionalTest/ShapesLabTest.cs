@@ -11,7 +11,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "ShapesLab.pptx";
+            return "ShapesLab\\ShapesLab.pptx";
         }
 
         //use new powerpoint instance to refresh
@@ -39,9 +39,9 @@ namespace Test.FunctionalTest
         private void TestImportLibraryAndShape(IShapesLabController shapesLab)
         {
             shapesLab.ImportLibrary(
-                PathUtil.GetDocTestPresentationPath("LibraryToImport.pptlabsshapes"));
+                PathUtil.GetDocTestPresentationPath("ShapesLab\\LibraryToImport.pptlabsshapes"));
             shapesLab.ImportLibrary(
-                PathUtil.GetDocTestPresentationPath("ShapeToImport.pptlabsshape"));
+                PathUtil.GetDocTestPresentationPath("ShapesLab\\ShapeToImport.pptlabsshape"));
             var actualShapeDataAfterImport = shapesLab.FetchShapeGalleryPresentationData();
             var expShapeDataAfterImport = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath(ExpectedShapeGalleryFileName()));
@@ -52,11 +52,11 @@ namespace Test.FunctionalTest
         {
             if (PpOperations.IsOffice2010())
             {
-                return "ExpShapeGalleryAftImportNonWide.pptx";
+                return "ShapesLab\\ExpShapeGalleryAftImportNonWide.pptx";
             }
             else
             {
-                return "ExpShapeGalleryAftImport.pptx";
+                return "ShapesLab\\ExpShapeGalleryAftImport.pptx";
             }
         }
 

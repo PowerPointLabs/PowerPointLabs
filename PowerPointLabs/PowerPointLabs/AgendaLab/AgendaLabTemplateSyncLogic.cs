@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -306,7 +308,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static List<string> RetrieveTrackedDeletions(PowerPointSlide slide)
         {
-            var retrievedNameList = Common.UnserializeCollection(slide.RetrieveDataFromNotes());
+            var retrievedNameList = CommonUtil.UnserializeCollection(slide.RetrieveDataFromNotes());
             if (retrievedNameList == null)
             {
                 return new List<string>();
@@ -322,7 +324,7 @@ namespace PowerPointLabs.AgendaLab
         private static void TrackShapesInSlide(PowerPointSlide slide)
         {
             var nameList = slide.GetNameToShapeDictionary().Keys.ToList();
-            slide.StoreDataInNotes(Common.SerializeCollection(nameList));
+            slide.StoreDataInNotes(CommonUtil.SerializeCollection(nameList));
         }
         #endregion
     }

@@ -2,10 +2,11 @@
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection.PasteAtOriginalPositionTag)]
+    [ExportActionRibbonId(PasteLabText.PasteAtOriginalPositionTag)]
     class PasteAtOriginalPositionActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
@@ -19,7 +21,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             }
             UpdateStyleName(
                 result,
-                TextCollection.PictureSlidesLabText.StyleNameTextBox);
+                PictureSlidesLabText.StyleNameTextBox);
             return result;
         }
 
@@ -27,7 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
         {
             return new StyleOption
             {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameTextBox,
+                StyleName = PictureSlidesLabText.StyleNameTextBox,
                 IsUseTextBoxStyle = true,
                 TextBoxPosition = 7,
                 TextBoxColor = "#000000",

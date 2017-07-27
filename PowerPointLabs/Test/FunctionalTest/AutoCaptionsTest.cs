@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs;
+using PowerPointLabs.TextCollection;
 
 using Test.Util;
 
@@ -11,7 +11,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AutoCaptions.pptx";
+            return "CaptionsLab\\AutoCaptions.pptx";
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace Test.FunctionalTest
             ThreadUtil.WaitFor(1000);
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
-                TextCollection.CaptionsLabErrorDialogTitle,
+                CaptionsLabText.ErrorDialogTitle,
                 "Captions could not be created because there are no notes entered. Please enter something in the notes and try again.",
                 PplFeatures.AutoCaptions);
         }

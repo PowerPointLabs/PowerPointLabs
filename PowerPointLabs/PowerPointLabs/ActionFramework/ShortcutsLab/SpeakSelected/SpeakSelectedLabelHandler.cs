@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
-    [ExportLabelRibbonId(TextCollection.SpeakSelectedTag)]
+    [ExportLabelRibbonId(ShortcutsLabText.SpeakSelectedTag)]
     class SpeakSelectedLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ContextSpeakSelectedTextLabel;
+            return ShortcutsLabText.ContextSpeakSelectedTextLabel;
         }
     }
 }

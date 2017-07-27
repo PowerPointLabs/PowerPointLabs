@@ -10,14 +10,9 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 namespace Test.UnitTest.CropLab
 {
     [TestClass]
-    public class BaseCropLabTest : BaseUnitTest
+    public abstract class BaseCropLabTest : BaseUnitTest
     {
         private readonly Dictionary<string, string> _originalShapeName = new Dictionary<string, string>();
-
-        protected override string GetTestingSlideName()
-        {
-            return "CropLab.pptx";
-        }
 
         protected PowerPoint.ShapeRange GetShapes(int slideNumber, IEnumerable<string> shapeNames)
         {

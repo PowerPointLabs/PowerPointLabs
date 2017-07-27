@@ -1,13 +1,12 @@
-﻿using System.Linq;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Models;
+using PowerPointLabs.NarrationsLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportActionRibbonId(TextCollection.RecordNarrationsTag)]
+    [ExportActionRibbonId(NarrationsLabText.RecordNarrationsTag)]
     class RecordNarrationsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

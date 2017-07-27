@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
@@ -20,14 +22,14 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             }
             return UpdateStyleName(
                 result,
-                TextCollection.PictureSlidesLabText.StyleNameCircle);
+                PictureSlidesLabText.StyleNameCircle);
         }
 
         public override StyleOption GetDefaultOptionForPreview()
         {
             return new StyleOption()
             {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameCircle,
+                StyleName = PictureSlidesLabText.StyleNameCircle,
                 IsUseCircleStyle = true,
                 FontColor = "#000000",
                 CircleTransparency = 25,

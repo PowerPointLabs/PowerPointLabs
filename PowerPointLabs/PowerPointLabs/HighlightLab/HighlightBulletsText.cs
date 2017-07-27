@@ -14,8 +14,6 @@ namespace PowerPointLabs.HighlightLab
     class HighlightBulletsText
     {
 #pragma warning disable 0618
-        public static Color highlightColor = Color.FromArgb(242, 41, 10);
-        public static Color defaultColor = Color.FromArgb(0, 0, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
 
@@ -269,7 +267,7 @@ namespace PowerPointLabs.HighlightLab
             {
                 effect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                 // TODO: Orange text bug occurs on this line. effect.EffectParameters.Color2.RGB is not changed for some reason.
-                effect.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(highlightColor);
+                effect.EffectParameters.Color2.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsTextHighlightColor);
                 effect.Timing.Duration = 0.1f;
                 effect.Timing.TriggerDelayTime = 0.1f;
             }
@@ -287,7 +285,7 @@ namespace PowerPointLabs.HighlightLab
             foreach (var effect in disappearEffects)
             {
                 effect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                effect.EffectParameters.Color2.RGB = Utils.Graphics.ConvertColorToRgb(defaultColor);
+                effect.EffectParameters.Color2.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsTextDefaultColor);
                 effect.Timing.Duration = 0.1f;
                 effect.Timing.TriggerDelayTime = 0.1f;
             }

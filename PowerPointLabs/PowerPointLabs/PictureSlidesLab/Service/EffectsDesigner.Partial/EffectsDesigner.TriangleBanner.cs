@@ -19,7 +19,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             triangle1.Rotation = 90;
             ChangeName(triangle1, EffectName.Overlay);
             triangle1.Fill.Solid();
-            triangle1.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor1));
+            triangle1.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor1));
             triangle1.Fill.Transparency = (float)transparency / 100;
             triangle1.Line.Visible = MsoTriState.msoFalse;
 
@@ -36,7 +36,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             triangle2.Rotation = 270;
             ChangeName(triangle2, EffectName.Overlay);
             triangle2.Fill.Solid();
-            triangle2.Fill.ForeColor.RGB = Graphics.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor2));
+            triangle2.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(StringUtil.GetColorFromHexValue(overlayColor2));
             triangle2.Fill.Transparency = (float)transparency / 100;
             triangle2.Line.Visible = MsoTriState.msoFalse;
 

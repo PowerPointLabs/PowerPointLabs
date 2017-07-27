@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportLabelRibbonId(TextCollection.ColorsLabTag)]
+    [ExportLabelRibbonId(ColorsLabText.PaneTag)]
     class ColorsLabLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.ColorPickerButtonLabel;
+            return ColorsLabText.RibbonMenuLabel;
         }
     }
 }

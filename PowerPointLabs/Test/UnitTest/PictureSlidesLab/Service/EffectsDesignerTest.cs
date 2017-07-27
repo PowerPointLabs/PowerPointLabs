@@ -13,7 +13,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
     [TestClass]
     public class EffectsDesignerTest : BaseUnitTest
     {
-        public readonly string Img = PathUtil.GetDocTestPath() + "koala.jpg";
+        public readonly string Img = PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg";
         public readonly string Link = "http://www.google.com/";
 
         private Slide _contentSlide;

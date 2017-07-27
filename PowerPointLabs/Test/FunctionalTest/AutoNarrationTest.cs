@@ -8,7 +8,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AutoNarrate.pptx";
+            return "NarrationsLab\\AutoNarrate.pptx";
         }
 
         [TestMethod]

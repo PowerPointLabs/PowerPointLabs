@@ -15,13 +15,17 @@ namespace Test.UnitTest.CropLab
         private const int SlideNumberMultiplePicturesExpected = 8;
         private const int SlideNumberRotatedPictureActual = 10;
         private const int SlideNumberRotatedPictureExpected = 11;
+        private const int SlideNumberOneChildPictureActual = 13;
+        private const int SlideNumberOneChildPictureExpected = 14;
+        private const int SlideNumberMultipleChildPicturesActual = 16;
+        private const int SlideNumberMultipleChildPicturesExpected = 17;
 
         private List<string> selectOneShapeNames = new List<string> { "selectMe" };
         private List<string> selectMultipleShapesNames = new List<string> { "selectMe1", "selectMe2" };
 
         protected override string GetTestingSlideName()
         {
-            return "CropOutPadding.pptx";
+            return "CropLab\\CropOutPadding.pptx";
         }
 
         [TestMethod]
@@ -54,6 +58,28 @@ namespace Test.UnitTest.CropLab
             actualShapes = CropOutPadding.Crop(actualShapes);
 
             var expectedShapes = GetShapes(SlideNumberRotatedPictureExpected, selectOneShapeNames);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void CropOutPaddingOneChildPicture()
+        {
+            var actualShapes = GetShapes(SlideNumberOneChildPictureActual, selectOneShapeNames);
+            actualShapes = CropOutPadding.Crop(actualShapes);
+
+            var expectedShapes = GetShapes(SlideNumberOneChildPictureExpected, selectOneShapeNames);
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void CropOutPaddingMultipleChildPictures()
+        {
+            var actualShapes = GetShapes(SlideNumberMultipleChildPicturesActual, selectMultipleShapesNames);
+            actualShapes = CropOutPadding.Crop(actualShapes);
+
+            var expectedShapes = GetShapes(SlideNumberMultipleChildPicturesExpected, selectMultipleShapesNames);
             CheckShapes(expectedShapes, actualShapes);
         }
     }

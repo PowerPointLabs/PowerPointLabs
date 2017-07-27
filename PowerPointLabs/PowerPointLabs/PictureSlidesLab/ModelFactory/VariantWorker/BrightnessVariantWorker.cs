@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
 {
@@ -8,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker
     {
         public string GetVariantName()
         {
-            return TextCollection.PictureSlidesLabText.VariantCategoryBrightness;
+            return PictureSlidesLabText.VariantCategoryBrightness;
         }
 
         public List<StyleVariant> GetVariants()

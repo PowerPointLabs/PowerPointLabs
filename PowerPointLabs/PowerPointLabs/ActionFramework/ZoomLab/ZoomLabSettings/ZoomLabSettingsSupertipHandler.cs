@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ZoomLab
 {
-    [ExportSupertipRibbonId(TextCollection.ZoomLabSettingsTag)]
+    [ExportSupertipRibbonId(ZoomLabText.SettingsTag)]
     class ZoomLabSettingsSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.ZoomLabSettingsSupertip;
+            return ZoomLabText.SettingsButtonSupertip;
         }
     }
 }

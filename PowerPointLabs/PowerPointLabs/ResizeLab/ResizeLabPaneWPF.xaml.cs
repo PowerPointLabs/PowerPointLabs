@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ResizeLab.Views;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab

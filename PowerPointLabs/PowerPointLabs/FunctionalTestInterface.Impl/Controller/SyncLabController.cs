@@ -4,8 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.SyncLab;
-using PowerPointLabs.SyncLab.View;
+using PowerPointLabs.SyncLab.Views;
+using PowerPointLabs.TextCollection;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
@@ -23,13 +24,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void OpenPane()
         {
-            UIThreadExecutor.Execute(() =>
+            UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection.SyncLabTag));
+                    new RibbonControl(SyncLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(SyncPane)).Control as SyncPane;
-            });
+            }));
         }
 
         public void Copy()

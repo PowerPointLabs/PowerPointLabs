@@ -14,15 +14,20 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Tools;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
+using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.ShapesLab;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+
 using PPExtraEventHelper;
 
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -42,7 +47,7 @@ namespace PowerPointLabs
 
         public Ribbon1 Ribbon;
 
-        internal ShapesLabConfig ShapesLabConfigs;
+        internal ShapesLabConfigSaveFile ShapesLabConfig;
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
@@ -141,7 +146,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            var shapeRootFolderPath = ShapesLabConfigs.ShapeRootFolder;
+            var shapeRootFolderPath = ShapesLabSettings.SaveFolderPath;
 
             ShapePresentation =
                 new PowerPointShapeGalleryPresentation(shapeRootFolderPath, ShapeGalleryPptxName);
@@ -151,36 +156,36 @@ namespace PowerPointLabs
             {
                 // if the presentation gets some error during opening, and the error could not
                 // be resolved by consistency check, prompt the user about the error
-                MessageBox.Show(TextCollection.ShapeGalleryInitErrorMsg);
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
 
-            if (ShapePresentation.HasCategory(ShapesLabConfigs.DefaultCategory))
+            if (ShapePresentation.HasCategory(ShapesLabConfig.DefaultCategory))
             {
-                ShapePresentation.DefaultCategory = ShapesLabConfigs.DefaultCategory;
+                ShapePresentation.DefaultCategory = ShapesLabConfig.DefaultCategory;
 
                 return;
             }
 
             // if we do not have the default category, create and add it to ShapeGallery
-            ShapePresentation.AddCategory(ShapesLabConfigs.DefaultCategory);
+            ShapePresentation.AddCategory(ShapesLabConfig.DefaultCategory);
             ShapePresentation.Save();
         }
 
         public void InitializeShapesLabConfig()
         {
             // if ShapesLabConfig has already been intialized, do nothing
-            if (ShapesLabConfigs != null)
+            if (ShapesLabConfig != null)
             {
                 return;
             }
 
-            ShapesLabConfigs = new ShapesLabConfig(AppDataFolder);
+            ShapesLabConfig = new ShapesLabConfigSaveFile(AppDataFolder);
 
             // create a directory under specified location if the location does not exist
-            if (!Directory.Exists(ShapesLabConfigs.ShapeRootFolder))
+            if (!Directory.Exists(ShapesLabSettings.SaveFolderPath))
             {
-                Directory.CreateDirectory(ShapesLabConfigs.ShapeRootFolder);
+                Directory.CreateDirectory(ShapesLabSettings.SaveFolderPath);
             }
         }
 
@@ -210,14 +215,14 @@ namespace PowerPointLabs
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog(TextCollection.AccessTempFolderErrorMsg, string.Empty, e);
+                    ErrorDialogBox.ShowDialog(CommonText.ErrorAccessTempFolder, string.Empty, e);
                 }
 
                 ExtractMediaFiles(zipFullPath, tempPath);
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.PrepareMediaErrorMsg, "Files cannot be linked.", e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorPrepareMedia, "Files cannot be linked.", e);
             }
         }
 
@@ -241,7 +246,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.CreatTempFolderErrorMsg, string.Empty, e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorCreateTempFolder, string.Empty, e);
             }
             finally
             {
@@ -260,7 +265,7 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ResizeLabPane(), TextCollection.ResizeLabsTaskPaneTitle, activeWindow,
+            RegisterTaskPane(new ResizeLabPane(), ResizeLabText.TaskPaneTitle, activeWindow,
                 ResizeTaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -271,7 +276,7 @@ namespace PowerPointLabs
                 return;
             }
 
-            RegisterTaskPane(new RecorderTaskPane(tempFullPath), TextCollection.RecManagementPanelTitle, activeWindow,
+            RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
                 TaskPaneVisibleValueChangedEventHandler, null);
         }
 
@@ -284,19 +289,7 @@ namespace PowerPointLabs
 
             var activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(new ColorPane(), TextCollection.ColorsLabTaskPanelTitle, activeWindow, null, null);
-        }
-
-        public void RegisterDrawingsPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(DrawingsPane)) != null)
-            {
-                return;
-            }
-
-            var activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new DrawingsPane(), TextCollection.DrawingsLabTaskPanelTitle, activeWindow, null, null);
+            RegisterTaskPane(new ColorPane(), ColorsLabText.TaskPanelTitle, activeWindow, null, null);
         }
 
         public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
@@ -309,8 +302,8 @@ namespace PowerPointLabs
             var activeWindow = presentation.Application.ActiveWindow;
 
             RegisterTaskPane(
-                new CustomShapePane(ShapesLabConfigs.ShapeRootFolder, ShapesLabConfigs.DefaultCategory),
-                TextCollection.ShapesLabTaskPanelTitle, activeWindow, null, null);
+                new CustomShapePane(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
+                ShapesLabText.TaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
@@ -766,7 +759,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog(TextCollection.ExtraErrorMsg, "Archived files cannot be retrieved.", e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorExtract, "Archived files cannot be retrieved.", e);
             }
         }
 
@@ -840,9 +833,9 @@ namespace PowerPointLabs
                 ShapePresentation != null &&
                 ShapePresentation.Opened)
             {
-                if (string.IsNullOrEmpty(ShapesLabConfigs.DefaultCategory))
+                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
                 {
-                    ShapesLabConfigs.DefaultCategory = ShapePresentation.Categories[0];
+                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
                 }
 
                 ShapePresentation.Close();
@@ -854,8 +847,6 @@ namespace PowerPointLabs
         {
             if (pres != null)
             {
-                Ribbon.EmbedAudioVisible = !pres.Name.EndsWith(".ppt");
-
                 var customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
 
                 // make sure ShapeGallery's default category is consistent with current presentation
@@ -900,16 +891,10 @@ namespace PowerPointLabs
             BreakRecorderEvents();
 
             // ribbon function init
-            Ribbon.AddAutoMotionEnabled = true;
-            Ribbon.ReloadAutoMotionEnabled = true;
-            Ribbon.ReloadSpotlight = true;
             Ribbon.HighlightBulletsEnabled = true;
 
             if (sldRange.Count != 1)
             {
-                Ribbon.AddAutoMotionEnabled = false;
-                Ribbon.ReloadAutoMotionEnabled = false;
-                Ribbon.ReloadSpotlight = false;
                 Ribbon.HighlightBulletsEnabled = false;
             }
             else
@@ -929,23 +914,6 @@ namespace PowerPointLabs
                 {
                     prev = presentation.Slides[slideIndex - 1];
                 }
-
-                if (!((tmp.Name.StartsWith("PPSlideAnimated"))
-                      || ((tmp.Name.StartsWith("PPSlideStart"))
-                          && (next.Name.StartsWith("PPSlideAnimated")))
-                      || ((tmp.Name.StartsWith("PPSlideEnd"))
-                          && (prev.Name.StartsWith("PPSlideAnimated")))
-                      || ((tmp.Name.StartsWith("PPSlideMulti"))
-                          && ((prev.Name.StartsWith("PPSlideAnimated"))
-                              || (next.Name.StartsWith("PPSlideAnimated"))))))
-                {
-                    Ribbon.ReloadAutoMotionEnabled = false;
-                }
-
-                if (!(tmp.Name.Contains("PPTLabsSpotlight")))
-                {
-                    Ribbon.ReloadSpotlight = false;
-                }
             }
             
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
@@ -958,10 +926,6 @@ namespace PowerPointLabs
         [HandleProcessCorruptedStateExceptions]
         private void ThisAddInSelectionChanged(PowerPoint.Selection sel)
         {
-            Ribbon.SpotlightEnabled = false;
-            Ribbon.InSlideEnabled = false;
-            Ribbon.ZoomButtonEnabled = false;
-
             if (sel.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
                 PowerPoint.Shape sh = null;
@@ -974,14 +938,6 @@ namespace PowerPointLabs
                     Logger.LogException(e, "ThisAddInSelectionChanged");
                     Logger.Log("We do not have access to the ShapeRange now!");
                     return;
-                }
-
-                if (sh.Type == Office.MsoShapeType.msoAutoShape || sh.Type == Office.MsoShapeType.msoFreeform ||
-                    sh.Type == Office.MsoShapeType.msoTextBox || sh.Type == Office.MsoShapeType.msoPlaceholder
-                    || sh.Type == Office.MsoShapeType.msoCallout || sh.Type == Office.MsoShapeType.msoInk ||
-                    sh.Type == Office.MsoShapeType.msoGroup)
-                {
-                    Ribbon.SpotlightEnabled = true;
                 }
 
                 if (isResizePaneVisible)
@@ -1002,6 +958,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
+            Ribbon.RefreshRibbonControl("AddSpotlight");
         }
 
         private void ThisAddInNewPresentation(PowerPoint.Presentation pres)
@@ -1404,7 +1361,7 @@ namespace PowerPointLabs
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
             {
-                MessageBox.Show(TextCollection.TabActivateErrorDescription, TextCollection.TabActivateErrorTitle);
+                MessageBox.Show(CommonText.ErrorTabActivate, CommonText.ErrorTabActivateTitle);
             }
         }
 
