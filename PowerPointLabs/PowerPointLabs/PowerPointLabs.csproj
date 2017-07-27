@@ -44,7 +44,7 @@
     <PublishUrl>C:\Users\initialsHL\Desktop\publish-online\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download-78563/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.0.0.0</ApplicationVersion>
+    <ApplicationVersion>4.1.1.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
