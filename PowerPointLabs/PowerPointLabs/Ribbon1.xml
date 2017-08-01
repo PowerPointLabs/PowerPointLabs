@@ -531,10 +531,6 @@
       <menuSeparator id="separatorInk"/>
       <dynamicMenu id="MenuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
-    <contextMenu idMso="ContextMenuVideo">
-      <menuSeparator id="separatorVideo"/>
-      <dynamicMenu id="MenuVideo" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
-    </contextMenu>
     
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
