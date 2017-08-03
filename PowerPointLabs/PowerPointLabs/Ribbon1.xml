@@ -515,6 +515,7 @@
       <menuSeparator id="separatorChart"/>
       <dynamicMenu id="MenuChart" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <!--
     <contextMenu idMso="ContextMenuTable">
       <menuSeparator id="separatorTable"/>
       <dynamicMenu id="MenuTable" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
@@ -523,6 +524,7 @@
 	    <menuSeparator id="separatorTableWhole" />
 	    <dynamicMenu id="MenuTableWhole" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    -->
     <contextMenu idMso="ContextMenuObjectsGroup">
       <menuSeparator id="separatorGroup"/>
       <dynamicMenu id="MenuGroup" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
@@ -531,7 +533,11 @@
       <menuSeparator id="separatorInk"/>
       <dynamicMenu id="MenuInk" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
-    
+    <!-- 
+    <contextMenu idMso="ContextMenuVideo">
+      <menuSeparator id="separatorVideo"/>
+      <dynamicMenu id="MenuVideo" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
     <contextMenu idMso="ContextMenuSmartArtBackground">
       <menuSeparator id="separatorSmartArt"/>
       <dynamicMenu id="MenuSmartArtBackground" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
@@ -544,6 +550,7 @@
       <menuSeparator id="separatorSmartArtEditText"/>
       <dynamicMenu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    -->
     
     <contextMenu idMso="ContextMenuCurve">
 	    <menuSeparator id="separatorCurve" />
@@ -564,6 +571,7 @@
 	    <menuSeparator id="separatorFrame" />
 	    <dynamicMenu id="MenuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <!--
     <contextMenu idMso="ContextMenuNotesEditText">
       <menu id="MenuNotesEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">
         <menuSeparator id="NarrationsLabContextSeparator"
@@ -580,6 +588,7 @@
                 onAction="OnAction"/>
       </menu>
     </contextMenu>
+    -->
   </contextMenus>
 </customUI>
 
