@@ -8,6 +8,9 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
+using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
@@ -120,18 +123,18 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void StoreDataInNotes(string data)
         {
-            NotesPageText = TextCollection.NotesPageStorageText + data;
+            NotesPageText = CommonText.NotesPageStorageText + data;
         }
 
         public string RetrieveDataFromNotes()
         {
             var text = NotesPageText;
-            if (!text.StartsWith(TextCollection.NotesPageStorageText))
+            if (!text.StartsWith(CommonText.NotesPageStorageText))
             {
                 return "";
             }
 
-            return text.Substring(TextCollection.NotesPageStorageText.Length);
+            return text.Substring(CommonText.NotesPageStorageText.Length);
         }
 
         public Shapes Shapes
@@ -536,7 +539,7 @@ namespace PowerPointLabs.Models
             var oldNames = shapeList.Select(shape => shape.Name).ToList();
 
             var currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
-            var unusedNames = Common.GetUnusedStrings(currentShapeNames, shapeList.Count);
+            var unusedNames = CommonUtil.GetUnusedStrings(currentShapeNames, shapeList.Count);
             shapeList.Zip(unusedNames, (shape, name) => shape.Name = name).ToList();
 
 
@@ -560,7 +563,7 @@ namespace PowerPointLabs.Models
                 newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
                 newShape.Top = shape.Top;
-                Graphics.MoveZToJustInFront(newShape, shape);
+                ShapeUtil.MoveZToJustInFront(newShape, shape);
 
                 DeleteShapeAnimations(newShape);
                 TransferAnimation(shape, newShape);
@@ -890,7 +893,7 @@ namespace PowerPointLabs.Models
 
             markerShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
-            markerShape.TextFrame2.TextRange.Text = TextCollection.AgendaLabTemplateSlideInstructions;
+            markerShape.TextFrame2.TextRange.Text = AgendaLabText.TemplateSlideInstructions;
             markerShape.Fill.ForeColor.RGB = 0x0000C0;
             markerShape.TextFrame2.TextRange.Font.Bold = MsoTriState.msoTrue;
             markerShape.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0x00FFFF;
@@ -904,7 +907,7 @@ namespace PowerPointLabs.Models
             markerShape.Top = slideHeight - markerShape.Height;
             markerShape.Name = PptLabsTemplateMarkerShapeName;
 
-            Utils.Graphics.MakeShapeViewTimeInvisible(markerShape, _slide);
+            ShapeUtil.MakeShapeViewTimeInvisible(markerShape, _slide);
             return markerShape;
         }
 
@@ -1162,9 +1165,9 @@ namespace PowerPointLabs.Models
             var shapes = _slide.Shapes.Cast<Shape>();
             foreach (var shape in shapes)
             {
-                if (Graphics.HasDefaultName(shape))
+                if (ShapeUtil.HasDefaultName(shape))
                 {
-                    shape.Name = UnnamedShapeName + Common.UniqueDigitString();
+                    shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }
             }
         }
@@ -1188,7 +1191,7 @@ namespace PowerPointLabs.Models
             {
                 if (currentNames.Contains(shape.Name))
                 {
-                    shape.Name = UnnamedShapeName + Common.UniqueDigitString();
+                    shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }
                 currentNames.Add(shape.Name);
             }
@@ -1219,7 +1222,7 @@ namespace PowerPointLabs.Models
             indicatorShape.Height = 84;
             indicatorShape.Name = PptLabsIndicatorShapeName + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-            Utils.Graphics.MakeShapeViewTimeInvisible(indicatorShape, _slide);
+            ShapeUtil.MakeShapeViewTimeInvisible(indicatorShape, _slide);
 
             return indicatorShape;
         }

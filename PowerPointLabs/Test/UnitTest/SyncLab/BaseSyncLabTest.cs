@@ -13,7 +13,7 @@ namespace Test.UnitTest.SyncLab
 
         protected override string GetTestingSlideName()
         {
-            return "SyncLab.pptx";
+            return "SyncLab\\SyncLab.pptx";
         }
 
         protected PowerPoint.Shape GetShape(int slideNumber, string shapeName)

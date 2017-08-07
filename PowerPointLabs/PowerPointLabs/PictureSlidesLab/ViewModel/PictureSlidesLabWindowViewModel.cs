@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.Models;
@@ -21,8 +22,9 @@ using PowerPointLabs.PictureSlidesLab.Service.Interface;
 using PowerPointLabs.PictureSlidesLab.Service.Preview;
 using PowerPointLabs.PictureSlidesLab.Thread;
 using PowerPointLabs.PictureSlidesLab.Util;
-using PowerPointLabs.PictureSlidesLab.View.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory;
+using PowerPointLabs.PictureSlidesLab.Views.Interface;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 
@@ -202,7 +204,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             catch (Exception e)
             {
                 // not an image or image is corrupted
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorImageCorrupted);
                 Logger.LogException(e, "AddImageSelectionListItem");
             }
         }
@@ -219,7 +221,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         {
             if (StringUtil.IsEmpty(downloadLink) || !UrlUtil.IsUrlValid(downloadLink)) // Case 1: If url not valid
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorUrlLinkIncorrect);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorUrlLinkIncorrect);
                 Logger.Log("Url link error when add internet image");
                 return;
             }
@@ -238,7 +240,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 + Guid.NewGuid().ToString().Substring(0, 7));
             ImageDownloader
                 .Get(downloadLink, imagePath)
-                .After(() =>
+                .After((AutoUpdate.Downloader.AfterDownloadEventDelegate)(() =>
                 {
                     try
                     {
@@ -262,7 +264,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     }
                     catch (Exception e)
                     {
-                        View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageDownloadCorrupted);
+                        View.ShowErrorMessageBox(PictureSlidesLabText.ErrorImageDownloadCorrupted);
                         ImageSelectionList.Remove(item);
                         Logger.LogException(e, "AddImageSelectionListItem (download)");
                     }
@@ -270,14 +272,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                     {
                         IsActiveDownloadProgressRing.Flag = false;
                     }
-                })
+                }))
                 // Case 3: Possibly network timeout
-                .OnError(e =>
+                .OnError((AutoUpdate.Downloader.ErrorEventDelegate)(e =>
                 {
                     IsActiveDownloadProgressRing.Flag = false;
                     ImageSelectionList.Remove(item);
-                    View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToLoad + e.Message);
-                })
+                    View.ShowErrorMessageBox(PictureSlidesLabText.ErrorFailedToLoad + e.Message);
+                }))
                 .Start();
         }
         #endregion
@@ -323,7 +325,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorNoSelectedSlide);
                 Logger.LogException(e, "ApplyStyleInPreviewStage");
             }
             SaveClipboardPicture(copiedPicture);
@@ -387,7 +389,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (Settings.GetDefaultAspectWhenCustomize() == Aspect.PictureAspect)
             {
                 CurrentVariantCategoryId.Number =
-                    VariantsCategory.IndexOf(TextCollection.PictureSlidesLabText.VariantCategoryPicture);
+                    VariantsCategory.IndexOf(PictureSlidesLabText.VariantCategoryPicture);
             }
             Logger.Log("Variation open completed");
         }
@@ -450,8 +452,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             
             var currentVariantsCategory = CurrentVariantCategory.Text;
-            if (currentVariantsCategory != TextCollection.PictureSlidesLabText.VariantCategoryFontColor
-                && _previousVariantsCategory != TextCollection.PictureSlidesLabText.VariantCategoryFontColor)
+            if (currentVariantsCategory != PictureSlidesLabText.VariantCategoryFontColor
+                && _previousVariantsCategory != PictureSlidesLabText.VariantCategoryFontColor)
             {
                 // apply font color variant,
                 // because default styles may contain special font color settings, but not in variants
@@ -466,7 +468,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             var nextCategoryVariants = _styleVariants[currentVariantsCategory];
-            if (currentVariantsCategory == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily)
+            if (currentVariantsCategory == PictureSlidesLabText.VariantCategoryFontFamily)
             {
                 var isFontInVariation = false;
                 var currentFontFamily = _styleOptions[targetVariationSelectedIndex].FontFamily;
@@ -490,14 +492,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             
             int pictureIndexToSelect = -1;
             // Enter picture variation for the first time
-            if (CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture
+            if (CurrentVariantCategory.Text == PictureSlidesLabText.VariantCategoryPicture
                 && !_isPictureVariationInit)
             {
                 _8PicturesInPictureVariation = GetLast8Pictures(targetVariationSelectedIndex);
                 _isPictureVariationInit = true;
             }
             // Enter picture variation again
-            else if (CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture
+            else if (CurrentVariantCategory.Text == PictureSlidesLabText.VariantCategoryPicture
                      && _isPictureVariationInit)
             {
                 var isPictureSwapped = false;
@@ -527,7 +529,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
             }
             // Exit picture variation
-            else if (_previousVariantsCategory == TextCollection.PictureSlidesLabText.VariantCategoryPicture)
+            else if (_previousVariantsCategory == PictureSlidesLabText.VariantCategoryPicture)
             {
                 // use the selected picture in the picture variation to preview
                 var targetPicture = _8PicturesInPictureVariation[targetVariationSelectedIndex];
@@ -628,7 +630,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorNoSelectedSlide);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorNoSelectedSlide);
                 Logger.LogException(e, "ApplyStyleInVariationStage");
             }
             SaveClipboardPicture(copiedPicture);
@@ -640,7 +642,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public bool IsInPictureVariation()
         {
             return CurrentVariantCategory != null && CurrentVariantCategory.Text != null
-                   && CurrentVariantCategory.Text == TextCollection.PictureSlidesLabText.VariantCategoryPicture;
+                   && CurrentVariantCategory.Text == PictureSlidesLabText.VariantCategoryPicture;
         }
 
         public ImageItem GetSelectedPictureInPictureVariation(int pictureIndex)
@@ -892,7 +894,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorImageCorrupted, e);
                 Logger.LogException(e, "UpdateStylesPreviewImages");
             }
             SaveClipboardPicture(copiedPicture);
@@ -1013,7 +1015,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorImageCorrupted, e);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorImageCorrupted, e);
                 Logger.LogException(e, "UpdateStylesVariationImages");
             }
             SaveClipboardPicture(copiedPicture);
@@ -1177,7 +1179,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             var isStoragePathInit = StoragePath.InitPersistentFolder();
             if (!isTempPathInit || !isStoragePathInit)
             {
-                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailToInitTempFolder);
+                View.ShowErrorMessageBox(PictureSlidesLabText.ErrorFailToInitTempFolder);
                 Logger.Log("Failed to init storage");
             }
             Logger.Log("Init storage done");

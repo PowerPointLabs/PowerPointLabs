@@ -3,10 +3,11 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection.PasteToFillSlideTag)]
+    [ExportActionRibbonId(PasteLabText.PasteToFillSlideTag)]
     class PasteToFillSlideActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,

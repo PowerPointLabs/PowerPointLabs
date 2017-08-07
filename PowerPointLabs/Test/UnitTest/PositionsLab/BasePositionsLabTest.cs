@@ -31,8 +31,8 @@ namespace Test.UnitTest.PositionsLab
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - Graphics.GetCenterPoint(selectedShape).X);
-                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - Graphics.GetCenterPoint(selectedShape).Y);
+                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
+                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
                 selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
@@ -44,8 +44,8 @@ namespace Test.UnitTest.PositionsLab
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
                 SwapZOrder(selectedShape, simulatedShape);
             }
         }
@@ -120,7 +120,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
 
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes);
                 }
@@ -167,7 +167,7 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension);
                 }
@@ -208,7 +208,7 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension1, dimension2);
                 }

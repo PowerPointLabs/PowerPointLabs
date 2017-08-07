@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.AudioMisc
 {
@@ -67,7 +70,7 @@ namespace PowerPointLabs.AudioMisc
             var temp = shape.Name.Split(new[] { ' ' });
             if (temp.Length < 3)
             {
-                throw new FormatException(TextCollection.RecorderUnrecognizeAudio);
+                throw new FormatException(NarrationsLabText.RecorderUnrecognizeAudio);
             }
             this.MatchScriptID = Int32.Parse(temp[2]);
 

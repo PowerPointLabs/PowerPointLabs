@@ -13,7 +13,7 @@ namespace Test.FunctionalTest
 
         protected override string GetTestingSlideName()
         {
-            return "AgendaSlidesDefault.pptx";
+            return "AgendaLab\\AgendaSlidesDefault.pptx";
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextWithSlideNumberDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextWithSlideNumberDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
@@ -45,7 +45,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesBeamWithSlideNumberDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesBeamWithSlideNumberDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
@@ -57,7 +57,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesVisualWithSlideNumberDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesVisualWithSlideNumberDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
     }

@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ColorsLab
 {
-    [ExportSupertipRibbonId(TextCollection.ColorsLabTag)]
+    [ExportSupertipRibbonId(ColorsLabText.PaneTag)]
     class ColorsLabSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.ColorsLabMenuSupertip;
+            return ColorsLabText.RibbonMenuSupertip;
         }
     }
 }

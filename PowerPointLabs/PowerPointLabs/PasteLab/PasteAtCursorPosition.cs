@@ -25,7 +25,7 @@ namespace PowerPointLabs.PasteLab
 
                 foreach (Shape shape in pastingShapes)
                 {
-                    if (Graphics.IsAChild(shape))
+                    if (ShapeUtil.IsAChild(shape))
                     {
                         continue;
                     }

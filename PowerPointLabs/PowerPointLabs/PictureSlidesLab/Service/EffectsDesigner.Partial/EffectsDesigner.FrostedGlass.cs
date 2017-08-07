@@ -10,7 +10,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public void ApplyFrostedGlassTextBoxEffect(string overlayColor, int transparency, Shape blurImage, int fontSizeToIncrease)
         {
-            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            var shape = Util.ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
             {
                 return;
@@ -38,8 +38,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                         left, top, width, height);
                     ChangeName(overlayShape, EffectName.TextBox);
 
-                    Graphics.MoveZToJustBehind(blurTextBox, shape);
-                    Graphics.MoveZToJustBehind(overlayShape, shape);
+                    Utils.ShapeUtil.MoveZToJustBehind(blurTextBox, shape);
+                    Utils.ShapeUtil.MoveZToJustBehind(overlayShape, shape);
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             ChangeName(overlayShape, EffectName.Banner);
             ChangeName(blurBanner, EffectName.Banner);
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            Graphics.MoveZToJustBehind(blurBanner, overlayShape);
+            Utils.ShapeUtil.MoveZToJustBehind(blurBanner, overlayShape);
 
             var range = Shapes.Range(new[] {blurBanner.Name, overlayShape.Name});
             var resultShape = range.Group();

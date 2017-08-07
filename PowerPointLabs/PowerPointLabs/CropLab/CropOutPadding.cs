@@ -13,16 +13,6 @@ namespace PowerPointLabs.CropLab
         private const float Epsilon = 0.05f;
         private static readonly string TempPngFileExportPath = Path.GetTempPath() + @"\cropoutpaddingtemp.png";
 
-        public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection)
-        {
-            var croppedShape = Crop(selection.ShapeRange);
-            if (croppedShape != null)
-            {
-                croppedShape.Select();
-            }
-            return croppedShape;
-        }
-
         public static PowerPoint.ShapeRange Crop(PowerPoint.ShapeRange shapeRange)
         {
             bool hasChange = false;
@@ -56,7 +46,7 @@ namespace PowerPointLabs.CropLab
                 Rectangle origImageRect = new Rectangle();
                 Rectangle croppedImageRect = new Rectangle();
 
-                Utils.Graphics.ExportShape(shape, TempPngFileExportPath);
+                Utils.GraphicsUtil.ExportShape(shape, TempPngFileExportPath);
                 using (Bitmap shapeBitmap = new Bitmap(TempPngFileExportPath))
                 {
                     origImageRect = new Rectangle(0, 0, shapeBitmap.Width, shapeBitmap.Height);

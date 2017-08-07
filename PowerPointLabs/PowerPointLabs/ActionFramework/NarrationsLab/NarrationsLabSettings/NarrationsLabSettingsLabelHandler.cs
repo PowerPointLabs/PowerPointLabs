@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportLabelRibbonId(TextCollection.NarrationsLabSettingsTag)]
+    [ExportLabelRibbonId(NarrationsLabText.SettingsTag)]
     class NarrationsLabSettingsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.NarrationsLabSettingsButtonLabel;
+            return NarrationsLabText.SettingsButtonLabel;
         }
     }
 }

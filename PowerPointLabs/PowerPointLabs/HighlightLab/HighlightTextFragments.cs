@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AnimationLab;
 using PowerPointLabs.Models;
 
 using Office = Microsoft.Office.Core;
@@ -16,9 +14,9 @@ namespace PowerPointLabs.HighlightLab
     class HighlightTextFragments
     {
 #pragma warning disable 0618
-        public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
+
         public static void AddHighlightedTextFragments()
         {
             try
@@ -100,13 +98,10 @@ namespace PowerPointLabs.HighlightLab
 
         private static void RunAnimateInSlide()
         {
-            bool oldFrameAnimationChecked = AnimateInSlide.frameAnimationChecked;
-            AnimateInSlide.frameAnimationChecked = false;
-            AnimateInSlide.isHighlightBullets = false;
-            AnimateInSlide.isHighlightTextFragments = true;
-            AnimateInSlide.AddAnimationInSlide();
-            AnimateInSlide.isHighlightTextFragments = false;
-            AnimateInSlide.frameAnimationChecked = oldFrameAnimationChecked;
+            bool oldFrameAnimationChecked = AnimationLabSettings.IsUseFrameAnimation;
+            AnimationLabSettings.IsUseFrameAnimation = false;
+            AnimateInSlide.AddAnimationInSlide(isHighlightTextFragments: true);
+            AnimationLabSettings.IsUseFrameAnimation = oldFrameAnimationChecked;
         }
 
         private static List<PowerPoint.Shape> GetShapesToAnimate(PowerPointSlide currentSlide)
@@ -132,12 +127,12 @@ namespace PowerPointLabs.HighlightLab
                     line.BoundHeight);
 
                 highlightShape.Adjustments[1] = 0.25f;
-                highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
+                highlightShape.Fill.ForeColor.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.textFragmentsBackgroundColor);
                 highlightShape.Fill.Transparency = 0.50f;
                 highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
                 if (isTextBoxTransparent)
                 {
-                    Utils.Graphics.MoveZToJustBehind(highlightShape, shape);
+                    Utils.ShapeUtil.MoveZToJustBehind(highlightShape, shape);
                 }
                 highlightShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
                 highlightShape.Tags.Add("HighlightTextFragment", highlightShape.Name);

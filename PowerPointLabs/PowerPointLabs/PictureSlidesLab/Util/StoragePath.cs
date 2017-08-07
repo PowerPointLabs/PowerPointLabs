@@ -59,7 +59,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Failed to remove unused images.", e.Message, e);
+                ErrorDialogBox.ShowDialog("Failed to remove unused images.", e.Message, e);
             }
         }
 

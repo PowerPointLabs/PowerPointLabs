@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
@@ -21,14 +23,14 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             }
             return UpdateStyleName(
                 result,
-                TextCollection.PictureSlidesLabText.StyleNameFrame);
+                PictureSlidesLabText.StyleNameFrame);
         }
 
         public override StyleOption GetDefaultOptionForPreview()
         {
             return new StyleOption()
             {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameFrame,
+                StyleName = PictureSlidesLabText.StyleNameFrame,
                 IsUseFrameStyle = true,
                 IsUseTextGlow = true,
                 TextGlowColor = "#000000",

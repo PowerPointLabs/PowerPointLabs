@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PowerPointLabs.Utils;
+﻿using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.AgendaLab
 {
@@ -24,7 +20,7 @@ namespace PowerPointLabs.AgendaLab
         {
             if (IsNone())
             {
-                return Common.UniqueDigitString();
+                return CommonUtil.UniqueDigitString();
             }
             return Name + "_" + Index;
         }

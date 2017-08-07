@@ -71,13 +71,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter4x4Margin5()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(5);
-            PositionsLabMain.SetDistributeMarginLeft(5);
-            PositionsLabMain.SetDistributeMarginRight(5);
-            PositionsLabMain.SetDistributeMarginBottom(5);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignLeft);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 5;
+            PositionsLabSettings.GridMarginLeft = 5;
+            PositionsLabSettings.GridMarginRight = 5;
+            PositionsLabSettings.GridMarginBottom = 5;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -95,13 +95,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter4x4Margin0Left()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignLeft);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -119,13 +119,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter4x4Margin0Center()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignCenter);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignCenter;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -143,13 +143,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter4x4Margin0Right()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignRight);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignRight;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -167,19 +167,19 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter6x3Margin0Top()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignLeft);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
-            ExecutePositionsAction(positionsAction, actualShapes, 3, 6);
+            ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter6x3Margin0TopSlide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -191,19 +191,19 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter6x3Margin0Center()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignCenter);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignCenter;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
-            ExecutePositionsAction(positionsAction, actualShapes, 3, 6);
+            ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter6x3Margin0CenterSlide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -215,19 +215,19 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstCenter6x3Margin0Bottom()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
-            PositionsLabMain.SetDistributeGridAlignment(PositionsLabMain.GridAlignment.AlignRight);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignRight;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
-            ExecutePositionsAction(positionsAction, actualShapes, 3, 6);
+            ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter6x3Margin0BtmSlide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -239,12 +239,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstEdge4x4Margin5()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.SetDistributeMarginTop(5);
-            PositionsLabMain.SetDistributeMarginLeft(5);
-            PositionsLabMain.SetDistributeMarginRight(5);
-            PositionsLabMain.SetDistributeMarginBottom(5);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.GridMarginTop = 5;
+            PositionsLabSettings.GridMarginLeft = 5;
+            PositionsLabSettings.GridMarginRight = 5;
+            PositionsLabSettings.GridMarginBottom = 5;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -262,12 +263,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstEdge4x4Margin0()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -285,18 +287,19 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstEdge6x3Margin0()
         {
-            PositionsLabMain.DistributeReferToFirstShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.SetDistributeMarginTop(0);
-            PositionsLabMain.SetDistributeMarginLeft(0);
-            PositionsLabMain.SetDistributeMarginRight(0);
-            PositionsLabMain.SetDistributeMarginBottom(0);
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.GridMarginTop = 0;
+            PositionsLabSettings.GridMarginLeft = 0;
+            PositionsLabSettings.GridMarginRight = 0;
+            PositionsLabSettings.GridMarginBottom = 0;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
-            ExecutePositionsAction(positionsAction, actualShapes, 3, 6);
+            ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstEdge6x3Margin0Slide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -308,8 +311,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstAndSecondCenter4x4()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 5;
+            PositionsLabSettings.GridMarginLeft = 5;
+            PositionsLabSettings.GridMarginRight = 5;
+            PositionsLabSettings.GridMarginBottom = 5;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -327,14 +335,19 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstAndSecondCenter6x3()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByCenter();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.GridMarginTop = 5;
+            PositionsLabSettings.GridMarginLeft = 5;
+            PositionsLabSettings.GridMarginRight = 5;
+            PositionsLabSettings.GridMarginBottom = 5;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
-            ExecutePositionsAction(positionsAction, actualShapes, 3, 6);
+            ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstAndSecondCenter6x3Slide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);
@@ -346,8 +359,13 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstAndSecondEdge4x4()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.GridMarginTop = 5;
+            PositionsLabSettings.GridMarginLeft = 5;
+            PositionsLabSettings.GridMarginRight = 5;
+            PositionsLabSettings.GridMarginBottom = 5;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
@@ -365,14 +383,19 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeGridFirstAndSecondEdge6x3()
         {
-            PositionsLabMain.DistributeReferToFirstTwoShapes();
-            PositionsLabMain.DistributeSpaceByBoundaries();
+            PositionsLabSettings.DistributeReference = PositionsLabSettings.DistributeReferenceObject.FirstTwoShapes;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.GridMarginTop = 5;
+            PositionsLabSettings.GridMarginLeft = 5;
+            PositionsLabSettings.GridMarginRight = 5;
+            PositionsLabSettings.GridMarginBottom = 5;
+            PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
-            ExecutePositionsAction(positionsAction, actualShapes, 3, 6);
+            ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstAndSecondEdge6x3Slide);
             var expectedShapes = PpOperations.SelectShapes(_shapeNames);

@@ -3,6 +3,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.SyncLab
 {
@@ -24,7 +25,7 @@ namespace PowerPointLabs.SyncLab
         private SyncLabShapeStorage() : base()
         {
             Path = System.IO.Path.GetTempPath();
-            Name = TextCollection.SyncLabStorageFileName;
+            Name = SyncLabText.StorageFileName;
             OpenInBackground();
             ClearShapes();
         }

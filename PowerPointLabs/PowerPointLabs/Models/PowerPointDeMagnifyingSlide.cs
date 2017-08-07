@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Linq;
+
+using PowerPointLabs.AnimationLab;
+using PowerPointLabs.ZoomLab;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -29,7 +33,7 @@ namespace PowerPointLabs.Models
         {
             PrepareForZoomToArea(zoomShape);
             
-            if (!ZoomToArea.backgroundZoomChecked)
+            if (!ZoomLabSettings.BackgroundZoomChecked)
             {
                 //Zoom stored shape to fit slide
                 zoomSlideCroppedShapes.LockAspectRatio = Office.MsoTriState.msoTrue;
@@ -183,7 +187,7 @@ namespace PowerPointLabs.Models
             zoomSlideCroppedShapes.Visible = Office.MsoTriState.msoTrue;
             DeleteShapeAnimations(zoomSlideCroppedShapes);
 
-            if (!ZoomToArea.backgroundZoomChecked)
+            if (!ZoomLabSettings.BackgroundZoomChecked)
             {
                 zoomSlideCroppedShapes.PictureFormat.CropLeft += zoomShape.Left;
                 zoomSlideCroppedShapes.PictureFormat.CropTop += zoomShape.Top;

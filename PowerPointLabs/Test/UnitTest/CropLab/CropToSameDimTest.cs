@@ -13,7 +13,7 @@ namespace Test.UnitTest.CropLab
 
         protected override string GetTestingSlideName()
         {
-            return "CropToSame.pptx";
+            return "CropLab\\CropToSame.pptx";
         }
 
         [TestMethod]

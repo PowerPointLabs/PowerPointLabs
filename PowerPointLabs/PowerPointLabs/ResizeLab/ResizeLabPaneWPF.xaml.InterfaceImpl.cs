@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Views;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab
@@ -13,7 +16,7 @@ namespace PowerPointLabs.ResizeLab
         {
             if (exception != null)
             {
-                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog("Error", content, exception);
             }
             else
             {

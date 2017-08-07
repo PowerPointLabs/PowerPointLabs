@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Speech.Synthesis;
-using System.Windows.Forms;
-using PowerPointLabs.Views;
+
+using PowerPointLabs.NarrationsLab.Views;
 
 namespace PowerPointLabs.SpeechEngine
 {
@@ -47,18 +47,20 @@ namespace PowerPointLabs.SpeechEngine
             SpeechSynthesizer synthesizer = state.Synthesizer;
             Prompt spokenPrompt = state.PromptBeingSynthesized;
 
-            SpeechPlayingForm progress = new SpeechPlayingForm(state);
-            DialogResult result = progress.ShowDialog();
-            if (result == DialogResult.Cancel)
+            SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox(state);
+            speechPlayingDialog.Closed += (sender, e) => SpeechPlayingDialog_Closed(synthesizer, spokenPrompt);
+            speechPlayingDialog.ShowDialog();
+        }
+
+        private static void SpeechPlayingDialog_Closed(SpeechSynthesizer synthesizer, Prompt spokenPrompt)
+        {
+            try
             {
-                try
-                {
-                    synthesizer.SpeakAsyncCancel(spokenPrompt);
-                }
-                catch (ObjectDisposedException)
-                {
-                    // Synthesizer has already finished, so we don't need to do anything.
-                }
+                synthesizer.SpeakAsyncCancel(spokenPrompt);
+            }
+            catch (ObjectDisposedException)
+            {
+                // Synthesizer has already finished, so we don't need to do anything.
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using PowerPointLabs.AnimationLab;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -72,7 +72,7 @@ namespace PowerPointLabs.Models
                         DeleteShapeAnimations(sh);
                         PowerPoint.Effect effectFade = _slide.TimeLine.MainSequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectFade, PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                         effectFade.Exit = Office.MsoTriState.msoTrue;
-                        effectFade.Timing.Duration = AutoAnimate.defaultDuration;
+                        effectFade.Timing.Duration = AnimationLabSettings.AnimationDuration;
                         //fadeFlag = true;
                     }
                     else

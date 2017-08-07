@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportImageRibbonId(TextCollection.PasteLabMenuId)]
+    [ExportImageRibbonId(PasteLabText.RibbonMenuId)]
     class PasteLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

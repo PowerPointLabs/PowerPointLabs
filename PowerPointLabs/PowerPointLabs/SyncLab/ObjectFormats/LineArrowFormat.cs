@@ -3,8 +3,7 @@ using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
-
-using Graphics = PowerPointLabs.Utils.Graphics;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -30,7 +29,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 0, SyncFormatConstants.DisplayImageSize.Height,
                 SyncFormatConstants.DisplayImageSize.Width, 0);
             SyncFormat(formatShape, shape);
-            Bitmap image = Graphics.ShapeToBitmap(shape);
+            Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
             shape.Delete();
             return image;
         }

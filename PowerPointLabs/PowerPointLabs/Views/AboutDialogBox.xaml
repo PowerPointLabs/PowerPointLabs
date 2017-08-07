@@ -24,7 +24,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
-    <Grid>
+    <Grid Margin="7">
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>
             <RowDefinition Height="12*"/>
@@ -37,8 +37,7 @@
                      FontSize="12"
                      FontWeight="Bold"
                      VerticalAlignment="Top" 
-                     HorizontalAlignment="Left" 
-                     Margin="5,7,0,0" Width="382">
+                     HorizontalAlignment="Left">
             <FlowDocument>
                 <Paragraph>
                     PowerPointLabs Version
@@ -46,7 +45,7 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Separator HorizontalAlignment="Left" Height="2" Margin="5,30,0,0" VerticalAlignment="Top" Width="382"/>
+        <Separator HorizontalAlignment="Stretch" Height="2" Margin="0,30,0,0" VerticalAlignment="Top"/>
         <RichTextBox x:Name="contentText" 
                      Background="Transparent"
                      BorderThickness="0"
@@ -55,7 +54,7 @@
                      FontSize="12"
                      VerticalAlignment="Top" 
                      HorizontalAlignment="Left" 
-                     Margin="5,37,0,0" Width="382">
+                     Margin="0,37,0,0">
             <FlowDocument>
                 <Paragraph>
                     Release date:
@@ -66,13 +65,22 @@
                     <LineBreak></LineBreak>
                     For more information, visit our website at
                     <Hyperlink x:Name="websiteHyperlink" 
-                               NavigateUri="http://PowerPointLabs.info" 
+                               NavigateUri="http://website.com" 
                                RequestNavigate="Hyperlink_RequestNavigate">
-                        <Run x:Name="websiteHyperlinkRunText">http://PowerPointLabs.info</Run>
-                    </Hyperlink>
+                        <Run x:Name="websiteHyperlinkRunText">http://website.com</Run>
+                    </Hyperlink>.
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,10,10.5" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click" Grid.Row="1"/>
+        
+        <Button x:Name="okButton" 
+                Content="OK" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Margin="0,0,5,5" 
+                Width="80" 
+                IsDefault="True" 
+                Click="OkButton_Click" 
+                Grid.Row="1"/>
     </Grid>
 </controls:MetroWindow>

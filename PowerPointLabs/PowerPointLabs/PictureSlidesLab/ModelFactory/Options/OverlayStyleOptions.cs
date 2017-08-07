@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
@@ -18,14 +20,14 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
                 styleOption.FontFamily = "Trebuchet MS";
             }
             return UpdateStyleName(result,
-                TextCollection.PictureSlidesLabText.StyleNameOverlay);
+                PictureSlidesLabText.StyleNameOverlay);
         }
 
         public override StyleOption GetDefaultOptionForPreview()
         {
             return new StyleOption
             {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameOverlay,
+                StyleName = PictureSlidesLabText.StyleNameOverlay,
                 IsUseOverlayStyle = true,
                 OverlayTransparency = 35,
                 OverlayColor = "#007FFF", // blue

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.AnimationLab;
 using PowerPointLabs.Models;
+
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -12,9 +14,9 @@ namespace PowerPointLabs.HighlightLab
     class HighlightBulletsBackground
     {
 #pragma warning disable 0618
-        public static Color backgroundColor = Color.FromArgb(255, 255, 0);
         public enum HighlightBackgroundSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightBackgroundSelection userSelection = HighlightBackgroundSelection.kNoneSelected;
+
         public static void AddHighlightBulletsBackground()
         {
             try
@@ -60,13 +62,10 @@ namespace PowerPointLabs.HighlightLab
 
                 if (newShapesAdded)
                 {
-                    bool oldValue = AnimateInSlide.frameAnimationChecked;
-                    AnimateInSlide.frameAnimationChecked = false;
-                    AnimateInSlide.isHighlightBullets = true;
-                    AnimateInSlide.isHighlightTextFragments = false;
-                    AnimateInSlide.AddAnimationInSlide();
-                    AnimateInSlide.isHighlightBullets = false;
-                    AnimateInSlide.frameAnimationChecked = oldValue;
+                    bool oldValue = AnimationLabSettings.IsUseFrameAnimation;
+                    AnimationLabSettings.IsUseFrameAnimation = false;
+                    AnimateInSlide.AddAnimationInSlide(isHighlightBullets: true);
+                    AnimationLabSettings.IsUseFrameAnimation = oldValue;
                     PowerPointPresentation.Current.AddAckSlide();
                 }
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
@@ -144,10 +143,10 @@ namespace PowerPointLabs.HighlightLab
                                                             paragraph.BoundWidth,
                                                             paragraph.BoundHeight);
             highlightShape.Adjustments[1] = 0.25f;
-            highlightShape.Fill.ForeColor.RGB = Utils.Graphics.ConvertColorToRgb(backgroundColor);
+            highlightShape.Fill.ForeColor.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsBackgroundColor);
             highlightShape.Fill.Transparency = 0.50f;
             highlightShape.Line.Visible = Office.MsoTriState.msoFalse;
-            Utils.Graphics.MoveZToJustBehind(highlightShape, sh);
+            Utils.ShapeUtil.MoveZToJustBehind(highlightShape, sh);
             highlightShape.Name = "PPTLabsHighlightBackgroundShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             highlightShape.Tags.Add("HighlightBackground", sh.Name);
             highlightShape.Select(Office.MsoTriState.msoFalse);

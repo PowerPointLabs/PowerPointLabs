@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.AgendaLab
 {
-    [ExportLabelRibbonId(TextCollection.TextAgendaTag)]
+    [ExportLabelRibbonId(AgendaLabText.TextAgendaTag)]
     class TextAgendaLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.AgendaLabBulletPointButtonLabel;
+            return AgendaLabText.BulletPointButtonLabel;
         }
     }
 }

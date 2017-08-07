@@ -9,7 +9,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "QuickProperties.pptx";
+            return "ShortcutsLab\\QuickProperties.pptx";
         }
 
         [TestMethod]
