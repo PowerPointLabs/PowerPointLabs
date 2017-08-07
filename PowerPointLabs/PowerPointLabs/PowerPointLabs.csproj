@@ -44,7 +44,7 @@
     <PublishUrl>C:\publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.1.1.1</ApplicationVersion>
+    <ApplicationVersion>4.1.1.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
