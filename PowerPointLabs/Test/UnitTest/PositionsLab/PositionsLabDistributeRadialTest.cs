@@ -61,9 +61,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleAtSecondWithEdgesFixedShapeOrientation()
         {
-            PositionsLabMain.DistributeReferAtSecondShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.DistributeShapeOrientationToFixed();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.AtSecondShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -79,9 +80,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleAtSecondWithEdgesDynamicShapeOrientation()
         {
-            PositionsLabMain.DistributeReferAtSecondShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.DistributeShapeOrientationToDynamic();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.AtSecondShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -97,9 +99,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleAtSecondWithCenterFixedShapeOrientation()
         {
-            PositionsLabMain.DistributeReferAtSecondShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.DistributeShapeOrientationToFixed();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.AtSecondShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -115,9 +118,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleAtSecondWithCenterDynamicShapeOrientation()
         {
-            PositionsLabMain.DistributeReferAtSecondShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.DistributeShapeOrientationToDynamic();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.AtSecondShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -133,9 +137,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleWithinSecondAndThirdWithEdgesFixedShapeOrientation()
         {
-            PositionsLabMain.DistributeReferToSecondThirdShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.DistributeShapeOrientationToFixed();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.SecondThirdShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -151,9 +156,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleWithinSecondAndThirdWithEdgesDynamicShapeOrientation()
         {
-            PositionsLabMain.DistributeReferToSecondThirdShape();
-            PositionsLabMain.DistributeSpaceByBoundaries();
-            PositionsLabMain.DistributeShapeOrientationToDynamic();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.SecondThirdShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -169,9 +175,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleWithinSecondAndThirdWithCenterFixedShapeOrientation()
         {
-            PositionsLabMain.DistributeReferToSecondThirdShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.DistributeShapeOrientationToFixed();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.SecondThirdShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
@@ -187,9 +194,10 @@ namespace Test.UnitTest.PositionsLab
         [TestCategory("UT")]
         public void TestDistributeAngleWithinSecondAndThirdWithCenterDynamicShapeOrientation()
         {
-            PositionsLabMain.DistributeReferToSecondThirdShape();
-            PositionsLabMain.DistributeSpaceByCenter();
-            PositionsLabMain.DistributeShapeOrientationToDynamic();
+            PositionsLabSettings.DistributeRadialReference = PositionsLabSettings.DistributeRadialReferenceObject.SecondThirdShape;
+            PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
+            PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
+
             var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);

@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportSupertipRibbonId(TextCollection.HelpMenuId)]
+    [ExportSupertipRibbonId(HelpText.RibbonMenuId)]
     class HelpMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TextCollection.HelpMenuSupertip;
+            return HelpText.HelpMenuSupertip;
         }
     }
 }

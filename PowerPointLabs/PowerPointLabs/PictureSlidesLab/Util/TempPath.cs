@@ -68,7 +68,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogWrapper.ShowDialog("Error", e.Message, e);
+                    ErrorDialogBox.ShowDialog("Error", e.Message, e);
                     return false;
                 }
             }

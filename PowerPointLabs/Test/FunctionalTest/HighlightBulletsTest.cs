@@ -8,7 +8,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "HighlightPoints.pptx";
+            return "HighlightLab\\HighlightPoints.pptx";
         }
 
         [TestMethod]

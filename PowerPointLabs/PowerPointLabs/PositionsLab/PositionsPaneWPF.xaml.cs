@@ -5,15 +5,18 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.PositionsLab.Views;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Views;
+
 using PPExtraEventHelper;
 
-using Graphics = PowerPointLabs.Utils.Graphics;
-using Media = System.Windows.Media;
 using Office = Microsoft.Office.Core;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PositionsLab
@@ -30,19 +33,6 @@ namespace PowerPointLabs.PositionsLab
         private static LMouseUpListener _leftMouseUpListener;
         private static LMouseDownListener _leftMouseDownListener;
         private static System.Windows.Threading.DispatcherTimer _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-
-        //Error Messages
-        private const string ErrorMessageNoSelection = TextCollection.PositionsLabText.ErrorNoSelection;
-        private const string ErrorMessageFewerThanTwoSelection = TextCollection.PositionsLabText.ErrorFewerThanTwoSelection;
-        private const string ErrorMessageFewerThanThreeSelection = TextCollection.PositionsLabText.ErrorFewerThanThreeSelection;
-        private const string ErrorMessageFewerThanFourSelection = TextCollection.PositionsLabText.ErrorFewerThanFourSelection;
-        private const string ErrorMessageFunctionNotSupportedForExtremeShapes = 
-            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
-        private const string ErrorMessageFunctionNotSupportedForSlide =
-            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForSlide;
-        private const string ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter =
-            TextCollection.PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter;
-        private const string ErrorMessageUndefined = TextCollection.PositionsLabText.ErrorUndefined;
 
         //Variable for preview
         private bool _previewIsExecuted = false;
@@ -63,16 +53,10 @@ namespace PowerPointLabs.PositionsLab
         private static List<Shape> _shapesToBeRotated = new List<Shape>();
         private static List<Shape> _allShapesInSlide = new List<Shape>();
         private static System.Drawing.Point _prevMousePos;
-        private static PowerPoint.ShapeRange _selectedRange;
+        private static ShapeRange _selectedRange;
 
         //Variables for key binding
         private const int CtrlProportion = 5;
-
-        //Variables for settings
-        private AlignSettingsDialog _alignSettingsDialog;
-        private DistributeSettingsDialog _distributeSettingsDialog;
-        private ReorderSettingsDialog _reorderSettingsDialog;
-        private ReorientSettingsDialog _reorientSettingsDialog;
 
         public PositionsPaneWpf()
         {
@@ -130,7 +114,7 @@ namespace PowerPointLabs.PositionsLab
         
         private void RotateSlightly(bool isClockwise, bool isLarge)
         {
-            var origin = Graphics.GetCenterPoint(_refPoint);
+            var origin = ShapeUtil.GetCenterPoint(_refPoint);
             var angle = (isClockwise) ? 1f : -1f;
             if (isLarge)
             {
@@ -139,7 +123,7 @@ namespace PowerPointLabs.PositionsLab
 
             foreach (var currentShape in _shapesToBeRotated)
             {
-                PositionsLabMain.Rotate(currentShape, origin, angle, PositionsLabMain.ReorientShapeOrientation);
+                PositionsLabMain.Rotate(currentShape, origin, angle, PositionsLabSettings.ReorientShapeOrientation);
             }
         }
 
@@ -147,41 +131,41 @@ namespace PowerPointLabs.PositionsLab
         #region Align
         private void AlignLeftButton_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
+            Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
             ExecutePositionsAction(positionsAction, false);
         }
 
         private void AlignRightButton_Click(object sender, RoutedEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignRight(shapes, width);
+            Action<ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignRight(shapes, width);
             ExecutePositionsAction(positionsAction, slideWidth, false);
         }
 
         private void AlignTopButton_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
+            Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
             ExecutePositionsAction(positionsAction, false);
         }
 
         private void AlignBottomButton_Click(object sender, RoutedEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignBottom(shapes, height);
+            Action<ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignBottom(shapes, height);
             ExecutePositionsAction(positionsAction, slideHeight, false);
         }
 
         private void AlignHorizontalCenterButton_Click(object sender, RoutedEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignHorizontalCenter(shapes, height);
+            Action<ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignHorizontalCenter(shapes, height);
             ExecutePositionsAction(positionsAction, slideHeight, false);
         }
 
         private void AlignVerticalCenterButton_Click(object sender, RoutedEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignVerticalCenter(shapes, width);
+            Action<ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignVerticalCenter(shapes, width);
             ExecutePositionsAction(positionsAction, slideWidth, false);
         }
 
@@ -189,13 +173,13 @@ namespace PowerPointLabs.PositionsLab
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            Action<PowerPoint.ShapeRange, float, float> positionsAction = (shapes, height, width) => PositionsLabMain.AlignCenter(shapes, height, width);
+            Action<ShapeRange, float, float> positionsAction = (shapes, height, width) => PositionsLabMain.AlignCenter(shapes, height, width);
             ExecutePositionsAction(positionsAction, slideHeight, slideWidth, false);
         }
 
         private void AlignRadialButton_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
+            Action<ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
             ExecutePositionsAction(positionsAction, false, isConvertPPShape: false);
         }
         #endregion
@@ -254,9 +238,9 @@ namespace PowerPointLabs.PositionsLab
         
         private void DistributeGridButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
-                ShowErrorMessageBox(ErrorMessageNoSelection);
+                ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 return;
             }
 
@@ -264,18 +248,17 @@ namespace PowerPointLabs.PositionsLab
             {
                 var selectedShapes = this.GetCurrentSelection().ShapeRange;
                 var numShapesSelected = selectedShapes.Count;
-                var rowLength = (int)Math.Ceiling(Math.Sqrt(numShapesSelected));
-                var colLength = (int)Math.Ceiling((double)numShapesSelected / rowLength);
+                var colLength = (int)Math.Ceiling(Math.Sqrt(numShapesSelected));
+                var rowLength = (int)Math.Ceiling((double)numShapesSelected / colLength);
 
-                if (_positionsDistributeGridDialog == null || !_positionsDistributeGridDialog.IsOpen)
-                {
-                    _positionsDistributeGridDialog = new PositionsDistributeGridDialog(selectedShapes, rowLength, colLength);
-                    _positionsDistributeGridDialog.ShowDialog();
-                }
-                else
-                {
-                    _positionsDistributeGridDialog.Activate();
-                }
+                _positionsDistributeGridDialog = new PositionsDistributeGridDialog(numShapesSelected, rowLength, colLength,
+                                                                                    PositionsLabSettings.DistributeGridAlignment,
+                                                                                    PositionsLabSettings.GridMarginTop,
+                                                                                    PositionsLabSettings.GridMarginBottom,
+                                                                                    PositionsLabSettings.GridMarginLeft,
+                                                                                    PositionsLabSettings.GridMarginRight);
+                _positionsDistributeGridDialog.DialogConfirmedHandler += OnDistributeGridDialogConfirmed;
+                _positionsDistributeGridDialog.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -283,9 +266,23 @@ namespace PowerPointLabs.PositionsLab
             }  
         }
 
+        private void OnDistributeGridDialogConfirmed(int rowLength, int colLength,
+                                        PositionsLabSettings.GridAlignment gridAlignment,
+                                        float gridMarginTop, float gridMarginBottom,
+                                        float gridMarginLeft, float gridMarginRight)
+        {
+            PositionsLabSettings.DistributeGridAlignment = gridAlignment;
+            PositionsLabSettings.GridMarginTop = gridMarginTop;
+            PositionsLabSettings.GridMarginBottom = gridMarginBottom;
+            PositionsLabSettings.GridMarginLeft = gridMarginLeft;
+            PositionsLabSettings.GridMarginRight = gridMarginRight;
+
+            ExecuteDistributeGrid(rowLength, colLength);
+        }
+
         private void DistributeRadialButton_Click(object sender, RoutedEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
+            Action<ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, false, isConvertPPShape: false);
         }
 
@@ -303,13 +300,13 @@ namespace PowerPointLabs.PositionsLab
 
         private void RotationButton_Click(object sender, RoutedEventArgs e)
         {
-            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+            var noShapesSelected = this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes;
             var button = (ToggleButton)sender;
 
             if (noShapesSelected)
             {
                 button.IsChecked = false;
-                ShowErrorMessageBox(ErrorMessageFewerThanTwoSelection);
+                ShowErrorMessageBox(PositionsLabText.ErrorFewerThanTwoSelection);
                 return;
             }
 
@@ -318,7 +315,7 @@ namespace PowerPointLabs.PositionsLab
             if (selectedShapes.Count <= 1)
             {
                 button.IsChecked = false;
-                ShowErrorMessageBox(ErrorMessageFewerThanTwoSelection);
+                ShowErrorMessageBox(PositionsLabText.ErrorFewerThanTwoSelection);
                 return;
             }
 
@@ -343,14 +340,14 @@ namespace PowerPointLabs.PositionsLab
             this.GetCurrentSelection().Unselect();
             var p = System.Windows.Forms.Control.MousePosition;
 
-            var prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), _prevMousePos);
-            var angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(_refPoint)), p) - prevAngle;
+            var prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), _prevMousePos);
+            var angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), p) - prevAngle;
             
-            var origin = Graphics.GetCenterPoint(_refPoint);
+            var origin = ShapeUtil.GetCenterPoint(_refPoint);
 
             foreach (var currentShape in _shapesToBeRotated)
             {
-                PositionsLabMain.Rotate(currentShape, origin, angle, PositionsLabMain.ReorientShapeOrientation);
+                PositionsLabMain.Rotate(currentShape, origin, angle, PositionsLabSettings.ReorientShapeOrientation);
             }
 
             _prevMousePos = p;
@@ -420,7 +417,7 @@ namespace PowerPointLabs.PositionsLab
                         var duplicatedShape = currentShape.Duplicate()[1];
                         duplicatedShape.Left -= 12;
                         duplicatedShape.Top -= 12;
-                        Graphics.MoveZToJustBehind(duplicatedShape, currentShape);
+                        ShapeUtil.MoveZToJustBehind(duplicatedShape, currentShape);
                     }
                 }
 
@@ -435,12 +432,12 @@ namespace PowerPointLabs.PositionsLab
 
         private void LockAxisButton_Click(object sender, RoutedEventArgs e)
         {
-            var noShapesSelected = this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes;
+            var noShapesSelected = this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes;
 
             if (noShapesSelected)
             {
                 lockAxisButton.IsChecked = false;
-                ShowErrorMessageBox(ErrorMessageNoSelection);
+                ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 return;
             }
 
@@ -563,7 +560,7 @@ namespace PowerPointLabs.PositionsLab
         #region Preview Behaviour
         private void AlignLeftButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
+            Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, true);
@@ -574,7 +571,7 @@ namespace PowerPointLabs.PositionsLab
         private void AlignRightButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignRight(shapes, width);
+            Action<ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignRight(shapes, width);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, slideWidth, true);
@@ -584,7 +581,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignTopButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
+            Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, true);
@@ -595,7 +592,7 @@ namespace PowerPointLabs.PositionsLab
         private void AlignBottomButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignBottom(shapes, height);
+            Action<ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignBottom(shapes, height);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, slideHeight, true);
@@ -606,7 +603,7 @@ namespace PowerPointLabs.PositionsLab
         private void AlignHorizontalCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignHorizontalCenter(shapes, height);
+            Action<ShapeRange, float> positionsAction = (shapes, height) => PositionsLabMain.AlignHorizontalCenter(shapes, height);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, slideHeight, true);
@@ -617,7 +614,7 @@ namespace PowerPointLabs.PositionsLab
         private void AlignVerticalCenterButton_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            Action<PowerPoint.ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignVerticalCenter(shapes, width);
+            Action<ShapeRange, float> positionsAction = (shapes, width) => PositionsLabMain.AlignVerticalCenter(shapes, width);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, slideWidth, true);
@@ -629,7 +626,7 @@ namespace PowerPointLabs.PositionsLab
         {
             var slideHeight = this.GetCurrentPresentation().SlideHeight;
             var slideWidth = this.GetCurrentPresentation().SlideWidth;
-            Action<PowerPoint.ShapeRange, float, float> positionsAction = (shapes, height, width) => PositionsLabMain.AlignCenter(shapes, height, width);
+            Action<ShapeRange, float, float> positionsAction = (shapes, height, width) => PositionsLabMain.AlignCenter(shapes, height, width);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, slideHeight, slideWidth, true);
@@ -639,7 +636,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void AlignRadialButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
+            Action<ShapeRange> positionsAction = (shapes) => PositionsLabMain.AlignRadial(shapes);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, true, isConvertPPShape: false);
@@ -727,7 +724,7 @@ namespace PowerPointLabs.PositionsLab
 
         private void DistributeRadialButton_MouseEnter(object sender, MouseEventArgs e)
         {
-            Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
+            Action<ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             _previewCallBack = delegate
             {
                 ExecutePositionsAction(positionsAction, true, isConvertPPShape: false);
@@ -777,7 +774,7 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Helper
-        private Shape AddReferencePoint(PowerPoint.Shapes shapes, float left, float top)
+        private Shape AddReferencePoint(Shapes shapes, float left, float top)
         {
             return shapes.AddShape(Office.MsoAutoShapeType.msoShapeOval, left, top, RefpointRadius, RefpointRadius);
         }
@@ -796,8 +793,8 @@ namespace PowerPointLabs.PositionsLab
         {
             var epsilon = 0.00001f;
 
-            var centerPoint = ConvertSlidePointToScreenPoint(Graphics.GetCenterPoint(shape));
-            var rotatedMousePos = Graphics.RotatePoint(p, centerPoint, -shape.Rotation);
+            var centerPoint = ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(shape));
+            var rotatedMousePos = CommonUtil.RotatePoint(p, centerPoint, -shape.Rotation);
 
             var x1 = PointsToScreenPixelsX(shape.Left);
             var y1 = PointsToScreenPixelsY(shape.Top);
@@ -835,7 +832,7 @@ namespace PowerPointLabs.PositionsLab
             return aShape;
         }
 
-        private List<PPShape> ConvertShapeRangeToPPShapeList (PowerPoint.ShapeRange range, int index)
+        private List<PPShape> ConvertShapeRangeToPPShapeList (ShapeRange range, int index)
         {
             var shapes = new List<PPShape>();
 
@@ -855,7 +852,7 @@ namespace PowerPointLabs.PositionsLab
             return shapes;
         }
 
-        private List<Shape> ConvertShapeRangeToShapeList(PowerPoint.ShapeRange range, int index)
+        private List<Shape> ConvertShapeRangeToShapeList(ShapeRange range, int index)
         {
             var shapes = new List<Shape>();
 
@@ -867,7 +864,7 @@ namespace PowerPointLabs.PositionsLab
             return shapes;
         }
 
-        private List<Shape> ConvertShapesToShapeList(PowerPoint.Shapes shapes)
+        private List<Shape> ConvertShapesToShapeList(Shapes shapes)
         {
             var listOfShapes = new List<Shape>();
 
@@ -897,57 +894,25 @@ namespace PowerPointLabs.PositionsLab
 
         #endregion
 
-        #region Settings
+        #region Settings Dialog
         private void AlignSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_alignSettingsDialog == null || !_alignSettingsDialog.IsOpen)
-            {
-                _alignSettingsDialog = new AlignSettingsDialog();
-                _alignSettingsDialog.ShowDialog();
-            }
-            else
-            {
-                _alignSettingsDialog.Activate();
-            }
+            PositionsLabSettings.ShowAlignSettingsDialog();
         }
 
         private void DistributeSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_distributeSettingsDialog == null || !_distributeSettingsDialog.IsOpen)
-            {
-                _distributeSettingsDialog = new DistributeSettingsDialog();
-                _distributeSettingsDialog.ShowDialog();
-            }
-            else
-            {
-                _distributeSettingsDialog.Activate();
-            }
+            PositionsLabSettings.ShowDistributeSettingsDialog();
         }
 
         private void ReorderSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_reorderSettingsDialog == null || !_reorderSettingsDialog.IsOpen)
-            {
-                _reorderSettingsDialog = new ReorderSettingsDialog();
-                _reorderSettingsDialog.ShowDialog();
-            }
-            else
-            {
-                _reorderSettingsDialog.Activate();
-            }
+            PositionsLabSettings.ShowReorderSettingsDialog();
         }
 
         private void ReorientSettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_reorientSettingsDialog == null || !_reorientSettingsDialog.IsOpen)
-            {
-                _reorientSettingsDialog = new ReorientSettingsDialog();
-                _reorientSettingsDialog.ShowDialog();
-            }
-            else
-            {
-                _reorientSettingsDialog.Activate();
-            }
+            PositionsLabSettings.ShowReorientSettingsDialog();
         }
         #endregion
 
@@ -1013,18 +978,18 @@ namespace PowerPointLabs.PositionsLab
 
             if (exception == null)
             {
-                MessageBox.Show(content, "Error");
+                MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
                 return;
             }
             
             var errorMessage = GetErrorMessage(exception.Message);
-            if (!string.Equals(errorMessage, ErrorMessageUndefined, StringComparison.Ordinal))
+            if (!string.Equals(errorMessage, PositionsLabText.ErrorUndefined, StringComparison.Ordinal))
             {
-                MessageBox.Show(content, "Error");
+                MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
             }
             else
             {
-                Views.ErrorDialogWrapper.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog(PositionsLabText.ErrorDialogTitle, content, exception);
             }
         }
 
@@ -1032,22 +997,22 @@ namespace PowerPointLabs.PositionsLab
         {
             switch (errorMsg)
             {
-                case ErrorMessageNoSelection:
-                    return ErrorMessageNoSelection;
-                case ErrorMessageFewerThanTwoSelection:
-                    return ErrorMessageFewerThanTwoSelection;
-                case ErrorMessageFewerThanThreeSelection:
-                    return ErrorMessageFewerThanThreeSelection;
-                case ErrorMessageFewerThanFourSelection:
-                    return ErrorMessageFewerThanFourSelection;
-                case ErrorMessageFunctionNotSupportedForExtremeShapes:
-                    return ErrorMessageFunctionNotSupportedForExtremeShapes;
-                case ErrorMessageFunctionNotSupportedForSlide:
-                    return ErrorMessageFunctionNotSupportedForSlide;
-                case ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter:
-                    return ErrorMessageFunctionNotSuppertedForOverlapRefShapeCenter;
+                case PositionsLabText.ErrorNoSelection:
+                    return PositionsLabText.ErrorNoSelection;
+                case PositionsLabText.ErrorFewerThanTwoSelection:
+                    return PositionsLabText.ErrorFewerThanTwoSelection;
+                case PositionsLabText.ErrorFewerThanThreeSelection:
+                    return PositionsLabText.ErrorFewerThanThreeSelection;
+                case PositionsLabText.ErrorFewerThanFourSelection:
+                    return PositionsLabText.ErrorFewerThanFourSelection;
+                case PositionsLabText.ErrorFunctionNotSupportedForWithinShapes:
+                    return PositionsLabText.ErrorFunctionNotSupportedForWithinShapes;
+                case PositionsLabText.ErrorFunctionNotSupportedForSlide:
+                    return PositionsLabText.ErrorFunctionNotSupportedForSlide;
+                case PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter:
+                    return PositionsLabText.ErrorFunctionNotSupportedForOverlapRefShapeCenter;
                 default:
-                    return ErrorMessageUndefined;
+                    return PositionsLabText.ErrorUndefined;
             }
         }
 
@@ -1057,18 +1022,18 @@ namespace PowerPointLabs.PositionsLab
 
         #region Helper
         // align left and top
-        public void ExecutePositionsAction(Action<PowerPoint.ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape = true)
+        public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape = true)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1087,7 +1052,7 @@ namespace PowerPointLabs.PositionsLab
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
 
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes);
                 }
@@ -1129,18 +1094,18 @@ namespace PowerPointLabs.PositionsLab
         }
 
         // Align right, bottom, vertical center, horizontal center
-        public void ExecutePositionsAction(Action<PowerPoint.ShapeRange, float> positionsAction, float dimension, bool isPreview)
+        public void ExecutePositionsAction(Action<ShapeRange, float> positionsAction, float dimension, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1158,7 +1123,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension);
                 }
@@ -1194,18 +1159,18 @@ namespace PowerPointLabs.PositionsLab
         }
 
         // Align center
-        public void ExecutePositionsAction(Action<PowerPoint.ShapeRange, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
+        public void ExecutePositionsAction(Action<ShapeRange, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1223,7 +1188,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                if (PositionsLabMain.AlignReference == PositionsLabMain.AlignReferenceObject.PowerpointDefaults)
+                if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension1, dimension2);
                 }
@@ -1261,16 +1226,16 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1319,16 +1284,16 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, bool> positionsAction, bool booleanVal, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1351,7 +1316,7 @@ namespace PowerPointLabs.PositionsLab
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
                     PPShape simulatedPPShape = new PPShape(simulatedShapes[i], false);
-                    Graphics.SwapZOrder(simulatedPPShape._shape, selectedShapes[i]);
+                    ShapeUtil.SwapZOrder(simulatedPPShape._shape, selectedShapes[i]);
                 }
 
                 var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
@@ -1385,16 +1350,16 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1443,16 +1408,16 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
 
-            PowerPoint.ShapeRange simulatedShapes = null;
+            ShapeRange simulatedShapes = null;
 
             try
             {
@@ -1501,11 +1466,11 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<Shape>> positionsAction, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
             {
                 if (!isPreview)
                 {
-                    ShowErrorMessageBox(ErrorMessageNoSelection);
+                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
                 return;
             }
@@ -1543,6 +1508,34 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        private void ExecuteDistributeGrid(int rowLength, int colLength)
+        {
+            ShapeRange simulatedShapes = null;
+            try
+            {
+                this.StartNewUndoEntry();
+                var selectedShapes = this.GetCurrentSelection().ShapeRange;
+                simulatedShapes = DuplicateShapes(selectedShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+
+                PositionsLabMain.DistributeGrid(simulatedPPShapes, rowLength, colLength);
+
+                SyncShapes(selectedShapes, simulatedShapes);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessageBox(ex.Message, ex);
+            }
+            finally
+            {
+                if (simulatedShapes != null)
+                {
+                    simulatedShapes.Delete();
+                    GC.Collect();
+                }
+            }
+        }
+
         private void PreviewHandler()
         {
             Focus();
@@ -1552,7 +1545,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void UndoPreview(object sender, System.Windows.Input.MouseEventArgs e)
+        private void UndoPreview(object sender, MouseEventArgs e)
         {
             UndoPreview();
             _previewCallBack = null;
@@ -1606,32 +1599,32 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
-        private void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes)
+        private void SyncShapes(ShapeRange selected, ShapeRange simulatedShapes)
         {
             for (int i = 1; i <= selected.Count; i++)
             {
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - Graphics.GetCenterPoint(selectedShape).X);
-                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - Graphics.GetCenterPoint(selectedShape).Y);
+                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
+                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
                 selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
 
-        private void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes, float[,] originalPositions)
+        private void SyncShapes(ShapeRange selected, ShapeRange simulatedShapes, float[,] originalPositions)
         {
             for (int i = 1; i <= selected.Count; i++)
             {
                 var selectedShape = selected[i];
                 var simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(Graphics.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(Graphics.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
             }
         }
 
-        private void SyncShapes(PowerPoint.ShapeRange selected, List<PPShape> simulatedShapes, float[,] originalPositions)
+        private void SyncShapes(ShapeRange selected, List<PPShape> simulatedShapes, float[,] originalPositions)
         {
             for (int i = 1; i <= selected.Count; i++)
             {
@@ -1640,26 +1633,25 @@ namespace PowerPointLabs.PositionsLab
 
                 selectedShape.IncrementLeft(simulatedShape.VisualCenter.X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(simulatedShape.VisualCenter.Y - originalPositions[i - 1, Top]);
-                Graphics.SwapZOrder(simulatedShape._shape, selectedShape);
+                ShapeUtil.SwapZOrder(simulatedShape._shape, selectedShape);
             }
         }
 
-        private PowerPoint.ShapeRange DuplicateShapes(PowerPoint.ShapeRange range)
+        private ShapeRange DuplicateShapes(ShapeRange range)
         {
-            int totalShapes = this.GetCurrentSlide().Shapes.Count;
-            int[] duplicatedShapeIndices = new int[range.Count];
+            String[] duplicatedShapeNames = new String[range.Count];
 
-            for (int i = 1; i <= range.Count; i++)
+            for (int i = 0; i < range.Count; i++)
             {
-                var shape = range[i];
+                var shape = range[i + 1];
                 var duplicated = shape.Duplicate()[1];
-                duplicated.Name = shape.Id + "";
+                duplicated.Name = shape.Name + "_Copy";
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
-                duplicatedShapeIndices[i - 1] = totalShapes + i;
+                duplicatedShapeNames[i] = duplicated.Name;
             }
 
-            return this.GetCurrentSlide().Shapes.Range(duplicatedShapeIndices);
+            return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
         }
 
         private float[,] SaveOriginalPositions(List<PPShape> shapes)
@@ -1676,7 +1668,7 @@ namespace PowerPointLabs.PositionsLab
             return initialPositions;
         }
 
-        private void SaveSelectedShapePositions(PowerPoint.ShapeRange shapes, Dictionary<int, PositionShapeProperties> dictionary)
+        private void SaveSelectedShapePositions(ShapeRange shapes, Dictionary<int, PositionShapeProperties> dictionary)
         {
             dictionary.Clear();
             foreach (Shape s in shapes)

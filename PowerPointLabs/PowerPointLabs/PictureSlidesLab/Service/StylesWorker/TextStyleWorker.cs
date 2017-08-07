@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
 {
@@ -13,10 +16,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            if (option.StyleName != TextCollection.PictureSlidesLabText.StyleNameDirectText
-                && option.StyleName != TextCollection.PictureSlidesLabText.StyleNameBlur
-                && option.StyleName != TextCollection.PictureSlidesLabText.StyleNameSpecialEffect
-                && option.StyleName != TextCollection.PictureSlidesLabText.StyleNameOverlay)
+            if (option.StyleName != PictureSlidesLabText.StyleNameDirectText
+                && option.StyleName != PictureSlidesLabText.StyleNameBlur
+                && option.StyleName != PictureSlidesLabText.StyleNameSpecialEffect
+                && option.StyleName != PictureSlidesLabText.StyleNameOverlay)
             {
                 designer.ApplyPseudoTextWhenNoTextShapes();
             }

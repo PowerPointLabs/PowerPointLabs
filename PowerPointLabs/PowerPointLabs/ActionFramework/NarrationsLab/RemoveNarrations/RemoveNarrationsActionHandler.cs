@@ -2,10 +2,13 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
+using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.NarrationsLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportActionRibbonId(TextCollection.RemoveNarrationsTag)]
+    [ExportActionRibbonId(NarrationsLabText.RemoveNarrationsTag)]
     class RemoveNarrationsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)

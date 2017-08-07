@@ -1,10 +1,12 @@
 ﻿using System.Drawing;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportImageRibbonId(TextCollection.RecordNarrationsTag)]
+    [ExportImageRibbonId(NarrationsLabText.RecordNarrationsTag)]
     class RecordNarrationsImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)

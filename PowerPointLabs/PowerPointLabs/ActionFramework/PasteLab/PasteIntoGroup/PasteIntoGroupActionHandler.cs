@@ -4,11 +4,12 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(TextCollection.PasteIntoGroupTag)]
+    [ExportActionRibbonId(PasteLabText.PasteIntoGroupTag)]
     class PasteIntoGroupActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 return null;
             }
 
-            if (selectedShapes.Count == 1 && !Graphics.IsAGroup(selectedShapes[1]))
+            if (selectedShapes.Count == 1 && !ShapeUtil.IsAGroup(selectedShapes[1]))
             {
                 Logger.Log("PasteIntoGroup failed. Selection is only a single shape.");
                 return null;

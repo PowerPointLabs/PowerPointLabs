@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
+
 using PPExtraEventHelper;
 
 using ColorPaneConverters = PowerPointLabs.Converters.ColorPane;
@@ -134,18 +134,18 @@ namespace PowerPointLabs
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.SetToolTip(panel1, TextCollection.ColorsLabText.MainColorBoxTooltips);
-            toolTip1.SetToolTip(this.fontButton, TextCollection.ColorsLabText.FontColorButtonTooltips);
-            toolTip1.SetToolTip(this.lineButton, TextCollection.ColorsLabText.LineColorButtonTooltips);
-            toolTip1.SetToolTip(this.fillButton, TextCollection.ColorsLabText.FillColorButtonTooltips);
-            toolTip1.SetToolTip(panel2, TextCollection.ColorsLabText.BrightnessSliderTooltips);
-            toolTip1.SetToolTip(panel3, TextCollection.ColorsLabText.SaturationSliderTooltips);
-            toolTip1.SetToolTip(this.saveThemeButton, TextCollection.ColorsLabText.SaveFavoriteColorsButtonTooltips);
-            toolTip1.SetToolTip(this.loadButton, TextCollection.ColorsLabText.LoadFavoriteColorsButtonTooltips);
-            toolTip1.SetToolTip(this.resetThemeButton, TextCollection.ColorsLabText.ResetFavoriteColorsButtonTooltips);
-            toolTip1.SetToolTip(this.emptyPanelButton, TextCollection.ColorsLabText.EmptyFavoriteColorsButtonTooltips);
-            const string colorRectangleToolTip = TextCollection.ColorsLabText.ColorRectangleTooltips;
-            const string themeColorRectangleToolTip = TextCollection.ColorsLabText.ThemeColorRectangleTooltips;
+            toolTip1.SetToolTip(panel1, ColorsLabText.MainColorBoxTooltip);
+            toolTip1.SetToolTip(this.fontButton, ColorsLabText.FontColorButtonTooltip);
+            toolTip1.SetToolTip(this.lineButton, ColorsLabText.LineColorButtonTooltip);
+            toolTip1.SetToolTip(this.fillButton, ColorsLabText.FillColorButtonTooltip);
+            toolTip1.SetToolTip(panel2, ColorsLabText.BrightnessSliderTooltip);
+            toolTip1.SetToolTip(panel3, ColorsLabText.SaturationSliderTooltip);
+            toolTip1.SetToolTip(this.saveThemeButton, ColorsLabText.SaveFavoriteColorsButtonTooltip);
+            toolTip1.SetToolTip(this.loadButton, ColorsLabText.LoadFavoriteColorsButtonTooltip);
+            toolTip1.SetToolTip(this.resetThemeButton, ColorsLabText.ResetFavoriteColorsButtonTooltip);
+            toolTip1.SetToolTip(this.emptyPanelButton, ColorsLabText.EmptyFavoriteColorsButtonTooltip);
+            const string colorRectangleToolTip = ColorsLabText.ColorRectangleTooltip;
+            const string themeColorRectangleToolTip = ColorsLabText.ThemeColorRectangleTooltip;
             toolTip1.SetToolTip(this.themePanel1, themeColorRectangleToolTip);
             toolTip1.SetToolTip(this.themePanel2, themeColorRectangleToolTip);
             toolTip1.SetToolTip(this.themePanel3, themeColorRectangleToolTip);
@@ -964,7 +964,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
             }
         }
 
@@ -988,7 +988,7 @@ namespace PowerPointLabs
             }
             catch (Exception e)
             {
-                ErrorDialogWrapper.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
             }
         }
 
@@ -1191,7 +1191,7 @@ namespace PowerPointLabs
             if (_selectedShapes == null && _selectedText == null && currMode != MODE.NONE)
             {
                 ResetEyeDropperSelectionInDataSource();
-                MessageBox.Show(TextCollection.ColorsLabText.InfoHowToActivateFeature, "Colors Lab");
+                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
                 return false;
             }
             return true;

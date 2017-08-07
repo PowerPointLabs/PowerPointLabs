@@ -10,7 +10,7 @@ namespace Test.UnitTest.HighlightLab
     {
         protected override string GetTestingSlideName()
         {
-            return "HighlightPoints.pptx";
+            return "HighlightLab\\HighlightPoints.pptx";
         }
 
         [TestMethod]

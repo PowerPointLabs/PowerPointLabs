@@ -16,7 +16,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "Spotlight.pptx";
+            return "EffectsLab\\Spotlight.pptx";
         }
 
         [TestMethod]

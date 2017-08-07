@@ -3,7 +3,9 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
@@ -21,13 +23,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public void OpenPane()
         {
-            UIThreadExecutor.Execute(() =>
+            UIThreadExecutor.Execute((Action)(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl(TextCollection.TimerLabTag));
+                    new RibbonControl(TimerLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(TimerPane)).Control as TimerPane;
-            });
+            }));
         }
 
         public void ClickCreateButton()

@@ -1,5 +1,8 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+
+using PowerPointLabs.ShapesLab;
+
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.Views
@@ -53,7 +56,7 @@ namespace PowerPointLabs.Views
                 return;
             }
 
-            TextRenderer.DrawText(_bufferGraphics, labeledThumbnail.NameLable, _parentTextBox.Font,
+            TextRenderer.DrawText(_bufferGraphics, labeledThumbnail.NameLabel, _parentTextBox.Font,
             _parentTextBox.ClientRectangle, _parentTextBox.ForeColor, _parentTextBox.BackColor,
             TextFormatFlags.TextBoxControl |
             TextFormatFlags.VerticalCenter |

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.CropLab
 {
@@ -24,18 +25,6 @@ namespace PowerPointLabs.CropLab
 
         private IMessageService View { get; set; }
         private static CropLabErrorHandler _errorHandler;
-
-        private const string ErrorMessageSelectionIsInvalid = TextCollection.CropLabText.ErrorSelectionIsInvalid;
-        private const string ErrorMessageSelectionMustBeShape = TextCollection.CropLabText.ErrorSelectionMustBeShape;
-        private const string ErrorMessageSelectionMustBePicture = TextCollection.CropLabText.ErrorSelectionMustBePicture;
-        private const string ErrorMessageSelectionMustBeShapeOrPicture = TextCollection.CropLabText.ErrorSelectionMustBeShapeOrPicture;
-        private const string ErrorMessageAspectRatioIsInvalid = TextCollection.CropLabText.ErrorAspectRatioIsInvalid;
-        private const string ErrorMessageUndefined = TextCollection.CropLabText.ErrorUndefined;
-        private const string ErrorMessageForSelectionCountZero = TextCollection.CropToSlideText.ErrorMessageForSelectionCountZero;
-        private const string ErrorMessageNoShapeOverBoundary = TextCollection.CropLabText.ErrorMessageNoShapeOverBoundary;
-        private const string ErrorMessageNoDimensionCropped = TextCollection.CropLabText.ErrorMessageNoDimensionCropped;
-        private const string ErrorMessageNoPaddingCropped = TextCollection.CropLabText.ErrorMessageNoPaddingCropped;
-        private const string ErrorMessageNoAspectRatioCropped = TextCollection.CropLabText.ErrorMessageNoAspectRatioCropped;
 
         private CropLabErrorHandler(IMessageService view = null)
         {
@@ -69,18 +58,14 @@ namespace PowerPointLabs.CropLab
                 case ErrorCodeSelectionMustBeShapeOrPicture:
                 case ErrorCodeSelectionMustBePicture:
                 case ErrorCodeSelectionMustBeShape:
-                    ShowErrorMessage(errorCode, featureName);
-                    break;
                 case ErrorCodeSelectionCountZero:
                 case ErrorCodeAspectRatioIsInvalid:
                 case ErrorCodeNoShapeOverBoundary:
                 case ErrorCodeNoDimensionCropped:
                 case ErrorCodeNoPaddingCropped:
                 case ErrorCodeNoAspectRatioCropped:
-                    ShowErrorMessage(errorCode);
-                    break;
                 default:
-                    ShowErrorMessage(errorCode);
+                    ShowErrorMessage(errorCode, featureName);
                     break;
             }
         }
@@ -119,27 +104,27 @@ namespace PowerPointLabs.CropLab
             switch (errorCode)
             {
                 case ErrorCodeSelectionIsInvalid:
-                    return ErrorMessageSelectionIsInvalid;
+                    return CropLabText.ErrorSelectionIsInvalid;
                 case ErrorCodeSelectionMustBeShape:
-                    return ErrorMessageSelectionMustBeShape;
+                    return CropLabText.ErrorSelectionMustBeShape;
                 case ErrorCodeSelectionMustBeShapeOrPicture:
-                    return ErrorMessageSelectionMustBeShapeOrPicture;
+                    return CropLabText.ErrorSelectionMustBeShapeOrPicture;
                 case ErrorCodeSelectionMustBePicture:
-                    return ErrorMessageSelectionMustBePicture;
+                    return CropLabText.ErrorSelectionMustBePicture;
                 case ErrorCodeAspectRatioIsInvalid:
-                    return ErrorMessageAspectRatioIsInvalid;
+                    return CropLabText.ErrorAspectRatioIsInvalid;
                 case ErrorCodeSelectionCountZero:
-                    return ErrorMessageForSelectionCountZero;
+                    return CropLabText.ErrorSelectionCountZero;
                 case ErrorCodeNoShapeOverBoundary:
-                    return ErrorMessageNoShapeOverBoundary;
+                    return CropLabText.ErrorNoShapeOverBoundary;
                 case ErrorCodeNoDimensionCropped:
-                    return ErrorMessageNoDimensionCropped;
+                    return CropLabText.ErrorNoDimensionCropped;
                 case ErrorCodeNoPaddingCropped:
-                    return ErrorMessageNoPaddingCropped;
+                    return CropLabText.ErrorNoPaddingCropped;
                 case ErrorCodeNoAspectRatioCropped:
-                    return ErrorMessageNoAspectRatioCropped;
+                    return CropLabText.ErrorNoAspectRatioCropped;
                 default:
-                    return ErrorMessageUndefined;
+                    return CropLabText.ErrorUndefined;
             }
         }
     }

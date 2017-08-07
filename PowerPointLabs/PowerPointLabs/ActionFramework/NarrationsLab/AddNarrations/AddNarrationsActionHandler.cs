@@ -3,11 +3,13 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Models;
+using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.NarrationsLab.Views;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
-    [ExportActionRibbonId(TextCollection.AddNarrationsTag)]
+    [ExportActionRibbonId(NarrationsLabText.AddNarrationsTag)]
     class AddNarrationsActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
@@ -49,7 +51,10 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 recorder.UpdateLists(currentSlide.ID);
             }
 
-            this.GetRibbonUi().PreviewAnimationsIfChecked();
+            if (NarrationsLabSettings.IsPreviewEnabled)
+            {
+                NotesToAudio.PreviewAnimations();
+            }
         }
     }
 }

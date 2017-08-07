@@ -12,7 +12,7 @@ namespace Test.FunctionalTest
 
         protected override string GetTestingSlideName()
         {
-            return "AgendaSlidesVisualDefault.pptx";
+            return "AgendaLab\\AgendaSlidesVisualDefault.pptx";
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesVisualDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesVisualDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
@@ -61,7 +61,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesBeamDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesBeamDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
@@ -71,7 +71,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesTextDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 
@@ -81,7 +81,7 @@ namespace Test.FunctionalTest
 
             var actualSlides = PpOperations.FetchCurrentPresentationData();
             var expectedSlides = PpOperations.FetchPresentationData(
-                PathUtil.GetDocTestPresentationPath("AgendaSlidesDefault.pptx"));
+                PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
 

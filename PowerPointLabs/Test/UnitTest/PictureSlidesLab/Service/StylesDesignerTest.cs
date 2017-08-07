@@ -30,7 +30,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
             _designer = new StylesDesigner(App);
             _sourceImage = new ImageItem
             {
-                ImageFile = PathUtil.GetDocTestPath() + "koala.jpg",
+                ImageFile = PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg",
                 Tooltip = "some tooltip"
             };
             _contentSlide = PpOperations.SelectSlide(1);

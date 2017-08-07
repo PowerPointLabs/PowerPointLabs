@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
 {
-    [ExportLabelRibbonId(TextCollection.RemoveCaptionsTag)]
+    [ExportLabelRibbonId(CaptionsLabText.RemoveCaptionsTag)]
     class RemoveCaptionsLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.RemoveCaptionsButtonLabel;
+            return CaptionsLabText.RemoveCaptionsButtonLabel;
         }
     }
 }

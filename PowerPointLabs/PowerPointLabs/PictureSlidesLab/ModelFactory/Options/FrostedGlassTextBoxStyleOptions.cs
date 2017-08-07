@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Options.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 {
@@ -19,14 +21,14 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
             }
             return UpdateStyleName(
                 options,
-                TextCollection.PictureSlidesLabText.StyleNameFrostedGlassTextBox);
+                PictureSlidesLabText.StyleNameFrostedGlassTextBox);
         }
 
         public override StyleOption GetDefaultOptionForPreview()
         {
             return new StyleOption
             {
-                StyleName = TextCollection.PictureSlidesLabText.StyleNameFrostedGlassTextBox,
+                StyleName = PictureSlidesLabText.StyleNameFrostedGlassTextBox,
                 FontFamily = "Segoe UI",
                 IsUseFrostedGlassTextBoxStyle = true
             };

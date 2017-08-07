@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
+using PowerPointLabs.TextCollection;
 
 namespace Test.UnitTest.PictureSlidesLab.ModelFactory
 {
@@ -24,80 +26,80 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetDirectTextVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameDirectText);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameDirectText);
+            VerifyVariants(PictureSlidesLabText.StyleNameDirectText);
+            VerifyVariants2(PictureSlidesLabText.StyleNameDirectText);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetBlurVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameBlur);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameBlur);
+            VerifyVariants(PictureSlidesLabText.StyleNameBlur);
+            VerifyVariants2(PictureSlidesLabText.StyleNameBlur);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetTextBoxVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameTextBox);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameTextBox);
+            VerifyVariants(PictureSlidesLabText.StyleNameTextBox);
+            VerifyVariants2(PictureSlidesLabText.StyleNameTextBox);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetBannerVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameBanner);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameBanner);
+            VerifyVariants(PictureSlidesLabText.StyleNameBanner);
+            VerifyVariants2(PictureSlidesLabText.StyleNameBanner);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetSpecialEffectVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameSpecialEffect);
+            VerifyVariants(PictureSlidesLabText.StyleNameSpecialEffect);
+            VerifyVariants2(PictureSlidesLabText.StyleNameSpecialEffect);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetOverlayVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameOverlay);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameOverlay);
+            VerifyVariants(PictureSlidesLabText.StyleNameOverlay);
+            VerifyVariants2(PictureSlidesLabText.StyleNameOverlay);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetOutlineVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameOutline);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameOutline);
+            VerifyVariants(PictureSlidesLabText.StyleNameOutline);
+            VerifyVariants2(PictureSlidesLabText.StyleNameOutline);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetFrameVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameFrame);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameFrame);
+            VerifyVariants(PictureSlidesLabText.StyleNameFrame);
+            VerifyVariants2(PictureSlidesLabText.StyleNameFrame);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetCircleVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameCircle);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameCircle);
+            VerifyVariants(PictureSlidesLabText.StyleNameCircle);
+            VerifyVariants2(PictureSlidesLabText.StyleNameCircle);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestGetTriangleVariants()
         {
-            VerifyVariants(TextCollection.PictureSlidesLabText.StyleNameTriangle);
-            VerifyVariants2(TextCollection.PictureSlidesLabText.StyleNameTriangle);
+            VerifyVariants(PictureSlidesLabText.StyleNameTriangle);
+            VerifyVariants2(PictureSlidesLabText.StyleNameTriangle);
         }
 
         [TestMethod]
@@ -130,7 +132,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             var numberOfNoEffectVariant = 0;
             foreach (var key in variants.Keys)
             {
-                if (key == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily)
+                if (key == PictureSlidesLabText.VariantCategoryFontFamily)
                     continue;
 
                 var variant = variants[key];
@@ -165,7 +167,7 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
             var numberOfNoEffectVariant = 0;
             foreach (var key in variants.Keys)
             {
-                if (key == TextCollection.PictureSlidesLabText.VariantCategoryFontFamily)
+                if (key == PictureSlidesLabText.VariantCategoryFontFamily)
                     continue;
 
                 var variant = variants[key];

@@ -9,7 +9,7 @@ namespace Test.FunctionalTest
     {
         protected override string GetTestingSlideName()
         {
-            return "AnimateInSlide.pptx";
+            return "AnimationLab\\AnimateInSlide.pptx";
         }
 
         [TestMethod]

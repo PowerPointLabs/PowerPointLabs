@@ -1,14 +1,15 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.Help
 {
-    [ExportLabelRibbonId(TextCollection.AboutTag)]
+    [ExportLabelRibbonId(HelpText.AboutTag)]
     class AboutLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return TextCollection.AboutButtonLabel;
+            return HelpText.AboutButtonLabel;
         }
     }
 }
