@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Interop.PowerPoint;
 
-using static PowerPointLabs.ActionFramework.Common.Extension.ContentControlExtensions;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
