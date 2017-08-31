@@ -3,6 +3,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
@@ -13,11 +14,11 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
             PowerPointSlide tempSlide = presentation.AddSlide(index: slide.Index);
-            ShapeRange tempPastingShapes = PasteShapesFromClipboard(tempSlide);
+            ShapeRange tempPastingShapes = ClipboardUtil.PasteShapesFromClipboard(tempSlide);
             if (tempPastingShapes == null)
             {
                 tempSlide.Delete();
-                return PasteShapesFromClipboard(slide);
+                return ClipboardUtil.PasteShapesFromClipboard(slide);
             }
 
             ShapeRange pastingShapes = slide.CopyShapesToSlide(tempPastingShapes);

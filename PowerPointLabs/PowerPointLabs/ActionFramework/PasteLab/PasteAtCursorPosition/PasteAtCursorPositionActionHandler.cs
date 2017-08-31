@@ -5,6 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 using PPExtraEventHelper;
 
@@ -30,7 +31,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 positionY = ((coordinates.Y - activeWindow.PointsToScreenPixelsY(0)) / yref) * 100;
             }
 
-            ShapeRange pastingShapes = PasteShapesFromClipboard(slide);
+            ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(slide);
             if (pastingShapes == null)
             {
                 return null;

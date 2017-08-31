@@ -14,7 +14,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         protected override bool GetEnabled(string ribbonId)
         {
             Selection currentSelection = this.GetCurrentSelection();
-            return !GraphicsUtil.IsClipboardEmpty() &&
+            return !ClipboardUtil.IsClipboardEmpty() &&
                 ShapeUtil.IsSelectionMultipleOrGroup(currentSelection) &&
                 !ShapeUtil.HasPlaceholderInSelection(currentSelection);
         }
