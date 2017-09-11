@@ -40,19 +40,9 @@ namespace PowerPointLabs.Utils
                 dpiScale = g.DpiX / TargetDpi;
             }
         }
-        # endregion
-
-        # region API
-
-        # region Clipboard
-        
-        public static bool IsClipboardEmpty()
-        {
-            IDataObject clipboardData = Clipboard.GetDataObject();
-            return clipboardData == null || clipboardData.GetFormats().Length == 0;
-        }
-
         #endregion
+
+        #region API
 
         #region Shape
 
@@ -109,7 +99,7 @@ namespace PowerPointLabs.Utils
 
         #endregion
 
-        # region Slide
+        #region Slide
         public static void ExportSlide(Slide slide, string exportPath, float magnifyRatio = 1.0f)
         {
             slide.Export(exportPath,
@@ -123,9 +113,9 @@ namespace PowerPointLabs.Utils
             ExportSlide(slide.GetNativeSlide(), exportPath, magnifyRatio);
         }
 
-        # endregion
+        #endregion
 
-        # region Bitmap
+        #region Bitmap
         public static Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
         {
             var scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
@@ -153,9 +143,9 @@ namespace PowerPointLabs.Utils
 
             return thumbnail;
         }
-        # endregion
+        #endregion
 
-        # region GDI+
+        #region GDI+
         public static void SuspendDrawing(Control control)
         {
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
@@ -166,9 +156,9 @@ namespace PowerPointLabs.Utils
             Native.SendMessage(control.Handle, (uint) Native.Message.WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
             control.Refresh();
         }
-        # endregion
+        #endregion
         
-        # region Color
+        #region Color
         public static int ConvertColorToRgb(Drawing.Color argb)
         {
             return (argb.B << 16) | (argb.G << 8) | argb.R;
@@ -282,6 +272,6 @@ namespace PowerPointLabs.Utils
         {
             return dpiScale;
         }
-        # endregion
+        #endregion
     }
 }

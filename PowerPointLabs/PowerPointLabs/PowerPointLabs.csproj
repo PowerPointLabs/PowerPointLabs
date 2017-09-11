@@ -44,7 +44,7 @@
     <PublishUrl>C:\publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.1.1.2</ApplicationVersion>
+    <ApplicationVersion>4.1.1.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -640,6 +640,7 @@
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />
+    <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
