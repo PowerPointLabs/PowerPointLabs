@@ -21,7 +21,7 @@ namespace PowerPointLabs.HighlightLab
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
                 currentSlide.Name = "PPTLabsHighlightBulletsSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
                 PowerPoint.ShapeRange selectedShapes = null;
@@ -82,14 +82,14 @@ namespace PowerPointLabs.HighlightLab
         {
             bool anySelected = false;
 
-            foreach (var sh in shapesToUse)
+            foreach (PowerPoint.Shape sh in shapesToUse)
             {
                 sh.Name = "HighlightBackgroundShape" + Guid.NewGuid();
             }
 
             if (userSelection == HighlightBackgroundSelection.kTextSelected)
             {
-                foreach (var sh in shapesToUse)
+                foreach (PowerPoint.Shape sh in shapesToUse)
                 {
                     foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
                     {
@@ -105,7 +105,7 @@ namespace PowerPointLabs.HighlightLab
             }
             else
             {
-                foreach (var sh in shapesToUse)
+                foreach (PowerPoint.Shape sh in shapesToUse)
                 {
                     bool anySelectedForShape = false;
                     foreach (Office.TextRange2 paragraph in sh.TextFrame2.TextRange.Paragraphs)
@@ -137,7 +137,7 @@ namespace PowerPointLabs.HighlightLab
 
         private static void GenerateHighlightShape(PowerPointSlide currentSlide, Office.TextRange2 paragraph, PowerPoint.Shape sh)
         {
-            var highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle,
+            PowerPoint.Shape highlightShape = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRoundedRectangle,
                                                             paragraph.BoundLeft,
                                                             paragraph.BoundTop,
                                                             paragraph.BoundWidth,
@@ -157,8 +157,8 @@ namespace PowerPointLabs.HighlightLab
             List<PowerPoint.Shape> shapesToDelete = new List<PowerPoint.Shape>();
             bool shouldSelect;
 
-            var shapes = currentSlide.GetShapesOrderedByTimeline();
-            foreach (var sh in shapes)
+            List<PowerPoint.Shape> shapes = currentSlide.GetShapesOrderedByTimeline();
+            foreach (PowerPoint.Shape sh in shapes)
             {
                 shouldSelect = true; //We should not select existing highlight shapes. Instead they should be deleted
                 if (sh.Name.Contains("PPTLabsHighlightBackgroundShape"))
@@ -206,7 +206,7 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<PowerPoint.Shape> GetShapesToUse(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapes)
         {
-            var shapesToUse = shapes.Cast<PowerPoint.Shape>()
+            List<PowerPoint.Shape> shapesToUse = shapes.Cast<PowerPoint.Shape>()
                                     .Where(sh => !sh.Name.Contains("PPTLabsHighlightBackgroundShape")
                                                     && HasText(sh))
                                     .ToList();
@@ -221,15 +221,15 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<PowerPoint.Shape> GetAllUsableShapesInSlide(PowerPointSlide currentSlide)
         {
-            var selectedShapes = currentSlide.Shapes.Range().Cast<PowerPoint.Shape>().ToArray();
+            PowerPoint.Shape[] selectedShapes = currentSlide.Shapes.Range().Cast<PowerPoint.Shape>().ToArray();
 
-            var usableShapesWithBullets = selectedShapes
+            List<PowerPoint.Shape> usableShapesWithBullets = selectedShapes
                                             .Where(sh => !sh.Name.Contains("PPTLabsHighlightBackgroundShape")
                                                         && HasText(sh)
                                                         && HasBullets(sh))
                                             .ToList();
 
-            var allUsableShapes = selectedShapes
+            List<PowerPoint.Shape> allUsableShapes = selectedShapes
                                     .Where(sh => !sh.Name.Contains("PPTLabsHighlightBackgroundShape")
                                                     && HasText(sh))
                                     .ToList();

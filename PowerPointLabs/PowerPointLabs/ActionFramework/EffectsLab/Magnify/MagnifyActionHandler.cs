@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
@@ -19,9 +21,9 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
         {
             this.StartNewUndoEntry();
 
-            var selection = this.GetCurrentSelection();
+            Selection selection = this.GetCurrentSelection();
 
-            PowerPoint.ShapeRange shapeRange;
+            ShapeRange shapeRange;
 
             try
             {
@@ -43,22 +45,22 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             try
             {
-                var croppedShape = CropToShape.Crop(this.GetCurrentSlide(), selection, isInPlace: true, handleError: false);
+                Shape croppedShape = CropToShape.Crop(this.GetCurrentSlide(), selection, isInPlace: true, handleError: false);
 
                 MagnifyGlassEffect(croppedShape, 1.4f);
             }
             catch (Exception e)
             {
-                var errorMessage = e.Message;
+                string errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
 
                 MessageBox.Show(errorMessage);
             }
         }
 
-        private void MagnifyGlassEffect(PowerPoint.Shape shape, float ratio)
+        private void MagnifyGlassEffect(Shape shape, float ratio)
         {
-            var delta = 0.5f * (ratio - 1);
+            float delta = 0.5f * (ratio - 1);
 
             shape.Left -= delta * shape.Width;
             shape.Top -= delta * shape.Height;

@@ -19,15 +19,15 @@ namespace PowerPointLabs.ActionFramework.Common.Factory
 
         protected BaseHandlerFactory()
         {
-            var catalog = new AggregateCatalog(
+            AggregateCatalog catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            var container = new CompositionContainer(catalog);
+            CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
         }
 
         public THandler CreateInstance(string ribbonId, string ribbonTag)
         {
-            foreach (var handler in ImportedHandlers)
+            foreach (Lazy<THandler, IRibbonIdMetadata> handler in ImportedHandlers)
             {
                 if (handler.Metadata.RibbonIds.Contains(ribbonId)
                     || handler.Metadata.RibbonIds.Contains(ribbonTag))
