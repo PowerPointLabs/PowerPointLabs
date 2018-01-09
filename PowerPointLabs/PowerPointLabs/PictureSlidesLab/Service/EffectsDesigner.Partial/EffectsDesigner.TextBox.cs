@@ -9,25 +9,25 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public void ApplyTextboxEffect(string overlayColor, int transparency, int fontSizeToIncrease)
         {
-            var shape = Util.ShapeUtil.GetTextShapeToProcess(Shapes);
+            Microsoft.Office.Interop.PowerPoint.Shape shape = Util.ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
             {
                 return;
             }
 
-            var margin = CalculateTextBoxMargin(fontSizeToIncrease);
+            int margin = CalculateTextBoxMargin(fontSizeToIncrease);
             // multiple paragraphs.. 
             foreach (TextRange2 textRange in shape.TextFrame2.TextRange.Paragraphs)
             {
                 if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
                 {
-                    var paragraph = textRange.TrimText();
-                    var left = paragraph.BoundLeft - margin;
-                    var top = paragraph.BoundTop - margin;
-                    var width = paragraph.BoundWidth + margin * 2;
-                    var height = paragraph.BoundHeight + margin * 2;
+                    TextRange2 paragraph = textRange.TrimText();
+                    float left = paragraph.BoundLeft - margin;
+                    float top = paragraph.BoundTop - margin;
+                    float width = paragraph.BoundWidth + margin * 2;
+                    float height = paragraph.BoundHeight + margin * 2;
 
-                    var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
+                    Microsoft.Office.Interop.PowerPoint.Shape overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                         left, top, width, height);
                     ChangeName(overlayShape, EffectName.TextBox);
                     Utils.ShapeUtil.MoveZToJustBehind(overlayShape, shape);

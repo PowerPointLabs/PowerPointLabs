@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            var result = new List<Shape>();
+            List<Shape> result = new List<Shape>();
             if (option.IsUseTriangleStyle)
             {
-                var triangleOverlayShape = designer.ApplyTriangleEffect(option.TriangleColor, option.FontColor,
+                Shape triangleOverlayShape = designer.ApplyTriangleEffect(option.TriangleColor, option.FontColor,
                     option.TriangleTransparency);
                 result.Add(triangleOverlayShape);
             }
