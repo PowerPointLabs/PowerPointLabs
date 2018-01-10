@@ -49,7 +49,7 @@ namespace PowerPointLabs.Views
         private void CustomPaint()
         {
             _bufferGraphics.Clear(_parentTextBox.BackColor);
-            var labeledThumbnail = _parentTextBox.Parent.Parent as LabeledThumbnail;
+            LabeledThumbnail labeledThumbnail = _parentTextBox.Parent.Parent as LabeledThumbnail;
 
             if (labeledThumbnail == null)
             {

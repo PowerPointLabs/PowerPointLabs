@@ -23,17 +23,17 @@ namespace PowerPointLabs.ZoomLab
 
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 DeleteExistingZoomToAreaSlides(currentSlide);
                 currentSlide.Name = "PPTLabsZoomToAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
-                var selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-                var zoomRectangles = ReplaceWithZoomRectangleImages(currentSlide, selectedShapes);
+                PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+                List<PowerPoint.Shape> zoomRectangles = ReplaceWithZoomRectangleImages(currentSlide, selectedShapes);
 
                 MakeInvisible(zoomRectangles);
                 List<PowerPoint.Shape> editedSelectedShapes = GetEditedShapesForZoomToArea(currentSlide, zoomRectangles);
 
-                var addedSlides = AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
+                List<PowerPointSlide> addedSlides = AddMultiSlideZoomToArea(currentSlide, editedSelectedShapes);
                 if (!ZoomLabSettings.MultiSlideZoomChecked)
                 {
                     SlideUtil.SquashSlides(addedSlides);
@@ -58,7 +58,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static List<PowerPointSlide> AddMultiSlideZoomToArea(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToZoom)
         {
-            var addedSlides = new List<PowerPointSlide>();
+            List<PowerPointSlide> addedSlides = new List<PowerPointSlide>();
 
             int shapeCount = 1;
             PowerPointSlide lastMagnifiedSlide = null;
@@ -119,11 +119,11 @@ namespace PowerPointLabs.ZoomLab
 
         private static List<PowerPoint.Shape> ReplaceWithZoomRectangleImages(PowerPointSlide currentSlide, PowerPoint.ShapeRange shapeRange)
         {
-            var zoomRectangles = new List<PowerPoint.Shape>();
+            List<PowerPoint.Shape> zoomRectangles = new List<PowerPoint.Shape>();
             int shapeCount = 1;
             foreach (PowerPoint.Shape zoomShape in shapeRange)
             {
-                var zoomRectangle = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle,
+                PowerPoint.Shape zoomRectangle = currentSlide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle,
                                                                 zoomShape.Left,
                                                                 zoomShape.Top,
                                                                 zoomShape.Width,
@@ -211,7 +211,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static void MakeInvisible(IEnumerable<PowerPoint.Shape> zoomRectangles)
         {
-            foreach (var sh in zoomRectangles)
+            foreach (PowerPoint.Shape sh in zoomRectangles)
             {
                 sh.Visible = Office.MsoTriState.msoFalse;
             }
@@ -219,7 +219,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static void MakeVisible(IEnumerable<PowerPoint.Shape> zoomRectangles)
         {
-            foreach (var sh in zoomRectangles)
+            foreach (PowerPoint.Shape sh in zoomRectangles)
             {
                 sh.Visible = Office.MsoTriState.msoTrue;
             }
@@ -227,7 +227,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static bool IsSelectingShapes()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            PowerPoint.Selection selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes && selection.ShapeRange.Count > 0;
         }
 

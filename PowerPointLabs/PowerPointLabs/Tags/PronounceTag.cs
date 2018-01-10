@@ -16,7 +16,7 @@ namespace PowerPointLabs.Tags
         {
             String pronounciation = ParseTagArgument();
 
-            var wordToPronounce = ParseWordToPronounce();
+            string wordToPronounce = ParseWordToPronounce();
             try
             {
                 builder.AppendTextWithPronunciation(wordToPronounce, pronounciation);

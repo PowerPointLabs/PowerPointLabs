@@ -51,7 +51,7 @@ namespace PowerPointLabs.ResizeLab
 
         public void Reset()
         {
-            var selectedShapes = GetSelectedShapes(false);
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes(false);
 
             if (selectedShapes != null && _isPreview)
             {

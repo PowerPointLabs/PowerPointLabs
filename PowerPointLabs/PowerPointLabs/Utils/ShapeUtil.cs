@@ -313,7 +313,7 @@ namespace PowerPointLabs.Utils
         // TODO: This could be an extension method of shape.
         public static bool HasDefaultName(Shape shape)
         {
-            var copy = shape.Duplicate()[1];
+            Shape copy = shape.Duplicate()[1];
             bool hasDefaultName = copy.Name != shape.Name;
             copy.Delete();
             return hasDefaultName;
@@ -441,7 +441,7 @@ namespace PowerPointLabs.Utils
                 return 1.0f;
             }
 
-            var isAspectRatioLocked = shape.LockAspectRatio;
+            MsoTriState isAspectRatioLocked = shape.LockAspectRatio;
             shape.LockAspectRatio = MsoTriState.msoFalse;
 
             float oldWidth = shape.Width;
@@ -461,7 +461,7 @@ namespace PowerPointLabs.Utils
                 return 1.0f;
             }
 
-            var isAspectRatioLocked = shape.LockAspectRatio;
+            MsoTriState isAspectRatioLocked = shape.LockAspectRatio;
             shape.LockAspectRatio = MsoTriState.msoFalse;
 
             float oldHeight = shape.Height;
@@ -746,14 +746,14 @@ namespace PowerPointLabs.Utils
 
         public static void MakeShapeViewTimeInvisible(Shape shape, Slide curSlide)
         {
-            var sequence = curSlide.TimeLine.MainSequence;
+            Sequence sequence = curSlide.TimeLine.MainSequence;
 
-            var effectAppear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+            Effect effectAppear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                                                   MsoAnimateByLevel.msoAnimateLevelNone,
                                                   MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectAppear.Timing.Duration = 0;
 
-            var effectDisappear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+            Effect effectDisappear = sequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                                                      MsoAnimateByLevel.msoAnimateLevelNone,
                                                      MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = MsoTriState.msoTrue;
@@ -842,16 +842,16 @@ namespace PowerPointLabs.Utils
                 refShape.HasTextFrame == MsoTriState.msoTrue &&
                 candidateShape.HasTextFrame == MsoTriState.msoTrue)
             {
-                var refTextRange = refShape.TextFrame2.TextRange;
-                var candidateTextRange = candidateShape.TextFrame2.TextRange;
+                TextRange2 refTextRange = refShape.TextFrame2.TextRange;
+                TextRange2 candidateTextRange = candidateShape.TextFrame2.TextRange;
 
                 if (pickupTextContent)
                 {
                     candidateTextRange.Text = refTextRange.Text;
                 }
 
-                var refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
-                var candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
+                int refParagraphCount = refShape.TextFrame2.TextRange.Paragraphs.Count;
+                int candidateParagraphCount = candidateShape.TextFrame2.TextRange.Paragraphs.Count;
 
                 if (refParagraphCount > 0)
                 {
@@ -860,10 +860,10 @@ namespace PowerPointLabs.Utils
                     candidateTextRange.Text = originalText;
                 }
 
-                for (var i = 1; i <= candidateParagraphCount; i++)
+                for (int i = 1; i <= candidateParagraphCount; i++)
                 {
-                    var refParagraph = refTextRange.Paragraphs[i <= refParagraphCount ? i : refParagraphCount];
-                    var candidateParagraph = candidateTextRange.Paragraphs[i];
+                    TextRange2 refParagraph = refTextRange.Paragraphs[i <= refParagraphCount ? i : refParagraphCount];
+                    TextRange2 candidateParagraph = candidateTextRange.Paragraphs[i];
 
                     SyncTextRange(refParagraph, candidateParagraph, pickupTextContent, pickupTextFormat);
                 }
@@ -878,10 +878,10 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            foreach (var shape in candidateShapeRange)
+            foreach (object shape in candidateShapeRange)
             {
-                var candidateShape = shape as Shape;
-                var refShape = refShapeRange.Cast<Shape>().FirstOrDefault(item => IsSameType(item, candidateShape) &&
+                Shape candidateShape = shape as Shape;
+                Shape refShape = refShapeRange.Cast<Shape>().FirstOrDefault(item => IsSameType(item, candidateShape) &&
                                                                                   IsSamePosition(item, candidateShape,
                                                                                                  false, 15) &&
                                                                                   IsSameSize(item, candidateShape));
@@ -901,7 +901,7 @@ namespace PowerPointLabs.Utils
             bool originallyHadNewLine = candidateTextRange.Text.EndsWith("\r");
             bool lostTheNewLine = false;
 
-            var candidateText = candidateTextRange.Text.TrimEnd('\r');
+            string candidateText = candidateTextRange.Text.TrimEnd('\r');
 
             if (pickupTextFormat)
             {
@@ -972,14 +972,14 @@ namespace PowerPointLabs.Utils
 
         public static TextRange ConvertTextRange2ToTextRange(TextRange2 textRange2)
         {
-            var textFrame2 = textRange2.Parent as TextFrame2;
+            TextFrame2 textFrame2 = textRange2.Parent as TextFrame2;
 
             if (textFrame2 == null)
             {
                 return null;
             }
 
-            var shape = textFrame2.Parent as Shape;
+            Shape shape = textFrame2.Parent as Shape;
 
             return shape == null ? null : shape.TextFrame.TextRange;
         }
@@ -1003,7 +1003,7 @@ namespace PowerPointLabs.Utils
         private static void SyncShapeSize(Shape refShape, Shape candidateShape)
         {
             // unlock aspect ratio to enable size tweak
-            var candidateLockRatio = candidateShape.LockAspectRatio;
+            MsoTriState candidateLockRatio = candidateShape.LockAspectRatio;
 
             candidateShape.LockAspectRatio = MsoTriState.msoFalse;
 

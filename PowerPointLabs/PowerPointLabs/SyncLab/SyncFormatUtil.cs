@@ -15,7 +15,7 @@ namespace PowerPointLabs.SyncLab
 
         public static Shapes GetTemplateShapes()
         {
-            var shapeStorage = SyncLabShapeStorage.Instance;
+            SyncLabShapeStorage shapeStorage = SyncLabShapeStorage.Instance;
             return shapeStorage.Slides[SyncLabShapeStorage.FormatStorageSlide].Shapes;
         }
 

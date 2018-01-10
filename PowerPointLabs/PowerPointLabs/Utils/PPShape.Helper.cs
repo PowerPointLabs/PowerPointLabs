@@ -40,8 +40,8 @@ namespace PowerPointLabs.Utils
 
             for (int i = 0; i < _points.Count; i++)
             {
-                var point = _points[i];
-                var nodeIndex = i + 1;
+                PointF point = _points[i];
+                int nodeIndex = i + 1;
 
                 _shape.Nodes.SetPosition(nodeIndex, point.X, point.Y);
             }
@@ -52,7 +52,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void UpdateAbsoluteWidth()
         {
-            var rotation = GetStandardizedRotation(_shape.Rotation);
+            float rotation = GetStandardizedRotation(_shape.Rotation);
 
             if (IsInQuadrant(_shape.Rotation))
             {
@@ -73,7 +73,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void UpdateAbsoluteHeight()
         {
-            var rotation = GetStandardizedRotation(_shape.Rotation);
+            float rotation = GetStandardizedRotation(_shape.Rotation);
 
             if (IsInQuadrant(_shape.Rotation))
             {
@@ -110,9 +110,9 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private void SetToAbsoluteDimension()
         {
-            var rotation = GetStandardizedRotation(_shape.Rotation);
-            var sinAngle = Math.Sin(rotation);
-            var cosAngle = Math.Cos(rotation);
+            float rotation = GetStandardizedRotation(_shape.Rotation);
+            double sinAngle = Math.Sin(rotation);
+            double cosAngle = Math.Cos(rotation);
 
             if ((int) _shape.Rotation == 90 || (int) _shape.Rotation == 270)
             {
@@ -121,7 +121,7 @@ namespace PowerPointLabs.Utils
             }
             else
             {
-                var ratio = sinAngle / cosAngle;
+                double ratio = sinAngle / cosAngle;
                 _shape.Height = (float)((_absoluteWidth * ratio - _absoluteHeight) / (sinAngle * ratio - cosAngle));
                 _shape.Width = (float)((_absoluteWidth - _shape.Height * sinAngle) / cosAngle);
             }
@@ -130,8 +130,8 @@ namespace PowerPointLabs.Utils
         private void SetToAbsoluteHeightAspectRatio()
         {
             // Store the original position of the shape
-            var originalTop = _shape.Top;
-            var originalLeft = _shape.Left;
+            float originalTop = _shape.Top;
+            float originalLeft = _shape.Left;
 
             _shape.LockAspectRatio = MsoTriState.msoFalse;
             FitToSlide.FitToHeight(_shape, _absoluteWidth, _absoluteHeight);
@@ -147,8 +147,8 @@ namespace PowerPointLabs.Utils
         private void SetToAbsoluteWidthAspectRatio()
         {
             // Store the original position of the shape
-            var originalTop = _shape.Top;
-            var originalLeft = _shape.Left;
+            float originalTop = _shape.Top;
+            float originalLeft = _shape.Left;
 
             _shape.LockAspectRatio = MsoTriState.msoFalse;
             FitToSlide.FitToWidth(_shape, _absoluteWidth, _absoluteHeight);
@@ -188,7 +188,7 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            var shape = _shape;
+            Microsoft.Office.Interop.PowerPoint.Shape shape = _shape;
 
             if (!isConvertToFreeform)
             {
@@ -208,9 +208,9 @@ namespace PowerPointLabs.Utils
 
             for (int i = 1; i <= shape.Nodes.Count; i++)
             {
-                var node = shape.Nodes[i];
-                var point = node.Points;
-                var newPoint = new PointF(point[1, 1], point[1, 2]);
+                Microsoft.Office.Interop.PowerPoint.ShapeNode node = shape.Nodes[i];
+                dynamic point = node.Points;
+                PointF newPoint = new PointF(point[1, 1], point[1, 2]);
 
                 _points.Add(newPoint);
             }
@@ -293,11 +293,11 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         private PointF GetRotatedPoint(float widthDiff, float heightDiff)
         {
-            var rotation = ConvertDegToRad(_shape.Rotation);
-            var centerX = _shape.Left + _shape.Width/2;
-            var centerY = _shape.Top + _shape.Height/2;
-            var x = Math.Cos(rotation)*widthDiff - Math.Sin(rotation)*heightDiff + centerX;
-            var y = Math.Sin(rotation)*widthDiff + Math.Cos(rotation)*heightDiff + centerY;
+            float rotation = ConvertDegToRad(_shape.Rotation);
+            float centerX = _shape.Left + _shape.Width/2;
+            float centerY = _shape.Top + _shape.Height/2;
+            double x = Math.Cos(rotation)*widthDiff - Math.Sin(rotation)*heightDiff + centerX;
+            double y = Math.Sin(rotation)*widthDiff + Math.Cos(rotation)*heightDiff + centerY;
 
             return new PointF((float) x, (float) y);
         }
@@ -312,9 +312,9 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         private PointF GetCenterPoint(PointF rotated, float widthDiff, float heightDiff)
         {
-            var rotation = ConvertDegToRad(_shape.Rotation);
-            var x = rotated.X - Math.Cos(rotation)*widthDiff + Math.Sin(rotation)*heightDiff;
-            var y = rotated.Y - Math.Sin(rotation)*widthDiff - Math.Cos(rotation)*heightDiff;
+            float rotation = ConvertDegToRad(_shape.Rotation);
+            double x = rotated.X - Math.Cos(rotation)*widthDiff + Math.Sin(rotation)*heightDiff;
+            double y = rotated.Y - Math.Sin(rotation)*widthDiff - Math.Cos(rotation)*heightDiff;
             
             return new PointF((float) x, (float) y);
         }
