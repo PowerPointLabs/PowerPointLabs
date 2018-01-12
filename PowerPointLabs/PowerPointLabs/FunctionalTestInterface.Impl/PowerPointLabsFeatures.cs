@@ -63,7 +63,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("CropToAspectRatioOption1_10");
+                RibbonControl control = new RibbonControl("CropToAspectRatioOption1_10");
                 control.Tag = CropLabText.CropToAspectRatioTag;
                 Ribbon.OnAction(control);
             }));
@@ -285,7 +285,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("BlurSelectedOption90");
+                RibbonControl control = new RibbonControl("BlurSelectedOption90");
                 control.Tag = EffectsLabText.BlurrinessTag;
                 Ribbon.OnAction(control);
             }));
@@ -295,7 +295,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("BlurRemainderOption90");
+                RibbonControl control = new RibbonControl("BlurRemainderOption90");
                 control.Tag = EffectsLabText.BlurrinessTag;
                 Ribbon.OnAction(control);
             }));
@@ -305,7 +305,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("BlurBackgroundOption90");
+                RibbonControl control = new RibbonControl("BlurBackgroundOption90");
                 control.Tag = EffectsLabText.BlurrinessTag;
                 Ribbon.OnAction(control);
             }));
@@ -315,7 +315,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("GrayScaleRecolorRemainderMenu");
+                RibbonControl control = new RibbonControl("GrayScaleRecolorRemainderMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -325,7 +325,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("BlackAndWhiteRecolorRemainderMenu");
+                RibbonControl control = new RibbonControl("BlackAndWhiteRecolorRemainderMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -335,7 +335,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("GothamRecolorRemainderMenu");
+                RibbonControl control = new RibbonControl("GothamRecolorRemainderMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -345,7 +345,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("SepiaRecolorRemainderMenu");
+                RibbonControl control = new RibbonControl("SepiaRecolorRemainderMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -355,7 +355,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("GrayScaleRecolorBackgroundMenu");
+                RibbonControl control = new RibbonControl("GrayScaleRecolorBackgroundMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -365,7 +365,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("BlackAndWhiteRecolorBackgroundMenu");
+                RibbonControl control = new RibbonControl("BlackAndWhiteRecolorBackgroundMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -375,7 +375,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("GothamRecolorBackgroundMenu");
+                RibbonControl control = new RibbonControl("GothamRecolorBackgroundMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));
@@ -385,7 +385,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
-                var control = new RibbonControl("SepiaRecolorBackgroundMenu");
+                RibbonControl control = new RibbonControl("SepiaRecolorBackgroundMenu");
                 control.Tag = EffectsLabText.RecolorTag;
                 Ribbon.OnAction(control);
             }));

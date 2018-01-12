@@ -30,9 +30,9 @@ namespace Test.UnitTest.SyncLab
 
         protected void CompareSlides(int actualShapesSlideNo, int expectedShapesSlideNo)
         {
-          
-            var actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
-            var expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
+
+            PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
+            PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
 
             SlideUtil.IsSameLooking(actualSlide, expectedSlide);
         }

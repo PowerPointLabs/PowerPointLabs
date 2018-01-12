@@ -48,7 +48,7 @@ namespace PowerPointLabs.NarrationsLab
 
         public static string[] EmbedCurrentSlideNotes()
         {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             
             if (currentSlide != null)
             {
@@ -60,20 +60,20 @@ namespace PowerPointLabs.NarrationsLab
 
         public static List<string[]> EmbedSelectedSlideNotes()
         {
-            var progressBarForm = new ProcessingStatusForm();
+            ProcessingStatusForm progressBarForm = new ProcessingStatusForm();
             progressBarForm.Show();
-            var audioList = new List<string[]>();
+            List<string[]> audioList = new List<string[]>();
 
-            var slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+            List<PowerPointSlide> slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
 
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
             {
-                var percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
+                int percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
                 progressBarForm.UpdateProgress(percentage);
                 progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
 
-                var slide = slides[currentSlideIndex];
+                PowerPointSlide slide = slides[currentSlideIndex];
                 audioList.Add(EmbedSlideNotes(slide));
             }
             progressBarForm.Close();
@@ -83,20 +83,20 @@ namespace PowerPointLabs.NarrationsLab
 
         public static List<string[]> EmbedAllSlideNotes()
         {
-            var progressBarForm = new ProcessingStatusForm();
+            ProcessingStatusForm progressBarForm = new ProcessingStatusForm();
             progressBarForm.Show();
-            var audioList = new List<string[]>();
+            List<string[]> audioList = new List<string[]>();
 
-            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
 
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
             {
-                var percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
+                int percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
                 progressBarForm.UpdateProgress(percentage);
                 progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
 
-                var slide = slides[currentSlideIndex];
+                PowerPointSlide slide = slides[currentSlideIndex];
                 audioList.Add(EmbedSlideNotes(slide));
             }
             progressBarForm.Close();
@@ -163,7 +163,7 @@ namespace PowerPointLabs.NarrationsLab
 
         public static void ReplaceSelectedAudio()
         {
-            var selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange selectedShape = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
             if (selectedShape.Count != 1 || selectedShape.MediaType != PpMediaType.ppMediaTypeSound)
             {
                 return;
@@ -177,7 +177,7 @@ namespace PowerPointLabs.NarrationsLab
 
             if (result == DialogResult.OK)
             {
-                var selectedFile = audioPicker.FileName;
+                string selectedFile = audioPicker.FileName;
 
                 PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 Shape newAudio = InsertAudioFileOnSlide(currentSlide, selectedFile);
@@ -208,8 +208,8 @@ namespace PowerPointLabs.NarrationsLab
             // changed, leave the audio.
 
             // to avoid duplicate records, delete all old audios in the current slide
-            var audiosInCurrentSlide = Directory.GetFiles(folderPath);
-            foreach (var audio in audiosInCurrentSlide)
+            string[] audiosInCurrentSlide = Directory.GetFiles(folderPath);
+            foreach (string audio in audiosInCurrentSlide)
             {
                 if (audio.Contains(fileNameSearchPattern))
                 {
@@ -275,9 +275,9 @@ namespace PowerPointLabs.NarrationsLab
 
         private static string[] GetAudioFilePaths(string folderPath, string fileNameSearchPattern)
         {
-            var filePaths = Directory.EnumerateFiles(folderPath, "*." + Audio.RecordedFormatExtension);
-            var comparer = new Utils.Comparers.AtomicNumberStringCompare();
-            var audioFiles =
+            IEnumerable<string> filePaths = Directory.EnumerateFiles(folderPath, "*." + Audio.RecordedFormatExtension);
+            Utils.Comparers.AtomicNumberStringCompare comparer = new Utils.Comparers.AtomicNumberStringCompare();
+            string[] audioFiles =
                 filePaths.Where(path => path.Contains(fileNameSearchPattern)).OrderBy(x => new FileInfo(x).Name,
                                                                                       comparer).ToArray();
 

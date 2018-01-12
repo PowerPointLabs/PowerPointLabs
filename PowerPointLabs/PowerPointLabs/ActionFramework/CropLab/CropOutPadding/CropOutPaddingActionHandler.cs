@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
         {
             IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
-            var selection = this.GetCurrentSelection();
+            Selection selection = this.GetCurrentSelection();
 
             if (!ShapeUtil.IsSelectionShape(selection))
             {

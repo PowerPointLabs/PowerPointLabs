@@ -25,15 +25,15 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         public StyleVariantsFactory()
         {
-            var catalog = new AggregateCatalog(
+            AggregateCatalog catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            var container = new CompositionContainer(catalog);
+            CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
         }
 
         public Dictionary<string, List<StyleVariant>> GetVariants(string targetStyle)
         {
-            foreach (var styleVariants in GetAllStyleVariants())
+            foreach (IStyleVariants styleVariants in GetAllStyleVariants())
             {
                 if (styleVariants.GetStyleName() == targetStyle)
                 {

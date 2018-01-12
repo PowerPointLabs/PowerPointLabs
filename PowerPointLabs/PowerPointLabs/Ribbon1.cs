@@ -64,49 +64,49 @@ namespace PowerPointLabs
 
         public void OnAction(Office.IRibbonControl control)
         {
-            var actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.ActionHandler actionHandler = ActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             actionHandler.Execute(control.Id);
         }
 
         public bool GetEnabled(Office.IRibbonControl control)
         {
-            var enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.EnabledHandler enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
             return enabledHandler.Get(control.Id);
         }
 
         public string GetLabel(Office.IRibbonControl control)
         {
-            var labelHandler = LabelHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.LabelHandler labelHandler = LabelHandlerFactory.CreateInstance(control.Id, control.Tag);
             return labelHandler.Get(control.Id);
         }
 
         public string GetSupertip(Office.IRibbonControl control)
         {
-            var supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.SupertipHandler supertipHandler = SupertipHandlerFactory.CreateInstance(control.Id, control.Tag);
             return supertipHandler.Get(control.Id);
         }
 
         public Bitmap GetImage(Office.IRibbonControl control)
         {
-            var imageHandler = ImageHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.ImageHandler imageHandler = ImageHandlerFactory.CreateInstance(control.Id, control.Tag);
             return imageHandler.Get(control.Id);
         }
 
         public string GetContent(Office.IRibbonControl control)
         {
-            var contentHandler = ContentHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.ContentHandler contentHandler = ContentHandlerFactory.CreateInstance(control.Id, control.Tag);
             return contentHandler.Get(control.Id);
         }
 
         public bool GetPressed(Office.IRibbonControl control)
         {
-            var pressedHandler = PressedHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.PressedHandler pressedHandler = PressedHandlerFactory.CreateInstance(control.Id, control.Tag);
             return pressedHandler.Get(control.Id);
         }
 
         public void OnCheckBoxAction(Office.IRibbonControl control, bool pressed)
         {
-            var checkBoxActionHandler = CheckBoxActionHandlerFactory.CreateInstance(control.Id, control.Tag);
+            ActionFramework.Common.Interface.CheckBoxActionHandler checkBoxActionHandler = CheckBoxActionHandlerFactory.CreateInstance(control.Id, control.Tag);
             checkBoxActionHandler.Execute(control.Id, pressed);
         }
 

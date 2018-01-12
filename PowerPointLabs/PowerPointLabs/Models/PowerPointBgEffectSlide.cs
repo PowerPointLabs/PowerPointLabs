@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -33,7 +34,7 @@ namespace PowerPointLabs.Models
             }
 
             // here we cut-paste the shape to get a reference of those shapes
-            var oriShapeRange = refSlide.Shapes.Paste();
+            ShapeRange oriShapeRange = refSlide.Shapes.Paste();
 
             // preprocess the shapes, eliminate animations for shapes
             foreach (Shape shape in oriShapeRange)
@@ -45,10 +46,10 @@ namespace PowerPointLabs.Models
             // cut the original shape cover again and duplicate the slide
             // here the slide will be duplicated without the original shape cover
             oriShapeRange.Cut();
-            var newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
+            PowerPointSlide newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
             
             // get a copy of original cover shapes
-            var copyShapeRange = newSlide.Shapes.Paste();
+            ShapeRange copyShapeRange = newSlide.Shapes.Paste();
             // paste the original shape cover back
             oriShapeRange = refSlide.Shapes.Paste();
             
@@ -63,7 +64,7 @@ namespace PowerPointLabs.Models
             newSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
             newSlide.Transition.Duration = 0.5f;
 
-            var bgEffectSlide = new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
+            PowerPointBgEffectSlide bgEffectSlide = new PowerPointBgEffectSlide(newSlide.GetNativeSlide());
 
             try
             {
@@ -123,9 +124,9 @@ namespace PowerPointLabs.Models
             }
             else
             {
-                using (var imageFactory = new ImageFactory())
+                using (ImageFactory imageFactory = new ImageFactory())
                 {
-                    var image = imageFactory.Load(AnimatedBackgroundPath);
+                    ImageFactory image = imageFactory.Load(AnimatedBackgroundPath);
 
                     image = image.Filter(filter);
 
@@ -133,7 +134,7 @@ namespace PowerPointLabs.Models
                 }
             }
 
-            var newBackground = Shapes.AddPicture(AnimatedBackgroundPath, Core.MsoTriState.msoFalse,
+            Shape newBackground = Shapes.AddPicture(AnimatedBackgroundPath, Core.MsoTriState.msoFalse,
                                                   Core.MsoTriState.msoTrue,
                                                   0, 0,
                                                   PowerPointPresentation.Current.SlideWidth,
@@ -143,7 +144,7 @@ namespace PowerPointLabs.Models
 
             if (filter == null && isTint)
             {
-                var overlayShape = EffectsLab.EffectsLabBlur.GenerateOverlayShape(this, newBackground);
+                EffectsLab.EffectsLabBlur.GenerateOverlayShape(this, newBackground);
             }
         }
 
@@ -166,14 +167,14 @@ namespace PowerPointLabs.Models
                 }
             }
 
-            var croppedShape = CropToShape.Crop(FromSlideFactory(refSlide), shapeRange, handleError: false);
+            Shape croppedShape = CropToShape.Crop(FromSlideFactory(refSlide), shapeRange, handleError: false);
 
             return croppedShape;
         }
 
         private static void MakeAnimatedBackground(PowerPointSlide curSlide)
         {
-            foreach (var shape in curSlide.Shapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
+            foreach (Shape shape in curSlide.Shapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
             {
                 shape.Delete();
             }
@@ -182,17 +183,17 @@ namespace PowerPointLabs.Models
 
             Utils.GraphicsUtil.ExportSlide(curSlide, AnimatedBackgroundPath);
 
-            var visibleShape = curSlide.Shapes.Cast<Shape>().Where(x => x.Visible == Core.MsoTriState.msoTrue).ToList();
+            List<Shape> visibleShape = curSlide.Shapes.Cast<Shape>().Where(x => x.Visible == Core.MsoTriState.msoTrue).ToList();
             
-            foreach (var shape in visibleShape)
+            foreach (Shape shape in visibleShape)
             {
                 shape.Delete();
             }
 
-            var placeHolders =
+            List<Shape> placeHolders =
                 curSlide.Shapes.Cast<Shape>().Where(x => x.Type == Core.MsoShapeType.msoPlaceholder).ToList();
 
-            foreach (var placeHolder in placeHolders)
+            foreach (Shape placeHolder in placeHolders)
             {
                 placeHolder.Delete();
             }
@@ -204,12 +205,12 @@ namespace PowerPointLabs.Models
             try
             {
                 // crop in the original slide and put into clipboard
-                var croppedShape = MakeFrontImage(refSlide, oriShapeRange);
+                Shape croppedShape = MakeFrontImage(refSlide, oriShapeRange);
 
                 croppedShape.Cut();
 
                 // swap the uncropped shapes and cropped shapes
-                var pastedCrop = newSlide.Shapes.Paste();
+                ShapeRange pastedCrop = newSlide.Shapes.Paste();
 
                 // calibrate pasted shapes
                 pastedCrop.Left -= 12;
@@ -241,7 +242,7 @@ namespace PowerPointLabs.Models
             }
             catch (Exception e)
             {
-                var errorMessage = e.Message;
+                string errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Blur/Recolor Remainder");
 
                 newSlide.Delete();

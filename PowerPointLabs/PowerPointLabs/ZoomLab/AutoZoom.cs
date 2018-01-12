@@ -66,7 +66,7 @@ namespace PowerPointLabs.ZoomLab
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
                     currentSlide.Copy();
-                    var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    PowerPoint.Shape backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     backgroundShape.Apply();
                     ShapeUtil.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
@@ -90,7 +90,7 @@ namespace PowerPointLabs.ZoomLab
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
                     currentSlide.Copy();
-                    var backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    PowerPoint.Shape backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                     backgroundShape.Apply();
                     ShapeUtil.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
@@ -273,11 +273,11 @@ namespace PowerPointLabs.ZoomLab
                 }
             }
 
-            var copiedShapes = new List<PowerPoint.Shape>();
+            List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in shapesOnNextSlide)
             {
                 sh.Copy();
-                var shapeCopy = nextSlide.Shapes.Paste()[1];
+                PowerPoint.Shape shapeCopy = nextSlide.Shapes.Paste()[1];
                 LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
                 copiedShapes.Add(shapeCopy);
             }
@@ -309,7 +309,7 @@ namespace PowerPointLabs.ZoomLab
         {
             PowerPointSlide nextSlideCopy = nextSlide.Duplicate();
             List<PowerPoint.Shape> shapes = nextSlideCopy.Shapes.Cast<PowerPoint.Shape>().ToList();
-            var matchingShapes = shapes.Where(current => nextSlideCopy.HasEntryAnimation(current));
+            IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => nextSlideCopy.HasEntryAnimation(current));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 s.Delete();
@@ -326,7 +326,7 @@ namespace PowerPointLabs.ZoomLab
         {
             PowerPointSlide previousSlideCopy = previousSlide.Duplicate();
             List<PowerPoint.Shape> shapes = previousSlideCopy.Shapes.Cast<PowerPoint.Shape>().ToList();
-            var matchingShapes = shapes.Where(current => previousSlideCopy.HasExitAnimation(current));
+            IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => previousSlideCopy.HasExitAnimation(current));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 s.Delete();
@@ -381,7 +381,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static bool IsSelectingShapes()
         {
-            var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            PowerPoint.Selection selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             return selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes && selection.ShapeRange.Count > 0;
         }
 
@@ -420,7 +420,7 @@ namespace PowerPointLabs.ZoomLab
             Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
-            var copiedShapes = new List<PowerPoint.Shape>();
+            List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
                 if (!previousSlide.HasExitAnimation(sh) && !ShapeUtil.IsHidden(sh))
