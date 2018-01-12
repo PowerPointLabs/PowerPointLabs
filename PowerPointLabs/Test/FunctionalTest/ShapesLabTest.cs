@@ -29,7 +29,7 @@ namespace Test.FunctionalTest
         public void FT_ShapesLabTest()
         {
             PpOperations.MaximizeWindow();
-            var shapesLab = PplFeatures.ShapesLab;
+            IShapesLabController shapesLab = PplFeatures.ShapesLab;
             shapesLab.OpenPane();
 
             TestSaveShapesToShapesLab(shapesLab);
@@ -42,8 +42,8 @@ namespace Test.FunctionalTest
                 PathUtil.GetDocTestPresentationPath("ShapesLab\\LibraryToImport.pptlabsshapes"));
             shapesLab.ImportLibrary(
                 PathUtil.GetDocTestPresentationPath("ShapesLab\\ShapeToImport.pptlabsshape"));
-            var actualShapeDataAfterImport = shapesLab.FetchShapeGalleryPresentationData();
-            var expShapeDataAfterImport = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<ISlideData> actualShapeDataAfterImport = shapesLab.FetchShapeGalleryPresentationData();
+            System.Collections.Generic.List<ISlideData> expShapeDataAfterImport = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath(ExpectedShapeGalleryFileName()));
             PresentationUtil.AssertEqual(expShapeDataAfterImport, actualShapeDataAfterImport);
         }
@@ -67,16 +67,16 @@ namespace Test.FunctionalTest
             // save shapes
             shapesLab.SaveSelectedShapes();
 
-            var actualSlide = PpOperations.SelectSlide(4);
-            var addedThumbnail = shapesLab.GetLabeledThumbnail("selectMe1");
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(4);
+            IShapesLabLabeledThumbnail addedThumbnail = shapesLab.GetLabeledThumbnail("selectMe1");
             addedThumbnail.FinishNameEdit();
             // add shapes back
             DoubleClick(addedThumbnail as Control);
-            var shapes = PpOperations.SelectShapesByPrefix("Group selectMe1");
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("Group selectMe1");
             Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
                                             "UI test is flaky, pls re-run.");
 
-            var expSlide = PpOperations.SelectSlide(5);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
 
             SlideUtil.IsSameLooking(expSlide, actualSlide);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
@@ -84,7 +84,7 @@ namespace Test.FunctionalTest
 
         private void DoubleClick(Control target)
         {
-            var pt = target.PointToScreen(new Point(target.Width/2, target.Height/2));
+            Point pt = target.PointToScreen(new Point(target.Width/2, target.Height/2));
             MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
         }
     }

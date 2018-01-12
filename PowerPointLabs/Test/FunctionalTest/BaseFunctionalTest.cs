@@ -66,7 +66,7 @@ namespace Test.FunctionalTest
         private void ConnectPpl()
         {
             const int waitTime = 3000;
-            var retryCount = 5;
+            int retryCount = 5;
             while (retryCount > 0)
             {
                 // if already connected, break
@@ -77,7 +77,7 @@ namespace Test.FunctionalTest
                 // otherwise keep trying to connect for some times
                 try
                 {
-                    var ftInstance = (IPowerPointLabsFT) Activator.GetObject(typeof (IPowerPointLabsFT),
+                    IPowerPointLabsFT ftInstance = (IPowerPointLabsFT) Activator.GetObject(typeof (IPowerPointLabsFT),
                         "ipc://PowerPointLabsFT/PowerPointLabsFT");
                     PplFeatures = ftInstance.GetFeatures();
                     PpOperations = ftInstance.GetOperations();
@@ -105,7 +105,7 @@ namespace Test.FunctionalTest
 
         private void OpenSlideForTest(String slideName)
         {
-            var pptProcess = new Process
+            Process pptProcess = new Process
             {
                 StartInfo =
                 {
@@ -118,7 +118,7 @@ namespace Test.FunctionalTest
 
         private void CloseActivePpInstance()
         {
-            var processes = Process.GetProcessesByName("POWERPNT");
+            Process[] processes = Process.GetProcessesByName("POWERPNT");
             if (processes.Length > 0)
             {
                 foreach (Process p in processes)
@@ -133,7 +133,7 @@ namespace Test.FunctionalTest
 
         private void WaitForPpInstanceToClose()
         {
-            var retry = 5;
+            int retry = 5;
             while (Process.GetProcessesByName("POWERPNT").Length > 0
                 && retry > 0)
             {
@@ -143,7 +143,7 @@ namespace Test.FunctionalTest
 
             if (Process.GetProcessesByName("POWERPNT").Length > 0)
             {
-                foreach (var process in Process.GetProcessesByName("POWERPNT"))
+                foreach (Process process in Process.GetProcessesByName("POWERPNT"))
                 {
                     process.Kill();
                 }
