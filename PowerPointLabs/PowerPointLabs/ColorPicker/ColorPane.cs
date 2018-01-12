@@ -1094,7 +1094,7 @@ namespace PowerPointLabs
         private Color GetSelectedShapeColor(PowerPoint.ShapeRange selectedShapes)
         {
             Color colorToReturn = Color.Empty;
-            foreach (PowerPoint.Shape selectedShape in selectedShapes)
+            foreach (object selectedShape in selectedShapes)
             {
                 Color color = GetSelectedShapeColor(selectedShape as PowerPoint.Shape);
                 if (colorToReturn.Equals(Color.Empty))

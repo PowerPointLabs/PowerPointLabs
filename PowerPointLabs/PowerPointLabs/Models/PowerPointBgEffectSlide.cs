@@ -144,7 +144,7 @@ namespace PowerPointLabs.Models
 
             if (filter == null && isTint)
             {
-                Shape overlayShape = EffectsLab.EffectsLabBlur.GenerateOverlayShape(this, newBackground);
+                EffectsLab.EffectsLabBlur.GenerateOverlayShape(this, newBackground);
             }
         }
 
