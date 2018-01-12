@@ -18,7 +18,7 @@ namespace PowerPointLabs.SpeechEngine
                 return;
             }
 
-            using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
+            using (var synthesizer = new SpeechSynthesizer())
             {
                 synthesizer.SetOutputToWaveFile(directory);
                 synthesizer.Speak(p);
@@ -27,7 +27,7 @@ namespace PowerPointLabs.SpeechEngine
 
         public static void Speak(PromptBuilder p)
         {
-            SpeechSynthesizer synthesizer = CreateSynthesizerOutputToAudio();
+            var synthesizer = CreateSynthesizerOutputToAudio();
 
             Prompt spokenPrompt = synthesizer.SpeakAsync(p);
             SynthesisState state = new SynthesisState(synthesizer, spokenPrompt);
@@ -37,7 +37,7 @@ namespace PowerPointLabs.SpeechEngine
 
         private static SpeechSynthesizer CreateSynthesizerOutputToAudio()
         {
-            SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+            var synthesizer = new SpeechSynthesizer();
             synthesizer.SetOutputToDefaultAudioDevice();
             return synthesizer;
         }

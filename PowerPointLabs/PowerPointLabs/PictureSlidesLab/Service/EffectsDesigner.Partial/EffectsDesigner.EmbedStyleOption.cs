@@ -33,17 +33,17 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 return new List<PowerPoint.Shape>();
             }
 
-            PowerPoint.Shape originalImage = AddPicture(originalImageFile, EffectName.Original_DO_NOT_REMOVE);
-            float slideWidth = SlideWidth;
-            float slideHeight = SlideHeight;
+            var originalImage = AddPicture(originalImageFile, EffectName.Original_DO_NOT_REMOVE);
+            var slideWidth = SlideWidth;
+            var slideHeight = SlideHeight;
             FitToSlide.AutoFit(originalImage, slideWidth, slideHeight);
             originalImage.Visible = MsoTriState.msoFalse;
 
-            PowerPoint.Shape croppedImage = AddPicture(croppedImageFile, EffectName.Cropped_DO_NOT_REMOVE);
+            var croppedImage = AddPicture(croppedImageFile, EffectName.Cropped_DO_NOT_REMOVE);
             FitToSlide.AutoFit(croppedImage, slideWidth, slideHeight);
             croppedImage.Visible = MsoTriState.msoFalse;
 
-            List<PowerPoint.Shape> result = new List<PowerPoint.Shape>();
+            var result = new List<PowerPoint.Shape>();
             result.Add(originalImage);
             result.Add(croppedImage);
 
@@ -58,9 +58,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             AddTag(originalImage, Tag.ReloadRectHeight, rect.Height.ToString(CultureInfo.InvariantCulture));
 
             // store style info
-            Type type = opt.GetType();
-            System.Reflection.PropertyInfo[] props = type.GetProperties();
-            foreach (System.Reflection.PropertyInfo propertyInfo in props)
+            var type = opt.GetType();
+            var props = type.GetProperties();
+            foreach (var propertyInfo in props)
             {
                 try
                 {

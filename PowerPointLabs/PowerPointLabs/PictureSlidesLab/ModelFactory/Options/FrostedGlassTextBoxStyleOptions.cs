@@ -13,8 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            List<StyleOption> options = GetOptions();
-            foreach (StyleOption option in options)
+            var options = GetOptions();
+            foreach (var option in options)
             {
                 option.IsUseFrostedGlassTextBoxStyle = true;
                 option.FontFamily = "Segoe UI";

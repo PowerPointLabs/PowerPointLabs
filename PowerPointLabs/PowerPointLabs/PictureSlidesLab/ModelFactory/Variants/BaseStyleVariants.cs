@@ -17,11 +17,11 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Variants
 
         public Dictionary<string, List<StyleVariant>> GetVariantsForStyle()
         {
-            IList<IVariantWorker> workers = GetRequiredVariantWorkers();
-            IEnumerable<IVariantWorker> orderedGeneralVariantWorkers = ImportedGeneralVariantWorkers
+            var workers = GetRequiredVariantWorkers();
+            var orderedGeneralVariantWorkers = ImportedGeneralVariantWorkers
                 .OrderBy(worker => worker.Metadata.GeneralVariantWorkerOrder)
                 .Select(worker => worker.Value);
-            foreach (IVariantWorker importedGeneralVariantWorker in orderedGeneralVariantWorkers)
+            foreach (var importedGeneralVariantWorker in orderedGeneralVariantWorkers)
             {
                 workers.Add(importedGeneralVariantWorker);
             }

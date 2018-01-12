@@ -13,8 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            List<StyleOption> options = new TextBoxStyleOptions().GetOptionsForVariation();
-            foreach (StyleOption option in options)
+            var options = new TextBoxStyleOptions().GetOptionsForVariation();
+            foreach (var option in options)
             {
                 option.FontFamily = "Times New Roman";
             }

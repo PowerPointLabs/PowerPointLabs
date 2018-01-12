@@ -55,29 +55,29 @@ namespace Test.UnitTest.PositionsLab
         {
             PositionsLabSettings.IsSwapByClickOrder = false;
             PositionsLabSettings.SwapReferencePoint = PositionsLabSettings.SwapReference.MiddleCenter;
-
-            PowerPoint.ShapeRange shapesToSwap = GetShapes(OriginalShapesSlideNo, _swapShapes);
+            
+            var shapesToSwap = GetShapes(OriginalShapesSlideNo, _swapShapes);
 
             Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes1Swap = GetShapes(SwapLeftToRight1Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes1Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes1Swap = GetShapes(SwapLeftToRight1Slide, _allShapes);
+            var actualShapes1Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes1Swap, actualShapes1Swap);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes2Swap = GetShapes(SwapLeftToRight2Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes2Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes2Swap = GetShapes(SwapLeftToRight2Slide, _allShapes);
+            var actualShapes2Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes2Swap, actualShapes2Swap);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes3Swap = GetShapes(SwapLeftToRight3Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes3Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes3Swap = GetShapes(SwapLeftToRight3Slide, _allShapes);
+            var actualShapes3Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes3Swap, actualShapes3Swap);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes4Swap = GetShapes(SwapLeftToRight4Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes4Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes4Swap = GetShapes(SwapLeftToRight4Slide, _allShapes);
+            var actualShapes4Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes4Swap, actualShapes4Swap);
         }
 
@@ -88,28 +88,28 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.IsSwapByClickOrder = true;
             PositionsLabSettings.SwapReferencePoint = PositionsLabSettings.SwapReference.MiddleCenter;
 
-            PowerPoint.ShapeRange shapesToSwap = GetShapes(OriginalShapesSlideNo, _swapShapes);
+            var shapesToSwap = GetShapes(OriginalShapesSlideNo, _swapShapes);
 
             Action<List<PPShape>, bool> positionsAction = (shapes, isPreview) => PositionsLabMain.Swap(shapes, isPreview);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes1Swap = GetShapes(SwapClick1Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes1Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes1Swap = GetShapes(SwapClick1Slide, _allShapes);
+            var actualShapes1Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes1Swap, actualShapes1Swap);
             
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes2Swap = GetShapes(SwapClick2Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes2Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes2Swap = GetShapes(SwapClick2Slide, _allShapes);
+            var actualShapes2Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes2Swap, actualShapes2Swap);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes3Swap = GetShapes(SwapClick3Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes3Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes3Swap = GetShapes(SwapClick3Slide, _allShapes);
+            var actualShapes3Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes3Swap, actualShapes3Swap);
 
             ExecutePositionsAction(positionsAction, shapesToSwap, false);
-            PowerPoint.ShapeRange expectedShapes4Swap = GetShapes(SwapClick4Slide, _allShapes);
-            PowerPoint.ShapeRange actualShapes4Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
+            var expectedShapes4Swap = GetShapes(SwapClick4Slide, _allShapes);
+            var actualShapes4Swap = GetShapes(OriginalShapesSlideNo, _allShapes);
             CheckShapes(expectedShapes4Swap, actualShapes4Swap);
         }
 
@@ -117,7 +117,7 @@ namespace Test.UnitTest.PositionsLab
         {
             foreach (PowerPoint.Shape actualShape in actualShapes)
             {
-                bool isFound = false;
+                var isFound = false;
 
                 foreach (PowerPoint.Shape expectedShape in expectedShapes)
                 {

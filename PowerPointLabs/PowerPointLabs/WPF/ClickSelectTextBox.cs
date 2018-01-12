@@ -31,7 +31,7 @@ namespace PowerPointLabs.WPF
 
             if (parent != null)
             {
-                TextBox textBox = (TextBox)parent;
+                var textBox = (TextBox)parent;
                 if (!textBox.IsKeyboardFocusWithin)
                 {
                     // If the text box is not yet focussed, give it the focus and
@@ -44,7 +44,7 @@ namespace PowerPointLabs.WPF
 
         private static void SelectAllText(object sender, RoutedEventArgs e)
         {
-            TextBox textBox = e.OriginalSource as TextBox;
+            var textBox = e.OriginalSource as TextBox;
             if (textBox != null)
             {
                 textBox.SelectAll();

@@ -66,13 +66,13 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
+                var isAspectRatio = selectedShapes.LockAspectRatio;
                 selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i]);
-                    System.Drawing.PointF anchorPoint = GetVisualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i]);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteHeight = shape.AbsoluteWidth;
                     AlignVisualShape(shape, anchorPoint);
@@ -94,13 +94,13 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
+                var isAspectRatio = selectedShapes.LockAspectRatio;
                 selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i]);
-                    System.Drawing.PointF anchorPoint = GetVisualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i]);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteWidth = shape.AbsoluteHeight;
                     AlignVisualShape(shape, anchorPoint);
@@ -122,13 +122,13 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
+                var isAspectRatio = selectedShapes.LockAspectRatio;
                 selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i], false);
-                    System.Drawing.PointF anchorPoint = GetActualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
 
                     shape.ShapeHeight = shape.ShapeWidth;
                     AlignActualShape(shape, anchorPoint);
@@ -150,13 +150,13 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
+                var isAspectRatio = selectedShapes.LockAspectRatio;
                 selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i], false);
-                    System.Drawing.PointF anchorPoint = GetActualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
 
                     shape.ShapeWidth = shape.ShapeHeight;
                     AlignActualShape(shape, anchorPoint);

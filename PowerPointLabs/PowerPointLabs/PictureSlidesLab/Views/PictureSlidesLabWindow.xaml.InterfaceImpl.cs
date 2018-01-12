@@ -91,15 +91,15 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         public double GetVariationListBoxScrollOffset()
         {
-            double scrollOffset = 0d;
-            System.Windows.Controls.ScrollViewer scrollViewer = ListBoxUtil.FindScrollViewer(StylesVariationListBox);
+            var scrollOffset = 0d;
+            var scrollViewer = ListBoxUtil.FindScrollViewer(StylesVariationListBox);
             if (scrollViewer != null) { scrollOffset = scrollViewer.VerticalOffset; }
             return scrollOffset;
         }
 
         public void SetVariationListBoxScrollOffset(double offset)
         {
-            System.Windows.Controls.ScrollViewer scrollViewer = ListBoxUtil.FindScrollViewer(StylesVariationListBox);
+            var scrollViewer = ListBoxUtil.FindScrollViewer(StylesVariationListBox);
             if (scrollViewer != null) { scrollViewer.ScrollToVerticalOffset(offset); }
         }
 

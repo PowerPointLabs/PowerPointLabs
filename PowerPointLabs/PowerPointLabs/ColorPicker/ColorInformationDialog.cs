@@ -46,7 +46,7 @@ namespace PowerPointLabs.ColorPicker
 
         private void TextBox_Enter(object sender, EventArgs e)
         {
-            TextBox textBox = (TextBox) sender;
+            var textBox = (TextBox) sender;
             Clipboard.SetText(textBox.Text.Substring(5));
             if (textBox.Equals(hslTextBox))
             {

@@ -14,7 +14,7 @@ namespace PowerPointLabs.Models
             {
                 try
                 {
-                    Slide interopSlide = Globals.ThisAddIn.Application.ActiveWindow.View.Slide as Slide;
+                    var interopSlide = Globals.ThisAddIn.Application.ActiveWindow.View.Slide as Slide;
                     return PowerPointSlide.FromSlideFactory(interopSlide);
                 }
                 catch (COMException)
@@ -37,15 +37,15 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                List<PowerPointSlide> slides = new List<PowerPointSlide>();
+                var slides = new List<PowerPointSlide>();
 
                 try
                 {
-                    SlideRange interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
+                    var interopSlides = Globals.ThisAddIn.Application.ActiveWindow.Selection.SlideRange;
 
                     foreach (Slide interopSlide in interopSlides)
                     {
-                        PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
+                        var s = PowerPointSlide.FromSlideFactory(interopSlide);
                         slides.Add(s);
                     }
                 }

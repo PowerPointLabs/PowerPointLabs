@@ -25,16 +25,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
-            string currentCategory = CurrentVariantCategory.Text;
-            BrushConverter bc = new BrushConverter();
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var bc = new BrushConverter();
 
             if (currentCategory.Contains(PictureSlidesLabText.ColorHasEffect))
             {
-                string propName = GetPropertyName(currentCategory);
-                System.Type type = styleOption.GetType();
-                System.Reflection.PropertyInfo prop = type.GetProperty(propName);
-                object optValue = prop.GetValue(styleOption, null);
+                var propName = GetPropertyName(currentCategory);
+                var type = styleOption.GetType();
+                var prop = type.GetProperty(propName);
+                var optValue = prop.GetValue(styleOption, null);
                 if (!string.IsNullOrEmpty(optValue as string))
                 {
                     View.SetVariantsColorPanelBackground((Brush) bc.ConvertFrom(optValue));
@@ -77,10 +77,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
-            string styleFontFamily = styleOption.GetFontFamily();
-            int targetIndex = -1;
-            for (int i = 0; i < FontFamilies.Count; i++)
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var styleFontFamily = styleOption.GetFontFamily();
+            var targetIndex = -1;
+            for (var i = 0; i < FontFamilies.Count; i++)
             {
                 if (styleFontFamily == FontFamilies[i])
                 {
@@ -113,11 +113,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
-            string currentCategory = CurrentVariantCategory.Text;
-            string propName = GetPropertyName(currentCategory);
-            SliderPropHandler.Interface.ISliderPropHandler propHandler = PropHandlerFactory.GetSliderPropHandler(propName);
-            SliderPropHandler.Factory.SliderPropHandlerFactory.SliderProperties sliderProperties = propHandler.GetSliderProperties(styleOption);
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var propName = GetPropertyName(currentCategory);
+            var propHandler = PropHandlerFactory.GetSliderPropHandler(propName);
+            var sliderProperties = propHandler.GetSliderProperties(styleOption);
             SelectedSliderValue.Number = sliderProperties.Value;
             SelectedSliderMaximum.Number = sliderProperties.Maximum;
             SelectedSliderTickFrequency.Number = sliderProperties.TickFrequency;
@@ -159,16 +159,16 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
-            string currentCategory = CurrentVariantCategory.Text;
-            string targetColor = StringUtil.GetHexValue(color);
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var targetColor = StringUtil.GetHexValue(color);
 
             if (currentCategory.Contains(PictureSlidesLabText.ColorHasEffect))
             {
                 styleOption.OptionName = "Customized";
-                string propName = GetPropertyName(currentCategory);
-                System.Type type = styleOption.GetType();
-                System.Reflection.PropertyInfo prop = type.GetProperty(propName);
+                var propName = GetPropertyName(currentCategory);
+                var type = styleOption.GetType();
+                var prop = type.GetProperty(propName);
                 prop.SetValue(styleOption, targetColor, null);
             }
         }
@@ -180,8 +180,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            string currentCategory = CurrentVariantCategory.Text;
-            Model.StyleVariant styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
 
             if (currentCategory.Contains(PictureSlidesLabText.ColorHasEffect))
             {
@@ -197,8 +197,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
-            string currentCategory = CurrentVariantCategory.Text;
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
 
             if (currentCategory == PictureSlidesLabText.VariantCategoryFontFamily)
             {
@@ -214,8 +214,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            string currentCategory = CurrentVariantCategory.Text;
-            Model.StyleVariant styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
 
             if (currentCategory == PictureSlidesLabText.VariantCategoryFontFamily)
             {
@@ -231,9 +231,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
-            string currentCategory = CurrentVariantCategory.Text;
-            string propName = GetPropertyName(currentCategory);
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var currentCategory = CurrentVariantCategory.Text;
+            var propName = GetPropertyName(currentCategory);
             PropHandlerFactory.GetSliderPropHandler(propName).BindStyleOption(styleOption, value);
         }
 
@@ -244,9 +244,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            string currentCategory = CurrentVariantCategory.Text;
-            Model.StyleVariant styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
-            string propName = GetPropertyName(currentCategory);
+            var currentCategory = CurrentVariantCategory.Text;
+            var styleVariant = _styleVariants[currentCategory][StylesVariationListSelectedId.Number];
+            var propName = GetPropertyName(currentCategory);
             PropHandlerFactory.GetSliderPropHandler(propName).BindStyleVariant(styleVariant, value);
         }
 
@@ -258,9 +258,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private string GetPropertyName(string categoryName)
         {
-            string propName = categoryName.Replace(" ", string.Empty);
+            var propName = categoryName.Replace(" ", string.Empty);
 
-            Model.StyleOption styleOption = _styleOptions[StylesVariationListSelectedId.Number];
+            var styleOption = _styleOptions[StylesVariationListSelectedId.Number];
             if ((styleOption.IsUseFrostedGlassBannerStyle && categoryName.Contains(PictureSlidesLabText.BannerHasEffect))
                 || (styleOption.IsUseFrostedGlassTextBoxStyle && categoryName.Contains(PictureSlidesLabText.TextBoxHasEffect)))
             {

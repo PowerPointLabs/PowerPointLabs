@@ -21,7 +21,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchPronounceBlock()
         {
-            string testTag = "[Pronounce: <IPA>]<Word Here>[EndPronounce]";
+            var testTag = "[Pronounce: <IPA>]<Word Here>[EndPronounce]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -29,7 +29,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchPronounceBlockCaseInsensitive()
         {
-            string testTag = "[pronounce: <IPA>]<word here>[endpronounce]";
+            var testTag = "[pronounce: <IPA>]<word here>[endpronounce]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -37,13 +37,13 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchListSingleInSentence()
         {
-            string sentence = "This is a [pronounce: <IPA>]test[endpronounce].";
-            System.Collections.Generic.List<PowerPointLabs.Tags.ITag> matches = new PronounceTagMatcher().Matches(sentence);
+            var sentence = "This is a [pronounce: <IPA>]test[endpronounce].";
+            var matches = new PronounceTagMatcher().Matches(sentence);
 
             Assert.IsTrue(matches.Any(), "No matches found.");
             Assert.IsTrue(matches.Count == 1, "More than one match.");
 
-            PowerPointLabs.Tags.ITag match = matches[0];
+            var match = matches[0];
             Assert.IsTrue(match.Start == 10, "Match start was incorrect.");
             Assert.IsTrue(match.End == 45, "Match end was incorrect.");
         }
@@ -52,8 +52,8 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchListMultipleInSentence()
         {
-            string sentence = "This [pronounce: <IPA>]has[endpronounce] multiple[pause: 2][pronounce: <IPA>]matches.[endpronounce]";
-            System.Collections.Generic.List<PowerPointLabs.Tags.ITag> matches = new PronounceTagMatcher().Matches(sentence);
+            var sentence = "This [pronounce: <IPA>]has[endpronounce] multiple[pause: 2][pronounce: <IPA>]matches.[endpronounce]";
+            var matches = new PronounceTagMatcher().Matches(sentence);
 
             Assert.IsTrue(matches.Any(), "No matches found.");
             Assert.IsTrue(matches.Count == 2, "Didn't match all.");

@@ -32,10 +32,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropOutPaddingOnePicture()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberOnePictureActual, selectOneShapeNames);
+            var actualShapes = GetShapes(SlideNumberOnePictureActual, selectOneShapeNames);
             actualShapes = CropOutPadding.Crop(actualShapes);
 
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberOnePictureExpected, selectOneShapeNames);
+            var expectedShapes = GetShapes(SlideNumberOnePictureExpected, selectOneShapeNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -43,10 +43,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropOutPaddingMultiplePictures()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberMultiplePicturesActual, selectMultipleShapesNames);
+            var actualShapes = GetShapes(SlideNumberMultiplePicturesActual, selectMultipleShapesNames);
             actualShapes = CropOutPadding.Crop(actualShapes);
 
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberMultiplePicturesExpected, selectMultipleShapesNames);
+            var expectedShapes = GetShapes(SlideNumberMultiplePicturesExpected, selectMultipleShapesNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -54,10 +54,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropOutPaddingRotatedPicture()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberRotatedPictureActual, selectOneShapeNames);
+            var actualShapes = GetShapes(SlideNumberRotatedPictureActual, selectOneShapeNames);
             actualShapes = CropOutPadding.Crop(actualShapes);
 
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberRotatedPictureExpected, selectOneShapeNames);
+            var expectedShapes = GetShapes(SlideNumberRotatedPictureExpected, selectOneShapeNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -65,10 +65,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropOutPaddingOneChildPicture()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberOneChildPictureActual, selectOneShapeNames);
+            var actualShapes = GetShapes(SlideNumberOneChildPictureActual, selectOneShapeNames);
             actualShapes = CropOutPadding.Crop(actualShapes);
 
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberOneChildPictureExpected, selectOneShapeNames);
+            var expectedShapes = GetShapes(SlideNumberOneChildPictureExpected, selectOneShapeNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -76,10 +76,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropOutPaddingMultipleChildPictures()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberMultipleChildPicturesActual, selectMultipleShapesNames);
+            var actualShapes = GetShapes(SlideNumberMultipleChildPicturesActual, selectMultipleShapesNames);
             actualShapes = CropOutPadding.Crop(actualShapes);
 
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberMultipleChildPicturesExpected, selectMultipleShapesNames);
+            var expectedShapes = GetShapes(SlideNumberMultipleChildPicturesExpected, selectMultipleShapesNames);
             CheckShapes(expectedShapes, actualShapes);
         }
     }

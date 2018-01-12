@@ -10,8 +10,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public PowerPoint.Shape ApplyCircleRingsEffect(string color, int transparency)
         {
-            PowerPoint.Shape innerCircleShape = ApplyCircleBannerEffect(color, transparency);
-            PowerPoint.Shape outerCircleShape = ApplyCircleBannerEffect(color, transparency, isOutline: true, margin: 10);
+            var innerCircleShape = ApplyCircleBannerEffect(color, transparency);
+            var outerCircleShape = ApplyCircleBannerEffect(color, transparency, isOutline: true, margin: 10);
             if (innerCircleShape == null || outerCircleShape == null)
             {
                 return null;
@@ -22,7 +22,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             CropPicture(innerCircleShape);
             CropPicture(outerCircleShape);
 
-            PowerPoint.Shape result = Shapes.Range(new[] { innerCircleShape.Name, outerCircleShape.Name }).Group();
+            var result = Shapes.Range(new[] { innerCircleShape.Name, outerCircleShape.Name }).Group();
             ChangeName(result, EffectName.Overlay);
             return result;
         }
@@ -30,7 +30,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private PowerPoint.Shape ApplyCircleBannerEffect(string overlayColor, int transparency,
             bool isOutline = false, int margin = 0)
         {
-            TextBoxInfo tbInfo =
+            var tbInfo =
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
@@ -40,7 +40,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
             TextBoxes.AddMargin(tbInfo, margin);
 
-            PowerPoint.Shape overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
+            var overlayShape = ApplyCircleOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height, isOutline);
             ChangeName(overlayShape, EffectName.Banner);
             return overlayShape;
@@ -49,12 +49,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private PowerPoint.Shape ApplyCircleOverlayEffect(string color, int transparency,
             float left, float top, float width, float height, bool isOutline)
         {
-            float radius = (float)Math.Sqrt(width * width / 4 + height * height / 4);
-            float circleLeft = left - radius + width / 2;
-            float circleTop = top - radius + height / 2;
-            float circleWidth = radius * 2;
+            var radius = (float)Math.Sqrt(width * width / 4 + height * height / 4);
+            var circleLeft = left - radius + width / 2;
+            var circleTop = top - radius + height / 2;
+            var circleWidth = radius * 2;
 
-            PowerPoint.Shape overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeOval, circleLeft, circleTop,
+            var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeOval, circleLeft, circleTop,
                 circleWidth, circleWidth);
             overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(StringUtil.GetColorFromHexValue(color));

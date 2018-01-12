@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Tools;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
@@ -20,11 +18,11 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
 
             NotesToAudio.RemoveAudioFromSelectedSlides();
 
-            CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
+            var recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane != null)
             {
-                RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
+                var recorder = recorderPane.Control as RecorderTaskPane;
                 recorder.ClearRecordDataListForSelectedSlides();
 
                 // if current list is visible, update the pane immediately

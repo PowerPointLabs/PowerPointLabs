@@ -14,8 +14,8 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
         [TestCategory("UT")]
         public void TestPersistence()
         {
-            string expectedString = "Test Images Persistence";
-            PictureSlidesLabWindowViewModel pslViewModel = CreateViewModel();
+            var expectedString = "Test Images Persistence";
+            var pslViewModel = CreateViewModel();
             pslViewModel.ImageSelectionList.Clear();
             // the first image item should be placeholder for `Choose Pictures`
             // so add a dummy item here
@@ -27,7 +27,7 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
             });
             pslViewModel.CleanUp();
 
-            PictureSlidesLabWindowViewModel pslViewModel2 = CreateViewModel();
+            var pslViewModel2 = CreateViewModel();
             Assert.AreEqual(expectedString, 
                 pslViewModel2.ImageSelectionList[1].ImageFile);
             pslViewModel2.ImageSelectionList.Clear();
@@ -40,8 +40,8 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
         [TestCategory("UT")]
         public void TestPersistenceWhenNoFullsizeImage()
         {
-            string expectedString = "Test Images Persistence";
-            PictureSlidesLabWindowViewModel pslViewModel = CreateViewModel();
+            var expectedString = "Test Images Persistence";
+            var pslViewModel = CreateViewModel();
             pslViewModel.ImageSelectionList.Clear();
             // the first image item should be placeholder for `Choose Pictures`
             // so add a dummy item here
@@ -53,7 +53,7 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
             });
             pslViewModel.CleanUp();
 
-            PictureSlidesLabWindowViewModel pslViewModel2 = CreateViewModel();
+            var pslViewModel2 = CreateViewModel();
             Assert.AreEqual(1, pslViewModel2.ImageSelectionList.Count);
             pslViewModel2.ImageSelectionList.Clear();
             // create a dummy item in order to clean up
@@ -63,8 +63,8 @@ namespace Test.UnitTest.PictureSlidesLab.ViewModel
 
         private PictureSlidesLabWindowViewModel CreateViewModel()
         {
-            Mock<IPictureSlidesLabWindowView> viewMock = new Mock<IPictureSlidesLabWindowView>();
-            Mock<IStylesDesigner> stylesDesignerMock = new Mock<IStylesDesigner>();
+            var viewMock = new Mock<IPictureSlidesLabWindowView>();
+            var stylesDesignerMock = new Mock<IStylesDesigner>();
             return new PictureSlidesLabWindowViewModel(
                 viewMock.Object,
                 stylesDesignerMock.Object);

@@ -182,7 +182,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(-_shape.Width/2, -_shape.Height/2); }
             set
             {
-                PointF center = GetCenterPoint(value, -_shape.Width/2, -_shape.Height/2);
+                var center = GetCenterPoint(value, -_shape.Width/2, -_shape.Height/2);
                 AlignToCenter(center);
             }
         }
@@ -208,7 +208,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(0, -_shape.Height/2); }
             set
             {
-                PointF center = GetCenterPoint(value, 0, -_shape.Height/2);
+                var center = GetCenterPoint(value, 0, -_shape.Height/2);
                 AlignToCenter(center);
             }
         }
@@ -237,7 +237,7 @@ namespace PowerPointLabs.Utils
             }
             set
             {
-                PointF center = GetCenterPoint(value, _shape.Width/2, -_shape.Height/2);
+                var center = GetCenterPoint(value, _shape.Width/2, -_shape.Height/2);
                 AlignToCenter(center);
             }
         }
@@ -263,7 +263,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(-_shape.Width/2, 0); }
             set
             {
-                PointF center = GetCenterPoint(value, -_shape.Width/2, 0); 
+                var center = GetCenterPoint(value, -_shape.Width/2, 0); 
                 AlignToCenter(center);
             }
         }
@@ -289,7 +289,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(_shape.Width/2, 0); }
             set
             {
-                PointF center = GetCenterPoint(value, _shape.Width/2, 0);
+                var center = GetCenterPoint(value, _shape.Width/2, 0);
                 AlignToCenter(center);
             }
         }
@@ -315,7 +315,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(-_shape.Width/2, _shape.Height/2); }
             set
             {
-                PointF center = GetCenterPoint(value, -_shape.Width/2, _shape.Height/2);
+                var center = GetCenterPoint(value, -_shape.Width/2, _shape.Height/2);
                 AlignToCenter(center);
             }
         }
@@ -341,7 +341,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(0, _shape.Height/2); }
             set
             {
-                PointF center = GetCenterPoint(value, 0, _shape.Height/2);
+                var center = GetCenterPoint(value, 0, _shape.Height/2);
                 AlignToCenter(center);
             }
         }
@@ -367,7 +367,7 @@ namespace PowerPointLabs.Utils
             get { return GetRotatedPoint(_shape.Width/2, _shape.Height/2); }
             set
             {
-                PointF center = GetCenterPoint(value, _shape.Width/2, _shape.Height/2);
+                var center = GetCenterPoint(value, _shape.Width/2, _shape.Height/2);
                 AlignToCenter(center);
             }
         }
@@ -450,7 +450,7 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         public PPShape Duplicate()
         {
-            PPShape newShape = new PPShape(_shape.Duplicate()[1]) {Name = _shape.Name + "Copy"};
+            var newShape = new PPShape(_shape.Duplicate()[1]) {Name = _shape.Name + "Copy"};
             return newShape;
         }
 
@@ -502,21 +502,21 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            bool isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
+            var isSecondOrFourthQuadrant = (_originalRotation >= 90 && _originalRotation < 180) ||
                                          (_originalRotation >= 270 && _originalRotation < 360);
 
-            float rotation = GetStandardizedRotation(_originalRotation%90);
-            float centerLeft = VisualCenter.X;
-            float centerTop = VisualCenter.Y;
+            var rotation = GetStandardizedRotation(_originalRotation%90);
+            var centerLeft = VisualCenter.X;
+            var centerTop = VisualCenter.Y;
 
             for (int i = 1; i <= _shape.Nodes.Count; i++)
             {
-                PowerPoint.ShapeNode node = _shape.Nodes[i];
-                dynamic point = node.Points;
-                dynamic oldX = point[1, 1];
-                dynamic oldY = point[1, 2];
-                dynamic newX = oldY*Math.Sin(rotation) + oldX*Math.Cos(rotation);
-                dynamic newY = oldY*Math.Cos(rotation) - oldX*Math.Sin(rotation);
+                var node = _shape.Nodes[i];
+                var point = node.Points;
+                var oldX = point[1, 1];
+                var oldY = point[1, 2];
+                var newX = oldY*Math.Sin(rotation) + oldX*Math.Cos(rotation);
+                var newY = oldY*Math.Cos(rotation) - oldX*Math.Sin(rotation);
 
                 if (isSecondOrFourthQuadrant)
                 {

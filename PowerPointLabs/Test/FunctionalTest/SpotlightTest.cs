@@ -39,10 +39,10 @@ namespace Test.FunctionalTest
             PpOperations.SelectShape("Spotlight Me");
             PplFeatures.Spotlight();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide1 = PpOperations.SelectSlide(4);
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide2 = PpOperations.SelectSlide(5);
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide1 = PpOperations.SelectSlide(6);
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide2 = PpOperations.SelectSlide(7);
+            var actualSlide1 = PpOperations.SelectSlide(4);
+            var actualSlide2 = PpOperations.SelectSlide(5);
+            var expSlide1 = PpOperations.SelectSlide(6);
+            var expSlide2 = PpOperations.SelectSlide(7);
             SlideUtil.IsSameLooking(expSlide1, actualSlide1);
             SlideUtil.IsSameLooking(expSlide2, actualSlide2);
         }
@@ -64,11 +64,11 @@ namespace Test.FunctionalTest
 
             PplFeatures.Spotlight();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide1 = PpOperations.SelectSlide(8);
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide2 = PpOperations.SelectSlide(9);
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide1 = PpOperations.SelectSlide(10);
+            var actualSlide1 = PpOperations.SelectSlide(8);
+            var actualSlide2 = PpOperations.SelectSlide(9);
+            var expSlide1 = PpOperations.SelectSlide(10);
             PpOperations.SelectShape("text 3")[1].Delete();
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide2 = PpOperations.SelectSlide(11);
+            var expSlide2 = PpOperations.SelectSlide(11);
             PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameLooking(expSlide1, actualSlide1);
             SlideUtil.IsSameLooking(expSlide2, actualSlide2);
@@ -94,14 +94,14 @@ namespace Test.FunctionalTest
             NativeUtil.SendMessage(transparencyDialog, 0x000C /*WM_SETTEXT*/, IntPtr.Zero, "1");
 
             // try to get class's build id
-            StringBuilder actualContentBuilder = new StringBuilder(1024);
+            var actualContentBuilder = new StringBuilder(1024);
             NativeUtil.GetClassName(spotlightDialog, actualContentBuilder, 1024);
-            string classBuildId = actualContentBuilder.ToString().Split('.').Last();
+            var classBuildId = actualContentBuilder.ToString().Split('.').Last();
 
-            IntPtr fadeComboBox = NativeUtil.FindWindowEx(spotlightDialog, IntPtr.Zero, "WindowsForms10.COMBOBOX.app.0." + classBuildId, null);
+            var fadeComboBox = NativeUtil.FindWindowEx(spotlightDialog, IntPtr.Zero, "WindowsForms10.COMBOBOX.app.0." + classBuildId, null);
             Assert.AreNotEqual(IntPtr.Zero, fadeComboBox, "Failed to find Fade Dialog.");
 
-            StringBuilder sb = new StringBuilder(256, 256);
+            var sb = new StringBuilder(256, 256);
             NativeUtil.SendMessage(fadeComboBox, 0x0148 /*CB_GETLBTEXT*/, (IntPtr)2, sb);
 
             // Set combo box

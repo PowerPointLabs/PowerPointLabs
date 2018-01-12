@@ -28,10 +28,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
 
         public void Apply(StyleOption opt)
         {
-            foreach (KeyValuePair<string, object> pair in _variants)
+            foreach (var pair in _variants)
             {
-                System.Type type = opt.GetType();
-                System.Reflection.PropertyInfo prop = type.GetProperty(pair.Key);
+                var type = opt.GetType();
+                var prop = type.GetProperty(pair.Key);
                 prop.SetValue(opt, pair.Value, null);
             }
         }
@@ -41,8 +41,8 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         /// </summary>
         public StyleVariant Copy(StyleOption opt, string givenOptionName = null)
         {
-            Dictionary<string, object> newVariants = new Dictionary<string, object>();
-            foreach (KeyValuePair<string, object> pair in _variants)
+            var newVariants = new Dictionary<string, object>();
+            foreach (var pair in _variants)
             {
                 if (pair.Key.Equals("OptionName"))
                 {
@@ -50,9 +50,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
                 }
                 else
                 {
-                    System.Type type = opt.GetType();
-                    System.Reflection.PropertyInfo prop = type.GetProperty(pair.Key);
-                    object optValue = prop.GetValue(opt, null);
+                    var type = opt.GetType();
+                    var prop = type.GetProperty(pair.Key);
+                    var optValue = prop.GetValue(opt, null);
                     newVariants[pair.Key] = optValue;
                 }
             }
@@ -65,16 +65,16 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         /// <param name="opt"></param>
         public bool IsNoEffect(StyleOption opt)
         {
-            foreach (KeyValuePair<string, object> pair in _variants)
+            foreach (var pair in _variants)
             {
                 if (pair.Key.Equals("OptionName") || pair.Value is bool)
                 {
                     continue;
                 }
 
-                System.Type type = opt.GetType();
-                System.Reflection.PropertyInfo prop = type.GetProperty(pair.Key);
-                object optValue = prop.GetValue(opt, null);
+                var type = opt.GetType();
+                var prop = type.GetProperty(pair.Key);
+                var optValue = prop.GetValue(opt, null);
                 if (!pair.Value.Equals(optValue))
                 {
                     return false;

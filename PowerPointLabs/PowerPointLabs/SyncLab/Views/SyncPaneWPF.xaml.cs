@@ -33,13 +33,13 @@ namespace PowerPointLabs.SyncLab.Views
 
         public void SyncPaneWPF_Loaded(object sender, RoutedEventArgs e)
         {
-            Microsoft.Office.Tools.CustomTaskPane syncLabPane = this.GetAddIn().GetActivePane(typeof(SyncPane));
+            var syncLabPane = this.GetAddIn().GetActivePane(typeof(SyncPane));
             if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
             {
                 MessageBox.Show("Error: SyncPane not opened.");
                 return;
             }
-            SyncPane syncLab = syncLabPane.Control as SyncPane;
+            var syncLab = syncLabPane.Control as SyncPane;
 
             syncLab.HandleDestroyed += SyncPane_Closing;
         }
@@ -118,7 +118,7 @@ namespace PowerPointLabs.SyncLab.Views
 
         public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape)
         {
-            Selection selection = this.GetCurrentSelection();
+            var selection = this.GetCurrentSelection();
             if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
@@ -127,7 +127,7 @@ namespace PowerPointLabs.SyncLab.Views
                 return;
             }
 
-            ShapeRange shapes = selection.ShapeRange;
+            var shapes = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
                 shapes = selection.ChildShapeRange;
@@ -187,7 +187,7 @@ namespace PowerPointLabs.SyncLab.Views
         #region GUI Handles
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            Selection selection = this.GetCurrentSelection();
+            var selection = this.GetCurrentSelection();
             if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count != 1)
@@ -196,7 +196,7 @@ namespace PowerPointLabs.SyncLab.Views
                 return;
             }
 
-            Shape shape = selection.ShapeRange[1];
+            var shape = selection.ShapeRange[1];
             if (selection.HasChildShapeRange)
             {
                 if (selection.ChildShapeRange.Count != 1)

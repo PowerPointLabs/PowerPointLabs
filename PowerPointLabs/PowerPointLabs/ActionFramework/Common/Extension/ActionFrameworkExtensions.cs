@@ -65,7 +65,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public static void ExecuteOfficeCommand(string commandMso)
         {
-            Microsoft.Office.Core.CommandBars commandBars = Globals.ThisAddIn.Application.CommandBars;
+            var commandBars = Globals.ThisAddIn.Application.CommandBars;
             commandBars.ExecuteMso(commandMso);
         }
 
@@ -84,19 +84,19 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         {
             try
             {
-                CustomTaskPane taskPane = Globals.ThisAddIn.GetActivePane(taskPaneType);
+                var taskPane = Globals.ThisAddIn.GetActivePane(taskPaneType);
                 if (taskPane != null)
                 {
                     return taskPane;
                 }
 
-                UserControl taskPaneControl = (UserControl) Activator.CreateInstance(taskPaneType);
+                var taskPaneControl = (UserControl) Activator.CreateInstance(taskPaneType);
                 if (taskPaneControl == null)
                 {
                     throw new InvalidCastException("Failed to convert " + taskPaneType + " to UserControl.");
                 }
 
-                DocumentWindow activeWindow = Globals.ThisAddIn.Application.ActiveWindow;
+                var activeWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
                 return Globals.ThisAddIn.RegisterTaskPane(taskPaneControl, taskPaneTitle, activeWindow,
                     visibleChangeEventHandler, dockPositionChangeEventHandler);

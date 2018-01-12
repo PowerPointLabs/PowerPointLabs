@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
@@ -18,8 +17,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
     {
         protected override string GetContent(string ribbonId)
         {
-            List<ContextMenuGroup> contextMenuGroups = GetContextMenuGroups(ribbonId);
-            StringBuilder xmlString = new System.Text.StringBuilder();
+            var contextMenuGroups = GetContextMenuGroups(ribbonId);
+            var xmlString = new System.Text.StringBuilder();
 
             foreach (ContextMenuGroup group in contextMenuGroups)
             {

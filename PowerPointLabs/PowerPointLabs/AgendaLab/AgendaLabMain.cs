@@ -51,7 +51,7 @@ namespace PowerPointLabs.AgendaLab
             /// </summary>
             public static BulletFormats ExtractFormats(Shape contentShape)
             {
-                List<TextRange2> paragraphs = contentShape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
+                var paragraphs = contentShape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
                 return new BulletFormats(paragraphs[0],
                                         paragraphs[1],
                                         paragraphs[2]);
@@ -77,8 +77,8 @@ namespace PowerPointLabs.AgendaLab
             /// </summary>
             public static BeamFormats ExtractFormats(Shape beamShape)
             {
-                Shape beamText = GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
-                Shape regularText = GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeText);
+                var beamText = GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
+                var regularText = GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeText);
                 return new BeamFormats(beamText.TextFrame2.TextRange, regularText.TextFrame2.TextRange);
             }
 
@@ -98,16 +98,16 @@ namespace PowerPointLabs.AgendaLab
         public static void GenerateAgenda(Type type)
         {
             bool dialogOpen = false;
-            DocumentWindow currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
-            PpViewType oldViewType = currentWindow.ViewType;
+            var currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = currentWindow.ViewType;
 
             try
             {
-                SlideSelectionTracker slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
+                var slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
 
                 if (AgendaPresent())
                 {
-                    DialogResult confirm = MessageBox.Show(AgendaLabText.ErrorAgendaExist,
+                    var confirm = MessageBox.Show(AgendaLabText.ErrorAgendaExist,
                                                   AgendaLabText.ErrorAgendaExistTitle,
                                                   MessageBoxButtons.OKCancel);
                     if (confirm != DialogResult.OK)
@@ -159,12 +159,12 @@ namespace PowerPointLabs.AgendaLab
 
         public static void RemoveAgenda()
         {
-            DocumentWindow currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
-            PpViewType oldViewType = currentWindow.ViewType;
+            var currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = currentWindow.ViewType;
 
             try
             {
-                SlideSelectionTracker slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
+                var slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
 
                 if (!AgendaPresent())
                 {
@@ -189,14 +189,14 @@ namespace PowerPointLabs.AgendaLab
         public static void SynchroniseAgenda()
         {
             bool dialogOpen = false;
-            DocumentWindow currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
-            PpViewType oldViewType = currentWindow.ViewType;
+            var currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            var oldViewType = currentWindow.ViewType;
 
             try
             {
-                SlideSelectionTracker slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
-                PowerPointSlide refSlide = FindReferenceSlide();
-                Type type = GetReferenceSlideType();
+                var slideTracker = new SlideSelectionTracker(SelectedSlides, CurrentSlide);
+                var refSlide = FindReferenceSlide();
+                var type = GetReferenceSlideType();
                 bool usingNewReferenceSlide = false;
 
                 if (refSlide == null)
@@ -268,7 +268,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void CreateBulletAgenda(SlideSelectionTracker slideTracker)
         {
-            PowerPointSlide refSlide = CreateBulletReferenceSlide();
+            var refSlide = CreateBulletReferenceSlide();
 
             // here we invoke sync logic, since it's the same behavior as sync
             SyncBulletAgendaSlides(slideTracker, refSlide);
@@ -280,7 +280,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void CreateVisualAgenda(SlideSelectionTracker slideTracker)
         {
-            PowerPointSlide refSlide = CreateVisualReferenceSlide();
+            var refSlide = CreateVisualReferenceSlide();
 
             // here we invoke sync logic, since it's the same behavior as sync
             SyncVisualAgendaSlides(slideTracker, refSlide);
@@ -292,9 +292,9 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void CreateBeamAgenda(SlideSelectionTracker slideTracker)
         {
-            PowerPointSlide refSlide = CreateBeamReferenceSlide();
+            var refSlide = CreateBeamReferenceSlide();
 
-            List<PowerPointSlide> targetSlides = slideTracker.SelectedSlides;
+            var targetSlides = slideTracker.SelectedSlides;
             if (targetSlides.Count == 0)
             {
                 // If no slides selected, generate on all slides.
@@ -303,7 +303,7 @@ namespace PowerPointLabs.AgendaLab
             else if (targetSlides.Count == 1)
             {
                 // If only one slide selected, ask whether the user wants to generate on all slides.
-                DialogResult confirmResult = MessageBox.Show(new Form { TopMost = true },
+                var confirmResult = MessageBox.Show(new Form { TopMost = true },
                                                     AgendaLabText.BeamGenerateSingleSlideDialogContent,
                                                     AgendaLabText.BeamGenerateSingleSlideDialogTitle,
                                                     MessageBoxButtons.YesNo);
@@ -324,7 +324,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide CreateBeamReferenceSlide()
         {
-            PowerPointSlide refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
+            var refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                             .Presentation
                                                             .Slides
                                                             .Add(1, PpSlideLayout.ppLayoutBlank));
@@ -342,20 +342,20 @@ namespace PowerPointLabs.AgendaLab
 
         private static void CreateBeamAgendaShapes(PowerPointSlide refSlide, Direction beamDirection = Direction.Top)
         {
-            List<AgendaSection> sections = GetAllButFirstSection();
+            var sections = GetAllButFirstSection();
 
-            Shape background = PrepareBeamAgendaBackground(refSlide);
-            List<Shape> textBoxes = CreateBeamAgendaTextBoxes(refSlide, sections);
-            Shape highlightedTextBox = CreateHighlightedTextBox(refSlide);
+            var background = PrepareBeamAgendaBackground(refSlide);
+            var textBoxes = CreateBeamAgendaTextBoxes(refSlide, sections);
+            var highlightedTextBox = CreateHighlightedTextBox(refSlide);
             SetupBeamTextBoxPositions(textBoxes, highlightedTextBox, background);
             MatchColour(highlightedTextBox, background);
 
-            List<Shape> beamShapeItems = new List<Shape>();
+            var beamShapeItems = new List<Shape>();
             beamShapeItems.Add(background);
             beamShapeItems.Add(highlightedTextBox);
             beamShapeItems.AddRange(textBoxes);
 
-            Shape group = refSlide.GroupShapes(beamShapeItems);
+            var group = refSlide.GroupShapes(beamShapeItems);
             AgendaShape.SetShapeName(group, ShapePurpose.BeamShapeMainGroup, AgendaSection.None);
         }
 
@@ -366,25 +366,25 @@ namespace PowerPointLabs.AgendaLab
 
         private static void SetupBeamTextBoxPositions(List<Shape> textBoxes, Shape highlightedTextBox, Shape background = null)
         {
-            float slideWidth = PowerPointPresentation.Current.SlideWidth;
-            Single slideHeight = PowerPointPresentation.Current.SlideHeight;
+            var slideWidth = PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = PowerPointPresentation.Current.SlideHeight;
             float itemWidth = textBoxes.Select(textBox => textBox.Width).Max();
             float itemHeight = textBoxes.Select(textBox => textBox.Height).Max();
 
-            float spacing = Math.Max(itemWidth, slideWidth/textBoxes.Count);
+            var spacing = Math.Max(itemWidth, slideWidth/textBoxes.Count);
             int columnCount = (int) (slideWidth/spacing + 0.01f); // +0.01f to cater to rounding errors.
             int rowCount = CommonUtil.CeilingDivide(textBoxes.Count, columnCount);
 
-            float left = 0f;
-            float leftOffset = (slideWidth - columnCount*spacing)/2;
-            Single top = 0f;
+            var left = 0f;
+            var leftOffset = (slideWidth - columnCount*spacing)/2;
+            var top = 0f;
 
             for (int i = 0; i < textBoxes.Count; ++i)
             {
                 int x = i%columnCount;
                 int y = i/columnCount;
 
-                Shape textBox = textBoxes[i];
+                var textBox = textBoxes[i];
                 textBox.Left = left + leftOffset + x*spacing + (spacing - textBox.Width)/2;
                 textBox.Top = top + y*itemHeight;
             }
@@ -413,7 +413,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static Shape CreateHighlightedTextBox(PowerPointSlide slide)
         {
-            Shape textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
+            var textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal,
                                                   0, 0, 0, 0);
 
             AgendaShape.SetShapeName(textBox, ShapePurpose.BeamShapeHighlightedText, AgendaSection.None);
@@ -427,7 +427,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static Shape PrepareBeamAgendaBackground(PowerPointSlide slide)
         {
-            Shape background = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, 0, 0);
+            var background = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, 0, 0, 0, 0);
 
             AgendaShape.SetShapeName(background, ShapePurpose.BeamShapeBackground, AgendaSection.None);
             background.Line.Visible = MsoTriState.msoFalse;
@@ -439,7 +439,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static Shape PrepareBeamAgendaBeamItem(PowerPointSlide slide, AgendaSection section)
         {
-            Shape textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 0, 0);
+            var textBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, 0, 0);
 
             AgendaShape.SetShapeName(textBox, ShapePurpose.BeamShapeText, section);
             textBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
@@ -457,7 +457,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide CreateBulletReferenceSlide()
         {
-            PowerPointSlide refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
+            var refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                             .Presentation
                                                             .Slides
                                                             .Add(1, PpSlideLayout.ppLayoutText));
@@ -465,8 +465,8 @@ namespace PowerPointLabs.AgendaLab
             refSlide.Transition.EntryEffect = PpEntryEffect.ppEffectPushUp;
             refSlide.Transition.Duration = 0.8f;
 
-            Shape titleShape = refSlide.Shapes.Placeholders[1];
-            Shape contentShape = refSlide.Shapes.Placeholders[2];
+            var titleShape = refSlide.Shapes.Placeholders[1];
+            var contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
             ShapeUtil.SetText(titleShape, AgendaLabText.TitleContent);
@@ -474,7 +474,7 @@ namespace PowerPointLabs.AgendaLab
                                             AgendaLabText.BulletHighlightedContent,
                                             AgendaLabText.BulletUnvisitedContent);
 
-            List<TextRange2> paragraphs = ShapeUtil.GetParagraphs(contentShape);
+            var paragraphs = ShapeUtil.GetParagraphs(contentShape);
             paragraphs[0].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Gray);
             paragraphs[1].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Red);
             paragraphs[2].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Black);
@@ -495,12 +495,12 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide CreateVisualReferenceSlide()
         {
-            PowerPointSlide refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
+            var refSlide = PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                             .Presentation
                                                             .Slides
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
-            Shape titleBar = refSlide.Shapes.Placeholders[1];
+            var titleBar = refSlide.Shapes.Placeholders[1];
             ShapeUtil.SetText(titleBar, AgendaLabText.TitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
@@ -520,7 +520,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void InsertVisualAgendaSectionImages(PowerPointSlide refSlide)
         {
-            List<Shape> sectionImages = CreateSectionImagesForAllSections(refSlide);
+            var sectionImages = CreateSectionImagesForAllSections(refSlide);
             ArrangeInGrid(sectionImages);
         }
 
@@ -551,7 +551,7 @@ namespace PowerPointLabs.AgendaLab
 
             for (int i = 0; i < sectionImages.Count; ++i)
             {
-                Shape sectionImage = sectionImages[i];
+                var sectionImage = sectionImages[i];
                 int xPosition = i%columnCount;
                 int yPosition = i/columnCount;
 
@@ -564,11 +564,11 @@ namespace PowerPointLabs.AgendaLab
 
         private static List<Shape> CreateSectionImagesForAllSections(PowerPointSlide refSlide)
         {
-            List<AgendaSection> sections = GetAllButFirstSection();
-            List<Shape> sectionImages = new List<Shape>();
-            foreach (AgendaSection section in sections)
+            var sections = GetAllButFirstSection();
+            var sectionImages = new List<Shape>();
+            foreach (var section in sections)
             {
-                Shape sectionImage = CreateSectionImage(refSlide, section);
+                var sectionImage = CreateSectionImage(refSlide, section);
                 sectionImages.Add(sectionImage);
             }
             return sectionImages;
@@ -577,8 +577,8 @@ namespace PowerPointLabs.AgendaLab
 
         private static Shape CreateSectionImage(PowerPointSlide refSlide, AgendaSection section)
         {
-            PowerPointSlide sectionFirstSlide = FindSectionFirstNonAgendaSlide(section.Index);
-            Shape shape = refSlide.InsertEntrySnapshotOfSlide(sectionFirstSlide);
+            var sectionFirstSlide = FindSectionFirstNonAgendaSlide(section.Index);
+            var shape = refSlide.InsertEntrySnapshotOfSlide(sectionFirstSlide);
             AgendaShape.SetShapeName(shape, ShapePurpose.VisualAgendaImage, section);
             return shape;
         }
@@ -586,7 +586,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static void UpdateSectionImage(PowerPointSlide refSlide, AgendaSection section, Shape previousImageShape)
         {
-            Shape snapshotShape = CreateSectionImage(refSlide, section);
+            var snapshotShape = CreateSectionImage(refSlide, section);
             ShapeUtil.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
             previousImageShape.Delete();
         }
@@ -635,7 +635,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void ScrambleSlideSectionNames()
         {
-            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
+            var slides = PowerPointPresentation.Current.Slides;
             slides.Where(slide => AgendaSlide.IsAnyAgendaSlide(slide) && AgendaSlide.IsNotReferenceslide(slide))
                     .ToList()
                     .ForEach(AgendaSlide.AssignUniqueSectionName);
@@ -658,7 +658,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void SyncBulletAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
-            List<AgendaSection> sections = Sections;
+            var sections = Sections;
             SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new BulletAgendaTemplate());
         }
 
@@ -667,8 +667,8 @@ namespace PowerPointLabs.AgendaLab
             int numberOfSections = NumberOfSections;
 
             // post process bullet points
-            Shape contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
-            TextRange2 textRange = contentHolder.TextFrame2.TextRange;
+            var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
+            var textRange = contentHolder.TextFrame2.TextRange;
 
             while (textRange.Paragraphs.Count < numberOfSections)
             {
@@ -680,7 +680,7 @@ namespace PowerPointLabs.AgendaLab
                 textRange.Paragraphs[textRange.Paragraphs.Count].Delete();
             }
 
-            for (int i = 4; i <= textRange.Paragraphs.Count; i++)
+            for (var i = 4; i <= textRange.Paragraphs.Count; i++)
             {
                 textRange.Paragraphs[i].ParagraphFormat.Bullet.Type = MsoBulletType.msoBulletNone;
             }
@@ -711,17 +711,17 @@ namespace PowerPointLabs.AgendaLab
         private static void RegenerateReferenceSlideImages(PowerPointSlide refSlide)
         {
             List<Shape> markedForDeletion;
-            Dictionary<int, Shape> shapeAssignment = GetImageShapeAssignment(refSlide, out markedForDeletion);
+            var shapeAssignment = GetImageShapeAssignment(refSlide, out markedForDeletion);
 
-            List<AgendaSection> sections = GetAllButFirstSection();
-            HashSet<int> assignedOldIndexes = new HashSet<int>();
-            List<AgendaSection> unassignedNewSections = new List<AgendaSection>();
+            var sections = GetAllButFirstSection();
+            var assignedOldIndexes = new HashSet<int>();
+            var unassignedNewSections = new List<AgendaSection>();
 
 
             float existingImageWidth = -1;
             float existingImageHeight = -1;
 
-            foreach (AgendaSection section in sections)
+            foreach (var section in sections)
             {
                 int oldIndex = IdentifyOldSectionIndex(section);
                 if (oldIndex == -1 || assignedOldIndexes.Contains(oldIndex))
@@ -747,7 +747,7 @@ namespace PowerPointLabs.AgendaLab
 
             markedForDeletion.AddRange(from entry in shapeAssignment where !assignedOldIndexes.Contains(entry.Key) select entry.Value);
 
-            List<Shape> newSectionImages = unassignedNewSections.Select(section => CreateSectionImage(refSlide, section))
+            var newSectionImages = unassignedNewSections.Select(section => CreateSectionImage(refSlide, section))
                                                         .ToList();
             PositionNewImageShapes(newSectionImages, existingImageWidth, existingImageHeight);
 
@@ -756,14 +756,14 @@ namespace PowerPointLabs.AgendaLab
 
         private static Dictionary<int, Shape> GetImageShapeAssignment(PowerPointSlide inSlide, out List<Shape> unassignedShapes)
         {
-            IEnumerable<Shape> shapes = inSlide.Shapes.Cast<Shape>();
+            var shapes = inSlide.Shapes.Cast<Shape>();
 
             unassignedShapes = new List<Shape>();
-            Dictionary<int, Shape> shapeAssignment = new Dictionary<int, Shape>();
+            var shapeAssignment = new Dictionary<int, Shape>();
 
-            foreach (Shape shape in shapes)
+            foreach (var shape in shapes)
             {
-                AgendaShape agendaShape = AgendaShape.Decode(shape);
+                var agendaShape = AgendaShape.Decode(shape);
                 if (agendaShape == null || agendaShape.ShapePurpose != ShapePurpose.VisualAgendaImage)
                 {
                     continue;
@@ -802,7 +802,7 @@ namespace PowerPointLabs.AgendaLab
                 return;
             }
 
-            foreach (Shape shape in shapes)
+            foreach (var shape in shapes)
             {
                 shape.Width = existingImageWidth;
                 shape.Height = existingImageHeight;
@@ -816,10 +816,10 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static int IdentifyOldSectionIndex(AgendaSection section)
         {
-            List<PowerPointSlide> sectionSlides = GetSectionSlides(section);
-            foreach (PowerPointSlide slide in sectionSlides)
+            var sectionSlides = GetSectionSlides(section);
+            foreach (var slide in sectionSlides)
             {
-                AgendaSlide agendaSlide = AgendaSlide.Decode(slide);
+                var agendaSlide = AgendaSlide.Decode(slide);
                 if (agendaSlide != null)
                 {
                     return agendaSlide.Section.Index;
@@ -851,14 +851,14 @@ namespace PowerPointLabs.AgendaLab
 
         private static void UpdateBeamReferenceSlide(PowerPointSlide refSlide)
         {
-            Shape beamShape = FindBeamShape(refSlide);
-            List<AgendaSection> currentSections = ExtractAgendaSectionsFromBeam(beamShape);
-            List<AgendaSection> newSections = GetAllButFirstSection();
+            var beamShape = FindBeamShape(refSlide);
+            var currentSections = ExtractAgendaSectionsFromBeam(beamShape);
+            var newSections = GetAllButFirstSection();
 
-            BeamFormats beamFormats = BeamFormats.ExtractFormats(beamShape);
-            List<Shape> oldTextBoxes = BeamFormats.GetAllShapesWithPurpose(beamShape, ShapePurpose.BeamShapeText);
-            Shape highlightedTextBox = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
-            Shape background = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeBackground);
+            var beamFormats = BeamFormats.ExtractFormats(beamShape);
+            var oldTextBoxes = BeamFormats.GetAllShapesWithPurpose(beamShape, ShapePurpose.BeamShapeText);
+            var highlightedTextBox = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
+            var background = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeBackground);
 
             MatchColour(highlightedTextBox, background);
 
@@ -868,7 +868,7 @@ namespace PowerPointLabs.AgendaLab
             }
 
 
-            DialogResult confirmResult = MessageBox.Show(new Form() { TopMost = true },
+            var confirmResult = MessageBox.Show(new Form() { TopMost = true },
                                                 AgendaLabText.ReorganiseSidebarContent,
                                                 AgendaLabText.ReorganiseSidebarTitle,
                                                 MessageBoxButtons.YesNo);
@@ -890,18 +890,18 @@ namespace PowerPointLabs.AgendaLab
                 Shape background, BeamFormats beamFormats, List<Shape> oldTextBoxes, Shape beamShape)
         {
             List<Shape> markedForDeletion;
-            Dictionary<int, Shape> textboxAssignment = GetBeamTextboxAssignment(oldTextBoxes, out markedForDeletion);
+            var textboxAssignment = GetBeamTextboxAssignment(oldTextBoxes, out markedForDeletion);
 
-            HashSet<int> reassignedTextboxIndexes = new HashSet<int>();
-            List<Shape> newTextboxes = new List<Shape>();
+            var reassignedTextboxIndexes = new HashSet<int>();
+            var newTextboxes = new List<Shape>();
 
-            foreach (AgendaSection section in newSections)
+            foreach (var section in newSections)
             {
                 int index = section.Index;
                 if (textboxAssignment.ContainsKey(index))
                 {
                     // Reuse old textbox
-                    Shape textbox = textboxAssignment[index];
+                    var textbox = textboxAssignment[index];
                     ShapeUtil.SetText(textbox, section.Name);
                     AgendaShape.SetShapeName(textbox, ShapePurpose.BeamShapeText, section);
                     reassignedTextboxIndexes.Add(index);
@@ -909,8 +909,8 @@ namespace PowerPointLabs.AgendaLab
                 else
                 {
                     // Create new textbox
-                    Shape textbox = PrepareBeamAgendaBeamItem(refSlide, section);
-                    TextRange2 referenceTextFormat = beamFormats.Regular;
+                    var textbox = PrepareBeamAgendaBeamItem(refSlide, section);
+                    var referenceTextFormat = beamFormats.Regular;
                     ShapeUtil.SyncTextRange(referenceTextFormat, textbox.TextFrame2.TextRange, pickupTextContent: false);
                     newTextboxes.Add(textbox);
                 }
@@ -919,7 +919,7 @@ namespace PowerPointLabs.AgendaLab
             markedForDeletion.AddRange(from entry in textboxAssignment where !reassignedTextboxIndexes.Contains(entry.Key) select entry.Value);
             markedForDeletion.ForEach(shape => shape.Delete());
 
-            List<Shape> beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
+            var beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
             beamShapeShapes.AddRange(newTextboxes);
             beamShape = refSlide.GroupShapes(beamShapeShapes);
             AgendaShape.SetShapeName(beamShape, ShapePurpose.BeamShapeMainGroup, AgendaSection.None);
@@ -931,11 +931,11 @@ namespace PowerPointLabs.AgendaLab
         private static Dictionary<int, Shape> GetBeamTextboxAssignment(IEnumerable<Shape> textboxes, out List<Shape> unassignedShapes)
         {
             unassignedShapes = new List<Shape>();
-            Dictionary<int, Shape> shapeAssignment = new Dictionary<int, Shape>();
+            var shapeAssignment = new Dictionary<int, Shape>();
 
-            foreach (Shape shape in textboxes)
+            foreach (var shape in textboxes)
             {
-                AgendaShape agendaShape = AgendaShape.Decode(shape);
+                var agendaShape = AgendaShape.Decode(shape);
                 
                 int index = agendaShape.Section.Index;
                 if (shapeAssignment.ContainsKey(index))
@@ -957,12 +957,12 @@ namespace PowerPointLabs.AgendaLab
         private static void ReorganiseBeam(PowerPointSlide refSlide, List<AgendaSection> newSections, Shape highlightedTextBox,
             Shape background, BeamFormats beamFormats, List<Shape> oldTextBoxes, Shape beamShape)
         {
-            List<Shape> newTextBoxes = CreateBeamAgendaTextBoxes(refSlide, newSections);
+            var newTextBoxes = CreateBeamAgendaTextBoxes(refSlide, newSections);
             SetupBeamTextBoxPositions(newTextBoxes, highlightedTextBox, background);
 
             for (int i = 0; i < newTextBoxes.Count; ++i)
             {
-                TextRange2 referenceTextFormat = beamFormats.Regular;
+                var referenceTextFormat = beamFormats.Regular;
                 if (i < oldTextBoxes.Count)
                 {
                     referenceTextFormat = oldTextBoxes[i].TextFrame2.TextRange;
@@ -973,7 +973,7 @@ namespace PowerPointLabs.AgendaLab
 
             oldTextBoxes.ForEach(shape => shape.Delete());
 
-            List<Shape> beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
+            var beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
             beamShapeShapes.AddRange(newTextBoxes);
             beamShape = refSlide.GroupShapes(beamShapeShapes);
             AgendaShape.SetShapeName(beamShape, ShapePurpose.BeamShapeMainGroup, AgendaSection.None);
@@ -991,8 +991,8 @@ namespace PowerPointLabs.AgendaLab
             }
             for (int i = 0; i < currentSections.Count; ++i)
             {
-                AgendaSection currentSection = currentSections[i];
-                AgendaSection newSection = newSections[i];
+                var currentSection = currentSections[i];
+                var newSection = newSections[i];
                 if (currentSection.Index != newSection.Index || currentSection.Name != newSection.Name)
                 {
                     return false;
@@ -1007,7 +1007,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static List<AgendaSection> ExtractAgendaSectionsFromBeam(Shape beamShape)
         {
-            List<AgendaSection> agendaSections = beamShape.GroupItems.Cast<Shape>()
+            var agendaSections = beamShape.GroupItems.Cast<Shape>()
                                                     .Where(AgendaShape.WithPurpose(ShapePurpose.BeamShapeText))
                                                     .Select(shape => AgendaShape.Decode(shape).Section)
                                                     .ToList();
@@ -1027,23 +1027,23 @@ namespace PowerPointLabs.AgendaLab
 
         private static void SyncBeamOnSlides(List<PowerPointSlide> targetSlides, PowerPointSlide refSlide)
         {
-            List<PowerPointSlide> syncSlides = new List<PowerPointSlide>();
+            var syncSlides = new List<PowerPointSlide>();
 
             // Generate beam agenda for all target slides that do not currently have the beam agenda.
             if (targetSlides != null)
             {
-                IEnumerable<PowerPointSlide> selectedSlidesWithoutBeam = targetSlides.Where(slide => !HasBeamShape(slide));
+                var selectedSlidesWithoutBeam = targetSlides.Where(slide => !HasBeamShape(slide));
                 syncSlides.AddRange(selectedSlidesWithoutBeam);
             }
 
             // Synchronise agenda for all slides in the presentation that have the beam agenda.
-            Shape refBeamShape = FindBeamShape(refSlide);
-            IEnumerable<PowerPointSlide> allSlidesWithBeam = PowerPointPresentation.Current.Slides
+            var refBeamShape = FindBeamShape(refSlide);
+            var allSlidesWithBeam = PowerPointPresentation.Current.Slides
                                                                   .Where(slide => AgendaSlide.IsNotReferenceslide(slide) &&
                                                                                   FindBeamShape(slide) != null);
             syncSlides.AddRange(allSlidesWithBeam);
 
-            foreach (PowerPointSlide slide in syncSlides)
+            foreach (var slide in syncSlides)
             {
                 UpdateBeamOnSlide(slide, refBeamShape);
             }
@@ -1053,8 +1053,8 @@ namespace PowerPointLabs.AgendaLab
         {
             RemoveBeamAgendaFromSlide(slide);
             refBeamShape.Copy();
-            Microsoft.Office.Interop.PowerPoint.ShapeRange beamShape = slide.Shapes.Paste();
-            AgendaSection section = GetSlideSection(slide);
+            var beamShape = slide.Shapes.Paste();
+            var section = GetSlideSection(slide);
 
             beamShape.GroupItems.Cast<Shape>()
                                 .Where(AgendaShape.WithPurpose(ShapePurpose.BeamShapeHighlightedText))
@@ -1066,13 +1066,13 @@ namespace PowerPointLabs.AgendaLab
                 return;
             }
 
-            BeamFormats beamFormats = BeamFormats.ExtractFormats(refBeamShape);
-            Shape currentSectionTextBox = beamShape.GroupItems
+            var beamFormats = BeamFormats.ExtractFormats(refBeamShape);
+            var currentSectionTextBox = beamShape.GroupItems
                                                 .Cast<Shape>()
                                                 .Where(AgendaShape.MeetsConditions(shape => shape.ShapePurpose == ShapePurpose.BeamShapeText &&
                                                                                             shape.Section.Index == section.Index))
                                                 .FirstOrDefault();
-            TextRange2 currentSectionText = currentSectionTextBox.TextFrame2.TextRange;
+            var currentSectionText = currentSectionTextBox.TextFrame2.TextRange;
 
             ShapeUtil.SyncTextRange(beamFormats.Highlighted, currentSectionText, pickupTextContent: false);
         }
@@ -1133,7 +1133,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static bool ValidSections()
         {
-            List<string> sections = PowerPointPresentation.Current.Sections;
+            var sections = PowerPointPresentation.Current.Sections;
 
             if (sections.Count == 0)
             {
@@ -1164,7 +1164,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static bool HasTooLongSectionName()
         {
-            List<AgendaSection> sections = Sections;
+            var sections = Sections;
             return sections.Any(section => section.Name.Length > SectionNameMaxLength);
         }
 
@@ -1174,10 +1174,10 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static bool HasEmptySection()
         {
-            List<AgendaSection> sections = Sections;
-            foreach (AgendaSection section in sections)
+            var sections = Sections;
+            foreach (var section in sections)
             {
-                List<PowerPointSlide> sectionSlides = GetSectionSlides(section);
+                var sectionSlides = GetSectionSlides(section);
                 if (sectionSlides.All(slide => AgendaSlide.IsAnyAgendaSlide(slide) || PowerPointAckSlide.IsAckSlide(slide)))
                 {
                     return true;
@@ -1230,13 +1230,13 @@ namespace PowerPointLabs.AgendaLab
 
         private static bool InvalidBulletAgendaReferenceSlide(PowerPointSlide refSlide)
         {
-            Shape contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
+            var contentHolder = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             return (contentHolder == null || contentHolder.TextFrame2.TextRange.Paragraphs.Count < 3);
         }
 
         private static bool InvalidBeamAgendaReferenceSlide(PowerPointSlide refSlide)
         {
-            Shape beamShape = FindBeamShape(refSlide);
+            var beamShape = FindBeamShape(refSlide);
 
             if (beamShape == null)
             {

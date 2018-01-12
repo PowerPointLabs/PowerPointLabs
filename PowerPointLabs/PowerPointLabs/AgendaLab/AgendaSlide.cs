@@ -124,7 +124,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         public static void AssignUniqueSectionName(PowerPointSlide slide)
         {
-            AgendaSlide properties = Decode(slide);
+            var properties = Decode(slide);
             slide.Name = Encode(properties.AgendaType, properties.SlidePurpose, AgendaSection.None);
         }
 
@@ -138,7 +138,7 @@ namespace PowerPointLabs.AgendaLab
 
         public static bool IsReferenceslide(PowerPointSlide slide)
         {
-            AgendaSlide agendaSlide = Decode(slide);
+            var agendaSlide = Decode(slide);
             if (agendaSlide == null)
             {
                 return false;
@@ -149,7 +149,7 @@ namespace PowerPointLabs.AgendaLab
 
         public static bool IsReferenceslide(Slide slide)
         {
-            AgendaSlide agendaSlide = Decode(slide);
+            var agendaSlide = Decode(slide);
             if (agendaSlide == null)
             {
                 return false;
@@ -188,7 +188,7 @@ namespace PowerPointLabs.AgendaLab
         {
             return slide =>
             {
-                AgendaSlide agendaSlide = Decode(slide);
+                var agendaSlide = Decode(slide);
                 if (agendaSlide == null)
                 {
                     return false;
@@ -207,7 +207,7 @@ namespace PowerPointLabs.AgendaLab
         {
             return slide =>
             {
-                AgendaSlide agendaSlide = Decode(slide);
+                var agendaSlide = Decode(slide);
                 if (agendaSlide == null)
                 {
                     return false;
@@ -219,7 +219,7 @@ namespace PowerPointLabs.AgendaLab
 
         public static bool MatchesPurpose(PowerPointSlide slide, SlidePurpose purpose)
         {
-            AgendaSlide agendaSlide = Decode(slide);
+            var agendaSlide = Decode(slide);
             if (agendaSlide == null)
             {
                 return false;

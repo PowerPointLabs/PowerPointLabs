@@ -25,13 +25,13 @@ namespace PowerPointLabs.CropLab
         public static Shape Crop(PowerPointSlide currentSlide, Selection selection,
                                 double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
         {
-            ShapeRange shapeRange = selection.ShapeRange;
+            var shapeRange = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
                 shapeRange = selection.ChildShapeRange;
             }
 
-            Shape croppedShape = Crop(currentSlide, shapeRange, isInPlace: isInPlace, handleError: handleError);
+            var croppedShape = Crop(currentSlide, shapeRange, isInPlace: isInPlace, handleError: handleError);
             if (croppedShape != null)
             {
                 croppedShape.Select();
@@ -45,10 +45,10 @@ namespace PowerPointLabs.CropLab
         {
             try
             {
-                bool hasManyShapes = shapeRange.Count > 1;
-                Shape shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
-                float left = shape.Left;
-                float top = shape.Top;
+                var hasManyShapes = shapeRange.Count > 1;
+                var shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
+                var left = shape.Left;
+                var top = shape.Top;
                 shape.Cut();
                 shapeRange = currentSlide.Shapes.Paste();
                 shapeRange.Left = left;
@@ -60,17 +60,17 @@ namespace PowerPointLabs.CropLab
 
                 TakeScreenshotProxy(currentSlide, shapeRange);
 
-                ShapeRange ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(currentSlide, shapeRange);
+                var ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(currentSlide, shapeRange);
                 List<Shape> shapeList = new List<Shape>();
 
                 for (int i = 1; i <= ungroupedRange.Count; i++)
                 {
-                    Shape filledShape = FillInShapeWithImage(currentSlide, SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
+                    var filledShape = FillInShapeWithImage(currentSlide, SlidePicture, ungroupedRange[i], magnifyRatio, isInPlace);
                     shapeList.Add(filledShape);
                 }
                 
-                ShapeRange croppedRange = currentSlide.ToShapeRange(shapeList);
-                Shape croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
+                var croppedRange = currentSlide.ToShapeRange(shapeList);
+                var croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
 
                 return croppedShape;
             }
@@ -94,7 +94,7 @@ namespace PowerPointLabs.CropLab
             }
 
             shape.Copy();
-            Shape shapeToReturn = currentSlide.Shapes.Paste()[1];
+            var shapeToReturn = currentSlide.Shapes.Paste()[1];
             shape.Delete();
             return shapeToReturn;
         }
@@ -105,16 +105,16 @@ namespace PowerPointLabs.CropLab
             if (original == null) { return null; }
             try
             {
-                Bitmap outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format32bppArgb);
+                var outputImage = new Bitmap((int)width, (int)height, PixelFormat.Format32bppArgb);
 
-                double inverseRatio = 1 / magnifyRatio;
+                var inverseRatio = 1 / magnifyRatio;
 
-                double newWidth = width * inverseRatio;
-                double newHeight = height * inverseRatio;
-                double newY = startY + (1 - inverseRatio) / 2 * width;
-                double newX = startX + (1 - inverseRatio) / 2 * width;
+                var newWidth = width * inverseRatio;
+                var newHeight = height * inverseRatio;
+                var newY = startY + (1 - inverseRatio) / 2 * width;
+                var newX = startX + (1 - inverseRatio) / 2 * width;
 
-                Graphics inputGraphics = Graphics.FromImage(outputImage);
+                var inputGraphics = Graphics.FromImage(outputImage);
                 inputGraphics.DrawImage(original,
                     new Rectangle(0, 0, (int)width, (int)height),
                     new Rectangle((int)newX, (int)newY, (int)newWidth, (int)newHeight),
@@ -131,7 +131,7 @@ namespace PowerPointLabs.CropLab
 
         private static void CreateFillInBackgroundForShape(string imageFile, Shape shape, double magnifyRatio = 1.0)
         {
-            using (Bitmap slideImage = (Bitmap)Image.FromFile(imageFile))
+            using (var slideImage = (Bitmap)Image.FromFile(imageFile))
             {
                 if (shape.Rotation == 0)
                 {
@@ -146,7 +146,7 @@ namespace PowerPointLabs.CropLab
 
         private static void CreateFillInBackground(Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
-            Bitmap croppedImage = KiCut(slideImage,
+            var croppedImage = KiCut(slideImage,
                 shape.Left * GraphicsUtil.PictureExportingRatio,
                 shape.Top * GraphicsUtil.PictureExportingRatio,
                 shape.Width * GraphicsUtil.PictureExportingRatio,
@@ -157,8 +157,8 @@ namespace PowerPointLabs.CropLab
 
         private static void CreateRotatedFillInBackground(Shape shape, Bitmap slideImage, double magnifyRatio = 1.0)
         {
-            PPShape rotatedShape = new PPShape(shape, false);
-            PointF topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * GraphicsUtil.PictureExportingRatio,
+            var rotatedShape = new PPShape(shape, false);
+            var topLeftPoint = new PointF(rotatedShape.ActualTopLeft.X * GraphicsUtil.PictureExportingRatio,
                 rotatedShape.ActualTopLeft.Y * GraphicsUtil.PictureExportingRatio);
 
             Bitmap rotatedImage = new Bitmap(slideImage.Width, slideImage.Height);
@@ -177,7 +177,7 @@ namespace PowerPointLabs.CropLab
                 }
             }
 
-            Bitmap magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * GraphicsUtil.PictureExportingRatio,
+            var magnifiedImage = KiCut(rotatedImage, 0, 0, shape.Width * GraphicsUtil.PictureExportingRatio,
                 shape.Height * GraphicsUtil.PictureExportingRatio, magnifyRatio);
             magnifiedImage.Save(FillInBackgroundPicture, ImageFormat.Png);
         }

@@ -10,9 +10,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
     {
         public Factory.SliderPropHandlerFactory.SliderProperties GetSliderProperties(StyleOption option)
         {
-            Factory.SliderPropHandlerFactory.SliderProperties sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
-            string colorValue = option.OverlayColor;
-            int optValue = option.OverlayTransparency;
+            var sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
+            var colorValue = option.OverlayColor;
+            var optValue = option.OverlayTransparency;
             sliderProperties.Value = (colorValue == "#FFFFFF") ? 200 - optValue : optValue;
             sliderProperties.Maximum = 200;
             sliderProperties.TickFrequency = 1;

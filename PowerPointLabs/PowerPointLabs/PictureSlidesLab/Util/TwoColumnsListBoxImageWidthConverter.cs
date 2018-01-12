@@ -12,14 +12,14 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         public object Convert(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            double originalValue = (double) value;
+            var originalValue = (double) value;
             return originalValue / 2 - ImageMargin - ScrollBarMargin;
         }
 
         public object ConvertBack(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            double valueAftConverted = (double) value;
+            var valueAftConverted = (double) value;
             return (valueAftConverted + ImageMargin + ScrollBarMargin) * 2;
         }
     }

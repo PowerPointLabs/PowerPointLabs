@@ -72,7 +72,7 @@ namespace PowerPointLabs.ResizeLab.Views
         #region Helper functions
         private ResizeLabMain.StretchRefType RefTypeToCheckedRefTypeBtn()
         {
-            foreach (KeyValuePair<ResizeLabMain.StretchRefType, RadioButton> aRefTypeButton in _refTypeButtonLookUp)
+            foreach (var aRefTypeButton in _refTypeButtonLookUp)
             {
                 if (aRefTypeButton.Value.IsChecked.GetValueOrDefault())
                 {

@@ -73,7 +73,7 @@ namespace PPExtraEventHelper
                 if (wParam.ToInt32() == (int)Native.Message.WM_LBUTTONDBLCLK
                     && !IsReEnteredCallback())
                 {
-                    IntPtr handle = Process.GetCurrentProcess().MainWindowHandle;
+                    var handle = Process.GetCurrentProcess().MainWindowHandle;
                     FindSlideViewWindowHandle(handle);
                     if (IsMouseWithinSlideViewWindow()
                         && DoubleClick != null)

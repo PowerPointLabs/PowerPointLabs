@@ -11,8 +11,8 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void ImageItemNotification()
         {
-            ObservableImageItem item = new ObservableImageItem();
-            bool isNotified = false;
+            var item = new ObservableImageItem();
+            var isNotified = false;
             item.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ImageItem")

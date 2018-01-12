@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Tools;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
@@ -12,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.ColorsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            CustomTaskPane colorPane = 
+            var colorPane = 
                 this.RegisterTaskPane(typeof(ColorPane), ColorsLabText.TaskPanelTitle);
             if (colorPane != null)
             {

@@ -11,7 +11,7 @@ namespace PowerPointLabs.CropLab
 
         public static PowerPoint.ShapeRange Crop(PowerPoint.Selection selection, float aspectRatio)
         {
-            PowerPoint.ShapeRange croppedShape = Crop(selection.ShapeRange, aspectRatio);
+            var croppedShape = Crop(selection.ShapeRange, aspectRatio);
             if (croppedShape != null)
             {
                 croppedShape.Select();

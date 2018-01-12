@@ -28,10 +28,10 @@ namespace Test.Util
         public static string GetDocTestPath()
         {
             //To get the location the assembly normally resides on disk or the install directory
-            string path = new Uri(
+            var path = new Uri(
                 Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase))
                 .LocalPath;
-            string parPath = PathUtil.GetParentFolder(path, 4);
+            var parPath = PathUtil.GetParentFolder(path, 4);
             return Path.Combine(parPath, "doc\\test\\");
         }
 

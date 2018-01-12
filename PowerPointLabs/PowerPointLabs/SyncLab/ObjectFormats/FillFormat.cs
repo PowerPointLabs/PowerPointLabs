@@ -11,7 +11,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            Shape duplicateShape = formatShape.Duplicate()[1];
+            var duplicateShape = formatShape.Duplicate()[1];
             bool canCopy = Sync(formatShape, duplicateShape);
             duplicateShape.Delete();
             return canCopy;
@@ -72,7 +72,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         private static void SyncGradient(Shape formatShape, Shape newShape) //should return bool?
         {
-            Microsoft.Office.Core.MsoGradientColorType gradientColorType = formatShape.Fill.GradientColorType;
+            var gradientColorType = formatShape.Fill.GradientColorType;
 
             if (gradientColorType == Microsoft.Office.Core.MsoGradientColorType.msoGradientOneColor)
             {

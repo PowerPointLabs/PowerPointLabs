@@ -149,7 +149,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 Logger.Log("PSL init styling begins");
                 // load back the style from the current slide, or
                 // select the first picture to preview styles
-                bool isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
+                var isSuccessfullyLoaded = LoadStyleAndImage(this.GetCurrentSlide(),
                     isLoadingWithDefaultPicture: false);
                 if (ViewModel.ImageSelectionList.Count >= 2 && !isSuccessfullyLoaded)
                 {
@@ -263,7 +263,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 Logger.Log("Drop enter");
                 if (args.Data.GetDataPresent("FileDrop"))
                 {
-                    string[] filenames = (args.Data.GetData("FileDrop") as string[]);
+                    var filenames = (args.Data.GetData("FileDrop") as string[]);
                     if (filenames == null || filenames.Length == 0)
                     {
                         return;
@@ -276,7 +276,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 }
                 else if (args.Data.GetDataPresent("Text"))
                 {
-                    string imageUrl = args.Data.GetData("Text") as string;
+                    var imageUrl = args.Data.GetData("Text") as string;
                     ViewModel.AddImageSelectionListItem(imageUrl,
                         this.GetCurrentSlide().GetNativeSlide(),
                         this.GetCurrentPresentation().SlideWidth,
@@ -319,8 +319,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             try
             {
-                System.Drawing.Image pastedPicture = Clipboard.GetImage();
-                StringCollection pastedFiles = Clipboard.GetFileDropList();
+                var pastedPicture = Clipboard.GetImage();
+                var pastedFiles = Clipboard.GetFileDropList();
 
                 if (pastedPicture == null &&
                     (pastedFiles == null || pastedFiles.Count == 0))
@@ -340,7 +340,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 if (pastedPicture != null)
                 {
                     Logger.Log("Pasted enter");
-                    string pastedPictureFile = StoragePath.GetPath("pastedImg-"
+                    var pastedPictureFile = StoragePath.GetPath("pastedImg-"
                                                                 + DateTime.Now.GetHashCode() + "-"
                                                                 + Guid.NewGuid().ToString().Substring(0, 7));
                     pastedPicture.Save(pastedPictureFile);
@@ -467,7 +467,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="e"></param>
         private void ListBox_OnKeyDown(object sender, KeyEventArgs e)
         {
-            ListBox listbox = sender as ListBox;
+            var listbox = sender as ListBox;
             if (listbox == null || listbox.Items.Count <= 0)
             {
                 return;
@@ -563,7 +563,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="e"></param>
         private void StylesPreviewListBox_OnKeyUp(object sender, KeyEventArgs e)
         {
-            ListBox listbox = sender as ListBox;
+            var listbox = sender as ListBox;
             if (listbox == null || listbox.Items.Count <= 0)
             {
                 return;
@@ -643,7 +643,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="e"></param>
         private void ImageSelectionListBox_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) 
+            var item = ItemsControl.ContainerFromElement((ItemsControl) sender, (DependencyObject) e.OriginalSource) 
                 as ListBoxItem;
             if (item == null || item.Content == null)
             {
@@ -653,9 +653,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             if (e.RightButton == MouseButtonState.Pressed)
             {
                 _clickedImageSelectionItemIndex = -1;
-                for (int i = 0; i < ImageSelectionListBox.Items.Count; i++)
+                for (var i = 0; i < ImageSelectionListBox.Items.Count; i++)
                 {
-                    ListBoxItem listBoxItem = ImageSelectionListBox.ItemContainerGenerator.ContainerFromIndex(i) 
+                    var listBoxItem = ImageSelectionListBox.ItemContainerGenerator.ContainerFromIndex(i) 
                         as ListBoxItem;
                     if (listBoxItem == null)
                     {
@@ -673,11 +673,11 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             else if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Logger.Log("begin import pictures");
-                ImageItem imageItem = item.Content as ImageItem;
+                var imageItem = item.Content as ImageItem;
                 if (imageItem != null
                     && imageItem.ImageFile == StoragePath.ChoosePicturesImgPath)
                 {
-                    OpenFileDialog openFileDialog = new OpenFileDialog
+                    var openFileDialog = new OpenFileDialog
                     {
                         Multiselect = true,
                         Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
@@ -722,7 +722,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            ImageItem selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
+            var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
             {
                 return;
@@ -735,7 +735,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             if (ViewModel.IsInPictureVariation())
             {
-                ImageItem imageItem = ViewModel.GetSelectedPictureInPictureVariation(
+                var imageItem = ViewModel.GetSelectedPictureInPictureVariation(
                     StylesVariationListBox.SelectedIndex);
                 if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
                     || imageItem.ImageFile == StoragePath.LoadingImgPath)
@@ -746,7 +746,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             else
             {
-                ImageItem selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
                 if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
                 {
                     return;
@@ -764,7 +764,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            ImageItem selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
+            var selectedImage = (ImageItem)ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
             if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
             {
                 return;
@@ -777,7 +777,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             if (ViewModel.IsInPictureVariation())
             {
-                ImageItem imageItem = ViewModel.GetSelectedPictureInPictureVariation(
+                var imageItem = ViewModel.GetSelectedPictureInPictureVariation(
                     StylesVariationListBox.SelectedIndex);
                 if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
                     || imageItem.ImageFile == StoragePath.LoadingImgPath)
@@ -788,7 +788,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             else
             {
-                ImageItem selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+                var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
                 if (selectedImage == null || selectedImage.ImageFile == StoragePath.LoadingImgPath)
                 {
                     return;
@@ -808,7 +808,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             if (ViewModel.IsInPictureVariation()
                      && StylesVariationListBox.SelectedIndex >= 0)
             {
-                ImageItem selectedImageItem =
+                var selectedImageItem =
                     ViewModel
                     .GetSelectedPictureInPictureVariation(StylesVariationListBox.SelectedIndex);
                 if (selectedImageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath
@@ -885,15 +885,15 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void AddCitationSlideButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Models.PowerPointPresentation presentation = this.GetCurrentPresentation();
+            var presentation = this.GetCurrentPresentation();
             if (presentation.Slides.Any(PictureCitationSlide.IsCitationSlide))
             {
-                Models.PowerPointSlide citationSlide = presentation.Slides.Where(PictureCitationSlide.IsCitationSlide).First();
+                var citationSlide = presentation.Slides.Where(PictureCitationSlide.IsCitationSlide).First();
                 ViewModel.AddPictureCitationSlide(citationSlide.GetNativeSlide(), presentation.Slides);
             }
             else // no citation slide yet, so create one
             {
-                Slide slide = presentation.Presentation.Slides.Add(presentation.SlideCount + 1, PpSlideLayout.ppLayoutText);
+                var slide = presentation.Presentation.Slides.Add(presentation.SlideCount + 1, PpSlideLayout.ppLayoutText);
                 ViewModel.AddPictureCitationSlide(slide, presentation.Slides);
             }
             presentation.AddAckSlide();
@@ -947,7 +947,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            ImageItem selectedImage = (ImageItem) ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
+            var selectedImage = (ImageItem) ImageSelectionListBox.Items.GetItemAt(_clickedImageSelectionItemIndex);
             if (selectedImage == null)
             {
                 return;
@@ -959,7 +959,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void DeleteSelectedImage()
         {
-            ImageItem selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
+            var selectedImage = (ImageItem)ImageSelectionListBox.SelectedItem;
             if (selectedImage == null
                 || ImageSelectionListBox.SelectedIndex == 0)
             {
@@ -972,7 +972,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void EditPictureSource(ImageItem source)
         {
-            MetroDialogSettings metroDialogSettings = new MetroDialogSettings
+            var metroDialogSettings = new MetroDialogSettings
             {
                 DefaultText = source.Source
             };
@@ -1120,7 +1120,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private static bool IsMouseOverTarget(Visual target, Point point)
         {
-            Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
+            var bounds = VisualTreeHelper.GetDescendantBounds(target);
             return bounds.Contains(point);
         }
 
@@ -1133,10 +1133,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                     return;
                 }
 
-                TranslateTransform left2RightToShowTranslate = new TranslateTransform { X = -StylesPreviewGrid.ActualWidth };
+                var left2RightToShowTranslate = new TranslateTransform { X = -StylesPreviewGrid.ActualWidth };
                 StyleVariationsFlyout.RenderTransform = left2RightToShowTranslate;
                 StyleVariationsFlyout.Visibility = Visibility.Visible;
-                DoubleAnimation left2RightToShowAnimation = new DoubleAnimation(-StylesPreviewGrid.ActualWidth, 0,
+                var left2RightToShowAnimation = new DoubleAnimation(-StylesPreviewGrid.ActualWidth, 0,
                     TimeSpan.FromMilliseconds(350))
                 {
                     EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
@@ -1155,9 +1155,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            TranslateTransform right2LeftToHideTranslate = new TranslateTransform();
+            var right2LeftToHideTranslate = new TranslateTransform();
             StyleVariationsFlyout.RenderTransform = right2LeftToHideTranslate;
-            DoubleAnimation right2LeftToHideAnimation = new DoubleAnimation(0, -StyleVariationsFlyout.ActualWidth,
+            var right2LeftToHideAnimation = new DoubleAnimation(0, -StyleVariationsFlyout.ActualWidth,
                 TimeSpan.FromMilliseconds(350))
             {
                 EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut },
@@ -1201,7 +1201,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                     // when it's to load the design for a default picture,
                     // and it's at the variation stage,
                     // directly jump to picture variation to select picture
-                    int picVariationIndex = ViewModel.VariantsCategory.IndexOf(
+                    var picVariationIndex = ViewModel.VariantsCategory.IndexOf(
                         PictureSlidesLabText.VariantCategoryPicture);
                     if (VariantsComboBox.SelectedIndex != picVariationIndex)
                     {
@@ -1285,7 +1285,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="time">time in ms</param>
         private void SetTimeout(Action action, int time)
         {
-            DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Render)
+            var timer = new DispatcherTimer(DispatcherPriority.Render)
             {
                 Interval = new TimeSpan(0, 0, 0, 0, time) // in ms
             };
@@ -1319,7 +1319,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                     return true;
                 }
 
-                System.Reflection.PropertyInfo propertyInfo = typeof(Window).GetProperty("IsDisposed", 
+                var propertyInfo = typeof(Window).GetProperty("IsDisposed", 
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 return (bool) propertyInfo.GetValue(this, null);
             }

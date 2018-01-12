@@ -19,7 +19,7 @@ namespace PowerPointLabs.Utils
         public static string GetHexValue(Color color)
         {
             byte[] rgbArray = { color.R, color.G, color.B };
-            string hex = BitConverter.ToString(rgbArray);
+            var hex = BitConverter.ToString(rgbArray);
             return "#" + hex.Replace("-", "");
         }
 

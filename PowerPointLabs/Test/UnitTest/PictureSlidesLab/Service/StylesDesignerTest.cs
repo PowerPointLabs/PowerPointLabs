@@ -47,9 +47,9 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestPreviewStyle()
         {
             TempPath.InitTempFolder();
-            foreach (StyleOption style in _factory.GetAllStylesPreviewOptions())
+            foreach (var style in _factory.GetAllStylesPreviewOptions())
             {
-                PowerPointLabs.PictureSlidesLab.Service.Preview.PreviewInfo previewInfo = _designer.PreviewApplyStyle(_sourceImage, _contentSlide,
+                var previewInfo = _designer.PreviewApplyStyle(_sourceImage, _contentSlide,
                     Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, style);
                 SlideUtil.IsSameLooking(
                     new FileInfo(PathUtil.GetDocTestPath() +
@@ -64,11 +64,11 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestApplyStyle()
         {
             TempPath.InitTempFolder();
-            foreach (StyleOption style in _factory.GetAllStylesPreviewOptions())
+            foreach (var style in _factory.GetAllStylesPreviewOptions())
             {
                 _designer.ApplyStyle(_sourceImage, _contentSlide,
                     Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, style);
-                string imgPath = TempPath.GetPath("applystyle-" +
+                var imgPath = TempPath.GetPath("applystyle-" +
                                                Guid.NewGuid().ToString().Substring(0, 7) +
                                                "-" + DateTime.Now.GetHashCode());
                 _contentSlide.Export(imgPath, "JPG");

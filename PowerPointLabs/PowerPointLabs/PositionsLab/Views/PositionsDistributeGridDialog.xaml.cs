@@ -30,7 +30,7 @@ namespace PowerPointLabs.PositionsLab.Views
                 return;
             }
 
-            string errorMessage = GetErrorMessage(exception.Message);
+            var errorMessage = GetErrorMessage(exception.Message);
             if (!string.Equals(errorMessage, PositionsLabText.ErrorUndefined, StringComparison.Ordinal))
             {
                 MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
@@ -168,8 +168,8 @@ namespace PowerPointLabs.PositionsLab.Views
                 gridAlignment = PositionsLabSettings.GridAlignment.AlignRight;
             }
 
-            double? rowValue = rowInput.Value;
-            double? colValue = colInput.Value;
+            var rowValue = rowInput.Value;
+            var colValue = colInput.Value;
 
             if (!rowValue.HasValue || rowValue.GetValueOrDefault() == 0 ||
                 !colValue.HasValue || colValue.GetValueOrDefault() == 0)

@@ -28,8 +28,8 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             if (IsValidGoogleImageLink(url))
             {
-                Uri googleImageUri = new Uri(url);
-                System.Collections.Specialized.NameValueCollection parameters = HttpUtility.ParseQueryString(googleImageUri.Query);
+                var googleImageUri = new Uri(url);
+                var parameters = HttpUtility.ParseQueryString(googleImageUri.Query);
                 url = HttpUtility.UrlDecode(parameters.Get("imgurl"));
                 item.ContextLink = HttpUtility.UrlDecode(parameters.Get("imgrefurl"));
                 item.Source = item.ContextLink;

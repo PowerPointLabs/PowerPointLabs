@@ -80,13 +80,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter4x4Margin5Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -104,13 +104,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter4x4Margin0LeftSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -128,13 +128,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignCenter;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter4x4Margin0CenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -152,13 +152,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignRight;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter4x4Margin0RightSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -176,13 +176,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter6x3Margin0TopSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -200,13 +200,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignCenter;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter6x3Margin0CenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -224,13 +224,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignRight;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstCenter6x3Margin0BtmSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -248,13 +248,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstEdge4x4Margin5Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -272,13 +272,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstEdge4x4Margin0Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -296,13 +296,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3, Rect16 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstEdge6x3Margin0Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -320,13 +320,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstAndSecondCenter4x4Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -344,13 +344,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstAndSecondCenter6x3Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -368,13 +368,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 4, 4);
 
             PpOperations.SelectSlide(DistributeGridFirstAndSecondEdge4x4Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -392,13 +392,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeGridAlignment = PositionsLabSettings.GridAlignment.AlignLeft;
 
             _shapeNames = new List<string> { Rect1, Rect16, Rect2, Oval3, RoundRect4, Rect5, Rect6, Oval7, RoundRect8, Rect9, Rect10, Pic11, Pic12, Pic3 };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<List<PPShape>, int, int> positionsAction = (shapes, rowLength, colLength) => PositionsLabMain.DistributeGrid(shapes, rowLength, colLength);
             ExecutePositionsAction(positionsAction, actualShapes, 6, 3);
 
             PpOperations.SelectSlide(DistributeGridFirstAndSecondEdge6x3Slide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }

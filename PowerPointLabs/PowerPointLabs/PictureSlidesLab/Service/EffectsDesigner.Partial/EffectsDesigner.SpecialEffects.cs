@@ -11,9 +11,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PowerPoint.Shape ApplySpecialEffectEffect(IMatrixFilter effectFilter, bool isActualSize)
         {
             Source.SpecialEffectImageFile = SpecialEffectImage(effectFilter, Source.FullSizeImageFile ?? Source.ImageFile, isActualSize);
-            PowerPoint.Shape specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
-            float slideWidth = SlideWidth;
-            float slideHeight = SlideHeight;
+            var specialEffectImageShape = AddPicture(Source.SpecialEffectImageFile, EffectName.SpecialEffect);
+            var slideWidth = SlideWidth;
+            var slideHeight = SlideHeight;
             FitToSlide.AutoFit(specialEffectImageShape, slideWidth, slideHeight);
             CropPicture(specialEffectImageShape);
             return specialEffectImageShape;
@@ -22,13 +22,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         private static string SpecialEffectImage(IMatrixFilter effectFilter, string imageFilePath,
             bool isActualSize)
         {
-            string specialEffectImageFile = Util.TempPath.GetPath("fullsize_specialeffect");
-            using (ImageFactory imageFactory = new ImageFactory())
+            var specialEffectImageFile = Util.TempPath.GetPath("fullsize_specialeffect");
+            using (var imageFactory = new ImageFactory())
             {
-                Image image = imageFactory
+                var image = imageFactory
                         .Load(imageFilePath)
                         .Image;
-                float ratio = (float)image.Width / image.Height;
+                var ratio = (float)image.Width / image.Height;
                 if (isActualSize)
                 {
                     image = imageFactory

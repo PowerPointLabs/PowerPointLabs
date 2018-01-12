@@ -26,7 +26,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void CreatePictureCitations()
         {
-            string citations = GenerateCitations();
+            var citations = GenerateCitations();
             foreach (Shape shape in Shapes)
             {
                 try
@@ -74,25 +74,25 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             try
             {
-                StringBuilder strBuilder = new StringBuilder("");
-                bool isAnyCitation = false;
-                int slideIndex = 1;
-                foreach (PowerPointSlide slide in AllSlides)
+                var strBuilder = new StringBuilder("");
+                var isAnyCitation = false;
+                var slideIndex = 1;
+                foreach (var slide in AllSlides)
                 {
-                    List<Shape> originalShapeList = slide.GetShapesWithPrefix(
+                    var originalShapeList = slide.GetShapesWithPrefix(
                         EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
                     if (originalShapeList.Count == 0)
                     {
                         continue;
                     }
 
-                    Shape originalImageShape = originalShapeList[0];
-                    string source = originalImageShape.Tags[Tag.ReloadImgSource];
+                    var originalImageShape = originalShapeList[0];
+                    var source = originalImageShape.Tags[Tag.ReloadImgSource];
                     if (string.IsNullOrEmpty(source))
                     {
                         source = "somewhere";
                     }
-                    string citation = "Picture taken from " + source;
+                    var citation = "Picture taken from " + source;
                     strBuilder.Append("Slide" + slideIndex + ": " + citation + "\n");
                     isAnyCitation = true;
                     slideIndex++;

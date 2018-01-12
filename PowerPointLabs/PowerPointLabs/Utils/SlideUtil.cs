@@ -58,7 +58,7 @@ namespace PowerPointLabs.Utils
             ShapeRange previousShapes = null;
             EffectTransition slideTransition = new EffectTransition();
 
-            foreach (PowerPointSlide slide in slides)
+            foreach (var slide in slides)
             {
                 if (firstSlide == null)
                 {
@@ -72,7 +72,7 @@ namespace PowerPointLabs.Utils
                     continue;
                 }
 
-                Sequence effectSequence = firstSlide.GetNativeSlide().TimeLine.MainSequence;
+                var effectSequence = firstSlide.GetNativeSlide().TimeLine.MainSequence;
                 int effectStartIndex = effectSequence.Count + 1;
 
                 slide.DeleteIndicator();
@@ -118,7 +118,7 @@ namespace PowerPointLabs.Utils
 
         public static void CopyToDesign(string designName, PowerPointSlide refSlide)
         {
-            Design design = GetDesign(designName);
+            var design = GetDesign(designName);
             if (design == null)
             {
                 design = CreateDesign(designName);
@@ -139,7 +139,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         private static EffectTransition GetTransitionFromSlide(PowerPointSlide slide)
         {
-            SlideShowTransition transition = slide.GetNativeSlide().SlideShowTransition;
+            var transition = slide.GetNativeSlide().SlideShowTransition;
 
             if (transition.AdvanceOnTime == MsoTriState.msoTrue)
             {
@@ -155,7 +155,7 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            Effect effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+            var effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious, effectStartIndex);
             effectFade.Exit = MsoTriState.msoFalse;
         }
@@ -167,7 +167,7 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            Effect effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
+            var effectFade = inSlide.GetNativeSlide().TimeLine.MainSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectAppear,
                 MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious, effectStartIndex);
             effectFade.Exit = MsoTriState.msoTrue;
         }

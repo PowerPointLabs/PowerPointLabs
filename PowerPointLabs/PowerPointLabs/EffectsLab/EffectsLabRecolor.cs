@@ -8,7 +8,7 @@ namespace PowerPointLabs.EffectsLab
     {
         public static void GreyScaleRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
 
             if (effectSlide == null)
             {
@@ -21,7 +21,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void BlackWhiteRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
             
             if (effectSlide == null)
             {
@@ -35,7 +35,7 @@ namespace PowerPointLabs.EffectsLab
         public static void GothamRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {
 
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
 
             if (effectSlide == null)
             {
@@ -48,7 +48,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void SepiaRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
 
             if (effectSlide == null)
             {
@@ -61,7 +61,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void GreyScaleBackgroundEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
 
             if (effectSlide == null)
             {
@@ -74,7 +74,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void BlackWhiteBackgroundEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
 
             if (effectSlide == null)
             {
@@ -87,7 +87,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void GothamBackgroundEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
 
             if (effectSlide == null)
             {
@@ -100,7 +100,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void SepiaBackgroundEffect(PowerPointSlide curSlide, Selection selection)
         {
-            PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
+            var effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
 
             if (effectSlide == null)
             {

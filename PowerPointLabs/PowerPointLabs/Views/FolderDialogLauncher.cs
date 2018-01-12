@@ -37,7 +37,7 @@ namespace PowerPointLabs.Views
         {
             DialogResult result;
 
-            using (Timer timer = new Timer())
+            using (var timer = new Timer())
             {
                 timer.Tick += TimerTickHandler;
                 timer.Interval = 10;
@@ -52,7 +52,7 @@ namespace PowerPointLabs.Views
 
         private static void TimerTickHandler(object sender, EventArgs args)
         {
-            Timer timer = sender as Timer;
+            var timer = sender as Timer;
 
             if (timer == null)
             {
@@ -64,17 +64,17 @@ namespace PowerPointLabs.Views
                 // retry 10 times until the dialog handle is created since we have no
                 // means to override wndproc of FolderBrowswerDialog to find handle.
                 --_retries;
-                IntPtr hwndDlg = Native.FindWindow(null, TopLevelSearchString);
+                var hwndDlg = Native.FindWindow(null, TopLevelSearchString);
                 if (hwndDlg != IntPtr.Zero)
                 {
-                    IntPtr hwndFolderCtrl = Native.GetDlgItem(hwndDlg, DlgItemBrowseControl);
+                    var hwndFolderCtrl = Native.GetDlgItem(hwndDlg, DlgItemBrowseControl);
                     if (hwndFolderCtrl != IntPtr.Zero)
                     {
-                        IntPtr hwndTreeView = Native.GetDlgItem(hwndFolderCtrl, DlgItemTreeView);
+                        var hwndTreeView = Native.GetDlgItem(hwndFolderCtrl, DlgItemTreeView);
 
                         if (hwndTreeView != IntPtr.Zero)
                         {
-                            IntPtr item = Native.SendMessage(hwndTreeView, (uint)Native.Message.TVM_GETNEXTITEM,
+                            var item = Native.SendMessage(hwndTreeView, (uint)Native.Message.TVM_GETNEXTITEM,
                                                           new IntPtr((uint)Native.Message.TVGN_CARET),
                                                           IntPtr.Zero);
                             if (item != IntPtr.Zero)

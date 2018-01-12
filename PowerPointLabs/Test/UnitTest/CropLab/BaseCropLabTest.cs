@@ -24,7 +24,7 @@ namespace Test.UnitTest.CropLab
         {
             foreach (PowerPoint.Shape actualShape in actualShapes)
             {
-                bool isFound = false;
+                var isFound = false;
 
                 foreach (PowerPoint.Shape expectedShape in expectedShapes)
                 {

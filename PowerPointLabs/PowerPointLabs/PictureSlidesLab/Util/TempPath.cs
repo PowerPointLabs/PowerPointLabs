@@ -26,7 +26,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 throw new Exception("TempPath is not initialized!");
             }
-            string fullsizeImageFile = TempFolder + name + "_"
+            var fullsizeImageFile = TempFolder + name + "_"
                                     + Guid.NewGuid().ToString().Substring(0, 6)
                                     + DateTime.Now.GetHashCode();
             return fullsizeImageFile;

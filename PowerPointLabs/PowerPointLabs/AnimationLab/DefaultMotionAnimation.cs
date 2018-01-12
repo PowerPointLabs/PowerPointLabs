@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-using Microsoft.Office.Interop.PowerPoint;
-
 using PowerPointLabs.Models;
 
 using Office = Microsoft.Office.Core;
@@ -153,8 +151,8 @@ namespace PowerPointLabs.AnimationLab
             AddMotionAnimation(animationSlide, initialShape, initialX, initialY, finalX, finalY, duration, ref trigger);
             AddResizeAnimation(animationSlide, initialShape, initialWidth, initialHeight, finalWidth, finalHeight, duration, ref trigger);
 
-            Sequence sequence = animationSlide.TimeLine.MainSequence;
-            Effect effectDisappear = sequence.AddEffect(initialShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+            var sequence = animationSlide.TimeLine.MainSequence;
+            var effectDisappear = sequence.AddEffect(initialShape, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
                 PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
                 PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;
@@ -187,15 +185,15 @@ namespace PowerPointLabs.AnimationLab
                 PowerPointPresentation.Current.SlideHeight / shape.Height);
             animationSlide.RelocateShapeWithoutPath(shape, 0, 0, shape.Width * scaleRatio, shape.Height * scaleRatio);
 
-            MsoAnimTriggerType trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-            Effect effectMotion = AddMotionAnimation(animationSlide, shape, shape.Left, shape.Top, originalLeft + (originalWidth - shape.Width) / 2, originalTop + (originalHeight - shape.Height) / 2, 0, ref trigger);
-            Effect effectResize = AddResizeAnimation(animationSlide, shape, shape.Width, shape.Height, originalWidth, originalHeight, 0, ref trigger);
+            var trigger = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+            var effectMotion = AddMotionAnimation(animationSlide, shape, shape.Left, shape.Top, originalLeft + (originalWidth - shape.Width) / 2, originalTop + (originalHeight - shape.Height) / 2, 0, ref trigger);
+            var effectResize = AddResizeAnimation(animationSlide, shape, shape.Width, shape.Height, originalWidth, originalHeight, 0, ref trigger);
 
             // Make "cover" image disappear after preload.
             PowerPoint.Effect effectDisappear = null;
             if (addCoverImage)
             {
-                Sequence sequence = animationSlide.TimeLine.MainSequence;
+                var sequence = animationSlide.TimeLine.MainSequence;
                 effectDisappear = sequence.AddEffect(coverImage, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
                     PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
                     PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
@@ -227,13 +225,13 @@ namespace PowerPointLabs.AnimationLab
         /// </summary>
         public static void DuplicateAsCoverImage(PowerPointSlide animationSlide, PowerPoint.Shape shape)
         {
-            Shape coverImage = shape.Duplicate()[1];
+            var coverImage = shape.Duplicate()[1];
             coverImage.Left = shape.Left;
             coverImage.Top = shape.Top;
             animationSlide.RemoveAnimationsForShape(coverImage);
 
-            Sequence sequence = animationSlide.TimeLine.MainSequence;
-            Effect effectDisappear = sequence.AddEffect(coverImage, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
+            var sequence = animationSlide.TimeLine.MainSequence;
+            var effectDisappear = sequence.AddEffect(coverImage, PowerPoint.MsoAnimEffect.msoAnimEffectFade,
                 PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
                 PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             effectDisappear.Exit = Office.MsoTriState.msoTrue;

@@ -17,13 +17,13 @@ namespace PowerPointLabs
                 (slideWidth / slideHeight))
             {
                 FitToHeight(selectedShape, slideWidth, slideHeight);
-                float availableOffset = selectedShape.Width/2 - slideWidth/2;
+                var availableOffset = selectedShape.Width/2 - slideWidth/2;
                 selectedShape.Left += availableOffset * offset / 100f;
             }
             else
             {
                 FitToWidth(selectedShape, slideWidth, slideHeight);
-                float availableOffset = selectedShape.Height/2 - slideHeight/2;
+                var availableOffset = selectedShape.Height/2 - slideHeight/2;
                 selectedShape.Top += availableOffset * offset / 100f;
             }
         }

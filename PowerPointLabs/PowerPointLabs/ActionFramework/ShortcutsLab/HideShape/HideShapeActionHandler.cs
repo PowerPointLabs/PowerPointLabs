@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
@@ -12,8 +10,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Selection selection = this.GetCurrentSelection();
-            ShapeRange selectedShapes = selection.ShapeRange;
+            var selection = this.GetCurrentSelection();
+            var selectedShapes = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
                 selectedShapes = selection.ChildShapeRange;

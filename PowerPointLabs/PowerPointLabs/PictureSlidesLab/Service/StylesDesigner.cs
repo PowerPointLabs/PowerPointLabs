@@ -49,9 +49,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             // generate styles
             EffectsDesignerForPreview = CreateEffectsHandlerForPreview();
 
-            AggregateCatalog catalog = new AggregateCatalog(
+            var catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            CompositionContainer container = new CompositionContainer(catalog);
+            var container = new CompositionContainer(catalog);
             container.ComposeParts(this);
         }
 
@@ -78,12 +78,12 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             SlideWidth = slideWidth;
             SlideHeight = slideHeight;
 
-            PreviewInfo previewInfo = new PreviewInfo();
+            var previewInfo = new PreviewInfo();
             EffectsDesignerForPreview.PreparePreviewing(contentSlide, slideWidth, slideHeight, source);
 
             // use thumbnail to apply, in order to speed up
             source.BackupFullSizeImageFile = source.FullSizeImageFile;
-            string backupImageFile = source.ImageFile;
+            var backupImageFile = source.ImageFile;
             source.FullSizeImageFile = null;
             source.ImageFile = source.CroppedThumbnailImageFile ?? source.ImageFile;
 
@@ -110,7 +110,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             source.BackupFullSizeImageFile = source.FullSizeImageFile;
             source.FullSizeImageFile = source.CroppedImageFile ?? source.FullSizeImageFile;
             
-            EffectsDesigner effectsHandler = new EffectsDesigner(contentSlide, slideWidth, slideHeight, source);
+            var effectsHandler = new EffectsDesigner(contentSlide, slideWidth, slideHeight, source);
 
             GenerateStyle(effectsHandler, source, isActualSize: true);
 
@@ -137,8 +137,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 imageShape = designer.ApplyBackgroundEffect();
             }
 
-            List<Shape> resultShapes = new List<Shape>();
-            foreach (StylesWorker.Interface.IStyleWorker styleWorker in WorkerFactory.StyleWorkers)
+            var resultShapes = new List<Shape>();
+            foreach (var styleWorker in WorkerFactory.StyleWorkers)
             {
                 resultShapes.AddRange(
                     styleWorker.Execute(Option, designer, source, imageShape, Settings));
@@ -162,7 +162,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private void SendToBack(params Shape[] shapes)
         {
-            foreach (Shape shape in shapes)
+            foreach (var shape in shapes)
             {
                 if (shape == null)
                 {
@@ -175,7 +175,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private EffectsDesigner CreateEffectsHandlerForPreview()
         {
-            Slide backgroundSlide = Presentation.Slides.Add(SlideCount + 1, PpSlideLayout.ppLayoutBlank);
+            var backgroundSlide = Presentation.Slides.Add(SlideCount + 1, PpSlideLayout.ppLayoutBlank);
             return new EffectsDesigner(backgroundSlide);
         }
         

@@ -8,7 +8,7 @@ namespace PowerPointLabs.Converters.ColorPane
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
+            var selectedColor = (HSLColor)value;
             Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.50f * 240);
             return Color.FromArgb(255,
                 convertedColor.R,

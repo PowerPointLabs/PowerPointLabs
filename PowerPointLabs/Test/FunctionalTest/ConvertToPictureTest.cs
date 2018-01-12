@@ -23,30 +23,30 @@ namespace Test.FunctionalTest
 
         private void CovertGroupObjToPicture()
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
+            var actualSlide = PpOperations.SelectSlide(7);
             PpOperations.SelectShape("pic");
 
             PplFeatures.ConvertToPic();
 
-            Shape sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
+            var sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
+            var expSlide = PpOperations.SelectSlide(8);
             PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
         private static void ConvertSingleObjToPicture()
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(4);
+            var actualSlide = PpOperations.SelectSlide(4);
             PpOperations.SelectShape("pic");
 
             PplFeatures.ConvertToPic();
 
-            Shape sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
+            var sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
+            var expSlide = PpOperations.SelectSlide(5);
             PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }

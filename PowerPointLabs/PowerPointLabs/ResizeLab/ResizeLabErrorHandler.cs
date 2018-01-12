@@ -45,7 +45,7 @@ namespace PowerPointLabs.ResizeLab
             {
                 return;
             }
-            string errorMsg = string.Format(GetErrorMessage(errorType), optionalParameters);
+            var errorMsg = string.Format(GetErrorMessage(errorType), optionalParameters);
             View.ShowErrorMessageBox(errorMsg);
         }
 

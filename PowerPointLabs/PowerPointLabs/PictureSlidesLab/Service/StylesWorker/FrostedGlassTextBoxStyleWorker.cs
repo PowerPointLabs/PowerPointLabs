@@ -14,8 +14,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
         {
             if (option.IsUseFrostedGlassTextBoxStyle)
             {
-                int blurDegreeForFrostedGlass = EffectsDesigner.BlurDegreeForFrostedGlassEffect;
-                Shape blurImageShape = option.IsUseSpecialEffectStyle
+                var blurDegreeForFrostedGlass = EffectsDesigner.BlurDegreeForFrostedGlassEffect;
+                var blurImageShape = option.IsUseSpecialEffectStyle
                     ? designer.ApplyBlurEffect(source.SpecialEffectImageFile, blurDegreeForFrostedGlass)
                     : designer.ApplyBlurEffect(degree: blurDegreeForFrostedGlass);
                 designer.ApplyFrostedGlassTextBoxEffect(option.FrostedGlassTextBoxColor, option.FrostedGlassTextBoxTransparency,

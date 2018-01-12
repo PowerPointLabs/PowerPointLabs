@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -50,7 +49,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             _recorder = recorder;
 
             // get slide show window
-            IntPtr slideShowWindow = new IntPtr(_slideShowWindow.HWND);
+            var slideShowWindow = new IntPtr(_slideShowWindow.HWND);
 
             Native.RECT rec;
             Native.GetWindowRect(new HandleRef(new object(), slideShowWindow), out rec);
@@ -126,7 +125,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     _recorder.StopButtonRecordingHandler(_recordStartClick, _recordStartSlide, true);
                     _slideShowWindow.Activate();
 
-                    int totalClick = _slideShowWindow.View.GetClickCount();
+                    var totalClick = _slideShowWindow.View.GetClickCount();
 
                     if (click + 1 > totalClick)
                     {
@@ -153,8 +152,8 @@ namespace PowerPointLabs.NarrationsLab.Views
                 return;
             }
 
-            List<Tuple<AudioMisc.Audio, int>> temp = _recorder.AudioBuffer[_recordStartSlide.Index - 1];
-            
+            var temp = _recorder.AudioBuffer[_recordStartSlide.Index - 1];
+
             // disable undo since we allow only 1 step undo
             undoButton.IsEnabled = false;
 

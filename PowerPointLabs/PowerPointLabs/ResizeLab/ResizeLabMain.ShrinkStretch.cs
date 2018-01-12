@@ -62,7 +62,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchLeft(PowerPoint.ShapeRange stretchShapes)
         {
-            GetAppropriateStretchAction appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
+            var appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
             {
                 // Opposite stretch
                 if (GetRight(checkShape) < referenceEdge)
@@ -71,7 +71,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchLeftAction;
             });
-            GetDefaultReferenceEdge defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualLeft);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualLeft);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Left);
         }
 
@@ -81,7 +81,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchRight(PowerPoint.ShapeRange stretchShapes)
         {
-            GetAppropriateStretchAction appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
+            var appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
             {
                 // Opposite stretch
                 if (checkShape.VisualLeft > referenceEdge)
@@ -90,7 +90,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchRightAction;
             });
-            GetDefaultReferenceEdge defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualLeft + referenceShape.AbsoluteWidth);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualLeft + referenceShape.AbsoluteWidth);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Right);
         }
 
@@ -100,7 +100,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchTop(PowerPoint.ShapeRange stretchShapes)
         {
-            GetAppropriateStretchAction appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
+            var appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
             {
                 // Opposite stretch
                 if (GetBottom(checkShape) < referenceEdge)
@@ -109,7 +109,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchTopAction;
             });
-            GetDefaultReferenceEdge defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualTop);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualTop);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Top);
         }
 
@@ -119,7 +119,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="stretchShapes">The shapes to stretch</param>
         public void StretchBottom(PowerPoint.ShapeRange stretchShapes)
         {
-            GetAppropriateStretchAction appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
+            var appropriateStretch = new GetAppropriateStretchAction((referenceEdge, checkShape) =>
             {
                 // Opposite stretch
                 if (checkShape.VisualTop > referenceEdge)
@@ -128,7 +128,7 @@ namespace PowerPointLabs.ResizeLab
                 }
                 return StretchBottomAction;
             });
-            GetDefaultReferenceEdge defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualTop + referenceShape.AbsoluteHeight);
+            var defaultReferenceEdge = new GetDefaultReferenceEdge(referenceShape => referenceShape.VisualTop + referenceShape.AbsoluteHeight);
             Stretch(stretchShapes, appropriateStretch, defaultReferenceEdge, StretchType.Bottom);
         }
 
@@ -140,7 +140,7 @@ namespace PowerPointLabs.ResizeLab
 
         private static void StretchRightAction(float referenceEdge, PPShape stretchShape)
         {
-            float oldLeft = stretchShape.VisualLeft;
+            var oldLeft = stretchShape.VisualLeft;
             stretchShape.AbsoluteWidth += referenceEdge - GetRight(stretchShape);
             stretchShape.VisualLeft = oldLeft;
         }
@@ -153,7 +153,7 @@ namespace PowerPointLabs.ResizeLab
 
         private static void StretchBottomAction(float referenceEdge, PPShape stretchShape)
         {
-            float oldTop = stretchShape.VisualTop;
+            var oldTop = stretchShape.VisualTop;
             stretchShape.AbsoluteHeight += referenceEdge - GetBottom(stretchShape);
             stretchShape.VisualTop = oldTop;
         }
@@ -173,17 +173,17 @@ namespace PowerPointLabs.ResizeLab
                 return;
             }
 
-            PowerPoint.Shape referenceShape = GetReferenceShape(stretchShapes, defaultReferenceEdge, stretchType);
-            float referenceEdge = defaultReferenceEdge(new PPShape(referenceShape));
+            var referenceShape = GetReferenceShape(stretchShapes, defaultReferenceEdge, stretchType);
+            var referenceEdge = defaultReferenceEdge(new PPShape(referenceShape));
 
-            for (int i = 1; i <= stretchShapes.Count; i++)
+            for (var i = 1; i <= stretchShapes.Count; i++)
             {
                 if (referenceShape.Equals(stretchShapes[i]))
                 {
                     continue;
                 }
-                PPShape stretchShape = new PPShape(stretchShapes[i]);
-                StretchAction sa = stretchAction(referenceEdge, stretchShape);
+                var stretchShape = new PPShape(stretchShapes[i]);
+                var sa = stretchAction(referenceEdge, stretchShape);
                 sa(referenceEdge, stretchShape);
             }
         }
@@ -200,14 +200,14 @@ namespace PowerPointLabs.ResizeLab
         private PowerPoint.Shape GetReferenceShape(PowerPoint.ShapeRange shapes, GetDefaultReferenceEdge getReferenceEdge,
             StretchType stretchType)
         {
-            int refShapeIndex = 1;
+            var refShapeIndex = 1;
 
             if (ReferenceType == StretchRefType.Outermost)
             {
-                PPShape refPpShape = new PPShape(shapes[1]);
-                for (int i = 2; i <= shapes.Count; i++)
+                var refPpShape = new PPShape(shapes[1]);
+                for (var i = 2; i <= shapes.Count; i++)
                 {
-                    PPShape tempPpShape = new PPShape(shapes[i]);
+                    var tempPpShape = new PPShape(shapes[i]);
                     if (((stretchType == StretchType.Left || stretchType == StretchType.Top) &&
                         getReferenceEdge(refPpShape) > getReferenceEdge(tempPpShape)) ||
                         ((stretchType == StretchType.Right || stretchType == StretchType.Bottom) &&

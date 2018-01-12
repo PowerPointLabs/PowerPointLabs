@@ -21,7 +21,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchEndSpeed()
         {
-            string testTag = "[EndSpeed]";
+            var testTag = "[EndSpeed]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -29,7 +29,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchEndSpeedLowercase()
         {
-            string testTag = "[endspeed]";
+            var testTag = "[endspeed]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -37,7 +37,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchEndSpeedMixedCase()
         {
-            string testTag = "[endSpeed]";
+            var testTag = "[endSpeed]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -45,13 +45,13 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchListSingleInSentence()
         {
-            string sentence = "This is [speed: fast]a test[endspeed].";
-            System.Collections.Generic.List<PowerPointLabs.Tags.ITag> matches = new EndSpeedTagMatcher().Matches(sentence);
+            var sentence = "This is [speed: fast]a test[endspeed].";
+            var matches = new EndSpeedTagMatcher().Matches(sentence);
 
             Assert.IsTrue(matches.Any(), "No matches found.");
             Assert.IsTrue(matches.Count == 1, "More than one match.");
 
-            PowerPointLabs.Tags.ITag match = matches[0];
+            var match = matches[0];
             Assert.IsTrue(match.Start == 27, "Match start was incorrect.");
             Assert.IsTrue(match.End == 36, "Match end was incorrect.");
         }
@@ -60,8 +60,8 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchListMultipleInSentence()
         {
-            string sentence = "This [speed: slow]has multiple[endspeed][speed: fast] matches.[endspeed]";
-            System.Collections.Generic.List<PowerPointLabs.Tags.ITag> matches = new EndSpeedTagMatcher().Matches(sentence);
+            var sentence = "This [speed: slow]has multiple[endspeed][speed: fast] matches.[endspeed]";
+            var matches = new EndSpeedTagMatcher().Matches(sentence);
 
             Assert.IsTrue(matches.Any(), "No matches found.");
             Assert.IsTrue(matches.Count == 2, "Didn't match all.");

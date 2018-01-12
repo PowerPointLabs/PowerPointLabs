@@ -30,8 +30,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestVisualMatchWidth()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.MatchVisualWidth, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchVisualWidth, _shapeNames);
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
             _resizeLab.MatchWidth(actualShapes);
@@ -42,8 +42,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestActualMatchWidth()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.MatchActualWidth, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchActualWidth, _shapeNames);
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
             _resizeLab.MatchWidth(actualShapes);
@@ -54,8 +54,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestVisualMatchHeight()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.MatchVisualHeight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchVisualHeight, _shapeNames);
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
             _resizeLab.MatchHeight(actualShapes);
@@ -66,8 +66,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestActualMatchHeight()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.MatchActualHeight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.MatchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.MatchActualHeight, _shapeNames);
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
             _resizeLab.MatchHeight(actualShapes);

@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.Office.Tools;
+﻿using System.Linq;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.TextCollection;
@@ -21,7 +17,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             //TODO: This needs to improved to stop using global variables
             this.StartNewUndoEntry();
 
-            PowerPointSlide currentSlide = this.GetCurrentSlide();
+            var currentSlide = this.GetCurrentSlide();
 
             if (this.GetCurrentPresentation().SelectedSlides.Any(slide => slide.NotesPageText.Trim() != ""))
             {
@@ -29,16 +25,16 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
             }
 
-            List<string[]> allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
+            var allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
 
-            CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
+            var recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane == null)
             {
                 return;
             }
 
-            RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
+            var recorder = recorderPane.Control as RecorderTaskPane;
 
             if (recorder == null)
             {

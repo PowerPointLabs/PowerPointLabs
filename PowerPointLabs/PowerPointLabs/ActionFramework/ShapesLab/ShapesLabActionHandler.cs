@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Tools;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -19,14 +17,14 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
             addIn.InitializeShapeGallery();
             addIn.RegisterShapesLabPane(this.GetCurrentPresentation().Presentation);
 
-            CustomTaskPane customShapePane = GetShapesLabPane();
+            var customShapePane = GetShapesLabPane();
 
             if (customShapePane == null)
             {
                 return null;
             }
 
-            CustomShapePane customShape = customShapePane.Control as CustomShapePane;
+            var customShape = customShapePane.Control as CustomShapePane;
 
             Logger.Log(
                 "Before Visible: " +
@@ -39,7 +37,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
         public Microsoft.Office.Tools.CustomTaskPane GetShapesLabPane()
         {
 
-            CustomTaskPane customShapePane = this.GetAddIn().GetActivePane(typeof(CustomShapePane));
+            var customShapePane = this.GetAddIn().GetActivePane(typeof(CustomShapePane));
 
             if (customShapePane == null || !(customShapePane.Control is CustomShapePane))
             {
@@ -50,7 +48,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
 
         public void TogglePaneVisibility()
         {
-            CustomTaskPane customShapePane = GetShapesLabPane();
+            var customShapePane = GetShapesLabPane();
 
             if (customShapePane == null)
             {
@@ -62,7 +60,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
 
         public void SetPaneVisibility(bool visibility)
         {
-            CustomTaskPane customShapePane = GetShapesLabPane();
+            var customShapePane = GetShapesLabPane();
 
             if (customShapePane == null)
             {
@@ -73,7 +71,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
 
             if (customShapePane.Visible)
             {
-                CustomShapePane customShape = customShapePane.Control as CustomShapePane;
+                var customShape = customShapePane.Control as CustomShapePane;
                 customShape.Width = customShapePane.Width - 16;
                 customShape.PaneReload();
             }

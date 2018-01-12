@@ -46,7 +46,7 @@ namespace PowerPointLabs.CaptionsLab
 
         public static void EmbedCaptionsOnCurrentSlide()
         {
-            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 EmbedCaptionsOnSlides(
@@ -61,7 +61,7 @@ namespace PowerPointLabs.CaptionsLab
 
         public static void RemoveCaptionsFromCurrentSlide()
         {
-            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 RemoveCaptionsFromSlide(currentSlide);
@@ -94,8 +94,8 @@ namespace PowerPointLabs.CaptionsLab
                 return false;
             }
 
-            IEnumerable<string> separatedNotes = SplitNotesByClicks(rawNotes);
-            List<string> captionCollection = ConvertSectionsToCaptions(separatedNotes);
+            var separatedNotes = SplitNotesByClicks(rawNotes);
+            var captionCollection = ConvertSectionsToCaptions(separatedNotes);
             if (captionCollection.Count == 0)
             {
                 return false;
