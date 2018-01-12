@@ -22,7 +22,7 @@ namespace PowerPointLabs.EffectsLab
 
             for (int i = 1; i <= shapeRange.Count; i++)
             {
-                Shape shape = shapeRange[i];
+                var shape = shapeRange[i];
                 if (ShapeUtil.IsCorrupted(shape))
                 {
                     shape = ShapeUtil.CorruptionCorrection(shape, curSlide);
@@ -34,7 +34,7 @@ namespace PowerPointLabs.EffectsLab
             {
                 if (originalShapeList[i].Type == Office.MsoShapeType.msoGroup)
                 {
-                    ShapeRange subRange = originalShapeList[i].Ungroup();
+                    var subRange = originalShapeList[i].Ungroup();
                     foreach (Shape item in subRange)
                     {
                         originalShapeList.Add(item);
@@ -53,7 +53,7 @@ namespace PowerPointLabs.EffectsLab
                 }
             }
 
-            ShapeRange ungroupedShapeRange = curSlide.ToShapeRange(ungroupedShapeList);
+            var ungroupedShapeRange = curSlide.ToShapeRange(ungroupedShapeList);
 
             return ungroupedShapeRange;
         }
@@ -77,7 +77,7 @@ namespace PowerPointLabs.EffectsLab
 
                 shapeRange.Cut();
 
-                PowerPointBgEffectSlide effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), generateOnRemainder);
+                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), generateOnRemainder);
 
                 if (dupSlide != null)
                 {
@@ -123,11 +123,11 @@ namespace PowerPointLabs.EffectsLab
 
         internal static Shape DuplicateShapeInPlace(Shape shape)
         {
-            Shape duplicateShape = shape.Duplicate()[1];
+            var duplicateShape = shape.Duplicate()[1];
             duplicateShape.Left = shape.Left;
             duplicateShape.Top = shape.Top;
 
-            System.Text.RegularExpressions.Match match = System.Text.RegularExpressions.Regex.Match(duplicateShape.Name, @"\d+$");
+            var match = System.Text.RegularExpressions.Regex.Match(duplicateShape.Name, @"\d+$");
             if (!match.Success || int.Parse(match.Value) != duplicateShape.Id - 1)
             {
                 duplicateShape.Name += " " + (duplicateShape.Id - 1);

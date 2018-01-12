@@ -93,8 +93,8 @@ namespace PowerPointLabs.Models
                     return String.Empty;
                 }
 
-                IEnumerable<Shape> notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-                Shape notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+                var notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+                var notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
                 String notesText = notesPageBody != null ? notesPageBody.TextFrame.TextRange.Text : String.Empty;
                 return notesText;
@@ -107,8 +107,8 @@ namespace PowerPointLabs.Models
                     return;
                 }
 
-                IEnumerable<Shape> notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-                Shape notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
+                var notesPagePlaceholders = _slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+                var notesPageBody = notesPagePlaceholders.FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
                 if (notesPageBody != null)
                 {
@@ -128,7 +128,7 @@ namespace PowerPointLabs.Models
 
         public string RetrieveDataFromNotes()
         {
-            string text = NotesPageText;
+            var text = NotesPageText;
             if (!text.StartsWith(CommonText.NotesPageStorageText))
             {
                 return "";
@@ -169,8 +169,8 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void CopyBackgroundColourFrom(PowerPointSlide refSlide)
         {
-            Microsoft.Office.Interop.PowerPoint.FillFormat myFill = _slide.Background[1].Fill;
-            Microsoft.Office.Interop.PowerPoint.FillFormat refFill = refSlide._slide.Background[1].Fill;
+            var myFill = _slide.Background[1].Fill;
+            var refFill = refSlide._slide.Background[1].Fill;
 
             if (refFill.Type == MsoFillType.msoFillSolid)
             {
@@ -236,20 +236,20 @@ namespace PowerPointLabs.Models
 
         public bool HasAnimationForClick(int clickNumber)
         {
-            Sequence mainSequence = _slide.TimeLine.MainSequence;
-            Effect effect = mainSequence.FindFirstAnimationForClick(clickNumber);
+            var mainSequence = _slide.TimeLine.MainSequence;
+            var effect = mainSequence.FindFirstAnimationForClick(clickNumber);
 
             return effect != null;
         }
 
         public void DeleteShapesWithPrefixTimelineInvariant(string prefix)
         {
-            Sequence mainSequence = _slide.TimeLine.MainSequence;
-            int effectCnt = 1;
+            var mainSequence = _slide.TimeLine.MainSequence;
+            var effectCnt = 1;
 
             while (effectCnt <= mainSequence.Count)
             {
-                Effect effect = mainSequence[effectCnt];
+                var effect = mainSequence[effectCnt];
 
                 if (effect.Shape.Name.StartsWith(prefix))
                 {
@@ -259,7 +259,7 @@ namespace PowerPointLabs.Models
                     if (effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick &&
                         effect.Index + 1 <= mainSequence.Count)
                     {
-                        Effect nextEffect = mainSequence[effect.Index + 1];
+                        var nextEffect = mainSequence[effect.Index + 1];
 
                         if (nextEffect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerWithPrevious)
                         {
@@ -282,7 +282,7 @@ namespace PowerPointLabs.Models
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
 
-            IEnumerable<Shape> matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix));
+            var matchingShapes = shapes.Where(current => current.Name.StartsWith(prefix));
             
             foreach (Shape s in matchingShapes)
             {
@@ -294,7 +294,7 @@ namespace PowerPointLabs.Models
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
 
-            IEnumerable<Shape> matchingShapes = shapes.Where(current => regex.IsMatch(current.Name));
+            var matchingShapes = shapes.Where(current => regex.IsMatch(current.Name));
             foreach (Shape s in matchingShapes)
             {
                 s.Delete();
@@ -304,9 +304,9 @@ namespace PowerPointLabs.Models
         public void DeleteShapeWithName(string name)
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
-            IEnumerable<Shape> matchingShapes = shapes.Where(current => current.Name == name);
+            var matchingShapes = shapes.Where(current => current.Name == name);
 
-            foreach (Shape s in matchingShapes)
+            foreach (var s in matchingShapes)
             {
                 s.Delete();
             }
@@ -325,7 +325,7 @@ namespace PowerPointLabs.Models
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
 
-            List<Shape> matchingShapes = shapes;
+            var matchingShapes = shapes;
             foreach (Shape s in matchingShapes)
             {
                 s.Delete();
@@ -334,7 +334,7 @@ namespace PowerPointLabs.Models
 
         public void SetShapeAsAutoplay(Shape shape)
         {
-            Sequence mainSequence = _slide.TimeLine.MainSequence;
+            var mainSequence = _slide.TimeLine.MainSequence;
 
             Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
             bool hasNoClicksOnSlide = firstClickEvent == null;
@@ -351,7 +351,7 @@ namespace PowerPointLabs.Models
 
         public void SetAudioAsAutoplay(Shape shape)
         {
-            Sequence mainSequence = _slide.TimeLine.MainSequence;
+            var mainSequence = _slide.TimeLine.MainSequence;
 
             Effect firstClickEvent = mainSequence.FindFirstAnimationForClick(1);
             bool hasNoClicksOnSlide = firstClickEvent == null;
@@ -454,8 +454,8 @@ namespace PowerPointLabs.Models
         {
             if (IsNextSlideTransitionBlacklisted())
             {
-                Sequence animationSequence = _slide.TimeLine.MainSequence;
-                Effect effect = animationSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectFade);
+                var animationSequence = _slide.TimeLine.MainSequence;
+                var effect = animationSequence.AddEffect(shape, MsoAnimEffect.msoAnimEffectFade);
                 effect.Exit = MsoTriState.msoTrue;
             }
         }
@@ -506,7 +506,7 @@ namespace PowerPointLabs.Models
             shape.Width = newWidth;
             shape.Height = newHeight;
 
-            IEnumerable<Effect> effects = TimeLine.MainSequence.Cast<Effect>();
+            var effects = TimeLine.MainSequence.Cast<Effect>();
             // TODO: Generalize to paths other than msoAnimEffectPathDown?
             effects = effects.Where(e => e.Shape.Equals(shape) && e.EffectType == MsoAnimEffect.msoAnimEffectPathDown).ToList();
 
@@ -515,9 +515,9 @@ namespace PowerPointLabs.Models
             xShift /= PowerPointPresentation.Current.SlideWidth;
             yShift /= PowerPointPresentation.Current.SlideHeight;
 
-            foreach (Effect effect in effects)
+            foreach (var effect in effects)
             {
-                MotionEffect motionEffect = effect.Behaviors[1].MotionEffect;
+                var motionEffect = effect.Behaviors[1].MotionEffect;
                 motionEffect.Path = TranslateVmlPath(motionEffect.Path, xShift, yShift);
             }
         }
@@ -535,15 +535,15 @@ namespace PowerPointLabs.Models
 
         public ShapeRange ToShapeRange(IEnumerable<Shape> shapes)
         {
-            List<Shape> shapeList = shapes.ToList();
-            List<string> oldNames = shapeList.Select(shape => shape.Name).ToList();
+            var shapeList = shapes.ToList();
+            var oldNames = shapeList.Select(shape => shape.Name).ToList();
 
-            IEnumerable<string> currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
-            string[] unusedNames = CommonUtil.GetUnusedStrings(currentShapeNames, shapeList.Count);
+            var currentShapeNames = Shapes.Cast<Shape>().Select(shape => shape.Name);
+            var unusedNames = CommonUtil.GetUnusedStrings(currentShapeNames, shapeList.Count);
             shapeList.Zip(unusedNames, (shape, name) => shape.Name = name).ToList();
 
 
-            ShapeRange shapeRange = Shapes.Range(unusedNames);
+            var shapeRange = Shapes.Range(unusedNames);
 
             shapeList.Zip(oldNames, (shape, name) => shape.Name = name).ToList();
 
@@ -558,7 +558,7 @@ namespace PowerPointLabs.Models
             try
             {
                 shape.Copy();
-                Shape newShape = _slide.Shapes.Paste()[1];
+                var newShape = _slide.Shapes.Paste()[1];
 
                 newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
@@ -608,11 +608,11 @@ namespace PowerPointLabs.Models
         {
             // First Index all the shapes by name, so they can be identified later.
             int index = 0;
-            Dictionary<string, Shape> originalShapes = new Dictionary<string, Shape>();
-            Dictionary<string, string> originalNames = new Dictionary<string, string>();
+            var originalShapes = new Dictionary<string, Shape>();
+            var originalNames = new Dictionary<string, string>();
             foreach (Shape shape in shapes)
             {
-                string tempName = index.ToString();
+                var tempName = index.ToString();
                 index++;
 
                 originalNames.Add(tempName, shape.Name);
@@ -623,14 +623,14 @@ namespace PowerPointLabs.Models
 
             // Copy all the shapes over.
             shapes.Copy();
-            ShapeRange newShapes = _slide.Shapes.Paste();
+            var newShapes = _slide.Shapes.Paste();
 
             // Now use the indexed names to set back the names and positions to the original shapes'
             foreach (Shape shape in newShapes)
             {
-                string key = shape.Name;
-                string originalName = originalNames[key];
-                Shape originalShape = originalShapes[key];
+                var key = shape.Name;
+                var originalName = originalNames[key];
+                var originalShape = originalShapes[key];
 
                 originalShape.Name = originalName;
                 shape.Name = originalName;
@@ -644,7 +644,7 @@ namespace PowerPointLabs.Models
         public void TransferAnimation(Shape source, Shape destination)
         {
             Sequence sequence = _slide.TimeLine.MainSequence;
-            List<Effect> enumerableSequence = sequence.Cast<Effect>().ToList();
+            var enumerableSequence = sequence.Cast<Effect>().ToList();
 
             Effect entryDetails = enumerableSequence.FirstOrDefault(effect => effect.Shape.Equals(source));
             if (entryDetails != null)
@@ -716,9 +716,9 @@ namespace PowerPointLabs.Models
         /// </summary>
         public Dictionary<string, Shape> GetNameToShapeDictionary()
         {
-            IEnumerable<Shape> shapes = _slide.Shapes.Cast<Shape>();
-            Dictionary<string, Shape> dictionary = new Dictionary<string, Shape>(shapes.Count());
-            foreach (Shape shape in shapes)
+            var shapes = _slide.Shapes.Cast<Shape>();
+            var dictionary = new Dictionary<string, Shape>(shapes.Count());
+            foreach (var shape in shapes)
             {
                 if (!dictionary.ContainsKey(shape.Name))
                 {
@@ -745,16 +745,16 @@ namespace PowerPointLabs.Models
 
         public List<Shape> GetShapesWithRule(Regex nameRule)
         {
-            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
-            List<Shape> matchingShapes = shapes.Where(current => nameRule.IsMatch(current.Name)).ToList();
+            var shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
         }
 
         public List<Shape> GetShapesWithTypeAndRule(MsoShapeType type, Regex nameRule)
         {
-            List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
-            List<Shape> matchingShapes = shapes.Where(current => current.Type == type &&
+            var shapes = _slide.Shapes.Cast<Shape>().ToList();
+            var matchingShapes = shapes.Where(current => current.Type == type &&
                                               nameRule.IsMatch(current.Name)).ToList();
 
             return matchingShapes;
@@ -1084,15 +1084,15 @@ namespace PowerPointLabs.Models
         /// </summary>
         public List<Shape> GetShapesOrderedByTimeline()
         {
-            List<Shape> shapesWithEntry = new List<Shape>();
-            List<Shape> shapesWithoutEntry = new List<Shape>();
-            HashSet<int> identifiedShapeIds = new HashSet<int>();
+            var shapesWithEntry = new List<Shape>();
+            var shapesWithoutEntry = new List<Shape>();
+            var identifiedShapeIds = new HashSet<int>();
 
-            Sequence seq = _slide.TimeLine.MainSequence;
+            var seq = _slide.TimeLine.MainSequence;
             for (int i = 1; i <= seq.Count; ++i)
             {
-                Effect effect = seq[i];
-                Shape shape = effect.Shape;
+                var effect = seq[i];
+                var shape = effect.Shape;
                 if (!identifiedShapeIds.Contains(shape.Id))
                 {
                     identifiedShapeIds.Add(shape.Id);
@@ -1107,9 +1107,9 @@ namespace PowerPointLabs.Models
                 }
             }
 
-            IEnumerable<Shape> remainingShapes = _slide.Shapes.Cast<Shape>().Where(shape => !identifiedShapeIds.Contains(shape.Id));
+            var remainingShapes = _slide.Shapes.Cast<Shape>().Where(shape => !identifiedShapeIds.Contains(shape.Id));
 
-            List<Shape> shapes = shapesWithoutEntry;
+            var shapes = shapesWithoutEntry;
             shapes.AddRange(shapesWithEntry);
             shapes.AddRange(remainingShapes);
             return shapes;
@@ -1120,7 +1120,7 @@ namespace PowerPointLabs.Models
         /// </summary>
         public List<Shape> GetTextFragments()
         {
-            List<Shape> allShapes = GetShapesOrderedByTimeline();
+            var allShapes = GetShapesOrderedByTimeline();
             return allShapes.Where(shape => shape.Name.StartsWith("PPTLabsHighlightTextFragmentsShape")).ToList();
         }
 
@@ -1162,8 +1162,8 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void MakeShapeNamesNonDefault()
         {
-            IEnumerable<Shape> shapes = _slide.Shapes.Cast<Shape>();
-            foreach (Shape shape in shapes)
+            var shapes = _slide.Shapes.Cast<Shape>();
+            foreach (var shape in shapes)
             {
                 if (ShapeUtil.HasDefaultName(shape))
                 {
@@ -1184,10 +1184,10 @@ namespace PowerPointLabs.Models
                 restrictTo = shape => true;
             }
 
-            HashSet<string> currentNames = new HashSet<string>();
-            IEnumerable<Shape> shapes = _slide.Shapes.Cast<Shape>().Where(restrictTo);
+            var currentNames = new HashSet<string>();
+            var shapes = _slide.Shapes.Cast<Shape>().Where(restrictTo);
 
-            foreach (Shape shape in shapes)
+            foreach (var shape in shapes)
             {
                 if (currentNames.Contains(shape.Name))
                 {
@@ -1201,7 +1201,7 @@ namespace PowerPointLabs.Models
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();
 
-            IEnumerable<Shape> matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoPlaceholder && current.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderSlideNumber);
+            var matchingShapes = shapes.Where(current => current.Type == MsoShapeType.msoPlaceholder && current.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderSlideNumber);
 
             foreach (Shape s in matchingShapes)
             {
@@ -1260,7 +1260,7 @@ namespace PowerPointLabs.Models
         private Effect InsertAnimationAtIndex(Shape shape, int index, MsoAnimEffect animationEffect,
             MsoAnimTriggerType triggerType)
         {
-            Sequence animationSequence = _slide.TimeLine.MainSequence;
+            var animationSequence = _slide.TimeLine.MainSequence;
             Effect effect = animationSequence.AddEffect(shape, animationEffect, MsoAnimateByLevel.msoAnimateLevelNone,
                 triggerType);
             effect.MoveTo(index);
@@ -1300,7 +1300,7 @@ namespace PowerPointLabs.Models
 
         private static void DeleteEffectsForShape(Shape shape, IEnumerable<Effect> mainEffects)
         {
-            List<Effect> shapeToDeleteList = mainEffects.Where(e => e.Shape.Equals(shape)).ToList();
+            var shapeToDeleteList = mainEffects.Where(e => e.Shape.Equals(shape)).ToList();
 
             foreach (Effect e in shapeToDeleteList)
             {
@@ -1328,7 +1328,7 @@ namespace PowerPointLabs.Models
 
         private Effect InsertAnimationBeforeExisting(Shape shape, Effect existing, MsoAnimEffect effect)
         {
-            Sequence sequence = _slide.TimeLine.MainSequence;
+            var sequence = _slide.TimeLine.MainSequence;
 
             Effect newAnimation = sequence.AddEffect(shape, effect, MsoAnimateByLevel.msoAnimateLevelNone,
                 MsoAnimTriggerType.msoAnimTriggerWithPrevious);

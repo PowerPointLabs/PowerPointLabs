@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            List<Shape> result = new List<Shape>();
+            var result = new List<Shape>();
             if (option.IsUseBannerStyle)
             {
-                Shape bannerOverlayShape = ApplyBannerStyle(option, designer, imageShape);
+                var bannerOverlayShape = ApplyBannerStyle(option, designer, imageShape);
                 result.Add(bannerOverlayShape);
             }
             return result;

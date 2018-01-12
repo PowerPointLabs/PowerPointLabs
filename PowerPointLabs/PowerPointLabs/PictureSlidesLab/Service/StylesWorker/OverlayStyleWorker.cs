@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            List<Shape> result = new List<Shape>();
+            var result = new List<Shape>();
             if (option.IsUseOverlayStyle)
             {
-                Shape backgroundOverlayShape = designer.ApplyOverlayEffect(option.OverlayColor, option.OverlayTransparency);
+                var backgroundOverlayShape = designer.ApplyOverlayEffect(option.OverlayColor, option.OverlayTransparency);
                 result.Add(backgroundOverlayShape);
             }
             return result;

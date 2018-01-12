@@ -77,8 +77,8 @@ namespace Test.UnitTest.CropLab
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
         {
             // Execute the Crop To Same feature
-            Microsoft.Office.Interop.PowerPoint.ShapeRange testShapes = GetShapes(testSlideNo, selectMultipleShapesNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expShapes = GetShapes(expectedSlideNo, selectMultipleShapesNames);
+            var testShapes = GetShapes(testSlideNo, selectMultipleShapesNames);
+            var expShapes = GetShapes(expectedSlideNo, selectMultipleShapesNames);
             CropToSame.CropSelection(testShapes);
 
             testShapes = GetShapes(testSlideNo, selectMultipleShapesNames);

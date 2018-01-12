@@ -118,13 +118,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 rect = AutoFit(element);
             }
 
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(element);
+            var layer = AdornerLayer.GetAdornerLayer(element);
             _croppingAdorner = new CroppingAdorner(element, rect);
             _croppingAdorner.SlideWidth = this.GetCurrentPresentation().SlideWidth;
             _croppingAdorner.SlideHeight = this.GetCurrentPresentation().SlideHeight;
             _croppingAdorner.CropChanged += (sender, args) =>
             {
-                Rect croppingRect = _croppingAdorner.ClippingRectangle;
+                var croppingRect = _croppingAdorner.ClippingRectangle;
                 if (croppingRect.Width*croppingRect.Height < 1)
                 {
                     SaveCropButton.IsEnabled = false;
@@ -160,10 +160,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void CenterWindowOnScreen()
         {
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-            double windowWidth = Width;
-            double windowHeight = Height;
+            var screenWidth = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            var windowWidth = Width;
+            var windowHeight = Height;
             Left = (screenWidth / 2) - (windowWidth / 2);
             Top = (screenHeight / 2) - (windowHeight / 2);
         }
@@ -180,15 +180,15 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void SaveCropButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Rect rect = _croppingAdorner.ClippingRectangle;
-            double xRatio = rect.X/ImageHolder.ActualWidth;
-            double yRatio = rect.Y/ImageHolder.ActualHeight;
-            double widthRatio = rect.Width/ImageHolder.ActualWidth;
-            double heightRatio = rect.Height/ImageHolder.ActualHeight;
+            var rect = _croppingAdorner.ClippingRectangle;
+            var xRatio = rect.X/ImageHolder.ActualWidth;
+            var yRatio = rect.Y/ImageHolder.ActualHeight;
+            var widthRatio = rect.Width/ImageHolder.ActualWidth;
+            var heightRatio = rect.Height/ImageHolder.ActualHeight;
             Rect = rect;
 
-            Bitmap originalImg = (Bitmap)Bitmap.FromFile(CropResult);
-            Bitmap result = CropToShape.KiCut(originalImg, 
+            var originalImg = (Bitmap)Bitmap.FromFile(CropResult);
+            var result = CropToShape.KiCut(originalImg, 
                 (float) xRatio*originalImg.Width,
                 (float) yRatio * originalImg.Height,
                 (float) widthRatio * originalImg.Width,
@@ -206,21 +206,21 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void AutoFitButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Rect rect = AutoFit();
+            var rect = AutoFit();
             _croppingAdorner.ClippingRectangle = rect;
         }
 
         private Rect AutoFit(FrameworkElement element = null)
         {
-            float slideWidth = this.GetCurrentPresentation().SlideWidth;
-            float slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
             element = element ?? _frameworkElement;
 
             Rect rect;
             if (element.ActualWidth / element.ActualHeight
                 < slideWidth/slideHeight)
             {
-                double targetHeight = element.ActualWidth / slideWidth * slideHeight;
+                var targetHeight = element.ActualWidth / slideWidth * slideHeight;
                 rect = new Rect(
                     0,
                     (element.ActualHeight - targetHeight) / 2,
@@ -229,7 +229,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             else
             {
-                double targetWidth = element.ActualHeight / slideHeight * slideWidth;
+                var targetWidth = element.ActualHeight / slideHeight * slideWidth;
                 rect = new Rect(
                     (element.ActualWidth - targetWidth) / 2,
                     0,
@@ -271,7 +271,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void RotateFlipImg(RotateFlipType roatateFlipType)
         {
-            Bitmap img = (Bitmap)Bitmap.FromFile(CropResult);
+            var img = (Bitmap)Bitmap.FromFile(CropResult);
             img.RotateFlip(roatateFlipType);
             String rotatedImg = StoragePath.GetPath("rotated-"
                                     + DateTime.Now.GetHashCode() + "-"
@@ -295,7 +295,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             Dispatcher.Invoke(DispatcherPriority.SystemIdle, new Action(() =>
             {
-                Rect rect = AutoFit();
+                var rect = AutoFit();
                 _croppingAdorner.ClippingRectangle = rect;
             }));
         }

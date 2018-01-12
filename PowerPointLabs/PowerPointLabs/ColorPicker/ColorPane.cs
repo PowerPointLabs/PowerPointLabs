@@ -451,7 +451,7 @@ namespace PowerPointLabs
         {
             try
             {
-                Selection selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+                var selection = PowerPointCurrentPresentationInfo.CurrentSelection;
                 if (selection == null)
                 {
                     return;
@@ -492,11 +492,11 @@ namespace PowerPointLabs
                 {
                     try
                     {
-                        Byte r = ((Color)selectedColor).R;
-                        Byte g = ((Color)selectedColor).G;
-                        Byte b = ((Color)selectedColor).B;
+                        var r = ((Color)selectedColor).R;
+                        var g = ((Color)selectedColor).G;
+                        var b = ((Color)selectedColor).B;
 
-                        int rgb = (b << 16) | (g << 8) | (r);
+                        var rgb = (b << 16) | (g << 8) | (r);
                         ColorShapeWithColor(s, rgb, currMode);
                     }
                     catch (Exception)
@@ -510,11 +510,11 @@ namespace PowerPointLabs
             {
                 try
                 {
-                    Byte r = ((Color)selectedColor).R;
-                    Byte g = ((Color)selectedColor).G;
-                    Byte b = ((Color)selectedColor).B;
+                    var r = ((Color)selectedColor).R;
+                    var g = ((Color)selectedColor).G;
+                    var b = ((Color)selectedColor).B;
 
-                    int rgb = (b << 16) | (g << 8) | (r);
+                    var rgb = (b << 16) | (g << 8) | (r);
                     ColorShapeWithColor(_selectedText, rgb, currMode);
                 }
                 catch (Exception)
@@ -587,8 +587,8 @@ namespace PowerPointLabs
 
         private void ColorShapeWithColor(PowerPoint.TextRange text, int rgb, MODE mode)
         {
-            PowerPoint.TextFrame frame = text.Parent as PowerPoint.TextFrame;
-            PowerPoint.Shape selectedShape = frame.Parent as PowerPoint.Shape;
+            var frame = text.Parent as PowerPoint.TextFrame;
+            var selectedShape = frame.Parent as PowerPoint.Shape;
             if (mode != MODE.NONE)
             {
                 ColorShapeWithColor(selectedShape, rgb, mode);
@@ -653,7 +653,7 @@ namespace PowerPointLabs
             if (!timer1.Enabled)
             {
                 float newBrightness = brightnessBar.Value;
-                HSLColor newColor = new HSLColor();
+                var newColor = new HSLColor();
                 try
                 {
                     newColor.Hue = dataSource.SelectedColor.Hue;
@@ -679,7 +679,7 @@ namespace PowerPointLabs
         private void SaturationBar_ValueChanged(object sender, EventArgs e)
         {
             float newSaturation = saturationBar.Value;
-            HSLColor newColor = new HSLColor();
+            var newColor = new HSLColor();
             try
             {
                 newColor.Hue = dataSource.SelectedColor.Hue;
@@ -707,9 +707,9 @@ namespace PowerPointLabs
 
         private void DrawBrightnessGradient(HSLColor color)
         {
-            Rectangle dis = brightnessPanel.DisplayRectangle;
-            Rectangle screenRec = brightnessPanel.RectangleToScreen(dis);
-            Rectangle rec = brightnessPanel.Parent.RectangleToClient(screenRec);
+            var dis = brightnessPanel.DisplayRectangle;
+            var screenRec = brightnessPanel.RectangleToScreen(dis);
+            var rec = brightnessPanel.Parent.RectangleToClient(screenRec);
             brightnessPanel.Visible = false;
             LinearGradientBrush brush = new LinearGradientBrush(
                 rec,
@@ -746,9 +746,9 @@ namespace PowerPointLabs
 
         private void DrawSaturationGradient(HSLColor color)
         {
-            Rectangle dis = saturationPanel.DisplayRectangle;
-            Rectangle screenRec = saturationPanel.RectangleToScreen(dis);
-            Rectangle rec = saturationPanel.Parent.RectangleToClient(screenRec);
+            var dis = saturationPanel.DisplayRectangle;
+            var screenRec = saturationPanel.RectangleToScreen(dis);
+            var rec = saturationPanel.Parent.RectangleToClient(screenRec);
             saturationPanel.Visible = false;
             LinearGradientBrush brush = new LinearGradientBrush(
                 rec,
@@ -1083,8 +1083,8 @@ namespace PowerPointLabs
             }
             if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
             {
-                PowerPoint.TextFrame frame = _selectedText.Parent as PowerPoint.TextFrame;
-                PowerPoint.Shape selectedShape = frame.Parent as PowerPoint.Shape;
+                var frame = _selectedText.Parent as PowerPoint.TextFrame;
+                var selectedShape = frame.Parent as PowerPoint.Shape;
                 return GetSelectedShapeColor(selectedShape);
             }
 
@@ -1094,7 +1094,7 @@ namespace PowerPointLabs
         private Color GetSelectedShapeColor(PowerPoint.ShapeRange selectedShapes)
         {
             Color colorToReturn = Color.Empty;
-            foreach (object selectedShape in selectedShapes)
+            foreach (var selectedShape in selectedShapes)
             {
                 Color color = GetSelectedShapeColor(selectedShape as PowerPoint.Shape);
                 if (colorToReturn.Equals(Color.Empty))
@@ -1124,7 +1124,7 @@ namespace PowerPointLabs
                     {
                         if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
                         {
-                            TextRange selectedText
+                            var selectedText
                                 = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
                             if (selectedText != null && selectedText.Text != "")
                             {
@@ -1201,7 +1201,7 @@ namespace PowerPointLabs
         {
             get
             {
-                CreateParams createParams = base.CreateParams;
+                var createParams = base.CreateParams;
                 createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
                 return createParams;
             }

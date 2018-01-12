@@ -63,7 +63,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 return false;
             }
 
-            Regex invalidChars = new Regex(InvalidCharsRegex);
+            var invalidChars = new Regex(InvalidCharsRegex);
 
             if (string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name))
             {

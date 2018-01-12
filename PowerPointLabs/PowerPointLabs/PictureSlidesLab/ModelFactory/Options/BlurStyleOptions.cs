@@ -13,8 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            List<StyleOption> result = GetOptions();
-            foreach (StyleOption styleOption in result)
+            var result = GetOptions();
+            foreach (var styleOption in result)
             {
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";

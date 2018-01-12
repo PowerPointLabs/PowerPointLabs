@@ -72,7 +72,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             if (_pane != null)
             {
-                List<ISlideData> slideData = _pane.GetShapeGallery()
+                var slideData = _pane.GetShapeGallery()
                     .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
                 return slideData;
             }

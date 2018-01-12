@@ -40,15 +40,15 @@ namespace Test.UnitTest.HighlightLab
         private void RemoveHighlightAndCompare(int testSlideNo, int expectedSlideNo)
         {
             PpOperations.SelectSlide(testSlideNo);
-            PowerPointSlide currentSlide = PowerPointSlide.FromSlideFactory(PpOperations.GetCurrentSlide());
+            var currentSlide = PowerPointSlide.FromSlideFactory(PpOperations.GetCurrentSlide());
             RemoveHighlighting.RemoveHighlight(currentSlide);
             AssertIsSame(testSlideNo, expectedSlideNo);
         }
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualSlideIndex);
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
+            var actualSlide = PpOperations.SelectSlide(actualSlideIndex);
+            var expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
         }

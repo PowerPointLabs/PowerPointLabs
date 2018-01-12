@@ -80,14 +80,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinSlideWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -100,14 +100,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinSlideWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -120,15 +120,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinSlideWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -140,14 +140,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinFirstWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -160,14 +160,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinFirstWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -180,15 +180,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinFirstWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -201,14 +201,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinFirstAndSecondWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -221,14 +221,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinFirstAndSecondWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -241,15 +241,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinFirstAndSecondWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -262,14 +262,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinCornerWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -282,14 +282,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinCornerWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -302,15 +302,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinCornerWithEdgesSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -323,14 +323,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinSlideWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -343,14 +343,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinSlideWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -363,15 +363,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinSlideWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -383,14 +383,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinFirstWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -403,14 +403,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinFirstWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -423,15 +423,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { BorderRectangle, UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinFirstWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -444,14 +444,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinFirstAndSecondWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -464,14 +464,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinFirstAndSecondWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -484,15 +484,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, RotatedArrow, Oval, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinFirstAndSecondWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -505,14 +505,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
 
             Action<List<PPShape>, float> positionsAction = (shapes, width) => PositionsLabMain.DistributeHorizontal(shapes, width);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth);
 
             PpOperations.SelectSlide(DistributeHorizontalWithinCornerWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -525,14 +525,14 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float> positionsAction = (shapes, height) => PositionsLabMain.DistributeVertical(shapes, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideHeight);
 
             PpOperations.SelectSlide(DistributeVerticalWithinCornerWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -545,15 +545,15 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
 
             _shapeNames = new List<string> { UnrotatedRectangle, Oval, RotatedArrow, RotatedRectangle };
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
-            float slideWidth = Pres.PageSetup.SlideWidth;
-            float slideHeight = Pres.PageSetup.SlideHeight;
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            var slideHeight = Pres.PageSetup.SlideHeight;
 
             Action<List<PPShape>, float, float> positionsAction = (shapes, width, height) => PositionsLabMain.DistributeCenter(shapes, width, height);
             ExecutePositionsAction(positionsAction, actualShapes, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(DistributeCenterWithinCornerWithCenterSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }

@@ -23,9 +23,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncFontFamily()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FontFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncFontFamilySlideNo);
@@ -36,9 +36,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncFontSize()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FontSizeFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncFontSizeSlideNo);
@@ -49,9 +49,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncFontFill()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FontColorFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncFontFillSlideNo);
@@ -62,9 +62,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncOneFontStyle()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FontStyleFormat.SyncFormat(formatShape, newShape);
 
             CheckFontStyle(OriginalShapesSlideNo, SyncOneFontStyleSlideNo);
@@ -74,9 +74,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncAllFontStyle()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromSmallShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromSmallShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FontStyleFormat.SyncFormat(formatShape, newShape);
 
             CheckFontStyle(OriginalShapesSlideNo, SyncAllFontStyleSlideNo);
@@ -85,11 +85,11 @@ namespace Test.UnitTest.SyncLab
         //Changes in font style are too minute for CompareSlide to detect so we need to check them manually
         protected void CheckFontStyle(int actualShapesSlideNo, int expectedShapesSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Shape actualShape = GetShape(actualShapesSlideNo, CopyToShape);
-            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, CopyToShape);
+            var actualShape = GetShape(actualShapesSlideNo, CopyToShape);
+            var expectedShape = GetShape(expectedShapesSlideNo, CopyToShape);
 
-            Microsoft.Office.Interop.PowerPoint.Font actualFont = actualShape.TextFrame.TextRange.Font;
-            Microsoft.Office.Interop.PowerPoint.Font expectedFont = expectedShape.TextFrame.TextRange.Font;
+            var actualFont = actualShape.TextFrame.TextRange.Font;
+            var expectedFont = expectedShape.TextFrame.TextRange.Font;
 
             Assert.IsTrue(actualFont.Bold == expectedFont.Bold
                 && actualFont.Italic == expectedFont.Italic

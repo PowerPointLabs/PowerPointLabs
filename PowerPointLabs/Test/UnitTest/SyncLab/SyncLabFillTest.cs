@@ -54,9 +54,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncTransparency()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, SolidFill);
+            var formatShape = GetShape(OriginalShapesSlideNo, SolidFill);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FillTransparencyFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncTransparencySlideNo);
@@ -65,9 +65,9 @@ namespace Test.UnitTest.SyncLab
 
         protected void syncFill(string shapeToCopy, int expectedSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, shapeToCopy);
+            var formatShape = GetShape(OriginalShapesSlideNo, shapeToCopy);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
+            var newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
             FillFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, expectedSlideNo);
@@ -77,8 +77,8 @@ namespace Test.UnitTest.SyncLab
         //Changes in transparency are too minute for CompareSlide to detect so we need to check them manually
         protected void CheckTransparency(string shape, int actualShapesSlideNo, int expectedShapesSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Shape actualShape = GetShape(actualShapesSlideNo, shape);
-            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, shape);
+            var actualShape = GetShape(actualShapesSlideNo, shape);
+            var expectedShape = GetShape(expectedShapesSlideNo, shape);
 
             Assert.IsTrue(actualShape.Fill.Transparency == expectedShape.Fill.Transparency,
                 "different transparency. exp:{0}, actual:{1}",

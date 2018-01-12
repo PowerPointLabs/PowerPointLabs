@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
@@ -17,7 +15,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
         protected override string GetContent(string ribbonId)
         {
-            StringBuilder xmlString = new System.Text.StringBuilder();
+            var xmlString = new System.Text.StringBuilder();
 
             foreach (string feature in features)
             {

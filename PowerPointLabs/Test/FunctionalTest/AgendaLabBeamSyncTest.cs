@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -53,8 +50,8 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(8);
             PplFeatures.SynchronizeAgenda();
 
-            List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
-            List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesBeamAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -62,7 +59,7 @@ namespace Test.FunctionalTest
         public void NoHighlightedTextUnsuccessful()
         {
             PpOperations.SelectSlide(1);
-            Microsoft.Office.Interop.PowerPoint.Shape highlightedText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",              
+            var highlightedText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",              
                                                                            "PptLabsAgenda_&^@BeamShapeHighlightedText");
             highlightedText.Delete();
 
@@ -75,7 +72,7 @@ namespace Test.FunctionalTest
         public void NoBeamUnsuccessful()
         {
             PpOperations.SelectSlide(1);
-            Microsoft.Office.Interop.PowerPoint.Shape beamShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@BeamShapeMainGroup")[1];
+            var beamShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@BeamShapeMainGroup")[1];
             beamShape.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -86,7 +83,7 @@ namespace Test.FunctionalTest
 
         public void NoRefSlideUnsuccessful()
         {
-            Microsoft.Office.Interop.PowerPoint.Slide refSlide = PpOperations.SelectSlide(1);
+            var refSlide = PpOperations.SelectSlide(1);
             refSlide.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -100,7 +97,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(1);
             for (int i = 0; i < 5; ++i)
             {
-                Microsoft.Office.Interop.PowerPoint.Shape beamText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",
+                var beamText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",
                     "PptLabsAgenda_&^@BeamShapeText");
                 beamText.Delete();
             }
@@ -125,12 +122,12 @@ namespace Test.FunctionalTest
         // When unfocused, only sync (so selectedSlide (doesn't have agenda) remains the same).
         private static void ClickOnSlideThumbnailsPanel()
         {
-            IntPtr pptPanel = NativeUtil.FindWindow("PPTFrameClass", null);
-            IntPtr mdiPanel = NativeUtil.FindWindowEx(pptPanel, IntPtr.Zero, "MDIClient", null);
-            IntPtr mdiPanel2 = NativeUtil.FindWindowEx(mdiPanel, IntPtr.Zero, "mdiClass", null);
+            var pptPanel = NativeUtil.FindWindow("PPTFrameClass", null);
+            var mdiPanel = NativeUtil.FindWindowEx(pptPanel, IntPtr.Zero, "MDIClient", null);
+            var mdiPanel2 = NativeUtil.FindWindowEx(mdiPanel, IntPtr.Zero, "mdiClass", null);
             if (PpOperations.IsOffice2010())
             {
-                IntPtr thumbnailsPanel = NativeUtil.FindWindowEx(mdiPanel2, IntPtr.Zero, "paneClassDC", "Thumbnails");
+                var thumbnailsPanel = NativeUtil.FindWindowEx(mdiPanel2, IntPtr.Zero, "paneClassDC", "Thumbnails");
                 NativeUtil.SendMessage(thumbnailsPanel, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
             } 
             else // Office2013 or Higher

@@ -67,11 +67,11 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             {
                 SlideList.Clear();
             }));
-            PowerPointSlide currentSlide = this.GetCurrentSlide();
+            var currentSlide = this.GetCurrentSlide();
             if (currentSlide.Index - 2 >= 0)
             {
                 _prevSlideIndex = currentSlide.Index - 2;
-                PowerPointSlide prevSlide = this.GetCurrentPresentation().Slides[currentSlide.Index - 2];
+                var prevSlide = this.GetCurrentPresentation().Slides[currentSlide.Index - 2];
                 AddSlideThumbnail(prevSlide);
             }
             else
@@ -84,7 +84,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             if (currentSlide.Index < this.GetCurrentPresentation().SlideCount)
             {
                 _nextSlideIndex = currentSlide.Index;
-                PowerPointSlide nextSlide = this.GetCurrentPresentation().Slides[currentSlide.Index];
+                var nextSlide = this.GetCurrentPresentation().Slides[currentSlide.Index];
                 AddSlideThumbnail(nextSlide);
             }
             else
@@ -127,7 +127,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void SelectCurrentSlide()
         {
-            foreach (ImageItem slide in SlideList)
+            foreach (var slide in SlideList)
             {
                 if (slide.Tooltip.Contains("Current"))
                 {
@@ -143,7 +143,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            string thumbnailPath = TempPath.GetPath("slide-" + DateTime.Now.GetHashCode() + slide.Index);
+            var thumbnailPath = TempPath.GetPath("slide-" + DateTime.Now.GetHashCode() + slide.Index);
             slide.GetNativeSlide().Export(thumbnailPath, "JPG", GetPreviewWidth(), PreviewHeight);
 
             ImageItem imageItem;
@@ -216,7 +216,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             {
                 GotoSlideButton.IsEnabled = true;
                 // obtain selected slide
-                ImageItem selectedItem = (ImageItem) SlideListBox.SelectedItem;
+                var selectedItem = (ImageItem) SlideListBox.SelectedItem;
                 if (selectedItem.Tooltip.Contains("Current"))
                 {
                     SelectedSlide = Int32.Parse(selectedItem.Tooltip.Substring(16));   
@@ -230,7 +230,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void PrevButton_OnClick(object sender, RoutedEventArgs e)
         {
-            int selectedIndex = SlideListBox.SelectedIndex;
+            var selectedIndex = SlideListBox.SelectedIndex;
             if (selectedIndex - 1 >= 0)
             {
                 SlideListBox.SelectedIndex = selectedIndex - 1;
@@ -244,18 +244,18 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void LoadPreviousSlides(bool isToSelectPrevSlide = true)
         {
-            int newPrevSlideIndex = _prevSlideIndex;
+            var newPrevSlideIndex = _prevSlideIndex;
 
             if (_prevSlideIndex - 3 >= 0)
             {
                 newPrevSlideIndex = _prevSlideIndex - 3;
-                PowerPointSlide prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 3];
+                var prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 3];
                 AddSlideThumbnail(prevSlide, 0);
             }
 
             if (_prevSlideIndex - 2 >= 0)
             {
-                PowerPointSlide prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 2];
+                var prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 2];
                 if (_prevSlideIndex - 3 >= 0)
                 {
                     AddSlideThumbnail(prevSlide, 1);
@@ -269,7 +269,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             if (_prevSlideIndex - 1 >= 0)
             {
-                PowerPointSlide prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 1];
+                var prevSlide = this.GetCurrentPresentation().Slides[_prevSlideIndex - 1];
                 if (_prevSlideIndex - 3 >= 0)
                 {
                     AddSlideThumbnail(prevSlide, 2);
@@ -295,7 +295,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void NextButton_OnClick(object sender, RoutedEventArgs e)
         {
-            int selectedIndex = SlideListBox.SelectedIndex;
+            var selectedIndex = SlideListBox.SelectedIndex;
             if (selectedIndex + 1 < SlideListBox.Items.Count)
             {
                 SlideListBox.SelectedIndex = selectedIndex + 1;
@@ -309,25 +309,25 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void LoadNextSlides(bool isToSelectNextSlide = true)
         {
-            int newNextSlideIndex = _nextSlideIndex;
+            var newNextSlideIndex = _nextSlideIndex;
 
             if (_nextSlideIndex + 1 < this.GetCurrentPresentation().SlideCount)
             {
-                PowerPointSlide nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 1];
+                var nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 1];
                 newNextSlideIndex = _nextSlideIndex + 1;
                 AddSlideThumbnail(nextSlide);
             }
 
             if (_nextSlideIndex + 2 < this.GetCurrentPresentation().SlideCount)
             {
-                PowerPointSlide nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 2];
+                var nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 2];
                 newNextSlideIndex = _nextSlideIndex + 2;
                 AddSlideThumbnail(nextSlide);
             }
 
             if (_nextSlideIndex + 3 < this.GetCurrentPresentation().SlideCount)
             {
-                PowerPointSlide nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 3];
+                var nextSlide = this.GetCurrentPresentation().Slides[_nextSlideIndex + 3];
                 newNextSlideIndex = _nextSlideIndex + 3;
                 AddSlideThumbnail(nextSlide);
             }
@@ -342,7 +342,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void SlideListBox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem item = ItemsControl.ContainerFromElement((ItemsControl)sender, (DependencyObject)e.OriginalSource)
+            var item = ItemsControl.ContainerFromElement((ItemsControl)sender, (DependencyObject)e.OriginalSource)
                 as ListBoxItem;
             if (item == null || item.Content == null)
             {

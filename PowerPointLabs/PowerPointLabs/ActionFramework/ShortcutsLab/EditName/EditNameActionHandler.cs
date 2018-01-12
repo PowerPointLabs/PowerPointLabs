@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ShortcutsLab.Views;
@@ -13,14 +11,14 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Selection selection = this.GetCurrentSelection();
-            Shape selectedShape = selection.ShapeRange[1];
+            var selection = this.GetCurrentSelection();
+            var selectedShape = selection.ShapeRange[1];
             if (selection.HasChildShapeRange)
             {
                 selectedShape = selection.ChildShapeRange[1];
             }
             
-            EditNameDialogBox editForm = new EditNameDialogBox(selectedShape);
+            var editForm = new EditNameDialogBox(selectedShape);
             editForm.ShowDialog();
         }
     }

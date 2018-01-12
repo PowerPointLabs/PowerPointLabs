@@ -44,7 +44,7 @@ namespace PowerPointLabs.ResizeLab.Views
         private void AddShapeRow(string label)
         {
             // Increase height of main grid
-            double oldHeight = MainGrid.RowDefinitions[ShapeGridColumnIndex].Height.Value;
+            var oldHeight = MainGrid.RowDefinitions[ShapeGridColumnIndex].Height.Value;
             MainGrid.RowDefinitions[ShapeGridColumnIndex].Height = new GridLength(oldHeight + RowHeight);
             Height += RowHeight;
 
@@ -66,7 +66,7 @@ namespace PowerPointLabs.ResizeLab.Views
             textBox.ToolTip = ResizeLabTooltip.AdjustProportionallySettingsTextBox;
 
             // Append the element
-            int rowIndex = ShapesGrid.RowDefinitions.Count - 1;
+            var rowIndex = ShapesGrid.RowDefinitions.Count - 1;
             ShapesGrid.Children.Add(labelTextBlock);
             ShapesGrid.Children.Add(textBox);
 
@@ -89,8 +89,8 @@ namespace PowerPointLabs.ResizeLab.Views
             List<float> proportionList = new List<float>();
             for (int i = 1; i < ShapesGrid.Children.Count; i += 2)
             {
-                TextBox textBox = ShapesGrid.Children[i] as TextBox;
-                float? proportion = ResizeLabUtil.ConvertToFloat(textBox.Text);
+                var textBox = ShapesGrid.Children[i] as TextBox;
+                var proportion = ResizeLabUtil.ConvertToFloat(textBox.Text);
 
                 if (ResizeLabUtil.IsValidFactor(proportion))
                 {

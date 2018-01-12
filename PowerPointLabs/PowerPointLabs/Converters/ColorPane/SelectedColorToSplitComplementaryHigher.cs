@@ -8,7 +8,7 @@ namespace PowerPointLabs.Converters.ColorPane
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
+            var selectedColor = (HSLColor)value;
             return ColorHelper.GetColorShiftedByAngle(selectedColor, 210.0f);
         }
 

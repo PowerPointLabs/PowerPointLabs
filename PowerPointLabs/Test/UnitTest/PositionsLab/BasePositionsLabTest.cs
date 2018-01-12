@@ -28,8 +28,8 @@ namespace Test.UnitTest.PositionsLab
         {
             for (int i = 1; i <= selected.Count; i++)
             {
-                Shape selectedShape = selected[i];
-                Shape simulatedShape = simulatedShapes[i];
+                var selectedShape = selected[i];
+                var simulatedShape = simulatedShapes[i];
 
                 selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
                 selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
@@ -41,8 +41,8 @@ namespace Test.UnitTest.PositionsLab
         {
             for (int i = 1; i <= selected.Count; i++)
             {
-                Shape selectedShape = selected[i];
-                Shape simulatedShape = simulatedShapes[i];
+                var selectedShape = selected[i];
+                var simulatedShape = simulatedShapes[i];
 
                 selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
                 selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
@@ -57,8 +57,8 @@ namespace Test.UnitTest.PositionsLab
 
             for (int i = 1; i <= range.Count; i++)
             {
-                Shape shape = range[i];
-                Shape duplicated = shape.Duplicate()[1];
+                var shape = range[i];
+                var duplicated = shape.Duplicate()[1];
                 duplicated.Name = shape.Id + "";
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
@@ -70,11 +70,11 @@ namespace Test.UnitTest.PositionsLab
 
         protected float[,] SaveOriginalPositions(List<PPShape> shapes)
         {
-            float[,] initialPositions = new float[shapes.Count, 2];
-            for (int i = 0; i < shapes.Count; i++)
+            var initialPositions = new float[shapes.Count, 2];
+            for (var i = 0; i < shapes.Count; i++)
             {
-                PPShape s = shapes[i];
-                System.Drawing.PointF pt = s.VisualCenter;
+                var s = shapes[i];
+                var pt = s.VisualCenter;
                 initialPositions[i, Left] = pt.X;
                 initialPositions[i, Top] = pt.Y;
             }
@@ -84,9 +84,9 @@ namespace Test.UnitTest.PositionsLab
 
         protected List<PPShape> ConvertShapeRangeToPPShapeList(PowerPoint.ShapeRange range, int index)
         {
-            List<PPShape> shapes = new List<PPShape>();
+            var shapes = new List<PPShape>();
 
-            for (int i = index; i <= range.Count; i++)
+            for (var i = index; i <= range.Count; i++)
             {
                 shapes.Add(new PPShape(range[i]));
             }
@@ -96,9 +96,9 @@ namespace Test.UnitTest.PositionsLab
 
         protected List<PowerPoint.Shape> ConvertShapeRangeToShapeList(PowerPoint.ShapeRange range, int index)
         {
-            List<Shape> shapes = new List<PowerPoint.Shape>();
+            var shapes = new List<PowerPoint.Shape>();
 
-            for (int i = index; i <= range.Count; i++)
+            for (var i = index; i <= range.Count; i++)
             {
                 shapes.Add(range[i]);
             }
@@ -126,8 +126,8 @@ namespace Test.UnitTest.PositionsLab
                 }
                 else if (isConvertPPShape)
                 {
-                    List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                    float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                    var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                     positionsAction.Invoke(simulatedShapes);
 
@@ -173,8 +173,8 @@ namespace Test.UnitTest.PositionsLab
                 }
                 else
                 {
-                    List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                    float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                    var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                     positionsAction.Invoke(simulatedShapes, dimension);
 
@@ -214,8 +214,8 @@ namespace Test.UnitTest.PositionsLab
                 }
                 else
                 {
-                    List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                    float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                    var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                     positionsAction.Invoke(simulatedShapes, dimension1, dimension2);
 
@@ -248,8 +248,8 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes);
 
@@ -288,8 +288,8 @@ namespace Test.UnitTest.PositionsLab
                     SwapZOrder(simulatedShapes[i], selectedShapes[i]);
                 }
 
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, booleanVal);
 
@@ -321,8 +321,8 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, dimension);
 
@@ -354,8 +354,8 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, dimension1, dimension2);
 
@@ -387,8 +387,8 @@ namespace Test.UnitTest.PositionsLab
             try
             {
                 simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                var simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                var initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
                 positionsAction.Invoke(simulatedPPShapes, dimension1, dimension2);
 
@@ -417,7 +417,7 @@ namespace Test.UnitTest.PositionsLab
 
             try
             {
-                List<Shape> shapes = ConvertShapeRangeToShapeList(selectedShapes, 1);
+                var shapes = ConvertShapeRangeToShapeList(selectedShapes, 1);
 
                 positionsAction.Invoke(shapes);
 

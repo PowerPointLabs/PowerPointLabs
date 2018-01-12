@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            List<Shape> result = new List<Shape>();
+            var result = new List<Shape>();
             if (option.IsUseFrameStyle)
             {
-                Shape frameOverlayShape = designer.ApplyAlbumFrameEffect(option.FrameColor, option.FrameTransparency);
+                var frameOverlayShape = designer.ApplyAlbumFrameEffect(option.FrameColor, option.FrameTransparency);
                 result.Add(frameOverlayShape);
             }
             return result;

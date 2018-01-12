@@ -66,7 +66,7 @@ namespace PowerPointLabs.AgendaLab
 
         public static bool IsBeamShape(Shape shape)
         {
-            AgendaShape agendaShape = Decode(shape);
+            var agendaShape = Decode(shape);
             if (agendaShape == null)
             {
                 return false;
@@ -103,7 +103,7 @@ namespace PowerPointLabs.AgendaLab
         {
             return shape =>
             {
-                AgendaShape agendaShape = Decode(shape);
+                var agendaShape = Decode(shape);
                 if (agendaShape == null)
                 {
                     return false;
@@ -121,7 +121,7 @@ namespace PowerPointLabs.AgendaLab
         {
             return shape =>
             {
-                AgendaShape agendaShape = Decode(shape);
+                var agendaShape = Decode(shape);
                 if (agendaShape == null)
                 {
                     return false;

@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
         {
             IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
-            Selection selection = this.GetCurrentSelection();
+            var selection = this.GetCurrentSelection();
 
             if (!ShapeUtil.IsSelectionShape(selection))
             {
@@ -57,7 +57,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
         {
             IMessageService cropLabMessageService = MessageServiceFactory.GetCropLabMessageService();
             CropLabErrorHandler errorHandler = CropLabErrorHandler.InitializeErrorHandler(cropLabMessageService);
-            Selection selection = this.GetCurrentSelection();
+            var selection = this.GetCurrentSelection();
 
             float aspectRatioWidth = 0.0f;
             float aspectRatioHeight = 0.0f;

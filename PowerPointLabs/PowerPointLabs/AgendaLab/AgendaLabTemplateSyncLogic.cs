@@ -21,9 +21,9 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void SynchroniseSlidesUsingTemplate(SlideSelectionTracker slideTracker, PowerPointSlide refSlide, Func<AgendaTemplate> generateTemplate)
         {
-            List<AgendaSection> sections = Sections;
+            var sections = Sections;
 
-            List<string> deletedShapeNames = RetrieveTrackedDeletions(refSlide);
+            var deletedShapeNames = RetrieveTrackedDeletions(refSlide);
 
             refSlide.DeleteSlideNumberShapes();
             refSlide.MakeShapeNamesNonDefault();
@@ -31,12 +31,12 @@ namespace PowerPointLabs.AgendaLab
                                                    !PowerPointSlide.IsTemplateSlideMarker(shape));
 
             ScrambleSlideSectionNames();
-            foreach (AgendaSection currentSection in sections)
+            foreach (var currentSection in sections)
             {
-                AgendaTemplate template = generateTemplate();
+                var template = generateTemplate();
                 ConfigureTemplate(currentSection, template);
 
-                TemplateIndexTable templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
+                var templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
                 SynchroniseAllSlides(template, templateTable, refSlide, sections, deletedShapeNames, currentSection);
             }
 
@@ -75,17 +75,17 @@ namespace PowerPointLabs.AgendaLab
             }
 
             // Step 1: Generate Assignment List and fill in Template Table.
-            TemplateIndexTable templateTable = template.CreateIndexTable();
-            List<PowerPointSlide> sectionSlides = GetSectionSlides(currentSection);
+            var templateTable = template.CreateIndexTable();
+            var sectionSlides = GetSectionSlides(currentSection);
             if (AgendaSlide.IsReferenceslide(sectionSlides[0]))
             {
                 sectionSlides.RemoveAt(0);
             }
 
-            int addToIndex = SectionLastSlideIndex(currentSection) + 1;
+            var addToIndex = SectionLastSlideIndex(currentSection) + 1;
 
-            List<int> assignmentList = new List<int>();
-            for (int i = 0; i < sectionSlides.Count; ++i)
+            var assignmentList = new List<int>();
+            for (var i = 0; i < sectionSlides.Count; ++i)
             {
                 assignmentList.Add(-1);
             }
@@ -98,7 +98,7 @@ namespace PowerPointLabs.AgendaLab
             GenerateInitialAssignmentList(out indexOfFirstBackSlide, template, templateTable, assignmentList, sectionSlides);
 
             // Step 2: Add all missing slides.
-            List<PowerPointSlide> createdSlides = AddAllMissingSlides(ref addToIndex, template, templateTable, assignmentList, currentSection, indexOfFirstBackSlide);
+            var createdSlides = AddAllMissingSlides(ref addToIndex, template, templateTable, assignmentList, currentSection, indexOfFirstBackSlide);
             sectionSlides.AddRange(createdSlides);
             templateTable.StoreSlideObjects(sectionSlides);
 
@@ -106,10 +106,10 @@ namespace PowerPointLabs.AgendaLab
             // Step 3: Create Goal Array of Slide Objects and MarkedForDeletion list.
             List<PowerPointSlide> markedForDeletion;
             int newSlideCount = indexOfFirstBackSlide + template.BackSlidesCount;
-            PowerPointSlide[] goalArray = GenerateGoalArray(newSlideCount, assignmentList, sectionSlides, out markedForDeletion);
+            var goalArray = GenerateGoalArray(newSlideCount, assignmentList, sectionSlides, out markedForDeletion);
 
             // Step 4: Use goal array to reorder all goal slides.
-            foreach (PowerPointSlide slide in goalArray)
+            foreach (var slide in goalArray)
             {
                 slide.MoveTo(addToIndex-1);
             }
@@ -150,13 +150,13 @@ namespace PowerPointLabs.AgendaLab
             TemplateIndexTable templateTable, List<int> assignmentList, AgendaSection currentSection,
             int indexOfFirstBackSlide)
         {
-            List<PowerPointSlide> createdSlides = new List<PowerPointSlide>();
+            var createdSlides = new List<PowerPointSlide>();
 
             for (int i = 0; i < template.FrontSlidesCount; ++i)
             {
                 if (templateTable.FrontIndexes[i] == TemplateIndexTable.NoSlide)
                 {
-                    PowerPointSlide newSlide = AddBlankSlide(addToIndex);
+                    var newSlide = AddBlankSlide(addToIndex);
                     createdSlides.Add(newSlide);
                     AgendaSlide.SetSlideName(newSlide, template.Type, template.FrontSlides[i].SlidePurpose,
                         currentSection);
@@ -171,7 +171,7 @@ namespace PowerPointLabs.AgendaLab
             {
                 if (templateTable.BackIndexes[i] == TemplateIndexTable.NoSlide)
                 {
-                    PowerPointSlide newSlide = AddBlankSlide(addToIndex);
+                    var newSlide = AddBlankSlide(addToIndex);
                     createdSlides.Add(newSlide);
                     AgendaSlide.SetSlideName(newSlide, template.Type, template.BackSlides[i].SlidePurpose,
                         currentSection);
@@ -235,7 +235,7 @@ namespace PowerPointLabs.AgendaLab
         {
             for (int i = 0; i < template.FrontSlidesCount; ++i)
             {
-                SlidePurpose purpose = template.FrontSlides[i].SlidePurpose;
+                var purpose = template.FrontSlides[i].SlidePurpose;
                 for (int j = 0; j < assignmentList.Count; ++j)
                 {
                     if (!AgendaSlide.MatchesPurpose(sectionSlides[j], purpose))
@@ -251,7 +251,7 @@ namespace PowerPointLabs.AgendaLab
 
             for (int i = 0; i < template.BackSlidesCount; ++i)
             {
-                SlidePurpose purpose = template.BackSlides[i].SlidePurpose;
+                var purpose = template.BackSlides[i].SlidePurpose;
                 for (int j = 0; j < assignmentList.Count; ++j)
                 {
                     if (!AgendaSlide.MatchesPurpose(sectionSlides[j], purpose))
@@ -268,7 +268,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide AddBlankSlide(int addLocation)
         {
-            PowerPointSlide slide =
+            var slide =
                 PowerPointSlide.FromSlideFactory(PowerPointPresentation.Current
                                                                        .Presentation
                                                                        .Slides
@@ -308,13 +308,13 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static List<string> RetrieveTrackedDeletions(PowerPointSlide slide)
         {
-            List<string> retrievedNameList = CommonUtil.UnserializeCollection(slide.RetrieveDataFromNotes());
+            var retrievedNameList = CommonUtil.UnserializeCollection(slide.RetrieveDataFromNotes());
             if (retrievedNameList == null)
             {
                 return new List<string>();
             }
 
-            Dictionary<string, Shape> currentNames = slide.GetNameToShapeDictionary();
+            var currentNames = slide.GetNameToShapeDictionary();
             return retrievedNameList.Where(name => !currentNames.ContainsKey(name)).ToList();
         }
 
@@ -323,7 +323,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void TrackShapesInSlide(PowerPointSlide slide)
         {
-            List<string> nameList = slide.GetNameToShapeDictionary().Keys.ToList();
+            var nameList = slide.GetNameToShapeDictionary().Keys.ToList();
             slide.StoreDataInNotes(CommonUtil.SerializeCollection(nameList));
         }
         #endregion

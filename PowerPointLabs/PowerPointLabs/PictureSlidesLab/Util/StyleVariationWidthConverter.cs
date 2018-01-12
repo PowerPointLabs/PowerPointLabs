@@ -8,13 +8,13 @@ namespace PowerPointLabs.PictureSlidesLab.Util
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double width = (double) value;
+            var width = (double) value;
             return width + 10;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            double actualWidth = (double) value;
+            var actualWidth = (double) value;
             return actualWidth - 10;
         }
     }

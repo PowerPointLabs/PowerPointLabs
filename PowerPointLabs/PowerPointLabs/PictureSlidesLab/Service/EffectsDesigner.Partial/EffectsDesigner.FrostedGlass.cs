@@ -10,31 +10,31 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public void ApplyFrostedGlassTextBoxEffect(string overlayColor, int transparency, Shape blurImage, int fontSizeToIncrease)
         {
-            Shape shape = Util.ShapeUtil.GetTextShapeToProcess(Shapes);
+            var shape = Util.ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
             {
                 return;
             }
 
-            int margin = CalculateTextBoxMargin(fontSizeToIncrease);
+            var margin = CalculateTextBoxMargin(fontSizeToIncrease);
             // multiple paragraphs.. 
             foreach (TextRange2 textRange in shape.TextFrame2.TextRange.Paragraphs)
             {
                 if (StringUtil.IsNotEmpty(textRange.TrimText().Text))
                 {
-                    TextRange2 paragraph = textRange.TrimText();
-                    float left = paragraph.BoundLeft - margin;
-                    float top = paragraph.BoundTop - margin;
-                    float width = paragraph.BoundWidth + margin * 2;
-                    float height = paragraph.BoundHeight + margin * 2;
+                    var paragraph = textRange.TrimText();
+                    var left = paragraph.BoundLeft - margin;
+                    var top = paragraph.BoundTop - margin;
+                    var width = paragraph.BoundWidth + margin * 2;
+                    var height = paragraph.BoundHeight + margin * 2;
 
-                    Shape blurTextBox = blurImage.Duplicate()[1];
+                    var blurTextBox = blurImage.Duplicate()[1];
                     blurTextBox.Left = blurImage.Left;
                     blurTextBox.Top = blurImage.Top;
                     CropPicture(blurTextBox, left, top, width, height);
                     ChangeName(blurTextBox, EffectName.TextBox);
 
-                    Shape overlayShape = ApplyOverlayEffect(overlayColor, transparency,
+                    var overlayShape = ApplyOverlayEffect(overlayColor, transparency,
                         left, top, width, height);
                     ChangeName(overlayShape, EffectName.TextBox);
 
@@ -47,7 +47,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public Shape ApplyFrostedGlassBannerEffect(BannerDirection direction, Position textPos, Shape blurImage,
             string overlayColor, int transparency)
         {
-            TextBoxInfo tbInfo =
+            var tbInfo =
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
@@ -58,7 +58,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             TextBoxes.AddMargin(tbInfo);
 
             Shape overlayShape;
-            Shape blurBanner = blurImage.Duplicate()[1];
+            var blurBanner = blurImage.Duplicate()[1];
             blurBanner.Left = blurImage.Left;
             blurBanner.Top = blurImage.Top;
             direction = HandleAutoDirection(direction, textPos);
@@ -81,8 +81,8 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             overlayShape.ZOrder(MsoZOrderCmd.msoSendToBack);
             Utils.ShapeUtil.MoveZToJustBehind(blurBanner, overlayShape);
 
-            Microsoft.Office.Interop.PowerPoint.ShapeRange range = Shapes.Range(new[] {blurBanner.Name, overlayShape.Name});
-            Shape resultShape = range.Group();
+            var range = Shapes.Range(new[] {blurBanner.Name, overlayShape.Name});
+            var resultShape = range.Group();
             ChangeName(resultShape, EffectName.Banner);
             return resultShape;
         }

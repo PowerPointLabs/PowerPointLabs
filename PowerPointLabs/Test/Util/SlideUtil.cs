@@ -42,8 +42,8 @@ namespace Test.Util
 
             if (expShape.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
             {
-                TextRange expText = expShape.TextFrame.TextRange;
-                TextRange actualText = actualShape.TextFrame.TextRange;
+                var expText = expShape.TextFrame.TextRange;
+                var actualText = actualShape.TextFrame.TextRange;
 
                 Assert.AreEqual(expText.Text, actualText.Text,
                     "different text for {0}. exp:{1}, actual:{2}", expShape.Name, expText.Text, actualText.Text);
@@ -68,18 +68,18 @@ namespace Test.Util
 
         public static void IsSameShapes(Slide expSlide, Slide actualSlide)
         {
-            Shapes expShapes = expSlide.Shapes;
-            Shapes actualShapes = actualSlide.Shapes;
+            var expShapes = expSlide.Shapes;
+            var actualShapes = actualSlide.Shapes;
             Assert.AreEqual(expShapes.Count, actualShapes.Count,
                 "different number of shapes on slide. exp:{0}, actual:{1}", expShapes.Count, actualShapes.Count);
 
             for (int i = 1; i <= expShapes.Count; i++)
             {
-                Shape expShape = expShapes[i];
+                var expShape = expShapes[i];
                 bool isMatchingShapeFound = false;
                 for (int j = 1; j <= actualShapes.Count; j++)
                 {
-                    Shape actualShape = actualShapes[j];
+                    var actualShape = actualShapes[j];
                     if (expShape.Name == actualShape.Name)
                     {
                         isMatchingShapeFound = true;
@@ -121,16 +121,16 @@ namespace Test.Util
         {
             IsSameShape(expShape, actualShape);
 
-            ComparableImage actualShapeInPic = new ComparableImage(actualFileInfo);
-            ComparableImage expShapeInPic = new ComparableImage(expFileInfo);
+            var actualShapeInPic = new ComparableImage(actualFileInfo);
+            var expShapeInPic = new ComparableImage(expFileInfo);
 
-            double similarity = actualShapeInPic.CalculateSimilarity(expShapeInPic);
+            var similarity = actualShapeInPic.CalculateSimilarity(expShapeInPic);
             Assert.IsTrue(similarity > similarityTolerance, "The shapes look different. Similarity = " + similarity);
         }
 
         public static void IsSameLooking(Slide expSlide, Slide actualSlide, double similarityTolerance = 0.95)
         {
-            int hashCode = DateTime.Now.GetHashCode();
+            var hashCode = DateTime.Now.GetHashCode();
             actualSlide.Export(PathUtil.GetTempPath("actualSlide" + hashCode + ".png"), "PNG");
             expSlide.Export(PathUtil.GetTempPath("expSlide" + hashCode + ".png"), "PNG");
 
@@ -146,22 +146,22 @@ namespace Test.Util
 
         public static void IsSameLooking(FileInfo expSlideImage, FileInfo actualSlideImage, double similarityTolerance = 0.95)
         {
-            ComparableImage actualSlideInPic = new ComparableImage(actualSlideImage);
-            ComparableImage expSlideInPic = new ComparableImage(expSlideImage);
+            var actualSlideInPic = new ComparableImage(actualSlideImage);
+            var expSlideInPic = new ComparableImage(expSlideImage);
 
-            double similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
+            var similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
             Assert.IsTrue(similarity > similarityTolerance, "The slides look different. Similarity = " + similarity);
         }
 
         public static void IsSameAnimations(Slide expSlide, Slide actualSlide)
         {
-            Sequence actualSeq = actualSlide.TimeLine.MainSequence;
-            Sequence expSeq = expSlide.TimeLine.MainSequence;
+            var actualSeq = actualSlide.TimeLine.MainSequence;
+            var expSeq = expSlide.TimeLine.MainSequence;
             Assert.AreEqual(expSeq.Count, actualSeq.Count, "Different animation sequence count.");
             for (int i = 1; i <= actualSeq.Count; i++)
             {
-                Effect actualEffect = actualSeq[i];
-                Effect expEffect = expSeq[i];
+                var actualEffect = actualSeq[i];
+                var expEffect = expSeq[i];
                 Assert.AreEqual(expEffect.EffectType, actualEffect.EffectType, 
                     "Different effect type.");
                 IsSameShape(expEffect.Shape, actualEffect.Shape);

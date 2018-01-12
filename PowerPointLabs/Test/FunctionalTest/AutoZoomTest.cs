@@ -78,7 +78,7 @@ namespace Test.FunctionalTest
 
         private void TestDrillDownUnsuccessful()
         {
-            Microsoft.Office.Interop.PowerPoint.Slide slide = PpOperations.SelectSlide(34);
+            var slide = PpOperations.SelectSlide(34);
             slide.MoveTo(35);
             PpOperations.SelectShape("Zoom This Shape");
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -89,7 +89,7 @@ namespace Test.FunctionalTest
 
         private void TestStepBackUnsuccessful()
         {
-            Microsoft.Office.Interop.PowerPoint.Slide slide = PpOperations.SelectSlide(35);
+            var slide = PpOperations.SelectSlide(35);
             slide.MoveTo(1);
             PpOperations.SelectShape("Zoom This Shape");
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -101,8 +101,8 @@ namespace Test.FunctionalTest
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualSlideIndex);
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
+            var actualSlide = PpOperations.SelectSlide(actualSlideIndex);
+            var expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
         }

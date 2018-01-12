@@ -67,7 +67,7 @@ namespace PowerPointLabs.AudioMisc
             this.Type = audioType;
 
             // derive matched id from shape name
-            string[] temp = shape.Name.Split(new[] { ' ' });
+            var temp = shape.Name.Split(new[] { ' ' });
             if (temp.Length < 3)
             {
                 throw new FormatException(NarrationsLabText.RecorderUnrecognizeAudio);
@@ -109,8 +109,8 @@ namespace PowerPointLabs.AudioMisc
         // the original timeline.
         public void EmbedOnSlide(PowerPointSlide slide, int clickNumber)
         {
-            bool isOnClick = clickNumber > 0;
-            string shapeName = Name;
+            var isOnClick = clickNumber > 0;
+            var shapeName = Name;
 
             if (slide != null)
             {
@@ -120,7 +120,7 @@ namespace PowerPointLabs.AudioMisc
                 // name.
                 try
                 {
-                    Shape audioShape = AudioHelper.InsertAudioFileOnSlide(slide, SaveName);
+                    var audioShape = AudioHelper.InsertAudioFileOnSlide(slide, SaveName);
                     audioShape.Name = "#";
                     slide.RemoveAnimationsForShape(audioShape);
 

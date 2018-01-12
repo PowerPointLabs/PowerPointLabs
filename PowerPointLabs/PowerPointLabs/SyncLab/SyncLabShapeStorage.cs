@@ -55,7 +55,7 @@ namespace PowerPointLabs.SyncLab
 
         public Shape GetShape(string shapeKey)
         {
-            Shapes shapes = Slides[0].Shapes;
+            var shapes = Slides[0].Shapes;
             for (int i = 1; i <= shapes.Count; i++)
             {
                 if (shapes[i].Name.Equals(shapeKey))
@@ -68,8 +68,8 @@ namespace PowerPointLabs.SyncLab
 
         public void RemoveShape(string shapeKey)
         {
-            int index = 1;
-            Shapes shapes = Slides[0].Shapes;
+            var index = 1;
+            var shapes = Slides[0].Shapes;
             while (index <= shapes.Count)
             {
                 if (shapes[index].Name.Equals(shapeKey))

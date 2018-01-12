@@ -13,7 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         {
             width = width ?? SlideWidth;
             height = height ?? SlideHeight;
-            PowerPoint.Shape overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, left, top,
+            var overlayShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, left, top,
                 width.Value, height.Value);
             ChangeName(overlayShape, EffectName.Overlay);
             overlayShape.Fill.Solid();

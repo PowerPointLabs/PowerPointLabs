@@ -7,7 +7,7 @@ namespace Test.Util
     {
         public static void MatchAndAssert(string testTag, Regex tagRegex)
         {
-            Match match = tagRegex.Match(testTag);
+            var match = tagRegex.Match(testTag);
 
             Assert.IsTrue(match.Success, "Tag isn't matched.");
             Assert.IsTrue(match.Index == 0, "Match doesn't start at 0.");

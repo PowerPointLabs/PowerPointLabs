@@ -67,8 +67,8 @@ namespace PowerPointLabs.Utils
 
         public static void ExportShape(ShapeRange shapeRange, string exportPath)
         {
-            int slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
-            int slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
+            var slideWidth = (int)PowerPointPresentation.Current.SlideWidth;
+            var slideHeight = (int)PowerPointPresentation.Current.SlideHeight;
 
             shapeRange.Export(exportPath, PpShapeFormat.ppShapeFormatPNG, slideWidth,
                               slideHeight, PpExportMode.ppScaleToFit);
@@ -118,22 +118,22 @@ namespace PowerPointLabs.Utils
         #region Bitmap
         public static Bitmap CreateThumbnailImage(Image oriImage, int width, int height)
         {
-            double scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
+            var scalingRatio = CalculateScalingRatio(oriImage.Size, new Size(width, height));
 
             // calculate width and height after scaling
-            int scaledWidth = (int)Math.Round(oriImage.Size.Width * scalingRatio);
-            int scaledHeight = (int)Math.Round(oriImage.Size.Height * scalingRatio);
+            var scaledWidth = (int)Math.Round(oriImage.Size.Width * scalingRatio);
+            var scaledHeight = (int)Math.Round(oriImage.Size.Height * scalingRatio);
 
             // calculate left top corner position of the image in the thumbnail
-            int scaledLeft = (width - scaledWidth) / 2;
-            int scaledTop = (height - scaledHeight) / 2;
+            var scaledLeft = (width - scaledWidth) / 2;
+            var scaledTop = (height - scaledHeight) / 2;
 
             // define drawing area
-            Rectangle drawingRect = new Rectangle(scaledLeft, scaledTop, scaledWidth, scaledHeight);
-            Bitmap thumbnail = new Bitmap(width, height);
+            var drawingRect = new Rectangle(scaledLeft, scaledTop, scaledWidth, scaledHeight);
+            var thumbnail = new Bitmap(width, height);
 
             // here we set the thumbnail as the highest quality
-            using (Graphics thumbnailGraphics = System.Drawing.Graphics.FromImage(thumbnail))
+            using (var thumbnailGraphics = System.Drawing.Graphics.FromImage(thumbnail))
             {
                 thumbnailGraphics.CompositingQuality = CompositingQuality.HighQuality;
                 thumbnailGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -240,16 +240,16 @@ namespace PowerPointLabs.Utils
         /// <returns>The converted object</returns>
         public static BitmapSource CreateBitmapSourceFromGdiBitmap(Bitmap bitmap)
         {
-            Rectangle rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
+            var rect = new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height);
 
-            BitmapData bitmapData = bitmap.LockBits(
+            var bitmapData = bitmap.LockBits(
                 rect,
                 ImageLockMode.ReadWrite,
                 Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             try
             {
-                int size = (rect.Width * rect.Height) * 4;
+                var size = (rect.Width * rect.Height) * 4;
 
                 return BitmapSource.Create(
                     bitmap.Width,

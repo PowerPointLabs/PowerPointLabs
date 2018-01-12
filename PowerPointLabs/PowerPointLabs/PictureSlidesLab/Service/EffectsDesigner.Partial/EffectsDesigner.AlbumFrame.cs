@@ -9,10 +9,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public PowerPoint.Shape ApplyAlbumFrameEffect(string overlayColor, int transparency)
         {
-            int halfFrameWidth = 15;
-            float width = SlideWidth - halfFrameWidth * 2;
-            float height = SlideHeight - halfFrameWidth * 2;
-            PowerPoint.Shape frameShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, halfFrameWidth, halfFrameWidth,
+            var halfFrameWidth = 15;
+            var width = SlideWidth - halfFrameWidth * 2;
+            var height = SlideHeight - halfFrameWidth * 2;
+            var frameShape = Shapes.AddShape(MsoAutoShapeType.msoShapeRectangle, halfFrameWidth, halfFrameWidth,
                 width, height);
             ChangeName(frameShape, EffectName.Overlay);
             frameShape.Fill.Transparency = 1f;

@@ -21,8 +21,8 @@ namespace Test.FunctionalTest
         public void VisualSyncSuccessful()
         {
             PplFeatures.SynchronizeAgenda();
-            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
-            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesVisualAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }

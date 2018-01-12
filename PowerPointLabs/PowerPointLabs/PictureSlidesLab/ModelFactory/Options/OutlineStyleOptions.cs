@@ -13,8 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            List<StyleOption> result = GetOptionsWithSuitableFontColorForOutline();
-            foreach (StyleOption styleOption in result)
+            var result = GetOptionsWithSuitableFontColorForOutline();
+            foreach (var styleOption in result)
             {
                 styleOption.IsUseTextGlow = true;
                 styleOption.TextGlowColor = "#000000";
@@ -39,7 +39,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 
         private List<StyleOption> GetOptionsWithSuitableFontColorForOutline()
         {
-            List<StyleOption> result = GetOptions();
+            var result = GetOptions();
             result[0].FontColor = "#FFFFFF"; //white
             result[1].FontColor = "#000000"; //black
             result[2].FontColor = "#FFD700"; //yellow

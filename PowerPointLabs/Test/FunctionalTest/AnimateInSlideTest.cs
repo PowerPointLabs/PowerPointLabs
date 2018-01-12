@@ -21,8 +21,8 @@ namespace Test.FunctionalTest
 
             PplFeatures.AnimateInSlide();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(4);
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
+            var actualSlide = PpOperations.SelectSlide(4);
+            var expSlide = PpOperations.SelectSlide(5);
 
             // remove text "Expected"
             PpOperations.SelectShape("text 3")[1].Delete();
@@ -41,8 +41,8 @@ namespace Test.FunctionalTest
 
             PplFeatures.AnimateInSlide();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(21);
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(22);
+            var actualSlide = PpOperations.SelectSlide(21);
+            var expSlide = PpOperations.SelectSlide(22);
 
             // remove text "Expected"
             PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
@@ -63,8 +63,8 @@ namespace Test.FunctionalTest
             PpOperations.SelectShapes(new List<string> { "Bolt 1a", "Bolt 1b" });
             PplFeatures.AnimateInSlide();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(10);
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(11);
+            var actualSlide = PpOperations.SelectSlide(10);
+            var expSlide = PpOperations.SelectSlide(11);
 
             // remove text "Expected"
             PpOperations.SelectShape("text 3")[1].Delete();

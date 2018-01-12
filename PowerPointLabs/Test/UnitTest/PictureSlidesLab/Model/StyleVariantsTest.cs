@@ -21,7 +21,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         public void TestApply()
         {
             variant.Set("OptionName", "test option name");
-            StyleOption option = new StyleOption();
+            var option = new StyleOption();
             variant.Apply(option);
             Assert.AreEqual("test option name", option.OptionName);
         }
@@ -34,7 +34,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
             variant.Set("OptionName", "test option name");
             variant = variant.Copy(new StyleOption());
 
-            StyleOption option = new StyleOption();
+            var option = new StyleOption();
             option.TextBoxPosition = 999;
             option.OptionName = "test option name";
 
@@ -50,7 +50,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
             variant.Set("TextBoxPosition", 999);
             variant.Set("OptionName", "test option name");
 
-            StyleOption option = new StyleOption();
+            var option = new StyleOption();
             option.TextBoxPosition = 999;
             option.OptionName = "test option name";
 

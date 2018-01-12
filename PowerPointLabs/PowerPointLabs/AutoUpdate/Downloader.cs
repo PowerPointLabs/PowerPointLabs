@@ -48,7 +48,7 @@ namespace PowerPointLabs.AutoUpdate
         {
             try
             {
-                Task th = new Task(StartDownload);
+                var th = new Task(StartDownload);
                 th.Start();
             }
             catch (Exception e)
@@ -59,7 +59,7 @@ namespace PowerPointLabs.AutoUpdate
 
         private void CallAfterDownloadDelegate()
         {
-            AfterDownloadEventDelegate handler = AfterDownload;
+            var handler = AfterDownload;
             if (handler != null)
             {
                 handler();
@@ -68,7 +68,7 @@ namespace PowerPointLabs.AutoUpdate
 
         private void CallWhenErrorDelegate(Exception e)
         {
-            ErrorEventDelegate handler = WhenError;
+            var handler = WhenError;
             if (handler != null)
             {
                 handler(e);

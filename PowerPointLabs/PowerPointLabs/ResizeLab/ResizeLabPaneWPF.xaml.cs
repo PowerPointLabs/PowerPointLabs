@@ -294,7 +294,7 @@ namespace PowerPointLabs.ResizeLab
 
         private bool ProportionalPromptProportion(bool isForSameShapes = false)
         {
-            int? noOfShapes = GetSelectedShapes()?.Count;
+            var noOfShapes = GetSelectedShapes()?.Count;
             if (!noOfShapes.HasValue || noOfShapes < 2)
             {
                 _errorHandler.ProcessErrorCode(ResizeLabErrorHandler.ErrorCodeInvalidSelection, ResizeLabMain.AdjustProportionally_ErrorParameters);
@@ -302,7 +302,7 @@ namespace PowerPointLabs.ResizeLab
             }
             if (isForSameShapes)
             {
-                int errorCode = IsValidShapes(GetSelectedShapes());
+                var errorCode = IsValidShapes(GetSelectedShapes());
 
                 if (errorCode != -1)
                 {
@@ -329,17 +329,17 @@ namespace PowerPointLabs.ResizeLab
 
         private int IsValidShapes(PowerPoint.ShapeRange selectedShapes)
         {
-            PowerPoint.Shape referenceShape = selectedShapes[1];
+            var referenceShape = selectedShapes[1];
 
             if (referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
             {
                 return ResizeLabErrorHandler.ErrorCodeGroupShapeNotSupported;
             }
 
-            PowerPoint.Adjustments referenceAdjustments = referenceShape.Adjustments;
-            bool isAutoShapeOrCallout = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape
+            var referenceAdjustments = referenceShape.Adjustments;
+            var isAutoShapeOrCallout = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoAutoShape
                                        || referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoCallout;
-            bool isFreeform = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoFreeform;
+            var isFreeform = referenceShape.Type == Microsoft.Office.Core.MsoShapeType.msoFreeform;
 
             Utils.PPShape referencePPShape;
             List<System.Drawing.PointF> referenceShapePoints = null;
@@ -352,7 +352,7 @@ namespace PowerPointLabs.ResizeLab
 
             for (int i = 2; i <= selectedShapes.Count; i++)
             {
-                PowerPoint.Shape currentShape = selectedShapes[i];
+                var currentShape = selectedShapes[i];
 
                 if (currentShape.Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
                 {
@@ -366,7 +366,7 @@ namespace PowerPointLabs.ResizeLab
 
                 if (isAutoShapeOrCallout)
                 {
-                    PowerPoint.Adjustments currentAdjustments = currentShape.Adjustments;
+                    var currentAdjustments = currentShape.Adjustments;
 
                     if (currentAdjustments.Count != referenceAdjustments.Count)
                     {
@@ -383,17 +383,17 @@ namespace PowerPointLabs.ResizeLab
                 }
                 else if (isFreeform)
                 {
-                    Microsoft.Office.Core.MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
+                    var isAspectRatio = selectedShapes.LockAspectRatio;
                     selectedShapes.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoFalse;
 
-                    PowerPoint.Shape duplicateCurrentShape = currentShape.Duplicate()[1];
+                    var duplicateCurrentShape = currentShape.Duplicate()[1];
                     duplicateCurrentShape.Width = referenceShape.Width;
                     duplicateCurrentShape.Height = referenceShape.Height;
                     duplicateCurrentShape.Rotation = referenceShape.Rotation;
                     duplicateCurrentShape.Left = referenceShape.Left;
                     duplicateCurrentShape.Top = referenceShape.Top;
-                    Utils.PPShape currentPPShape = new Utils.PPShape(duplicateCurrentShape, false);
-                    List<System.Drawing.PointF> currentShapePoints = currentPPShape.Points;
+                    var currentPPShape = new Utils.PPShape(duplicateCurrentShape, false);
+                    var currentShapePoints = currentPPShape.Points;
                     duplicateCurrentShape.Delete();
 
                     selectedShapes.LockAspectRatio = isAspectRatio;
@@ -574,8 +574,8 @@ namespace PowerPointLabs.ResizeLab
 
         private void AnchorBtn_Checked(object sender, RoutedEventArgs e)
         {
-            RadioButton checkedButton = sender as RadioButton;
-            foreach (KeyValuePair<ResizeLabMain.AnchorPoint, RadioButton> anAnchorPair in _anchorButtonLookUp)
+            var checkedButton = sender as RadioButton;
+            foreach (var anAnchorPair in _anchorButtonLookUp)
             {
                 if (checkedButton.Equals(anAnchorPair.Value))
                 {
@@ -622,7 +622,7 @@ namespace PowerPointLabs.ResizeLab
 
         private PowerPoint.ShapeRange GetSelectedShapes(bool handleError = false)
         {
-            PowerPoint.Selection selection = GetSelection();
+            var selection = GetSelection();
 
             return _resizeLab.IsSelectionValid(selection, handleError) ? GetSelection().ShapeRange : null;
         }
@@ -634,7 +634,7 @@ namespace PowerPointLabs.ResizeLab
 
         private void ClickHandler(Action<PowerPoint.ShapeRange> resizeAction, int minNoOfSelectedShapes, string[] errorParameters)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+            var selectedShapes = GetSelectedShapes();
 
             if (selectedShapes == null || selectedShapes.Count < minNoOfSelectedShapes)
             {
@@ -649,9 +649,9 @@ namespace PowerPointLabs.ResizeLab
         private void ClickHandler(Action<PowerPoint.ShapeRange, float, float, bool> resizeAction, int minNoOfSelectedShapes,
             string[] errorParameters)
         {
-            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-            float slideWidth = this.GetCurrentPresentation().SlideWidth;
-            float slideHeight = this.GetCurrentPresentation().SlideHeight;
+            var selectedShapes = GetSelectedShapes();
+            var slideWidth = this.GetCurrentPresentation().SlideWidth;
+            var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
             if (selectedShapes == null || selectedShapes.Count < minNoOfSelectedShapes)
             {
@@ -668,7 +668,7 @@ namespace PowerPointLabs.ResizeLab
             Focus();
             _previewCallBack = delegate
             {
-                PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
+                var selectedShapes = GetSelectedShapes();
 
                 ModifySelectionAspectRatio();
                 Preview(selectedShapes, previewAction, minNoOfSelectedShapes);
@@ -685,9 +685,9 @@ namespace PowerPointLabs.ResizeLab
             Focus();
             _previewCallBack = delegate
             {
-                PowerPoint.ShapeRange selectedShapes = GetSelectedShapes();
-                float slideWidth = this.GetCurrentPresentation().SlideWidth;
-                float slideHeight = this.GetCurrentPresentation().SlideHeight;
+                var selectedShapes = GetSelectedShapes();
+                var slideWidth = this.GetCurrentPresentation().SlideWidth;
+                var slideHeight = this.GetCurrentPresentation().SlideHeight;
 
                 ModifySelectionAspectRatio();
                 Preview(selectedShapes, slideWidth, slideHeight, previewAction);

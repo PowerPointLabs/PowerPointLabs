@@ -8,16 +8,16 @@ namespace PowerPointLabs.PictureSlidesLab.Util
     {
         public static ScrollViewer FindScrollViewer(DependencyObject parent)
         {
-            int childCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < childCount; i++)
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (var i = 0; i < childCount; i++)
             {
-                DependencyObject elt = VisualTreeHelper.GetChild(parent, i);
+                var elt = VisualTreeHelper.GetChild(parent, i);
                 if (elt is ScrollViewer)
                 {
                     return (ScrollViewer)elt;
                 }
 
-                ScrollViewer result = FindScrollViewer(elt);
+                var result = FindScrollViewer(elt);
                 if (result != null)
                 {
                     return result;

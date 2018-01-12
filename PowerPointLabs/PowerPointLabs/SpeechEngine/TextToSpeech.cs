@@ -14,17 +14,17 @@ namespace PowerPointLabs.SpeechEngine
 
         public static IEnumerable<string> GetVoices()
         {
-            using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
+            using (var synthesizer = new SpeechSynthesizer())
             {
-                System.Collections.ObjectModel.ReadOnlyCollection<InstalledVoice> installedVoices = synthesizer.GetInstalledVoices();
-                IEnumerable<InstalledVoice> voices = installedVoices.Where(voice => voice.Enabled);
+                var installedVoices = synthesizer.GetInstalledVoices();
+                var voices = installedVoices.Where(voice => voice.Enabled);
                 return voices.Select(voice => voice.VoiceInfo.Name);
             }
         }
 
         public static void SaveStringToWaveFiles(string notesText, string folderPath, string fileNameFormat)
         {
-            TaggedText taggedNotes = new TaggedText(notesText);
+            var taggedNotes = new TaggedText(notesText);
             List<String> stringsToSave = taggedNotes.SplitByClicks();
             //MD5 md5 = MD5.Create();
 
@@ -44,7 +44,7 @@ namespace PowerPointLabs.SpeechEngine
 
         public static void SaveStringToWaveFile(String textToSave, String filePath)
         {
-            PromptBuilder builder = GetPromptForText(textToSave);
+            var builder = GetPromptForText(textToSave);
             PromptToAudio.SaveAsWav(builder, filePath);
         }
 
@@ -55,13 +55,13 @@ namespace PowerPointLabs.SpeechEngine
                 return;
             }
 
-            PromptBuilder builder = GetPromptForText(textToSpeak);
+            var builder = GetPromptForText(textToSpeak);
             PromptToAudio.Speak(builder);
         }
 
         private static PromptBuilder GetPromptForText(string textToConvert)
         {
-            TaggedText taggedText = new TaggedText(textToConvert);
+            var taggedText = new TaggedText(textToConvert);
             PromptBuilder builder = taggedText.ToPromptBuilder(DefaultVoiceName);
             return builder;
         }

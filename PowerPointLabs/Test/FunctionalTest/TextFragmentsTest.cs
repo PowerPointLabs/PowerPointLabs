@@ -18,7 +18,7 @@ namespace Test.FunctionalTest
         public void FT_TextFragmentsTest()
         {
             PpOperations.SelectSlide(3);
-            int[][] fragments = new[]
+            var fragments = new[]
             {
                 new[] {17, 37},
                 new[] {45, 114},
@@ -33,7 +33,7 @@ namespace Test.FunctionalTest
                 new[] {370, 388},
             };
 
-            foreach (int[] fragment in fragments)
+            foreach (var fragment in fragments)
             {
                 PpOperations.SelectTextInShape(ShapeName, fragment[0], fragment[1]);
                 PplFeatures.HighlightFragments();
@@ -44,8 +44,8 @@ namespace Test.FunctionalTest
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualSlideIndex);
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
+            var actualSlide = PpOperations.SelectSlide(actualSlideIndex);
+            var expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
         }

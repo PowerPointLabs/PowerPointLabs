@@ -73,18 +73,18 @@ namespace Test.FunctionalTest
 
         public void CropAndCompare(int testSlideNo, int expectedSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(testSlideNo);
+            var actualSlide = PpOperations.SelectSlide(testSlideNo);
             PpOperations.SelectShapesByPrefix("selectMe");
 
             // Execute the Crop To Slide feature
             PplFeatures.CropToSlide();
-            Microsoft.Office.Interop.PowerPoint.Shape resultShapes = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            System.IO.FileInfo resultShapesInPic = PpOperations.ExportSelectedShapes();
+            var resultShapes = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            var resultShapesInPic = PpOperations.ExportSelectedShapes();
 
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(expectedSlideNo);
+            var expSlide = PpOperations.SelectSlide(expectedSlideNo);
 
-            Microsoft.Office.Interop.PowerPoint.Shape expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            System.IO.FileInfo expShapeInPic = PpOperations.ExportSelectedShapes();
+            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            var expShapeInPic = PpOperations.ExportSelectedShapes();
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox

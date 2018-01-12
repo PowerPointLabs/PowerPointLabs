@@ -44,7 +44,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestLockAspectRatio()
         {
-            PowerPoint.ShapeRange shapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var shapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
 
             _resizeLab.ChangeShapesAspectRatio(shapes, true);
 
@@ -58,7 +58,7 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestUnlockAspectRatio()
         {
-            PowerPoint.ShapeRange shapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var shapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
 
             _resizeLab.ChangeShapesAspectRatio(shapes, false);
 
@@ -72,8 +72,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorTopLeft()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualTopLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualTopLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopLeft;
@@ -86,8 +86,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorTopLeft()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualTopLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualTopLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopLeft;
@@ -100,8 +100,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorTopCenter()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualTopCenter, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualTopCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopCenter;
@@ -114,8 +114,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorTopCenter()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualTopCenter, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualTopCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopCenter;
@@ -128,8 +128,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorTopRight()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualTopRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualTopRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopRight;
@@ -142,8 +142,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorTopRight()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualTopRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualTopRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.TopRight;
@@ -156,8 +156,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorMiddleLeft()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualMiddleLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualMiddleLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.MiddleLeft;
@@ -170,8 +170,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorMiddleLeft()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualMiddleLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualMiddleLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.MiddleLeft;
@@ -184,8 +184,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorCenter()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualCenter, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.Center;
@@ -198,8 +198,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorCenter()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualCenter, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.Center;
@@ -212,8 +212,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorMiddleRight()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualMiddleRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualMiddleRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.MiddleRight;
@@ -226,8 +226,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorMiddleRight()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualMiddleRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualMiddleRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.MiddleRight;
@@ -240,8 +240,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorBottomLeft()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualBottomLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualBottomLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomLeft;
@@ -254,8 +254,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorBottomLeft()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualBottomLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualBottomLeft, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomLeft;
@@ -268,8 +268,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorBottomCenter()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualBottomCenter, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualBottomCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomCenter;
@@ -282,8 +282,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorBottomCenter()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualBottomCenter, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualBottomCenter, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomCenter;
@@ -296,8 +296,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeVisualAnchorBottomRight()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorVisualBottomRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorVisualBottomRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomRight;
@@ -310,8 +310,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestEqualizeActualAnchorBottomRight()
         {
-            PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
-            PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.AnchorActualBottomRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.AnchorOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.AnchorActualBottomRight, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
             _resizeLab.AnchorPointType = ResizeLabMain.AnchorPoint.BottomRight;

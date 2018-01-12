@@ -158,7 +158,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                 Rect rcInterior = _prCropMask.RectInterior;
                 Rect rcExterior = _prCropMask.RectExterior;
 
-                double dx = args.HorizontalChange;
+                var dx = args.HorizontalChange;
 
                 // boundary: when minimized
                 if (rcInterior.Width - dx < 0)
@@ -166,9 +166,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                     dx = rcInterior.Width;
                 }
 
-                double newLeft = rcInterior.Left + dx;
-                double newWidth = rcInterior.Width - dx;
-                double newHeight = newWidth / SlideWidth * SlideHeight;
+                var newLeft = rcInterior.Left + dx;
+                var newWidth = rcInterior.Width - dx;
+                var newHeight = newWidth / SlideWidth * SlideHeight;
 
                 // boundary: when maximized
                 if (newLeft < rcExterior.Left && rcInterior.Top + newHeight > rcExterior.Bottom)
@@ -217,7 +217,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
         {
             if (sender is CropThumb)
             {
-                double dx = args.HorizontalChange;
+                var dx = args.HorizontalChange;
                 ZoomCroppingRect(dx);
             }
         }
@@ -233,8 +233,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                 dx = -rcInterior.Width;
             }
 
-            double newWidth = rcInterior.Width + dx;
-            double newHeight = newWidth / SlideWidth * SlideHeight;
+            var newWidth = rcInterior.Width + dx;
+            var newHeight = newWidth / SlideWidth * SlideHeight;
 
             // boundary: when maximized
             if (rcInterior.Left + newWidth > rcExterior.Right
@@ -278,7 +278,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                 Rect rcInterior = _prCropMask.RectInterior;
                 Rect rcExterior = _prCropMask.RectExterior;
 
-                double dy = args.VerticalChange;
+                var dy = args.VerticalChange;
 
                 // boundary: when minimized
 
@@ -287,9 +287,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                     dy = rcInterior.Height;
                 }
 
-                double newTop = rcInterior.Top + dy;
-                double newHeight = rcInterior.Height - dy;
-                double newWidth = newHeight / SlideHeight * SlideWidth;
+                var newTop = rcInterior.Top + dy;
+                var newHeight = rcInterior.Height - dy;
+                var newWidth = newHeight / SlideHeight * SlideWidth;
 
                 // boundary: when maximized
                 if (newTop < rcExterior.Top && rcInterior.Left + newWidth > rcExterior.Right)
@@ -341,7 +341,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                 Rect rcInterior = _prCropMask.RectInterior;
                 Rect rcExterior = _prCropMask.RectExterior;
 
-                double dx = args.HorizontalChange;
+                var dx = args.HorizontalChange;
 
                 // boundary: when minimized
                 if (rcInterior.Width - dx < 0)
@@ -349,10 +349,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
                     dx = rcInterior.Width;
                 }
 
-                double newWidth = rcInterior.Width - dx;
-                double newLeft = rcInterior.Right - newWidth;
-                double newHeight = newWidth / SlideWidth * SlideHeight;
-                double newTop = rcInterior.Bottom - newHeight;
+                var newWidth = rcInterior.Width - dx;
+                var newLeft = rcInterior.Right - newWidth;
+                var newHeight = newWidth / SlideWidth * SlideHeight;
+                var newTop = rcInterior.Bottom - newHeight;
 
                 // boundary: when maximized
                 if (newTop < rcExterior.Top && newLeft < rcExterior.Left)
@@ -400,8 +400,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment
         {
             if (sender is CropThumb)
             {
-                double dx = args.HorizontalChange;
-                double dy = args.VerticalChange;
+                var dx = args.HorizontalChange;
+                var dy = args.VerticalChange;
                 MoveCroppingRect(dx, dy);
             }
         }

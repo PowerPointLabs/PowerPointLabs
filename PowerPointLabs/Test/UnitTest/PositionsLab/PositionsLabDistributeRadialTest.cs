@@ -65,13 +65,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithEdgesFixedShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -84,13 +84,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithEdgesDynamicShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -103,13 +103,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithCenterFixedShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -122,13 +122,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleAtSecondWithCenterDynamicShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -141,13 +141,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleWithinSecondAndThirdWithEdgesFixedShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -160,13 +160,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectBoundary;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleWithinSecondAndThirdWithEdgesDynamicShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -179,13 +179,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Fixed;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleWithinSecondAndThirdWithCenterFixedShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }
@@ -198,13 +198,13 @@ namespace Test.UnitTest.PositionsLab
             PositionsLabSettings.DistributeSpaceReference = PositionsLabSettings.DistributeSpaceReferenceObject.ObjectCenter;
             PositionsLabSettings.DistributeShapeOrientation = PositionsLabSettings.RadialShapeOrientationObject.Dynamic;
 
-            PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
 
             Action<PowerPoint.ShapeRange> positionsAction = (shapes) => PositionsLabMain.DistributeRadial(shapes);
             ExecutePositionsAction(positionsAction, actualShapes, isConvertPPShape: false);
 
             PpOperations.SelectSlide(DistributeAngleWithinSecondAndThirdWithCenterDynamicShapeOrientationSlide);
-            PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
         }

@@ -46,7 +46,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestInsertImageReference()
         {
             // constructor for producing preview image
-            EffectsDesigner ed = new EffectsDesigner(_processingSlide);
+            var ed = new EffectsDesigner(_processingSlide);
             ed.PreparePreviewing(
                 _contentSlide, 
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight, 
@@ -62,7 +62,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
                 .Contains(Link));
 
             ed.ApplyImageReferenceInsertion(Link, "Calibri", "#000000", 14, "", Alignment.Left);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange refShape = PpOperations.SelectShapesByPrefix(
+            var refShape = PpOperations.SelectShapesByPrefix(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.ImageReference);
             Assert.IsTrue(
                 refShape.TextFrame2.TextRange.Text.Contains(Link));
@@ -72,7 +72,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestInsertBackground()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape bgShape = _designer.ApplyBackgroundEffect();
+            var bgShape = _designer.ApplyBackgroundEffect();
             Assert.IsTrue(bgShape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.BackGround));
             Assert.AreEqual(MsoShapeType.msoPicture, bgShape.Type);
@@ -88,8 +88,8 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         {
             _designer.ApplyTextEffect("Tahoma", "#123456", 3, 0);
             PpOperations.SelectSlide(1);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange shape = PpOperations.SelectShapesByPrefix("Title");
-            float originalTextSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
+            var shape = PpOperations.SelectShapesByPrefix("Title");
+            var originalTextSize = float.Parse(shape.Tags[Tag.OriginalFontSize]);
 
             Assert.AreEqual("Tahoma", shape.TextEffect.FontName);
             Assert.AreEqual(originalTextSize + 3, shape.TextEffect.FontSize);
@@ -100,7 +100,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestTextPositionAndAlignment()
         {
             _designer.ApplyTextPositionAndAlignment(Position.Left, Alignment.Auto);
-            TextBoxInfo tbInfo = new TextBoxes(
+            var tbInfo = new TextBoxes(
                 _contentSlide.Shapes.Range(), 
                 Pres.PageSetup.SlideWidth, 
                 Pres.PageSetup.SlideHeight)
@@ -126,7 +126,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestOverlayEffect()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyOverlayEffect("#000000", 35);
+            var shape = _designer.ApplyOverlayEffect("#000000", 35);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Overlay));
             Assert.AreEqual(MsoShapeType.msoAutoShape, shape.Type);
@@ -141,7 +141,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestBlurEffect()
         {
             TempPath.InitTempFolder();
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyBlurEffect();
+            var shape = _designer.ApplyBlurEffect();
 
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Blur));
@@ -155,7 +155,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         {
             _designer.ApplyTextboxEffect("#000000", 35, 0);
             PpOperations.SelectSlide(1);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange shapeRange = PpOperations.SelectShapesByPrefix(
+            var shapeRange = PpOperations.SelectShapesByPrefix(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.TextBox);
 
             Assert.AreEqual(1, shapeRange.Count);
@@ -166,7 +166,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestCircleRingsEffect()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyCircleRingsEffect("#000000", 35);
+            var shape = _designer.ApplyCircleRingsEffect("#000000", 35);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Overlay));
             Assert.AreEqual(MsoShapeType.msoGroup, shape.Type);
@@ -177,7 +177,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestRectBannerEffect()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyRectBannerEffect(BannerDirection.Auto, Position.Left,
+            var shape = _designer.ApplyRectBannerEffect(BannerDirection.Auto, Position.Left,
                 null, "#000000", 35);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Banner));
@@ -188,7 +188,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestRectOutlineEffect()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyRectOutlineEffect(null, "#000000", 35);
+            var shape = _designer.ApplyRectOutlineEffect(null, "#000000", 35);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Banner));
             Assert.AreEqual(MsoShapeType.msoAutoShape, shape.Type);
@@ -198,7 +198,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestFrameEffect()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyAlbumFrameEffect("#000000", 35);
+            var shape = _designer.ApplyAlbumFrameEffect("#000000", 35);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Overlay));
             Assert.AreEqual(MsoShapeType.msoAutoShape, shape.Type);
@@ -208,7 +208,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         [TestCategory("UT")]
         public void TestTriangleEffect()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplyTriangleEffect("#FFFFFF", "#000000", 35);
+            var shape = _designer.ApplyTriangleEffect("#FFFFFF", "#000000", 35);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.Overlay));
             Assert.AreEqual(MsoShapeType.msoGroup, shape.Type);
@@ -220,7 +220,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service
         public void TestSpecialEffectsEffect()
         {
             TempPath.InitTempFolder();
-            Microsoft.Office.Interop.PowerPoint.Shape shape = _designer.ApplySpecialEffectEffect(MatrixFilters.GreyScale, true);
+            var shape = _designer.ApplySpecialEffectEffect(MatrixFilters.GreyScale, true);
             Assert.IsTrue(shape.Name.StartsWith(
                 EffectsDesigner.ShapeNamePrefix + "_" + EffectName.SpecialEffect));
             Assert.AreEqual(MsoShapeType.msoPicture, shape.Type);

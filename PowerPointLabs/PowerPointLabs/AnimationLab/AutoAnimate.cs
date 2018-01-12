@@ -49,7 +49,7 @@ namespace PowerPointLabs.AnimationLab
         
         private static void AddCompleteAnimations(PowerPointSlide currentSlide, PowerPointSlide nextSlide)
         {
-            PowerPointAutoAnimateSlide addedSlide = currentSlide.CreateAutoAnimateSlide() as PowerPointAutoAnimateSlide;
+            var addedSlide = currentSlide.CreateAutoAnimateSlide() as PowerPointAutoAnimateSlide;
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
             LoadingDialogBox loadingDialog = new LoadingDialogBox(content: AnimationLabText.AutoAnimateLoadingText);

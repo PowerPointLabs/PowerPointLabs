@@ -40,7 +40,7 @@ namespace Test.FunctionalTest
         public void FT_PositionsLabDuplicateAndRotateTest()
         {
             PpOperations.MaximizeWindow();
-            IPositionsLabController positionsLab = PplFeatures.PositionsLab;
+            var positionsLab = PplFeatures.PositionsLab;
             positionsLab.OpenPane();
 
             TestOneShapeFixed(positionsLab);
@@ -51,7 +51,7 @@ namespace Test.FunctionalTest
 
         private void TestOneShapeFixed(IPositionsLabController positionsLab)
         {
-            Slide actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestOneFixed);
+            var actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestOneFixed);
 
             _shapeNames = new List<string> { Rectangle, Oval };
             Shape shapeStart = PpOperations.SelectShape(Oval)[1];
@@ -63,13 +63,13 @@ namespace Test.FunctionalTest
 
             RotateShape(shapeStart, shapeEnd);
 
-            Slide expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestOneFixed);
+            var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestOneFixed);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
         private void TestOneShapeDynamic(IPositionsLabController positionsLab)
         {
-            Slide actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestOneDynamic);
+            var actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestOneDynamic);
 
             _shapeNames = new List<string> { Rectangle, Triangle };
             Shape shapeStart = PpOperations.SelectShape(Triangle)[1];
@@ -81,13 +81,13 @@ namespace Test.FunctionalTest
 
             RotateShape(shapeStart, shapeEnd);
 
-            Slide expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestOneDynamic);
+            var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestOneDynamic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
         private void TestMultipleShapesFixed(IPositionsLabController positionsLab)
         {
-            Slide actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestMultipleFixed);
+            var actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestMultipleFixed);
 
             _shapeNames = new List<string> { Rectangle, Oval, Triangle };
             Shape shapeStart = PpOperations.SelectShape(Oval)[1];
@@ -99,13 +99,13 @@ namespace Test.FunctionalTest
 
             RotateShape(shapeStart, shapeEnd);
 
-            Slide expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestMultipleFixed);
+            var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestMultipleFixed);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
         private void TestMultipleShapesDynamic(IPositionsLabController positionsLab)
         {
-            Slide actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestMultipleDynamic);
+            var actualSlide = PpOperations.SelectSlide(OriginalShapesSlideNoTestMultipleDynamic);
 
             _shapeNames = new List<string> { Rectangle, Oval, Triangle };
             Shape shapeStart = PpOperations.SelectShape(Oval)[1];
@@ -117,7 +117,7 @@ namespace Test.FunctionalTest
 
             RotateShape(shapeStart, shapeEnd);
 
-            Slide expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestMultipleDynamic);
+            var expSlide = PpOperations.SelectSlide(ExpectedShapesSlideNoTestMultipleDynamic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
@@ -125,10 +125,10 @@ namespace Test.FunctionalTest
         // mouse drag & drop from Control to Shape to apply color
         private void RotateShape(Shape from, Shape to)
         {
-            Point startPt = new Point(
+            var startPt = new Point(
                 PpOperations.PointsToScreenPixelsX(from.Left + from.Width / 2),
                 PpOperations.PointsToScreenPixelsY(from.Top + from.Height / 2));
-            Point endPt = new Point(
+            var endPt = new Point(
                 PpOperations.PointsToScreenPixelsX(to.Left + to.Width/2),
                 PpOperations.PointsToScreenPixelsY(to.Top + to.Height/2));
             DragAndDrop(startPt, endPt);
@@ -147,7 +147,7 @@ namespace Test.FunctionalTest
 
         private void Click(Control target)
         {
-            Point pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
+            var pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
         }
         # endregion
     }

@@ -11,7 +11,7 @@ namespace PowerPointLabs
     {
         public void Execute(AddInPostDeploymentActionArgs args)
         {
-            string sourceFile = "";
+            var sourceFile = "";
             switch (Properties.Settings.Default.ReleaseType)
             {
                 case "dev":

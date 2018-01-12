@@ -24,9 +24,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncLineFill()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
+            var newShape = GetShape(OriginalShapesSlideNo, StraightLine);
             LineFillFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineFillSlideNo);
@@ -37,9 +37,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncLineWidth()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, Arrow);
+            var newShape = GetShape(OriginalShapesSlideNo, Arrow);
             LineWeightFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineWidthSlideNo);
@@ -50,9 +50,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncLineCompoundType()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
+            var newShape = GetShape(OriginalShapesSlideNo, StraightLine);
             LineCompoundTypeFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineCompoundTypeSlideNo);
@@ -63,9 +63,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncLineDashType()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
+            var newShape = GetShape(OriginalShapesSlideNo, StraightLine);
             LineDashTypeFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineDashTypeSlideNo);
@@ -76,9 +76,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncLineArrow()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
+            var newShape = GetShape(OriginalShapesSlideNo, StraightLine);
             LineArrowFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineArrowSlideNo);
@@ -89,9 +89,9 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncLineTransparency()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
+            var formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, Arrow);
+            var newShape = GetShape(OriginalShapesSlideNo, Arrow);
             LineTransparencyFormat.SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineTransparencySlideNo);
@@ -101,8 +101,8 @@ namespace Test.UnitTest.SyncLab
         //Changes in line style are too minute for CompareSlide to detect so we need to check them manually
         protected void CheckLineStyle(string shape, int actualShapesSlideNo, int expectedShapesSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Shape actualShape = GetShape(actualShapesSlideNo, shape);
-            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, shape);
+            var actualShape = GetShape(actualShapesSlideNo, shape);
+            var expectedShape = GetShape(expectedShapesSlideNo, shape);
 
             //Check transparency style
             Assert.IsTrue(actualShape.Line.Transparency == expectedShape.Line.Transparency,

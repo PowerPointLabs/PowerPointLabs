@@ -17,7 +17,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         // apply text formats to textbox & placeholer
         public void ApplyTextEffect(string fontFamily, string fontColor, int fontSizeToIncrease, int fontTransparency)
         {
-            PowerPoint.Shape shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
             {
                 return;
@@ -29,7 +29,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             shape.Fill.Visible = MsoTriState.msoFalse;
             shape.Line.Visible = MsoTriState.msoFalse;
 
-            Font2 font = shape.TextFrame2.TextRange.TrimText().Font;
+            var font = shape.TextFrame2.TextRange.TrimText().Font;
 
             if (!string.IsNullOrEmpty(fontColor))
             {
@@ -60,7 +60,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyTextGlowEffect(bool isUseTextGlow, string textGlowColor)
         {
-            PowerPoint.Shape shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+            var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
             if (shape == null)
             {
                 return;
@@ -92,7 +92,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         public void ApplyPseudoTextWhenNoTextShapes()
         {
-            bool isTextShapesEmpty = new TextBoxes(
+            var isTextShapesEmpty = new TextBoxes(
                 Shapes.Range(), SlideWidth, SlideHeight)
                 .IsTextShapesEmpty();
 

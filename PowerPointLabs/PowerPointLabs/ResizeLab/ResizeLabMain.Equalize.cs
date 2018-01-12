@@ -68,7 +68,7 @@ namespace PowerPointLabs.ResizeLab
         /// <param name="selectedShapes"></param>
         public void ResizeToSameHeightAndWidth(PowerPoint.ShapeRange selectedShapes)
         {
-            MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
+            var isAspectRatio = selectedShapes.LockAspectRatio;
 
             selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
             switch (ResizeType)
@@ -92,8 +92,8 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceHeight = GetReferenceHeight(selectedShapes);
-                float referenceWidth = GetReferenceWidth(selectedShapes);
+                var referenceHeight = GetReferenceHeight(selectedShapes);
+                var referenceWidth = GetReferenceWidth(selectedShapes);
 
                 if (!IsMoreThanOneShape(selectedShapes, Equalize_MinNoOfShapesRequired, true, Equalize_ErrorParameters) 
                     || (referenceHeight < 0) || (referenceWidth < 0))
@@ -103,8 +103,8 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i]);
-                    PointF anchorPoint = GetVisualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i]);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
@@ -129,8 +129,8 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceHeight = GetReferenceHeight(selectedShapes);
-                float referenceWidth = GetReferenceWidth(selectedShapes);
+                var referenceHeight = GetReferenceHeight(selectedShapes);
+                var referenceWidth = GetReferenceWidth(selectedShapes);
 
                 if (!IsMoreThanOneShape(selectedShapes, Equalize_MinNoOfShapesRequired, true, Equalize_ErrorParameters)
                     || (referenceHeight < 0) || (referenceWidth < 0))
@@ -140,8 +140,8 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i], false);
-                    PointF anchorPoint = GetActualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {

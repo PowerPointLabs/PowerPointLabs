@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
@@ -13,9 +11,9 @@ namespace PowerPointLabs.ActionFramework.CropLab
 
         protected override string GetContent(string ribbonId)
         {
-            string feature = ribbonId.Replace(CommonText.DynamicMenuId, "");
+            var feature = ribbonId.Replace(CommonText.DynamicMenuId, "");
 
-            StringBuilder xmlString = new System.Text.StringBuilder();
+            var xmlString = new System.Text.StringBuilder();
 
             for (int i = 0; i < PRESET_ASPECT_RATIOS.Length; i++)
             {

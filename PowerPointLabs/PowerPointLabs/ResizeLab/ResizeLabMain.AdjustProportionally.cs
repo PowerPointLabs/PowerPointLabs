@@ -67,8 +67,8 @@ namespace PowerPointLabs.ResizeLab
 
         public void AdjustAreaProportionally(PowerPoint.ShapeRange selectedShapes)
         {
-            MsoTriState isAspectRatio = selectedShapes.LockAspectRatio;
-            bool isLockedRatio = isAspectRatio == MsoTriState.msoTrue;
+            var isAspectRatio = selectedShapes.LockAspectRatio;
+            var isLockedRatio = isAspectRatio == MsoTriState.msoTrue;
 
             selectedShapes.LockAspectRatio = MsoTriState.msoFalse;
             AdjustActualAreaProportionally(selectedShapes, isLockedRatio);
@@ -84,7 +84,7 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceWidth = GetReferenceWidth(selectedShapes);
+                var referenceWidth = GetReferenceWidth(selectedShapes);
 
                 if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
                 {
@@ -93,10 +93,10 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    float newWidth = referenceWidth*
+                    var newWidth = referenceWidth*
                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
-                    PPShape shape = new PPShape(selectedShapes[i + 1]);
-                    System.Drawing.PointF anchorPoint = GetVisualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i + 1]);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteWidth = newWidth;
                     AlignVisualShape(shape, anchorPoint);
@@ -118,7 +118,7 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceHeight = GetReferenceHeight(selectedShapes);
+                var referenceHeight = GetReferenceHeight(selectedShapes);
 
                 if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
                 {
@@ -127,10 +127,10 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    float newHeight = referenceHeight*
+                    var newHeight = referenceHeight*
                                     (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
-                    PPShape shape = new PPShape(selectedShapes[i + 1]);
-                    System.Drawing.PointF anchorPoint = GetVisualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i + 1]);
+                    var anchorPoint = GetVisualAnchorPoint(shape);
 
                     shape.AbsoluteHeight = newHeight;
                     AlignVisualShape(shape, anchorPoint);
@@ -152,7 +152,7 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceWidth = GetReferenceWidth(selectedShapes);
+                var referenceWidth = GetReferenceWidth(selectedShapes);
 
                 if (referenceWidth <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
                 {
@@ -161,10 +161,10 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    float newWidth = referenceWidth*
+                    var newWidth = referenceWidth*
                                    (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
-                    PPShape shape = new PPShape(selectedShapes[i + 1], false);
-                    System.Drawing.PointF anchorPoint = GetActualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i + 1], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
 
                     shape.ShapeWidth = newWidth;
                     AlignActualShape(shape, anchorPoint);
@@ -186,7 +186,7 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceHeight = GetReferenceHeight(selectedShapes);
+                var referenceHeight = GetReferenceHeight(selectedShapes);
 
                 if (referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
                 {
@@ -195,10 +195,10 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    float newHeight = referenceHeight*
+                    var newHeight = referenceHeight*
                                     (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
-                    PPShape shape = new PPShape(selectedShapes[i + 1], false);
-                    System.Drawing.PointF anchorPoint = GetActualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i + 1], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
 
                     shape.ShapeHeight = newHeight;
                     AlignActualShape(shape, anchorPoint);
@@ -220,10 +220,10 @@ namespace PowerPointLabs.ResizeLab
         {
             try
             {
-                float referenceWidth = selectedShapes[1].Width;
-                float referenceHeight = selectedShapes[1].Height;
-                double referenceArea = (double)referenceWidth * referenceHeight;
-                double referenceRatio = (double)referenceHeight / referenceWidth;
+                var referenceWidth = selectedShapes[1].Width;
+                var referenceHeight = selectedShapes[1].Height;
+                var referenceArea = (double)referenceWidth * referenceHeight;
+                var referenceRatio = (double)referenceHeight / referenceWidth;
 
                 if (referenceWidth <= 0 || referenceHeight <= 0 || AdjustProportionallyProportionList?.Count != selectedShapes.Count)
                 {
@@ -232,10 +232,10 @@ namespace PowerPointLabs.ResizeLab
 
                 for (int i = 1; i < AdjustProportionallyProportionList.Count; i++)
                 {
-                    PPShape shape = new PPShape(selectedShapes[i + 1], false);
-                    System.Drawing.PointF anchorPoint = GetActualAnchorPoint(shape);
+                    var shape = new PPShape(selectedShapes[i + 1], false);
+                    var anchorPoint = GetActualAnchorPoint(shape);
 
-                    double newArea = referenceArea *
+                    var newArea = referenceArea *
                                     (AdjustProportionallyProportionList[i] / AdjustProportionallyProportionList[0]);
 
                     if (isLockedRatio)
@@ -245,8 +245,8 @@ namespace PowerPointLabs.ResizeLab
                         referenceRatio = (double)referenceHeight / referenceWidth;
                     }
 
-                    float newWidth = (float)Math.Sqrt(newArea / referenceRatio);
-                    float newHeight = (float)(newWidth * referenceRatio);
+                    var newWidth = (float)Math.Sqrt(newArea / referenceRatio);
+                    var newHeight = (float)(newWidth * referenceRatio);
                     
                     shape.ShapeWidth = newWidth;
                     shape.ShapeHeight = newHeight;

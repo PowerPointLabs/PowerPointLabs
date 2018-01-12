@@ -139,7 +139,7 @@ namespace PowerPointLabs.ShapesLab
             _nameFinishHandled = true;
             NameLabel = labelTextBox.Text;
 
-            string oldName = Path.GetFileNameWithoutExtension(ImagePath);
+            var oldName = Path.GetFileNameWithoutExtension(ImagePath);
 
             if (_isGoodName &&
                 !IsDuplicateName(oldName))
@@ -213,7 +213,7 @@ namespace PowerPointLabs.ShapesLab
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the
             // image. Therefore, we use using keyword to ensure a collection.
-            using (Bitmap bitmap = new Bitmap(ImagePath))
+            using (var bitmap = new Bitmap(ImagePath))
             {
                 thumbnailPanel.BackgroundImage = Utils.GraphicsUtil.CreateThumbnailImage(bitmap, 50, 50);
             }
@@ -231,7 +231,7 @@ namespace PowerPointLabs.ShapesLab
                 return false;
             }
 
-            string newPath = ImagePath.Replace(oldName, NameLabel);
+            var newPath = ImagePath.Replace(oldName, NameLabel);
 
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
@@ -251,7 +251,7 @@ namespace PowerPointLabs.ShapesLab
 
         private bool Verify(string name)
         {
-            Regex invalidChars = new Regex(InvalidCharsRegex);
+            var invalidChars = new Regex(InvalidCharsRegex);
             
             return !(string.IsNullOrWhiteSpace(name) ||
                      invalidChars.IsMatch(name) ||

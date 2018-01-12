@@ -37,7 +37,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
             _slideWidth = slideWidth;
             _slideHeight = slideHeight;
             TextShapes = new List<Shape>();
-            Shape shape = ShapeUtil.GetTextShapeToProcess(shapes);
+            var shape = ShapeUtil.GetTextShapeToProcess(shapes);
             if (shape != null)
             {
                 TextShapes.Add(shape);
@@ -83,7 +83,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         public void StartTextWrapping()
         {
-            foreach (Shape textShape in TextShapes)
+            foreach (var textShape in TextShapes)
             {
                 if (textShape.Width > _slideWidth / 2)
                 {
@@ -96,7 +96,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         public void RecoverTextWrapping()
         {
-            foreach (Shape textShape in TextShapes)
+            foreach (var textShape in TextShapes)
             {
                 if (StringUtil.IsNotEmpty(textShape.Tags[Tag.OriginalShapeWidth]))
                 {
@@ -126,13 +126,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
             SetupTextBoxesAlignment();
 
-            TextBoxInfo boxesInfo = GetTextBoxesInfo(TextShapes);
+            var boxesInfo = GetTextBoxesInfo(TextShapes);
             SetupTextBoxesPosition(boxesInfo);
 
-            float accumulatedHeight = 0f;
-            foreach (Shape textShape in TextShapes)
+            var accumulatedHeight = 0f;
+            foreach (var textShape in TextShapes)
             {
-                TextBoxInfo singleBoxInfo = GetTextBoxInfo(textShape);
+                var singleBoxInfo = GetTextBoxInfo(textShape);
 
                 AdjustShapeLeft(textShape, boxesInfo, singleBoxInfo);
                 AdjustShapeTop(textShape, singleBoxInfo, accumulatedHeight);
@@ -213,7 +213,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private void SetTextAlignment(MsoTextEffectAlignment alignment)
         {
-            foreach (Shape shape in TextShapes)
+            foreach (var shape in TextShapes)
             {
                 shape.TextEffect.Alignment = alignment;
             }
@@ -261,13 +261,13 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private TextBoxInfo GetTextBoxInfo(Shape textShape)
         {
-            TextBoxInfo result = new TextBoxInfo();
-            TextRange2 paragraphs = textShape.TextFrame2.TextRange.Paragraphs;
-            float rightMost = 0f;
-            float bottomMost = 0f;
+            var result = new TextBoxInfo();
+            var paragraphs = textShape.TextFrame2.TextRange.Paragraphs;
+            var rightMost = 0f;
+            var bottomMost = 0f;
             foreach (TextRange2 textRange in paragraphs)
             {
-                TextRange2 paragraph = textRange.TrimText();
+                var paragraph = textRange.TrimText();
                 if (StringUtil.IsNotEmpty(paragraph.Text))
                 {
                     result.Left = paragraph.BoundLeft < result.Left ? paragraph.BoundLeft : result.Left;
@@ -288,10 +288,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.Effect
 
         private TextBoxInfo GetTextBoxesInfo(IEnumerable<Shape> textShapes)
         {
-            TextBoxInfo result = new TextBoxInfo();
-            float rightMost = 0f;
-            float bottomMost = 0f;
-            foreach (TextBoxInfo partialResult in textShapes.Select(GetTextBoxInfo))
+            var result = new TextBoxInfo();
+            var rightMost = 0f;
+            var bottomMost = 0f;
+            foreach (var partialResult in textShapes.Select(GetTextBoxInfo))
             {
                 result.Left = partialResult.Left < result.Left ? partialResult.Left : result.Left;
                 result.Top = partialResult.Top < result.Top ? partialResult.Top : result.Top;

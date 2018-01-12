@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            List<Shape> result = new List<Shape>();
+            var result = new List<Shape>();
             if (option.IsUseOutlineStyle)
             {
-                Shape outlineOverlayShape = designer.ApplyRectOutlineEffect(imageShape, option.OutlineColor, 0);
+                var outlineOverlayShape = designer.ApplyRectOutlineEffect(imageShape, option.OutlineColor, 0);
                 result.Add(outlineOverlayShape);
             }
             return result;

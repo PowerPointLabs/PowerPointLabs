@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ShortcutsLab;
@@ -15,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         {
             this.StartNewUndoEntry();
 
-            Selection selection = this.GetCurrentSelection();
+            var selection = this.GetCurrentSelection();
             ConvertToPicture.Convert(selection);
         }
     }

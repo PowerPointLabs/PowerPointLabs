@@ -10,8 +10,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
     {
         public Factory.SliderPropHandlerFactory.SliderProperties GetSliderProperties(StyleOption option)
         {
-            Factory.SliderPropHandlerFactory.SliderProperties sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
-            int optValue = option.BlurDegree;
+            var sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
+            var optValue = option.BlurDegree;
             sliderProperties.Value = (optValue == 0) ? 0 : (optValue - 50) * 2;
             sliderProperties.Maximum = 100;
             sliderProperties.TickFrequency = 2;
@@ -30,7 +30,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
         {
             variant.Set("OptionName", "Customized");
             variant.Set("IsUseBlurStyle", true);
-            int variantValue = (value == 0) ? 0 : 50 + (value / 2);
+            var variantValue = (value == 0) ? 0 : 50 + (value / 2);
             variant.Set("BlurDegree", variantValue);
         }
     }

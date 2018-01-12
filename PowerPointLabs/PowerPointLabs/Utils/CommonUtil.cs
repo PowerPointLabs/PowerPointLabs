@@ -16,15 +16,15 @@ namespace PowerPointLabs.Utils
 
         public static string NextAvailableName(List<string> nameList, string name)
         {
-            List<string> orderedNameList = nameList.OrderBy(item => item, new Comparers.AtomicNumberStringCompare()).ToList();
-            int nextDefaultNumber = NextDefaultNumber(orderedNameList, name);
+            var orderedNameList = nameList.OrderBy(item => item, new Comparers.AtomicNumberStringCompare()).ToList();
+            var nextDefaultNumber = NextDefaultNumber(orderedNameList, name);
 
             return nextDefaultNumber == 0 ? name : string.Format("{0} {1}", name, nextDefaultNumber);
         }
 
         public static string SkipRegexCharacter(string str)
         {
-            Regex replacePattern = new Regex(@"([^\d\s\w])");
+            var replacePattern = new Regex(@"([^\d\s\w])");
 
             return replacePattern.Replace(str, "\\$1");
         }
@@ -35,7 +35,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static string FilenameBase64(string str)
         {
-            byte[] plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
             str = Convert.ToBase64String(plainTextBytes);
             str = str.Replace("+", "-");
             str = str.Replace("/", "_");
@@ -47,7 +47,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static string Base64Encode(string str)
         {
-            byte[] plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(str);
             str = Convert.ToBase64String(plainTextBytes);
             return str;
         }
@@ -57,7 +57,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static string Base64Decode(string base64EncodedData)
         {
-            byte[] base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
@@ -67,7 +67,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static string SerializeCollection(List<string> collection)
         {
-            string serialized = string.Join("@", collection.Select(Base64Encode));
+            var serialized = string.Join("@", collection.Select(Base64Encode));
             return serialized + "@" + ComputeCheckSum(serialized);
         }
 
@@ -77,15 +77,15 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static List<string> UnserializeCollection(string dataString)
         {
-            int lastDelim = dataString.LastIndexOf('@');
+            var lastDelim = dataString.LastIndexOf('@');
             if (lastDelim == -1)
             {
                 return null;
             }
 
             // Verify checksum
-            string hashCode = dataString.Substring(lastDelim + 1);
-            string serialized = dataString.Substring(0, lastDelim);
+            var hashCode = dataString.Substring(lastDelim + 1);
+            var serialized = dataString.Substring(0, lastDelim);
             if (ComputeCheckSum(serialized).ToString() != hashCode)
             {
                 return null;
@@ -113,7 +113,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static string[] GetUnusedStrings(IEnumerable<string> presentStrings, int nStrings)
         {
-            List<string> unusedStrings = new List<string>();
+            var unusedStrings = new List<string>();
 
             int longestString = presentStrings.Select(str => str.Length).Max();
             string baseString = new string('a', longestString);
@@ -142,9 +142,9 @@ namespace PowerPointLabs.Utils
 
         public static PointF RotatePoint(PointF p, PointF origin, float rotation)
         {
-            double rotationInRadian = DegreeToRadian(rotation);
-            double rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
-            double rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
+            var rotationInRadian = DegreeToRadian(rotation);
+            var rotatedX = Math.Cos(rotationInRadian) * (p.X - origin.X) - Math.Sin(rotationInRadian) * (p.Y - origin.Y) + origin.X;
+            var rotatedY = Math.Sin(rotationInRadian) * (p.X - origin.X) + Math.Cos(rotationInRadian) * (p.Y - origin.Y) + origin.Y;
 
             return new PointF((float)rotatedX, (float)rotatedY);
         }
@@ -159,17 +159,17 @@ namespace PowerPointLabs.Utils
         #region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
-            Regex namePattern = new Regex(string.Format("{0}(?: (\\d+))*", name));
-            int min = 0;
+            var namePattern = new Regex(string.Format("{0}(?: (\\d+))*", name));
+            var min = 0;
 
             if (!string.IsNullOrEmpty(namePattern.Match(nameList[0]).Groups[1].Value))
             {
                 return min;
             }
 
-            for (int i = 1; i < nameList.Count; i++)
+            for (var i = 1; i < nameList.Count; i++)
             {
-                int currentCnt = int.Parse(namePattern.Match(nameList[i]).Groups[1].Value);
+                var currentCnt = int.Parse(namePattern.Match(nameList[i]).Groups[1].Value);
 
                 if (currentCnt != min + 1)
                 {
@@ -189,7 +189,7 @@ namespace PowerPointLabs.Utils
         private static string ComputeCheckSum(string s)
         {
             uint x = 0;
-            foreach (char c in s)
+            foreach (var c in s)
             {
                 x += c;
                 x *= 565325351;

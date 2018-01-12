@@ -33,8 +33,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchLeftWithoutAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchLeft, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchLeft, _shapeNames);
 
             _resizeLab.StretchLeft(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
@@ -44,8 +44,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchLeftWithAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchLeftAspectRatio, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchLeftAspectRatio, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
             _resizeLab.StretchLeft(actualShapes);
@@ -56,8 +56,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchLeftOuterMost()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchLeftOuterMost, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchLeftOuterMost, _shapeNames);
 
             _resizeLab.ReferenceType = ResizeLabMain.StretchRefType.Outermost;
             _resizeLab.StretchLeft(actualShapes);
@@ -68,8 +68,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchRightWithoutAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchRight, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchRight, _shapeNames);
 
             _resizeLab.StretchRight(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
@@ -79,8 +79,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchRightWithAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchRightAspectRatio, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchRightAspectRatio, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
             _resizeLab.StretchRight(actualShapes);
@@ -91,8 +91,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchRightOuterMost()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchRightOuterMost, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchRightOuterMost, _shapeNames);
 
             _resizeLab.ReferenceType = ResizeLabMain.StretchRefType.Outermost;
             _resizeLab.StretchRight(actualShapes);
@@ -103,8 +103,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchTopWithoutAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchTop, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchTop, _shapeNames);
 
             _resizeLab.StretchTop(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
@@ -114,8 +114,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchTopWithAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchTopAspectRatio, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchTopAspectRatio, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
             _resizeLab.StretchTop(actualShapes);
@@ -126,8 +126,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchTopOuterMost()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchTopOuterMost, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchTopOuterMost, _shapeNames);
 
             _resizeLab.ReferenceType = ResizeLabMain.StretchRefType.Outermost;
             _resizeLab.StretchTop(actualShapes);
@@ -138,8 +138,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchBottomWithoutAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchBottom, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchBottom, _shapeNames);
 
             _resizeLab.StretchBottom(actualShapes);
             CheckShapes(expectedShapes, actualShapes);
@@ -149,8 +149,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchBottomWithAspectRatio()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchBottomAspectRatio, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchBottomAspectRatio, _shapeNames);
 
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
             _resizeLab.StretchBottom(actualShapes);
@@ -161,8 +161,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestStretchBottomOuterMost()
         {
-            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.StretchBottomOuterMost, _shapeNames);
+            var actualShapes = GetShapes(SlideNo.StretchOrigin, _shapeNames);
+            var expectedShapes = GetShapes(SlideNo.StretchBottomOuterMost, _shapeNames);
 
             _resizeLab.ReferenceType = ResizeLabMain.StretchRefType.Outermost;
             _resizeLab.StretchBottom(actualShapes);

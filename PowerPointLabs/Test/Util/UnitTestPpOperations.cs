@@ -56,15 +56,15 @@ namespace Test.Util
 
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
         {
-            Presentation presentation = App.Presentations.Open(pathToPresentation, WithWindow: MsoTriState.msoFalse);
-            List<ISlideData> slideData = presentation.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
+            var presentation = App.Presentations.Open(pathToPresentation, WithWindow: MsoTriState.msoFalse);
+            var slideData = presentation.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
             presentation.Close();
             return slideData;
         }
 
         public List<ISlideData> FetchCurrentPresentationData()
         {
-            List<ISlideData> slideData = Pres.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
+            var slideData = Pres.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
             return slideData;
         }
 
@@ -110,7 +110,7 @@ namespace Test.Util
 
         public Slide SelectSlide(int index)
         {
-            Slide slide = Pres.Slides[index];
+            var slide = Pres.Slides[index];
             CurrentSlide = slide;
             return slide;
         }
@@ -140,8 +140,8 @@ namespace Test.Util
                 return string.Empty;
             }
 
-            IEnumerable<Shape> notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-            Shape notesPageBody = notesPagePlaceholders
+            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            var notesPageBody = notesPagePlaceholders
                 .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
             string notesText = notesPageBody != null ? notesPageBody.TextFrame.TextRange.Text : string.Empty;
@@ -155,8 +155,8 @@ namespace Test.Util
                 return;
             }
 
-            IEnumerable<Shape> notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-            Shape notesPageBody = notesPagePlaceholders
+            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            var notesPageBody = notesPagePlaceholders
                 .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
             if (notesPageBody != null)
@@ -174,7 +174,7 @@ namespace Test.Util
         {
             if (CurrentSlide == null) return null;
 
-            List<string> nameList = new List<string>();
+            var nameList = new List<string>();
             nameList.Add(shapeName);
             _currentShape = CurrentSlide.Shapes.Range(nameList.ToArray());
             return _currentShape;
@@ -191,7 +191,7 @@ namespace Test.Util
         {
             if (CurrentSlide == null) return null;
 
-            List<string> nameList = new List<string>();
+            var nameList = new List<string>();
             foreach (Shape shape in CurrentSlide.Shapes)
             {
                 if (shape.Name.StartsWith(prefix))
@@ -205,7 +205,7 @@ namespace Test.Util
 
         public Shape RecursiveGetShapeWithPrefix(params string[] prefixes)
         {
-            Shape parentShape = SelectShapesByPrefix(prefixes[0])[1];
+            var parentShape = SelectShapesByPrefix(prefixes[0])[1];
             for (int i = 1; i < prefixes.Length; ++i)
             {
                 parentShape = parentShape.GroupItems.Cast<Shape>().FirstOrDefault(shape => shape.Name.StartsWith(prefixes[i]));
@@ -215,25 +215,25 @@ namespace Test.Util
 
         public FileInfo ExportSelectedShapes()
         {
-            ShapeRange shapes = _currentShape;
-            int hashCode = DateTime.Now.GetHashCode();
-            string pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
+            var shapes = _currentShape;
+            var hashCode = DateTime.Now.GetHashCode();
+            var pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
         }
 
         public string SelectAllTextInShape(string shapeName)
         {
-            Shape shape = CurrentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
-            TextRange2 textRange = shape.TextFrame2.TextRange;
+            var shape = CurrentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
+            var textRange = shape.TextFrame2.TextRange;
             textRange.Select();
             return textRange.Text;
         }
 
         public string SelectTextInShape(string shapeName, int startIndex, int endIndex)
         {
-            Shape shape = CurrentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
-            TextRange2 textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
+            var shape = CurrentSlide.Shapes.Cast<Shape>().FirstOrDefault(sh => sh.Name == shapeName);
+            var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
             textRange.Select();
             return textRange.Text;
         }

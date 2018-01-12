@@ -13,7 +13,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
         private PowerPoint.Shape AddPicture(string imageFile, EffectName effectName)
         {
-            PowerPoint.Shape imageShape = Shapes.AddPicture(imageFile,
+            var imageShape = Shapes.AddPicture(imageFile,
                 MsoTriState.msoFalse, MsoTriState.msoTrue, 0,
                 0);
             ChangeName(imageShape, effectName);

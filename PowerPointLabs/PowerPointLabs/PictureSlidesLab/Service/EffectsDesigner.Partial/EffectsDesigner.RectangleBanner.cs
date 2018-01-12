@@ -9,7 +9,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public PowerPoint.Shape ApplyRectBannerEffect(BannerDirection direction, Position textPos, PowerPoint.Shape imageShape,
             string overlayColor, int transparency)
         {
-            TextBoxInfo tbInfo =
+            var tbInfo =
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)

@@ -1,10 +1,7 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.ActionFramework.Common.Log;
+﻿using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Util;
-
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PictureSlidesLab.Service
@@ -79,7 +76,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             {
                 _slide.CustomLayout = contentSlide.CustomLayout;
                 // remove target textbox from the layout
-                Shape shape = ShapeUtil.GetTextShapeToProcess(Shapes);
+                var shape = ShapeUtil.GetTextShapeToProcess(Shapes);
                 if (shape != null)
                 {
                     shape.Delete();

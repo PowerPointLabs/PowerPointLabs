@@ -80,7 +80,7 @@ namespace PowerPointLabs.Models
             else
             {
                 GetShapeToZoomWithBackground(zoomShape);
-                PowerPoint.Effect lastDisappearEffect = DefaultMotionAnimation.AddZoomOutMotionAnimation(this,
+                var lastDisappearEffect = DefaultMotionAnimation.AddZoomOutMotionAnimation(this,
                     zoomSlideCroppedShapes, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 DefaultMotionAnimation.PreloadShape(this, zoomSlideCroppedShapes);
                 

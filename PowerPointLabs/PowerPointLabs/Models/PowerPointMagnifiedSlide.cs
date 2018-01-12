@@ -65,7 +65,7 @@ namespace PowerPointLabs.Models
         {
             //Delete all shapes on slide except slide-size crop copied from magnifying slide
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
-            IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
+            var matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 s.Delete();

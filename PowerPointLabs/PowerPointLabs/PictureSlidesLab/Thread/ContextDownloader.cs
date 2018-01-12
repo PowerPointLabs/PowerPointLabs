@@ -57,7 +57,7 @@ namespace PowerPointLabs.PictureSlidesLab.Thread
 
         public void Start()
         {
-            IDownloader downloader = _downloader ?? new Downloader();
+            var downloader = _downloader ?? new Downloader();
             downloader
                 .Get(_downloadLink, _destination)
                 .After(_onAfterDownload)

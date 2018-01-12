@@ -30,8 +30,8 @@ namespace Test.FunctionalTest
             PpOperations.ShowAllSlideNumbers();
             PplFeatures.GenerateTextAgenda();
 
-            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
-            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextWithSlideNumberDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -43,8 +43,8 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(AgendaExistsTitle, AgendaExistsContent,
                 PplFeatures.GenerateBeamAgenda, buttonNameToClick: "OK");
 
-            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
-            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesBeamWithSlideNumberDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -55,8 +55,8 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(AgendaExistsTitle, AgendaExistsContent,
                 PplFeatures.GenerateVisualAgenda, buttonNameToClick: "OK");
 
-            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
-            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
+            var actualSlides = PpOperations.FetchCurrentPresentationData();
+            var expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesVisualWithSlideNumberDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
