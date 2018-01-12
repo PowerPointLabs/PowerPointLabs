@@ -31,8 +31,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseVisualWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseWidth, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -44,8 +44,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseActualWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualIncreaseWidth, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualIncreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -57,8 +57,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseVisualWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseWidthAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -70,8 +70,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseActualWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualIncreaseWidthAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualIncreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -83,8 +83,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseVisualWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseWidth, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -96,8 +96,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseActualWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualDecreaseWidth, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualDecreaseWidth, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -109,8 +109,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseVisualWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseWidthAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -122,8 +122,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseActualWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualDecreaseWidthAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualDecreaseWidthAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -135,8 +135,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseVisualHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseHeight, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -148,8 +148,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseActualHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualIncreaseHeight, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualIncreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -161,8 +161,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseVisualHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseHeightAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualIncreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -174,8 +174,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightIncreaseActualHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualIncreaseHeightAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualIncreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -187,8 +187,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseVisualHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseHeight, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -200,8 +200,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseActualHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualDecreaseHeight, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualDecreaseHeight, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoFalse;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;
@@ -213,8 +213,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseVisualHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseHeightAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightVisualDecreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Visual;
@@ -226,8 +226,8 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestSlightDecreaseActualHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.SlightActualDecreaseHeightAspectRatio, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.SlightAdjustOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.SlightActualDecreaseHeightAspectRatio, _shapeNames);
             actualShapes.LockAspectRatio = MsoTriState.msoTrue;
 
             _resizeLab.ResizeType = ResizeLabMain.ResizeBy.Actual;

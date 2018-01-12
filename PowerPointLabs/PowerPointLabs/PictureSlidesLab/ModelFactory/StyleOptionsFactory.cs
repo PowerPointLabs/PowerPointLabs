@@ -24,9 +24,9 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         public StyleOptionsFactory()
         {
-            var catalog = new AggregateCatalog(
+            AggregateCatalog catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            var container = new CompositionContainer(catalog);
+            CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
         }
 
@@ -36,8 +36,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         /// <returns></returns>
         public List<List<StyleOption>> GetAllStylesVariationOptions()
         {
-            var options = new List<List<StyleOption>>();
-            foreach (var styleOptions in GetAllStyleOptions())
+            List<List<StyleOption>> options = new List<List<StyleOption>>();
+            foreach (IStyleOptions styleOptions in GetAllStyleOptions())
             {
                 options.Add(styleOptions.GetOptionsForVariation());
             }
@@ -50,8 +50,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
         /// <returns></returns>
         public List<StyleOption> GetAllStylesPreviewOptions()
         {
-            var options = new List<StyleOption>();
-            foreach (var styleOptions in GetAllStyleOptions())
+            List<StyleOption> options = new List<StyleOption>();
+            foreach (IStyleOptions styleOptions in GetAllStyleOptions())
             {
                 options.Add(styleOptions.GetDefaultOptionForPreview());
             }
@@ -60,8 +60,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         public StyleOption GetStylesPreviewOption(string targetStyle)
         {
-            var options = GetAllStylesPreviewOptions();
-            foreach (var option in options)
+            List<StyleOption> options = GetAllStylesPreviewOptions();
+            foreach (StyleOption option in options)
             {
                 if (option.StyleName == targetStyle)
                 {
@@ -73,8 +73,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory
 
         public List<StyleOption> GetStylesVariationOptions(string targetStyle)
         {
-            var allStylesVariationOptions = GetAllStylesVariationOptions();
-            foreach (var stylesVariationOptions in allStylesVariationOptions)
+            List<List<StyleOption>> allStylesVariationOptions = GetAllStylesVariationOptions();
+            foreach (List<StyleOption> stylesVariationOptions in allStylesVariationOptions)
             {
                 if (stylesVariationOptions[0].StyleName == targetStyle)
                 {

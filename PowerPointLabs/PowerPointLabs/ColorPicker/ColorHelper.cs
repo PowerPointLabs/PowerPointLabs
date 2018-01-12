@@ -23,8 +23,8 @@ namespace PowerPointLabs.ColorPicker
                 }
             }
 
-            var baseAngle = (float) originalColor.Hue / 240.0f * 360.0f;
-            var finalAngle = baseAngle + angle;
+            float baseAngle = (float) originalColor.Hue / 240.0f * 360.0f;
+            float finalAngle = baseAngle + angle;
             
             if (finalAngle > 360.0f)
             {
@@ -45,7 +45,7 @@ namespace PowerPointLabs.ColorPicker
 
         public static List<Color> GetAnalogousColorsForColor(HSLColor originalColor)
         {
-            var analogousColors = new List<Color>
+            List<Color> analogousColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, -30.0f),
                 GetColorShiftedByAngle(originalColor, 30.0f)
@@ -56,7 +56,7 @@ namespace PowerPointLabs.ColorPicker
 
         public static List<Color> GetTriadicColorsForColor(HSLColor originalColor)
         {
-            var triadicColors = new List<Color>
+            List<Color> triadicColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, -120.0f),
                 GetColorShiftedByAngle(originalColor, 120.0f)
@@ -67,7 +67,7 @@ namespace PowerPointLabs.ColorPicker
 
         public static List<Color> GetTetradicColorsForColor(HSLColor originalColor)
         {
-            var tetradicColors = new List<Color>
+            List<Color> tetradicColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, -90.0f),
                 GetColorShiftedByAngle(originalColor, 90.0f),
@@ -79,7 +79,7 @@ namespace PowerPointLabs.ColorPicker
 
         public static List<Color> GetSplitComplementaryColorsForColor(HSLColor originalColor)
         {
-            var splitComplementaryColors = new List<Color>
+            List<Color> splitComplementaryColors = new List<Color>
             {
                 GetColorShiftedByAngle(originalColor, 150.0f),
                 GetColorShiftedByAngle(originalColor, 210.0f)

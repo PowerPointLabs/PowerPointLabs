@@ -8,10 +8,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public PowerPoint.Shape ApplyBackgroundEffect()
         {
-            var imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
+            PowerPoint.Shape imageShape = AddPicture(Source.FullSizeImageFile ?? Source.ImageFile, EffectName.BackGround);
             imageShape.ZOrder(MsoZOrderCmd.msoSendToBack);
-            var slideWidth = SlideWidth;
-            var slideHeight = SlideHeight;
+            float slideWidth = SlideWidth;
+            float slideHeight = SlideHeight;
             FitToSlide.AutoFit(imageShape, slideWidth, slideHeight);
 
             CropPicture(imageShape);

@@ -38,7 +38,7 @@ namespace PowerPointLabs.AgendaLab
         {
             get
             {
-                var slides = PowerPointPresentation.Current.SelectedSlides;
+                List<PowerPointSlide> slides = PowerPointPresentation.Current.SelectedSlides;
                 if (slides.Count == 0)
                 {
                     return null;
@@ -49,19 +49,19 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide FindReferenceSlide()
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
             return slides.FirstOrDefault(AgendaSlide.IsReferenceslide);
         }
 
         private static List<PowerPointSlide> FindAllAgendaSlides()
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
             return slides.Where(AgendaSlide.IsAnyAgendaSlide).ToList();
         }
 
         private static List<PowerPointSlide> FindSlidesWithBeam()
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
             return slides.Where(HasBeamShape).ToList();
         }
 
@@ -77,7 +77,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static Type GetReferenceSlideType()
         {
-            var referenceSlide = FindReferenceSlide();
+            PowerPointSlide referenceSlide = FindReferenceSlide();
             if (referenceSlide == null)
             {
                 return Type.None;
@@ -87,7 +87,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static Type GetAnyAgendaSlideType()
         {
-            var agendaSlide = PowerPointPresentation.Current
+            PowerPointSlide agendaSlide = PowerPointPresentation.Current
                                                     .Slides
                                                     .FirstOrDefault(slide => AgendaSlide.IsAnyAgendaSlide(slide) ||
                                                                              HasBeamShape(slide));
@@ -110,7 +110,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static PowerPointSlide TryFindSuitableRefSlide(Type type)
         {
-            var firstSlide = PowerPointPresentation.Current.FirstSlide;
+            PowerPointSlide firstSlide = PowerPointPresentation.Current.FirstSlide;
             if (firstSlide == null)
             {
                 return null;
@@ -131,10 +131,10 @@ namespace PowerPointLabs.AgendaLab
         {
             get
             {
-                var sectionProperty = PowerPointPresentation.Current.SectionProperties;
-                var sections = new List<AgendaSection>(sectionProperty.Count);
+                SectionProperties sectionProperty = PowerPointPresentation.Current.SectionProperties;
+                List<AgendaSection> sections = new List<AgendaSection>(sectionProperty.Count);
 
-                for (var i = 1; i <= sectionProperty.Count; i++)
+                for (int i = 1; i <= sectionProperty.Count; i++)
                 {
                     sections.Add(new AgendaSection(sectionProperty.Name(i), i));
                 }
@@ -144,7 +144,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static List<AgendaSection> GetAllButFirstSection()
         {
-            var sections = Sections;
+            List<AgendaSection> sections = Sections;
             if (sections.Count > 1)
             {
                 sections.RemoveAt(0);
@@ -160,11 +160,11 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide FindSectionFirstNonAgendaSlide(int sectionIndex)
         {
-            var presentation = PowerPointPresentation.Current;
+            PowerPointPresentation presentation = PowerPointPresentation.Current;
             int slideCount = presentation.SlideCount;
 
             int currentIndex = SectionFirstSlideIndex(sectionIndex);
-            var slide = presentation.GetSlide(currentIndex);
+            PowerPointSlide slide = presentation.GetSlide(currentIndex);
 
             while (AgendaSlide.IsAnyAgendaSlide(slide))
             {
@@ -181,10 +181,10 @@ namespace PowerPointLabs.AgendaLab
 
         private static PowerPointSlide FindSectionLastNonAgendaSlide(int sectionIndex)
         {
-            var presentation = PowerPointPresentation.Current;
+            PowerPointPresentation presentation = PowerPointPresentation.Current;
 
             int currentIndex = SectionLastSlideIndex(sectionIndex);
-            var slide = presentation.GetSlide(currentIndex);
+            PowerPointSlide slide = presentation.GetSlide(currentIndex);
 
             while (AgendaSlide.IsAnyAgendaSlide(slide))
             {
@@ -204,7 +204,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static List<PowerPointSlide> AllSlidesAfterFirstSection()
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
             int firstSlideIndex = SectionFirstSlideIndex(2);
             int lastSlideIndex = PowerPointPresentation.Current.SlideCount;
 
@@ -250,16 +250,16 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static int SectionFirstSlideIndex(int sectionIndex)
         {
-            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
+            SectionProperties sectionProperties = PowerPointPresentation.Current.SectionProperties;
             return sectionProperties.FirstSlide(sectionIndex);
         }
 
         private static AgendaSection GetSlideSection(PowerPointSlide slide)
         {
-            var slideIndex = slide.Index;
+            int slideIndex = slide.Index;
 
-            var sections = Sections;
-            var firstSlideIndexes = sections.Select(SectionFirstSlideIndex).ToList();
+            List<AgendaSection> sections = Sections;
+            List<int> firstSlideIndexes = sections.Select(SectionFirstSlideIndex).ToList();
 
             int i = 0;
             for (; i < sections.Count; ++i)
@@ -277,7 +277,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static int SectionLastSlideIndex(int sectionIndex)
         {
-            var sectionProperties = PowerPointPresentation.Current.SectionProperties;
+            SectionProperties sectionProperties = PowerPointPresentation.Current.SectionProperties;
             int lastSlideIndex = PowerPointPresentation.Current.SlideCount;
 
             if (!IsLastSection(sectionIndex))
@@ -297,7 +297,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static List<PowerPointSlide> GetSectionSlides(AgendaSection section)
         {
-            var slides = PowerPointPresentation.Current.Slides;
+            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
 
             int firstSlideIndex = SectionFirstSlideIndex(section);
             int lastSlideIndex = SectionLastSlideIndex(section);

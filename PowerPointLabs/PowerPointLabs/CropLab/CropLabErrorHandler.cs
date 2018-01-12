@@ -90,7 +90,7 @@ namespace PowerPointLabs.CropLab
             {
                 return;
             }
-            var errorMsg = string.Format(GetErrorMessage(errorType), optionalParameters);
+            string errorMsg = string.Format(GetErrorMessage(errorType), optionalParameters);
             View.ShowErrorMessageBox(errorMsg);
         }
 

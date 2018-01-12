@@ -13,8 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            var result = GetOptions();
-            foreach (var styleOption in result)
+            List<StyleOption> result = GetOptions();
+            foreach (StyleOption styleOption in result)
             {
                 styleOption.IsUseFrameStyle = true;
                 styleOption.IsUseTextGlow = true;

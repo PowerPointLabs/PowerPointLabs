@@ -40,7 +40,7 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_TimerLabTest()
         {
-            var timerLab = PplFeatures.TimerLab;
+            ITimerLabController timerLab = PplFeatures.TimerLab;
             timerLab.OpenPane();
 
             TestCreateInitialTimer(timerLab);
@@ -79,7 +79,7 @@ namespace Test.FunctionalTest
         private void TestDeleteTimerBody(ITimerLabController timerLab)
         {
             PpOperations.SelectSlide(OriginalSlideNo);
-            var shapes = PpOperations.SelectShape(TimerBody);
+            ShapeRange shapes = PpOperations.SelectShape(TimerBody);
             shapes.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
@@ -93,9 +93,9 @@ namespace Test.FunctionalTest
             int expectedColor = PpOperations.SelectShape(TimerLineMarkerGroup)[1].Line.ForeColor.RGB;
 
             PpOperations.SelectSlide(OriginalSlideNo);
-            var lineMarkerGroup = PpOperations.SelectShape(TimerLineMarkerGroup);
+            ShapeRange lineMarkerGroup = PpOperations.SelectShape(TimerLineMarkerGroup);
             lineMarkerGroup.Line.ForeColor.RGB = expectedColor;
-            var timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
+            ShapeRange timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
             timeMarkerGroup.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
@@ -116,10 +116,10 @@ namespace Test.FunctionalTest
             int expectedColor = PpOperations.SelectShape(TimerTimeMarkerGroup)[1].TextFrame.TextRange.Font.Color.RGB;
 
             PpOperations.SelectSlide(OriginalSlideNo);
-            var timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
+            ShapeRange timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
             timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB = expectedColor;
             List<string> sliderComponentNames = new List<string> { TimerSliderHead, TimerSliderBody };
-            var sliderComponents = PpOperations.SelectShapes(sliderComponentNames);
+            ShapeRange sliderComponents = PpOperations.SelectShapes(sliderComponentNames);
             sliderComponents.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
@@ -146,8 +146,8 @@ namespace Test.FunctionalTest
 
         private void AssertIsSame(int actualSlideNo, int expectedSlideNo)
         {
-            var actualSlide = PpOperations.SelectSlide(actualSlideNo);
-            var expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            Slide actualSlide = PpOperations.SelectSlide(actualSlideNo);
+            Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
 
             SlideUtil.IsSameShapes(expectedSlide, actualSlide);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);

@@ -133,7 +133,7 @@ namespace PowerPointLabs.AudioMisc
                 length = GetAudioLength(saveName);  
             }
 
-            var audio = new Audio
+            Audio audio = new Audio
                             {
                                 Name = name,
                                 SaveName = saveName,
