@@ -338,7 +338,7 @@ namespace PowerPointLabs.PositionsLab
         {
             //Remove dragging control of user
             this.GetCurrentSelection().Unselect();
-            System.Drawing.PointF p = System.Windows.Forms.Control.MousePosition;
+            System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
             float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), _prevMousePos);
             float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), p) - prevAngle;
