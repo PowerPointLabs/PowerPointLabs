@@ -59,18 +59,18 @@ namespace PowerPointLabs.XMLMisc
                 IEnumerable<XElement> audioShape = element.Elements(_p + "pic");
                 Regex pptSpeechFormat = new Regex("PowerPointLabs|AudioGen Speech \\d+");
 
-                var data = from item in audioShape
+                IEnumerable<Data.AudioGenSpeechData> data = from item in audioShape
                            where
                                pptSpeechFormat.IsMatch(item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value)
-                           select new
+                           select new Data.AudioGenSpeechData
                                       {
-                                          name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
-                                          audioID = item.Element(_p + "nvPicPr").Element(_p + "nvPr").Element(_a + "audioFile").Attribute(_r + "link").Value
+                                          Name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
+                                          AudioID = item.Element(_p + "nvPicPr").Element(_p + "nvPr").Element(_a + "audioFile").Attribute(_r + "link").Value
                                       };
 
-                foreach (var entry in data)
+                foreach (Data.AudioGenSpeechData entry in data)
                 {
-                    shapeFileMapper[entry.name] = audioIDFileMapper[entry.audioID];
+                    shapeFileMapper[entry.Name] = audioIDFileMapper[entry.AudioID];
                 }
             }
         }

@@ -647,6 +647,7 @@
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>
