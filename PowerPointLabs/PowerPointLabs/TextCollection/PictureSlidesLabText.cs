@@ -75,7 +75,7 @@
         public const string ErrorImageDownloadCorrupted =
             "Failed to load image. Please try again.";
         public const string ErrorFailedToLoad =
-            "Failed to load image. ";
+            "Failed to load image.";
         public const string ErrorUrlLinkIncorrect =
             "The download link is not in the correct format. Did the link miss out 'http://'?";
         public const string ErrorNoSelectedSlide =

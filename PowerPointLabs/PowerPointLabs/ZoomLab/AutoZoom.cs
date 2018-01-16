@@ -39,7 +39,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    System.Windows.Forms.MessageBox.Show("No next slide is found. Please select the correct slide", "Unable to Add Animations");
+                    System.Windows.Forms.MessageBox.Show("No next slide is found. Please select the correct slide.", "Unable to Add Animations");
                     addedSlide = null;
                     return;
                 }
@@ -141,7 +141,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
-                    System.Windows.Forms.MessageBox.Show("No previous slide is found. Please select the correct slide", "Unable to Add Animations");
+                    System.Windows.Forms.MessageBox.Show("No previous slide is found. Please select the correct slide.", "Unable to Add Animations");
                     addedSlide = null;
                     return;
                 }

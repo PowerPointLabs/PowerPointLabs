@@ -34,7 +34,7 @@ namespace PowerPointLabs.ResizeLab.Views
             }
             else
             {
-                MessageBox.Show("Please enter a value greater than 0", "Error");
+                MessageBox.Show("Please enter a value greater than 0.", "Error");
             }
         }
 

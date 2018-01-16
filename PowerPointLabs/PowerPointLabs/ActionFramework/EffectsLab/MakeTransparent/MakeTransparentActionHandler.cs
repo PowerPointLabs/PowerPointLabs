@@ -23,7 +23,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show("Please select at least 1 shape");
+                MessageBox.Show("Please select at least 1 shape.");
                 return;
             }
 

@@ -98,7 +98,7 @@ namespace PowerPointLabs.ResizeLab.Views
                 }
                 else
                 {
-                    MessageBox.Show("Please enter a value greater than 0 (Shape " + (i + 1)/2 + ")", "Error");
+                    MessageBox.Show("Please enter a value greater than 0 (Shape " + (i + 1)/2 + ").", "Error");
                     return;
                 }
             }
