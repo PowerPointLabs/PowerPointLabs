@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
@@ -30,12 +31,14 @@ namespace PowerPointLabs.HighlightLab
                 switch (userSelection)
                 {
                     case HighlightTextSelection.kShapeSelected:
+                        // grey out "Highlight Text" button
                         return;
                     case HighlightTextSelection.kTextSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                         selectedText = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
                         break;
                     case HighlightTextSelection.kNoneSelected:
+                        // grey out "Highlight Text" button
                         return;
                     default:
                         return;
