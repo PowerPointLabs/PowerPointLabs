@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Xml;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
@@ -27,6 +27,8 @@ namespace PowerPointLabs.HighlightLab
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
 
+
+
                 //Get shapes to consider for animation
                 switch (userSelection)
                 {
@@ -39,6 +41,13 @@ namespace PowerPointLabs.HighlightLab
                         break;
                     case HighlightTextSelection.kNoneSelected:
                         // grey out "Highlight Text" button
+                        /*
+                        XmlDocument ribbon1Doc = new XmlDocument();
+                        ribbon1Doc.LoadXml("Ribbon1.xml");
+
+                        XmlElement highlightTextButton = ribbon1Doc.GetElementById("HighlightTextButton");
+                        System.Diagnostics.Debug.WriteLine("Found attribute " + highlightTextButton.HasAttribute("getEnabled"));
+                        */
                         return;
                     default:
                         return;
