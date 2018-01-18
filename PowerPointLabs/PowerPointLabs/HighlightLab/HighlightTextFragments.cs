@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Xml;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
@@ -28,26 +26,16 @@ namespace PowerPointLabs.HighlightLab
                 Office.TextRange2 selectedText = null;
 
 
-
                 //Get shapes to consider for animation
                 switch (userSelection)
                 {
                     case HighlightTextSelection.kShapeSelected:
-                        // grey out "Highlight Text" button
                         return;
                     case HighlightTextSelection.kTextSelected:
                         selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
                         selectedText = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange2.TrimText();
                         break;
                     case HighlightTextSelection.kNoneSelected:
-                        // grey out "Highlight Text" button
-                        /*
-                        XmlDocument ribbon1Doc = new XmlDocument();
-                        ribbon1Doc.LoadXml("Ribbon1.xml");
-
-                        XmlElement highlightTextButton = ribbon1Doc.GetElementById("HighlightTextButton");
-                        System.Diagnostics.Debug.WriteLine("Found attribute " + highlightTextButton.HasAttribute("getEnabled"));
-                        */
                         return;
                     default:
                         return;
@@ -61,7 +49,6 @@ namespace PowerPointLabs.HighlightLab
                 {
                     return;
                 }
-
                 List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
                 GroupShapesForAnimation(selectionToAnimate);
 
