@@ -15,7 +15,8 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
         {
             try
             {
-                if (this.GetAddIn().Application.ActiveWindow.Selection.TextRange2.TrimText().Length > 0)
+                if (this.GetAddIn().Application.ActiveWindow.Selection.Type == PpSelectionType.ppSelectionText && 
+                    this.GetAddIn().Application.ActiveWindow.Selection.TextRange2.TrimText().Length > 0)
                 {
                     return this.GetRibbonUi().HighlightTextFragmentsEnabled;
                 }
