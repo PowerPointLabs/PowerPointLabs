@@ -502,6 +502,16 @@ namespace PowerPointLabs.PositionsLab
 
         #region Distribute
 
+        public class GridSpace
+        {
+            public float RowDifference { get; }
+            public float ColDifference { get; }
+            public GridSpace(float rowDifference, float colDifference)
+            {
+                RowDifference = rowDifference;
+                ColDifference = colDifference;
+            }
+        }
         public static void DistributeHorizontal(List<PPShape> selectedShapes, float slideWidth)
         {
             bool isSlide = PositionsLabSettings.DistributeReference == PositionsLabSettings.DistributeReferenceObject.Slide;
@@ -1499,18 +1509,17 @@ namespace PowerPointLabs.PositionsLab
             float rowDifference = rowWidth / (rowLength - 1);
             float colDifference = colHeight / (colLength - 1);
 
-            float[,] gridSpaces = new float[selectedShapes.Count, 2];
+            GridSpace[] gridSpaces = new GridSpace[selectedShapes.Count];
 
             for (int i = 0; i < selectedShapes.Count; i++)
             {
-                gridSpaces[i, 0] = rowDifference;
-                gridSpaces[i, 1] = colDifference;
+                gridSpaces[i] = new GridSpace(rowDifference, colDifference);
             }
 
             DistributeGridByRow(selectedShapes, rowLength, colLength, gridSpaces, 0, selectedShapes.Count - 1);
         }
 
-        public static void DistributeGridByRow(List<PPShape> selectedShapes, int rowLength, int colLength, float[,] gridSpaces, int start, int end)
+        public static void DistributeGridByRow(List<PPShape> selectedShapes, int rowLength, int colLength, GridSpace[] gridSpaces, int start, int end)
         {
             int numShapes = selectedShapes.Count;
             int numIndicesToSkip = IndicesToSkip(numShapes, rowLength, PositionsLabSettings.DistributeGridAlignment);
@@ -1530,20 +1539,20 @@ namespace PowerPointLabs.PositionsLab
                 if (i % rowLength == 0 && i != 0)
                 {
                     posX = startingAnchor.X;
-                    posY += gridSpaces[i, 1];
+                    posY += gridSpaces[i].ColDifference;
                 }
 
                 //If last row, offset by num of indices to skip
                 if (numShapes - i == remainder)
                 {
-                    posX += numIndicesToSkip * gridSpaces[i, 0];
+                    posX += numIndicesToSkip * gridSpaces[i].RowDifference;
                 }
 
                 PPShape currentShape = selectedShapes[i];
                 currentShape.IncrementLeft(posX - currentShape.VisualCenter.X);
                 currentShape.IncrementTop(posY - currentShape.VisualCenter.Y);
 
-                posX += gridSpaces[i, 0];
+                posX += gridSpaces[i].RowDifference;
             }
         }
 
