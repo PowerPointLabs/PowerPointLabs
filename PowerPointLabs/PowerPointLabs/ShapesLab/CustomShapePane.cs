@@ -1526,9 +1526,9 @@ namespace PowerPointLabs.ShapesLab
 
             ClickTimerReset();
         }
-        # endregion
+        #endregion
 
-        # region search box appearance and behaviors
+        #region search box appearance and behaviors
         /*
         private bool _searchBoxFocused = false;
         protected override void OnLoad(EventArgs e)
@@ -1575,6 +1575,49 @@ namespace PowerPointLabs.ShapesLab
             }
         }
         */
-        # endregion
+        #endregion
+
+        #region GUI Handles
+
+        private void AddShapeButton_Click(object sender, EventArgs e)
+        {
+            // var selection = this.GetCurrentSelection(); don't use this. obsolete. use action framework
+            //if ((selection.Type != PpSelectionType.ppSelectionShapes &&
+            //    selection.Type != PpSelectionType.ppSelectionText) ||
+            //    selection.ShapeRange.Count != 1)
+            //{
+            //    MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
+            //    return;
+            //}
+
+            //var shape = selection.ShapeRange[1];
+            //if (selection.HasChildShapeRange)
+            //{
+            //    if (selection.ChildShapeRange.Count != 1)
+            //    {
+            //        MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
+            //        return;
+            //    }
+            //    shape = selection.ChildShapeRange[1];
+            //}
+
+            //if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
+            //    shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
+            //    shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
+            //{
+            //    MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
+            //    return;
+            //}
+            //Dialog = new SyncFormatDialog(shape);
+            //Dialog.ObjectName = shape.Name;
+            //bool? result = Dialog.ShowDialog();
+            //if (!result.HasValue || !(bool)result)
+            //{
+            //    return;
+            //}
+            //AddFormatToList(shape, Dialog.ObjectName, Dialog.Formats);
+            //Dialog = null;
+        }
+        #endregion
     }
 }
