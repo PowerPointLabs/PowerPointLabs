@@ -44,6 +44,12 @@ namespace PowerPointLabs.AutoUpdate
             return this;
         }
 
+        public void Dispose()
+        {
+            // Dispose web client after downloading or when error occurs
+            this._client.Dispose();
+        }
+
         public void Start()
         {
             try
@@ -91,6 +97,10 @@ namespace PowerPointLabs.AutoUpdate
             {
                 CallWhenErrorDelegate(e);
                 Logger.LogException(e, "Failed to execute Downloader.StartDownload");
+            }
+            finally
+            {
+                Dispose();
             }
         }
     }
