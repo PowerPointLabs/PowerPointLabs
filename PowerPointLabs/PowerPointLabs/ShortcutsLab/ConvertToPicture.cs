@@ -14,7 +14,7 @@ namespace PowerPointLabs.ShortcutsLab
     internal static class ConvertToPicture
     {
 #pragma warning disable 0618
-        public static int zOrder;
+        private static int zOrder;
 
         public static void Convert(PowerPoint.Selection selection)
         {
