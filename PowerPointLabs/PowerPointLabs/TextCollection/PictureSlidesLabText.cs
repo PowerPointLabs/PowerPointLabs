@@ -87,8 +87,8 @@
         public const string ErrorWhenInitialize =
             "Failed to initialize Picture Slides Lab. Some functions may not work.";
 
-        public const string DragAndDropInstruction =
-            "Drag and Drop here to get image.";
+        public const string CreatePictureItemToolTip = "Please select a picture.";
+        public const string DragAndDropInstruction = "Drag and Drop here to get image.";
 
         public const string InfoPasteNothing = "No picture to paste.";
         public const string InfoPasteThumbnail = "Pasted successfully! But you might have pasted the thumbnail picture.";

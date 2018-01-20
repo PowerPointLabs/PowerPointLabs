@@ -18,7 +18,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         {
             if (selectedShapes.Count <= 0)
             {
-                MessageBox.Show("Please select at least one shape.", "Error");
+                MessageBox.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorCaption);
                 return null;
             }
 

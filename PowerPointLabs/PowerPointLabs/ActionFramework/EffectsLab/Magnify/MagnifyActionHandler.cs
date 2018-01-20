@@ -29,7 +29,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
             catch (Exception)
             {
-                MessageBox.Show("Please select an area to magnify.");
+                MessageBox.Show(TextCollection.EffectsLabText.MagnifyActionHandlerReminderText);
 
                 return;
             }

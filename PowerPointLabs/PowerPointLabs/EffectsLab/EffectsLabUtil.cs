@@ -106,7 +106,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show("Please select at least 1 shape.");
+                MessageBox.Show(TextCollection.EffectsLabText.SelectAtLeastOneShapeReminderText);
                 return null;
             }
             catch (Exception e)

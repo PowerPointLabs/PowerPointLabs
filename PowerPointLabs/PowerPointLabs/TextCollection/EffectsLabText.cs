@@ -75,6 +75,9 @@
             "Recolor everything in the slide except for the selected shapes.\n\n" +
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
 
+        public const string MagnifyActionHandlerReminderText = "Please select an area to magnify.";
+        public const string SelectAtLeastOneShapeReminderText = "Please select at least 1 shape.";
+
         public const string ErrorDialogTitle = "Unable to execute action";
         public const string ErrorBlurSelectedNoSelection = "'Blur Selected' requires at least one shape or text box to be selected.";
         public const string ErrorBlurSelectedNonShapeOrTextBox = "'Blur Selected' only supports shape and text box objects.";

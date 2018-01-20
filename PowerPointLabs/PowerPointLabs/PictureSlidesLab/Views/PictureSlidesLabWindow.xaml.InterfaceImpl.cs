@@ -113,7 +113,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             return new ImageItem
             {
                 ImageFile = StoragePath.NoPicturePlaceholderImgPath,
-                Tooltip = "Please select a picture."
+                Tooltip = TextCollection.PictureSlidesLabText.CreatePictureItemToolTip
             };
         }
 

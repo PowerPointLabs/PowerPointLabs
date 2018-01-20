@@ -13,6 +13,9 @@
         public const string ErrorInvalidSelection = "You need to select at least {1} {2} before applying '{0}'.";
         public const string ErrorNotSameShapes = "You need to select the same type of objects before applying 'Adjust Area Proportionally'.";
         public const string ErrorGroupShapeNotSupported = "'Adjust Area Proportionally' does not support grouped objects.";
+        public const string ErrorValueLessThanEqualsZero = "Please enter a value greater than 0.";
+        public const string ErrorValueLessThanEqualsZeroWithShape = "Please enter a value greater than 0 (Shape {0}).";
         public const string ErrorUndefined = "Undefined error in Resize Lab.";
+
     }
 }
