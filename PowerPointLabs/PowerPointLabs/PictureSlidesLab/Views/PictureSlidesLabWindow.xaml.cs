@@ -863,7 +863,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             catch (Exception expt)
             {
-                ShowErrorMessageBox("Failed when loading preview images.", expt);
+                ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToLoadPreviewImages, expt);
                 Logger.LogException(expt, "VariantsComboBox_OnSelectionChanged");
             }
         }

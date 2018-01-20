@@ -36,7 +36,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             if (shapeRange.Count > 1 || shapeRange[1].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
             {
-                MessageBox.Show("Only one magnify area is allowed.");
+                MessageBox.Show(TextCollection.EffectsLabText.MagnifyOnlyOneAreaReminderText);
 
                 return;
             }

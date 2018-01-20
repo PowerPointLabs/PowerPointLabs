@@ -862,7 +862,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Error", "Error during setup.", e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorCaption, TextCollection.CommonText.ErrorDuringSetup, e);
                 throw;
             }
         }

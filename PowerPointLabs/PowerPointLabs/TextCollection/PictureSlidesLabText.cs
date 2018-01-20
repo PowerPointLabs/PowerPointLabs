@@ -76,6 +76,8 @@
             "Failed to load image. Please try again.";
         public const string ErrorFailedToLoad =
             "Failed to load image.";
+        public const string ErrorFailedToLoadPreviewImages =
+            "Failed when loading preview images.";
         public const string ErrorUrlLinkIncorrect =
             "The download link is not in the correct format. Did the link miss out 'http://'?";
         public const string ErrorNoSelectedSlide =
@@ -86,6 +88,14 @@
             "No Picture Slides Lab styles are detected for the current slide.";
         public const string ErrorWhenInitialize =
             "Failed to initialize Picture Slides Lab. Some functions may not work.";
+        public const string ErrorFailedToRetrieveInfoFromImage = 
+            "Failed when retrieving information from the selected preview image.";
+        public const string ErrorFailedToFetchPictureAspect =
+            "Failed when fetching picture aspect.";
+        public const string ErrorFailedToProcessPictureAspect =
+            "Failed when processing picture aspect.";
+        public const string ErrorFailedToGeneratePictureAspect =
+            "Failed when generating picture aspect.";
 
         public const string CreatePictureItemToolTip = "Please select a picture.";
         public const string DragAndDropInstruction = "Drag and Drop here to get image.";

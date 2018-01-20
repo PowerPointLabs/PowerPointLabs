@@ -16,11 +16,11 @@ namespace PowerPointLabs.ResizeLab
         {
             if (exception != null)
             {
-                ErrorDialogBox.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorCaption, content, exception);
             }
             else
             {
-                MessageBox.Show(content, "Error");
+                MessageBox.Show(content, TextCollection.CommonText.ErrorCaption);
             }
         }
 

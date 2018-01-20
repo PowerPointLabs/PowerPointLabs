@@ -842,7 +842,7 @@ namespace PowerPointLabs.TimerLab
         #region Error Handling
         private void ShowErrorMessageBox(string content)
         {
-            MessageBox.Show(content, "Error");
+            MessageBox.Show(content, TextCollection.CommonText.ErrorCaption);
         }
 
         #endregion

@@ -76,6 +76,7 @@
             "To perform this action, select the shape(s) or picture(s) to keep, then click this button.";
 
         public const string MagnifyActionHandlerReminderText = "Please select an area to magnify.";
+        public const string MagnifyOnlyOneAreaReminderText = "Only one magnify area is allowed.";
         public const string SelectAtLeastOneShapeReminderText = "Please select at least 1 shape.";
 
         public const string ErrorDialogTitle = "Unable to execute action";

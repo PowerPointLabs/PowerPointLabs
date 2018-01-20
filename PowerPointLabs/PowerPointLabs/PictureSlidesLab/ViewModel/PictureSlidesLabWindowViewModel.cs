@@ -346,7 +346,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when retrieving information from the selected preview image.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToRetrieveInfoFromImage, e);
                 Logger.LogException(e, "UpdateStyleVariationStyleOptionsWhenSelectedItemChange");
             }
         }
@@ -653,7 +653,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when fetching picture aspect.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToFetchPictureAspect, e);
                 Logger.LogException(e, "GetSelectedPictureInPictureVariation");
                 return View.CreateDefaultPictureItem();
             }
@@ -677,7 +677,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when processing picture aspect.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToProcessPictureAspect, e);
                 Logger.LogException(e, "UpdateSelectedPictureInPictureVariation");
             }
         }
@@ -787,7 +787,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when generating picture aspect.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToGeneratePictureAspect, e);
                 Logger.LogException(e, "GetLast8Pictures");
                 return new List<ImageItem>();
             }

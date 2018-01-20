@@ -116,7 +116,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                ErrorDialogBox.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorCaption, e.Message, e);
                 return null;
             }
         }
