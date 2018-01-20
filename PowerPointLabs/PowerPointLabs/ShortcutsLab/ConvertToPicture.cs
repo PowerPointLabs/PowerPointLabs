@@ -14,11 +14,14 @@ namespace PowerPointLabs.ShortcutsLab
     internal static class ConvertToPicture
     {
 #pragma warning disable 0618
+        public static int zOrder;
+
         public static void Convert(PowerPoint.Selection selection)
         {
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                var shape = GetShapeFromSelection(selection);
+                PowerPoint.Shape shape = GetShapeFromSelection(selection);
+                zOrder = shape.ZOrderPosition;
                 shape = CutPasteShape(shape);
                 ConvertToPictureForShape(shape);
             }
@@ -65,10 +68,19 @@ namespace PowerPointLabs.ShortcutsLab
             float width = shape.Width;
             float height = shape.Height;
             shape.Delete();
-            var pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             pic.Left = x + (width - pic.Width) / 2;
             pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;
+            // move picture to original z-order
+            while (pic.ZOrderPosition > zOrder)
+            {
+                pic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+            }
+            while (pic.ZOrderPosition < zOrder)
+            {
+                pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
+            }
             pic.Select();
         }
 
