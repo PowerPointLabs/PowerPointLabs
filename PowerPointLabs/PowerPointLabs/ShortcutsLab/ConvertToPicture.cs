@@ -20,7 +20,7 @@ namespace PowerPointLabs.ShortcutsLab
         {
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                var shape = GetShapeFromSelection(selection);
+                PowerPoint.Shape shape = GetShapeFromSelection(selection);
                 zOrder = shape.ZOrderPosition;
                 shape = CutPasteShape(shape);
                 ConvertToPictureForShape(shape);
