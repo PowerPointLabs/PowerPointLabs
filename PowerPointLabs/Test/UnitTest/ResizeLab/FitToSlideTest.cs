@@ -30,10 +30,10 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToWidthWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.FitToSlideWidth, _shapeNames);
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.FitToSlideWidth, _shapeNames);
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             _resizeLab.FitToWidth(actualShapes, slideWidth, slideHeight, false);
             CheckShapes(expectedShapes, actualShapes);
@@ -43,10 +43,10 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToWidthWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.FitToSlideWidthAspectRatio, _shapeNames);
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.FitToSlideWidthAspectRatio, _shapeNames);
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             _resizeLab.FitToWidth(actualShapes, slideWidth, slideHeight, true);
             CheckShapes(expectedShapes, actualShapes);
@@ -56,10 +56,10 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToHeightWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.FitToSlideHeight, _shapeNames);
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.FitToSlideHeight, _shapeNames);
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             _resizeLab.FitToHeight(actualShapes, slideWidth, slideHeight, false);
             CheckShapes(expectedShapes, actualShapes);
@@ -69,10 +69,10 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToHeightWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.FitToSlideHeightAspectRatio, _shapeNames);
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.FitToSlideHeightAspectRatio, _shapeNames);
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             _resizeLab.FitToHeight(actualShapes, slideWidth, slideHeight, true);
             CheckShapes(expectedShapes, actualShapes);
@@ -82,10 +82,10 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToFillWithoutAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.FitToSlideFill, _shapeNames);
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.FitToSlideFill, _shapeNames);
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             _resizeLab.FitToFill(actualShapes, slideWidth, slideHeight, false);
             CheckShapes(expectedShapes, actualShapes);
@@ -95,10 +95,10 @@ namespace Test.UnitTest.ResizeLab
         [TestCategory("UT")]
         public void TestFitToFillWithAspectRatio()
         {
-            var actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
-            var expectedShapes = GetShapes(SlideNo.FitToSlideFillAspectRatio, _shapeNames);
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNo.FitToSlideOrigin, _shapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNo.FitToSlideFillAspectRatio, _shapeNames);
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             _resizeLab.FitToFill(actualShapes, slideWidth, slideHeight, true);
             CheckShapes(expectedShapes, actualShapes);

@@ -21,7 +21,7 @@ namespace PowerPointLabs.HighlightLab
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
 
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;

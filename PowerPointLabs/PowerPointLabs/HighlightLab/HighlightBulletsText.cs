@@ -21,7 +21,7 @@ namespace PowerPointLabs.HighlightLab
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
 
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
@@ -73,15 +73,15 @@ namespace PowerPointLabs.HighlightLab
                     //Add Font Appear effect for all paragraphs within shape
                     int currentIndex = sequence.Count;
                     sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
-                    var appearEffects = AsList(sequence, currentIndex + 1, sequence.Count + 1);
+                    List<PowerPoint.Effect> appearEffects = AsList(sequence, currentIndex + 1, sequence.Count + 1);
 
                     //Add Font Disappear effect for all paragraphs within shape
                     currentIndex = sequence.Count;
                     sequence.AddEffect(sh, PowerPoint.MsoAnimEffect.msoAnimEffectChangeFontColor, PowerPoint.MsoAnimateByLevel.msoAnimateTextByFifthLevel, PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                    var disappearEffects = AsList(sequence, currentIndex + 1, sequence.Count + 1);
+                    List<PowerPoint.Effect> disappearEffects = AsList(sequence, currentIndex + 1, sequence.Count + 1);
 
                     //Remove effects for paragraphs without bullet points 
-                    var markedForRemoval = GetParagraphsToRemove(sh, selectedText);
+                    List<int> markedForRemoval = GetParagraphsToRemove(sh, selectedText);
                     // assert appearEffects.Count == disappearEffects.Count;
                     // assert markedForRemoval.Count <= appearEffects.Count;
                     for (int i = markedForRemoval.Count - 1; i >= 0; --i)
@@ -123,7 +123,7 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<PowerPoint.Effect> AsList(PowerPoint.Sequence sequence, int startIndex, int endIndex)
         {
-            var list = new List<PowerPoint.Effect>();
+            List<PowerPoint.Effect> list = new List<PowerPoint.Effect>();
             for (int i = startIndex; i < endIndex; ++i)
             {
                 list.Add(sequence[i]);
@@ -157,7 +157,7 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<int> GetParagraphsToRemove(PowerPoint.Shape sh, Office.TextRange2 selectedText)
         {
-            var textRange = sh.TextFrame2.TextRange;
+            Office.TextRange2 textRange = sh.TextFrame2.TextRange;
             if (userSelection == HighlightTextSelection.kTextSelected)
             {
                 return GetUnselectedParagraphs(textRange, selectedText);
@@ -174,12 +174,12 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<int> GetParagraphsWithoutBullets(Office.TextRange2 textRange)
         {
-            var indexList = new List<int>();
+            List<int> indexList = new List<int>();
             int index = 0;
             bool hasBulletPoint = false;
             for (int i = 1; i <= textRange.Paragraphs.Count; ++i)
             {
-                var paragraph = textRange.Paragraphs[i];
+                Office.TextRange2 paragraph = textRange.Paragraphs[i];
                 if (paragraph.Text.Trim().Length == 0)
                 {
                     continue;
@@ -208,11 +208,11 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<int> GetUnselectedParagraphs(Office.TextRange2 textRange, Office.TextRange2 selectedText)
         {
-            var indexList = new List<int>();
+            List<int> indexList = new List<int>();
             int index = 0;
             for (int i = 1; i <= textRange.Paragraphs.Count; ++i)
             {
-                var paragraph = textRange.Paragraphs[i];
+                Office.TextRange2 paragraph = textRange.Paragraphs[i];
                 if (paragraph.Text.Trim().Length == 0)
                 {
                     continue;
@@ -263,7 +263,7 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static void FormatAppearEffects(List<PowerPoint.Effect> appearEffects, bool isFirstShape)
         {
-            foreach (var effect in appearEffects)
+            foreach (PowerPoint.Effect effect in appearEffects)
             {
                 effect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                 // TODO: Orange text bug occurs on this line. effect.EffectParameters.Color2.RGB is not changed for some reason.
@@ -282,7 +282,7 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static void FormatDisappearEffects(List<PowerPoint.Effect> disappearEffects)
         {
-            foreach (var effect in disappearEffects)
+            foreach (PowerPoint.Effect effect in disappearEffects)
             {
                 effect.Timing.TriggerType = PowerPoint.MsoAnimTriggerType.msoAnimTriggerWithPrevious;
                 effect.EffectParameters.Color2.RGB = Utils.GraphicsUtil.ConvertColorToRgb(HighlightLabSettings.bulletsTextDefaultColor);
@@ -329,14 +329,14 @@ namespace PowerPointLabs.HighlightLab
         /// </summary>
         private static List<PowerPoint.Shape> GetAllUsableShapesInSlide(PowerPointSlide currentSlide)
         {
-            var selectedShapes = currentSlide.Shapes.Range().Cast<PowerPoint.Shape>().ToArray();
+            PowerPoint.Shape[] selectedShapes = currentSlide.Shapes.Range().Cast<PowerPoint.Shape>().ToArray();
 
-            var usableShapesWithBullets = selectedShapes
+            List<PowerPoint.Shape> usableShapesWithBullets = selectedShapes
                                             .Where(sh => HasText(sh)
                                                         && HasBullets(sh))
                                             .ToList();
 
-            var allUsableShapes = selectedShapes
+            List<PowerPoint.Shape> allUsableShapes = selectedShapes
                                     .Where(HasText)
                                     .ToList();
 

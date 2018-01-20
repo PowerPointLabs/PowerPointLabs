@@ -1,4 +1,6 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Tools;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
@@ -12,7 +14,7 @@ namespace PowerPointLabs.ActionFramework.TimerLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.RegisterTaskPane(typeof(TimerPane), TimerLabText.TaskPaneTitle);
-            var timerPane = this.GetTaskPane(typeof(TimerPane));
+            CustomTaskPane timerPane = this.GetTaskPane(typeof(TimerPane));
             // if currently the pane is hidden, show the pane
             if (!timerPane.Visible)
             {

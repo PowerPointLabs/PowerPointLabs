@@ -68,7 +68,7 @@ namespace PowerPointLabs.ShortcutsLab
             float width = shape.Width;
             float height = shape.Height;
             shape.Delete();
-            var pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             pic.Left = x + (width - pic.Width) / 2;
             pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;

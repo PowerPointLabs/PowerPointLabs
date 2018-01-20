@@ -65,7 +65,7 @@ namespace PowerPointLabs.Models
 
             //Delete zoom shapes and shapes with exit animations
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
-            var matchingShapes = shapes.Where(current => (HasExitAnimation(current) || current.Equals(zoomShape)));
+            IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (HasExitAnimation(current) || current.Equals(zoomShape)));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 s.Delete();

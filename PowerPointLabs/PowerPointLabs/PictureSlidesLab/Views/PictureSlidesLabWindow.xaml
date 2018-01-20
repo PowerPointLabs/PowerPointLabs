@@ -344,7 +344,7 @@
                             <MenuItem Header="Paste picture here" Click="MenuItemPastePictureHere_OnClick"></MenuItem>
                             <MenuItem Header="Delete this picture" Click="MenuItemDeleteThisImage_OnClick"></MenuItem>
                             <Separator />
-                            <MenuItem Header="Delete all picture" Click="MenuItemDeleteAllImages_OnClick"></MenuItem>
+                            <MenuItem Header="Delete all pictures" Click="MenuItemDeleteAllImages_OnClick"></MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.Template>

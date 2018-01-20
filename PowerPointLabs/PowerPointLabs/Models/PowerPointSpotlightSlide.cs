@@ -43,7 +43,7 @@ namespace PowerPointLabs.Models
 
             //Delete shapes with exit animations
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
-            var matchingShapes = shapes.Where(current => (HasExitAnimation(current)));
+            IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (HasExitAnimation(current)));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 s.Delete();
@@ -118,7 +118,7 @@ namespace PowerPointLabs.Models
             //export formatted spotlight picture to a temp folder
             spotlightPicture.Export(dirOfRenderedPicture, PowerPoint.PpShapeFormat.ppShapeFormatPNG);
             //then add the exported new picture back
-            var renderedPicture = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(
+            PowerPoint.Shape renderedPicture = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.AddPicture(
                 dirOfRenderedPicture, Office.MsoTriState.msoFalse, Office.MsoTriState.msoTrue,
                 spotlightPicture.Left, spotlightPicture.Top, spotlightPicture.Width, spotlightPicture.Height);
 

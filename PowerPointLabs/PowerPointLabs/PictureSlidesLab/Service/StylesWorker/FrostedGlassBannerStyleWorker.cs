@@ -12,14 +12,14 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            var result = new List<Shape>();
+            List<Shape> result = new List<Shape>();
             if (option.IsUseFrostedGlassBannerStyle)
             {
-                var blurDegreeForFrostedGlass = EffectsDesigner.BlurDegreeForFrostedGlassEffect;
-                var blurImageShape = option.IsUseSpecialEffectStyle
+                int blurDegreeForFrostedGlass = EffectsDesigner.BlurDegreeForFrostedGlassEffect;
+                Shape blurImageShape = option.IsUseSpecialEffectStyle
                     ? designer.ApplyBlurEffect(source.SpecialEffectImageFile, blurDegreeForFrostedGlass)
                     : designer.ApplyBlurEffect(degree: blurDegreeForFrostedGlass);
-                var banner = designer.ApplyFrostedGlassBannerEffect(option.GetBannerDirection(), option.GetTextBoxPosition(),
+                Shape banner = designer.ApplyFrostedGlassBannerEffect(option.GetBannerDirection(), option.GetTextBoxPosition(),
                     blurImageShape, option.FrostedGlassBannerColor, option.FrostedGlassBannerTransparency);
                 result.Add(banner);
                 blurImageShape.Delete();
