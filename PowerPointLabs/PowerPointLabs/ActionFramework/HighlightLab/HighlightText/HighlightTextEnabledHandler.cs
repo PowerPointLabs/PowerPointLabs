@@ -22,12 +22,12 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
                 }
                 else
                 {
-                    return !this.GetRibbonUi().HighlightTextFragmentsEnabled;
+                    return false;
                 }
             }
             catch (System.Runtime.InteropServices.COMException) // If this exception is caught, it means nothing has been selected yet
             {
-                return !this.GetRibbonUi().HighlightTextFragmentsEnabled;
+                return false;
             }
         }
     }
