@@ -30,7 +30,18 @@ namespace PowerPointLabs.PositionsLab
         private const int Up = 3;
         private const int Leftorright = 4;
         private const int Upordown = 5;
-        
+
+        public class GridSpace
+        {
+            public float RowDifference { get; }
+            public float ColDifference { get; }
+            public GridSpace(float rowDifference, float colDifference)
+            {
+                RowDifference = rowDifference;
+                ColDifference = colDifference;
+            }
+        }
+
         private class ShapeAngleInfo
         {
             public Shape Shape { get; private set; }
@@ -502,16 +513,6 @@ namespace PowerPointLabs.PositionsLab
 
         #region Distribute
 
-        public class GridSpace
-        {
-            public float RowDifference { get; }
-            public float ColDifference { get; }
-            public GridSpace(float rowDifference, float colDifference)
-            {
-                RowDifference = rowDifference;
-                ColDifference = colDifference;
-            }
-        }
         public static void DistributeHorizontal(List<PPShape> selectedShapes, float slideWidth)
         {
             bool isSlide = PositionsLabSettings.DistributeReference == PositionsLabSettings.DistributeReferenceObject.Slide;
@@ -1703,18 +1704,17 @@ namespace PowerPointLabs.PositionsLab
             selectedShapes.RemoveAt(1);
             selectedShapes.Add(endAnchor);
 
-            float[,] gridSpaces = new float[selectedShapes.Count, 2];
+            GridSpace[] gridSpaces = new GridSpace[selectedShapes.Count];
 
             for (int i = 0; i < selectedShapes.Count; i++)
             {
-                gridSpaces[i, 0] = rowDifference;
-                gridSpaces[i, 1] = colDifference;
+                gridSpaces[i] = new GridSpace(rowDifference, colDifference);
             }
 
             DistributeGridByCol(selectedShapes, rowLength, colLength, gridSpaces, 0, selectedShapes.Count - 1);
         }
 
-        public static void DistributeGridByCol(List<PPShape> selectedShapes, int rowLength, int colLength, float[,] gridSpaces, int start, int end)
+        public static void DistributeGridByCol(List<PPShape> selectedShapes, int rowLength, int colLength, GridSpace[] gridSpaces, int start, int end)
         {
             int numShapes = selectedShapes.Count;
 
@@ -1752,7 +1752,7 @@ namespace PowerPointLabs.PositionsLab
                 if (IsFirstIndexOfRow(augmentedShapeIndex, rowLength) && augmentedShapeIndex != 0)
                 {
                     posX = startingAnchor.X;
-                    posY += gridSpaces[i, 1];
+                    posY += gridSpaces[i].ColDifference;
                 }
 
                 PPShape currentShape = selectedShapes[i];
@@ -1760,7 +1760,7 @@ namespace PowerPointLabs.PositionsLab
                 currentShape.IncrementLeft(posX - center.X);
                 currentShape.IncrementTop(posY - center.Y);
 
-                posX += gridSpaces[i, 0];
+                posX += gridSpaces[i].RowDifference;
                 augmentedShapeIndex++;
             }
         }
