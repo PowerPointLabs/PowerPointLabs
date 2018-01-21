@@ -116,8 +116,8 @@ namespace PowerPointLabs.ResizeLab
             {
                 foreach (PowerPoint.Shape shape in shapes)
                 {
-                    var ppShape = new PPShape(shape);
-                    var anchorPoint = GetVisualAnchorPoint(ppShape);
+                    PPShape ppShape = new PPShape(shape);
+                    System.Drawing.PointF anchorPoint = GetVisualAnchorPoint(ppShape);
 
                     resizeAction(ppShape);
                     AlignVisualShape(ppShape, anchorPoint);
@@ -147,8 +147,8 @@ namespace PowerPointLabs.ResizeLab
             {
                 foreach (PowerPoint.Shape shape in shapes)
                 {
-                    var ppShape = new PPShape(shape, false);
-                    var anchorPoint = GetActualAnchorPoint(ppShape);
+                    PPShape ppShape = new PPShape(shape, false);
+                    System.Drawing.PointF anchorPoint = GetActualAnchorPoint(ppShape);
 
                     resizeAction(ppShape);
                     AlignActualShape(ppShape, anchorPoint);

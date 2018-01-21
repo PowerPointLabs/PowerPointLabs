@@ -29,9 +29,9 @@ namespace PowerPointLabs.Utils
 
         public static void DeleteTempTestFolder()
         {
-            var tempFolder = _tempTestPath;
+            string tempFolder = _tempTestPath;
 
-            var tempFolderInfo = new DirectoryInfo(tempFolder);
+            DirectoryInfo tempFolderInfo = new DirectoryInfo(tempFolder);
 
             try
             {
@@ -47,12 +47,12 @@ namespace PowerPointLabs.Utils
         {
             rootFolder.Attributes = FileAttributes.Normal;
 
-            foreach (var subFolder in rootFolder.GetDirectories())
+            foreach (DirectoryInfo subFolder in rootFolder.GetDirectories())
             {
                 DeepDeleteFolder(subFolder);
             }
 
-            foreach (var file in rootFolder.GetFiles())
+            foreach (FileInfo file in rootFolder.GetFiles())
             {
                 file.IsReadOnly = false;
                 try

@@ -18,7 +18,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Factory
         {
             if (propHandlerName.Contains(PictureSlidesLabText.TransparencyHasEffect))
             {
-                var transparencyPropHandler = (TransparencySliderPropHandler)ImportedSliderPropHandlers
+                TransparencySliderPropHandler transparencyPropHandler = (TransparencySliderPropHandler)ImportedSliderPropHandlers
                     .Where(propHandler => propHandler.Metadata.PropHandlerName == PictureSlidesLabText.TransparencyHasEffect)
                     .Select(propHandler => propHandler.Value)
                     .FirstOrDefault();

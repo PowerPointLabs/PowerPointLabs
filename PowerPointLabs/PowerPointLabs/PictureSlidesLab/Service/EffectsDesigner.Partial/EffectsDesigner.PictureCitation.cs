@@ -25,7 +25,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
         public void ApplyImageReferenceInsertion(string source, string fontFamily, string fontColor,
             int fontSize, string textBoxColor, Alignment citationTextAlignment)
         {
-            var imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, SlideWidth,
+            Microsoft.Office.Interop.PowerPoint.Shape imageRefShape = Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0, SlideWidth,
                 20);
             imageRefShape.TextFrame2.TextRange.Text = "Picture taken from: " + source;
 

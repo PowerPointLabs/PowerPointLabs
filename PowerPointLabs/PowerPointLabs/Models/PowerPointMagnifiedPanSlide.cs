@@ -43,7 +43,7 @@ namespace PowerPointLabs.Models
         {
             //Delete all shapes from slide excpet last magnified shape
             List<PowerPoint.Shape> shapes = _slide.Shapes.Cast<PowerPoint.Shape>().ToList();
-            var matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
+            IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
                 s.Delete();

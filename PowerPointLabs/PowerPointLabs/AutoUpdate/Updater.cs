@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Xml;
@@ -66,7 +67,7 @@ namespace PowerPointLabs.AutoUpdate
 
         private void AfterVstoDownloadHandler()
         {
-            var version = GetVstoVersion(_destVstoAddress);
+            string version = GetVstoVersion(_destVstoAddress);
             if (IsTheNewestVersion(version))
             {
                 return;
@@ -80,7 +81,7 @@ namespace PowerPointLabs.AutoUpdate
 
         private string GetVstoVersion(String vstoDirectory)
         {
-            var currentVsto = new XmlDocument();
+            XmlDocument currentVsto = new XmlDocument();
             try
             {
                 currentVsto.Load(vstoDirectory);
@@ -89,7 +90,7 @@ namespace PowerPointLabs.AutoUpdate
             {
                 Logger.LogException(e, "GetVstoVersion");
             }
-            var vstoNode = currentVsto.GetElementsByTagName("assemblyIdentity")[0];
+            XmlNode vstoNode = currentVsto.GetElementsByTagName("assemblyIdentity")[0];
 
             return vstoNode.Attributes != null
                 ? vstoNode.Attributes["version"].Value
@@ -120,9 +121,9 @@ namespace PowerPointLabs.AutoUpdate
 
         private void Unzip(String installerZipAddress)
         {
-            var installerZip = ZipStorer.Open(installerZipAddress, FileAccess.Read);
-            var zipDir = installerZip.ReadCentralDir();
-            foreach (var file in zipDir)
+            ZipStorer installerZip = ZipStorer.Open(installerZipAddress, FileAccess.Read);
+            List<ZipStorer.ZipFileEntry> zipDir = installerZip.ReadCentralDir();
+            foreach (ZipStorer.ZipFileEntry file in zipDir)
             {
                 installerZip.ExtractFile(file,
                     Path.Combine(_targetInstallFolder, file.FilenameInZip));

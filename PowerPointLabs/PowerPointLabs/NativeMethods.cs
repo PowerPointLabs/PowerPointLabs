@@ -193,11 +193,11 @@ namespace PPExtraEventHelper
 
         internal static Point GetPoint(IntPtr lParam)
         {
-            var uLParam = GetUncheckedInt(lParam);
+            uint uLParam = GetUncheckedInt(lParam);
             
             // cast to long first so that it's 64-bit compatible
-            var x = unchecked((short)(long)uLParam);
-            var y = unchecked((short)((long)uLParam >> 16));
+            short x = unchecked((short)(long)uLParam);
+            short y = unchecked((short)((long)uLParam >> 16));
 
             return new Point(x, y);
         }

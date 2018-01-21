@@ -62,13 +62,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void ColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var panel = sender as Border;
+            Border panel = sender as Border;
             if (panel == null)
             {
                 return;
             }
 
-            var colorDialog = new ColorDialog
+            ColorDialog colorDialog = new ColorDialog
             {
                 Color = GetColor(panel.Background as SolidColorBrush),
                 FullOpen = true
@@ -78,8 +78,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            var hexString = StringUtil.GetHexValue(colorDialog.Color);
-            var settings = DataContext as Settings;
+            string hexString = StringUtil.GetHexValue(colorDialog.Color);
+            Settings settings = DataContext as Settings;
             if (settings == null)
             {
                 return;
