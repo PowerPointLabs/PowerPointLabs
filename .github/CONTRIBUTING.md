@@ -154,7 +154,7 @@ If any strange behaviour or exception is encountered, please submit a [bug repor
 
 ## Coding Standards
 
-See [OSS-Generics Coding Standards](https://github.com/oss-generic/process/blob/master/docs/CodingStandards.md)
+See [OSS-Generics Coding Standards](https://github.com/oss-generic/process/blob/master/docs/CodingStandards.adoc)
 
 
 <a name="branches"></a>
