@@ -116,15 +116,37 @@ namespace PowerPointLabs.SyncLab.Views
             }
         }
 
+        /// <summary>
+        /// Applies a set of formats from a source shape to shapes selected by the user 
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <param name="formatShape">source shape</param>
         public void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape)
+        {
+            var selectedShapes = GetSelectedShapesForFormatting();
+            if (selectedShapes == null)
+            {
+                MessageBox.Show(SyncLabText.ErrorPasteSelectionInvalid, SyncLabText.ErrorDialogTitle);
+                return;
+            }
+            else
+            {
+                SyncFormatUtil.ApplyFormats(nodes, formatShape, selectedShapes);
+            }
+        }
+
+        /// <summary>
+        /// Get shapes selected by user
+        /// </summary>
+        /// <returns>shaperange of selected shapes, or null</returns>
+        private ShapeRange GetSelectedShapesForFormatting()
         {
             var selection = this.GetCurrentSelection();
             if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
             {
-                MessageBox.Show(SyncLabText.ErrorPasteSelectionInvalid, SyncLabText.ErrorDialogTitle);
-                return;
+                return null;
             }
 
             var shapes = selection.ShapeRange;
@@ -133,12 +155,12 @@ namespace PowerPointLabs.SyncLab.Views
                 shapes = selection.ChildShapeRange;
             }
 
-            ApplyFormats(nodes, formatShape, shapes);
+            return shapes;
         }
 
         private void AddFormatToList(Shape shape, string name, FormatTreeNode[] formats)
         {
-            string shapeKey = CopyShape(shape);
+            string shapeKey = CopyShape(shape, formats);
             if (shapeKey == null)
             {
                 MessageBox.Show(SyncLabText.ErrorCopy);
@@ -149,38 +171,6 @@ namespace PowerPointLabs.SyncLab.Views
             item.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
-        }
-
-        private void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)
-        {
-            foreach (Shape newShape in newShapes)
-            {
-                ApplyFormats(nodes, formatShape, newShape);
-            }
-        }
-
-        private void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, Shape newShape)
-        {
-            foreach (FormatTreeNode node in nodes)
-            {
-                ApplyFormats(node, formatShape, newShape);
-            }
-        }
-
-        private void ApplyFormats(FormatTreeNode node, Shape formatShape, Shape newShape)
-        {
-            if (node.Format != null)
-            {
-                if (!node.IsChecked.HasValue || !node.IsChecked.Value)
-                {
-                    return;
-                }
-                node.Format.SyncFormat(formatShape, newShape);
-            }
-            else
-            {
-                ApplyFormats(node.ChildrenNodes, formatShape, newShape);
-            }
         }
         #endregion
 
@@ -209,6 +199,7 @@ namespace PowerPointLabs.SyncLab.Views
 
             if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
+                shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
@@ -231,9 +222,9 @@ namespace PowerPointLabs.SyncLab.Views
         // Saves shape into another powerpoint file
         // Returns a key to find the shape by,
         // or null if the shape cannot be copied
-        private string CopyShape(Shape shape)
+        private string CopyShape(Shape shape, FormatTreeNode[] formats)
         {
-            return shapeStorage.CopyShape(shape);
+            return shapeStorage.CopyShape(shape, formats);
         }
         #endregion
 

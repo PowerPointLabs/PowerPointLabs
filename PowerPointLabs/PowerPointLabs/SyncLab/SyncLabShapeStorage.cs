@@ -1,12 +1,17 @@
 ﻿using System;
-
-using Microsoft.Office.Interop.PowerPoint;
-
+using Microsoft.Office.Core;
 using PowerPointLabs.Models;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab
 {
+    /// <summary>
+    /// Saves shapes into a PowerPointPresentation that runs in the background.
+    /// The exact saved shapes may change in type but style will be retained.
+    /// Eg: PlaceHolders are saved as Textboxes
+    /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
 
@@ -30,17 +35,30 @@ namespace PowerPointLabs.SyncLab
             ClearShapes();
         }
 
-        // Saves shape in storage
-        // Returns a key to find the shape by,
-        // or null if the shape cannot be copied
-        public string CopyShape(Shape shape)
+        /// <summary>
+        /// Saves shape in storage
+        /// Returns a key to find the shape by,
+        /// or null if the shape cannot be copied
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="formats">Required for msoPlaceholder</param>
+        /// <returns></returns>
+        public string CopyShape(Shape shape, FormatTreeNode[] formats)
         {
             // copies a shape, and returns a shape name
-            shape.Copy();
             Shape copiedShape = null;
             try
             {
-                copiedShape = Slides[0].Shapes.Paste()[1];
+                if (shape.Type == MsoShapeType.msoPlaceholder)
+                {
+                    copiedShape = CopyMsoPlaceHolder(formats, shape);
+                }
+                else
+                {
+                    shape.Copy();
+                    copiedShape = Slides[0].Shapes.Paste()[1];
+                }
+                    
             }
             catch
             {
@@ -98,6 +116,27 @@ namespace PowerPointLabs.SyncLab
             }
             AddSlide();
             Slides[FormatStorageSlide].DeleteAllShapes();
+        }
+
+        /// <summary>
+        /// Copy/Pasting MsoPlaceHolder doesn't work.
+        /// Creating a MsoPlaceHolder doesn't work too.
+        /// Fake a copy by creating a textbox with the same style
+        /// </summary>
+        /// <param name="formats"></param>
+        /// <param name="msoPlaceHolder"></param>
+        /// <returns></returns>
+        private Shape CopyMsoPlaceHolder(FormatTreeNode[] formats, Shape msoPlaceHolder)
+        {
+            Shape savedShape = Slides[0].Shapes.AddTextbox(
+                MsoTextOrientation.msoTextOrientationHorizontal,
+                msoPlaceHolder.Left,
+                msoPlaceHolder.Top,
+                msoPlaceHolder.Width,
+                msoPlaceHolder.Height);
+            
+            SyncFormatUtil.ApplyFormats(formats, msoPlaceHolder, savedShape);
+            return savedShape;
         }
     }
 }

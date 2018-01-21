@@ -5,7 +5,7 @@ using System.IO;
 
 using Microsoft.Office.Interop.PowerPoint;
 
-using PowerPointLabs.Models;
+using PowerPointLabs.SyncLab.Views;
 
 namespace PowerPointLabs.SyncLab
 {
@@ -53,6 +53,47 @@ namespace PowerPointLabs.SyncLab
             return name.Length > 0;
         }
 
+        #endregion
+
+        #region Sync Shape Format utils
+
+        /// <summary>
+        /// Applies the specified formats from one shape to multiple shapes
+        /// </summary>
+        /// <param name="nodes">styles to apply</param>
+        /// <param name="formatShape">source shape</param>
+        /// <param name="newShapes">destination shape</param>
+        public static void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)
+        {
+            foreach (Shape newShape in newShapes)
+            {
+                ApplyFormats(nodes, formatShape, newShape);
+            }
+        }
+
+        public static void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, Shape newShape)
+        {
+            foreach (FormatTreeNode node in nodes)
+            {
+                ApplyFormats(node, formatShape, newShape);
+            }
+        }
+
+        public static void ApplyFormats(FormatTreeNode node, Shape formatShape, Shape newShape)
+        {
+            if (node.Format != null)
+            {
+                if (!node.IsChecked.HasValue || !node.IsChecked.Value)
+                {
+                    return;
+                }
+                node.Format.SyncFormat(formatShape, newShape);
+            }
+            else
+            {
+                ApplyFormats(node.ChildrenNodes, formatShape, newShape);
+            }
+        }
         #endregion
     }
 }
