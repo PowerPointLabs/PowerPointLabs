@@ -188,9 +188,7 @@ namespace PowerPointLabs.SyncLab.Views
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             Selection selection = this.GetCurrentSelection();
-            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
-                selection.Type != PpSelectionType.ppSelectionText) ||
-                selection.ShapeRange.Count != 1)
+            if (!ShapeUtil.IsValidSelection(selection))
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;
@@ -207,9 +205,7 @@ namespace PowerPointLabs.SyncLab.Views
                 shape = selection.ChildShapeRange[1];
             }
 
-            if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
-                shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
-                shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
+            if (!ShapeUtil.IsShapeOrLineOrTextBox(shape))
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;
