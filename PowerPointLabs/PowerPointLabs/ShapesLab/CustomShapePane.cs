@@ -7,9 +7,10 @@ using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShapesLab.Views;
+using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -159,9 +160,31 @@ namespace PowerPointLabs.ShapesLab
 
             singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
         }
-        # endregion
+        #endregion
 
-        # region API
+        #region API
+
+        public void AddCustomShapeToPane(Selection selection, ThisAddIn addIn)
+        {
+            ShapeRange selectedShapes = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
+            {
+                selectedShapes = selection.ChildShapeRange;
+            }
+            // add shape into shape gallery first to reduce flicker
+            string shapeName = addIn.ShapePresentation.AddShape(selectedShapes, selectedShapes[1].Name);
+
+            // add the selection into pane and save it as .png locally
+            string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+
+            // sync the shape among all opening panels
+            addIn.SyncShapeAdd(shapeName, shapeFullName, CurrentCategory);
+
+            // finally, add the shape into the panel and waiting for name editing
+            AddCustomShape(shapeName, shapeFullName, true);
+        }
+
         public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
         {
             DehighlightSelected();
