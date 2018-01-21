@@ -107,6 +107,13 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        public static bool IsShapeOrLineOrTextBox(Shape shape)
+        {
+            return (shape.Type == MsoShapeType.msoAutoShape ||
+                shape.Type == MsoShapeType.msoLine ||
+                shape.Type == MsoShapeType.msoTextBox);
+        }
+
         #endregion
 
         #region ShapeRange
@@ -146,6 +153,16 @@ namespace PowerPointLabs.Utils
 
         #region Selection
 
+        public static bool IsValidSelection(Selection selection)
+        {
+            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
+                selection.Type != PpSelectionType.ppSelectionText) ||
+                selection.ShapeRange.Count != 1)
+            {
+                return false;
+            }
+            return true;
+        }
         public static bool IsSelectionShape(Selection selection)
         {
             return selection.Type == PpSelectionType.ppSelectionShapes &&

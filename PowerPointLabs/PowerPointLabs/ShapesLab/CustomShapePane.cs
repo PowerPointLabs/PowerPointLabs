@@ -1604,42 +1604,40 @@ namespace PowerPointLabs.ShapesLab
 
         private void AddShapeButton_Click(object sender, EventArgs e)
         {
-            // var selection = this.GetCurrentSelection(); don't use this. obsolete. use action framework
-            //if ((selection.Type != PpSelectionType.ppSelectionShapes &&
-            //    selection.Type != PpSelectionType.ppSelectionText) ||
-            //    selection.ShapeRange.Count != 1)
-            //{
-            //    MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
-            //    return;
-            //}
+            Selection selection = ActionFrameworkExtensions.GetCurrentSelection();
+            ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
+            // first of all we check if the shape gallery has been opened correctly
+            if (!addIn.ShapePresentation.Opened)
+            {
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                return;
+            }
 
-            //var shape = selection.ShapeRange[1];
-            //if (selection.HasChildShapeRange)
-            //{
-            //    if (selection.ChildShapeRange.Count != 1)
-            //    {
-            //        MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
-            //        return;
-            //    }
-            //    shape = selection.ChildShapeRange[1];
-            //}
+            if (!ShapeUtil.IsValidSelection(selection))
+            {
+                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
 
-            //if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
-            //    shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
-            //    shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
-            //{
-            //    MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
-            //    return;
-            //}
-            //Dialog = new SyncFormatDialog(shape);
-            //Dialog.ObjectName = shape.Name;
-            //bool? result = Dialog.ShowDialog();
-            //if (!result.HasValue || !(bool)result)
-            //{
-            //    return;
-            //}
-            //AddFormatToList(shape, Dialog.ObjectName, Dialog.Formats);
-            //Dialog = null;
+            // Take shape from shape range
+            Shape shape = selection.ShapeRange[1];
+            if (selection.HasChildShapeRange)
+            {
+                if (selection.ChildShapeRange.Count != 1)
+                {
+                    MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                    return;
+                }
+                shape = selection.ChildShapeRange[1];
+            }
+
+            // Check if valid shape or line or textbox
+            if (!ShapeUtil.IsShapeOrLineOrTextBox(shape))
+            {
+                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
+            AddCustomShapeToPane(selection, addIn);
         }
         #endregion
     }

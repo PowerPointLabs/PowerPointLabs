@@ -10,6 +10,9 @@
            "Use Shapes Lab to manage your custom shapes.\n\n" +
            "Click this button to open the Shapes Lab interface.";
 
+        public const string ErrorDialogTitle = "Unable to execute action";
+        public const string ErrorAddSelectionInvalid = "Please select one shape to add.";
+
         public const string ErrorFileNameInvalid = "Invalid shape name.";
         public const string ErrorNoShapeTextFirstLine = "No shapes saved yet.";
         public const string ErrorNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
