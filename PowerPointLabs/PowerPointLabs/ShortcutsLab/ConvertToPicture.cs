@@ -14,16 +14,15 @@ namespace PowerPointLabs.ShortcutsLab
     internal static class ConvertToPicture
     {
 #pragma warning disable 0618
-        private static int zOrder;
 
         public static void Convert(PowerPoint.Selection selection)
         {
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
-                zOrder = shape.ZOrderPosition;
+                int zOrder = shape.ZOrderPosition;
                 shape = CutPasteShape(shape);
-                ConvertToPictureForShape(shape);
+                ConvertToPictureForShape(shape, zOrder);
             }
             else
             {
@@ -50,7 +49,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
         }
 
-        private static void ConvertToPictureForShape(PowerPoint.Shape shape)
+        private static void ConvertToPictureForShape(PowerPoint.Shape shape, int zOrder)
         {
             float rotation = 0;
             try
