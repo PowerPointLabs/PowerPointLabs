@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
             }
             else if (this.GetAddIn().Application.ActiveWindow.Selection.Type == Microsoft.Office.Interop.PowerPoint.PpSelectionType.ppSelectionText)
             {
-                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;                
+                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kTextSelected;
             }
             else
             {

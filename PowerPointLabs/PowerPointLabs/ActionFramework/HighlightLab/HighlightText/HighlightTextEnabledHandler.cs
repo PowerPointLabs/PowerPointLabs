@@ -25,7 +25,8 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
                     return false;
                 }
             }
-            catch (System.Runtime.InteropServices.COMException) // If this exception is caught, it means nothing has been selected yet
+            // If this exception is caught, it means nothing has been selected yet
+            catch (System.Runtime.InteropServices.COMException)
             {
                 return false;
             }
