@@ -29,14 +29,14 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
             catch (Exception)
             {
-                MessageBox.Show(TextCollection.EffectsLabText.MagnifyActionHandlerReminderText);
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorMagnifyAction);
 
                 return;
             }
 
             if (shapeRange.Count > 1 || shapeRange[1].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
             {
-                MessageBox.Show(TextCollection.EffectsLabText.MagnifyOnlyOneAreaReminderText);
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorMagnifyOnlyOneArea);
 
                 return;
             }

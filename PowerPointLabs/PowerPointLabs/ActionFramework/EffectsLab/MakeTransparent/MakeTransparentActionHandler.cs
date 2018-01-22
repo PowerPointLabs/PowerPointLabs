@@ -23,7 +23,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show(TextCollection.EffectsLabText.SelectAtLeastOneShapeReminderText);
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
                 return;
             }
 
