@@ -132,7 +132,7 @@ namespace PowerPointLabs.PositionsLab
         private void AlignLeftButton_Click(object sender, RoutedEventArgs e)
         {
             Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
-            ExecutePositionsAction(positionsAction, false);
+            ExecutePositionsAction(positionsAction, false, true);
         }
 
         private void AlignRightButton_Click(object sender, RoutedEventArgs e)
@@ -145,7 +145,7 @@ namespace PowerPointLabs.PositionsLab
         private void AlignTopButton_Click(object sender, RoutedEventArgs e)
         {
             Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
-            ExecutePositionsAction(positionsAction, false);
+            ExecutePositionsAction(positionsAction, false, true);
         }
 
         private void AlignBottomButton_Click(object sender, RoutedEventArgs e)
@@ -563,7 +563,7 @@ namespace PowerPointLabs.PositionsLab
             Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignLeft(shapes);
             _previewCallBack = delegate
             {
-                ExecutePositionsAction(positionsAction, true);
+                ExecutePositionsAction(positionsAction, true, true);
             };
             PreviewHandler();
         }
@@ -584,7 +584,7 @@ namespace PowerPointLabs.PositionsLab
             Action<ShapeRange> positionsAction = shapes => PositionsLabMain.AlignTop(shapes);
             _previewCallBack = delegate
             {
-                ExecutePositionsAction(positionsAction, true);
+                ExecutePositionsAction(positionsAction, true, true);
             };
             PreviewHandler();
         }
@@ -1021,15 +1021,27 @@ namespace PowerPointLabs.PositionsLab
         #endregion
 
         #region Helper
-        // align left and top
-        public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape = true)
+
+        // returns true if selection is valid
+        public bool HandleInvalidSelection(bool isPreview, Selection selection)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            if (!ShapeUtil.IsSelectionShape(selection))
             {
                 if (!isPreview)
                 {
                     ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
                 }
+                return false;
+            }
+            return true;
+        }
+        // align left and top
+        public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape)
+        {
+            Selection selection = this.GetCurrentSelection();
+            if (!HandleInvalidSelection(isPreview, selection))
+            {
+                // invalid selection!
                 return;
             }
 
@@ -1037,7 +1049,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+                ShapeRange selectedShapes = selection.ShapeRange;
 
                 if (isPreview)
                 {
@@ -1096,12 +1108,10 @@ namespace PowerPointLabs.PositionsLab
         // Align right, bottom, vertical center, horizontal center
         public void ExecutePositionsAction(Action<ShapeRange, float> positionsAction, float dimension, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            Selection selection = this.GetCurrentSelection();
+            if (!HandleInvalidSelection(isPreview, selection))
             {
-                if (!isPreview)
-                {
-                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
-                }
+                // invalid selection!
                 return;
             }
 
@@ -1109,7 +1119,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+                ShapeRange selectedShapes = selection.ShapeRange;
 
                 if (isPreview)
                 {
@@ -1161,12 +1171,10 @@ namespace PowerPointLabs.PositionsLab
         // Align center
         public void ExecutePositionsAction(Action<ShapeRange, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            Selection selection = this.GetCurrentSelection();
+            if (!HandleInvalidSelection(isPreview, selection))
             {
-                if (!isPreview)
-                {
-                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
-                }
+                // invalid selection!
                 return;
             }
 
@@ -1174,7 +1182,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+                ShapeRange selectedShapes = selection.ShapeRange;
 
                 if (isPreview)
                 {
@@ -1226,12 +1234,10 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            Selection selection = this.GetCurrentSelection();
+            if (!HandleInvalidSelection(isPreview, selection))
             {
-                if (!isPreview)
-                {
-                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
-                }
+                // invalid selection!
                 return;
             }
 
@@ -1239,7 +1245,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+                ShapeRange selectedShapes = selection.ShapeRange;
 
                 if (isPreview)
                 {
@@ -1284,20 +1290,17 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, bool> positionsAction, bool booleanVal, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            Selection selection = this.GetCurrentSelection();
+            if (!HandleInvalidSelection(isPreview, selection))
             {
-                if (!isPreview)
-                {
-                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
-                }
+                // invalid selection!
                 return;
             }
 
             ShapeRange simulatedShapes = null;
-
             try
             {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+                ShapeRange selectedShapes = selection.ShapeRange;
 
                 if (isPreview)
                 {
@@ -1350,12 +1353,10 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            Selection selection = this.GetCurrentSelection();
+            if (!HandleInvalidSelection(isPreview, selection))
             {
-                if (!isPreview)
-                {
-                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
-                }
+                // invalid selection!
                 return;
             }
 
@@ -1363,7 +1364,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+                ShapeRange selectedShapes = selection.ShapeRange;
 
                 if (isPreview)
                 {
