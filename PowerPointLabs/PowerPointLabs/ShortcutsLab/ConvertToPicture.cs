@@ -20,9 +20,9 @@ namespace PowerPointLabs.ShortcutsLab
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
-                int zOrder = shape.ZOrderPosition;
+                int originalZOrder = shape.ZOrderPosition;
                 shape = CutPasteShape(shape);
-                ConvertToPictureForShape(shape, zOrder);
+                ConvertToPictureForShape(shape, originalZOrder);
             }
             else
             {
@@ -49,7 +49,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
         }
 
-        private static void ConvertToPictureForShape(PowerPoint.Shape shape, int zOrder)
+        private static void ConvertToPictureForShape(PowerPoint.Shape shape, int originalZOrder)
         {
             float rotation = 0;
             try
@@ -72,11 +72,11 @@ namespace PowerPointLabs.ShortcutsLab
             pic.Top = y + (height - pic.Height) / 2;
             pic.Rotation = rotation;
             // move picture to original z-order
-            while (pic.ZOrderPosition > zOrder)
+            while (pic.ZOrderPosition > originalZOrder)
             {
                 pic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
             }
-            while (pic.ZOrderPosition < zOrder)
+            while (pic.ZOrderPosition < originalZOrder)
             {
                 pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
             }
