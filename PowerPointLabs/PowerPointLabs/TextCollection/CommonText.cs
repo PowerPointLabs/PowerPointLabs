@@ -10,7 +10,7 @@
         public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
         public const string ErrorInvalidCharacter = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
         public const string ErrorFileNameExist = "A file already exists with that name.";   
-        #endregion
+        # endregion
 
         #region URLs
         public const string FeedbackUrl = "http://www.comp.nus.edu.sg/~pptlabs/contact.html";
