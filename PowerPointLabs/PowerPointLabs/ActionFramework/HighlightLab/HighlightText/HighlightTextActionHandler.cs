@@ -15,7 +15,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
 
             if (this.GetAddIn().Application.ActiveWindow.Selection.Type == Microsoft.Office.Interop.PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;
+                HighlightTextFragments.userSelection = HighlightTextFragments.HighlightTextSelection.kShapeSelected;                
             }
             else if (this.GetAddIn().Application.ActiveWindow.Selection.Type == Microsoft.Office.Interop.PowerPoint.PpSelectionType.ppSelectionText)
             {
@@ -27,6 +27,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
             }
 
             HighlightTextFragments.AddHighlightedTextFragments();
+            
         }
     }
 }
