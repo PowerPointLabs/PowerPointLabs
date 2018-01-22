@@ -775,7 +775,7 @@ namespace PowerPointLabs.ShapesLab
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorCaption, e.Message, e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, e.Message, e);
 
                 return false;
             }

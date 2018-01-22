@@ -98,7 +98,7 @@ namespace PowerPointLabs.ResizeLab.Views
                 }
                 else
                 {
-                    MessageBox.Show(string.Format(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZeroWithShape, (i + 1)/2), TextCollection.CommonText.ErrorCaption);
+                    MessageBox.Show(string.Format(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZeroWithShape, (i + 1)/2), TextCollection.CommonText.ErrorTitle);
                     return;
                 }
             }

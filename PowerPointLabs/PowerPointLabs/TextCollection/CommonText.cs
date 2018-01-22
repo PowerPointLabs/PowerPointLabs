@@ -3,7 +3,7 @@
     public class CommonText
     {
         # region Common Error
-        public const string ErrorCaption = "Error";
+        public const string ErrorTitle = "Error";
         public const string ErrorSlideSelectionTitle = "Slide selection error";
         public const string ErrorDuringSetup = "Error During Setup.";
 

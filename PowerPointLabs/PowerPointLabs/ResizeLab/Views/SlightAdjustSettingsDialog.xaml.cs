@@ -34,7 +34,7 @@ namespace PowerPointLabs.ResizeLab.Views
             }
             else
             {
-                MessageBox.Show(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZero, TextCollection.CommonText.ErrorCaption);
+                MessageBox.Show(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZero, TextCollection.CommonText.ErrorTitle);
             }
         }
 

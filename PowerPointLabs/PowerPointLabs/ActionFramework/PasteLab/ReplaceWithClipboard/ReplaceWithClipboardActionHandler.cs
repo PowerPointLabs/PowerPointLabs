@@ -18,7 +18,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         {
             if (selectedShapes.Count <= 0)
             {
-                MessageBox.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorCaption);
+                MessageBox.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
                 return null;
             }
 

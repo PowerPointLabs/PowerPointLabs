@@ -23,7 +23,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             try
             {
-                this.ShowMessageAsync(TextCollection.CommonText.ErrorCaption, content);
+                this.ShowMessageAsync(TextCollection.CommonText.ErrorTitle, content);
             }
             catch (Exception e)
             {
