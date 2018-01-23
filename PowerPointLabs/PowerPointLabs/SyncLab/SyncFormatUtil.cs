@@ -59,7 +59,7 @@ namespace PowerPointLabs.SyncLab
         /// <summary>
         /// Applies the specified formats from one shape to multiple shapes
         /// </summary>
-        /// <param name="nodes">styles to apply</param>
+        /// <param name="nodes">Formats to apply</param>
         /// <param name="formatShape">source shape</param>
         /// <param name="newShapes">destination shape</param>
         public static void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)

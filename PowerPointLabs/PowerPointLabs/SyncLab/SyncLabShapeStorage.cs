@@ -9,7 +9,7 @@ using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 namespace PowerPointLabs.SyncLab
 {
     /// <summary>
-    /// Saves shapes into a PowerPointPresentation that runs in the background.
+    /// Saves shapes into a PowerPointPresentation that exists in the background.
     /// The exact saved shapes may change in type but style will be retained.
     /// Eg: PlaceHolders are saved as Textboxes
     /// </summary>
@@ -120,9 +120,10 @@ namespace PowerPointLabs.SyncLab
         }
 
         /// <summary>
+        /// Fake a copy by creating a textbox with the same formats
         /// Copy/Pasting MsoPlaceHolder doesn't work.
-        /// Creating a MsoPlaceHolder doesn't work too.
-        /// Fake a copy by creating a textbox with the same style
+        /// Note: Shapes.AddPlaceholder(..) is not applicable.
+        /// It restores a deleted placeholder to the slide, not create a shape
         /// </summary>
         /// <param name="formats"></param>
         /// <param name="msoPlaceHolder"></param>
