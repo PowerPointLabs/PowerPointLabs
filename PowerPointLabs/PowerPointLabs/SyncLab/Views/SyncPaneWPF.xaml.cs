@@ -138,7 +138,9 @@ namespace PowerPointLabs.SyncLab.Views
         /// <summary>
         /// Get shapes selected by user
         /// </summary>
-        /// <returns>ShapeRange of selected shapes, or null if selection is invalid</returns>
+        /// <returns>ShapeRange of selected shapes, or null.
+        /// Null is returned over an empty collection as selections may not contain ShapeRanges
+        /// </returns>
         private ShapeRange GetSelectedShapesForFormatting()
         {
             Selection selection = this.GetCurrentSelection();
