@@ -24,14 +24,57 @@ namespace PowerPointLabs.PasteLab
 
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
 
+            /*
+            Resize(ppShapeToFillSlide, slideWidth, slideHeight);
+            ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
+            */
+            
             ppShapeToFillSlide.AbsoluteHeight = slideHeight;
+
             if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
             {
                 ppShapeToFillSlide.AbsoluteWidth = slideWidth;
             }
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
+            
 
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
         }
+        public static PPShape Resize(PPShape originalShape, float w, float h)
+        {
+            //Original Image attributes
+            float originalWidth = originalShape.AbsoluteWidth;
+            float originalHeight = originalShape.AbsoluteHeight;
+
+            // Figure out the ratio
+            double ratioX = (double)w / (double)originalWidth;
+            double ratioY = (double)h / (double)originalHeight;
+            // use whichever multiplier is smaller
+            double ratio = ratioX < ratioY ? ratioX : ratioY;
+
+            // now we can get the new height and width
+            int newHeight = System.Convert.ToInt32(originalHeight * ratio);
+            int newWidth = System.Convert.ToInt32(originalWidth * ratio);
+
+            originalShape.AbsoluteWidth = newWidth;
+            originalShape.AbsoluteHeight = newHeight;
+
+            return originalShape;
+            /*
+            Image thumbnail = new System.Drawing.Bitmap(newWidth, newHeight);
+            Graphics graphic = System.Drawing.Graphics.FromImage(thumbnail);
+
+            graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphic.SmoothingMode = SmoothingMode.HighQuality;
+            graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            graphic.CompositingQuality = CompositingQuality.HighQuality;
+
+            graphic.Clear(Color.Transparent);
+            graphic.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+
+            return thumbnail;
+            */
+        }
+
     }
 }
