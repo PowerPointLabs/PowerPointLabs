@@ -13,6 +13,12 @@ namespace PowerPointLabs.SyncLab
     {
         #region Display Image Utils
 
+        /// <summary>
+        /// User takes ownership of managing shapes created with this Shapes object.
+        /// i.e. Created shapes must be deleted if no longer required
+        /// The shapes already present in this Shapes object MUST NOT be edited
+        /// </summary>
+        /// <returns></returns>
         public static Shapes GetTemplateShapes()
         {
             SyncLabShapeStorage shapeStorage = SyncLabShapeStorage.Instance;
