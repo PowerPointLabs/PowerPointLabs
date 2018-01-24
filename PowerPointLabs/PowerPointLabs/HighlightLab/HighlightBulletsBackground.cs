@@ -16,6 +16,7 @@ namespace PowerPointLabs.HighlightLab
 #pragma warning disable 0618
         public enum HighlightBackgroundSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightBackgroundSelection userSelection = HighlightBackgroundSelection.kNoneSelected;
+        public static bool HighlightBulletsEnabled = true;
 
         public static void AddHighlightBulletsBackground()
         {

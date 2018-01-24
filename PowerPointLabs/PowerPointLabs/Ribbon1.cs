@@ -118,9 +118,6 @@ namespace PowerPointLabs
         private Office.IRibbonUI _ribbon;
         
         public bool SpotlightDelete = true;
-
-        public bool HighlightBulletsEnabled = true;
-        public bool HighlightTextFragmentsEnabled = true;
         public bool RemoveCaptionsEnabled = true;
         public bool RemoveAudioEnabled = true;
 
