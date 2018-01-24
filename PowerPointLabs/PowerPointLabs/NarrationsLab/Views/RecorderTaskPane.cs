@@ -27,6 +27,7 @@ using PPExtraEventHelper;
 namespace PowerPointLabs.NarrationsLab.Views
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
+    // These task panes use User Control from Container 
     public partial class RecorderTaskPane : UserControl
     {
 #pragma warning disable 0618
@@ -1370,9 +1371,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
+                        if (!NotesToAudio.RemoveAudioEnabled)
                         {
-                            Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
+                            NotesToAudio.RemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }

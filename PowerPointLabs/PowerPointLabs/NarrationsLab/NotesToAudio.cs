@@ -22,6 +22,7 @@ namespace PowerPointLabs.NarrationsLab
     internal static class NotesToAudio
     {
 #pragma warning disable 0618
+        public static bool RemoveAudioEnabled = true;
         private static string TempFolderName
         {
             get

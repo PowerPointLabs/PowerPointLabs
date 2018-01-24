@@ -116,10 +116,6 @@ namespace PowerPointLabs
 
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
-        
-        public bool SpotlightDelete = true;
-        public bool RemoveCaptionsEnabled = true;
-        public bool RemoveAudioEnabled = true;
 
         #region IRibbonExtensibility Members
 
