@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
@@ -27,6 +26,7 @@ namespace PowerPointLabs.HighlightLab
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
 
+
                 //Get shapes to consider for animation
                 switch (userSelection)
                 {
@@ -50,7 +50,6 @@ namespace PowerPointLabs.HighlightLab
                 {
                     return;
                 }
-
                 List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
                 GroupShapesForAnimation(selectionToAnimate);
 
