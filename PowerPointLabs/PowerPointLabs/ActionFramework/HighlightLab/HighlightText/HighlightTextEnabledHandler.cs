@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
                 if (this.GetAddIn().Application.ActiveWindow.Selection.Type == PpSelectionType.ppSelectionText && 
                     this.GetAddIn().Application.ActiveWindow.Selection.TextRange2.TrimText().Length > 0)
                 {
-                    return HighlightTextFragments.HighlightTextFragmentsSelected;
+                    return HighlightTextFragments.HighlightTextFragmentsEnabled;
                 }
                 else
                 {
