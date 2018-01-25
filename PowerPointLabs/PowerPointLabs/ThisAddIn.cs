@@ -892,12 +892,12 @@ namespace PowerPointLabs
             BreakRecorderEvents();
 
             // ribbon function init
-            HighlightLab.HighlightBulletsText.HighlightBulletsEnabled = true;
+            HighlightLab.HighlightBulletsText.SetHighlightBulletsEnabled(true);
             HighlightLab.HighlightBulletsBackground.HighlightBulletsEnabled = true;
 
             if (sldRange.Count != 1)
             {
-                HighlightLab.HighlightBulletsText.HighlightBulletsEnabled = false;
+                HighlightLab.HighlightBulletsText.SetHighlightBulletsEnabled(false);
                 HighlightLab.HighlightBulletsBackground.HighlightBulletsEnabled = false;
             }
             else
