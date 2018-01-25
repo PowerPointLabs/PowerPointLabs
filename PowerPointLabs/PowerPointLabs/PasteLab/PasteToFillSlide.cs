@@ -21,14 +21,11 @@ namespace PowerPointLabs.PasteLab
                 shapeToFillSlide = pastingShapes.Group();
             }
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-
-            PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
-
-            /*
-            Resize(ppShapeToFillSlide, slideWidth, slideHeight);
-            ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
-            */
             
+            PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
+            
+            // Add code to compress the slide here.
+
             ppShapeToFillSlide.AbsoluteHeight = slideHeight;
 
             if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
@@ -37,7 +34,6 @@ namespace PowerPointLabs.PasteLab
             }
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
             
-
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
         }
         public static PPShape Resize(PPShape originalShape, float w, float h)
