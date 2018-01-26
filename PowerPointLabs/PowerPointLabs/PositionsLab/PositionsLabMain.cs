@@ -232,7 +232,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        // Insert default align bottom behaviour here
+                        toAlign.Align(MsoAlignCmd.msoAlignBottoms, MsoTriState.msoTrue);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -277,7 +278,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        // Insert default align horizontal center behaviour here
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -320,7 +322,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        // Insert default align vertical center behaviour here
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -364,7 +367,9 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        // Insert default align center behaviour here
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
