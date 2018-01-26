@@ -304,14 +304,20 @@
                   getSupertip="GetSupertip"
                   onAction="OnAction"
                   size="large"/>
-
-          <button id="ShapesLabButton"
-                  tag="ShapesLab"
-                  getLabel="GetLabel"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"
-                  size="large"/>
+          
+          <menu id="ShapesLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <gallery idMso="ShapesInsertGallery"/>
+            <button id="ShapesLabButton"
+                    tag="ShapesLab"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
           <menu id="CropLabMenu"
                 getLabel="GetLabel"
