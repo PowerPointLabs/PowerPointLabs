@@ -203,6 +203,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
             <gallery idMso="PictureSharpenSoftenGallery"/>
