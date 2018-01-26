@@ -29,6 +29,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <button id="AnimateInSlideButton"
                     tag="AnimateInSlide"
                     getLabel="GetLabel"
