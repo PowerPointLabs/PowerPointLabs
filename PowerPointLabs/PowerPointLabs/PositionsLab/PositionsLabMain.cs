@@ -188,7 +188,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        // Insert default align top behaviour here
+                        toAlign.Align(MsoAlignCmd.msoAlignTops, MsoTriState.msoTrue);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
