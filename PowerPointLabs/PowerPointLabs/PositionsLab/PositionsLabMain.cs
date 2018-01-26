@@ -96,7 +96,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        // Insert default align left behaviour here
+                        toAlign.Align(MsoAlignCmd.msoAlignLefts, MsoTriState.msoTrue);
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
