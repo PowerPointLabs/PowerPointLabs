@@ -15,7 +15,18 @@ namespace PowerPointLabs.HighlightLab
 #pragma warning disable 0618
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
-        public static bool HighlightTextFragmentsEnabled = true;
+        private static bool highlightTextFragmentsEnabled = true;
+
+        public static bool GetHighlightTextFragmentsEnabled()
+        {
+            return highlightTextFragmentsEnabled;
+        }
+
+        public static void SetHighlightTextFragmentsEnabled(bool enabled)
+        {
+            highlightTextFragmentsEnabled = enabled;
+        }
+
 
         public static void AddHighlightedTextFragments()
         {

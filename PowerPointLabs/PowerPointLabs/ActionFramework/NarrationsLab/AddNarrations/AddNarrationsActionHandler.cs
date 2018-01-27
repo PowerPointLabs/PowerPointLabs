@@ -26,7 +26,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             // If there are text in notes page for any of the selected slides 
             if (this.GetCurrentPresentation().SelectedSlides.Any(slide => slide.NotesPageText.Trim() != ""))
             {
-                NotesToAudio.RemoveAudioEnabled = true;
+                NotesToAudio.SetRemoveAudioEnabled(true);
                 this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
             }
 

@@ -13,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.CaptionsLab
         {
             //TODO: This needs to improved to stop using global variables
             this.StartNewUndoEntry();
-            NotesToCaptions.RemoveCaptionsEnabled = false;
+            NotesToCaptions.SetRemoveCaptionsEnabled(false);
             this.GetRibbonUi().RefreshRibbonControl("RemoveCaptionsButton");
             NotesToCaptions.RemoveCaptionsFromSelectedSlides();
         }

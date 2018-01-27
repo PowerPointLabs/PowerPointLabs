@@ -37,7 +37,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 }
             }
 
-            NotesToAudio.RemoveAudioEnabled = false;
+            NotesToAudio.SetRemoveAudioEnabled(false);
             this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
         }
     }

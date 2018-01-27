@@ -18,7 +18,7 @@ namespace PowerPointLabs.HighlightLab
         public static HighlightBackgroundSelection userSelection = HighlightBackgroundSelection.kNoneSelected;
         private static bool highlightBulletsEnabled = true;
 
-        public static bool IsHighlightBulletsEnabled()
+        public static bool GetHighlightBulletsEnabled()
         {
             return highlightBulletsEnabled;
         }

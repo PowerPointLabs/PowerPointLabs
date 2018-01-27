@@ -638,12 +638,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (NarrationsLab.NotesToAudio.RemoveAudioEnabled)
+                        if (NarrationsLab.NotesToAudio.GetRemoveAudioEnabled())
                         {
                             continue;
                         }
 
-                        NarrationsLab.NotesToAudio.RemoveAudioEnabled = true;
+                        NarrationsLab.NotesToAudio.SetRemoveAudioEnabled(true);
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -865,8 +865,8 @@ namespace PowerPointLabs
         {
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
-            NotesToCaptions.RemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            NarrationsLab.NotesToAudio.RemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+            NotesToCaptions.SetRemoveCaptionsEnabled(SlidesInRangeHaveCaptions(sldRange));
+            NarrationsLab.NotesToAudio.SetRemoveAudioEnabled(SlidesInRangeHaveAudio(sldRange));
 
             // update recorder pane
             if (sldRange.Count > 0)
@@ -893,12 +893,12 @@ namespace PowerPointLabs
 
             // ribbon function init
             HighlightLab.HighlightBulletsText.SetHighlightBulletsEnabled(true);
-            HighlightLab.HighlightBulletsBackground.HighlightBulletsEnabled = true;
+            HighlightLab.HighlightBulletsBackground.SetHighlightBulletsEnabled(true);
 
             if (sldRange.Count != 1)
             {
                 HighlightLab.HighlightBulletsText.SetHighlightBulletsEnabled(false);
-                HighlightLab.HighlightBulletsBackground.HighlightBulletsEnabled = false;
+                HighlightLab.HighlightBulletsBackground.SetHighlightBulletsEnabled(false);
             }
             else
             {

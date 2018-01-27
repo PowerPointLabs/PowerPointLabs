@@ -22,7 +22,6 @@ namespace PowerPointLabs.NarrationsLab
     internal static class NotesToAudio
     {
 #pragma warning disable 0618
-        public static bool RemoveAudioEnabled = true;
         private static string TempFolderName
         {
             get
@@ -34,6 +33,17 @@ namespace PowerPointLabs.NarrationsLab
 
         public const string SpeechShapePrefix = "PowerPointLabs Speech";
         public const string SpeechShapePrefixOld = "AudioGen Speech";
+
+        private static bool removeAudioEnabled = true;
+        public static bool GetRemoveAudioEnabled()
+        {
+            return removeAudioEnabled;
+        }
+
+        public static void SetRemoveAudioEnabled(bool enabled)
+        {
+            removeAudioEnabled = enabled;
+        }
 
         public static void PreviewAnimations()
         {
