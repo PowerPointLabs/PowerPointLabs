@@ -334,7 +334,14 @@ namespace PowerPointLabs.Utils
                 return true;
             }
         }
-
+        /// <summary>
+        /// To avoid corrupted shape.
+        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
+        /// After that, most of operations on corrupted shapes will throw an exception.
+        /// One solution for this is to re-allocate its memory: simply cut/copy and paste.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
             // in case of random corruption of shape, cut-paste a shape before using its property
@@ -352,6 +359,35 @@ namespace PowerPointLabs.Utils
                 correctedShapeList.Add(correctedShape);
             }
             return ownerSlide.ToShapeRange(correctedShapeList);
+        }
+
+        /// <summary>
+        /// To avoid corrupted shape.
+        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
+        /// After that, most of operations on corrupted shapes will throw an exception.
+        /// One solution for this is to re-allocate its memory: simply cut/copy and paste.
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <returns></returns>
+        public static Shape CutPasteShape(Shape shape)
+        {
+            // Save clipboard onto a temp slide, this is similar to code in PasteLabActionHandler.cs
+            // Have no choice to use deprecated methods because ShapeUtil does not use ActionFramework
+            PowerPointPresentation presentation = PowerPointPresentation.Current;
+
+            PowerPointSlide tempClipboardSlide = presentation.AddSlide();
+            ShapeRange tempClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(tempClipboardSlide);
+
+            shape.Cut();
+            shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
+
+            // Revert clipboard. Note that cannot be reverted if last copied item was a placeholder
+            if (tempClipboardShapes != null)
+            {
+                tempClipboardShapes.Copy();
+            }
+            tempClipboardSlide.Delete();
+            return shape;
         }
 
         #endregion

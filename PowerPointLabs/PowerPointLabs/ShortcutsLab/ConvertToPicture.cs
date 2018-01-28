@@ -21,7 +21,8 @@ namespace PowerPointLabs.ShortcutsLab
             {
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
                 int originalZOrder = shape.ZOrderPosition;
-                shape = CutPasteShape(shape);
+                // In case shape is corrupted
+                shape = ShapeUtil.CutPasteShape(shape);
                 ConvertToPictureForShape(shape, originalZOrder);
             }
             else
@@ -61,6 +62,14 @@ namespace PowerPointLabs.ShortcutsLab
             {
                 Logger.LogException(e, "Chart cannot be rotated.");
             }
+
+            // Save clipboard onto a temp slide, this is similar to code in PasteLabActionHandler.cs
+            // Have no choice to use deprecated methods because ConvertToPicture does not use ActionFramework
+            PowerPointPresentation presentation = PowerPointPresentation.Current;
+
+            PowerPointSlide tempClipboardSlide = presentation.AddSlide();
+            PowerPoint.ShapeRange tempClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(tempClipboardSlide);
+
             shape.Copy();
             float x = shape.Left;
             float y = shape.Top;
@@ -81,21 +90,13 @@ namespace PowerPointLabs.ShortcutsLab
                 pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
             }
             pic.Select();
-        }
 
-        /// <summary>
-        /// To avoid corrupted shape.
-        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
-        /// After that, most of operations on corrupted shapes will throw an exception.
-        /// One solution for this is to re-allocate its memory: simply cut/copy and paste.
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <returns></returns>
-        private static PowerPoint.Shape CutPasteShape(PowerPoint.Shape shape)
-        {
-            shape.Cut();
-            shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
-            return shape;
+            // Revert clipboard
+            if (tempClipboardShapes != null)
+            {
+                tempClipboardShapes.Copy();
+            }
+            tempClipboardSlide.Delete();
         }
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
