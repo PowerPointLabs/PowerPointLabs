@@ -1319,7 +1319,7 @@ namespace PowerPointLabs
 
                     _copiedShapes.Sort((x, y) => (x.Id - y.Id));
                 }
-
+                Ribbon.RefreshRibbonControl("PasteToFitSlideButton");
                 Ribbon.RefreshRibbonControl("PasteToFillSlideButton");
                 Ribbon.RefreshRibbonControl("PasteAtOriginalPositionButton");
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
