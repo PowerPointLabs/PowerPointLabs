@@ -13,9 +13,12 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         {
             this.StartNewUndoEntry();
 
-            var selection = this.GetCurrentSelection();
-            // Send selection over to method, check if it is a shape/picture and perform fill operation
-            FillSlide.Fill(selection);
+            Microsoft.Office.Interop.PowerPoint.Selection currentSelection = this.GetCurrentSelection();
+            PowerPointLabs.Models.PowerPointSlide currentSlide = this.GetCurrentSlide();
+            float slideHeight = this.GetCurrentPresentation().SlideHeight;
+            float slideWidth = this.GetCurrentPresentation().SlideWidth;
+            // Send over to Fill operation to fill up the slide
+            FillSlide.Fill(currentSelection, currentSlide, slideWidth, slideHeight);
         }
     }
 }
