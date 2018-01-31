@@ -359,6 +359,10 @@
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabImageHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedActionHandler.cs" />
