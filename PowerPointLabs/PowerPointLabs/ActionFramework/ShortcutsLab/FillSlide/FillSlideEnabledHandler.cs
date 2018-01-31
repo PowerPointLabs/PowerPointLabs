@@ -13,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         {
             //Gets the current selection
             Microsoft.Office.Interop.PowerPoint.Selection currentSelection = this.GetCurrentSelection();
-            //Checks if the current selection is either a shape or picture and enable if true
+            //Checks if everything currently selected is either a shape or picture and enable if true
             return ShapeUtil.IsAllPictureOrShape(currentSelection.ShapeRange);
         }
     }
