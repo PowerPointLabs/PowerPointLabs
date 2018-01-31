@@ -15,23 +15,38 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            Shape shapeToFillSlide = pastingShapes[1];
+            Shape shapeToFitSlide = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {
-                shapeToFillSlide = pastingShapes.Group();
+                shapeToFitSlide = pastingShapes.Group();
             }
-            shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+            shapeToFitSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 
-            PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
+            PPShape ppShapeToFitSlide = new PPShape(shapeToFitSlide);
 
-            ppShapeToFillSlide.AbsoluteHeight = slideHeight;
-            if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
-            {
-                ppShapeToFillSlide.AbsoluteWidth = slideWidth;
-            }
-            ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
+            ResizeShape(ppShapeToFitSlide, slideWidth, slideHeight);
+            ppShapeToFitSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
+        }
 
-            CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
+        public static void ResizeShape(PPShape ppShapeToFitSlide, float w, float h)
+        {
+            //Original PPShape attributes
+            float originalWidth = ppShapeToFitSlide.AbsoluteWidth;
+            float originalHeight = ppShapeToFitSlide.AbsoluteHeight;
+
+            // Figure out the ratio
+            double ratioX = (double)w / (double)originalWidth;
+            double ratioY = (double)h / (double)originalHeight;
+            // use whichever multiplier is smaller
+            double ratio = ratioX < ratioY ? ratioX : ratioY;
+
+            // Now we can get the new height and width
+            float newHeight = originalHeight * (float)ratio;
+            float newWidth = originalWidth * (float)ratio;
+
+            // Resize the image accordingly to the slide
+            ppShapeToFitSlide.AbsoluteHeight = newHeight;
+            ppShapeToFitSlide.AbsoluteWidth = newWidth;
         }
     }
 }
