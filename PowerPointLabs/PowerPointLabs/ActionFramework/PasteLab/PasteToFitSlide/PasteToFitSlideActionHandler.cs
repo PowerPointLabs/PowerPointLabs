@@ -17,7 +17,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(slide);
             if (pastingShapes == null)
             {
-                return null;
+                return pastingShapes;
             }
 
             PasteToFitSlide.Execute(slide, pastingShapes, presentation.SlideWidth, presentation.SlideHeight);
