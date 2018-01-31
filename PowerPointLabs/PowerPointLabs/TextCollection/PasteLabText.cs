@@ -7,7 +7,7 @@
         public const string PasteAtCursorPositionTag = "PasteAtCursorPosition";
         public const string PasteAtOriginalPositionTag = "PasteAtOriginalPosition";
         public const string PasteToFillSlideTag = "PasteToFillSlide";
-        public const string PasteToFitSlideTag = "PasteToFillSlide";
+        public const string PasteToFitSlideTag = "PasteToFitSlide";
         public const string ReplaceWithClipboardTag = "ReplaceWithClipboard";
         public const string PasteIntoGroupTag = "PasteIntoGroup";
 

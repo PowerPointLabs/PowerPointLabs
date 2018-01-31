@@ -26,6 +26,7 @@ namespace PowerPointLabs.PasteLab
 
             ResizeShape(ppShapeToFitSlide, slideWidth, slideHeight);
             ppShapeToFitSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
+            
         }
 
         public static void ResizeShape(PPShape ppShapeToFitSlide, float w, float h)

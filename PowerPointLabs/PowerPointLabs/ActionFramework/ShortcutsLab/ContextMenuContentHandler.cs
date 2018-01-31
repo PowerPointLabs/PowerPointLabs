@@ -46,6 +46,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             pasteLab.Items.Add(PasteLabText.PasteAtCursorPositionTag);
             pasteLab.Items.Add(PasteLabText.PasteAtOriginalPositionTag);
             pasteLab.Items.Add(PasteLabText.PasteToFillSlideTag);
+            pasteLab.Items.Add(PasteLabText.PasteToFitSlideTag);
+
 
             // Context menus other than slide will have these buttons
             if (ribbonId != ShortcutsLabText.MenuSlide)
