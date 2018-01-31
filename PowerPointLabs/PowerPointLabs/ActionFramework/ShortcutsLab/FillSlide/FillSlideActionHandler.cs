@@ -14,7 +14,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             this.StartNewUndoEntry();
 
             var selection = this.GetCurrentSelection();
-            // Send selection over to method, check if it is an image and perform fill operation
+            // Send selection over to method, check if it is a shape/picture and perform fill operation
+            FillSlide.Fill(selection);
         }
     }
 }
