@@ -21,10 +21,10 @@ namespace PowerPointLabs.PasteLab
                 shapeToFillSlide = pastingShapes.Group();
             }
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-            
+
+            // Add code to compress the slide here, using ShapeToBitmap method from GraphicsUtil.cs
+
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
-            
-            // Add code to compress the slide here.
 
             ppShapeToFillSlide.AbsoluteHeight = slideHeight;
 
