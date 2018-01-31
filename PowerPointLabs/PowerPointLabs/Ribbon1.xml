@@ -373,6 +373,13 @@
                     getSupertip="GetSupertip"
                     getEnabled="GetEnabled"
                     onAction="OnAction"/>
+            <button id="PasteToFitSlideButton"
+                    tag="PasteToFitSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
             <button id="ReplaceWithClipboardButton"
                     tag="ReplaceWithClipboard"
                     getLabel="GetLabel"
