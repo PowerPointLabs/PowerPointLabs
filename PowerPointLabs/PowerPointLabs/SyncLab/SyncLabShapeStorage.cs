@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
@@ -43,28 +44,32 @@ namespace PowerPointLabs.SyncLab
         /// </summary>
         /// <param name="shape"></param>
         /// <param name="formats">Required for msoPlaceholder</param>
-        /// <returns></returns>
+        /// <returns>identifier of copied shape</returns>
         public string CopyShape(Shape shape, FormatTreeNode[] formats)
         {
-            // copies a shape, and returns a shape name
             Shape copiedShape = null;
-            try
+            if (shape.Type == MsoShapeType.msoPlaceholder)
             {
-                if (shape.Type == MsoShapeType.msoPlaceholder)
-                {
-                    copiedShape = CopyMsoPlaceHolder(formats, shape);
-                }
-                else
+                copiedShape = CopyMsoPlaceHolder(formats, shape);
+            }
+            else
+            {
+                try
                 {
                     shape.Copy();
                     copiedShape = Slides[0].Shapes.Paste()[1];
                 }
-                    
+                catch
+                {
+                    copiedShape = null;
+                }
             }
-            catch
+
+            if (copiedShape == null)
             {
                 return null;
             }
+
             string shapeKey = nextKey.ToString();
             nextKey++;
             copiedShape.Name = shapeKey;
@@ -120,25 +125,124 @@ namespace PowerPointLabs.SyncLab
         }
 
         /// <summary>
-        /// Fake a copy by creating a textbox with the same formats
+        /// Fake a copy by creating a similar object with the same formats
         /// Copy/Pasting MsoPlaceHolder doesn't work.
-        /// Note: Shapes.AddPlaceholder(..) is not applicable.
+        /// Note: Shapes.AddPlaceholder(..) does not work as well.
         /// It restores a deleted placeholder to the slide, not create a shape
         /// </summary>
         /// <param name="formats"></param>
         /// <param name="msoPlaceHolder"></param>
-        /// <returns></returns>
+        /// <returns>returns null if input placeholder is not supported</returns>
         private Shape CopyMsoPlaceHolder(FormatTreeNode[] formats, Shape msoPlaceHolder)
         {
-            Shape savedShape = Slides[0].Shapes.AddTextbox(
-                MsoTextOrientation.msoTextOrientationHorizontal,
-                msoPlaceHolder.Left,
-                msoPlaceHolder.Top,
-                msoPlaceHolder.Width,
-                msoPlaceHolder.Height);
+            PpPlaceholderType realType = msoPlaceHolder.PlaceholderFormat.Type;
             
-            SyncFormatUtil.ApplyFormats(formats, msoPlaceHolder, savedShape);
-            return savedShape;
+            // charts, tables, pictures & smart shapes may return a general type,
+            // ppPlaceHolderObject or ppPlaceHolderVerticalObject
+            bool isGeneralType = realType == PpPlaceholderType.ppPlaceholderObject ||
+                                 realType == PpPlaceholderType.ppPlaceholderVerticalObject;
+            if (isGeneralType)
+            {
+                realType = GetSpecificPlaceholderType(msoPlaceHolder);
+            }
+            
+            // create an appropriate shape, based on placeholder type
+            Shape shapeTemplate = null;
+            switch (realType)
+            {
+                case PpPlaceholderType.ppPlaceholderBody:
+                case PpPlaceholderType.ppPlaceholderCenterTitle:
+                case PpPlaceholderType.ppPlaceholderSubtitle:
+                    // unable to support FarEast text orientation, API does not give us enough information
+                    shapeTemplate = Slides[0].Shapes.AddTextbox(
+                        MsoTextOrientation.msoTextOrientationHorizontal,
+                        msoPlaceHolder.Left,
+                        msoPlaceHolder.Top,
+                        msoPlaceHolder.Width,
+                        msoPlaceHolder.Height);
+                    break;
+                case PpPlaceholderType.ppPlaceholderVerticalBody:
+                case PpPlaceholderType.ppPlaceholderVerticalTitle:
+                    // unable to support FarEast text orientation, API does not give us enough information
+                    shapeTemplate = Slides[0].Shapes.AddTextbox(
+                        MsoTextOrientation.msoTextOrientationVertical,
+                        msoPlaceHolder.Left,
+                        msoPlaceHolder.Top,
+                        msoPlaceHolder.Width,
+                        msoPlaceHolder.Height);
+                    break;
+                case PpPlaceholderType.ppPlaceholderChart:
+                case PpPlaceholderType.ppPlaceholderOrgChart:
+                    // charts are not yet supported by Synclab
+                    break;
+                case PpPlaceholderType.ppPlaceholderTable:
+                    // tables are not yet supported by Synclab
+                    break;
+                case PpPlaceholderType.ppPlaceholderPicture:
+                case PpPlaceholderType.ppPlaceholderBitmap:
+                    // TODO: images are not yet supported by SyncLab, see PictureFormat for things to copy
+                    // do nothing for now
+                    break;
+                case PpPlaceholderType.ppPlaceholderVerticalObject:
+                case PpPlaceholderType.ppPlaceholderObject:
+                    // already narrowed down the type 
+                    // should only perform actions valid for all placeholder objects here 
+                    // do nothing for now
+                    break;
+                default:
+                    // types not listed above are types that do not make sense to be supported by Synclab
+                    // eg. footer, header, date
+                    break;
+            }
+            
+            if (shapeTemplate == null)
+            {
+                // placeholder type is not supported, no copy made
+                return null;
+            }
+            
+            SyncFormatUtil.ApplyFormats(formats, msoPlaceHolder, shapeTemplate);
+            return shapeTemplate;
+        }
+
+        /// <summary>
+        /// Targets only msoPlaceHolderObject & msoPlaceHolderVerticalObject
+        /// Attempt to return a more specific placeholder type, if we can determine it
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns>a specific type, or the shape's original type</returns>
+        private PpPlaceholderType GetSpecificPlaceholderType(Shape placeHolder)
+        {
+            bool isPicture = IsPlaceHolderPicture(placeHolder);
+            if (isPicture)
+            {
+                return PpPlaceholderType.ppPlaceholderPicture;
+            }
+            else
+            {
+                return placeHolder.PlaceholderFormat.Type;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a placeholder is a Picture
+        /// shape.PlaceHolderFormat.Type is insufficient, sometimes returning the more general "ppPlaceHolderObject".
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns></returns>
+        private bool IsPlaceHolderPicture(Shape placeHolder)
+        {
+            try
+            {
+                // attempt to access PictureFormat properties, an exception will be thrown
+                // if shape is not a Picture.
+                float attemptToAccess = placeHolder.PictureFormat.CropTop;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
