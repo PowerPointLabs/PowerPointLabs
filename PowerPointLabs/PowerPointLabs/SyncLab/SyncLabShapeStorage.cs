@@ -2,6 +2,7 @@
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -45,7 +46,7 @@ namespace PowerPointLabs.SyncLab
         /// <param name="shape"></param>
         /// <param name="formats">Required for msoPlaceholder</param>
         /// <returns>identifier of copied shape</returns>
-        public string CopyShape(Shape shape, FormatTreeNode[] formats)
+        public string CopyShape(Shape shape, Format[] formats)
         {
             Shape copiedShape = null;
             if (shape.Type == MsoShapeType.msoPlaceholder)

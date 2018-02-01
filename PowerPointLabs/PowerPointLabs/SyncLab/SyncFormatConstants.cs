@@ -1,5 +1,6 @@
-﻿using System.Drawing;
-
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Documents;
 using PowerPointLabs.SyncLab.Views;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -31,9 +32,37 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
+        public static List<Format> Formats
+        {
+            get
+            {
+                List<Format> list = new List<Format>();
+                list.AddRange(GetFormatsFromFormatTreeNode(FormatCategories));
+                return list;
+            }
+        }
+        
+        private static Format[] GetFormatsFromFormatTreeNode(FormatTreeNode[] nodes)
+        {
+            List<Format> list = new List<Format>();
+            foreach (FormatTreeNode node in nodes)
+            {
+                if (node.IsFormatNode && node.IsChecked.HasValue && node.IsChecked.Value)
+                {
+                    list.Add(node.Format);
+                }
+                else
+                {
+                    list.AddRange(GetFormatsFromFormatTreeNode(node.ChildrenNodes));
+                }
+            }
+
+            return list.ToArray();
+        }
+
         private static FormatTreeNode[] InitFormatCategories()
         {
-            FormatTreeNode[] formats = new FormatTreeNode[]
+            FormatTreeNode[] formats =
                 {
                     new FormatTreeNode(
                             "Text",

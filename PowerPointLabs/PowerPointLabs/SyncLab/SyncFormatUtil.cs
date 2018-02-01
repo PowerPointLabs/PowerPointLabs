@@ -3,8 +3,7 @@ using System.Drawing;
 using System.Drawing.Text;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.SyncLab.Views;
+using PowerPointLabs.SyncLab.ObjectFormats;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
@@ -21,144 +20,6 @@ namespace PowerPointLabs.SyncLab
             return shapeStorage.Slides[SyncLabShapeStorage.FormatStorageSlide].Shapes;
         }
         
-        public static bool CanCopyMsoPlaceHolder(Shape placeholder)
-        {
-            SyncLabShapeStorage shapeStorage = SyncLabShapeStorage.Instance;
-            
-            var emptyArray = new FormatTreeNode[0];
-            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder);
-            
-            if (copyAttempt == null)
-            {
-                return false;
-            }
-            
-            copyAttempt.Delete();
-            return true;
-        }
-
-        /// <summary>
-        /// Fake a copy by creating a similar object with the same formats
-        /// Copy/Pasting MsoPlaceHolder doesn't work.
-        /// Note: Shapes.AddPlaceholder(..) does not work as well.
-        /// It restores a deleted placeholder to the slide, not create a shape
-        /// </summary>
-        /// <param name="formats"></param>
-        /// <param name="msoPlaceHolder"></param>
-        /// <returns>returns null if input placeholder is not supported</returns>
-        public static Shape CopyMsoPlaceHolder(FormatTreeNode[] formats, Shape msoPlaceHolder)
-        {
-            Shapes templateShapes = GetTemplateShapes();
-            PpPlaceholderType realType = msoPlaceHolder.PlaceholderFormat.Type;
-            
-            // charts, tables, pictures & smart shapes may return a general type,
-            // ppPlaceHolderObject or ppPlaceHolderVerticalObject
-            bool isGeneralType = realType == PpPlaceholderType.ppPlaceholderObject ||
-                                 realType == PpPlaceholderType.ppPlaceholderVerticalObject;
-            if (isGeneralType)
-            {
-                realType = GetSpecificPlaceholderType(msoPlaceHolder);
-            }
-            
-            // create an appropriate shape, based on placeholder type
-            Shape shapeTemplate = null;
-            switch (realType)
-            {
-                case PpPlaceholderType.ppPlaceholderBody:
-                case PpPlaceholderType.ppPlaceholderCenterTitle:
-                case PpPlaceholderType.ppPlaceholderSubtitle:
-                    // unable to support FarEast text orientation, API does not give us enough information
-                    shapeTemplate = templateShapes.AddTextbox(
-                        MsoTextOrientation.msoTextOrientationHorizontal,
-                        msoPlaceHolder.Left,
-                        msoPlaceHolder.Top,
-                        msoPlaceHolder.Width,
-                        msoPlaceHolder.Height);
-                    break;
-                case PpPlaceholderType.ppPlaceholderVerticalBody:
-                case PpPlaceholderType.ppPlaceholderVerticalTitle:
-                    // unable to support FarEast text orientation, API does not give us enough information
-                    shapeTemplate = templateShapes.AddTextbox(
-                        MsoTextOrientation.msoTextOrientationVertical,
-                        msoPlaceHolder.Left,
-                        msoPlaceHolder.Top,
-                        msoPlaceHolder.Width,
-                        msoPlaceHolder.Height);
-                    break;
-                case PpPlaceholderType.ppPlaceholderChart:
-                case PpPlaceholderType.ppPlaceholderOrgChart:
-                    // charts are not yet supported by Synclab
-                    break;
-                case PpPlaceholderType.ppPlaceholderTable:
-                    // tables are not yet supported by Synclab
-                    break;
-                case PpPlaceholderType.ppPlaceholderPicture:
-                case PpPlaceholderType.ppPlaceholderBitmap:
-                    // TODO: images are not yet supported by SyncLab, see PictureFormat for things to copy
-                    // do nothing for now
-                    break;
-                case PpPlaceholderType.ppPlaceholderVerticalObject:
-                case PpPlaceholderType.ppPlaceholderObject:
-                    // already narrowed down the type 
-                    // should only perform actions valid for all placeholder objects here 
-                    // do nothing for now
-                    break;
-                default:
-                    // types not listed above are types that do not make sense to be supported by Synclab
-                    // eg. footer, header, date
-                    break;
-            }
-            
-            if (shapeTemplate == null)
-            {
-                // placeholder type is not supported, no copy made
-                return null;
-            }
-            
-            SyncFormatUtil.ApplyFormats(formats, msoPlaceHolder, shapeTemplate);
-            return shapeTemplate;
-        }
-
-        /// <summary>
-        /// Targets only msoPlaceHolderObject & msoPlaceHolderVerticalObject
-        /// Attempt to return a more specific placeholder type, if we can determine it
-        /// </summary>
-        /// <param name="placeHolder"></param>
-        /// <returns>a specific type, or the shape's original type</returns>
-        private static PpPlaceholderType GetSpecificPlaceholderType(Shape placeHolder)
-        {
-            bool isPicture = IsPlaceHolderPicture(placeHolder);
-            if (isPicture)
-            {
-                return PpPlaceholderType.ppPlaceholderPicture;
-            }
-            else
-            {
-                return placeHolder.PlaceholderFormat.Type;
-            }
-        }
-
-        /// <summary>
-        /// Checks if a placeholder is a Picture
-        /// shape.PlaceHolderFormat.Type is insufficient, sometimes returning the more general "ppPlaceHolderObject".
-        /// </summary>
-        /// <param name="placeHolder"></param>
-        /// <returns></returns>
-        private static bool IsPlaceHolderPicture(Shape placeHolder)
-        {
-            try
-            {
-                // attempt to access PictureFormat properties, an exception will be thrown
-                // if shape is not a Picture.
-                float attemptToAccess = placeHolder.PictureFormat.CropTop;
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size imageSize)
         {
             Bitmap image = new Bitmap(imageSize.Width, imageSize.Height);
@@ -200,39 +61,173 @@ namespace PowerPointLabs.SyncLab
         /// <summary>
         /// Applies the specified formats from one shape to multiple shapes
         /// </summary>
-        /// <param name="nodes">Formats to apply</param>
+        /// <param name="formats">Formats to apply</param>
         /// <param name="formatShape">source shape</param>
         /// <param name="newShapes">destination shape</param>
-        public static void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, ShapeRange newShapes)
+        public static void ApplyFormats(Format[] formats, Shape formatShape, ShapeRange newShapes)
         {
             foreach (Shape newShape in newShapes)
             {
-                ApplyFormats(nodes, formatShape, newShape);
+                ApplyFormats(formats, formatShape, newShape);
             }
         }
 
-        public static void ApplyFormats(FormatTreeNode[] nodes, Shape formatShape, Shape newShape)
+        public static void ApplyFormats(Format[] formats, Shape formatShape, Shape newShape)
         {
-            foreach (FormatTreeNode node in nodes)
+            foreach (Format format in formats)
             {
-                ApplyFormats(node, formatShape, newShape);
+                format.SyncFormat(formatShape, newShape);
             }
         }
+        
+        #endregion
 
-        public static void ApplyFormats(FormatTreeNode node, Shape formatShape, Shape newShape)
+        #region PlaceHolder utils
+
+        public static bool CanCopyMsoPlaceHolder(Shape placeholder)
         {
-            if (node.Format != null)
+            var emptyArray = new Format[0];
+            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder);
+            
+            if (copyAttempt == null)
             {
-                if (!node.IsChecked.HasValue || !node.IsChecked.Value)
-                {
-                    return;
-                }
-                node.Format.SyncFormat(formatShape, newShape);
+                return false;
+            }
+            
+            copyAttempt.Delete();
+            return true;
+        }
+
+        /// <summary>
+        /// Fake a copy by creating a similar object with the same formats
+        /// Copy/Pasting MsoPlaceHolder doesn't work.
+        /// Note: Shapes.AddPlaceholder(..) does not work as well.
+        /// It restores a deleted placeholder to the slide, not create a shape
+        /// </summary>
+        /// <param name="formats"></param>
+        /// <param name="msoPlaceHolder"></param>
+        /// <returns>returns null if input placeholder is not supported</returns>
+        public static Shape CopyMsoPlaceHolder(Format[] formats, Shape msoPlaceHolder)
+        {
+            Shapes templateShapes = GetTemplateShapes();
+            PpPlaceholderType realType = msoPlaceHolder.PlaceholderFormat.Type;
+            
+            // charts, tables, pictures & smart shapes may return a general type,
+            // ppPlaceHolderObject or ppPlaceHolderVerticalObject
+            bool isGeneralType = realType == PpPlaceholderType.ppPlaceholderObject ||
+                                 realType == PpPlaceholderType.ppPlaceholderVerticalObject;
+            if (isGeneralType)
+            {
+                realType = GetSpecificPlaceholderType(msoPlaceHolder);
+            }
+            
+            // create an appropriate shape, based on placeholder type
+            Shape shapeTemplate = null;
+            switch (realType)
+            {
+                // the type never seems to be anything other than subtitle, center title, title, body or object.
+                // still, place the rest here to be safe.
+                case PpPlaceholderType.ppPlaceholderBody:
+                case PpPlaceholderType.ppPlaceholderCenterTitle:
+                case PpPlaceholderType.ppPlaceholderTitle:
+                case PpPlaceholderType.ppPlaceholderSubtitle:
+                case PpPlaceholderType.ppPlaceholderVerticalBody:
+                case PpPlaceholderType.ppPlaceholderVerticalTitle:
+                    shapeTemplate = templateShapes.AddTextbox(
+                        msoPlaceHolder.TextFrame.Orientation,
+                        msoPlaceHolder.Left,
+                        msoPlaceHolder.Top,
+                        msoPlaceHolder.Width,
+                        msoPlaceHolder.Height);
+                    break;
+                case PpPlaceholderType.ppPlaceholderChart:
+                case PpPlaceholderType.ppPlaceholderOrgChart:
+                    // charts are not yet supported by Synclab
+                    break;
+                case PpPlaceholderType.ppPlaceholderTable:
+                    // tables are not yet supported by Synclab
+                    break;
+                case PpPlaceholderType.ppPlaceholderPicture:
+                case PpPlaceholderType.ppPlaceholderBitmap:
+                    // TODO: images are not yet supported by SyncLab, see PictureFormat for things to copy
+                    // do nothing for now
+                    break;
+                case PpPlaceholderType.ppPlaceholderVerticalObject:
+                case PpPlaceholderType.ppPlaceholderObject:
+                    // already narrowed down the type 
+                    // should only perform actions valid for all placeholder objects here 
+                    // do nothing for now
+                    break;
+                default:
+                    // types not listed above are types that do not make sense to be supported by Synclab
+                    // eg. footer, header, date
+                    break;
+            }
+            
+            if (shapeTemplate == null)
+            {
+                // placeholder type is not supported, no copy made
+                return null;
+            }
+            
+            ApplyFormats(formats, msoPlaceHolder, shapeTemplate);
+            return shapeTemplate;
+        }
+
+        /// <summary>
+        /// Targets only msoPlaceHolderObject & msoPlaceHolderVerticalObject
+        /// Attempt to return a more specific placeholder type, if we can determine it
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns>a specific type, or the shape's original type</returns>
+        private static PpPlaceholderType GetSpecificPlaceholderType(Shape placeHolder)
+        {
+            bool isPicture = IsPlaceHolderPicture(placeHolder);
+            bool isBody = IsPlaceHolderBody(placeHolder);
+            if (isPicture)
+            {
+                return PpPlaceholderType.ppPlaceholderPicture;
+            }
+            else if (isBody)
+            {
+                return PpPlaceholderType.ppPlaceholderBody;
             }
             else
             {
-                ApplyFormats(node.ChildrenNodes, formatShape, newShape);
+                return placeHolder.PlaceholderFormat.Type;
             }
+        }
+
+        /// <summary>
+        /// Checks if a placeholder is a Picture
+        /// shape.PlaceHolderFormat.Type is insufficient, sometimes returning the more general "ppPlaceHolderObject".
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns></returns>
+        private static bool IsPlaceHolderPicture(Shape placeHolder)
+        {
+            try
+            {
+                // attempt to access PictureFormat properties, an exception will be thrown
+                // if shape is not a Picture.
+                float unused = placeHolder.PictureFormat.CropTop;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
+        /// <summary>
+        /// Checks if a placeholder is a Body
+        /// shape.PlaceHolderFormat.Type is insufficient, sometimes returning the more general "ppPlaceHolderObject".
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns></returns>
+        private static bool IsPlaceHolderBody(Shape placeHolder)
+        {
+            return placeHolder.HasTextFrame == MsoTriState.msoTrue;
         }
         #endregion
     }

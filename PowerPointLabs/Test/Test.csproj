@@ -163,6 +163,7 @@
     <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
+    <Compile Include="UnitTest\SyncLab\PlaceHolderCopyTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabPositionTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFormatTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />

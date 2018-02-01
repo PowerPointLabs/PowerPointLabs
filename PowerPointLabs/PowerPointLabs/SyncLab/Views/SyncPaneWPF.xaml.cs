@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -6,6 +7,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -129,12 +131,31 @@ namespace PowerPointLabs.SyncLab.Views
             if (selectedShapes == null)
             {
                 MessageBox.Show(SyncLabText.ErrorPasteSelectionInvalid, SyncLabText.ErrorDialogTitle);
-                return;
             }
             else
             {
-                SyncFormatUtil.ApplyFormats(nodes, formatShape, selectedShapes);
+                Format[] formats = GetFormatsToApply(nodes);
+                SyncFormatUtil.ApplyFormats(formats, formatShape, selectedShapes);
+                
             }
+        }
+        
+        private Format[] GetFormatsToApply(FormatTreeNode[] nodes)
+        {
+            List<Format> list = new List<Format>();
+            foreach (FormatTreeNode node in nodes)
+            {
+                if (node.IsFormatNode && node.IsChecked.HasValue && node.IsChecked.Value)
+                {
+                    list.Add(node.Format);
+                }
+                else
+                {
+                    list.AddRange(GetFormatsToApply(node.ChildrenNodes));
+                }
+            }
+
+            return list.ToArray();
         }
 
         /// <summary>
@@ -204,9 +225,9 @@ namespace PowerPointLabs.SyncLab.Views
             bool canSyncPlaceHolder =
                 shape.Type == MsoShapeType.msoPlaceholder && SyncFormatUtil.CanCopyMsoPlaceHolder(shape);
 
-            if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
-                shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
-                shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox &&
+            if (shape.Type != MsoShapeType.msoAutoShape &&
+                shape.Type != MsoShapeType.msoLine &&
+                shape.Type != MsoShapeType.msoTextBox &&
                 !canSyncPlaceHolder)
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
@@ -229,9 +250,9 @@ namespace PowerPointLabs.SyncLab.Views
         // Saves shape into another powerpoint file
         // Returns a key to find the shape by,
         // or null if the shape cannot be copied
-        private string CopyShape(Shape shape, FormatTreeNode[] formats)
+        private string CopyShape(Shape shape, FormatTreeNode[] nodes)
         {
-            return shapeStorage.CopyShape(shape, formats);
+            return shapeStorage.CopyShape(shape, GetFormatsToApply(nodes));
         }
         #endregion
 
