@@ -2,12 +2,14 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -199,10 +201,13 @@ namespace PowerPointLabs.SyncLab.Views
                 shape = selection.ChildShapeRange[1];
             }
 
+            bool canSyncPlaceHolder =
+                shape.Type == MsoShapeType.msoPlaceholder && SyncFormatUtil.CanCopyMsoPlaceHolder(shape);
+
             if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
-                shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder &&
-                shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
+                shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox &&
+                !canSyncPlaceHolder)
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;
