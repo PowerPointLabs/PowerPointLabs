@@ -23,6 +23,13 @@ namespace PowerPointLabs.PasteLab
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 
             // Add code to compress the slide here, using ShapeToBitmap method from GraphicsUtil.cs
+            System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(shapeToFillSlide);
+            if (((System.Drawing.Image)shapeBitMap).HorizontalResolution > 96.0f && ((System.Drawing.Image)shapeBitMap).VerticalResolution > 96.0f)
+            {
+                shapeBitMap.SetResolution(96.0f, 96.0f);
+            }
+            // Comvert bitmap back into shape
+
 
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
 
