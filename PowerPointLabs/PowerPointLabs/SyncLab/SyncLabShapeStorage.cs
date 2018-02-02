@@ -38,6 +38,11 @@ namespace PowerPointLabs.SyncLab
             ClearShapes();
         }
 
+        public Shapes GetTemplateShapes()
+        {
+            return Slides[FormatStorageSlide].Shapes;
+        }
+
         /// <summary>
         /// Saves shape in storage
         /// Returns a key to find the shape by,
@@ -51,7 +56,7 @@ namespace PowerPointLabs.SyncLab
             Shape copiedShape = null;
             if (shape.Type == MsoShapeType.msoPlaceholder)
             {
-                copiedShape = SyncFormatUtil.CopyMsoPlaceHolder(formats, shape);
+                copiedShape = SyncFormatUtil.CopyMsoPlaceHolder(formats, shape, GetTemplateShapes());
             }
             else
             {

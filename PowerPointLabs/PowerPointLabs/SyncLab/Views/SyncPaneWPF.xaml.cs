@@ -149,7 +149,7 @@ namespace PowerPointLabs.SyncLab.Views
                 {
                     list.Add(node.Format);
                 }
-                else
+                else if (node.ChildrenNodes != null)
                 {
                     list.AddRange(GetFormatsToApply(node.ChildrenNodes));
                 }
@@ -223,7 +223,8 @@ namespace PowerPointLabs.SyncLab.Views
             }
 
             bool canSyncPlaceHolder =
-                shape.Type == MsoShapeType.msoPlaceholder && SyncFormatUtil.CanCopyMsoPlaceHolder(shape);
+                shape.Type == MsoShapeType.msoPlaceholder && 
+                SyncFormatUtil.CanCopyMsoPlaceHolder(shape, SyncFormatUtil.GetTemplateShapes());
 
             if (shape.Type != MsoShapeType.msoAutoShape &&
                 shape.Type != MsoShapeType.msoLine &&

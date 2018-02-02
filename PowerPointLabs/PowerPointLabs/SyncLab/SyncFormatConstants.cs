@@ -51,7 +51,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 {
                     list.Add(node.Format);
                 }
-                else
+                else if (node.ChildrenNodes != null)
                 {
                     list.AddRange(GetFormatsFromFormatTreeNode(node.ChildrenNodes));
                 }

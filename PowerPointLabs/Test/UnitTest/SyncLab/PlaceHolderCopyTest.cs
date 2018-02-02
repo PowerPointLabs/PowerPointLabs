@@ -34,6 +34,14 @@ namespace Test.UnitTest.SyncLab
         private const string Table = "Content Placeholder 3";
         private const string Chart = "Content Placeholder 5";
         private const string Picture = "Content Placeholder 4";
+
+        private Shapes TemplateShapes;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            TemplateShapes = GetShapesObject(1);
+        }
         
         [TestMethod]
         [TestCategory("UT")]
@@ -71,8 +79,8 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyTable()
         {
             Shape table = GetShape(TablePlaceholderSlide, Table);
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], table);
-            Assert.Equals(copy, null);
+            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], table, TemplateShapes);
+            Assert.AreEqual(copy, null);
         }
         
         [TestMethod]
@@ -80,8 +88,8 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyPicture()
         {
             Shape picture = GetShape(PicturePlaceholderSlide, Picture);
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], picture);
-            Assert.Equals(copy, null);
+            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], picture, TemplateShapes);
+            Assert.AreEqual(copy, null);
         }
         
         [TestMethod]
@@ -89,8 +97,8 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyChart()
         {
             Shape chart = GetShape(ChartPlaceholderSlide, Chart);
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], chart);
-            Assert.Equals(copy, null);
+            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], chart, TemplateShapes);
+            Assert.AreEqual(copy, null);
         }
         
         private void EnsureFormatsAreRetainedAfterCopy(Shape placeHolder)
@@ -99,12 +107,12 @@ namespace Test.UnitTest.SyncLab
             Format[] formatsFromOriginal = GetCopyableFormats(placeHolder);
             List<Type> typesFromOriginal = formatsFromOriginal.Select(format => format.FormatType).ToList();
             
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder);
+            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, TemplateShapes);
             Format[] formatsFromCopy = GetCopyableFormats(copy);
             IEnumerable<Type> typesFromCopy = formatsFromCopy.Select(format => format.FormatType);
 
             IEnumerable<Type> typesInBoth = typesFromCopy.Intersect(typesFromOriginal);
-            Assert.Equals(typesInBoth.Count(), typesFromOriginal.Count);
+            Assert.AreEqual(typesInBoth.Count(), typesFromOriginal.Count);
         }
 
         private Format[] GetCopyableFormats(Shape shape)

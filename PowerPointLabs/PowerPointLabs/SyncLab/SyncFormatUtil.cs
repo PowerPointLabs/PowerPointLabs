@@ -17,7 +17,7 @@ namespace PowerPointLabs.SyncLab
         public static Shapes GetTemplateShapes()
         {
             SyncLabShapeStorage shapeStorage = SyncLabShapeStorage.Instance;
-            return shapeStorage.Slides[SyncLabShapeStorage.FormatStorageSlide].Shapes;
+            return shapeStorage.GetTemplateShapes();
         }
         
         public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size imageSize)
@@ -84,10 +84,10 @@ namespace PowerPointLabs.SyncLab
 
         #region PlaceHolder utils
 
-        public static bool CanCopyMsoPlaceHolder(Shape placeholder)
+        public static bool CanCopyMsoPlaceHolder(Shape placeholder, Shapes templateShapes)
         {
             var emptyArray = new Format[0];
-            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder);
+            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder, templateShapes);
             
             if (copyAttempt == null)
             {
@@ -106,10 +106,10 @@ namespace PowerPointLabs.SyncLab
         /// </summary>
         /// <param name="formats"></param>
         /// <param name="msoPlaceHolder"></param>
+        /// <param name="templateShapes"></param>
         /// <returns>returns null if input placeholder is not supported</returns>
-        public static Shape CopyMsoPlaceHolder(Format[] formats, Shape msoPlaceHolder)
+        public static Shape CopyMsoPlaceHolder(Format[] formats, Shape msoPlaceHolder, Shapes templateShapes)
         {
-            Shapes templateShapes = GetTemplateShapes();
             PpPlaceholderType realType = msoPlaceHolder.PlaceholderFormat.Type;
             
             // charts, tables, pictures & smart shapes may return a general type,
