@@ -98,6 +98,7 @@ namespace PowerPointLabs.PositionsLab
                     {
                         // Insert default align left behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignLefts, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -144,6 +145,7 @@ namespace PowerPointLabs.PositionsLab
                     {
                         // Insert default align right behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignRights, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -190,6 +192,7 @@ namespace PowerPointLabs.PositionsLab
                     {
                         // Insert default align top behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignTops, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -234,6 +237,7 @@ namespace PowerPointLabs.PositionsLab
                     {
                         // Insert default align bottom behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignBottoms, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -280,6 +284,7 @@ namespace PowerPointLabs.PositionsLab
                     {
                         // Insert default align horizontal center behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -324,6 +329,7 @@ namespace PowerPointLabs.PositionsLab
                     {
                         // Insert default align vertical center behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -370,8 +376,9 @@ namespace PowerPointLabs.PositionsLab
                         // Insert default align center behaviour here
                         toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
                         toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
+                        break;
                     }
-
+                    System.Diagnostics.Debug.WriteLine("Not suppose to see this string");
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     var refShape = selectedShapes[0];
 
