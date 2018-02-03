@@ -62,8 +62,8 @@ namespace Test.FunctionalTest
             ISyncLabController syncLab = PplFeatures.SyncLab;
             syncLab.OpenPane();
 
-            //TestSync(syncLab);
-            //TestErrorDialogs(syncLab);
+            TestSync(syncLab);
+            TestErrorDialogs(syncLab);
             TestCopySupportedPlaceHolders(syncLab);
             TestCopyUnsupportedPlaceHolders(syncLab);
         }
