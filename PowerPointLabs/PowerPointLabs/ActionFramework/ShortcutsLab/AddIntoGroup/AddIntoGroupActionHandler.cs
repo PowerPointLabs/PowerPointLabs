@@ -23,7 +23,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
 
             if (!ShapeUtil.IsSelectionShape(selection) || selection.ShapeRange.Count < 2)
             {
-                MessageBox.Show("Please select more than one shape.", "Error");
+                MessageBox.Show(TextCollection.ShortcutsLabText.AddIntoGroupActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
                 return;
             }
             

@@ -775,7 +775,7 @@ namespace PowerPointLabs.ShapesLab
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, e.Message, e);
 
                 return false;
             }
@@ -1142,10 +1142,9 @@ namespace PowerPointLabs.ShapesLab
                 // moving
                 if (File.Exists(destPath))
                 {
-                    MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.",
-                                                  shapeName,
-                                                  categoryName));
-
+                    MessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination,
+                                    shapeName,
+                                    categoryName));
                     break;
                 }
 
@@ -1448,9 +1447,9 @@ namespace PowerPointLabs.ShapesLab
                 // moving
                 if (File.Exists(destPath))
                 {
-                    MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.", shapeName,
-                                                  categoryName));
-
+                    MessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination, 
+                                    shapeName, 
+                                    categoryName));
                     break;
                 }
 

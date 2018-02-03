@@ -58,6 +58,8 @@
         public const string RecorderErrorReplaceRecordTitle = "Replace Audio";
         public const string RecorderErrorNoRecordToPlay = "There are no recordings to play.";
         public const string RecorderErrorInvalidOperation = "Invalid Operation";
+        public const string RecorderErrorCannotParseTextTitle = "Couldn't Parse Text";
+        public const string RecorderErrorCannotParseText = "Have you added the correct closing tags? \n(Speed and Gender text ranges can't overlap.)";
 
         public const string InShowControlErrorInvalidRecCommand = "Invalid Recording Command";
         public const string InShowControlRecButtonIdleText = "Stop and Advance";

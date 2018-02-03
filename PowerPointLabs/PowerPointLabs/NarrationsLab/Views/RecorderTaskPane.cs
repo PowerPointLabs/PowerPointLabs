@@ -862,7 +862,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Error", "Error during setup", e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, TextCollection.CommonText.ErrorDuringSetup, e);
                 throw;
             }
         }
@@ -1390,7 +1390,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             catch (Exception e)
             {
                 ErrorDialogBox.ShowDialog("Record cannot be saved\n",
-                                              "Error when saving the file", e);
+                                              "Error when saving the file.", e);
                 throw;
             }
             finally

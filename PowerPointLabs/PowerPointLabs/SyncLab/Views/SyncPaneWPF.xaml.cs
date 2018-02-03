@@ -36,7 +36,7 @@ namespace PowerPointLabs.SyncLab.Views
             Microsoft.Office.Tools.CustomTaskPane syncLabPane = this.GetAddIn().GetActivePane(typeof(SyncPane));
             if (syncLabPane == null || !(syncLabPane.Control is SyncPane))
             {
-                MessageBox.Show("Error: SyncPane not opened.");
+                MessageBox.Show(TextCollection.SyncLabText.ErrorSyncPaneNotOpened);
                 return;
             }
             SyncPane syncLab = syncLabPane.Control as SyncPane;

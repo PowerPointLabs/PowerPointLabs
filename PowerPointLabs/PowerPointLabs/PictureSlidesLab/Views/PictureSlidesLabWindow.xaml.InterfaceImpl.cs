@@ -23,7 +23,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             try
             {
-                this.ShowMessageAsync("Error", content);
+                this.ShowMessageAsync(TextCollection.CommonText.ErrorTitle, content);
             }
             catch (Exception e)
             {
@@ -113,7 +113,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             return new ImageItem
             {
                 ImageFile = StoragePath.NoPicturePlaceholderImgPath,
-                Tooltip = "Please select a picture."
+                Tooltip = TextCollection.PictureSlidesLabText.CreatePictureItemToolTip
             };
         }
 

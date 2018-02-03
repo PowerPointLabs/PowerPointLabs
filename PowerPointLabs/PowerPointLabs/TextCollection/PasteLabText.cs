@@ -34,5 +34,7 @@
             "Paste your copied objects into an existing group.\n\n" +
             "To perform this action, select a group on the slide, then with object(s) copied, click this button.";
         #endregion
+
+        public const string ReplaceWithClipboardActionHandlerReminderText = "Please select at least one shape.";
     }
 }

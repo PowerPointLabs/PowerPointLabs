@@ -83,7 +83,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShape("Zoom This Shape");
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to Add Animations",
-                "No next slide is found. Please select the correct slide",
+                "No next slide is found. Please select the correct slide.",
                 PplFeatures.DrillDown);
         }
 
@@ -94,7 +94,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectShape("Zoom This Shape");
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to Add Animations",
-                "No previous slide is found. Please select the correct slide",
+                "No previous slide is found. Please select the correct slide.",
                 PplFeatures.StepBack);
         }
 

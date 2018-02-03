@@ -298,8 +298,10 @@ namespace PowerPointLabs.NarrationsLab
 
         private static void ErrorParsingText()
         {
-            MessageBox.Show("Have you added the correct closing tags? \n(Speed and Gender text ranges can't overlap.)", "Couldn't Parse Text",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(TextCollection.NarrationsLabText.RecorderErrorCannotParseText, 
+                            TextCollection.NarrationsLabText.RecorderErrorCannotParseTextTitle,
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Error);
         }
     }
 }
