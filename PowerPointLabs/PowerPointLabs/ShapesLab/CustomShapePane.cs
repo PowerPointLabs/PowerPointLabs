@@ -323,6 +323,11 @@ namespace PowerPointLabs.ShapesLab
             return Globals.ThisAddIn.ShapePresentation.Presentation;
         }
 
+        public Button GetAddShapeButton()
+        {
+            return addShapeButton;
+        }
+
         # endregion
 
         # region Helper Functions

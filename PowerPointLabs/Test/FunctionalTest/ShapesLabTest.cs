@@ -34,6 +34,7 @@ namespace Test.FunctionalTest
 
             TestSaveShapesToShapesLab(shapesLab);
             TestImportLibraryAndShape(shapesLab);
+            TestSaveShapesToShapesLabWithAddShapesButton(shapesLab);
         }
 
         private void TestImportLibraryAndShape(IShapesLabController shapesLab)
@@ -86,6 +87,29 @@ namespace Test.FunctionalTest
         {
             Point pt = target.PointToScreen(new Point(target.Width/2, target.Height/2));
             MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
+        }
+
+        private void TestSaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab)
+        {
+            PpOperations.SelectSlide(6);
+            PpOperations.SelectShapesByPrefix("selectMeNow");
+            // Need to perform clicking of button in its own UI thread at ShapesLabController
+            // thus clicking cannot be performed directly in test script
+            shapesLab.ClickAddShapeButton();
+
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
+            IShapesLabLabeledThumbnail addedThumbnail = shapesLab.GetLabeledThumbnail("selectMeNow1");
+            addedThumbnail.FinishNameEdit();
+            // add shapes back
+            DoubleClick(addedThumbnail as Control);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("Group selectMeNow1");
+            Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
+                                            "UI test is flaky, pls re-run.");
+
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
+
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+            SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }
     }
 }

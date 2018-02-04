@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ShapesLab;
 using PowerPointLabs.TextCollection;
-
 using TestInterface;
+
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
@@ -77,6 +78,18 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 return slideData;
             }
             return null;
+        }
+
+        public void ClickAddShapeButton()
+        {
+            if (_pane != null && _pane.GetAddShapeButton() != null)
+            {
+                UIThreadExecutor.Execute(() =>
+                {
+                    _pane.GetAddShapeButton().PerformClick();
+                });
+            }
+
         }
     }
 }
