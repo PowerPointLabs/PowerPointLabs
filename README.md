@@ -5,6 +5,7 @@ Your slides don't have to be this way, and it doesn't take a whole lot of effort
 PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out what it can do for you here: http://powerpointlabs.info
 
 [![Build status](https://img.shields.io/appveyor/ci/kai33/powerpointlabs/master.svg)](https://ci.appveyor.com/project/kai33/powerpointlabs)
+[![Open Source Helpers](https://www.codetriage.com/powerpointlabs/powerpointlabs/badges/users.svg)](https://www.codetriage.com/powerpointlabs/powerpointlabs)
 
 ### Contributing To PowerPointLabs
 Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
