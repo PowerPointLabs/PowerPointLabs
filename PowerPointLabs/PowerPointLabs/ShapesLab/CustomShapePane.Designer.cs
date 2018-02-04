@@ -51,10 +51,10 @@ namespace PowerPointLabs.ShapesLab
             this.label1 = new System.Windows.Forms.Label();
             this.categoryBox = new System.Windows.Forms.ComboBox();
             this.flowPanelHolder = new System.Windows.Forms.Panel();
+            this.myShapeFlowLayout = new PowerPointLabs.BufferedFlowLayoutPanel();
             this.singleShapeDownloadLink = new System.Windows.Forms.LinkLabel();
             this.addShapeButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.myShapeFlowLayout = new PowerPointLabs.BufferedFlowLayoutPanel();
             this.shapeContextMenuStrip.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
             this.flowPanelHolder.SuspendLayout();
@@ -189,6 +189,19 @@ namespace PowerPointLabs.ShapesLab
             this.flowPanelHolder.Size = new System.Drawing.Size(553, 558);
             this.flowPanelHolder.TabIndex = 4;
             // 
+            // myShapeFlowLayout
+            // 
+            this.myShapeFlowLayout.AutoScroll = true;
+            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.myShapeFlowLayout.ContextMenuStrip = this.flowlayoutContextMenuStrip;
+            this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.myShapeFlowLayout.Location = new System.Drawing.Point(0, 0);
+            this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(4);
+            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(160, 66);
+            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(553, 558);
+            this.myShapeFlowLayout.TabIndex = 2;
+            // 
             // singleShapeDownloadLink
             // 
             this.singleShapeDownloadLink.AutoSize = true;
@@ -204,12 +217,16 @@ namespace PowerPointLabs.ShapesLab
             // 
             // addShapeButton
             // 
-            this.addShapeButton.Image = global::PowerPointLabs.Properties.Resources.AddToCustomShapes;
+            this.addShapeButton.BackColor = System.Drawing.SystemColors.Control;
+            this.addShapeButton.BackgroundImage = global::PowerPointLabs.Properties.Resources.AddToCustomShapes;
+            this.addShapeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addShapeButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.addShapeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addShapeButton.Location = new System.Drawing.Point(5, 9);
             this.addShapeButton.Name = "addShapeButton";
-            this.addShapeButton.Size = new System.Drawing.Size(60, 60);
+            this.addShapeButton.Size = new System.Drawing.Size(59, 56);
             this.addShapeButton.TabIndex = 6;
-            this.addShapeButton.UseVisualStyleBackColor = true;
+            this.addShapeButton.UseVisualStyleBackColor = false;
             this.addShapeButton.Click += new System.EventHandler(this.AddShapeButton_Click);
             // 
             // label2
@@ -222,19 +239,6 @@ namespace PowerPointLabs.ShapesLab
             this.label2.Size = new System.Drawing.Size(36, 17);
             this.label2.TabIndex = 7;
             this.label2.Text = "Add";
-            // 
-            // myShapeFlowLayout
-            // 
-            this.myShapeFlowLayout.AutoScroll = true;
-            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.myShapeFlowLayout.ContextMenuStrip = this.flowlayoutContextMenuStrip;
-            this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.myShapeFlowLayout.Location = new System.Drawing.Point(0, 0);
-            this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(4);
-            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(160, 66);
-            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(553, 558);
-            this.myShapeFlowLayout.TabIndex = 2;
             // 
             // CustomShapePane
             // 
