@@ -188,7 +188,7 @@ namespace PowerPointLabs.SyncLab.Views
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             Selection selection = this.GetCurrentSelection();
-            if (!ShapeUtil.IsValidSelection(selection))
+            if (!ShapeUtil.IsValidSingleSelection(selection))
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;

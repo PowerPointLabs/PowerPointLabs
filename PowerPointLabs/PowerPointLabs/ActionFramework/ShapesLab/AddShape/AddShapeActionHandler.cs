@@ -19,12 +19,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
             CustomShapePane customShape = InitCustomShapePane();
             Selection selection = this.GetCurrentSelection();
             ThisAddIn addIn = this.GetAddIn();
-            // first of all we check if the shape gallery has been opened correctly
-            if (!addIn.ShapePresentation.Opened)
-            {
-                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
-                return;
-            }
+
             customShape.AddCustomShapeToPane(selection, addIn);
 
             SetPaneVisibility(true);

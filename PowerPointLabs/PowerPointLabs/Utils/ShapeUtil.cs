@@ -155,6 +155,16 @@ namespace PowerPointLabs.Utils
 
         public static bool IsValidSelection(Selection selection)
         {
+            if (selection.Type != PpSelectionType.ppSelectionShapes &&
+                selection.Type != PpSelectionType.ppSelectionText)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsValidSingleSelection(Selection selection)
+        {
             if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count != 1)

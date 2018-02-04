@@ -166,6 +166,22 @@ namespace PowerPointLabs.ShapesLab
 
         public void AddCustomShapeToPane(Selection selection, ThisAddIn addIn)
         {
+            // first of all we check if the shape gallery has been opened correctly
+            if (!addIn.ShapePresentation.Opened)
+            {
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                return;
+            }
+
+            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
+            if (!ShapeUtil.IsSelectionShapeOrText(selection))
+            {
+                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
+
+            // Finish checks
+
             ShapeRange selectedShapes = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
@@ -1606,37 +1622,7 @@ namespace PowerPointLabs.ShapesLab
         {
             Selection selection = ActionFrameworkExtensions.GetCurrentSelection();
             ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
-            // first of all we check if the shape gallery has been opened correctly
-            if (!addIn.ShapePresentation.Opened)
-            {
-                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
-                return;
-            }
-
-            if (!ShapeUtil.IsValidSelection(selection))
-            {
-                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
-                return;
-            }
-
-            // Take shape from shape range
-            Shape shape = selection.ShapeRange[1];
-            if (selection.HasChildShapeRange)
-            {
-                if (selection.ChildShapeRange.Count != 1)
-                {
-                    MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
-                    return;
-                }
-                shape = selection.ChildShapeRange[1];
-            }
-
-            // Check if valid shape or line or textbox
-            if (!ShapeUtil.IsShapeOrLineOrTextBox(shape))
-            {
-                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
-                return;
-            }
+            
             AddCustomShapeToPane(selection, addIn);
         }
         #endregion
