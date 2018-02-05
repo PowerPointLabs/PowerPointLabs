@@ -371,22 +371,15 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         public static Shape CutPasteShape(Shape shape)
         {
-            // Save clipboard onto a temp slide, this is similar to code in PasteLabActionHandler.cs
-            // Have no choice to use deprecated methods because ShapeUtil does not use ActionFramework
+            // Have no choice to use deprecated method because ShapeUtil does not use ActionFramework
             PowerPointPresentation presentation = PowerPointPresentation.Current;
 
-            PowerPointSlide tempClipboardSlide = presentation.AddSlide();
-            ShapeRange tempClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(tempClipboardSlide);
-
-            shape.Cut();
-            shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
-
-            // Revert clipboard. Note that cannot be reverted if last copied item was a placeholder
-            if (tempClipboardShapes != null)
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                tempClipboardShapes.Copy();
-            }
-            tempClipboardSlide.Delete();
+                shape.Cut();
+                shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
+            }, presentation);
+            
             return shape;
         }
 

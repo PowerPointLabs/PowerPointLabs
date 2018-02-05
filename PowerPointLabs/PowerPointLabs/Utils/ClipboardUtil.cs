@@ -45,6 +45,28 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        /// <summary>
+        /// To avoid changing the clipboard during a copy/cut and paste action. 
+        /// One solution for this is to save clipboard into a temp slide and revert clipboard afterwards. 
+        /// Note that cannot be reverted if last copied item was a placeholder. 
+        /// </summary>
+        public static void RestoreClipboardAfterAction(System.Action action, PowerPointPresentation pres)
+        {
+            // Save clipboard onto a temp slide
+            PowerPointSlide tempClipboardSlide = pres.AddSlide();
+            ShapeRange tempClipboardShapes = PasteShapesFromClipboard(tempClipboardSlide);
+
+            // Run action
+            action();
+
+            // Revert clipboard. Note that cannot be reverted if last copied item was a placeholder
+            if (tempClipboardShapes != null)
+            {
+                tempClipboardShapes.Copy();
+            }
+            tempClipboardSlide.Delete();
+        }
+
         #endregion
     }
 }

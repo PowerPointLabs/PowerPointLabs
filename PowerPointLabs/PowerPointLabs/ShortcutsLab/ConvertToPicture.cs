@@ -62,41 +62,33 @@ namespace PowerPointLabs.ShortcutsLab
             {
                 Logger.LogException(e, "Chart cannot be rotated.");
             }
-
-            // Save clipboard onto a temp slide, this is similar to code in PasteLabActionHandler.cs
-            // Have no choice to use deprecated methods because ConvertToPicture does not use ActionFramework
+            
+            // Have no choice to use deprecated method because ConvertToPicture does not use ActionFramework
             PowerPointPresentation presentation = PowerPointPresentation.Current;
 
-            PowerPointSlide tempClipboardSlide = presentation.AddSlide();
-            PowerPoint.ShapeRange tempClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(tempClipboardSlide);
-
-            shape.Copy();
-            float x = shape.Left;
-            float y = shape.Top;
-            float width = shape.Width;
-            float height = shape.Height;
-            shape.Delete();
-            PowerPoint.Shape pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pic.Left = x + (width - pic.Width) / 2;
-            pic.Top = y + (height - pic.Height) / 2;
-            pic.Rotation = rotation;
-            // move picture to original z-order
-            while (pic.ZOrderPosition > originalZOrder)
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                pic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-            }
-            while (pic.ZOrderPosition < originalZOrder)
-            {
-                pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
-            }
-            pic.Select();
-
-            // Revert clipboard
-            if (tempClipboardShapes != null)
-            {
-                tempClipboardShapes.Copy();
-            }
-            tempClipboardSlide.Delete();
+                shape.Copy();
+                float x = shape.Left;
+                float y = shape.Top;
+                float width = shape.Width;
+                float height = shape.Height;
+                shape.Delete();
+                PowerPoint.Shape pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                pic.Left = x + (width - pic.Width) / 2;
+                pic.Top = y + (height - pic.Height) / 2;
+                pic.Rotation = rotation;
+                // move picture to original z-order
+                while (pic.ZOrderPosition > originalZOrder)
+                {
+                    pic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                }
+                while (pic.ZOrderPosition < originalZOrder)
+                {
+                    pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
+                }
+                pic.Select();
+            }, presentation);
         }
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
