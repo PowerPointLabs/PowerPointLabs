@@ -209,6 +209,7 @@ namespace PowerPointLabs.SyncLab.Views
 
             if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoAutoShape &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoLine &&
+                shape.Type != Microsoft.Office.Core.MsoShapeType.msoPicture &&
                 shape.Type != Microsoft.Office.Core.MsoShapeType.msoTextBox)
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
