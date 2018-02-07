@@ -93,8 +93,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(6);
             PpOperations.SelectShapesByPrefix("selectMeNow");
-            // Need to perform clicking of button in its own UI thread at ShapesLabController
-            // thus clicking cannot be performed directly in test script
+
             shapesLab.ClickAddShapeButton();
 
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);

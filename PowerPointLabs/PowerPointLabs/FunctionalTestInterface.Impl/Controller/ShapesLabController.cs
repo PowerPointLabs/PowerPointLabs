@@ -84,6 +84,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         {
             if (_pane != null && _pane.GetAddShapeButton() != null)
             {
+                // Perform clicking of button on its own UI thread
                 UIThreadExecutor.Execute(() =>
                 {
                     _pane.GetAddShapeButton().PerformClick();
