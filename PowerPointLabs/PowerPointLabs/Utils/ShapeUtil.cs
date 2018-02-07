@@ -371,7 +371,7 @@ namespace PowerPointLabs.Utils
         /// <returns></returns>
         public static Shape CutPasteShape(Shape shape)
         {
-            // Have no choice to use deprecated method because ShapeUtil does not use ActionFramework
+            // Utilises deprecated PowerPointPresentation class as ConvertToPicture does not utilise ActionFramework
             PowerPointPresentation presentation = PowerPointPresentation.Current;
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>

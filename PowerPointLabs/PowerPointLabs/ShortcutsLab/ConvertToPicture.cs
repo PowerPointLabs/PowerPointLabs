@@ -62,8 +62,8 @@ namespace PowerPointLabs.ShortcutsLab
             {
                 Logger.LogException(e, "Chart cannot be rotated.");
             }
-            
-            // Have no choice to use deprecated method because ConvertToPicture does not use ActionFramework
+
+            // Utilises deprecated PowerPointPresentation class as ConvertToPicture does not utilise ActionFramework
             PowerPointPresentation presentation = PowerPointPresentation.Current;
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
