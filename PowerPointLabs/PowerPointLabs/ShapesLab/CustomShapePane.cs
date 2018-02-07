@@ -130,6 +130,8 @@ namespace PowerPointLabs.ShapesLab
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
+            
+            InitToolTipControl();
 
             InitializeContextMenu();
 
@@ -151,7 +153,7 @@ namespace PowerPointLabs.ShapesLab
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
-            
+
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.MouseEnter += FlowLayoutMouseEnterHandler;
             myShapeFlowLayout.MouseDown += FlowLayoutMouseDownHandler;
@@ -281,11 +283,11 @@ namespace PowerPointLabs.ShapesLab
             {
                 GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
             }
-            
+
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-            
+
             // scroll the view to show the first item, and focus the flowlayout to enable
             // scroll if applicable
             myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
@@ -386,18 +388,18 @@ namespace PowerPointLabs.ShapesLab
                 _selectedThumbnail[1].DeHighlight();
                 _selectedThumbnail.RemoveAt(1);
             }
-            
+
             _selectedThumbnail[0].StartNameEdit();
         }
 
         private void ContextMenuStripImportCategoryClicked()
         {
             OpenFileDialog fileDialog = new OpenFileDialog
-                                 {
-                                     Filter = ImportLibraryFileDialogFilter,
-                                     Multiselect = false,
-                                     Title = ShapesLabText.ImportLibraryFileDialogTitle
-                                 };
+            {
+                Filter = ImportLibraryFileDialogFilter,
+                Multiselect = false,
+                Title = ShapesLabText.ImportLibraryFileDialogTitle
+            };
 
             flowlayoutContextMenuStrip.Hide();
 
@@ -414,11 +416,11 @@ namespace PowerPointLabs.ShapesLab
         private void ContextMenuStripImportShapesClicked()
         {
             OpenFileDialog fileDialog = new OpenFileDialog
-                                 {
-                                     Filter = ImportShapesFileDialogFilter,
-                                     Multiselect = true,
-                                     Title = ShapesLabText.ImportShapeFileDialogTitle
-                                 };
+            {
+                Filter = ImportShapesFileDialogFilter,
+                Multiselect = true,
+                Title = ShapesLabText.ImportShapeFileDialogTitle
+            };
 
             flowlayoutContextMenuStrip.Hide();
 
@@ -435,7 +437,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 return;
             }
-            
+
             PaneReload(true);
             MessageBox.Show(ShapesLabText.SuccessImport);
         }
@@ -473,7 +475,7 @@ namespace PowerPointLabs.ShapesLab
             FileDir.DeleteFolder(categoryPath);
 
             _categoryBinding.RemoveAt(categoryIndex);
-            
+
             // RemoveAt may NOT change the index, so we need to manually set the default category here
             if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
             {
@@ -612,7 +614,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 return;
             }
-            
+
             foreach (LabeledThumbnail thumbnail in _selectedThumbnail)
             {
                 thumbnail.DeHighlight();
@@ -659,7 +661,7 @@ namespace PowerPointLabs.ShapesLab
                     thisControlPosition = i;
                     continue;
                 }
-                
+
                 if (_stringComparer.Compare(control.NameLabel, name) > 0)
                 {
                     // immediate next control's name is still bigger than current control, do
@@ -669,7 +671,7 @@ namespace PowerPointLabs.ShapesLab
                     {
                         return thisControlPosition;
                     }
-                    
+
                     // now we have 2 cases:
                     // 1. the replace position is before the current position;
                     // 2. the replace position is behind the current position.
@@ -772,7 +774,7 @@ namespace PowerPointLabs.ShapesLab
                 {
                     contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
                 }
-                
+
                 if (contextMenu.Text != ShapesLabText.ShapeContextStripCopyShape)
                 {
                     contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
@@ -983,10 +985,10 @@ namespace PowerPointLabs.ShapesLab
             // init the file as an imported file
             PowerPointShapeGalleryPresentation importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
                                                                             ImportFileNameNoExtension)
-                                         {
-                                             IsImportedFile = true,
-                                             ImportToCategory = fromCategory ? string.Empty : CurrentCategory
-                                         };
+            {
+                IsImportedFile = true,
+                ImportToCategory = fromCategory ? string.Empty : CurrentCategory
+            };
 
             return importShapeGallery;
         }
@@ -1026,9 +1028,9 @@ namespace PowerPointLabs.ShapesLab
             }
             else
                 if (p.X > myShapeFlowLayout.Width)
-                {
-                    p.X = myShapeFlowLayout.Width;
-                }
+            {
+                p.X = myShapeFlowLayout.Width;
+            }
 
             if (p.Y < 0)
             {
@@ -1036,9 +1038,9 @@ namespace PowerPointLabs.ShapesLab
             }
             else
                 if (p.Y > myShapeFlowLayout.Height)
-                {
-                    p.Y = myShapeFlowLayout.Height;
-                }
+            {
+                p.Y = myShapeFlowLayout.Height;
+            }
         }
 
         private void RemoveThumbnail(LabeledThumbnail thumbnail, bool removeSelection = true)
@@ -1283,7 +1285,7 @@ namespace PowerPointLabs.ShapesLab
 
                 _selectRect.Size = rect.Size;
                 _selectRect.Location = myShapeFlowLayout.PointToScreen(rect.Location);
-                
+
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
                     if (!(control is LabeledThumbnail))
@@ -1409,7 +1411,7 @@ namespace PowerPointLabs.ShapesLab
 
             string shapeName = clickedThumbnail.NameLabel;
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            
+
             if (currentSlide != null)
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -1627,8 +1629,15 @@ namespace PowerPointLabs.ShapesLab
         {
             Selection selection = ActionFrameworkExtensions.GetCurrentSelection();
             ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
-            
+
             AddShapeFromSelection(selection, addIn);
+        }
+        #endregion
+
+        #region ToolTip
+        private void InitToolTipControl()
+        {
+            toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
         #endregion
     }
