@@ -1989,6 +1989,9 @@
   <ItemGroup>
     <None Include="Resources\PasteToFitSlide.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FillSlide.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
