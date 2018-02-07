@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         protected override Bitmap GetImage(string ribbonId)
         {
             // Need a new image for PasteToFitSlide
-            return new Bitmap(Properties.Resources.PasteToFillSlide);
+            return new Bitmap(Properties.Resources.PasteToFitSlide);
         }
     }
 }
