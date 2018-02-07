@@ -164,7 +164,7 @@ namespace PowerPointLabs.ShapesLab
 
         #region API
 
-        public void AddCustomShapeToPane(Selection selection, ThisAddIn addIn)
+        public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
         {
             // first of all we check if the shape gallery has been opened correctly
             if (!addIn.ShapePresentation.Opened)
@@ -1628,7 +1628,7 @@ namespace PowerPointLabs.ShapesLab
             Selection selection = ActionFrameworkExtensions.GetCurrentSelection();
             ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
             
-            AddCustomShapeToPane(selection, addIn);
+            AddShapeFromSelection(selection, addIn);
         }
         #endregion
     }

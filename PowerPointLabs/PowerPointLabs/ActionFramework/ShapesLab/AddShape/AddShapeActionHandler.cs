@@ -20,7 +20,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
             Selection selection = this.GetCurrentSelection();
             ThisAddIn addIn = this.GetAddIn();
 
-            customShape.AddCustomShapeToPane(selection, addIn);
+            customShape.AddShapeFromSelection(selection, addIn);
 
             SetPaneVisibility(true);
         }
