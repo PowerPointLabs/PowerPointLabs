@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SaveLab
 {
-    [ExportLabelRibbonId(SaveLabText.RibbonMenuId)]
-    class SaveLabMenuLabelHandler : LabelHandler
+    [ExportLabelRibbonId(SaveLabText.SavePresentationsButtonTag)]
+    class SaveLabButtonLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return SaveLabText.RibbonMenuLabel;
+            return SaveLabText.SavePresentationsButtonLabel;
         }
     }
 }

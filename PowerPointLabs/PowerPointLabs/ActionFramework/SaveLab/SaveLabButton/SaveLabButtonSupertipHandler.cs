@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SaveLab
 {
-    [ExportSupertipRibbonId(SaveLabText.RibbonMenuId)]
-    class SaveLabMenuSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId(SaveLabText.SavePresentationsButtonTag)]
+    class SaveLabButtonSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return SaveLabText.RibbonMenuSupertip;
+            return SaveLabText.SavePresentationsButtonSupertip;
         }
     }
 }

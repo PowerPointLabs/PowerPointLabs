@@ -6,13 +6,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SaveLab
 {
-    [ExportImageRibbonId(SaveLabText.RibbonMenuId)]
-    class SaveLabMenuImageHandler : ImageHandler
+    [ExportImageRibbonId(SaveLabText.SaveLabSettingsButtonTag)]
+    class SaveLabSettingsImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            // Need a new icon for Save Lab
-            return new Bitmap(Properties.Resources.CropLab);
+            return new Bitmap(Properties.Resources.SettingsGear);
         }
     }
 }

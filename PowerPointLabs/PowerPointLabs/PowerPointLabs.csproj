@@ -256,6 +256,17 @@
   -->
   <ItemGroup>
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonSupertipHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingssActionHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabMenu\SaveLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabMenu\SaveLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabMenu\SaveLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurBackground\BlurBackgroundImageHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurBackground\BlurRemainderLabelHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurBackground\BlurRemainderSupertipHandler.cs" />
@@ -623,6 +634,7 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />
