@@ -23,6 +23,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;

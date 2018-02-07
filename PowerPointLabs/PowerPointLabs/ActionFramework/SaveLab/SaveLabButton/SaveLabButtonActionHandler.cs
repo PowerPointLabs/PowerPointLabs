@@ -1,5 +1,5 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
-using PowerPointLabs.CropLab;
+using PowerPointLabs.SaveLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SaveLab

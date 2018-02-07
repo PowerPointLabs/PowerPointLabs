@@ -1,5 +1,5 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
-using PowerPointLabs.CropLab;
+using PowerPointLabs.SaveLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.SaveLab
@@ -10,6 +10,7 @@ namespace PowerPointLabs.ActionFramework.SaveLab
         protected override void ExecuteAction(string ribbonId)
         {
             // Action for Save Lab settings here
+            SaveLabSettings.ShowSettingsDialog();
         }
     }
 }
