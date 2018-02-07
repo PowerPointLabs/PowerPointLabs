@@ -7,6 +7,7 @@ namespace Test.UnitTest.SyncLab
     /// DO NOT use PPT2013 to edit the source powerpoint.
     /// PPT2013 exhibits strange behavior on ArtisticEffect.
     /// ArtisticEffect is sometimes made permenant on pictures after saving the file.
+    /// i.e, image's artistic effect cannot be removed/undone
     /// </summary>
     [TestClass]
     public class SyncLabVisualEffectsTest : BaseSyncLabTest
