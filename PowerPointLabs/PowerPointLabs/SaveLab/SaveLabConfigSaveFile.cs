@@ -7,16 +7,15 @@ using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.ShapesLab
+namespace PowerPointLabs.SaveLab
 {
-    internal class ShapesLabConfigSaveFile
+    internal class SaveLabConfigSaveFile
     {
-#pragma warning disable 0618
-        private const string DefaultShapeMasterFolderName = @"\PowerPointLabs Custom Shapes";
-        private const string DefaultShapeCategoryName = "My Shapes";
-        private const string ShapeRootFolderConfigFileName = "ShapeRootFolder.config";
+        private const string DefaultSaveMasterFolderName = @"\PowerPointLabs Saved Presentation";
+        private const string DefaultSaveCategoryName = "My Presentation";
+        private const string SaveRootFolderConfigFileName = "SaveRootFolder.config";
 
-        private readonly string _defaultShapeMasterFolderPrefix =
+        private readonly string _defaultSaveMasterFolderPrefix =
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         private string _configFilePath;
@@ -26,34 +25,34 @@ namespace PowerPointLabs.ShapesLab
         # endregion
 
         # region Constructor
-        public ShapesLabConfigSaveFile(string appDataFolder)
+        public SaveLabConfigSaveFile(string appDataFolder)
         {
             if (!PowerPointLabsFT.IsFunctionalTestOn)
             {
-                ShapesLabSettings.SaveFolderPath = _defaultShapeMasterFolderPrefix + DefaultShapeMasterFolderName;
-                DefaultCategory = DefaultShapeCategoryName;
+                SaveLabSettings.SaveFolderPath = _defaultSaveMasterFolderPrefix + DefaultSaveMasterFolderName;
+                DefaultCategory = DefaultSaveCategoryName;
 
-                ReadShapeLabConfig(appDataFolder);
+                ReadSaveLabConfig(appDataFolder);
             }
             else
             {
                 // if it's in FT, use new temp shape root folder every time
                 string tmpPath = TempPath.GetTempTestFolder();
                 int hash = DateTime.Now.GetHashCode();
-                ShapesLabSettings.SaveFolderPath = tmpPath + DefaultShapeMasterFolderName + hash;
-                DefaultCategory = DefaultShapeCategoryName + hash;
-                _configFilePath = tmpPath + "ShapeRootFolder" + hash;
+                SaveLabSettings.SaveFolderPath = tmpPath + DefaultSaveMasterFolderName + hash;
+                DefaultCategory = DefaultSaveCategoryName + hash;
+                _configFilePath = tmpPath + "SaveRootFolder" + hash;
             }
         }
         # endregion
 
         # region Destructor
-        ~ShapesLabConfigSaveFile()
+        ~SaveLabConfigSaveFile()
         {
             // flush shape root folder & default category info to the file
             using (StreamWriter fileWriter = File.CreateText(_configFilePath))
             {
-                fileWriter.WriteLine(ShapesLabSettings.SaveFolderPath);
+                fileWriter.WriteLine(SaveLabSettings.SaveFolderPath);
                 fileWriter.WriteLine(DefaultCategory);
                 
                 fileWriter.Close();
@@ -62,16 +61,16 @@ namespace PowerPointLabs.ShapesLab
         # endregion
 
         # region Helper Functions
-        private void ReadShapeLabConfig(string appDataFolder)
+        private void ReadSaveLabConfig(string appDataFolder)
         {
-            _configFilePath = Path.Combine(appDataFolder, ShapeRootFolderConfigFileName);
+            _configFilePath = Path.Combine(appDataFolder, SaveRootFolderConfigFileName);
 
             if (File.Exists(_configFilePath) &&
                 (new FileInfo(_configFilePath)).Length != 0)
             {
                 using (StreamReader reader = new StreamReader(_configFilePath))
                 {
-                    ShapesLabSettings.SaveFolderPath = reader.ReadLine();
+                    SaveLabSettings.SaveFolderPath = reader.ReadLine();
                     
                     // if we have a default category setting
                     if (reader.Peek() != -1)

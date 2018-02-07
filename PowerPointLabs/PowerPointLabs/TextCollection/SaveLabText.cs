@@ -19,9 +19,9 @@
             "To perform this action, select the slides to export, then click this button.";
         public const string SaveLabSettingsButtonSupertip = "Configure the default directory for Save Lab for a quick save.";
 
-
         public const string ErrorSavingPresentations = "Presentations could not be saved.";
-        
+
+        public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         #endregion
     }
 }

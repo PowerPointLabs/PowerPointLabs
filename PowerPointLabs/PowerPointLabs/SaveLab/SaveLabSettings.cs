@@ -1,7 +1,7 @@
 ﻿
-namespace PowerPointLabs.ShapesLab
+namespace PowerPointLabs.SaveLab
 {
-    internal static class ShapesLabSettings
+    internal static class SaveLabSettings
     {
         public static string SaveFolderPath = "";
     }

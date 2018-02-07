@@ -10,22 +10,22 @@ using PowerPointLabs.Views;
 
 using Forms = System.Windows.Forms;
 
-namespace PowerPointLabs.ShapesLab.Views
+namespace PowerPointLabs.SaveLab.Views
 {
     /// <summary>
-    /// Interaction logic for ShapesLabSettingsDialogBox.xaml
+    /// Interaction logic for SaveLabSettingsDialogBox.xaml
     /// </summary>
-    public partial class ShapesLabSettingsDialogBox
+    public partial class SaveLabSettingsDialogBox
     {
         public delegate void DialogConfirmedDelegate(string savePath);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
-        public ShapesLabSettingsDialogBox()
+        public SaveLabSettingsDialogBox()
         {
             InitializeComponent();
         }
         
-        public ShapesLabSettingsDialogBox(string savePath)
+        public SaveLabSettingsDialogBox(string savePath)
             : this()
         {
             savePathBrowserIconImage.Source = Imaging.CreateBitmapSourceFromHBitmap(
@@ -50,10 +50,10 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 ShowNewFolderButton = true,
                 SelectedPath = savePathInput.Text,
-                Description = ShapesLabText.FolderDialogDescription
+                Description = SaveLabText.FolderDialogDescription
             };
 
-            // loop until user chooses an empty folder, or click "Cancel" button
+            // loop until user chooses a folder, or click "Cancel" button
             while (true)
             {
                 // this launcher will scroll the view to selected path
@@ -62,16 +62,8 @@ namespace PowerPointLabs.ShapesLab.Views
                 if (folderDialogResult == Forms.DialogResult.OK)
                 {
                     string newPath = folderDialog.SelectedPath;
-
-                    if (!FileDir.IsDirectoryEmpty(newPath))
-                    {
-                        System.Windows.MessageBox.Show(ShapesLabText.ErrorFolderNonEmpty);
-                    }
-                    else
-                    {
-                        savePathInput.Text = newPath;
-                        break;
-                    }
+                    savePathInput.Text = newPath;
+                    break;
                 }
                 else
                 {

@@ -635,9 +635,6 @@
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="SaveLab\SaveLabConfigSaveFile.cs" />
     <Compile Include="SaveLab\SaveLabSettings.cs" />
-    <Compile Include="SaveLab\Views\SaveLabCategoryInfoDialogBox.xaml.cs">
-      <DependentUpon>SaveLabCategoryInfoDialogBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SaveLab\Views\SaveLabSettingsDialogBox.xaml.cs">
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1426,10 +1423,6 @@
     <Page Include="ResizeLab\Views\SlightAdjustSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SaveLab\Views\SaveLabCategoryInfoDialogBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="SaveLab\Views\SaveLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
