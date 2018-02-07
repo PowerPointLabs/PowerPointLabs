@@ -180,7 +180,7 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            // Finish checks
+            // Finish checks, will add shape(s) from selection
 
             ShapeRange selectedShapes = selection.ShapeRange;
             if (selection.HasChildShapeRange)
