@@ -15,11 +15,6 @@ namespace PowerPointLabs.ShortcutsLab
     {
         public static void Fill(PowerPoint.Selection selection, PowerPointSlide slide, float slideWidth, float slideHeight)
         {
-            // If nothing is selected
-            if (selection.ShapeRange.Count == 0)
-            {
-                return;
-            }
             // Obtain selection, EnabledHandler has already checked if the selection are shapes/pics
             PowerPoint.Shape shapeToFitSlide = GetShapeFromSelection(selection);
             
