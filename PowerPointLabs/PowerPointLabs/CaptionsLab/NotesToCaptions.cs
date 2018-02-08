@@ -17,16 +17,17 @@ namespace PowerPointLabs.CaptionsLab
     internal static class NotesToCaptions
     {
 #pragma warning disable 0618
-        private static bool removeCaptionsEnabled = true;
-
-        public static bool GetRemoveCaptionsEnabled()
+        private static bool isRemoveCaptionsEnabled = true;
+        public static bool IsRemoveCaptionsEnabled
         {
-            return removeCaptionsEnabled;
-        }
-
-        public static void SetRemoveCaptionsEnabled(bool enabled)
-        {
-            removeCaptionsEnabled = enabled;
+            get
+            {
+                return isRemoveCaptionsEnabled;
+            }
+            set
+            {
+                isRemoveCaptionsEnabled = value;
+            }
         }
         
         public static void EmbedCaptionsOnSelectedSlides()

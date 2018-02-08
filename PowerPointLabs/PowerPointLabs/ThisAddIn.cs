@@ -865,7 +865,7 @@ namespace PowerPointLabs
         {
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
-            NotesToCaptions.SetRemoveCaptionsEnabled(SlidesInRangeHaveCaptions(sldRange));
+            NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             NarrationsLab.NotesToAudio.SetRemoveAudioEnabled(SlidesInRangeHaveAudio(sldRange));
 
             // update recorder pane

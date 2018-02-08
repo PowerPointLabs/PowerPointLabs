@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.CaptionsLab
             {
                 if (slide.NotesPageText.Trim() != "")
                 {
-                    NotesToCaptions.SetRemoveCaptionsEnabled(true);
+                    NotesToCaptions.IsRemoveCaptionsEnabled = true;
                     break;
                 }
             }

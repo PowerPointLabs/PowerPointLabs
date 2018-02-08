@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.CaptionsLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return NotesToCaptions.GetRemoveCaptionsEnabled();
+            return NotesToCaptions.IsRemoveCaptionsEnabled;
         }
     }
 }
