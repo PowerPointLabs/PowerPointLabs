@@ -26,7 +26,7 @@ namespace Test.UnitTest
         private const string VerticalTitle = "Title 1";
         private const string VerticalBody = "Content Placeholder 2";
         
-        // not yet supported by synclab
+        // not yet supported 
         private const int TablePlaceholderSlide = 5;
         private const int ChartPlaceholderSlide = 6;
         private const int PicturePlaceholderSlide = 7;
