@@ -42,12 +42,17 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
         
+        /// <Summary>
+        /// Collect all format objects from an array of FormatTreeNodes
+        /// <Summary>
+        /// <param name="nodes"></param>
+        /// <returns>Collected formats</returns>
         private static Format[] GetFormatsFromFormatTreeNode(FormatTreeNode[] nodes)
         {
             List<Format> list = new List<Format>();
             foreach (FormatTreeNode node in nodes)
             {
-                if (node.IsFormatNode && node.IsChecked.HasValue && node.IsChecked.Value)
+                if (node.IsFormatNode)
                 {
                     list.Add(node.Format);
                 }
