@@ -1025,10 +1025,10 @@ namespace PowerPointLabs.Utils
         
         #region PlaceHolder utils
 
-        public static bool CanCopyMsoPlaceHolder(Shape placeholder, Shapes templateShapes)
+        public static bool CanCopyMsoPlaceHolder(Shape placeholder, Shapes shapesSource)
         {
             var emptyArray = new Format[0];
-            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder, templateShapes);
+            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder, shapesSource);
             
             if (copyAttempt == null)
             {
@@ -1047,9 +1047,9 @@ namespace PowerPointLabs.Utils
         /// </summary>
         /// <param name="formats"></param>
         /// <param name="msoPlaceHolder"></param>
-        /// <param name="templateShapes"></param>
+        /// <param name="shapesSource">Shapes object, source of shapes</param>
         /// <returns>returns null if input placeholder is not supported</returns>
-        public static Shape CopyMsoPlaceHolder(Format[] formats, Shape msoPlaceHolder, Shapes templateShapes)
+        public static Shape CopyMsoPlaceHolder(Format[] formats, Shape msoPlaceHolder, Shapes shapesSource)
         {
             PpPlaceholderType realType = msoPlaceHolder.PlaceholderFormat.Type;
             
@@ -1074,7 +1074,7 @@ namespace PowerPointLabs.Utils
                 case PpPlaceholderType.ppPlaceholderSubtitle:
                 case PpPlaceholderType.ppPlaceholderVerticalBody:
                 case PpPlaceholderType.ppPlaceholderVerticalTitle:
-                    shapeTemplate = templateShapes.AddTextbox(
+                    shapeTemplate = shapesSource.AddTextbox(
                         msoPlaceHolder.TextFrame.Orientation,
                         msoPlaceHolder.Left,
                         msoPlaceHolder.Top,
