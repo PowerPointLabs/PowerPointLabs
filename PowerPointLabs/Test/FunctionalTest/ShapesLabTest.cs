@@ -69,24 +69,12 @@ namespace Test.FunctionalTest
             shapesLab.SaveSelectedShapes();
 
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(4);
-            IShapesLabLabeledThumbnail addedThumbnail = shapesLab.GetLabeledThumbnail("selectMe1");
-            addedThumbnail.FinishNameEdit();
-            // add shapes back
-            DoubleClick(addedThumbnail as Control);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("Group selectMe1");
-            Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
-                                            "UI test is flaky, pls re-run.");
+            AddShapesToSlideFromShapesLab(shapesLab, "selectMe1", "Group selectMe1");
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
 
             SlideUtil.IsSameLooking(expSlide, actualSlide);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
-        }
-
-        private void DoubleClick(Control target)
-        {
-            Point pt = target.PointToScreen(new Point(target.Width/2, target.Height/2));
-            MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
         }
 
         private void TestSaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab)
@@ -97,18 +85,29 @@ namespace Test.FunctionalTest
             shapesLab.ClickAddShapeButton();
 
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
-            IShapesLabLabeledThumbnail addedThumbnail = shapesLab.GetLabeledThumbnail("selectMeNow1");
-            addedThumbnail.FinishNameEdit();
-            // add shapes back
-            DoubleClick(addedThumbnail as Control);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("Group selectMeNow1");
-            Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
-                                            "UI test is flaky, pls re-run.");
+            AddShapesToSlideFromShapesLab(shapesLab, "selectMeNow1", "Group selectMeNow1");
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
 
             SlideUtil.IsSameLooking(expSlide, actualSlide);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
+        }
+
+        private void AddShapesToSlideFromShapesLab(IShapesLabController shapesLab, string shapeThumbnail, string expectedShapePrefix) 
+        {
+            IShapesLabLabeledThumbnail thumbnail = shapesLab.GetLabeledThumbnail(shapeThumbnail);
+            thumbnail.FinishNameEdit();
+            // Add shapes from Shapes Lab to slide by double clicking
+            DoubleClick(thumbnail as Control);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix(expectedShapePrefix);
+            Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
+                                            "UI test is flaky, pls re-run.");
+        }
+
+        private void DoubleClick(Control target)
+        {
+            Point pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
+            MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
         }
     }
 }
