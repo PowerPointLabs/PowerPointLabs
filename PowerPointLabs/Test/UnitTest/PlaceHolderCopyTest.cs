@@ -3,22 +3,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.SyncLab;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.Utils;
 
-namespace Test.UnitTest.SyncLab
+namespace Test.UnitTest
 {
     /// <summary>
     /// Checks if copied Placeholders replacements support the same formats
     /// Also checks that unsupported placeholders cannot be copied
     /// </summary>
     [TestClass]
-    public class PlaceHolderCopyTest : BaseSyncLabTest
+    public class PlaceHolderCopyTest : BaseUnitTest
     {
-        private const int HorizontalPlaceholdersSlide = 41;
-        private const int CenterPlaceholdersSlide = 42;
-        private const int VerticalPlaceholdersSlide = 43;
+        private const int HorizontalPlaceholdersSlide = 2;
+        private const int CenterPlaceholdersSlide = 3;
+        private const int VerticalPlaceholdersSlide = 4;
         
         private const string HorizontalTitle = "Title 1";
         private const string HorizontalBody = "Content Placeholder 2";
@@ -28,20 +27,36 @@ namespace Test.UnitTest.SyncLab
         private const string VerticalBody = "Content Placeholder 2";
         
         // not yet supported by synclab
-        private const int TablePlaceholderSlide = 44;
-        private const int ChartPlaceholderSlide = 45;
-        private const int PicturePlaceholderSlide = 46;
+        private const int TablePlaceholderSlide = 5;
+        private const int ChartPlaceholderSlide = 6;
+        private const int PicturePlaceholderSlide = 7;
         
         private const string Table = "Content Placeholder 3";
         private const string Chart = "Content Placeholder 5";
         private const string Picture = "Content Placeholder 4";
 
-        private Shapes TemplateShapes;
+        private Shapes _templateShapes;
+        
+        protected override string GetTestingSlideName()
+        {
+            return "CopyPlaceHolder.pptx";
+        }
+        
+        private Shape GetShape(int slideNumber, string shapeName)
+        {
+            PpOperations.SelectSlide(slideNumber);
+            return PpOperations.SelectShape(shapeName)[1];
+        }
+        
+        private Shapes GetShapesObject(int slideNumber)
+        {
+            return PpOperations.SelectSlide(slideNumber).Shapes;
+        }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            TemplateShapes = GetShapesObject(1);
+            _templateShapes = GetShapesObject(1);
         }
         
         [TestMethod]
@@ -80,7 +95,7 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyTable()
         {
             Shape table = GetShape(TablePlaceholderSlide, Table);
-            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], table, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], table, _templateShapes);
             Assert.AreEqual(copy, null);
         }
         
@@ -89,7 +104,7 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyPicture()
         {
             Shape picture = GetShape(PicturePlaceholderSlide, Picture);
-            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], picture, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], picture, _templateShapes);
             Assert.AreEqual(copy, null);
         }
         
@@ -98,7 +113,7 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyChart()
         {
             Shape chart = GetShape(ChartPlaceholderSlide, Chart);
-            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], chart, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], chart, _templateShapes);
             Assert.AreEqual(copy, null);
         }
         
@@ -108,7 +123,7 @@ namespace Test.UnitTest.SyncLab
             Format[] formatsFromOriginal = GetCopyableFormats(placeHolder);
             List<Type> typesFromOriginal = formatsFromOriginal.Select(format => format.FormatType).ToList();
             
-            Shape copy = ShapeUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, _templateShapes);
             Format[] formatsFromCopy = GetCopyableFormats(copy);
             IEnumerable<Type> typesFromCopy = formatsFromCopy.Select(format => format.FormatType);
 
