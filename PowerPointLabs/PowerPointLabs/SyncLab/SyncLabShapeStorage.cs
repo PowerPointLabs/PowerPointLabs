@@ -5,6 +5,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
@@ -56,7 +57,7 @@ namespace PowerPointLabs.SyncLab
             Shape copiedShape = null;
             if (shape.Type == MsoShapeType.msoPlaceholder)
             {
-                copiedShape = SyncFormatUtil.CopyMsoPlaceHolder(formats, shape, GetTemplateShapes());
+                copiedShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, GetTemplateShapes());
             }
             else
             {

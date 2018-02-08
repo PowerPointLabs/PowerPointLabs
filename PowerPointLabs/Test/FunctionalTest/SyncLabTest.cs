@@ -70,8 +70,8 @@ namespace Test.FunctionalTest
 
         private void TestCopySupportedPlaceHolders(ISyncLabController syncLab)
         {
-            // ensure that can copy any style from the items
-            // ensuring all styles can be copied is done in UnitTest
+            // Ensure that one style can be copied from placeholder objects.
+            // Testing copying of all valid placeholder styles is done in unit tests.
             PpOperations.SelectSlide(HorizontalPlaceHolderSlideNo);
             PpOperations.SelectShape(HorizontalBody);
             CopyStyle(syncLab, 1, 0);

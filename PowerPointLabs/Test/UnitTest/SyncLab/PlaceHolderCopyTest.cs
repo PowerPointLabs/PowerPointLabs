@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.SyncLab;
 using PowerPointLabs.SyncLab.ObjectFormats;
+using PowerPointLabs.Utils;
 
 namespace Test.UnitTest.SyncLab
 {
@@ -79,7 +80,7 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyTable()
         {
             Shape table = GetShape(TablePlaceholderSlide, Table);
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], table, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], table, TemplateShapes);
             Assert.AreEqual(copy, null);
         }
         
@@ -88,7 +89,7 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyPicture()
         {
             Shape picture = GetShape(PicturePlaceholderSlide, Picture);
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], picture, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], picture, TemplateShapes);
             Assert.AreEqual(copy, null);
         }
         
@@ -97,7 +98,7 @@ namespace Test.UnitTest.SyncLab
         public void TestCopyChart()
         {
             Shape chart = GetShape(ChartPlaceholderSlide, Chart);
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(new Format[0], chart, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], chart, TemplateShapes);
             Assert.AreEqual(copy, null);
         }
         
@@ -107,7 +108,7 @@ namespace Test.UnitTest.SyncLab
             Format[] formatsFromOriginal = GetCopyableFormats(placeHolder);
             List<Type> typesFromOriginal = formatsFromOriginal.Select(format => format.FormatType).ToList();
             
-            Shape copy = SyncFormatUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, TemplateShapes);
+            Shape copy = ShapeUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, TemplateShapes);
             Format[] formatsFromCopy = GetCopyableFormats(copy);
             IEnumerable<Type> typesFromCopy = formatsFromCopy.Select(format => format.FormatType);
 

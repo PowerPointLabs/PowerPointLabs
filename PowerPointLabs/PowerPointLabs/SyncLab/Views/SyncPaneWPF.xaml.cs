@@ -135,7 +135,7 @@ namespace PowerPointLabs.SyncLab.Views
             else
             {
                 Format[] formats = GetFormatsToApply(nodes);
-                SyncFormatUtil.ApplyFormats(formats, formatShape, selectedShapes);
+                ShapeUtil.ApplyFormats(formats, formatShape, selectedShapes);
                 
             }
         }
@@ -224,7 +224,7 @@ namespace PowerPointLabs.SyncLab.Views
 
             bool canSyncPlaceHolder =
                 shape.Type == MsoShapeType.msoPlaceholder && 
-                SyncFormatUtil.CanCopyMsoPlaceHolder(shape, SyncFormatUtil.GetTemplateShapes());
+                ShapeUtil.CanCopyMsoPlaceHolder(shape, SyncFormatUtil.GetTemplateShapes());
 
             if (shape.Type != MsoShapeType.msoAutoShape &&
                 shape.Type != MsoShapeType.msoLine &&
