@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-
-using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -14,7 +14,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
+            MsoTriState lockState = newShape.LockAspectRatio;
+            newShape.LockAspectRatio = MsoTriState.msoFalse;
             newShape.Height = formatShape.Height;
+            newShape.LockAspectRatio = lockState;
         }
 
         public static Bitmap DisplayImage(Shape formatShape)
