@@ -22,7 +22,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void ImageFileNotification()
         {
-            var notified = false;
+            bool notified = false;
             item.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ImageFile")
@@ -38,7 +38,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void ToolTipNotification()
         {
-            var notified = false;
+            bool notified = false;
             item.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Tooltip")
@@ -56,7 +56,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         {
             StoragePath.InitPersistentFolder();
             StoragePath.CleanPersistentFolder(new List<string>());
-            var imagePath = PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg";
+            string imagePath = PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg";
             item.UpdateDownloadedImage(imagePath);
             Assert.AreEqual(imagePath, item.FullSizeImageFile);
             Assert.IsFalse(string.IsNullOrEmpty(item.ImageFile));

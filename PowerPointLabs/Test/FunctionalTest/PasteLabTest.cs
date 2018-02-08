@@ -63,7 +63,7 @@ namespace Test.FunctionalTest
 
         private void PasteToFillSlide(int originalSlideNo, int expSlideNo)
         {
-            var shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
             shapes.Cut();
 
             PplFeatures.PasteToFillSlide();
@@ -73,7 +73,7 @@ namespace Test.FunctionalTest
 
         private void PasteAtCursorPosition(int originalSlideNo, int expSlideNo)
         {
-            var shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
             shapes.Cut();
 
             RightClick(GetShapesByPrefix(originalSlideNo, ShapeToClick)[1]);
@@ -86,7 +86,7 @@ namespace Test.FunctionalTest
 
         private void PasteAtOriginalPosition(int originalSlideNo, int expSlideNo)
         {
-            var shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
             shapes.Cut();
 
             PplFeatures.PasteAtOriginalPosition();
@@ -96,7 +96,7 @@ namespace Test.FunctionalTest
 
         private void ReplaceWithClipboard(int originalSlideNo, int expSlideNo)
         {
-            var shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
             shapes.Cut();
 
             PpOperations.SelectShapes(new List<string> { ShapeToReplace });
@@ -107,7 +107,7 @@ namespace Test.FunctionalTest
 
         private void PasteIntoGroup(int originalSlideNo, int expSlideNo)
         {
-            var shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
             shapes.Cut();
 
             PpOperations.SelectShape(GroupToPaste);
@@ -118,8 +118,8 @@ namespace Test.FunctionalTest
 
         private void AssertIsSame(int actualSlideNo, int expectedSlideNo)
         {
-            var actualSlide = PpOperations.SelectSlide(actualSlideNo);
-            var expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
 
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
@@ -133,7 +133,7 @@ namespace Test.FunctionalTest
 
         private void RightClick(Shape target)
         {
-            var pt = new Point(
+            Point pt = new Point(
                 PpOperations.PointsToScreenPixelsX(target.Left + target.Width / 2),
                 PpOperations.PointsToScreenPixelsY(target.Top + target.Height / 2));
             MouseUtil.SendMouseRightClick(pt.X, pt.Y);

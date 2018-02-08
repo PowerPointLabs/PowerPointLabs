@@ -41,7 +41,7 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_SyncLabTest()
         {
-            var syncLab = PplFeatures.SyncLab;
+            ISyncLabController syncLab = PplFeatures.SyncLab;
             syncLab.OpenPane();
 
             TestSync(syncLab);
@@ -99,10 +99,10 @@ namespace Test.FunctionalTest
 
         private void IsSame(int originalSlideNo, int expectedSlideNo, string shapeToCheck)
         {
-            var actualSlide = PpOperations.SelectSlide(originalSlideNo);
-            var actualShape = PpOperations.SelectShape(shapeToCheck)[1];
-            var expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
-            var expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(originalSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameShape(expectedShape, actualShape);
         }

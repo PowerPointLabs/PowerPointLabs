@@ -21,7 +21,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchExtraSlowLowerCase()
         {
-            var testTag = "[speed: extra slow]";
+            string testTag = "[speed: extra slow]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -29,7 +29,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchExtraSlowUpperCase()
         {
-            var testTag = "[Speed: Extra Slow]";
+            string testTag = "[Speed: Extra Slow]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -37,7 +37,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchExtraSlowMixedCase()
         {
-            var testTag = "[Speed: extra Slow]";
+            string testTag = "[Speed: extra Slow]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -45,7 +45,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchSlowLowerCase()
         {
-            var testTag = "[speed: slow]";
+            string testTag = "[speed: slow]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -53,7 +53,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchSlowUpperCase()
         {
-            var testTag = "[Speed: Slow]";
+            string testTag = "[Speed: Slow]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -61,7 +61,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchSlowMixedCase()
         {
-            var testTag = "[Speed: slow]";
+            string testTag = "[Speed: slow]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -69,7 +69,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchMediumLowerCase()
         {
-            var testTag = "[speed: medium]";
+            string testTag = "[speed: medium]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -77,7 +77,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchMediumUpperCase()
         {
-            var testTag = "[Speed: Medium]";
+            string testTag = "[Speed: Medium]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -85,7 +85,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchMediumMixedCase()
         {
-            var testTag = "[Speed: medium]";
+            string testTag = "[Speed: medium]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -93,7 +93,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchFastLowerCase()
         {
-            var testTag = "[speed: fast]";
+            string testTag = "[speed: fast]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -101,7 +101,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchFastUpperCase()
         {
-            var testTag = "[Speed: Fast]";
+            string testTag = "[Speed: Fast]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -109,7 +109,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchFastMixedCase()
         {
-            var testTag = "[Speed: fast]";
+            string testTag = "[Speed: fast]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -117,7 +117,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchExtraFastLowerCase()
         {
-            var testTag = "[speed: extra fast]";
+            string testTag = "[speed: extra fast]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -125,7 +125,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchExtraFastUpperCase()
         {
-            var testTag = "[Speed: Extra Fast]";
+            string testTag = "[Speed: Extra Fast]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -133,7 +133,7 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchExtraFastMixedCase()
         {
-            var testTag = "[Speed: extra fast]";
+            string testTag = "[Speed: extra fast]";
             TagUtil.MatchAndAssert(testTag, tagRegex);
         }
 
@@ -141,8 +141,8 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void DoesntMatchWithNoParameters()
         {
-            var testTag = "[Speed]";
-            var match = tagRegex.Match(testTag);
+            string testTag = "[Speed]";
+            Match match = tagRegex.Match(testTag);
 
             Assert.IsFalse(match.Success);
 
@@ -161,13 +161,13 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchListSingleInSentence()
         {
-            var sentence = "This is [speed: fast]a test[endspeed].";
-            var matches = new StartSpeedTagMatcher().Matches(sentence);
+            string sentence = "This is [speed: fast]a test[endspeed].";
+            System.Collections.Generic.List<PowerPointLabs.Tags.ITag> matches = new StartSpeedTagMatcher().Matches(sentence);
 
             Assert.IsTrue(matches.Any(), "No matches found.");
             Assert.IsTrue(matches.Count == 1, "More than one match.");
 
-            var match = matches[0];
+            PowerPointLabs.Tags.ITag match = matches[0];
             Assert.IsTrue(match.Start == 8, "Match start was incorrect.");
             Assert.IsTrue(match.End == 20, "Match end was incorrect.");
         }
@@ -176,8 +176,8 @@ namespace Test.UnitTest.TagMatchers
         [TestCategory("UT")]
         public void MatchListMultipleInSentence()
         {
-            var sentence = "This [speed: slow]has multiple[endspeed][speed: fast] matches.[endspeed]";
-            var matches = new StartSpeedTagMatcher().Matches(sentence);
+            string sentence = "This [speed: slow]has multiple[endspeed][speed: fast] matches.[endspeed]";
+            System.Collections.Generic.List<PowerPointLabs.Tags.ITag> matches = new StartSpeedTagMatcher().Matches(sentence);
 
             Assert.IsTrue(matches.Any(), "No matches found.");
             Assert.IsTrue(matches.Count == 2, "Didn't match all.");

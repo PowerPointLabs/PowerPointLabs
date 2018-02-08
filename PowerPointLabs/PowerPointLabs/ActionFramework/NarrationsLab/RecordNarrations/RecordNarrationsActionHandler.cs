@@ -1,4 +1,7 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Tools;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.NarrationsLab.Views;
@@ -12,7 +15,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         protected override void ExecuteAction(string ribbonId)
         {
             //TODO: This needs to improved to stop using global variables
-            var currentPresentation = this.GetCurrentPresentation().Presentation;
+            Presentation currentPresentation = this.GetCurrentPresentation().Presentation;
 
             if (!this.GetRibbonUi().IsValidPresentation(currentPresentation))
             {
@@ -20,13 +23,13 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
 
             // prepare media files
-            var tempPath = this.GetAddIn().PrepareTempFolder(currentPresentation);
+            string tempPath = this.GetAddIn().PrepareTempFolder(currentPresentation);
             this.GetAddIn().PrepareMediaFiles(currentPresentation, tempPath);
 
             this.GetAddIn().RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
 
-            var recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
-            var recorder = recorderPane.Control as RecorderTaskPane;
+            CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
+            RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
 
             // if currently the pane is hidden, show the pane
             if (recorder != null && !recorderPane.Visible)

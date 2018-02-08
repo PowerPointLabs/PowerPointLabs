@@ -6,7 +6,7 @@ namespace Test.Util
     {
         public static void WaitFor(int time)
         {
-            var waitedFor = 0;
+            int waitedFor = 0;
             while (waitedFor < time)
             {
                 Thread.Sleep(time);

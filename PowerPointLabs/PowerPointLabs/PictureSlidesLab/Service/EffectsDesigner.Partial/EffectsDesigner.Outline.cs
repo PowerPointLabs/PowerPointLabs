@@ -8,7 +8,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
     {
         public PowerPoint.Shape ApplyRectOutlineEffect(PowerPoint.Shape imageShape, string overlayColor, int transparency)
         {
-            var tbInfo =
+            TextBoxInfo tbInfo =
                 new TextBoxes(Shapes.Range(), SlideWidth, SlideHeight)
                 .GetTextBoxesInfo();
             if (tbInfo == null)
@@ -18,7 +18,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
 
             TextBoxes.AddMargin(tbInfo, 10);
 
-            var overlayShape = ApplyOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
+            PowerPoint.Shape overlayShape = ApplyOverlayEffect(overlayColor, transparency, tbInfo.Left, tbInfo.Top, tbInfo.Width,
                 tbInfo.Height);
             overlayShape.Fill.Visible = MsoTriState.msoFalse;
             overlayShape.Line.Visible = MsoTriState.msoTrue;

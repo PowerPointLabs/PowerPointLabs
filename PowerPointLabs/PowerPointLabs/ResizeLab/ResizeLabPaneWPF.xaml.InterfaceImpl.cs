@@ -16,11 +16,11 @@ namespace PowerPointLabs.ResizeLab
         {
             if (exception != null)
             {
-                ErrorDialogBox.ShowDialog("Error", content, exception);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, content, exception);
             }
             else
             {
-                MessageBox.Show(content, "Error");
+                MessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
             }
         }
 
@@ -51,7 +51,7 @@ namespace PowerPointLabs.ResizeLab
 
         public void Reset()
         {
-            var selectedShapes = GetSelectedShapes(false);
+            PowerPoint.ShapeRange selectedShapes = GetSelectedShapes(false);
 
             if (selectedShapes != null && _isPreview)
             {

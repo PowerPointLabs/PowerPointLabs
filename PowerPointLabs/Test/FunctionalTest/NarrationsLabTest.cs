@@ -24,7 +24,7 @@ namespace Test.FunctionalTest
         {
             // ensure that the audio type detection is
             // backwards-compatible with older versions
-            var shape = PpOperations.SelectShape("Record")[1];
+            Shape shape = PpOperations.SelectShape("Record")[1];
             Assert.AreEqual(Audio.AudioType.Record, Audio.GetShapeAudioType(shape));
             shape = PpOperations.SelectShape("Auto")[1];
             Assert.AreEqual(Audio.AudioType.Auto, Audio.GetShapeAudioType(shape));

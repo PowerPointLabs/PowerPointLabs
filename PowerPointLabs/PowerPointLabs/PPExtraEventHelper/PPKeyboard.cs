@@ -115,7 +115,7 @@ namespace PPExtraEventHelper
             _keyDownActions = new Dictionary<int, List<BindedAction>>();
             _keyUpActions = new Dictionary<int, List<BindedAction>>();
 
-            foreach (var key in Enum.GetValues(typeof(Native.VirtualKey)))
+            foreach (object key in Enum.GetValues(typeof(Native.VirtualKey)))
             {
                 int keyIndex = (int)key;
                 _keyStatuses.Add(keyIndex, new KeyStatus());
@@ -237,7 +237,7 @@ namespace PPExtraEventHelper
                 int keyIndex = wParam.ToInt32();
                 if (_keyStatuses.ContainsKey(keyIndex))
                 {
-                    var keyStatus = _keyStatuses[keyIndex];
+                    KeyStatus keyStatus = _keyStatuses[keyIndex];
                     if (IsKeydownCommand(lParam))
                     {
                         if (!keyStatus.IsPressed)
@@ -245,9 +245,9 @@ namespace PPExtraEventHelper
                             keyStatus.Press();
                         }
 
-                        foreach (var action in _keyDownActions[keyIndex])
+                        foreach (BindedAction action in _keyDownActions[keyIndex])
                         {
-                            var block = action.RunConditionally(keyStatus);
+                            bool block = action.RunConditionally(keyStatus);
                             if (block)
                             {
                                 blockInput = true;
@@ -258,9 +258,9 @@ namespace PPExtraEventHelper
                     {
                         if (keyStatus.IsPressed)
                         {
-                            foreach (var action in _keyUpActions[keyIndex])
+                            foreach (BindedAction action in _keyUpActions[keyIndex])
                             {
-                                var block = action.RunConditionally(keyStatus);
+                                bool block = action.RunConditionally(keyStatus);
                                 if (block)
                                 {
                                     blockInput = true;

@@ -639,7 +639,7 @@
     <Compile Include="TextCollection\HighlightLabText.cs" />
     <Compile Include="TextCollection\ResizeLabText.cs" />
     <Compile Include="TextCollection\HelpText.cs" />
-    <Compile Include="TextCollection\ShortcutsLab.cs" />
+    <Compile Include="TextCollection\ShortcutsLabText.cs" />
     <Compile Include="TextCollection\TimerLabText.cs" />
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
@@ -650,6 +650,7 @@
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>

@@ -37,7 +37,7 @@ namespace PowerPointLabs.AgendaLab
                 targetSlide.Transition.EntryEffect = PpEntryEffect.ppEffectFadeSmoothly;
                 targetSlide.Transition.Duration = 0.25f;
 
-                var nextSlide = TryGetSlideAtIndex(targetSlide.Index + 1);
+                PowerPointSlide nextSlide = TryGetSlideAtIndex(targetSlide.Index + 1);
                 if (nextSlide != null)
                 {
                     nextSlide.Transition.EntryEffect = refSlide.Transition.EntryEffect;
@@ -73,9 +73,9 @@ namespace PowerPointLabs.AgendaLab
         {
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
 
-            var referenceContentShape = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
-            var targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
-            var bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
+            Shape referenceContentShape = refSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
+            Shape targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
+            BulletFormats bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
             ShapeUtil.SetText(targetContentShape, sections.Where(section => section.Index > 1)
                 .Select(section => section.Name));
@@ -98,9 +98,9 @@ namespace PowerPointLabs.AgendaLab
 
             textRange.Font.StrikeThrough = MsoTriState.msoFalse;
 
-            for (var i = 1; i <= textRange.Paragraphs.Count; i++)
+            for (int i = 1; i <= textRange.Paragraphs.Count; i++)
             {
-                var currentParagraph = textRange.Paragraphs[i];
+                TextRange2 currentParagraph = textRange.Paragraphs[i];
 
                 if (i == focusIndex)
                 {
@@ -134,11 +134,11 @@ namespace PowerPointLabs.AgendaLab
             if (currentSection.Index > 2)
             {
                 // Not first visual section.
-                var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index - 1);
+                Shape zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index - 1);
                 GenerateVisualAgendaSlideZoomOut(targetSlide, zoomOutShape);
             }
 
-            var zoomInShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
+            Shape zoomInShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
             GenerateVisualAgendaSlideZoomIn(targetSlide, zoomInShape);
 
             targetSlide.DeletePlaceholderShapes();
@@ -153,7 +153,7 @@ namespace PowerPointLabs.AgendaLab
             SyncShapesFromReferenceSlide(refSlide, targetSlide, deletedShapeNames);
             ReplaceVisualImagesWithAfterZoomOutImages(targetSlide, currentSection.Index + 1);
 
-            var zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
+            Shape zoomOutShape = FindShapeCorrespondingToSection(targetSlide, currentSection.Index);
             GenerateVisualAgendaSlideZoomOut(targetSlide, zoomOutShape, finalZoomOut: true);
 
             targetSlide.DeletePlaceholderShapes();
@@ -173,7 +173,7 @@ namespace PowerPointLabs.AgendaLab
         /// </summary>
         private static void ReplaceVisualImagesWithAfterZoomOutImages(PowerPointSlide slide, int sectionIndex)
         {
-            var indexedShapes = new Dictionary<int, Shape>();
+            Dictionary<int, Shape> indexedShapes = new Dictionary<int, Shape>();
             slide.Shapes.Cast<Shape>()
                         .Where(AgendaShape.WithPurpose(ShapePurpose.VisualAgendaImage))
                         .ToList()
@@ -181,10 +181,10 @@ namespace PowerPointLabs.AgendaLab
 
             for (int i = 2; i < sectionIndex; ++i)
             {
-                var imageShape = indexedShapes[i];
+                Shape imageShape = indexedShapes[i];
 
-                var sectionEndSlide = FindSectionLastNonAgendaSlide(i);
-                var snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
+                PowerPointSlide sectionEndSlide = FindSectionLastNonAgendaSlide(i);
+                Shape snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
                 ShapeUtil.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
                 imageShape.Delete();
@@ -225,7 +225,7 @@ namespace PowerPointLabs.AgendaLab
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, finalZoomOut ? SlidePurpose.FinalZoomOut : SlidePurpose.ZoomOut, section);
             zoomOutShape.Visible = MsoTriState.msoTrue;
 
-            var index = slide.Index;
+            int index = slide.Index;
 
             // move the step back slide to the first slide of the section
             PowerPointPresentation.Current.Presentation.Slides[index - 1].MoveTo(index);
@@ -256,8 +256,8 @@ namespace PowerPointLabs.AgendaLab
             candidate.GetNativeSlide().FollowMasterBackground = MsoTriState.msoTrue;
 
             // synchronize extra shapes other than visual items in reference slide
-            var candidateSlideShapes = candidate.GetNameToShapeDictionary();
-            var extraShapes = refSlide.Shapes.Cast<Shape>()
+            Dictionary<string, Shape> candidateSlideShapes = candidate.GetNameToShapeDictionary();
+            string[] extraShapes = refSlide.Shapes.Cast<Shape>()
                                              .Where(shape => !PowerPointSlide.IsIndicator(shape) &&
                                                              !PowerPointSlide.IsTemplateSlideMarker(shape) &&
                                                              !candidateSlideShapes.ContainsKey(shape.Name))
@@ -266,21 +266,21 @@ namespace PowerPointLabs.AgendaLab
 
             if (extraShapes.Length != 0)
             {
-                var refShapes = refSlide.Shapes.Range(extraShapes);
+                ShapeRange refShapes = refSlide.Shapes.Range(extraShapes);
                 CopyShapesTo(refShapes, candidate);
             }
 
             // synchronize shapes position and size, except bullet content
             candidateSlideShapes = candidate.GetNameToShapeDictionary();
-            var sameShapes = refSlide.Shapes.Cast<Shape>()
+            IEnumerable<Shape> sameShapes = refSlide.Shapes.Cast<Shape>()
                                             .Where(shape => !PowerPointSlide.IsIndicator(shape) &&
                                                             !PowerPointSlide.IsTemplateSlideMarker(shape) &&
                                                             candidateSlideShapes.ContainsKey(shape.Name));
 
-            var shapeOriginalZOrders = new SortedDictionary<int, Shape>();
-            foreach (var refShape in sameShapes)
+            SortedDictionary<int, Shape> shapeOriginalZOrders = new SortedDictionary<int, Shape>();
+            foreach (Shape refShape in sameShapes)
             {
-                var candidateShape = candidateSlideShapes[refShape.Name];
+                Shape candidateShape = candidateSlideShapes[refShape.Name];
                 ShapeUtil.SyncWholeShape(refShape, ref candidateShape, candidate);
 
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
@@ -314,8 +314,8 @@ namespace PowerPointLabs.AgendaLab
                 return;
             }
             
-            var candidateSlideShapes = candidate.GetNameToShapeDictionary();
-            foreach (var shapeName in markedForDeletion)
+            Dictionary<string, Shape> candidateSlideShapes = candidate.GetNameToShapeDictionary();
+            foreach (string shapeName in markedForDeletion)
             {
                 Shape shapeInSlide;
                 bool shapeExists = candidateSlideShapes.TryGetValue(shapeName, out shapeInSlide);
@@ -332,9 +332,9 @@ namespace PowerPointLabs.AgendaLab
         private static void SynchroniseZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)
         {
             Shape lastShape = null;
-            foreach (var entry in shapeOriginalZOrders.Reverse())
+            foreach (KeyValuePair<int, Shape> entry in shapeOriginalZOrders.Reverse())
             {
-                var shape = entry.Value;
+                Shape shape = entry.Value;
                 if (lastShape != null)
                 {
                     ShapeUtil.MoveZUntilBehind(shape, lastShape);

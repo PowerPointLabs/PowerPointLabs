@@ -38,12 +38,12 @@ namespace PowerPointLabs.Tags
         private static string FindFullVoiceName(string voiceArgument)
         {
             string voiceName = null;
-            using (var synthesizer = new SpeechSynthesizer())
+            using (SpeechSynthesizer synthesizer = new SpeechSynthesizer())
             {
-                var installedVoices = synthesizer.GetInstalledVoices();
-                var enabledVoices = installedVoices.Where(voice => voice.Enabled);
+                System.Collections.ObjectModel.ReadOnlyCollection<InstalledVoice> installedVoices = synthesizer.GetInstalledVoices();
+                System.Collections.Generic.IEnumerable<InstalledVoice> enabledVoices = installedVoices.Where(voice => voice.Enabled);
 
-                var selectedVoice = enabledVoices.FirstOrDefault(voice => voice.VoiceInfo.Name.ToLowerInvariant().Contains(voiceArgument));
+                InstalledVoice selectedVoice = enabledVoices.FirstOrDefault(voice => voice.VoiceInfo.Name.ToLowerInvariant().Contains(voiceArgument));
                 if (selectedVoice != null)
                 {
                     voiceName = selectedVoice.VoiceInfo.Name;

@@ -64,7 +64,7 @@ namespace Test.Util
 
         private static Point GetDpiSafeLocation(int x, int y)
         {
-            var dpi = GetScalingFactor();
+            float dpi = GetScalingFactor();
             return new Point
             {
                 X = (int) (x / dpi),
@@ -74,12 +74,12 @@ namespace Test.Util
 
         private static float GetScalingFactor()
         {
-            var g = Graphics.FromHwnd(IntPtr.Zero);
-            var desktop = g.GetHdc();
-            var LogicalScreenHeight = NativeUtil.GetDeviceCaps(desktop, (int)NativeUtil.DeviceCap.VERTRES);
-            var PhysicalScreenHeight = NativeUtil.GetDeviceCaps(desktop, (int)NativeUtil.DeviceCap.DESKTOPVERTRES);
+            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+            IntPtr desktop = g.GetHdc();
+            int LogicalScreenHeight = NativeUtil.GetDeviceCaps(desktop, (int)NativeUtil.DeviceCap.VERTRES);
+            int PhysicalScreenHeight = NativeUtil.GetDeviceCaps(desktop, (int)NativeUtil.DeviceCap.DESKTOPVERTRES);
 
-            var ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+            float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
 
             return ScreenScalingFactor; // 1.25 = 125%
         }

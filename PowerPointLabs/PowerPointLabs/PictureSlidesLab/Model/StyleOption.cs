@@ -34,9 +34,9 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         {
             try
             {
-                using (var writer = new StreamWriter(filename))
+                using (StreamWriter writer = new StreamWriter(filename))
                 {
-                    var serializer = new XmlSerializer(GetType());
+                    XmlSerializer serializer = new XmlSerializer(GetType());
                     serializer.Serialize(writer, this);
                     writer.Flush();
                 }
@@ -56,10 +56,10 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         {
             try
             {
-                using (var stream = File.OpenRead(filename))
+                using (FileStream stream = File.OpenRead(filename))
                 {
-                    var serializer = new XmlSerializer(typeof(StyleOption));
-                    var opt = serializer.Deserialize(stream) as StyleOption;
+                    XmlSerializer serializer = new XmlSerializer(typeof(StyleOption));
+                    StyleOption opt = serializer.Deserialize(stream) as StyleOption;
                     return opt ?? new StyleOption();
                 }
             }
@@ -77,7 +77,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         {
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(this))
             {
-                var myAttribute = (DefaultValueAttribute) property
+                DefaultValueAttribute myAttribute = (DefaultValueAttribute) property
                     .Attributes[typeof(DefaultValueAttribute)];
                 if (myAttribute != null)
                 {

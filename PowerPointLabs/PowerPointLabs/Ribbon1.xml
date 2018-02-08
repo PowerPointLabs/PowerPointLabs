@@ -325,6 +325,12 @@
                 getSupertip="GetSupertip"
                 size="large">
             <gallery idMso="ShapesInsertGallery"/>
+            <menuSeparator id="builtinCropSeparator"
+                           title="Builtin Crop Features"/>
+            <splitButton idMso="PictureCropTools"/>
+            <splitButton idMso="PictureCropToolsMenu"/>
+            <menuSeparator id="NewCropSeparator"
+                           title="New Crop Features"/>
             <button id="CropToShapeButton"
                     tag="CropToShape"
                     getLabel="GetLabel"

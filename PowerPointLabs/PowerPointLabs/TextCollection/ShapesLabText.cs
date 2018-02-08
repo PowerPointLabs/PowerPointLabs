@@ -41,7 +41,7 @@
         public const string ErrorImportAppendCategory = "Your computer does not support this feature.";
         public const string ErrorImportSingleCategory =
             "{0} contains multiple categories. Try \"Import Category\" instead.";
-        public const string SuccessImport = "Successfully imported";
+        public const string SuccessImport = "Successfully imported.";
 
         public const string ImportShapeFileDialogTitle = "Import Shapes";
         public const string ImportLibraryFileDialogTitle = "Import Library";
@@ -60,6 +60,7 @@
         public const string CategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CategoryContextStripCategorySettings = "Shapes Lab Settings";
 
+        public const string ErrorSameShapeNameInDestination = "{0} exists in {1}. Please rename your shape before moving.";
         public const string ErrorShapeCorrupted = "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
 
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";

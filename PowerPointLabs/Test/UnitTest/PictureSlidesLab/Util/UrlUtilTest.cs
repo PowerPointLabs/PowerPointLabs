@@ -43,8 +43,8 @@ namespace Test.UnitTest.PictureSlidesLab.Util
         [TestCategory("UT")]
         public void TestGetMetaInfo()
         {
-            var imgItem = new ImageItem();
-            var link = _googleImgLink.Clone() as string;
+            ImageItem imgItem = new ImageItem();
+            string link = _googleImgLink.Clone() as string;
             UrlUtil.GetMetaInfo(ref link, imgItem);
             Assert.AreEqual("http://tctechcrunch2011.files.wordpress.com/2011/05/tcdisrupt_tc-9.jpg",
                 link);
@@ -56,8 +56,8 @@ namespace Test.UnitTest.PictureSlidesLab.Util
         [TestCategory("UT")]
         public void TestGetMetaInfoWithDecoding()
         {
-            var imgItem = new ImageItem();
-            var link = _googleImgLinkThatNeedDecode.Clone() as string;
+            ImageItem imgItem = new ImageItem();
+            string link = _googleImgLinkThatNeedDecode.Clone() as string;
             UrlUtil.GetMetaInfo(ref link, imgItem);
             Assert.AreEqual("http://www.virgin.com/sites/default/files/Articles/Entrepreneur%20Getty/Entrepreneur_breakfast_getty.jpg",
                 link);
