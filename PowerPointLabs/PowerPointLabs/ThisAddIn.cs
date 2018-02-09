@@ -638,12 +638,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (NarrationsLab.NotesToAudio.GetRemoveAudioEnabled())
+                        if (NarrationsLab.NotesToAudio.IsRemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        NarrationsLab.NotesToAudio.SetRemoveAudioEnabled(true);
+                        NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = true;
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -866,7 +866,7 @@ namespace PowerPointLabs
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            NarrationsLab.NotesToAudio.SetRemoveAudioEnabled(SlidesInRangeHaveAudio(sldRange));
+            NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
 
             // update recorder pane
             if (sldRange.Count > 0)
@@ -892,13 +892,13 @@ namespace PowerPointLabs
             BreakRecorderEvents();
 
             // ribbon function init
-            HighlightLab.HighlightBulletsText.SetHighlightBulletsEnabled(true);
-            HighlightLab.HighlightBulletsBackground.SetHighlightBulletsEnabled(true);
+            HighlightLab.HighlightBulletsText.IsHighlightPointsEnabled = true;
+            HighlightLab.HighlightBulletsBackground.IsHighlightBackgroundEnabled = true;
 
             if (sldRange.Count != 1)
             {
-                HighlightLab.HighlightBulletsText.SetHighlightBulletsEnabled(false);
-                HighlightLab.HighlightBulletsBackground.SetHighlightBulletsEnabled(false);
+                HighlightLab.HighlightBulletsText.IsHighlightPointsEnabled = false;
+                HighlightLab.HighlightBulletsBackground.IsHighlightBackgroundEnabled = false;
             }
             else
             {

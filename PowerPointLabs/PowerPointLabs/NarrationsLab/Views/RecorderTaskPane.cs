@@ -1371,9 +1371,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!NotesToAudio.GetRemoveAudioEnabled())
+                        if (!NotesToAudio.IsRemoveAudioEnabled)
                         {
-                            NotesToAudio.SetRemoveAudioEnabled(true);
+                            NotesToAudio.IsRemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }

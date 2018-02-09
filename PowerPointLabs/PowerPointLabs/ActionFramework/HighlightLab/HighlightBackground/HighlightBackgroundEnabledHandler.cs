@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return HighlightBulletsBackground.GetHighlightBulletsEnabled();
+            return HighlightBulletsBackground.IsHighlightBackgroundEnabled;
         }
     }
 }

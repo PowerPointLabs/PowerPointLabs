@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return NotesToAudio.GetRemoveAudioEnabled();
+            return NotesToAudio.IsRemoveAudioEnabled;
         }
     }
 }

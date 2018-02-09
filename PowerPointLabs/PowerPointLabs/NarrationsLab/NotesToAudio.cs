@@ -34,16 +34,7 @@ namespace PowerPointLabs.NarrationsLab
         public const string SpeechShapePrefix = "PowerPointLabs Speech";
         public const string SpeechShapePrefixOld = "AudioGen Speech";
 
-        private static bool removeAudioEnabled = true;
-        public static bool GetRemoveAudioEnabled()
-        {
-            return removeAudioEnabled;
-        }
-
-        public static void SetRemoveAudioEnabled(bool enabled)
-        {
-            removeAudioEnabled = enabled;
-        }
+        public static bool IsRemoveAudioEnabled { get; set; } = true;
 
         public static void PreviewAnimations()
         {
