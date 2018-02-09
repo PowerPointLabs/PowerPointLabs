@@ -338,16 +338,33 @@ namespace PowerPointLabs.Utils
         /// To avoid corrupted shape.
         /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
         /// After that, most of operations on corrupted shapes will throw an exception.
-        /// One solution for this is to re-allocate its memory: simply cut/copy and paste.
+        /// One solution for this is to re-allocate its memory: simply cut/copy and paste before using its property.
         /// </summary>
-        /// <param name="shape"></param>
-        /// <returns></returns>
+        /// <param name="shape"> Shape to be corrected </param>
+        /// <returns> The corrected shape </returns>
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
-            // in case of random corruption of shape, cut-paste a shape before using its property
-            Shape correctedShape = ownerSlide.CopyShapeToSlide(shape);
-            shape.Delete();
-            return correctedShape;
+            Shape correctedShape = null;
+
+            // Utilises deprecated PowerPointPresentation class as ShapeUtil does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
+            // While doing corruption correction, we don't want to affect the clipboard
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                correctedShape = ownerSlide.CopyShapeToSlide(shape);
+            }, pres);
+            
+            if (correctedShape != null)
+            {
+                shape.Delete();
+                return correctedShape;
+            }
+            else
+            {
+                // There were problems with the copying of the shape to the slide (could be a placeholder) thus we just return the original shape
+                return shape;
+            }
         }
 
         public static ShapeRange CorruptionCorrection(ShapeRange shapes, PowerPointSlide ownerSlide)
@@ -360,29 +377,6 @@ namespace PowerPointLabs.Utils
             }
             return ownerSlide.ToShapeRange(correctedShapeList);
         }
-
-        /// <summary>
-        /// To avoid corrupted shape.
-        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
-        /// After that, most of operations on corrupted shapes will throw an exception.
-        /// One solution for this is to re-allocate its memory: simply cut/copy and paste.
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <returns></returns>
-        public static Shape CutPasteShape(Shape shape)
-        {
-            // Utilises deprecated PowerPointPresentation class as ConvertToPicture does not utilise ActionFramework
-            PowerPointPresentation presentation = PowerPointPresentation.Current;
-
-            ClipboardUtil.RestoreClipboardAfterAction(() =>
-            {
-                shape.Cut();
-                shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
-            }, presentation);
-            
-            return shape;
-        }
-
         #endregion
 
         #region Size and Position

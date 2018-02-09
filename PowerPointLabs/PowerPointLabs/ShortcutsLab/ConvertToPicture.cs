@@ -15,15 +15,18 @@ namespace PowerPointLabs.ShortcutsLab
     {
 #pragma warning disable 0618
 
-        public static void Convert(PowerPoint.Selection selection)
+        public static void Convert(PowerPointPresentation pres, PowerPointSlide slide, PowerPoint.Selection selection)
         {
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
                 int originalZOrder = shape.ZOrderPosition;
                 // In case shape is corrupted
-                shape = ShapeUtil.CutPasteShape(shape);
-                ConvertToPictureForShape(shape, originalZOrder);
+                if (ShapeUtil.IsCorrupted(shape))
+                {
+                    shape = ShapeUtil.CorruptionCorrection(shape, slide);
+                }
+                ConvertToPictureForShape(pres, slide, shape, originalZOrder);
             }
             else
             {
@@ -50,7 +53,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
         }
 
-        private static void ConvertToPictureForShape(PowerPoint.Shape shape, int originalZOrder)
+        private static void ConvertToPictureForShape(PowerPointPresentation pres, PowerPointSlide slide, PowerPoint.Shape shape, int originalZOrder)
         {
             float rotation = 0;
             try
@@ -63,9 +66,6 @@ namespace PowerPointLabs.ShortcutsLab
                 Logger.LogException(e, "Chart cannot be rotated.");
             }
 
-            // Utilises deprecated PowerPointPresentation class as ConvertToPicture does not utilise ActionFramework
-            PowerPointPresentation presentation = PowerPointPresentation.Current;
-
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 shape.Copy();
@@ -74,7 +74,7 @@ namespace PowerPointLabs.ShortcutsLab
                 float width = shape.Width;
                 float height = shape.Height;
                 shape.Delete();
-                PowerPoint.Shape pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                PowerPoint.Shape pic = slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                 pic.Left = x + (width - pic.Width) / 2;
                 pic.Top = y + (height - pic.Height) / 2;
                 pic.Rotation = rotation;
@@ -88,7 +88,7 @@ namespace PowerPointLabs.ShortcutsLab
                     pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
                 }
                 pic.Select();
-            }, presentation);
+            }, pres);
         }
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
