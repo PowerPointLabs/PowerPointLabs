@@ -100,8 +100,7 @@ namespace Test.FunctionalTest
             // Add shapes from Shapes Lab to slide by double clicking
             DoubleClick(thumbnail as Control);
             Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix(expectedShapePrefix);
-            Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab." +
-                                            "UI test is flaky, pls re-run.");
+            Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab.");
         }
 
         private void DoubleClick(Control target)
