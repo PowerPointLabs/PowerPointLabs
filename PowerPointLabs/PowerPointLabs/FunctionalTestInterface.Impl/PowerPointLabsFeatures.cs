@@ -430,5 +430,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 Ribbon.OnAction(new RibbonControl(PasteLabText.ReplaceWithClipboardTag));
             }));
         }
+
+        public void PasteToFitSlide()
+        {
+            UIThreadExecutor.Execute((Action)(() =>
+            {
+                Ribbon.OnAction(new RibbonControl(PasteLabText.PasteToFitSlideTag));
+            }));
+        }
     }
 }

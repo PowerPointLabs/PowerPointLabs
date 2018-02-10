@@ -38,6 +38,15 @@ namespace Test.FunctionalTest
         private const int OriginalPasteIntoGroupSlideNo = 23;
         private const int ExpectedPasteIntoGroupSlideNo = 24;
 
+        private const int OriginalPasteToFitSlideSlideNo = 26;
+        private const int ExpectedPasteToFitSlideSlideNo = 27;
+        private const int OriginalDiagonalPasteToFitSlideSlideNo = 28;
+        private const int ExpectedDiagonalPasteToFitSlideSlideNo = 29;
+        private const int OriginalMultiplePasteToFitSlideSlideNo = 30;
+        private const int ExpectedMultiplePasteToFitSlideSlideNo = 31;
+        private const int OriginalGroupPasteToFitSlideSlideNo = 32;
+        private const int ExpectedGroupPasteToFitSlideSlideNo = 33;
+
         protected override string GetTestingSlideName()
         {
             return "PasteLab\\PasteLab.pptx";
@@ -59,6 +68,11 @@ namespace Test.FunctionalTest
             ReplaceWithClipboard(OriginalGroupReplaceWithClipboardSlideNo, ExpectedGroupReplaceWithClipboardSlideNo);
 
             PasteIntoGroup(OriginalPasteIntoGroupSlideNo, ExpectedPasteIntoGroupSlideNo);
+
+            PasteToFitSlide(OriginalPasteToFitSlideSlideNo, ExpectedPasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalDiagonalPasteToFitSlideSlideNo, ExpectedDiagonalPasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalMultiplePasteToFitSlideSlideNo, ExpectedMultiplePasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalGroupPasteToFitSlideSlideNo, ExpectedGroupPasteToFitSlideSlideNo);
         }
 
         private void PasteToFillSlide(int originalSlideNo, int expSlideNo)
@@ -112,6 +126,16 @@ namespace Test.FunctionalTest
 
             PpOperations.SelectShape(GroupToPaste);
             PplFeatures.PasteIntoGroup();
+
+            AssertIsSame(originalSlideNo, expSlideNo);
+        }
+
+        private void PasteToFitSlide(int originalSlideNo, int expSlideNo)
+        {
+            var shapes = GetShapesByPrefix(originalSlideNo, ShapeToCopyPrefix);
+            shapes.Cut();
+
+            PplFeatures.PasteToFitSlide();
 
             AssertIsSame(originalSlideNo, expSlideNo);
         }
