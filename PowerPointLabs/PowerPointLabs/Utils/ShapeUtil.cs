@@ -106,7 +106,6 @@ namespace PowerPointLabs.Utils
                 return false;
             }
         }
-
         #endregion
 
         #region ShapeRange
