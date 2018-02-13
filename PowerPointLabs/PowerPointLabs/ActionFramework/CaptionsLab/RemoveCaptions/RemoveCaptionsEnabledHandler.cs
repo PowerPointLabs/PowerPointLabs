@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.CaptionsLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.CaptionsLab
@@ -10,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.CaptionsLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return this.GetRibbonUi().RemoveCaptionsEnabled;
+            return NotesToCaptions.IsRemoveCaptionsEnabled;
         }
     }
 }

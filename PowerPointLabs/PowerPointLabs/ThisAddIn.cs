@@ -17,6 +17,7 @@ using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
+using PowerPointLabs.CaptionsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
@@ -637,12 +638,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (Ribbon.RemoveAudioEnabled)
+                        if (NarrationsLab.NotesToAudio.IsRemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        Ribbon.RemoveAudioEnabled = true;
+                        NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = true;
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -864,8 +865,8 @@ namespace PowerPointLabs
         {
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
-            Ribbon.RemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            Ribbon.RemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+            NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
+            NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
 
             // update recorder pane
             if (sldRange.Count > 0)
@@ -891,11 +892,13 @@ namespace PowerPointLabs
             BreakRecorderEvents();
 
             // ribbon function init
-            Ribbon.HighlightBulletsEnabled = true;
+            HighlightLab.HighlightBulletsText.IsHighlightPointsEnabled = true;
+            HighlightLab.HighlightBulletsBackground.IsHighlightBackgroundEnabled = true;
 
             if (sldRange.Count != 1)
             {
-                Ribbon.HighlightBulletsEnabled = false;
+                HighlightLab.HighlightBulletsText.IsHighlightPointsEnabled = false;
+                HighlightLab.HighlightBulletsBackground.IsHighlightBackgroundEnabled = false;
             }
             else
             {

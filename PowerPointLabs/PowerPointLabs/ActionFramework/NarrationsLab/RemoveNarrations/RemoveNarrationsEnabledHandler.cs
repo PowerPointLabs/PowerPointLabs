@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
@@ -10,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return this.GetRibbonUi().RemoveAudioEnabled;
+            return NotesToAudio.IsRemoveAudioEnabled;
         }
     }
 }

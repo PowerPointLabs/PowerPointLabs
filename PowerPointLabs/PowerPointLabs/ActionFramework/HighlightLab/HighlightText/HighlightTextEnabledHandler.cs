@@ -4,6 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.HighlightLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.HighlightLab
@@ -18,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
                 if (this.GetAddIn().Application.ActiveWindow.Selection.Type == PpSelectionType.ppSelectionText && 
                     this.GetAddIn().Application.ActiveWindow.Selection.TextRange2.TrimText().Length > 0)
                 {
-                    return this.GetRibbonUi().HighlightTextFragmentsEnabled;
+                    return HighlightTextFragments.IsHighlightTextFragmentsEnabled;
                 }
                 else
                 {
