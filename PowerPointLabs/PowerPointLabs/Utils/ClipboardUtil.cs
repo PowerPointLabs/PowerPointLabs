@@ -51,19 +51,41 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static void RestoreClipboardAfterAction(System.Action action, PowerPointPresentation pres)
         {
-            // Save clipboard onto a temp slide
-            PowerPointSlide tempClipboardSlide = pres.AddSlide();
-            ShapeRange tempClipboardShapes = PasteShapesFromClipboard(tempClipboardSlide);
-
-            action();
-
-            // Revert clipboard. Note that clipboard cannot be reverted if last copied item was a placeholder (for now)
-            if (tempClipboardShapes != null)
+            if (!IsClipboardEmpty())
             {
-                tempClipboardShapes.Copy();
+                // Save clipboard onto a temp slide
+                PowerPointSlide tempClipboardSlide = pres.AddSlide();
+                ShapeRange tempClipboardShapes = PasteShapesFromClipboard(tempClipboardSlide);
+                action();
+
+                try
+                {
+                    // Revert clipboard. Note that clipboard cannot be reverted if last copied item was a placeholder (for now)
+                    if (tempClipboardShapes != null && tempClipboardShapes.Count >= 1)
+                    {
+                        tempClipboardShapes.Copy();
+                        tempClipboardShapes.Delete();
+                            //System.Runtime.InteropServices.Marshal.ReleaseComObject(tempClipboardShapes);
+                    }
+                }
+                catch (COMException e)
+                {
+                    // May be thrown when trying to copy if previous clipboard item was not a shape (eg. a slide, certain web pictures)
+                    Logger.LogException(e, "RestoreClipboardAfterAction");
+                }
+                finally
+                {
+                    tempClipboardSlide.Delete();
+                }
             }
-            tempClipboardSlide.Delete();
+            else
+            {
+                // Clipboard is empty, we can just run the action function
+                action();
+            }
+            
         }
+           
 
         #endregion
     }
