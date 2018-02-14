@@ -26,7 +26,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             if (Sync(formatShape, newShape))
             {
-                Logger.Log(newShape.Type + " unable to sync Font Format");
+                Logger.Log(newShape.Type + " unable to sync PictureEffect Format");
             }
         }
 
