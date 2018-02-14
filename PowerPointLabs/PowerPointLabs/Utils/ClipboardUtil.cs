@@ -65,7 +65,6 @@ namespace PowerPointLabs.Utils
                     {
                         tempClipboardShapes.Copy();
                         tempClipboardShapes.Delete();
-                            //System.Runtime.InteropServices.Marshal.ReleaseComObject(tempClipboardShapes);
                     }
                 }
                 catch (COMException e)
