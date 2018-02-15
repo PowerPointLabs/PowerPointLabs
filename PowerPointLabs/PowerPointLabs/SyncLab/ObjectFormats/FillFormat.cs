@@ -43,6 +43,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             try
             {
+                // force msoFillMixed to msoFillSolid
+                // freshly created textboxes have the msoFillMixed type for unknown reasons
+                // otherwise, msoFillMixed only appears when multiple shapes are selected
+                // manual conversion is needed as msoFillMixed textboxes risk system forced conversions to msoFillSolid
+                // system forced conversions will set fill color to black
+                if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillMixed)
+                {
+                    int oldColor = formatShape.Fill.ForeColor.RGB;
+                    float oldTransparency = formatShape.Fill.Transparency;
+                    formatShape.Fill.Solid();
+                    formatShape.Fill.ForeColor.RGB = oldColor;
+                    formatShape.Fill.Transparency = oldTransparency;
+                }
+                
                 if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillPatterned)
                 {
                     newShape.Fill.Patterned(formatShape.Fill.Pattern);
