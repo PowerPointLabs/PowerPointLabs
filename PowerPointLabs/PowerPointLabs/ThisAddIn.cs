@@ -1324,8 +1324,8 @@ namespace PowerPointLabs
 
                     _copiedShapes.Sort((x, y) => (x.Id - y.Id));
                 }
-
                 Ribbon.RefreshRibbonControl("PasteToFillSlideButton");
+                Ribbon.RefreshRibbonControl("PasteToFitSlideButton");
                 Ribbon.RefreshRibbonControl("PasteAtOriginalPositionButton");
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
                 Ribbon.RefreshRibbonControl("PasteIntoGroupButton");

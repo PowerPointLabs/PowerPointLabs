@@ -307,6 +307,11 @@
     <Compile Include="ActionFramework\Help\Help\HelpSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\NarrationsLab\NarrationsLabSettings\NarrationsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\FormattingGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\MoreLabsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
@@ -621,6 +626,7 @@
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
@@ -1967,6 +1973,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PasteLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
