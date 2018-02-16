@@ -27,6 +27,11 @@ namespace Test.UnitTest.SyncLab
             PpOperations.SelectSlide(slideNumber);
             return PpOperations.SelectShapes(shapeNames);
         }
+        
+        protected PowerPoint.Shapes GetShapesObject(int slideNumber)
+        {
+            return PpOperations.SelectSlide(slideNumber).Shapes;
+        }
 
         protected void CompareSlides(int actualShapesSlideNo, int expectedShapesSlideNo)
         {
