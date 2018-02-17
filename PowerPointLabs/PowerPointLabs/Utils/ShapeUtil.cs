@@ -353,7 +353,7 @@ namespace PowerPointLabs.Utils
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 correctedShape = ownerSlide.CopyShapeToSlide(shape);
-            }, pres);
+            }, pres, ownerSlide);
             
             if (correctedShape != null)
             {

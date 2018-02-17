@@ -88,7 +88,7 @@ namespace PowerPointLabs.ShortcutsLab
                     pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
                 }
                 pic.Select();
-            }, pres);
+            }, pres, slide);
         }
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
