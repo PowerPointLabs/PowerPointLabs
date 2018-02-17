@@ -70,34 +70,8 @@ namespace PowerPointLabs.Utils
 
                 action();
 
-                try
-                {
-                    // Revert clipboard. Note that clipboard cannot be reverted if last copied item was a placeholder (for now)
-                    if (tempPastedSlide != null)
-                    {
-                        tempPastedSlide.Copy();
-                        tempPastedSlide.Delete();
-                    }
-                    else if (tempClipboardShapes != null && tempClipboardShapes.Count >= 1)
-                    {
-                        tempClipboardShapes.Copy();
-                        tempClipboardShapes.Delete();
-                    } 
-                    else if (tempClipboardShape != null) 
-                    {
-                        tempClipboardShape.Copy();
-                        tempClipboardShape.Delete();
-                    }
-                }
-                catch (COMException e)
-                {
-                    // May be thrown when trying to copy if previous clipboard item was not a shape (eg. a slide, certain web pictures)
-                    Logger.LogException(e, "RestoreClipboardAfterAction");
-                }
-                finally
-                {
-                    tempClipboardSlide.Delete();
-                }
+                RestoreClipboard(tempClipboardShape, tempClipboardShapes, tempPastedSlide);
+                tempClipboardSlide.Delete();
             }
             else
             {
@@ -105,8 +79,41 @@ namespace PowerPointLabs.Utils
                 action();
             }
         }
-
         #endregion
+
+        /// <summary>
+        /// Tries to restore clipboard with provided SlideRange first, then ShapeRange then finally Shape. 
+        /// Note that clipboard cannot be restored if last copied item was a placeholder (for now)
+        /// </summary>
+        /// <returns>True if successfully restored</returns>
+        private static bool RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
+        {
+            try
+            {
+                if (slides != null)
+                {
+                    slides.Copy();
+                    slides.Delete();
+                }
+                else if (shapes != null && shapes.Count >= 1)
+                {
+                    shapes.Copy();
+                    shapes.Delete();
+                }
+                else if (shape != null)
+                {
+                    shape.Copy();
+                    shape.Delete();
+                }
+                return true;
+            }
+            catch (COMException e) 
+            {
+                // May be thrown when trying to copy
+                Logger.LogException(e, "RestoreClipboard");
+                return false;
+            }
+        }
 
         private static ShapeRange PasteWithCorrectSlideCheck(PowerPointSlide slide, bool isPasteSpecial = false, PpPasteDataType pasteType = PpPasteDataType.ppPasteDefault)
         {
@@ -189,7 +196,7 @@ namespace PowerPointLabs.Utils
 
         /// <summary>
         /// Pastes clipboard content into new temp slide using the DocumentWindow's View.Paste()
-        /// Though this paste will work for most clipboard objects (even web pictures), it will change the undo history
+        /// Though this paste will work for most clipboard objects (even web pictures), it will change the undo history.
         /// </summary>
         private static Shape TryPastingOntoView(PowerPointPresentation pres, PowerPointSlide tempSlide, PowerPointSlide origSlide)
         {
