@@ -64,7 +64,7 @@ namespace PowerPointLabs.Utils
 
                 if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
                 {
-                    Logger.Log("RestoreClipboardAfterAction: Trying to paste onto view normally.", ActionFramework.Common.Logger.LogType.Info);
+                    Logger.Log("RestoreClipboardAfterAction: Trying to paste onto current view of the document window.", ActionFramework.Common.Logger.LogType.Info);
                     tempClipboardShape = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
                 }
 
@@ -86,7 +86,7 @@ namespace PowerPointLabs.Utils
         /// Note that clipboard cannot be restored if last copied item was a placeholder (for now)
         /// </summary>
         /// <returns>True if successfully restored</returns>
-        private static bool RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
+        private static void RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
         {
             try
             {
@@ -105,13 +105,11 @@ namespace PowerPointLabs.Utils
                     shape.Copy();
                     shape.Delete();
                 }
-                return true;
             }
             catch (COMException e) 
             {
                 // May be thrown when trying to copy
                 Logger.LogException(e, "RestoreClipboard");
-                return false;
             }
         }
 
@@ -159,7 +157,7 @@ namespace PowerPointLabs.Utils
             catch (COMException e)
             {
                 // May be thrown if clipboard is not a slide
-                Logger.LogException(e, "RestoreClipboardAfterAction: pasting as slide");
+                Logger.LogException(e, "TryPastingAsSlide");
                 return null;
             }
         }
@@ -174,7 +172,7 @@ namespace PowerPointLabs.Utils
             catch (COMException e)
             {
                 // May be thrown if clipboard is not text
-                Logger.LogException(e, "RestoreClipboardAfterAction: pasting as text");
+                Logger.LogException(e, "TryPastingAsText");
                 return null;
             }
         }
@@ -204,10 +202,10 @@ namespace PowerPointLabs.Utils
             {
                 // Utilises deprecated Globals class as ClipboardUtil does not utilise ActionFramework
                 DocumentWindow workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
-                // Note: This will change the undo history
                 pres.GotoSlide(tempSlide.Index);
                 int origShapesCount = tempSlide.Shapes.Count;
 
+                // Note: This will change the undo history
                 workingWindow.View.Paste();
                 pres.GotoSlide(origSlide.Index);
                 int finalShapesCount = tempSlide.Shapes.Count;
