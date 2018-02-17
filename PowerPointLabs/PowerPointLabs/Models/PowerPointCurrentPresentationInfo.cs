@@ -30,13 +30,10 @@ namespace PowerPointLabs.Models
             get
             {
                 Selection select = GetSelectionInActiveWindow();
-                if (select == null)
+                // Could be that there is no active window, we can try to activate one
+                if (select == null && ActivateWindow())
                 {
-                    // Could be that there is no active window, we can try to activate one
-                    if (ActivateWindow())
-                    {
-                        select = GetSelectionInActiveWindow();
-                    }
+                    select = GetSelectionInActiveWindow();
                 }
                 return select;
             }
