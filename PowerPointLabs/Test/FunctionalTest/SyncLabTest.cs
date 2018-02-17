@@ -89,14 +89,14 @@ namespace Test.FunctionalTest
             CopyStyle(syncLab, 1, 0);
             PpOperations.SelectShape(CenterTitle);
             CopyStyle(syncLab, 1, 0);
+            
+            PpOperations.SelectSlide(PicturePlaceHolderSlideNo);
+            PpOperations.SelectShape(Picture);
+            CopyStyle(syncLab, 1, 0);
         }
         
         private void TestCopyUnsupportedPlaceHolders(ISyncLabController syncLab)
         {
-            PpOperations.SelectSlide(PicturePlaceHolderSlideNo);
-            PpOperations.SelectShape(Picture);
-            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
             
             PpOperations.SelectSlide(ChartPlaceHolderSlideNo);
             PpOperations.SelectShape(Chart);

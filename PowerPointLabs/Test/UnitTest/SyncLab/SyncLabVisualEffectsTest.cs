@@ -12,9 +12,10 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabVisualEffectsTest : BaseSyncLabTest
     {
-        private const int OriginalShapesSlideNo = 4;
-        private const int ReplaceEffectSlideNo = 6;
-        private const int SetEffectSlideNo = 5;
+        private const int OriginalReplaceEffectSlideNo = 4;
+        private const int OriginalSetEffectSlideNo = 6;
+        private const int DesiredReplaceEffectSlideNo = 7;
+        private const int DesiredSetEffectSlideNo = 5;
         
         private const string SourceShape = "Picture 2";
         private const string SetArtisticEffect = "Picture 9";
@@ -29,24 +30,24 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestReplaceArtisticEffect()
         {
-            SyncArtisticEffect(ReplacedArtisticEffect, ReplaceEffectSlideNo);
+            SyncArtisticEffect(ReplacedArtisticEffect, OriginalReplaceEffectSlideNo, DesiredReplaceEffectSlideNo);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestSetArtisticEffect()
         {
-            SyncArtisticEffect(SetArtisticEffect, SetEffectSlideNo);
+            SyncArtisticEffect(SetArtisticEffect, OriginalSetEffectSlideNo, DesiredSetEffectSlideNo);
         }
 
-        private void SyncArtisticEffect(string shapeToPaste, int expectedSlideNo)
+        private void SyncArtisticEffect(string shapeToPaste, int sourceSlideNumber, int expectedSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, SourceShape);
+            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(sourceSlideNumber, SourceShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, shapeToPaste);
+            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(sourceSlideNumber, shapeToPaste);
             PictureEffectsFormat.SyncFormat(formatShape, newShape);
 
-            CompareSlides(OriginalShapesSlideNo, expectedSlideNo);
+            CompareSlides(sourceSlideNumber, expectedSlideNo);
         }
 
     }
