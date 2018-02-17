@@ -17,6 +17,8 @@ namespace PowerPointLabs.CaptionsLab
     internal static class NotesToCaptions
     {
 #pragma warning disable 0618
+        public static bool IsRemoveCaptionsEnabled { get; set; } = true;
+        
         public static void EmbedCaptionsOnSelectedSlides()
         {
             if (PowerPointCurrentPresentationInfo.SelectedSlides == null ||

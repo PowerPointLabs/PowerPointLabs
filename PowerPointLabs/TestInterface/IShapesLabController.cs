@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace TestInterface
 {
@@ -10,5 +11,6 @@ namespace TestInterface
         void ImportLibrary(string pathToLibrary);
         void ImportShape(string pathToShape);
         List<ISlideData> FetchShapeGalleryPresentationData();
+        void ClickAddShapeButton();
     }
 }

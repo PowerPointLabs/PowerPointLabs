@@ -106,7 +106,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show("Please select at least 1 shape");
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
                 return null;
             }
             catch (Exception e)
@@ -116,7 +116,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                ErrorDialogBox.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorTitle, e.Message, e);
                 return null;
             }
         }

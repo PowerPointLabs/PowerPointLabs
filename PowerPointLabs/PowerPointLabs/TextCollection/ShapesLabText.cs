@@ -10,6 +10,9 @@
            "Use Shapes Lab to manage your custom shapes.\n\n" +
            "Click this button to open the Shapes Lab interface.";
 
+        public const string ErrorDialogTitle = "Unable to execute action";
+        public const string ErrorAddSelectionInvalid = "Please select one shape to add.";
+
         public const string ErrorFileNameInvalid = "Invalid shape name.";
         public const string ErrorNoShapeTextFirstLine = "No shapes saved yet.";
         public const string ErrorNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -37,7 +40,7 @@
         public const string ErrorImportAppendCategory = "Your computer does not support this feature.";
         public const string ErrorImportSingleCategory =
             "{0} contains multiple categories. Try \"Import Category\" instead.";
-        public const string SuccessImport = "Successfully imported";
+        public const string SuccessImport = "Successfully imported.";
 
         public const string ImportShapeFileDialogTitle = "Import Shapes";
         public const string ImportLibraryFileDialogTitle = "Import Library";
@@ -56,9 +59,12 @@
         public const string CategoryContextStripSetAsDefaultCategory = "Set as Default Category";
         public const string CategoryContextStripCategorySettings = "Shapes Lab Settings";
 
+        public const string ErrorSameShapeNameInDestination = "{0} exists in {1}. Please rename your shape before moving.";
         public const string ErrorShapeCorrupted = "Some shapes in the Shapes Lab were corrupted, but some of the them are recovered.";
 
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string ErrorFolderNonEmpty = "Please select an empty folder as default saving folder.";
+
+        public const string AddShapeToolTip = "Adds a shape to Shapes Lab.";
     }
 }

@@ -307,6 +307,11 @@
     <Compile Include="ActionFramework\Help\Help\HelpSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\NarrationsLab\NarrationsLabSettings\NarrationsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\FormattingGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\MoreLabsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
@@ -621,6 +626,7 @@
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
@@ -637,7 +643,7 @@
     <Compile Include="TextCollection\HighlightLabText.cs" />
     <Compile Include="TextCollection\ResizeLabText.cs" />
     <Compile Include="TextCollection\HelpText.cs" />
-    <Compile Include="TextCollection\ShortcutsLab.cs" />
+    <Compile Include="TextCollection\ShortcutsLabText.cs" />
     <Compile Include="TextCollection\TimerLabText.cs" />
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
@@ -1968,6 +1974,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PasteLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

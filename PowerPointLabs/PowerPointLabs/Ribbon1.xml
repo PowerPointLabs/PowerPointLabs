@@ -315,6 +315,12 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <menuSeparator id="builtinCropSeparator"
+                           title="Builtin Crop Features"/>
+            <splitButton idMso="PictureCropTools"/>
+            <splitButton idMso="PictureCropToolsMenu"/>
+            <menuSeparator id="NewCropSeparator"
+                           title="New Crop Features"/>
             <button id="CropToShapeButton"
                     tag="CropToShape"
                     getLabel="GetLabel"
@@ -368,6 +374,13 @@
                     onAction="OnAction"/>
             <button id="PasteToFillSlideButton"
                     tag="PasteToFillSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="PasteToFitSlideButton"
+                    tag="PasteToFitSlide"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"

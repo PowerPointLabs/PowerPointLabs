@@ -148,7 +148,7 @@ namespace PowerPointLabs.AudioMisc
             }
             else
             {
-                MessageBox.Show("Slide selection error");
+                MessageBox.Show(TextCollection.CommonText.ErrorSlideSelectionTitle);
             }
         }
     }

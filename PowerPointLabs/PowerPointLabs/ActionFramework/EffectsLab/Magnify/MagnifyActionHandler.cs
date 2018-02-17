@@ -31,14 +31,14 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
             catch (Exception)
             {
-                MessageBox.Show("Please select an area to magnify.");
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorMagnifyAction);
 
                 return;
             }
 
             if (shapeRange.Count > 1 || shapeRange[1].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
             {
-                MessageBox.Show("Only one magnify area is allowed.");
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorMagnifyOnlyOneArea);
 
                 return;
             }

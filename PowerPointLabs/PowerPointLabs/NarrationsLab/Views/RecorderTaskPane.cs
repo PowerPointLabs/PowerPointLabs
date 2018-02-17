@@ -27,6 +27,7 @@ using PPExtraEventHelper;
 namespace PowerPointLabs.NarrationsLab.Views
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
+    // These task panes use User Control from Container 
     public partial class RecorderTaskPane : UserControl
     {
 #pragma warning disable 0618
@@ -862,7 +863,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Error", "Error during setup", e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, TextCollection.CommonText.ErrorDuringSetup, e);
                 throw;
             }
         }
@@ -1370,9 +1371,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
+                        if (!NotesToAudio.IsRemoveAudioEnabled)
                         {
-                            Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
+                            NotesToAudio.IsRemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }
@@ -1390,7 +1391,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             catch (Exception e)
             {
                 ErrorDialogBox.ShowDialog("Record cannot be saved\n",
-                                              "Error when saving the file", e);
+                                              "Error when saving the file.", e);
                 throw;
             }
             finally

@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.Models;
@@ -10,25 +8,20 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
-    [ExportActionRibbonId(PasteLabText.ReplaceWithClipboardTag)]
-    class ReplaceWithClipboardActionHandler : PasteLabActionHandler
+    [ExportActionRibbonId(PasteLabText.PasteToFitSlideTag)]
+    class PasteToFitSlideActionHandler : PasteLabActionHandler
     {
         protected override ShapeRange ExecutePasteAction(string ribbonId, PowerPointPresentation presentation, PowerPointSlide slide,
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
-            if (selectedShapes.Count <= 0)
-            {
-                MessageBox.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
-                return null;
-            }
-
             ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(slide);
             if (pastingShapes == null)
             {
-                return null;
+                return pastingShapes;
             }
 
-            return ReplaceWithClipboard.Execute(presentation, slide, selectedShapes, selectedChildShapes, pastingShapes);
+            PasteToFitSlide.Execute(slide, pastingShapes, presentation.SlideWidth, presentation.SlideHeight);
+            return null;
         }
     }
 }
