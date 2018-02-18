@@ -14,6 +14,9 @@
         public const string PaneTag = "ShapesLab";
         public const string TaskPanelTitle = "Shapes Lab";
 
+        public const string ErrorDialogTitle = "Unable to execute action";
+        public const string ErrorAddSelectionInvalid = "Please select one shape to add.";
+
         public const string ErrorFileNameInvalid = "Invalid shape name.";
         public const string ErrorNoShapeTextFirstLine = "No shapes saved yet.";
         public const string ErrorNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
@@ -65,5 +68,7 @@
 
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string ErrorFolderNonEmpty = "Please select an empty folder as default saving folder.";
+
+        public const string AddShapeToolTip = "Adds a shape to Shapes Lab.";
     }
 }

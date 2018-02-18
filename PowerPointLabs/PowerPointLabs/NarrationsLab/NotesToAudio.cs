@@ -22,6 +22,12 @@ namespace PowerPointLabs.NarrationsLab
     internal static class NotesToAudio
     {
 #pragma warning disable 0618
+
+        public const string SpeechShapePrefix = "PowerPointLabs Speech";
+        public const string SpeechShapePrefixOld = "AudioGen Speech";
+
+        public static bool IsRemoveAudioEnabled { get; set; } = true;
+
         private static string TempFolderName
         {
             get
@@ -30,9 +36,6 @@ namespace PowerPointLabs.NarrationsLab
                 return @"\PowerPointLabs Temp\" + tempName + @"\";
             }
         }
-
-        public const string SpeechShapePrefix = "PowerPointLabs Speech";
-        public const string SpeechShapePrefixOld = "AudioGen Speech";
 
         public static void PreviewAnimations()
         {

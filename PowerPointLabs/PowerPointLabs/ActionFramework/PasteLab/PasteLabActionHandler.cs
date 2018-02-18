@@ -105,7 +105,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         {
             return ribbonId.StartsWith("PasteAtCursorPosition") ||
                 ribbonId.StartsWith("PasteAtOriginalPosition") ||
-                ribbonId.StartsWith("PasteToFillSlide");
+                ribbonId.StartsWith("PasteToFillSlide") ||
+                ribbonId.StartsWith("PasteToFitSlide");
         }
     }
 }

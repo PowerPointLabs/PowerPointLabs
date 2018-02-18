@@ -107,7 +107,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignLefts, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -152,7 +153,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignRights, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -197,7 +199,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignTops, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -240,7 +243,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignBottoms, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -285,7 +289,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -328,7 +333,8 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
+                        break;
                     }
 
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
@@ -372,9 +378,10 @@ namespace PowerPointLabs.PositionsLab
                 case PositionsLabSettings.AlignReferenceObject.SelectedShape:
                     if (toAlign.Count < 2)
                     {
-                        throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
+                        toAlign.Align(MsoAlignCmd.msoAlignMiddles, MsoTriState.msoTrue);
+                        toAlign.Align(MsoAlignCmd.msoAlignCenters, MsoTriState.msoTrue);
+                        break;
                     }
-
                     selectedShapes = ConvertShapeRangeToPPShapeList(toAlign);
                     PPShape refShape = selectedShapes[0];
 
