@@ -1365,7 +1365,6 @@ namespace PowerPointLabs.PositionsLab
             try
             {
                 ShapeRange selectedShapes = selection.ShapeRange;
-
                 if (isPreview)
                 {
                     SaveSelectedShapePositions(selectedShapes, allShapePos);
