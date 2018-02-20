@@ -42,16 +42,17 @@ namespace PowerPointLabs.Utils
             if (!IsClipboardEmpty())
             {
                 // Save clipboard onto a temp slide
-                PowerPointSlide tempClipboardSlide = pres.AddSlide();
+                PowerPointSlide tempClipboardSlide = null;
                 ShapeRange tempClipboardShapes = null;
                 SlideRange tempPastedSlide = null;
                 Shape tempClipboardShape = null;
 
                 Logger.Log("RestoreClipboardAfterAction: Trying to paste as slide.", ActionFramework.Common.Logger.LogType.Info);
-                tempPastedSlide = TryPastingAsSlide(pres);
+                tempPastedSlide = TryPastingAsSlide(pres, origSlide);
 
                 if (tempPastedSlide == null)
                 {
+                    tempClipboardSlide = pres.AddSlide();
                     Logger.Log("RestoreClipboardAfterAction: Trying to paste as text.", ActionFramework.Common.Logger.LogType.Info);
                     tempClipboardShapes = TryPastingAsText(tempClipboardSlide);
                 }
@@ -71,7 +72,10 @@ namespace PowerPointLabs.Utils
                 action();
 
                 RestoreClipboard(tempClipboardShape, tempClipboardShapes, tempPastedSlide);
-                tempClipboardSlide.Delete();
+                if (tempClipboardSlide != null)
+                {
+                    tempClipboardSlide.Delete();
+                }
             }
             else
             {
@@ -146,12 +150,14 @@ namespace PowerPointLabs.Utils
             return pastedShapes;
         }
 
-        private static SlideRange TryPastingAsSlide(PowerPointPresentation pres)
+        private static SlideRange TryPastingAsSlide(PowerPointPresentation pres, PowerPointSlide origSlide)
         {
             try
             {
                 // try pasting as slide
                 SlideRange slides = pres.PasteSlide();
+                // Ensure that the view is at the original slide
+                pres.GotoSlide(origSlide.Index);
                 return (slides.Count >= 1) ? slides : null;
             }
             catch (COMException e)
