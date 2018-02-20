@@ -634,6 +634,7 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="SaveLab\SaveLabConfigSaveFile.cs" />
+    <Compile Include="SaveLab\SaveLabMain.cs" />
     <Compile Include="SaveLab\SaveLabSettings.cs" />
     <Compile Include="SaveLab\Views\SaveLabSettingsDialogBox.xaml.cs">
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
