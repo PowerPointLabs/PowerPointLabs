@@ -35,7 +35,7 @@ namespace PowerPointLabs.SyncLab
         {
             Path = System.IO.Path.GetTempPath();
             Name = SyncLabText.StorageFileName;
-            OpenInBackground();
+            Open(false, false, false, false);
             ClearShapes();
         }
 
@@ -118,7 +118,7 @@ namespace PowerPointLabs.SyncLab
         {
             Save();
             Close();
-            OpenInBackground();
+            Open(false, false, false, false);
         }
 
         public void ClearShapes()
