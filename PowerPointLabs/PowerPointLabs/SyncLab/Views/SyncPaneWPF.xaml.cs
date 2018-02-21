@@ -167,7 +167,7 @@ namespace PowerPointLabs.SyncLab.Views
         private ShapeRange GetSelectedShapesForFormatting()
         {
             Selection selection = this.GetCurrentSelection();
-            if ((selection == null || selection.Type != PpSelectionType.ppSelectionShapes &&
+            if ((selection == null) || (selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
             {
