@@ -29,13 +29,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                Selection select = GetSelectionInActiveWindow();
-                // Could be that there is no active window, we can try to activate one
-                if (select == null && ActivateWindow())
-                {
-                    select = GetSelectionInActiveWindow();
-                }
-                return select;
+                return GetSelectionInActiveWindow();
             }
         }
 
@@ -61,24 +55,6 @@ namespace PowerPointLabs.Models
                 }
 
                 return slides;
-            }
-        }
-
-        private static bool ActivateWindow() 
-        {
-            try 
-            {
-                Globals.ThisAddIn.Application.Activate();
-                if (Globals.ThisAddIn.Application.Active == Microsoft.Office.Core.MsoTriState.msoTrue && Globals.ThisAddIn.Application.Windows.Count >= 1)
-                {
-                    Globals.ThisAddIn.Application.Windows[1].Activate();
-                    return Globals.ThisAddIn.Application.Windows[1].Active == Microsoft.Office.Core.MsoTriState.msoTrue;
-                }
-                return false;
-            } 
-            catch (COMException) 
-            {
-                return false;
             }
         }
 

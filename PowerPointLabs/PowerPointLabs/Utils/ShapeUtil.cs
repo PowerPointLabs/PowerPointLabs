@@ -148,7 +148,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionShape(Selection selection)
         {
-            return selection.Type == PpSelectionType.ppSelectionShapes &&
+            return selection != null && selection.Type == PpSelectionType.ppSelectionShapes &&
                     selection.ShapeRange.Count >= 1;
         }
 

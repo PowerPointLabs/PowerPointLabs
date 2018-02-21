@@ -561,6 +561,10 @@ namespace PowerPointLabs
         {
             if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
             {
+                if (PowerPointCurrentPresentationInfo.CurrentSelection == null) 
+                {
+                    return;
+                }
                 if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
                     == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
