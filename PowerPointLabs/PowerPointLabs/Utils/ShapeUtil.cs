@@ -988,18 +988,18 @@ namespace PowerPointLabs.Utils
         /// Useful when shape has text with more than one color
         /// Getting color in that case without a workabout will return black
         /// Assumes that shape has a TextRange
-        /// 
-        /// Unsuccessful workabouts:
-        /// Taking a sub TextRange of the shape
-        /// Trimming text to the first character
         /// </summary>
         /// <param name="shape">RGB color, seems to be the color of the last character</param>
         /// <returns></returns>
         public static int GuessTextColor(Shape shape)
         {
-            Shape duplicate = shape.Duplicate()[1];
             // clear the text, to clear presence of more than 1 color
             // TextRange.Font.Color.RGB then returns the same color of as new text that is added to the shape
+            // 
+            // Unsuccessful workabouts:
+            // Taking a sub TextRange of the shape
+            // Trimming text to the first character
+            Shape duplicate = shape.Duplicate()[1];
             duplicate.TextFrame.TextRange.Text = "";
             int color = duplicate.TextFrame.TextRange.Font.Color.RGB;
             duplicate.Delete();
