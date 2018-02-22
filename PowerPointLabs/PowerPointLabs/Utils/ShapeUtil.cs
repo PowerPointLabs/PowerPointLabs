@@ -993,7 +993,7 @@ namespace PowerPointLabs.Utils
         /// Taking a sub TextRange of the shape
         /// Trimming text to the first character
         /// </summary>
-        /// <param name="shape">RGB color</param>
+        /// <param name="shape">RGB color, seems to be the color of the last character</param>
         /// <returns></returns>
         public static int GuessTextColor(Shape shape)
         {
