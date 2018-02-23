@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
@@ -16,15 +15,17 @@ namespace PowerPointLabs.HighlightLab
 #pragma warning disable 0618
         public enum HighlightTextSelection { kShapeSelected, kTextSelected, kNoneSelected };
         public static HighlightTextSelection userSelection = HighlightTextSelection.kNoneSelected;
+        public static bool IsHighlightTextFragmentsEnabled { get; set; } = true;
 
         public static void AddHighlightedTextFragments()
         {
             try
             {
-                var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide as PowerPointSlide;
 
                 PowerPoint.ShapeRange selectedShapes = null;
                 Office.TextRange2 selectedText = null;
+
 
                 //Get shapes to consider for animation
                 switch (userSelection)
@@ -49,7 +50,6 @@ namespace PowerPointLabs.HighlightLab
                 {
                     return;
                 }
-
                 List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
                 GroupShapesForAnimation(selectionToAnimate);
 

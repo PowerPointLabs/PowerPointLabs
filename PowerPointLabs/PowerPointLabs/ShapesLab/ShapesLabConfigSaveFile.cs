@@ -38,8 +38,8 @@ namespace PowerPointLabs.ShapesLab
             else
             {
                 // if it's in FT, use new temp shape root folder every time
-                var tmpPath = TempPath.GetTempTestFolder();
-                var hash = DateTime.Now.GetHashCode();
+                string tmpPath = TempPath.GetTempTestFolder();
+                int hash = DateTime.Now.GetHashCode();
                 ShapesLabSettings.SaveFolderPath = tmpPath + DefaultShapeMasterFolderName + hash;
                 DefaultCategory = DefaultShapeCategoryName + hash;
                 _configFilePath = tmpPath + "ShapeRootFolder" + hash;
@@ -51,7 +51,7 @@ namespace PowerPointLabs.ShapesLab
         ~ShapesLabConfigSaveFile()
         {
             // flush shape root folder & default category info to the file
-            using (var fileWriter = File.CreateText(_configFilePath))
+            using (StreamWriter fileWriter = File.CreateText(_configFilePath))
             {
                 fileWriter.WriteLine(ShapesLabSettings.SaveFolderPath);
                 fileWriter.WriteLine(DefaultCategory);
@@ -69,7 +69,7 @@ namespace PowerPointLabs.ShapesLab
             if (File.Exists(_configFilePath) &&
                 (new FileInfo(_configFilePath)).Length != 0)
             {
-                using (var reader = new StreamReader(_configFilePath))
+                using (StreamReader reader = new StreamReader(_configFilePath))
                 {
                     ShapesLabSettings.SaveFolderPath = reader.ReadLine();
                     

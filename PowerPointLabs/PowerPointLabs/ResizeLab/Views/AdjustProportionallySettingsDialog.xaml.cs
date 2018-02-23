@@ -44,7 +44,7 @@ namespace PowerPointLabs.ResizeLab.Views
         private void AddShapeRow(string label)
         {
             // Increase height of main grid
-            var oldHeight = MainGrid.RowDefinitions[ShapeGridColumnIndex].Height.Value;
+            double oldHeight = MainGrid.RowDefinitions[ShapeGridColumnIndex].Height.Value;
             MainGrid.RowDefinitions[ShapeGridColumnIndex].Height = new GridLength(oldHeight + RowHeight);
             Height += RowHeight;
 
@@ -66,7 +66,7 @@ namespace PowerPointLabs.ResizeLab.Views
             textBox.ToolTip = ResizeLabTooltip.AdjustProportionallySettingsTextBox;
 
             // Append the element
-            var rowIndex = ShapesGrid.RowDefinitions.Count - 1;
+            int rowIndex = ShapesGrid.RowDefinitions.Count - 1;
             ShapesGrid.Children.Add(labelTextBlock);
             ShapesGrid.Children.Add(textBox);
 
@@ -89,8 +89,8 @@ namespace PowerPointLabs.ResizeLab.Views
             List<float> proportionList = new List<float>();
             for (int i = 1; i < ShapesGrid.Children.Count; i += 2)
             {
-                var textBox = ShapesGrid.Children[i] as TextBox;
-                var proportion = ResizeLabUtil.ConvertToFloat(textBox.Text);
+                TextBox textBox = ShapesGrid.Children[i] as TextBox;
+                float? proportion = ResizeLabUtil.ConvertToFloat(textBox.Text);
 
                 if (ResizeLabUtil.IsValidFactor(proportion))
                 {
@@ -98,7 +98,7 @@ namespace PowerPointLabs.ResizeLab.Views
                 }
                 else
                 {
-                    MessageBox.Show("Please enter a value greater than 0 (Shape " + (i + 1)/2 + ")", "Error");
+                    MessageBox.Show(string.Format(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZeroWithShape, (i + 1)/2), TextCollection.CommonText.ErrorTitle);
                     return;
                 }
             }

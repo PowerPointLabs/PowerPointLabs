@@ -18,5 +18,6 @@
         public const string ErrorCopySelectionInvalid = "Please select one shape to copy.";
         public const string ErrorPasteSelectionInvalid = "Please select at least one item to apply this format to.";
         public const string ErrorShapeDeleted = "Error in loading shape formats. Removing invalid formats from the list.";
+        public const string ErrorSyncPaneNotOpened = "Error: SyncPane not opened.";
     }
 }

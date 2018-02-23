@@ -28,10 +28,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropToAspectRatioOnePicture()
         {
-            var actualShapes = GetShapes(SlideNumberOnePictureActual, selectOneShapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberOnePictureActual, selectOneShapeNames);
             actualShapes = CropToAspectRatio.Crop(actualShapes, 0.1f);
 
-            var expectedShapes = GetShapes(SlideNumberOnePictureExpected, selectOneShapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberOnePictureExpected, selectOneShapeNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -39,10 +39,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropToAspectRatioMultiplePictures()
         {
-            var actualShapes = GetShapes(SlideNumberMultiplePicturesActual, selectMultipleShapesNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberMultiplePicturesActual, selectMultipleShapesNames);
             actualShapes = CropToAspectRatio.Crop(actualShapes, 0.1f);
 
-            var expectedShapes = GetShapes(SlideNumberMultiplePicturesExpected, selectMultipleShapesNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberMultiplePicturesExpected, selectMultipleShapesNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 
@@ -50,10 +50,10 @@ namespace Test.UnitTest.CropLab
         [TestCategory("UT")]
         public void CropToAspectRatioRotatedPicture()
         {
-            var actualShapes = GetShapes(SlideNumberRotatedPictureActual, selectOneShapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange actualShapes = GetShapes(SlideNumberRotatedPictureActual, selectOneShapeNames);
             actualShapes = CropToAspectRatio.Crop(actualShapes, 0.1f);
 
-            var expectedShapes = GetShapes(SlideNumberRotatedPictureExpected, selectOneShapeNames);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange expectedShapes = GetShapes(SlideNumberRotatedPictureExpected, selectOneShapeNames);
             CheckShapes(expectedShapes, actualShapes);
         }
 

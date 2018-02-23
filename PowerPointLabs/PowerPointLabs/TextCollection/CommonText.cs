@@ -3,12 +3,16 @@
     public class CommonText
     {
         # region Common Error
+        public const string ErrorTitle = "Error";
+        public const string ErrorSlideSelectionTitle = "Slide selection error";
+        public const string ErrorDuringSetup = "Error During Setup.";
+
         public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
         public const string ErrorInvalidCharacter = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
-        public const string ErrorFileNameExist = "A file already exists with that name.";
+        public const string ErrorFileNameExist = "A file already exists with that name.";   
         # endregion
 
-        # region URLs
+        #region URLs
         public const string FeedbackUrl = "http://www.comp.nus.edu.sg/~pptlabs/contact.html";
         public const string HelpDocumentUrl = "http://www.comp.nus.edu.sg/~pptlabs/docs/";
         public const string PowerPointLabsWebsiteUrl = "http://PowerPointLabs.info";

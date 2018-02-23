@@ -22,10 +22,10 @@ namespace Test.Util
         {
             // MessageBox in pptlabs will block the whole thread,
             // so multi-thread is needed here.
-            var taskToVerify = new Task(() =>
+            Task taskToVerify = new Task(() =>
             {
                 // try to find messagebox window
-                var msgBoxHandle = IntPtr.Zero;
+                IntPtr msgBoxHandle = IntPtr.Zero;
                 while (msgBoxHandle == IntPtr.Zero && retryCount > 0)
                 {
                     msgBoxHandle = NativeUtil.FindWindow("#32770", title);
@@ -45,12 +45,12 @@ namespace Test.Util
                 }
 
                 // try to find text label in the message box
-                var dlgHandle = NativeUtil.GetDlgItem(msgBoxHandle, 0xFFFF);
+                IntPtr dlgHandle = NativeUtil.GetDlgItem(msgBoxHandle, 0xFFFF);
                 Assert.AreNotEqual(IntPtr.Zero, dlgHandle, "Failed to find label in the messagebox.");
 
                 const int nchars = 1024;
-                var actualContentBuilder = new StringBuilder(nchars);
-                var isGetTextSuccessful = NativeUtil.GetWindowText(dlgHandle, actualContentBuilder, nchars);
+                StringBuilder actualContentBuilder = new StringBuilder(nchars);
+                int isGetTextSuccessful = NativeUtil.GetWindowText(dlgHandle, actualContentBuilder, nchars);
 
                 // close the message box, otherwise it will block the test
                 CloseMessageBox(msgBoxHandle, buttonNameToClick);
@@ -95,7 +95,7 @@ namespace Test.Util
             {
                 // This may be flaky.. if there're more than one windows pop up at the same time..
                 // it will affect clicking the button
-                var btnHandle = NativeUtil.FindWindowEx(msgBoxHandle, IntPtr.Zero, "Button", buttonName);
+                IntPtr btnHandle = NativeUtil.FindWindowEx(msgBoxHandle, IntPtr.Zero, "Button", buttonName);
                 Assert.AreNotEqual(IntPtr.Zero, btnHandle, "Failed to find button in the messagebox.");
                 NativeUtil.SetForegroundWindow(msgBoxHandle);
                 NativeUtil.SendMessage(btnHandle, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);

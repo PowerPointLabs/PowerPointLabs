@@ -47,8 +47,8 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(AgendaExistsTitle, AgendaExistsContent,
                 PplFeatures.GenerateVisualAgenda, buttonNameToClick: "OK");
 
-            var actualSlides = PpOperations.FetchCurrentPresentationData();
-            var expectedSlides = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
+            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesVisualDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -59,8 +59,8 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(AgendaExistsTitle, AgendaExistsContent,
                 PplFeatures.GenerateBeamAgenda, buttonNameToClick: "OK");
 
-            var actualSlides = PpOperations.FetchCurrentPresentationData();
-            var expectedSlides = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
+            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesBeamDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -69,8 +69,8 @@ namespace Test.FunctionalTest
         {
             PplFeatures.GenerateTextAgenda();
 
-            var actualSlides = PpOperations.FetchCurrentPresentationData();
-            var expectedSlides = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
+            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -79,8 +79,8 @@ namespace Test.FunctionalTest
         {
             PplFeatures.RemoveAgenda();
 
-            var actualSlides = PpOperations.FetchCurrentPresentationData();
-            var expectedSlides = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
+            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesDefault.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -96,11 +96,11 @@ namespace Test.FunctionalTest
 
         public void EmptySectionUnsuccessful(bool isTestingSynchronize)
         {
-            var slide = PpOperations.SelectSlide(27);
+            Microsoft.Office.Interop.PowerPoint.Slide slide = PpOperations.SelectSlide(27);
             slide.Delete();
 
-            var title = "Unable to execute action";
-            var message = "Presentation contains empty section(s). Please fill them up or remove them.";
+            string title = "Unable to execute action";
+            string message = "Presentation contains empty section(s). Please fill them up or remove them.";
 
             if (isTestingSynchronize)
             {
@@ -123,8 +123,8 @@ namespace Test.FunctionalTest
             string longName = new string('x', 200);
             PpOperations.RenameSection(2, longName);
 
-            var title = "Unable to execute action";
-            var message = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
+            string title = "Unable to execute action";
+            string message = "One of the section names exceeds the maximum size allowed by Agenda Lab. Please rename the section accordingly.";
 
             if (isTestingSynchronize)
             {
@@ -147,8 +147,8 @@ namespace Test.FunctionalTest
             PpOperations.DeleteSection(3, false);
             PpOperations.DeleteSection(2, false);
 
-            var title = "Unable to execute action";
-            var message = "Please divide the slides into two or more sections.";
+            string title = "Unable to execute action";
+            string message = "Please divide the slides into two or more sections.";
 
             if (isTestingSynchronize)
             {
@@ -166,8 +166,8 @@ namespace Test.FunctionalTest
         {
             PpOperations.DeleteSection(1, false);
 
-            var title = "Unable to execute action";
-            var message = "Please group the slides into sections before generating agenda.";
+            string title = "Unable to execute action";
+            string message = "Please group the slides into sections before generating agenda.";
 
             if (isTestingSynchronize)
             {

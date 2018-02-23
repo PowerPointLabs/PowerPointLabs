@@ -39,7 +39,7 @@ namespace PowerPointLabs.CropLab
             if (!ShapeUtil.IsPicture(shape) || shape.Rotation != 0)
             {
                 GraphicsUtil.ExportShape(shape, ShapePicture);
-                var newShape = currentSlide.Shapes.AddPicture(ShapePicture,
+                Shape newShape = currentSlide.Shapes.AddPicture(ShapePicture,
                     Office.MsoTriState.msoFalse,
                     Office.MsoTriState.msoTrue,
                     shapeBounds.Left, shapeBounds.Top, shapeBounds.Width, shapeBounds.Height);

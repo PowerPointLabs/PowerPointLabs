@@ -11,8 +11,8 @@ namespace Test.UnitTest.Utils
         [TestCategory("UT")]
         public void TestTempTestFolderName()
         {
-            var tempFolder = TempPath.GetTempTestFolder();
-            var folderName = Path.GetFileName(Path.GetDirectoryName(tempFolder));
+            string tempFolder = TempPath.GetTempTestFolder();
+            string folderName = Path.GetFileName(Path.GetDirectoryName(tempFolder));
             Assert.AreEqual("PowerPointLabsTest", folderName);
         }
 
@@ -37,7 +37,7 @@ namespace Test.UnitTest.Utils
         [TestCategory("UT")]
         public void TestDeleteTempTestFolderWithReadOnlyFile()
         {
-            var readOnlyFile = Path.Combine(TempPath.GetTempTestFolder(), "ReadOnlyFile.txt");
+            string readOnlyFile = Path.Combine(TempPath.GetTempTestFolder(), "ReadOnlyFile.txt");
 
             TempPath.CreateTempTestFolder();
 
@@ -54,7 +54,7 @@ namespace Test.UnitTest.Utils
         [TestCategory("UT")]
         public void TestDeleteTempTestFolderWithNestedFolder()
         {
-            var subFolder = Path.Combine(TempPath.GetTempTestFolder(), "SubPowerPointLabsTest\\");
+            string subFolder = Path.Combine(TempPath.GetTempTestFolder(), "SubPowerPointLabsTest\\");
 
             TempPath.CreateTempTestFolder();
 

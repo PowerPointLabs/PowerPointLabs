@@ -106,14 +106,14 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
         [TestCategory("UT")]
         public void VerifyVariantsKeysCount()
         {
-            var allVariants =
+            IEnumerable<PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface.IStyleVariants> allVariants =
                 _variantsFactory.GetAllStyleVariants();
-            foreach (var styleVariants in allVariants)
+            foreach (PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface.IStyleVariants styleVariants in allVariants)
             {
                 foreach (IEnumerable<StyleVariant> styleVariant in styleVariants.GetVariantsForStyle().Values)
                 {
-                    var expectedKeyCount = styleVariant.First().GetVariants().Keys.Count;
-                    foreach (var variant in styleVariant)
+                    int expectedKeyCount = styleVariant.First().GetVariants().Keys.Count;
+                    foreach (StyleVariant variant in styleVariant)
                     {
                         Assert.AreEqual(expectedKeyCount, variant.GetVariants().Keys.Count,
                             "Keys Count should be same for a VariantWorker.");
@@ -124,21 +124,21 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
 
         private void VerifyVariants(string styleName)
         {
-            var variants =
+            Dictionary<string, List<StyleVariant>> variants =
                 _variantsFactory.GetVariants(styleName);
-            var option =
+            StyleOption option =
                 _optionsFactory.GetStylesPreviewOption(styleName);
 
-            var numberOfNoEffectVariant = 0;
-            foreach (var key in variants.Keys)
+            int numberOfNoEffectVariant = 0;
+            foreach (string key in variants.Keys)
             {
                 if (key == PictureSlidesLabText.VariantCategoryFontFamily)
                     continue;
 
-                var variant = variants[key];
+                List<StyleVariant> variant = variants[key];
                 Assert.AreEqual(8, variant.Count,
                     "Each variant/category/aspect/dimension should have 8 variations");
-                foreach (var styleVariants in variant)
+                foreach (StyleVariant styleVariants in variant)
                 {
                     if (styleVariants.IsNoEffect(option))
                     {
@@ -154,26 +154,26 @@ namespace Test.UnitTest.PictureSlidesLab.ModelFactory
 
         private void VerifyVariants2(string styleName)
         {
-            var variants =
+            Dictionary<string, List<StyleVariant>> variants =
                 _variantsFactory.GetVariants(styleName);
-            var options =
+            List<StyleOption> options =
                 _optionsFactory.GetStylesVariationOptions(styleName);
 
-            for (var i = 0; i < options.Count; i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 variants[variants.Keys.First()][i].Apply(options[i]);
             }
 
-            var numberOfNoEffectVariant = 0;
-            foreach (var key in variants.Keys)
+            int numberOfNoEffectVariant = 0;
+            foreach (string key in variants.Keys)
             {
                 if (key == PictureSlidesLabText.VariantCategoryFontFamily)
                     continue;
 
-                var variant = variants[key];
-                foreach (var styleVariants in variant)
+                List<StyleVariant> variant = variants[key];
+                foreach (StyleVariant styleVariants in variant)
                 {
-                    foreach (var option in options)
+                    foreach (StyleOption option in options)
                     {
                         if (styleVariants.IsNoEffect(option))
                         {

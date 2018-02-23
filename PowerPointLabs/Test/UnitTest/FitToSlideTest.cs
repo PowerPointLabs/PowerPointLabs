@@ -15,15 +15,15 @@ namespace Test.UnitTest
         [TestCategory("UT")]
         public void FitToWidth()
         {
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             PpOperations.SelectSlide(4);
-            var actualShape = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape("pic")[1];
             PowerPointLabs.FitToSlide.FitToWidth(actualShape, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(5);
-            var expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToWidth, actualShape);
         }
@@ -32,16 +32,16 @@ namespace Test.UnitTest
         [TestCategory("UT")]
         public void FitToHeight()
         {
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             PpOperations.SelectSlide(4);
-            var actualShape = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape("pic")[1];
 
             PowerPointLabs.FitToSlide.FitToHeight(actualShape, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(6);
-            var expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToHeight, actualShape);
         }
@@ -50,15 +50,15 @@ namespace Test.UnitTest
         [TestCategory("UT")]
         public void FitToWidthRotated()
         {
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             PpOperations.SelectSlide(8);
-            var actualShape = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape("pic")[1];
             PowerPointLabs.FitToSlide.FitToWidth(actualShape, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(9);
-            var expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape expectedResultForFitToWidth = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToWidth, actualShape);
         }
@@ -67,15 +67,15 @@ namespace Test.UnitTest
         [TestCategory("UT")]
         public void FitToHeightRotated()
         {
-            var slideWidth = Pres.PageSetup.SlideWidth;
-            var slideHeight = Pres.PageSetup.SlideHeight;
+            float slideWidth = Pres.PageSetup.SlideWidth;
+            float slideHeight = Pres.PageSetup.SlideHeight;
 
             PpOperations.SelectSlide(8);
-            var actualShape = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape("pic")[1];
             PowerPointLabs.FitToSlide.FitToHeight(actualShape, slideWidth, slideHeight);
 
             PpOperations.SelectSlide(10);
-            var expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape expectedResultForFitToHeight = PpOperations.SelectShape("pic")[1];
 
             SlideUtil.IsSameShape(expectedResultForFitToHeight, actualShape);
         }

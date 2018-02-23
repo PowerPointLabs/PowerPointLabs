@@ -24,6 +24,14 @@ namespace Test.FunctionalTest
         private const int ExpectedSyncGroupToShapeSlideNo = 37;
         private const int OriginalSyncShapeToGroupSlideNo = 38;
         private const int ExpectedSyncShapeToGroupSlideNo = 39;
+        
+        private const int HorizontalPlaceHolderSlideNo = 41;
+        private const int VerticalPlaceHolderSlideNo = 43;
+        private const int CenterPlaceHolderSlideNo = 42;
+        
+        private const int PicturePlaceHolderSlideNo = 46;
+        private const int ChartPlaceHolderSlideNo = 45;
+        private const int TablePlaceHolderSlideNo = 44;
 
         private const string Line = "Straight Connector 2";
         private const string RotatedArrow = "Right Arrow 5";
@@ -31,6 +39,16 @@ namespace Test.FunctionalTest
         private const string Oval = "Oval 4";
         private const string CopyFromShape = "CopyFrom";
         private const string UnrotatedRectangle = "Rectangle 3";
+        
+        private const string HorizontalTitle = "Title 1";
+        private const string HorizontalBody = "Content Placeholder 2";
+        private const string CenterTitle= "Title 1";
+        private const string Subtitle= "Subtitle 2";
+        private const string VerticalTitle = "Title 1";
+        private const string VerticalBody = "Content Placeholder 2";
+        private const string Table = "Content Placeholder 3";
+        private const string Chart = "Content Placeholder 5";
+        private const string Picture = "Content Placeholder 4";
 
         protected override string GetTestingSlideName()
         {
@@ -41,12 +59,56 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_SyncLabTest()
         {
-            var syncLab = PplFeatures.SyncLab;
+            ISyncLabController syncLab = PplFeatures.SyncLab;
             syncLab.OpenPane();
 
             TestSync(syncLab);
             TestErrorDialogs(syncLab);
+            TestCopySupportedPlaceHolders(syncLab);
+            TestCopyUnsupportedPlaceHolders(syncLab);
         }
+
+        private void TestCopySupportedPlaceHolders(ISyncLabController syncLab)
+        {
+            // Ensure that one style can be copied from placeholder objects.
+            // Testing copying of all valid placeholder styles is done in unit tests.
+            PpOperations.SelectSlide(HorizontalPlaceHolderSlideNo);
+            PpOperations.SelectShape(HorizontalBody);
+            CopyStyle(syncLab, 1, 0);
+            PpOperations.SelectShape(HorizontalTitle);
+            CopyStyle(syncLab, 1, 0);
+            
+            PpOperations.SelectSlide(VerticalPlaceHolderSlideNo);
+            PpOperations.SelectShape(VerticalBody);
+            CopyStyle(syncLab, 1, 0);
+            PpOperations.SelectShape(VerticalTitle);
+            CopyStyle(syncLab, 1, 0);
+            
+            PpOperations.SelectSlide(CenterPlaceHolderSlideNo);
+            PpOperations.SelectShape(Subtitle);
+            CopyStyle(syncLab, 1, 0);
+            PpOperations.SelectShape(CenterTitle);
+            CopyStyle(syncLab, 1, 0);
+        }
+        
+        private void TestCopyUnsupportedPlaceHolders(ISyncLabController syncLab)
+        {
+            PpOperations.SelectSlide(PicturePlaceHolderSlideNo);
+            PpOperations.SelectShape(Picture);
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
+                "Please select one shape to copy.", syncLab.Copy, "Ok");
+            
+            PpOperations.SelectSlide(ChartPlaceHolderSlideNo);
+            PpOperations.SelectShape(Chart);
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
+                "Please select one shape to copy.", syncLab.Copy, "Ok");
+            
+            PpOperations.SelectSlide(TablePlaceHolderSlideNo);
+            PpOperations.SelectShape(Table);
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
+                "Please select one shape to copy.", syncLab.Copy, "Ok");
+        }
+        
 
         private void TestErrorDialogs(ISyncLabController syncLab)
         {
@@ -99,10 +161,10 @@ namespace Test.FunctionalTest
 
         private void IsSame(int originalSlideNo, int expectedSlideNo, string shapeToCheck)
         {
-            var actualSlide = PpOperations.SelectSlide(originalSlideNo);
-            var actualShape = PpOperations.SelectShape(shapeToCheck)[1];
-            var expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
-            var expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(originalSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameShape(expectedShape, actualShape);
         }
