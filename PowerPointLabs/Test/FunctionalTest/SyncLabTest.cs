@@ -142,7 +142,7 @@ namespace Test.FunctionalTest
         private void TestSync(ISyncLabController syncLab)
         {
             Sync(syncLab, OriginalSyncGroupToShapeSlideNo, ExpectedSyncGroupToShapeSlideNo, CopyFromShape, RotatedArrow, 1, 0);
-            Sync(syncLab, OriginalSyncShapeToGroupSlideNo, ExpectedSyncShapeToGroupSlideNo, Line, Oval, 1, 4);
+            Sync(syncLab, OriginalSyncShapeToGroupSlideNo, ExpectedSyncShapeToGroupSlideNo, Line, Oval, 0, 4);
         }
 
         private void Sync(ISyncLabController syncLab, int originalSlide, int expectedSlide,
