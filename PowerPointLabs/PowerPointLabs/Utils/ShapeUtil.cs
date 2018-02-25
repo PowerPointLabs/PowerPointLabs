@@ -1074,7 +1074,7 @@ namespace PowerPointLabs.Utils
                 case PpPlaceholderType.ppPlaceholderVerticalBody:
                 case PpPlaceholderType.ppPlaceholderVerticalTitle:
                     // not safe to do shape.Duplicate(), the duplicated textbox has differences in configuration
-                    // width is one example. more investigation is required to find out the exact differnces
+                    // width is one example. more investigation is required to find out the exact differences
                     shapeTemplate = shapesSource.AddTextbox(
                         msoPlaceHolder.TextFrame.Orientation,
                         msoPlaceHolder.Left,
@@ -1092,7 +1092,7 @@ namespace PowerPointLabs.Utils
                 case PpPlaceholderType.ppPlaceholderPicture:
                 case PpPlaceholderType.ppPlaceholderBitmap:
                     // must use duplicate. there is no way to create a replacement picture
-                    // as the image's source is not obtainalbe through the Shape API
+                    // as the image's source is not obtainable through the Shape API
                     var tempShape = msoPlaceHolder.Duplicate()[1];
                     tempShape.Copy();
                     shapeTemplate = shapesSource.Paste()[1];
