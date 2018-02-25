@@ -62,6 +62,8 @@ namespace PowerPointLabs.Models
         {
             try
             {
+                // Makes PowerPoint visible for Microsoft PowerPoint 2000 and for later versions of PowerPoint
+                Globals.ThisAddIn.Application.Visible = Microsoft.Office.Core.MsoTriState.msoTrue;
                 return Globals.ThisAddIn.Application.ActiveWindow.Selection;
             }
             catch (COMException) 
