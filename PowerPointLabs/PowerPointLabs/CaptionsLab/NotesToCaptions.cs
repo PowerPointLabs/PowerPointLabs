@@ -182,7 +182,10 @@ namespace PowerPointLabs.CaptionsLab
 
         private static void ShowNotesPane()
         {
-            Globals.ThisAddIn.Application.CommandBars.ExecuteMso("ShowNotes");
+            if (!Globals.ThisAddIn.IsApplicationVersion2010())
+            {
+                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("ShowNotes");
+            }
         }
     }
 }
