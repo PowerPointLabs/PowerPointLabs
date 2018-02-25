@@ -212,6 +212,13 @@ namespace PowerPointLabs.SyncLab.Views
             }
 
             Shape shape = selection.ShapeRange[1];
+
+            if (shape.Type == MsoShapeType.msoSmartArt) 
+            {
+                MessageBox.Show(SyncLabText.ErrorSmartArtUnsupported, SyncLabText.ErrorDialogTitle);
+                return;
+            }
+            
             if (selection.HasChildShapeRange)
             {
                 if (selection.ChildShapeRange.Count != 1)
