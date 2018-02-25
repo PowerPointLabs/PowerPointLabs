@@ -1048,6 +1048,24 @@ namespace PowerPointLabs
 
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
+
+            // Refresh ribbon to grey out the menu / buttons if there are no windows open
+            Ribbon.RefreshRibbonControl("AnimationLabMenu");
+            Ribbon.RefreshRibbonControl("ZoomLabMenu");
+            Ribbon.RefreshRibbonControl("NarrationsLabMenu");
+            Ribbon.RefreshRibbonControl("CaptionsLabMenu");
+            Ribbon.RefreshRibbonControl("HighlightLabMenu");
+            Ribbon.RefreshRibbonControl("EffectsLabMenu");
+            Ribbon.RefreshRibbonControl("PositionsLabButton");
+            Ribbon.RefreshRibbonControl("ResizeLabButton");
+            Ribbon.RefreshRibbonControl("ColorsLabButton");
+            Ribbon.RefreshRibbonControl("SyncLabButton");
+            Ribbon.RefreshRibbonControl("ShapesLabButton");
+            Ribbon.RefreshRibbonControl("CropLabMenu");
+            Ribbon.RefreshRibbonControl("PasteLabMenu");
+            Ribbon.RefreshRibbonControl("TimerLabButton");
+            Ribbon.RefreshRibbonControl("AgendaLabMenu");
+            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
         }
 
         private void ShutDownImageSearchPane()

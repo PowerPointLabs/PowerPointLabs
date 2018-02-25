@@ -28,6 +28,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <button id="AnimateInSlideButton"
                     tag="AnimateInSlide"
@@ -55,6 +56,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <button id="DrillDownButton"
                     tag="DrillDown"
@@ -95,6 +97,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <button id="AddNarrationsButton"
                     tag="AddNarrations"
@@ -128,6 +131,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <button id="AddCaptionsButton"
                     tag="AddCaptions"
@@ -159,6 +163,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <button id="HighlightPointsButton"
                     tag="HighlightPoints"
@@ -200,6 +205,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
@@ -275,6 +281,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
           
@@ -283,6 +290,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -291,6 +299,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -299,6 +308,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -307,6 +317,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -314,6 +325,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <menuSeparator id="builtinCropSeparator"
                            title="Builtin Crop Features"/>
@@ -364,6 +376,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 size="large">
             <button id="PasteAtOriginalPositionButton"
                     tag="PasteAtOriginalPosition"
@@ -412,12 +425,14 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
           <menu id="AgendaLabMenu"
                 getLabel="GetLabel"
                 getSupertip="GetSupertip"
+				getEnabled="GetEnabled"
                 getImage="GetImage"
                 size="large">
             <button id="TextAgendaButton"
@@ -458,6 +473,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+				  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
