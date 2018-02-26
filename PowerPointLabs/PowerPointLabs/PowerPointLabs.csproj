@@ -629,6 +629,7 @@
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />
