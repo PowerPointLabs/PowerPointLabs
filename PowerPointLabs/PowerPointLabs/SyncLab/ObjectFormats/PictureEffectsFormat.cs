@@ -24,7 +24,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
         {
-            if (Sync(formatShape, newShape))
+            if (!Sync(formatShape, newShape))
             {
                 Logger.Log(newShape.Type + " unable to sync PictureEffect Format");
             }
