@@ -11,13 +11,6 @@ namespace PowerPointLabs.SaveLab
 {
     class SaveLabMain
     {
-
-        public class PresentationDocument
-        {
-            public int PresentationDocID { get; set; }
-            public string PresentationDocName { get; set; }
-            public byte[] PresentationDocContent { get; set; }
-        }
         /*
         public PresentationDocument FileToByteArray(string fileName)
         {
@@ -36,8 +29,43 @@ namespace PowerPointLabs.SaveLab
         }
         */
 
-        public static void SaveFile(SlideRange selectedSlides)
+        public static void SaveFile(Models.PowerPointPresentation currentPresentation, Selection currentSelection)
         {
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            //Presentation newPresentation = new Presentation();
+            Models.PowerPointPresentation newPresentation;
+            //System.Diagnostics.Debug.WriteLine(newPresentation.Presentation == null);
+            //newPresentation.AddSlide(PpSlideLayout.ppLayoutBlank, "TEMP_SLIDE");
+            //System.Diagnostics.Debug.WriteLine(newPresentation.Presentation == null);
+            //newPresentation.Presentation.Slides.Add(1, PpSlideLayout.ppLayoutBlank);
+
+            List<Models.PowerPointSlide> selectedSlides = currentPresentation.SelectedSlides;
+
+            saveFileDialog.InitialDirectory = SaveLabSettings.SaveFolderPath;
+            saveFileDialog.Filter = "PowerPoint Presentations|*.ppt";
+            saveFileDialog.Title = "Save Selected Slides";
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.OverwritePrompt = true;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName);
+                Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
+                Presentation tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                newPresentation = new Models.PowerPointPresentation(tempPresentation);
+                System.Diagnostics.Debug.WriteLine("No of slides selected: " + selectedSlides.Count);
+
+                foreach (Models.PowerPointSlide slide in selectedSlides)
+                {
+                    newPresentation.AddSlide(PpSlideLayout.ppLayoutMixed, slide.Name);
+                }
+                System.Diagnostics.Debug.WriteLine("No of slides saved: " + newPresentation.SlideCount);
+                //newPresentation.RemoveSlide("TEMP_SLIDE", true);
+                //System.Diagnostics.Debug.WriteLine("No of slides saved after removal: " + newPresentation.SlideCount);
+                newPresentation.Save();
+            }
+            /*
             FileStream fileStream;
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
@@ -69,9 +97,7 @@ namespace PowerPointLabs.SaveLab
                 newPresentation.SaveAs(saveFileDialog.FileName);
                 System.Diagnostics.Process.Start(saveFileDialog.FileName + ".pptx");
             }
-
+            */
         }
-
-        private 
     }
 }

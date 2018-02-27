@@ -13,14 +13,15 @@ namespace PowerPointLabs.ActionFramework.SaveLab
         protected override void ExecuteAction(string ribbonId)
         {
             // Save action here
-
+            
             // Get selection of the slides
             Selection currentSelection = this.GetCurrentSelection();
+            Models.PowerPointPresentation currentPresentation = this.GetCurrentPresentation();
              //check the type of selection and ensure that it is a slide and that the number of slides selected is >= 1
             if (currentSelection.Type == PpSelectionType.ppSelectionSlides && currentSelection.SlideRange.Count >= 1)
             {
                 // Perform the actual save action
-                SaveLabMain.SaveFile(currentSelection.SlideRange);
+                SaveLabMain.SaveFile(currentPresentation, currentSelection);
             }
             else
             {
