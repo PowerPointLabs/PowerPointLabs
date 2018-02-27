@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.ShapesLab
+namespace PowerPointLabs.ActionFramework.ShapesLab.ShapesLabMenu
 {
-    [ExportSupertipRibbonId(ShapesLabText.PaneTag)]
-    class ShapesLabSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId(ShapesLabText.RibbonMenuId)]
+    class ShapesLabMenuSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return ShapesLabText.ShapesLabButtonSupertip;
+            return ShapesLabText.RibbonMenuSupertip;
         }
     }
 }

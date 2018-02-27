@@ -320,6 +320,9 @@
     <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
