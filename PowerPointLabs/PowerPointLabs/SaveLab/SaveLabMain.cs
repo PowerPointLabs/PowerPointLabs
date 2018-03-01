@@ -21,7 +21,7 @@ namespace PowerPointLabs.SaveLab
 
             // Setting for Save File Dialog
             saveFileDialog.InitialDirectory = SaveLabSettings.SaveFolderPath;
-            saveFileDialog.Filter = "PowerPoint Presentations|*.ppt";
+            saveFileDialog.Filter = "PowerPoint Presentations|*.pptx";
             saveFileDialog.Title = "Save Selected Slides";
             saveFileDialog.RestoreDirectory = true;
             saveFileDialog.OverwritePrompt = true;
@@ -29,7 +29,8 @@ namespace PowerPointLabs.SaveLab
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // Copy the Current Presentation under a new name
-                currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsPresentation);
+                currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);
+                
                 // Re-open the save copy in the same directory in the background
                 Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
                 Presentation tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
