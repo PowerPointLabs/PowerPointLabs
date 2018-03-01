@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Windows.Forms;
+
+using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -23,6 +25,7 @@ namespace PowerPointLabs.ActionFramework.SaveLab
             else
             {
                 // If no slides return error message or do nothing
+                MessageBox.Show(SaveLabText.ErrorZeroSlidesSelected, CommonText.ErrorSlideSelectionTitle);
                 return;
             }
         }
