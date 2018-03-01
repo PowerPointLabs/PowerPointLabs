@@ -39,17 +39,6 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 // Therefore we must capture the selection first.
                 ShapeRange selectedShapes = selection.ShapeRange;
 
-                // Save clipboard onto a temp slide, because CorruptionCorrrection uses Copy-Paste
-                PowerPointSlide tempClipboardSlide = presentation.AddSlide(index: slide.Index);
-                ShapeRange tempClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(tempClipboardSlide);
-
-                // Nothing is pasted, stop now
-                if (tempClipboardShapes == null)
-                {
-                    tempClipboardSlide.Delete();
-                    return;
-                }
-
                 // Preserve selection by tagging them
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
@@ -85,10 +74,6 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 // Remove shape tags after they have been used
                 ShapeUtil.DeleteTagFromShapes(passedSelectedShapes, SelectOrderTagName);
                 ShapeUtil.DeleteTagFromShapes(passedSelectedChildShapes, SelectChildOrderTagName);
-
-                // Revert clipboard
-                tempClipboardShapes.Copy();
-                tempClipboardSlide.Delete();
             }
 
             ShapeRange result = ExecutePasteAction(ribbonId, presentation, slide, passedSelectedShapes, passedSelectedChildShapes);
