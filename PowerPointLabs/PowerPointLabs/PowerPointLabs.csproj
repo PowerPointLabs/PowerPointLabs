@@ -320,6 +320,9 @@
     <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
@@ -629,6 +632,7 @@
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />

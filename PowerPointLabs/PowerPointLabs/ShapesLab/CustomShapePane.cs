@@ -115,7 +115,7 @@ namespace PowerPointLabs.ShapesLab
 
                 // do this optimization only for office 2010 since painting speed on 2013 is
                 // really slow
-                if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
+                if (Globals.ThisAddIn.IsApplicationVersion2010())
                 {
                     createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
                 }
@@ -279,7 +279,7 @@ namespace PowerPointLabs.ShapesLab
             }
 
             // double buffer starts
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
                 GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
             }
@@ -294,7 +294,7 @@ namespace PowerPointLabs.ShapesLab
             myShapeFlowLayout.Focus();
 
             // double buffer ends
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
                 GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
             }
