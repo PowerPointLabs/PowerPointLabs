@@ -90,7 +90,7 @@ namespace PowerPointLabs.Utils
         /// Note that clipboard cannot be restored if last copied item was a placeholder (for now)
         /// </summary>
         /// <returns>True if successfully restored</returns>
-        private static void RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
+        public static void RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
         {
             try
             {
@@ -114,6 +114,88 @@ namespace PowerPointLabs.Utils
             {
                 // May be thrown when trying to copy
                 Logger.LogException(e, "RestoreClipboard");
+            }
+        }
+
+        public static SlideRange TryPastingAsSlide(PowerPointPresentation pres, PowerPointSlide origSlide)
+        {
+            try
+            {
+                // try pasting as slide
+                SlideRange slides = pres.PasteSlide();
+                // Ensure that the view is at the original slide
+                pres.GotoSlide(origSlide.Index);
+                return (slides.Count >= 1) ? slides : null;
+            }
+            catch (COMException e)
+            {
+                // May be thrown if clipboard is not a slide
+                Logger.LogException(e, "TryPastingAsSlide");
+                return null;
+            }
+        }
+
+        public static ShapeRange TryPastingAsText(PowerPointSlide slide)
+        {
+            try
+            {
+                // try pasting as text
+                return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPasteText);
+            }
+            catch (COMException e)
+            {
+                // May be thrown if clipboard is not text
+                Logger.LogException(e, "TryPastingAsText");
+                return null;
+            }
+        }
+
+        public static ShapeRange TryPastingAsShape(PowerPointSlide slide) 
+        {
+            try
+            {
+                // try pasting as shape
+                return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPasteShape);
+            }
+            catch (COMException e)
+            {
+                // May be thrown if clipboard is not a shape
+                Logger.LogException(e, "TryPastingAsShape");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Pastes clipboard content into new temp slide using the DocumentWindow's View.Paste()
+        /// Though this paste will work for most clipboard objects (even web pictures), it will change the undo history.
+        /// </summary>
+        public static Shape TryPastingOntoView(PowerPointPresentation pres, PowerPointSlide tempSlide, PowerPointSlide origSlide)
+        {
+            try
+            {
+                // Utilises deprecated Globals class as ClipboardUtil does not utilise ActionFramework
+                DocumentWindow workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
+                pres.GotoSlide(tempSlide.Index);
+                int origShapesCount = tempSlide.Shapes.Count;
+
+                // Note: This will change the undo history
+                workingWindow.View.Paste();
+                pres.GotoSlide(origSlide.Index);
+                int finalShapesCount = tempSlide.Shapes.Count;
+                if (finalShapesCount > origShapesCount) 
+                {
+                    return tempSlide.Shapes.Range()[finalShapesCount];
+                } 
+                else 
+                {
+                    return null;
+                }
+            }
+            catch (COMException e)
+            {
+                // May be thrown if cannot be pasted
+                Logger.LogException(e, "TryPastingOntoView");
+                return null;
             }
         }
 
@@ -148,88 +230,6 @@ namespace PowerPointLabs.Utils
             }
 
             return pastedShapes;
-        }
-
-        private static SlideRange TryPastingAsSlide(PowerPointPresentation pres, PowerPointSlide origSlide)
-        {
-            try
-            {
-                // try pasting as slide
-                SlideRange slides = pres.PasteSlide();
-                // Ensure that the view is at the original slide
-                pres.GotoSlide(origSlide.Index);
-                return (slides.Count >= 1) ? slides : null;
-            }
-            catch (COMException e)
-            {
-                // May be thrown if clipboard is not a slide
-                Logger.LogException(e, "TryPastingAsSlide");
-                return null;
-            }
-        }
-
-        private static ShapeRange TryPastingAsText(PowerPointSlide slide)
-        {
-            try
-            {
-                // try pasting as text
-                return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPasteText);
-            }
-            catch (COMException e)
-            {
-                // May be thrown if clipboard is not text
-                Logger.LogException(e, "TryPastingAsText");
-                return null;
-            }
-        }
-
-        private static ShapeRange TryPastingAsShape(PowerPointSlide slide) 
-        {
-            try
-            {
-                // try pasting as shape
-                return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPasteShape);
-            }
-            catch (COMException e)
-            {
-                // May be thrown if clipboard is not a shape
-                Logger.LogException(e, "TryPastingAsShape");
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Pastes clipboard content into new temp slide using the DocumentWindow's View.Paste()
-        /// Though this paste will work for most clipboard objects (even web pictures), it will change the undo history.
-        /// </summary>
-        private static Shape TryPastingOntoView(PowerPointPresentation pres, PowerPointSlide tempSlide, PowerPointSlide origSlide)
-        {
-            try
-            {
-                // Utilises deprecated Globals class as ClipboardUtil does not utilise ActionFramework
-                DocumentWindow workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
-                pres.GotoSlide(tempSlide.Index);
-                int origShapesCount = tempSlide.Shapes.Count;
-
-                // Note: This will change the undo history
-                workingWindow.View.Paste();
-                pres.GotoSlide(origSlide.Index);
-                int finalShapesCount = tempSlide.Shapes.Count;
-                if (finalShapesCount > origShapesCount) 
-                {
-                    return tempSlide.Shapes.Range()[finalShapesCount];
-                } 
-                else 
-                {
-                    return null;
-                }
-            }
-            catch (COMException e)
-            {
-                // May be thrown if cannot be pasted
-                Logger.LogException(e, "TryPastingOntoView");
-                return null;
-            }
         }
     }
 }

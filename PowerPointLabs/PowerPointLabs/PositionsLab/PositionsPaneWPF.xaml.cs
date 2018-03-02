@@ -1235,6 +1235,13 @@ namespace PowerPointLabs.PositionsLab
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
             Selection selection = this.GetCurrentSelection();
+            ShapeRange tempShapes = CutAndPasteShapeRange(selection.ShapeRange, this.GetCurrentSlide());
+            //System.Diagnostics.Debug.WriteLine("first selection: " + selection.ShapeRange[1].Id);
+            //System.Diagnostics.Debug.WriteLine("second selection: " + selection.ShapeRange[2].Id);
+            //System.Diagnostics.Debug.WriteLine("first temp: " + tempShapes[1].Id);
+            //System.Diagnostics.Debug.WriteLine("second temp: " + tempShapes[2].Id);
+            //System.Diagnostics.Debug.WriteLine(selection.ShapeRange[1].Equals(tempShapes[1]));
+            System.Diagnostics.Debug.WriteLine(tempShapes.Equals(selection.ShapeRange));
             if (!HandleInvalidSelection(isPreview, selection))
             {
                 // invalid selection!
@@ -1245,8 +1252,7 @@ namespace PowerPointLabs.PositionsLab
 
             try
             {
-                ShapeRange selectedShapes = selection.ShapeRange;
-
+                ShapeRange selectedShapes = tempShapes;
                 if (isPreview)
                 {
                     SaveSelectedShapePositions(selectedShapes, allShapePos);
@@ -1257,7 +1263,7 @@ namespace PowerPointLabs.PositionsLab
                     _previewCallBack = null;
                     this.StartNewUndoEntry();
                 }
-
+                //selectedShapes = CutAndPasteShapeRange(selectedShapes, this.GetCurrentSlide());
                 simulatedShapes = DuplicateShapes(selectedShapes);
                 List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                 float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
@@ -1286,6 +1292,49 @@ namespace PowerPointLabs.PositionsLab
                     GC.Collect();
                 }
             }
+        }
+
+        // Cuts and Paste ShapeRange while maintaining the contents of the Clipboard
+        public ShapeRange CutAndPasteShapeRange(ShapeRange shapeRange, Models.PowerPointSlide currentSlide)
+        {
+            // Save clipboard onto a temp slide
+            Models.PowerPointSlide tempClipboardSlide = null;
+            ShapeRange tempClipboardShapes = null;
+            SlideRange tempPastedSlide = null;
+            Shape tempClipboardShape = null;
+            Models.PowerPointPresentation currentPresentation = this.GetCurrentPresentation();
+
+            tempPastedSlide = ClipboardUtil.TryPastingAsSlide(currentPresentation, currentSlide);
+            if (tempPastedSlide == null)
+            {
+                tempClipboardSlide = currentPresentation.AddSlide();
+                tempClipboardShapes = ClipboardUtil.TryPastingAsText(tempClipboardSlide);
+            }
+
+            if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+            {
+                tempClipboardShapes = ClipboardUtil.TryPastingAsShape(tempClipboardSlide);
+            }
+
+            if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+            {
+                tempClipboardShape = ClipboardUtil.TryPastingOntoView(currentPresentation, tempClipboardSlide, currentSlide);
+            }
+
+            // Actual Cut/Paste operation
+            shapeRange.Cut();
+            ShapeRange result = ClipboardUtil.PasteShapesFromClipboard(currentSlide);
+
+            // Restore Clipboard
+            ClipboardUtil.RestoreClipboard(tempClipboardShape, tempClipboardShapes, tempPastedSlide);
+            if (tempClipboardSlide != null)
+            {
+                tempClipboardSlide.Delete();
+            }
+
+            // Select pasted ShapeRange and return them
+            result.Select();
+            return result;
         }
 
         public void ExecutePositionsAction(Action<List<PPShape>, bool> positionsAction, bool booleanVal, bool isPreview)
