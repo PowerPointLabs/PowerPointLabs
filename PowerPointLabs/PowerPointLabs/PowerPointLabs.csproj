@@ -1989,6 +1989,12 @@
   <ItemGroup>
     <None Include="Resources\PasteLab.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveLabActionButton.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

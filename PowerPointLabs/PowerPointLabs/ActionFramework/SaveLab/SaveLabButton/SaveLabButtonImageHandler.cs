@@ -12,7 +12,7 @@ namespace PowerPointLabs.ActionFramework.SaveLab
         protected override Bitmap GetImage(string ribbonId)
         {
             // Need a new image for SaveLab
-            return new Bitmap(Properties.Resources.CropLab);
+            return new Bitmap(Properties.Resources.SaveLabActionButton);
         }
     }
 }

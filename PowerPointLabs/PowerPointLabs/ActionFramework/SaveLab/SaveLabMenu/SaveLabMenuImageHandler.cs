@@ -11,8 +11,7 @@ namespace PowerPointLabs.ActionFramework.SaveLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            // Need a new icon for Save Lab
-            return new Bitmap(Properties.Resources.CropLab);
+            return new Bitmap(Properties.Resources.SaveLab);
         }
     }
 }
