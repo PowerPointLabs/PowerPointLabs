@@ -796,6 +796,8 @@ namespace PowerPointLabs
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
 
+            SaveLabSettings.InitialiseLocalStorage();
+
             // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
             // follows the defining order. I.e. the earlier you defined, the earlier it will be
             // executed.

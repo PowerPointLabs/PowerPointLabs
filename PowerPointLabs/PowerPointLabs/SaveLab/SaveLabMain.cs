@@ -23,7 +23,6 @@ namespace PowerPointLabs.SaveLab
             saveFileDialog.InitialDirectory = SaveLabSettings.SaveFolderPath;
             saveFileDialog.Filter = "PowerPoint Presentations|*.pptx";
             saveFileDialog.Title = "Save Selected Slides";
-            saveFileDialog.RestoreDirectory = true;
             saveFileDialog.OverwritePrompt = true;
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
