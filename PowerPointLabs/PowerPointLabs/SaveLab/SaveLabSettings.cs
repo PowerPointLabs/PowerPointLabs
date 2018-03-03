@@ -79,7 +79,6 @@ namespace PowerPointLabs.SaveLab
         {
             UpdateLocalStorage(pathName);
             UpdatePathString(pathName);
-            //SaveFolderPath = pathName;
         }
     }
 }
