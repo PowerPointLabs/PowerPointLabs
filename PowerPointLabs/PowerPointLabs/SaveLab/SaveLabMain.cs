@@ -29,33 +29,40 @@ namespace PowerPointLabs.SaveLab
             {
                 // Copy the Current Presentation under a new name
                 currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);
-                
-                // Re-open the save copy in the same directory in the background
-                Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
-                Presentation tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
-                newPresentation = new Models.PowerPointPresentation(tempPresentation);
 
-                // Check and remove un-selected slides using unique slide ID
-                bool removeSlide;
-                for (int i = newPresentation.SlideCount - 1; i >= 0; i--)
+                try
                 {
-                    removeSlide = true;
-                    foreach (Models.PowerPointSlide selectedSlide in selectedSlides)
+                    // Re-open the save copy in the same directory in the background
+                    Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
+                    Presentation tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                    newPresentation = new Models.PowerPointPresentation(tempPresentation);
+
+                    // Check and remove un-selected slides using unique slide ID
+                    bool removeSlide;
+                    for (int i = newPresentation.SlideCount - 1; i >= 0; i--)
                     {
-                        if (newPresentation.Slides[i].ID == selectedSlide.ID)
+                        removeSlide = true;
+                        foreach (Models.PowerPointSlide selectedSlide in selectedSlides)
                         {
-                            removeSlide = false;
-                            break;
+                            if (newPresentation.Slides[i].ID == selectedSlide.ID)
+                            {
+                                removeSlide = false;
+                                break;
+                            }
+                        }
+                        if (removeSlide)
+                        {
+                            newPresentation.RemoveSlide(i);
                         }
                     }
-                    if (removeSlide)
-                    {
-                        newPresentation.RemoveSlide(i);
-                    }
+                    // Save and then close the presentation
+                    newPresentation.Save();
+                    newPresentation.Close();
                 }
-                // Save and then close the presentation
-                newPresentation.Save();
-                newPresentation.Close();
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    // do nothing as file is successfully copied
+                }
             }
         }
     }
