@@ -9,7 +9,7 @@ namespace PowerPointLabs.SaveLab
     {
         public static string SaveFolderPath;
 
-        private const string DefaultSaveMasterFolderName = @"\PowerPointLabs Saved Presentation";
+        private const string DefaultSaveMasterFolderName = @"\PowerPoint Save Lab Local Storage";
         private static readonly string DefaultSaveMasterFolderPrefix = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
         private static string defaultSavePath = DefaultSaveMasterFolderPrefix + DefaultSaveMasterFolderName;
         private static string defaultSaveTextFile = Path.Combine(defaultSavePath, "SavePath.txt");
