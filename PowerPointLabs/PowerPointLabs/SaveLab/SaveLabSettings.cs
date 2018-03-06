@@ -14,6 +14,11 @@ namespace PowerPointLabs.SaveLab
         private static string defaultSavePath = DefaultSaveMasterFolderPrefix + DefaultSaveMasterFolderName;
         private static string defaultSaveTextFile = Path.Combine(defaultSavePath, "SavePath.txt");
 
+        public static string GetDefaultSavePath()
+        {
+            return defaultSavePath;
+        }
+
         public static void ShowSettingsDialog()
         {
             SaveLabSettingsDialogBox dialog = new SaveLabSettingsDialogBox(SaveFolderPath);

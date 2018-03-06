@@ -11,7 +11,9 @@ namespace PowerPointLabs.SaveLab
 {
     class SaveLabMain
     {
-        public static void SaveFile(Models.PowerPointPresentation currentPresentation)
+        private static string defaultTestSaveName = Path.Combine(SaveLabSettings.GetDefaultSavePath(), "SaveLab_Copy.pptx");
+
+        public static void SaveFile(Models.PowerPointPresentation currentPresentation, bool isTesting = false)
         {
             // Opens up a new Save File Dialog
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -27,14 +29,32 @@ namespace PowerPointLabs.SaveLab
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                // Copy the Current Presentation under a new name
-                currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);
+                // Check if functional test is switched on
+                if (isTesting)
+                {
+                    // Save for functional test
+                    currentPresentation.Presentation.SaveCopyAs(defaultTestSaveName, PpSaveAsFileType.ppSaveAsDefault);
+                }
+                else
+                {
+                    // Copy the Current Presentation under a new name
+                    currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);
+                }
 
                 try
                 {
                     // Re-open the save copy in the same directory in the background
                     Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
-                    Presentation tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                    Presentation tempPresentation;
+                    // Check if functional test is switched on
+                    if (isTesting)
+                    {
+                        tempPresentation = newPres.Open(defaultTestSaveName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                    }
+                    else
+                    {
+                        tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                    }
                     newPresentation = new Models.PowerPointPresentation(tempPresentation);
 
                     // Check and remove un-selected slides using unique slide ID

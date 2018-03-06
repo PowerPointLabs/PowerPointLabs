@@ -104,6 +104,7 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\SaveLabTest.cs" />
     <Compile Include="FunctionalTest\PasteLabTest.cs" />
     <Compile Include="FunctionalTest\SyncLabTest.cs" />
     <Compile Include="FunctionalTest\TimerLabTest.cs" />
