@@ -6,7 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Test.Util;
 
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using PowerPointPresentation = PowerPointLabs.Models.PowerPointPresentation;
+using Presentations = Microsoft.Office.Interop.PowerPoint.Presentations;
+using Presentation = Microsoft.Office.Interop.PowerPoint.Presentation;
 
 namespace Test.FunctionalTest
 {
@@ -26,8 +28,6 @@ namespace Test.FunctionalTest
         private const int OriginalAnimationSlideSlideNo = 7;
         private const int ExpectedAnimationSlideSlideNo = 4;
 
-        private const string SavedSlideName = "SaveLab\\SaveLab_Copy.pptx";
-
         protected override string GetTestingSlideName()
         {
             return "SaveLab\\SaveLab.pptx";
@@ -45,16 +45,27 @@ namespace Test.FunctionalTest
             }
 
             // Get the current presentation and Save presentation
-            PowerPointLabs.Models.PowerPointPresentation currentPresentation = (PowerPointLabs.Models.PowerPointPresentation) PowerPointLabs.Models.PowerPointPresentation.Application.ActivePresentation;
+            PowerPointPresentation currentPresentation = PowerPointPresentation.Current;
+            //PowerPointPresentation currentPresentation = (PowerPointPresentation) PowerPointPresentation.Application.ActivePresentation;
             PowerPointLabs.SaveLab.SaveLabMain.SaveFile(currentPresentation, true);
 
             // Wait for the presentation to be saved
+            ThreadUtil.WaitFor(1500);
 
             // Open up the saved copy in the background
+            Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
+            Presentation tempPres = newPres.Open(PowerPointLabs.SaveLab.SaveLabSettings.GetDefaultSavePresentationFileName(), Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+            PowerPointPresentation newPresentation = new PowerPointPresentation(tempPres);
 
             // Check each slide to ensure that it is the same
+            List<int> ExpectedSlideIndexArray = InitialiseExpectedSlideIndexArray();
+            for (int i = 0; i < NoOfTestSlides; i++)
+            {
+                AssertIsSame(currentPresentation, TestSlideIndexArray[i], newPresentation, ExpectedSlideIndexArray[i]);
+            }
 
             // Delete the copied presentation
+            System.IO.File.Delete(PowerPointLabs.SaveLab.SaveLabSettings.GetDefaultSavePresentationFileName()); 
         }
 
         private List<int> InitialiseTestSlideIndexArray()
@@ -68,12 +79,24 @@ namespace Test.FunctionalTest
             return indexArray;
         }
 
-        private void RightClick(Shape target)
+        private List<int> InitialiseExpectedSlideIndexArray()
         {
-            Point pt = new Point(
-                PpOperations.PointsToScreenPixelsX(target.Left + target.Width / 2),
-                PpOperations.PointsToScreenPixelsY(target.Top + target.Height / 2));
-            MouseUtil.SendMouseRightClick(pt.X, pt.Y);
+            List<int> indexArray = new List<int>();
+            indexArray.Add(ExpectedTextboxSlideSlideNo);
+            indexArray.Add(ExpectedShapesSlideSlideNo);
+            indexArray.Add(ExpectedPicturesSlideSlideNo);
+            indexArray.Add(ExpectedAnimationSlideSlideNo);
+
+            return indexArray;
+        }
+
+        private void AssertIsSame(PowerPointPresentation originalPresentation, int originalSlideNo, PowerPointPresentation expectedPresentation, int expectedSlideNo)
+        {
+            Microsoft.Office.Interop.PowerPoint.Slide originalSlide = (Microsoft.Office.Interop.PowerPoint.Slide) originalPresentation.Slides[originalSlideNo - 1];
+            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = (Microsoft.Office.Interop.PowerPoint.Slide) expectedPresentation.Slides[expectedSlideNo - 1];
+
+            SlideUtil.IsSameLooking(expectedSlide, originalSlide);
+            SlideUtil.IsSameAnimations(expectedSlide, originalSlide);
         }
     }
 }

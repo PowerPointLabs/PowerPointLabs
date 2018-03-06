@@ -11,8 +11,6 @@ namespace PowerPointLabs.SaveLab
 {
     class SaveLabMain
     {
-        private static string defaultTestSaveName = Path.Combine(SaveLabSettings.GetDefaultSavePath(), "SaveLab_Copy.pptx");
-
         public static void SaveFile(Models.PowerPointPresentation currentPresentation, bool isTesting = false)
         {
             // Opens up a new Save File Dialog
@@ -33,7 +31,7 @@ namespace PowerPointLabs.SaveLab
                 if (isTesting)
                 {
                     // Save for functional test
-                    currentPresentation.Presentation.SaveCopyAs(defaultTestSaveName, PpSaveAsFileType.ppSaveAsDefault);
+                    currentPresentation.Presentation.SaveCopyAs(SaveLabSettings.GetDefaultSavePresentationFileName(), PpSaveAsFileType.ppSaveAsDefault);
                 }
                 else
                 {
@@ -49,7 +47,7 @@ namespace PowerPointLabs.SaveLab
                     // Check if functional test is switched on
                     if (isTesting)
                     {
-                        tempPresentation = newPres.Open(defaultTestSaveName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                        tempPresentation = newPres.Open(SaveLabSettings.GetDefaultSavePresentationFileName(), Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
                     }
                     else
                     {
