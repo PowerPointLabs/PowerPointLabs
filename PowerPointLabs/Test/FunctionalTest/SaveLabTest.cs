@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Test.Util;
@@ -37,16 +38,23 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_SaveLabTest()
         {
+
             // Select slides in the original test pptx using the slide index
             List<int> TestSlideIndexArray = InitialiseTestSlideIndexArray();
             for (int i = 0; i < NoOfTestSlides; i++)
             {
                 PpOperations.SelectSlide(TestSlideIndexArray[i]);
+                System.Diagnostics.Debug.WriteLine(PpOperations.GetCurrentSelection().SlideRange.Count);
             }
-
+            
             // Get the current presentation and Save presentation
-            PowerPointPresentation currentPresentation = PowerPointPresentation.Current;
-            //PowerPointPresentation currentPresentation = (PowerPointPresentation) PowerPointPresentation.Application.ActivePresentation;
+            PowerPointPresentation currentPresentation = new PowerPointPresentation();
+            currentPresentation.Presentation = PpOperations.GetCurrentSelection().Application.ActivePresentation;
+            //PowerPointPresentation currentPresentation = (PowerPointPresentation) PowerPointPresentation.Application.ActiveWindow.Presentation;
+            //System.Diagnostics.Debug.WriteLine();
+            //Presentation currPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations[1];
+            //PowerPointPresentation currentPresentation = PowerPointLabs.ActionFramework.Common.Extension.FunctionalTestExtensions.GetCurrentPresentation();
+            System.Diagnostics.Debug.WriteLine(currentPresentation.SelectedSlides.Count);
             PowerPointLabs.SaveLab.SaveLabMain.SaveFile(currentPresentation, true);
 
             // Wait for the presentation to be saved
@@ -65,7 +73,8 @@ namespace Test.FunctionalTest
             }
 
             // Delete the copied presentation
-            System.IO.File.Delete(PowerPointLabs.SaveLab.SaveLabSettings.GetDefaultSavePresentationFileName()); 
+            System.IO.File.Delete(PowerPointLabs.SaveLab.SaveLabSettings.GetDefaultSavePresentationFileName());
+            
         }
 
         private List<int> InitialiseTestSlideIndexArray()
