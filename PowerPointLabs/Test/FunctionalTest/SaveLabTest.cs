@@ -8,8 +8,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util;
 
 using PowerPointPresentation = PowerPointLabs.Models.PowerPointPresentation;
-using Presentations = Microsoft.Office.Interop.PowerPoint.Presentations;
-using Presentation = Microsoft.Office.Interop.PowerPoint.Presentation;
 
 namespace Test.FunctionalTest
 {
