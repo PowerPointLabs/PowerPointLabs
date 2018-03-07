@@ -38,43 +38,30 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_SaveLabTest()
         {
-
-            // Select slides in the original test pptx using the slide index
-            List<int> TestSlideIndexArray = InitialiseTestSlideIndexArray();
-            for (int i = 0; i < NoOfTestSlides; i++)
-            {
-                PpOperations.SelectSlide(TestSlideIndexArray[i]);
-                System.Diagnostics.Debug.WriteLine(PpOperations.GetCurrentSelection().SlideRange.Count);
-            }
+            // Get the full path of the expected slides
+            string ExpectedSlidesFullName = System.IO.Path.Combine(PathUtil.GetDocTestPath(), "SaveLab\\SaveLab_Copy.pptx");
             
-            // Get the current presentation and Save presentation
-            PowerPointPresentation currentPresentation = new PowerPointPresentation();
-            currentPresentation.Presentation = PpOperations.GetCurrentSelection().Application.ActivePresentation;
-            //PowerPointPresentation currentPresentation = (PowerPointPresentation) PowerPointPresentation.Application.ActiveWindow.Presentation;
-            //System.Diagnostics.Debug.WriteLine();
-            //Presentation currPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations[1];
-            //PowerPointPresentation currentPresentation = PowerPointLabs.ActionFramework.Common.Extension.FunctionalTestExtensions.GetCurrentPresentation();
-            System.Diagnostics.Debug.WriteLine(currentPresentation.SelectedSlides.Count);
-            PowerPointLabs.SaveLab.SaveLabMain.SaveFile(currentPresentation, true);
-
-            // Wait for the presentation to be saved
-            ThreadUtil.WaitFor(1500);
-
-            // Open up the saved copy in the background
-            Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
-            Presentation tempPres = newPres.Open(PowerPointLabs.SaveLab.SaveLabSettings.GetDefaultSavePresentationFileName(), Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
-            PowerPointPresentation newPresentation = new PowerPointPresentation(tempPres);
-
-            // Check each slide to ensure that it is the same
-            List<int> ExpectedSlideIndexArray = InitialiseExpectedSlideIndexArray();
-            for (int i = 0; i < NoOfTestSlides; i++)
+            if (System.IO.File.Exists(ExpectedSlidesFullName))
             {
-                AssertIsSame(currentPresentation, TestSlideIndexArray[i], newPresentation, ExpectedSlideIndexArray[i]);
-            }
+                // Gather slide indexes for both original and expected slides
+                List<int> TestSlideIndexArray = InitialiseTestSlideIndexArray();
+                List<int> ExpectedSlideIndexArray = InitialiseExpectedSlideIndexArray();
 
-            // Delete the copied presentation
-            System.IO.File.Delete(PowerPointLabs.SaveLab.SaveLabSettings.GetDefaultSavePresentationFileName());
-            
+                // Open up the saved copy in the background
+                Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
+                Presentation tempPres = newPres.Open(ExpectedSlidesFullName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                PowerPointPresentation newPresentation = new PowerPointPresentation(tempPres);
+
+                // Check each slide to ensure that it is the same
+                for (int i = 0; i < NoOfTestSlides; i++)
+                {
+                    AssertIsSame(TestSlideIndexArray[i], ExpectedSlideIndexArray[i], newPresentation);
+                }
+
+                // Close the saved copy
+                newPresentation.Close();
+            }
+                
         }
 
         private List<int> InitialiseTestSlideIndexArray()
@@ -99,10 +86,10 @@ namespace Test.FunctionalTest
             return indexArray;
         }
 
-        private void AssertIsSame(PowerPointPresentation originalPresentation, int originalSlideNo, PowerPointPresentation expectedPresentation, int expectedSlideNo)
+        private void AssertIsSame(int originalSlideNo, int expectedSlideNo, PowerPointPresentation expectedPresentation)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide originalSlide = (Microsoft.Office.Interop.PowerPoint.Slide) originalPresentation.Slides[originalSlideNo - 1];
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = (Microsoft.Office.Interop.PowerPoint.Slide) expectedPresentation.Slides[expectedSlideNo - 1];
+            Microsoft.Office.Interop.PowerPoint.Slide originalSlide = PpOperations.SelectSlide(originalSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = (Microsoft.Office.Interop.PowerPoint.Slide) expectedPresentation.GetSlide(expectedSlideNo);
 
             SlideUtil.IsSameLooking(expectedSlide, originalSlide);
             SlideUtil.IsSameAnimations(expectedSlide, originalSlide);
