@@ -47,17 +47,18 @@ namespace Test.FunctionalTest
 
                 // Open up the saved copy in the background
                 Presentations newPres = new Microsoft.Office.Interop.PowerPoint.Application().Presentations;
-                Presentation tempPres = newPres.Open(ExpectedSlidesFullName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
+                Presentation tempPres = newPres.Open(ExpectedSlidesFullName, WithWindow: MsoTriState.msoFalse);
                 PowerPointPresentation newPresentation = new PowerPointPresentation(tempPres);
-
+                
                 // Check each slide to ensure that it is the same
                 for (int i = 0; i < NoOfTestSlides; i++)
                 {
-                    AssertIsSame(TestSlideIndexArray[i], ExpectedSlideIndexArray[i], newPresentation);
+                    AssertIsSame(TestSlideIndexArray[i], ExpectedSlideIndexArray[i], tempPres);
                 }
 
                 // Close the saved copy
                 newPresentation.Close();
+                
             }
                 
         }
@@ -84,10 +85,10 @@ namespace Test.FunctionalTest
             return indexArray;
         }
 
-        private void AssertIsSame(int originalSlideNo, int expectedSlideNo, PowerPointPresentation expectedPresentation)
+        private void AssertIsSame(int originalSlideNo, int expectedSlideNo, Presentation expectedPresentation)
         {
             Microsoft.Office.Interop.PowerPoint.Slide originalSlide = PpOperations.SelectSlide(originalSlideNo);
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = (Microsoft.Office.Interop.PowerPoint.Slide) expectedPresentation.GetSlide(expectedSlideNo);
+            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = expectedPresentation.Slides[expectedSlideNo];
 
             SlideUtil.IsSameLooking(expectedSlide, originalSlide);
             SlideUtil.IsSameAnimations(expectedSlide, originalSlide);
