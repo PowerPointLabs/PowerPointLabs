@@ -1038,9 +1038,6 @@ namespace PowerPointLabs.PositionsLab
         // align left and top
         public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int i = 0; i < 2; i++)
-            {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
                 {
@@ -1106,15 +1103,11 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
-            }
         }
 
         // Align right, bottom, vertical center, horizontal center
         public void ExecutePositionsAction(Action<ShapeRange, float> positionsAction, float dimension, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int i = 0; i < 2; i++)
-            {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
                 {
@@ -1173,15 +1166,11 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
-            }
         }
 
         // Align center
         public void ExecutePositionsAction(Action<ShapeRange, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int i = 0; i < 2; i++)
-            {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
                 {
@@ -1241,12 +1230,11 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
-            }
         }
 
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
+            // Run the action 2 times in order to properly execute actions (FOR ADJOIN: DO NOT REMOVE)
             for (int i = 0; i < 2; i++)
             {
                 Selection selection = this.GetCurrentSelection();
@@ -1271,7 +1259,7 @@ namespace PowerPointLabs.PositionsLab
                         _previewCallBack = null;
                         this.StartNewUndoEntry();
                     }
-                    simulatedShapes = DuplicateShapes(selectedShapes);
+                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
                     List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1306,9 +1294,6 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, bool> positionsAction, bool booleanVal, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int j = 0; j < 2; j++)
-            {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
                 {
@@ -1368,14 +1353,10 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
-            }
         }
 
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int i = 0; i < 2; i++)
-            {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
                 {
@@ -1428,14 +1409,10 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
-            }
         }
 
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int i = 0; i < 2; i++)
-            {
                 if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
                 {
                     if (!isPreview)
@@ -1490,14 +1467,10 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
-            }
         }
 
         public void ExecutePositionsAction(Action<List<Shape>> positionsAction, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (DO NOT REMOVE)
-            for (int i = 0; i < 2; i++)
-            {
                 if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
                 {
                     if (!isPreview)
@@ -1538,7 +1511,6 @@ namespace PowerPointLabs.PositionsLab
                         ShowErrorMessageBox(ex.Message, ex);
                     }
                 }
-            }
         }
 
         private void ExecuteDistributeGrid(int rowLength, int colLength)
@@ -1671,6 +1643,21 @@ namespace PowerPointLabs.PositionsLab
         }
 
         private ShapeRange DuplicateShapes(ShapeRange range)
+        {
+            String[] duplicatedShapeNames = new String[range.Count];
+            for (int i = 0; i < range.Count; i++)
+            {
+                Shape shape = range[i + 1];
+                Shape duplicated = shape.Duplicate()[1];
+                duplicated.Name = shape.Name + "_Copy";
+                duplicated.Left = shape.Left;
+                duplicated.Top = shape.Top;
+                duplicatedShapeNames[i] = duplicated.Name;
+            }
+            return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
+        }
+
+        private ShapeRange DuplicateShapesForAdjoinOperation(ShapeRange range)
         {
             return range.Duplicate();
         }
