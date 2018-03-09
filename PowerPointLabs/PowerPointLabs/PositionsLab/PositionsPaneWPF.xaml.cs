@@ -1035,7 +1035,7 @@ namespace PowerPointLabs.PositionsLab
             }
             return true;
         }
-        // align left and top
+        // Align left and top
         public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape)
         {
                 Selection selection = this.GetCurrentSelection();
@@ -1195,7 +1195,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapes(selectedShapes);
+                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
                     if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                     {
                         positionsAction.Invoke(selectedShapes, dimension1, dimension2);
@@ -1231,7 +1231,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                 }
         }
-
+        // Adjoin operations
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
             // Run the action 2 times in order to properly execute actions (FOR ADJOIN: DO NOT REMOVE)
