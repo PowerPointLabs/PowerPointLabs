@@ -1132,7 +1132,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapes(selectedShapes);
+                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
                     if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                     {
                         positionsAction.Invoke(selectedShapes, dimension);
@@ -1195,7 +1195,8 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
+                    simulatedShapes = DuplicateShapes(selectedShapes);
+                    simulatedShapes.Select();
                     if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                     {
                         positionsAction.Invoke(selectedShapes, dimension1, dimension2);
@@ -1354,7 +1355,7 @@ namespace PowerPointLabs.PositionsLab
                     }
                 }
         }
-
+        // Distribute operations
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
                 Selection selection = this.GetCurrentSelection();
