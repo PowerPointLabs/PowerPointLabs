@@ -128,6 +128,21 @@ namespace PowerPointLabs
 
         #region Ribbon Callbacks
         //Create callback methods here. For more information about adding callback methods, select the Ribbon XML item in Solution Explorer and then press F1
+        public void RemainInPPTLabsTab()
+        {
+            System.Diagnostics.Debug.WriteLine("Return to home");
+            _ribbon.ActivateTabMso("TabHome");
+            //_ribbon.ActivateTab("PowerPointLabs");
+        }
+        /*
+        public void GetSelectedItemID(string ribbonId)
+        {
+            if (ribbonId != null)
+            {
+                RemainInPPTLabsTab(ribbonId);
+            }
+        }
+        */
 
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
