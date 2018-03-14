@@ -805,7 +805,7 @@ namespace PowerPointLabs
             // Priority High: Application Actions
             ((PowerPoint.EApplication_Event) Application).NewPresentation += ThisAddInNewPresentation;
             Application.AfterNewPresentation += ThisAddInAfterNewPresentation;
-            Application.PresentationOpen += ThisAddInPrensentationOpen;
+            Application.PresentationOpen += ThisAddInPresentationOpen;
             Application.PresentationClose += ThisAddInPresentationClose;
 
             // Priority Mid: Window Actions
@@ -982,19 +982,23 @@ namespace PowerPointLabs
             pres.Saved = Microsoft.Office.Core.MsoTriState.msoTrue;
         }
 
-        private void ThisAddInPrensentationOpen(PowerPoint.Presentation pres)
+        private void ThisAddInPresentationOpen(PowerPoint.Presentation pres)
         {
-            PowerPoint.DocumentWindow activeWindow = pres.Application.ActiveWindow;
-            string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            // if we opened a new window, register the window with its name
-            if (!_documentHashcodeMapper.ContainsKey(activeWindow))
+            // Windows count could be zero if presentation is opened as preview of template slides
+            if (pres.Application.Windows.Count > 0)
             {
-                _documentHashcodeMapper[activeWindow] = tempName;
-            }
+                PowerPoint.DocumentWindow activeWindow = pres.Application.ActiveWindow;
+                string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
-            // Refresh ribbon to grey out the menu / buttons if there are now at least one window
-            RefreshRibbonMenuButtons();
+                // if we opened a new window, register the window with its name
+                if (!_documentHashcodeMapper.ContainsKey(activeWindow))
+                {
+                    _documentHashcodeMapper[activeWindow] = tempName;
+                }
+
+                // Refresh ribbon to grey out the menu / buttons if there are now at least one window
+                RefreshRibbonMenuButtons();
+            }
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
