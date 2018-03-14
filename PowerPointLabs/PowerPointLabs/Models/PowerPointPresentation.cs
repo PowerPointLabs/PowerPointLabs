@@ -257,6 +257,12 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
+
+        public SlideRange PasteSlide() 
+        {
+            return Presentation.Slides.Paste();
+        }
+
         public void AddAckSlide()
         {
             if (!HasAckSlide())

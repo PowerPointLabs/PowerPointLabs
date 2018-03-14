@@ -557,6 +557,7 @@ namespace PowerPointLabs.Models
         {
             try
             {
+                // Will affect clipboard
                 shape.Copy();
                 Shape newShape = _slide.Shapes.Paste()[1];
 

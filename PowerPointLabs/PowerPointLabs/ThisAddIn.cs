@@ -77,6 +77,16 @@ namespace PowerPointLabs
 
         #region API
 
+        public bool IsApplicationVersion2010() 
+        {
+            return Application.Version == OfficeVersion2010;
+        }
+
+        public bool IsApplicationVersion2013()
+        {
+            return Application.Version == OfficeVersion2013;
+        }
+
         public Control GetActiveControl(Type type)
         {
             CustomTaskPane taskPane = GetActivePane(type);
@@ -1005,7 +1015,7 @@ namespace PowerPointLabs
         {
             Trace.TraceInformation("Closing " + pres.Name);
 
-            if (Application.Version == OfficeVersion2010 &&
+            if (IsApplicationVersion2010() &&
                 _deactivatedPresFullName == pres.FullName &&
                 Application.Presentations.Count == 2 &&
                 ShapePresentation != null &&
@@ -1073,7 +1083,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ResizeLabButton");
             Ribbon.RefreshRibbonControl("ColorsLabButton");
             Ribbon.RefreshRibbonControl("SyncLabButton");
-            Ribbon.RefreshRibbonControl("ShapesLabButton");
+            Ribbon.RefreshRibbonControl("ShapesLabMenu");
             Ribbon.RefreshRibbonControl("CropLabMenu");
             Ribbon.RefreshRibbonControl("PasteLabMenu");
             Ribbon.RefreshRibbonControl("TimerLabButton");
@@ -1438,7 +1448,7 @@ namespace PowerPointLabs
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    if (Application.Version == OfficeVersion2010)
+                    if (IsApplicationVersion2010())
                     {
                         OpenPropertyWindowForOffice10();
                     }

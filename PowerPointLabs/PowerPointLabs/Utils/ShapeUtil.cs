@@ -334,13 +334,37 @@ namespace PowerPointLabs.Utils
                 return true;
             }
         }
-
+        /// <summary>
+        /// To avoid corrupted shape.
+        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
+        /// After that, most of operations on corrupted shapes will throw an exception.
+        /// One solution for this is to re-allocate its memory: simply cut/copy and paste before using its property.
+        /// </summary>
+        /// <param name="shape"> Shape to be corrected </param>
+        /// <returns> The corrected shape </returns>
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
-            // in case of random corruption of shape, cut-paste a shape before using its property
-            Shape correctedShape = ownerSlide.CopyShapeToSlide(shape);
-            shape.Delete();
-            return correctedShape;
+            Shape correctedShape = null;
+
+            // Utilises deprecated PowerPointPresentation class as ShapeUtil does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
+            // While doing corruption correction, we don't want to affect the clipboard
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                correctedShape = ownerSlide.CopyShapeToSlide(shape);
+            }, pres, ownerSlide);
+            
+            if (correctedShape != null)
+            {
+                shape.Delete();
+                return correctedShape;
+            }
+            else
+            {
+                // There were problems with the copying of the shape to the slide (could be a placeholder) thus we just return the original shape
+                return shape;
+            }
         }
 
         public static ShapeRange CorruptionCorrection(ShapeRange shapes, PowerPointSlide ownerSlide)
@@ -353,7 +377,6 @@ namespace PowerPointLabs.Utils
             }
             return ownerSlide.ToShapeRange(correctedShapeList);
         }
-
         #endregion
 
         #region Size and Position
@@ -984,6 +1007,28 @@ namespace PowerPointLabs.Utils
             return shape == null ? null : shape.TextFrame.TextRange;
         }
 
+        /// <summary>
+        /// Useful when shape has text with more than one color
+        /// Getting color in that case without a workabout will return black
+        /// Assumes that shape has a TextRange
+        /// </summary>
+        /// <param name="shape">RGB color, seems to be the color of the last character</param>
+        /// <returns></returns>
+        public static int GuessTextColor(Shape shape)
+        {
+            // clear the text, to clear presence of more than 1 color
+            // TextRange.Font.Color.RGB then returns the same color of as new text that is added to the shape
+            // 
+            // Unsuccessful workabouts:
+            // Taking a sub TextRange of the shape
+            // Trimming text to the first character
+            Shape duplicate = shape.Duplicate()[1];
+            duplicate.TextFrame.TextRange.Text = "";
+            int color = duplicate.TextFrame.TextRange.Font.Color.RGB;
+            duplicate.Delete();
+            return color;
+        }
+
         #endregion
         
         /// <summary>
@@ -1073,6 +1118,8 @@ namespace PowerPointLabs.Utils
                 case PpPlaceholderType.ppPlaceholderSubtitle:
                 case PpPlaceholderType.ppPlaceholderVerticalBody:
                 case PpPlaceholderType.ppPlaceholderVerticalTitle:
+                    // not safe to do shape.Duplicate(), the duplicated textbox has differences in configuration
+                    // width is one example. more investigation is required to find out the exact differences
                     shapeTemplate = shapesSource.AddTextbox(
                         msoPlaceHolder.TextFrame.Orientation,
                         msoPlaceHolder.Left,
@@ -1089,8 +1136,12 @@ namespace PowerPointLabs.Utils
                     break;
                 case PpPlaceholderType.ppPlaceholderPicture:
                 case PpPlaceholderType.ppPlaceholderBitmap:
-                    // TODO: support will be added in future PR
-                    // do nothing for now
+                    // must use duplicate. there is no way to create a replacement picture
+                    // as the image's source is not obtainable through the Shape API
+                    var tempShape = msoPlaceHolder.Duplicate()[1];
+                    tempShape.Copy();
+                    shapeTemplate = shapesSource.Paste()[1];
+                    tempShape.Delete();
                     break;
                 case PpPlaceholderType.ppPlaceholderVerticalObject:
                 case PpPlaceholderType.ppPlaceholderObject:

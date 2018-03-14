@@ -228,6 +228,7 @@ namespace PowerPointLabs.SyncLab.Views
 
             if (shape.Type != MsoShapeType.msoAutoShape &&
                 shape.Type != MsoShapeType.msoLine &&
+                shape.Type != MsoShapeType.msoPicture &&
                 shape.Type != MsoShapeType.msoTextBox &&
                 !canSyncPlaceHolder)
             {

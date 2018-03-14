@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="RibbonLoad">
   <ribbon>
     <contextualTabs>
@@ -28,8 +28,9 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <button id="AnimateInSlideButton"
                     tag="AnimateInSlide"
                     getLabel="GetLabel"
@@ -56,8 +57,9 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <button id="DrillDownButton"
                     tag="DrillDown"
                     getLabel="GetLabel"
@@ -97,7 +99,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="AddNarrationsButton"
                     tag="AddNarrations"
@@ -131,7 +133,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="AddCaptionsButton"
                     tag="AddCaptions"
@@ -163,7 +165,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="HighlightPointsButton"
                     tag="HighlightPoints"
@@ -205,8 +207,9 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
             <gallery idMso="PictureSharpenSoftenGallery"/>
@@ -281,7 +284,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
           
@@ -290,7 +293,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -299,7 +302,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -308,25 +311,32 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
-
-          <button id="ShapesLabButton"
-                  tag="ShapesLab"
-                  getLabel="GetLabel"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
-                  onAction="OnAction"
-                  size="large"/>
+          
+          <menu id="ShapesLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
+                size="large">
+            <gallery idMso="ShapesInsertGallery"/>
+            <button id="ShapesLabButton"
+                    tag="ShapesLab"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
           <menu id="CropLabMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinCropSeparator"
                            title="Builtin Crop Features"/>
             <splitButton idMso="PictureCropTools"/>
@@ -376,7 +386,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="PasteAtOriginalPositionButton"
                     tag="PasteAtOriginalPosition"
@@ -425,14 +435,14 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
           <menu id="AgendaLabMenu"
                 getLabel="GetLabel"
                 getSupertip="GetSupertip"
-				getEnabled="GetEnabled"
+                getEnabled="GetEnabled"
                 getImage="GetImage"
                 size="large">
             <button id="TextAgendaButton"
@@ -473,7 +483,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
-				  getEnabled="GetEnabled"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
