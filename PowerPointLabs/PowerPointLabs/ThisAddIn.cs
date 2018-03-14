@@ -1073,22 +1073,22 @@ namespace PowerPointLabs
 
         private void RefreshRibbonMenuButtons() 
         {
-            Ribbon.RefreshRibbonControl("AnimationLabMenu");
-            Ribbon.RefreshRibbonControl("ZoomLabMenu");
-            Ribbon.RefreshRibbonControl("NarrationsLabMenu");
-            Ribbon.RefreshRibbonControl("CaptionsLabMenu");
-            Ribbon.RefreshRibbonControl("HighlightLabMenu");
-            Ribbon.RefreshRibbonControl("EffectsLabMenu");
-            Ribbon.RefreshRibbonControl("PositionsLabButton");
-            Ribbon.RefreshRibbonControl("ResizeLabButton");
-            Ribbon.RefreshRibbonControl("ColorsLabButton");
-            Ribbon.RefreshRibbonControl("SyncLabButton");
-            Ribbon.RefreshRibbonControl("ShapesLabMenu");
-            Ribbon.RefreshRibbonControl("CropLabMenu");
-            Ribbon.RefreshRibbonControl("PasteLabMenu");
-            Ribbon.RefreshRibbonControl("TimerLabButton");
-            Ribbon.RefreshRibbonControl("AgendaLabMenu");
-            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
+            Ribbon.RefreshRibbonControl(AnimationLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ZoomLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(NarrationsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(CaptionsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(HighlightLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(EffectsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(PositionsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ResizeLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ColorsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(SyncLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ShapesLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(CropLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(PasteLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(TimerLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(AgendaLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(PictureSlidesLabText.RibbonMenuId);
         }
 
         private void ShutDownImageSearchPane()
