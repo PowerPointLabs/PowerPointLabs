@@ -80,9 +80,9 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                using (var writer = new StreamWriter(GetPath(PictureSlidesLabImagesList)))
+                using (StreamWriter writer = new StreamWriter(GetPath(PictureSlidesLabImagesList)))
                 {
-                    var serializer = new XmlSerializer(list.GetType());
+                    XmlSerializer serializer = new XmlSerializer(list.GetType());
                     serializer.Serialize(writer, list);
                     writer.Flush();
                 }
@@ -101,9 +101,9 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                using (var writer = new StreamWriter(GetPath(PictureSlidesLabSettings)))
+                using (StreamWriter writer = new StreamWriter(GetPath(PictureSlidesLabSettings)))
                 {
-                    var serializer = new XmlSerializer(settings.GetType());
+                    XmlSerializer serializer = new XmlSerializer(settings.GetType());
                     serializer.Serialize(writer, settings);
                     writer.Flush();
                 }
@@ -122,10 +122,10 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                using (var stream = File.OpenRead(GetPath(PictureSlidesLabImagesList)))
+                using (FileStream stream = File.OpenRead(GetPath(PictureSlidesLabImagesList)))
                 {
-                    var serializer = new XmlSerializer(typeof(ObservableCollection<ImageItem>));
-                    var list = serializer.Deserialize(stream) as ObservableCollection<ImageItem> 
+                    XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<ImageItem>));
+                    ObservableCollection<ImageItem> list = serializer.Deserialize(stream) as ObservableCollection<ImageItem> 
                         ?? new ObservableCollection<ImageItem>();
                     return list;
                 }
@@ -145,10 +145,10 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                using (var stream = File.OpenRead(GetPath(PictureSlidesLabSettings)))
+                using (FileStream stream = File.OpenRead(GetPath(PictureSlidesLabSettings)))
                 {
-                    var serializer = new XmlSerializer(typeof(Model.Settings));
-                    var settings = serializer.Deserialize(stream) as Model.Settings
+                    XmlSerializer serializer = new XmlSerializer(typeof(Model.Settings));
+                    Model.Settings settings = serializer.Deserialize(stream) as Model.Settings
                         ?? new Model.Settings();
                     return settings;
                 }
@@ -176,7 +176,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                 filesInUse.Add(NoPicturePlaceholderImgPath);
                 filesInUse.Add(SampleImg1Path);
                 filesInUse.Add(SampleImg2Path);
-                foreach (var file in directory.GetFiles())
+                foreach (FileInfo file in directory.GetFiles())
                 {
                     if (!filesInUse.Contains(file.FullName))
                     {

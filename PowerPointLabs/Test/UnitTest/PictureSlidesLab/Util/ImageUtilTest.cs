@@ -18,11 +18,11 @@ namespace Test.UnitTest.PictureSlidesLab.Util
         {
             StoragePath.InitPersistentFolder();
             StoragePath.CleanPersistentFolder(new List<string>());
-            var thumbnail = 
+            string thumbnail = 
                 ImageUtil.GetThumbnailFromFullSizeImg(
                     PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg");
-            var thumbnailImage = new Bitmap(thumbnail);
-            var fullsizeImage = new Bitmap(
+            Bitmap thumbnailImage = new Bitmap(thumbnail);
+            Bitmap fullsizeImage = new Bitmap(
                 PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg");
             Assert.IsTrue(thumbnailImage.Width < fullsizeImage.Width 
                 && thumbnailImage.Height < fullsizeImage.Height);
@@ -32,7 +32,7 @@ namespace Test.UnitTest.PictureSlidesLab.Util
         [TestCategory("UT")]
         public void TestGetWidthAndHeight()
         {
-            var result = ImageUtil.GetWidthAndHeight(
+            string result = ImageUtil.GetWidthAndHeight(
                 PathUtil.GetDocTestPath() + "PictureSlidesLab\\koala.jpg");
             Assert.AreEqual("500 x 375", result);
         }

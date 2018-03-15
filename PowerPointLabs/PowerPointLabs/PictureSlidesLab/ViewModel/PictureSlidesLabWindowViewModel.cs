@@ -130,9 +130,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             OptionsFactory = new StyleOptionsFactory();
             VariantsFactory = new StyleVariantsFactory();
 
-            var catalog = new AggregateCatalog(
+            AggregateCatalog catalog = new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            var container = new CompositionContainer(catalog);
+            CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
 
             Logger.Log("Init PSL View Model done");
@@ -173,11 +173,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             try
             {
                 Logger.Log("Add local picture begins");
-                var isToSelectPicture = ImageSelectionList.Count == 1;
-                foreach (var filename in filenames)
+                bool isToSelectPicture = ImageSelectionList.Count == 1;
+                foreach (string filename in filenames)
                 {
                     VerifyIsProperImage(filename);
-                    var fromFileItem = new ImageItem
+                    ImageItem fromFileItem = new ImageItem
                     {
                         ImageFile = ImageUtil.GetThumbnailFromFullSizeImg(filename),
                         FullSizeImageFile = filename,
@@ -225,7 +225,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 Logger.Log("Url link error when add internet image");
                 return;
             }
-            var item = new ImageItem
+            ImageItem item = new ImageItem
             {
                 ImageFile = StoragePath.LoadingImgPath,
                 ContextLink = downloadLink,
@@ -235,7 +235,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             ImageSelectionList.Add(item);
             IsActiveDownloadProgressRing.Flag = true;
 
-            var imagePath = StoragePath.GetPath("img-"
+            string imagePath = StoragePath.GetPath("img-"
                 + DateTime.Now.GetHashCode() + "-"
                 + Guid.NewGuid().ToString().Substring(0, 7));
             ImageDownloader
@@ -314,10 +314,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public void ApplyStyleInPreviewStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
             Logger.Log("Apply style in preview stage begins");
-            var copiedPicture = LoadClipboardPicture();
+            IList<object> copiedPicture = LoadClipboardPicture();
             try
             {
-                var targetDefaultOptions = OptionsFactory
+                StyleOption targetDefaultOptions = OptionsFactory
                     .GetStylesPreviewOption(StylesPreviewListSelectedItem.ImageItem.Tooltip);
                 Designer.ApplyStyle(ImageSelectionListSelectedItem.ImageItem, contentSlide,
                     slideWidth, slideHeight, targetDefaultOptions);
@@ -346,7 +346,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when retrieving information from the selected preview image.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToRetrieveInfoFromImage, e);
                 Logger.LogException(e, "UpdateStyleVariationStyleOptionsWhenSelectedItemChange");
             }
         }
@@ -364,7 +364,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             List<StyleOption> givenOptions = null, Dictionary<string, List<StyleVariant>> givenVariants = null)
         {
             Logger.Log("Variation stage is open");
-            var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
+            ImageItem targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
             StylesVariationList.Clear();
 
             if (!IsAbleToUpdateStylesVariationImages(source, targetStyleItem, contentSlide))
@@ -400,9 +400,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public void UpdateStylesVariationImagesAfterOpenFlyout(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isUpdateSelectedPreviewOnly = false)
         {
             Logger.Log("Variation is already open, update preview images");
-            var selectedId = StylesVariationListSelectedId.Number;
-            var scrollOffset = View.GetVariationListBoxScrollOffset();
-            var targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
+            int selectedId = StylesVariationListSelectedId.Number;
+            double scrollOffset = View.GetVariationListBoxScrollOffset();
+            ImageItem targetStyleItem = StylesPreviewListSelectedItem.ImageItem;
             if (!isUpdateSelectedPreviewOnly)
             {
                 StylesVariationList.Clear();
@@ -444,35 +444,35 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
 
             Logger.Log("Step by step preview begins");
-            var targetVariationSelectedIndex = StylesVariationListSelectedId.Number;
-            var targetVariant = _styleVariants[_previousVariantsCategory][targetVariationSelectedIndex];
-            foreach (var option in _styleOptions)
+            int targetVariationSelectedIndex = StylesVariationListSelectedId.Number;
+            StyleVariant targetVariant = _styleVariants[_previousVariantsCategory][targetVariationSelectedIndex];
+            foreach (StyleOption option in _styleOptions)
             {
                 targetVariant.Apply(option);
             }
             
-            var currentVariantsCategory = CurrentVariantCategory.Text;
+            string currentVariantsCategory = CurrentVariantCategory.Text;
             if (currentVariantsCategory != PictureSlidesLabText.VariantCategoryFontColor
                 && _previousVariantsCategory != PictureSlidesLabText.VariantCategoryFontColor)
             {
                 // apply font color variant,
                 // because default styles may contain special font color settings, but not in variants
-                var fontColorVariant = new StyleVariant(new Dictionary<string, object>
+                StyleVariant fontColorVariant = new StyleVariant(new Dictionary<string, object>
                 {
                     {"FontColor", _styleOptions[targetVariationSelectedIndex].FontColor}
                 });
-                foreach (var option in _styleOptions)
+                foreach (StyleOption option in _styleOptions)
                 {
                     fontColorVariant.Apply(option);
                 }
             }
 
-            var nextCategoryVariants = _styleVariants[currentVariantsCategory];
+            List<StyleVariant> nextCategoryVariants = _styleVariants[currentVariantsCategory];
             if (currentVariantsCategory == PictureSlidesLabText.VariantCategoryFontFamily)
             {
-                var isFontInVariation = false;
-                var currentFontFamily = _styleOptions[targetVariationSelectedIndex].FontFamily;
-                foreach (var variant in nextCategoryVariants)
+                bool isFontInVariation = false;
+                string currentFontFamily = _styleOptions[targetVariationSelectedIndex].FontFamily;
+                foreach (StyleVariant variant in nextCategoryVariants)
                 {
                     if (currentFontFamily == (string) variant.Get("FontFamily"))
                     {
@@ -502,18 +502,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             else if (CurrentVariantCategory.Text == PictureSlidesLabText.VariantCategoryPicture
                      && _isPictureVariationInit)
             {
-                var isPictureSwapped = false;
-                for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
+                bool isPictureSwapped = false;
+                for (int i = 0; i < _8PicturesInPictureVariation.Count; i++)
                 {
                     // swap the picture to the current selected id in
                     // variation list
-                    var picture = _8PicturesInPictureVariation[i];
+                    ImageItem picture = _8PicturesInPictureVariation[i];
                     if ((ImageSelectionListSelectedItem.ImageItem == null 
                         && picture.ImageFile == StoragePath.NoPicturePlaceholderImgPath) || 
                             (ImageSelectionListSelectedItem.ImageItem != null
                             && picture.ImageFile == ImageSelectionListSelectedItem.ImageItem.ImageFile))
                     {
-                        var tempPic = _8PicturesInPictureVariation[targetVariationSelectedIndex];
+                        ImageItem tempPic = _8PicturesInPictureVariation[targetVariationSelectedIndex];
                         _8PicturesInPictureVariation[targetVariationSelectedIndex]
                             = picture;
                         _8PicturesInPictureVariation[i] = tempPic;
@@ -532,10 +532,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             else if (_previousVariantsCategory == PictureSlidesLabText.VariantCategoryPicture)
             {
                 // use the selected picture in the picture variation to preview
-                var targetPicture = _8PicturesInPictureVariation[targetVariationSelectedIndex];
+                ImageItem targetPicture = _8PicturesInPictureVariation[targetVariationSelectedIndex];
                 if (targetPicture.ImageFile != StoragePath.NoPicturePlaceholderImgPath)
                 {
-                    var indexForTargetPicture = ImageSelectionList.IndexOf(targetPicture);
+                    int indexForTargetPicture = ImageSelectionList.IndexOf(targetPicture);
                     if (indexForTargetPicture == -1)
                     {
                         ImageSelectionList.Add(targetPicture);
@@ -554,8 +554,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
             }
 
-            var variantIndexWithoutEffect = -1;
-            for (var i = 0; i < nextCategoryVariants.Count; i++)
+            int variantIndexWithoutEffect = -1;
+            for (int i = 0; i < nextCategoryVariants.Count; i++)
             {
                 if (nextCategoryVariants[i].IsNoEffect(_styleOptions[targetVariationSelectedIndex]))
                 {
@@ -568,13 +568,13 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             // selected style
             if (variantIndexWithoutEffect != -1)
             {
-                var temp = nextCategoryVariants[variantIndexWithoutEffect];
+                StyleVariant temp = nextCategoryVariants[variantIndexWithoutEffect];
                 nextCategoryVariants[variantIndexWithoutEffect] =
                     nextCategoryVariants[targetVariationSelectedIndex];
                 nextCategoryVariants[targetVariationSelectedIndex] = temp;
             }
 
-            for (var i = 0; i < nextCategoryVariants.Count && i < _styleOptions.Count; i++)
+            for (int i = 0; i < nextCategoryVariants.Count && i < _styleOptions.Count; i++)
             {
                 nextCategoryVariants[i].Apply(_styleOptions[i]);
             }
@@ -597,7 +597,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         public void ApplyStyleInVariationStage(Slide contentSlide, float slideWidth, float slideHeight)
         {
             Logger.Log("Apply style in variation stage begins");
-            var copiedPicture = LoadClipboardPicture();
+            IList<object> copiedPicture = LoadClipboardPicture();
             try
             {
                 Designer.ApplyStyle(
@@ -610,11 +610,11 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 if (IsInPictureVariation())
                 {
                     // select the picture if possible
-                    var targetPicture = GetSelectedPictureInPictureVariation(
+                    ImageItem targetPicture = GetSelectedPictureInPictureVariation(
                         StylesVariationListSelectedId.Number);
                     if (targetPicture.ImageFile != StoragePath.NoPicturePlaceholderImgPath)
                     {
-                        var indexForTargetPicture = ImageSelectionList.IndexOf(targetPicture);
+                        int indexForTargetPicture = ImageSelectionList.IndexOf(targetPicture);
                         if (indexForTargetPicture == -1)
                         {
                             ImageSelectionList.Add(targetPicture);
@@ -653,7 +653,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when fetching picture aspect.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToFetchPictureAspect, e);
                 Logger.LogException(e, "GetSelectedPictureInPictureVariation");
                 return View.CreateDefaultPictureItem();
             }
@@ -677,7 +677,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when processing picture aspect.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToProcessPictureAspect, e);
                 Logger.LogException(e, "UpdateSelectedPictureInPictureVariation");
             }
         }
@@ -692,9 +692,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
+            for (int i = 0; i < _8PicturesInPictureVariation.Count; i++)
             {
-                var imageItem = _8PicturesInPictureVariation[i];
+                ImageItem imageItem = _8PicturesInPictureVariation[i];
                 if (imageItem.ImageFile == StoragePath.NoPicturePlaceholderImgPath)
                 {
                     _8PicturesInPictureVariation[i] = newPicture;
@@ -712,9 +712,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            for (var i = 0; i < _8PicturesInPictureVariation.Count; i++)
+            for (int i = 0; i < _8PicturesInPictureVariation.Count; i++)
             {
-                var imageItem = _8PicturesInPictureVariation[i];
+                ImageItem imageItem = _8PicturesInPictureVariation[i];
                 if (ImageSelectionList.IndexOf(imageItem) == -1)
                 {
                     _8PicturesInPictureVariation[i] = View.CreateDefaultPictureItem();
@@ -724,7 +724,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         public void RefreshLast8Pictures()
         {
-            var selectedIdOfVariationList = Math.Max(StylesVariationListSelectedId.Number, 0);
+            int selectedIdOfVariationList = Math.Max(StylesVariationListSelectedId.Number, 0);
             _8PicturesInPictureVariation = GetLast8Pictures(selectedIdOfVariationList);
         }
 
@@ -752,8 +752,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
             try
             {
-                var subPictureList = ImageSelectionList.Skip(Math.Max(1, ImageSelectionList.Count - 8));
-                var result = new List<ImageItem>(subPictureList);
+                IEnumerable<ImageItem> subPictureList = ImageSelectionList.Skip(Math.Max(1, ImageSelectionList.Count - 8));
+                List<ImageItem> result = new List<ImageItem>(subPictureList);
                 while (result.Count < 8)
                 {
                     result.Add(View.CreateDefaultPictureItem());
@@ -765,7 +765,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
                 else if (ImageSelectionListSelectedItem.ImageItem == null)
                 {
-                    for (var i = 0; i < result.Count; i++)
+                    for (int i = 0; i < result.Count; i++)
                     {
                         if (result[i].ImageFile == StoragePath.NoPicturePlaceholderImgPath)
                         {
@@ -778,8 +778,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 else if (selectedIdOfVariationList >= 0)
                 // contains selected item, need swap to selected index
                 {
-                    var indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
-                    var tempItem = result[selectedIdOfVariationList];
+                    int indexToSwap = result.IndexOf(ImageSelectionListSelectedItem.ImageItem);
+                    ImageItem tempItem = result[selectedIdOfVariationList];
                     result[selectedIdOfVariationList] = ImageSelectionListSelectedItem.ImageItem;
                     result[indexToSwap] = tempItem;
                 }
@@ -787,7 +787,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             catch (Exception e)
             {
-                View.ShowErrorMessageBox("Failed when generating picture aspect.", e);
+                View.ShowErrorMessageBox(TextCollection.PictureSlidesLabText.ErrorFailedToGeneratePictureAspect, e);
                 Logger.LogException(e, "GetLast8Pictures");
                 return new List<ImageItem>();
             }
@@ -798,7 +798,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             try
             {
                 Logger.Log("Load clipboard begins.");
-                var result = new List<object>();
+                List<object> result = new List<object>();
                 if (Clipboard.ContainsImage())
                 {
                     result.Add(Clipboard.GetImage());
@@ -827,7 +827,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             try
             {
                 Logger.Log("Save clipboard begins.");
-                foreach (var copiedObj in copiedObjs)
+                foreach (object copiedObj in copiedObjs)
                 {
                     if (copiedObj == null)
                     {
@@ -867,7 +867,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void UpdateStylesPreviewImages(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight)
         {
             Logger.Log("UpdateStylesPreviewImages begins");
-            var selectedId = StylesPreviewListSelectedId.Number;
+            int selectedId = StylesPreviewListSelectedId.Number;
             StylesPreviewList.Clear();
 
             if (!IsAbleToUpdateStylesPreviewImages(source, contentSlide))
@@ -875,14 +875,14 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 return;
             }
 
-            var copiedPicture = LoadClipboardPicture();
+            IList<object> copiedPicture = LoadClipboardPicture();
             try
             {
-                var allStyleOptions = OptionsFactory.GetAllStylesPreviewOptions();
+                List<StyleOption> allStyleOptions = OptionsFactory.GetAllStylesPreviewOptions();
                 Logger.Log("Number of styles: " + allStyleOptions.Count);
-                foreach (var stylesPreviewOption in allStyleOptions)
+                foreach (StyleOption stylesPreviewOption in allStyleOptions)
                 {
-                    var previewInfo = Designer.PreviewApplyStyle(source, 
+                    PreviewInfo previewInfo = Designer.PreviewApplyStyle(source, 
                         contentSlide, slideWidth, slideHeight, stylesPreviewOption);
                     StylesPreviewList.Add(new ImageItem
                     {
@@ -922,7 +922,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             _styleVariants = givenVariants ?? VariantsFactory.GetVariants(targetStyle);
 
             VariantsCategory.Clear();
-            foreach (var styleVariant in _styleVariants.Keys)
+            foreach (string styleVariant in _styleVariants.Keys)
             {
                 VariantsCategory.Add(styleVariant);
             }
@@ -930,10 +930,10 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             _previousVariantsCategory = VariantsCategory[0];
 
             // default style options (in preview stage)
-            var defaultStyleOptions = OptionsFactory.GetStylesPreviewOption(targetStyle);
-            var currentVariants = _styleVariants.Values.First();
-            var variantIndexWithoutEffect = -1;
-            for (var i = 0; i < currentVariants.Count; i++)
+            StyleOption defaultStyleOptions = OptionsFactory.GetStylesPreviewOption(targetStyle);
+            List<StyleVariant> currentVariants = _styleVariants.Values.First();
+            int variantIndexWithoutEffect = -1;
+            for (int i = 0; i < currentVariants.Count; i++)
             {
                 if (currentVariants[i].IsNoEffect(defaultStyleOptions))
                 {
@@ -952,18 +952,18 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             if (variantIndexWithoutEffect != -1 && givenOptions == null)
             {
                 // swap style variant
-                var tempVariant = currentVariants[variantIndexWithoutEffect];
+                StyleVariant tempVariant = currentVariants[variantIndexWithoutEffect];
                 currentVariants[variantIndexWithoutEffect] =
                     currentVariants[0];
                 currentVariants[0] = tempVariant;
                 // swap default style options (in variation stage)
-                var tempStyleOpt = _styleOptions[variantIndexWithoutEffect];
+                StyleOption tempStyleOpt = _styleOptions[variantIndexWithoutEffect];
                 _styleOptions[variantIndexWithoutEffect] =
                     _styleOptions[0];
                 _styleOptions[0] = tempStyleOpt;
             }
 
-            for (var i = 0; i < currentVariants.Count && i < _styleOptions.Count; i++)
+            for (int i = 0; i < currentVariants.Count && i < _styleOptions.Count; i++)
             {
                 currentVariants[i].Apply(_styleOptions[i]);
             }
@@ -990,7 +990,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             float slideWidth, float slideHeight, bool isMockPreviewImages = false, int selectedId = -1)
         {
             Logger.Log("UpdateStylesVariationImages begins");
-            var copiedPicture = LoadClipboardPicture();
+            IList<object> copiedPicture = LoadClipboardPicture();
             try
             {
                 if (isMockPreviewImages)
@@ -1005,7 +1005,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
                 }
                 else
                 {
-                    for (var i = 0; i < _styleOptions.Count; i++)
+                    for (int i = 0; i < _styleOptions.Count; i++)
                     {
                         StylesVariationList.Add(
                             GenerateImageItem(source, contentSlide, slideWidth, slideHeight, isMockPreviewImages, i));
@@ -1025,7 +1025,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private ImageItem GenerateImageItem(ImageItem source, Slide contentSlide, float slideWidth, float slideHeight, bool isMockPreviewImages,
             int index)
         {
-            var styleOption = _styleOptions[index];
+            StyleOption styleOption = _styleOptions[index];
             PreviewInfo previewInfo;
             if (isMockPreviewImages)
             {
@@ -1090,7 +1090,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
         private void InitFontFamilies()
         {
             FontFamilies = new ObservableCollection<string>();
-            foreach (var fontFamily in Fonts.SystemFontFamilies)
+            foreach (System.Windows.Media.FontFamily fontFamily in Fonts.SystemFontFamilies)
             {
                 FontFamilies.Add(fontFamily.Source);
             }
@@ -1106,8 +1106,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void CleanUnusedPersistentData()
         {
-            var imageFilesInUse = new HashSet<string>();
-            foreach (var imageItem in ImageSelectionList)
+            HashSet<string> imageFilesInUse = new HashSet<string>();
+            foreach (ImageItem imageItem in ImageSelectionList)
             {
                 imageFilesInUse.Add(imageItem.ImageFile);
                 imageFilesInUse.Add(imageItem.FullSizeImageFile);
@@ -1152,8 +1152,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             }
             else
             {
-                var loadedImageSelectionList = StoragePath.LoadPictures();
-                foreach (var item in loadedImageSelectionList)
+                ObservableCollection<ImageItem> loadedImageSelectionList = StoragePath.LoadPictures();
+                foreach (ImageItem item in loadedImageSelectionList)
                 {
                     if (item.FullSizeImageFile == null && item.BackupFullSizeImageFile != null)
                     {
@@ -1175,8 +1175,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
 
         private void InitStorage()
         {
-            var isTempPathInit = Util.TempPath.InitTempFolder();
-            var isStoragePathInit = StoragePath.InitPersistentFolder();
+            bool isTempPathInit = Util.TempPath.InitTempFolder();
+            bool isStoragePathInit = StoragePath.InitPersistentFolder();
             if (!isTempPathInit || !isStoragePathInit)
             {
                 View.ShowErrorMessageBox(PictureSlidesLabText.ErrorFailToInitTempFolder);

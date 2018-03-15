@@ -7,9 +7,10 @@ using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShapesLab.Views;
+using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -84,7 +85,7 @@ namespace PowerPointLabs.ShapesLab
         {
             get
             {
-                var shapeList = new List<string>();
+                List<string> shapeList = new List<string>();
 
                 if (myShapeFlowLayout.Controls.Count == 0 ||
                     myShapeFlowLayout.Controls.Contains(_noShapePanel))
@@ -110,11 +111,11 @@ namespace PowerPointLabs.ShapesLab
         {
             get
             {
-                var createParams = base.CreateParams;
+                CreateParams createParams = base.CreateParams;
 
                 // do this optimization only for office 2010 since painting speed on 2013 is
                 // really slow
-                if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
+                if (Globals.ThisAddIn.IsApplicationVersion2010())
                 {
                     createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
                 }
@@ -129,6 +130,8 @@ namespace PowerPointLabs.ShapesLab
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
+            
+            InitToolTipControl();
 
             InitializeContextMenu();
 
@@ -139,7 +142,7 @@ namespace PowerPointLabs.ShapesLab
             _categoryBinding = new BindingSource { DataSource = Categories };
             categoryBox.DataSource = _categoryBinding;
 
-            for (var i = 0; i < Categories.Count; i++)
+            for (int i = 0; i < Categories.Count; i++)
             {
                 if (Categories[i] == defaultShapeCategoryName)
                 {
@@ -150,7 +153,7 @@ namespace PowerPointLabs.ShapesLab
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
-            
+
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.MouseEnter += FlowLayoutMouseEnterHandler;
             myShapeFlowLayout.MouseDown += FlowLayoutMouseDownHandler;
@@ -159,14 +162,52 @@ namespace PowerPointLabs.ShapesLab
 
             singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
         }
-        # endregion
+        #endregion
 
-        # region API
+        #region API
+
+        public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
+        {
+            // first of all we check if the shape gallery has been opened correctly
+            if (!addIn.ShapePresentation.Opened)
+            {
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                return;
+            }
+
+            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
+            if (!ShapeUtil.IsSelectionShapeOrText(selection))
+            {
+                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
+
+            // Finish checks, will add shape(s) from selection
+
+            ShapeRange selectedShapes = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
+            {
+                selectedShapes = selection.ChildShapeRange;
+            }
+            // add shape into shape gallery first to reduce flicker
+            string shapeName = addIn.ShapePresentation.AddShape(selectedShapes, selectedShapes[1].Name);
+
+            // add the selection into pane and save it as .png locally
+            string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+
+            // sync the shape among all opening panels
+            addIn.SyncShapeAdd(shapeName, shapeFullName, CurrentCategory);
+
+            // finally, add the shape into the panel and waiting for name editing
+            AddCustomShape(shapeName, shapeFullName, true);
+        }
+
         public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
         {
             DehighlightSelected();
 
-            var labeledThumbnail = new LabeledThumbnail(shapePath, shapeName) { ContextMenuStrip = shapeContextMenuStrip };
+            LabeledThumbnail labeledThumbnail = new LabeledThumbnail(shapePath, shapeName) { ContextMenuStrip = shapeContextMenuStrip };
 
             labeledThumbnail.Click += LabeledThumbnailClick;
             labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
@@ -197,7 +238,7 @@ namespace PowerPointLabs.ShapesLab
 
         public void RemoveCustomShape(string shapeName)
         {
-            var labeledThumbnail = FindLabeledThumbnail(shapeName);
+            LabeledThumbnail labeledThumbnail = FindLabeledThumbnail(shapeName);
 
             if (labeledThumbnail == null)
             {
@@ -210,7 +251,7 @@ namespace PowerPointLabs.ShapesLab
 
         public void RenameCustomShape(string oldShapeName, string newShapeName)
         {
-            var labeledThumbnail = FindLabeledThumbnail(oldShapeName);
+            LabeledThumbnail labeledThumbnail = FindLabeledThumbnail(oldShapeName);
 
             if (labeledThumbnail == null)
             {
@@ -238,22 +279,22 @@ namespace PowerPointLabs.ShapesLab
             }
 
             // double buffer starts
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
                 GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
             }
-            
+
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-            
+
             // scroll the view to show the first item, and focus the flowlayout to enable
             // scroll if applicable
             myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
             myShapeFlowLayout.Focus();
 
             // double buffer ends
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
                 GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
             }
@@ -284,6 +325,11 @@ namespace PowerPointLabs.ShapesLab
             return Globals.ThisAddIn.ShapePresentation.Presentation;
         }
 
+        public Button GetAddShapeButton()
+        {
+            return addShapeButton;
+        }
+
         # endregion
 
         # region Helper Functions
@@ -299,7 +345,7 @@ namespace PowerPointLabs.ShapesLab
         {
             Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             if (currentSlide == null)
             {
@@ -342,18 +388,18 @@ namespace PowerPointLabs.ShapesLab
                 _selectedThumbnail[1].DeHighlight();
                 _selectedThumbnail.RemoveAt(1);
             }
-            
+
             _selectedThumbnail[0].StartNameEdit();
         }
 
         private void ContextMenuStripImportCategoryClicked()
         {
-            var fileDialog = new OpenFileDialog
-                                 {
-                                     Filter = ImportLibraryFileDialogFilter,
-                                     Multiselect = false,
-                                     Title = ShapesLabText.ImportLibraryFileDialogTitle
-                                 };
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Filter = ImportLibraryFileDialogFilter,
+                Multiselect = false,
+                Title = ShapesLabText.ImportLibraryFileDialogTitle
+            };
 
             flowlayoutContextMenuStrip.Hide();
 
@@ -369,12 +415,12 @@ namespace PowerPointLabs.ShapesLab
 
         private void ContextMenuStripImportShapesClicked()
         {
-            var fileDialog = new OpenFileDialog
-                                 {
-                                     Filter = ImportShapesFileDialogFilter,
-                                     Multiselect = true,
-                                     Title = ShapesLabText.ImportShapeFileDialogTitle
-                                 };
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Filter = ImportShapesFileDialogFilter,
+                Multiselect = true,
+                Title = ShapesLabText.ImportShapeFileDialogTitle
+            };
 
             flowlayoutContextMenuStrip.Hide();
 
@@ -383,7 +429,7 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            var importSuccess = fileDialog.FileNames.Aggregate(true,
+            bool importSuccess = fileDialog.FileNames.Aggregate(true,
                                                                (current, fileName) =>
                                                                ImportShapes(fileName, false) && current);
 
@@ -391,7 +437,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 return;
             }
-            
+
             PaneReload(true);
             MessageBox.Show(ShapesLabText.SuccessImport);
         }
@@ -405,14 +451,14 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            var categoryIndex = categoryBox.SelectedIndex;
-            var categoryName = _categoryBinding[categoryIndex].ToString();
-            var categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
-            var isDefaultCategory = Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory;
+            int categoryIndex = categoryBox.SelectedIndex;
+            string categoryName = _categoryBinding[categoryIndex].ToString();
+            string categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
+            bool isDefaultCategory = Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory;
 
             if (isDefaultCategory)
             {
-                var result =
+                DialogResult result =
                     MessageBox.Show(ShapesLabText.RemoveDefaultCategoryMessage,
                                     ShapesLabText.RemoveDefaultCategoryCaption,
                                     MessageBoxButtons.OKCancel);
@@ -429,7 +475,7 @@ namespace PowerPointLabs.ShapesLab
             FileDir.DeleteFolder(categoryPath);
 
             _categoryBinding.RemoveAt(categoryIndex);
-            
+
             // RemoveAt may NOT change the index, so we need to manually set the default category here
             if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
             {
@@ -461,8 +507,8 @@ namespace PowerPointLabs.ShapesLab
 
             while (_selectedThumbnail.Count > 0)
             {
-                var thumbnail = _selectedThumbnail[0];
-                var removedShapename = thumbnail.NameLabel;
+                LabeledThumbnail thumbnail = _selectedThumbnail[0];
+                string removedShapename = thumbnail.NameLabel;
 
                 // remove shape from shape gallery
                 Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
@@ -498,7 +544,7 @@ namespace PowerPointLabs.ShapesLab
                 Globals.ThisAddIn.ShapePresentation.RenameCategory(newCategoryName);
 
                 // rename the category on the disk
-                var newPath = Path.Combine(ShapeRootFolderPath, newCategoryName);
+                string newPath = Path.Combine(ShapeRootFolderPath, newCategoryName);
 
                 try
                 {
@@ -510,7 +556,7 @@ namespace PowerPointLabs.ShapesLab
                 }
 
                 // rename the category in combo box
-                var categoryIndex = categoryBox.SelectedIndex;
+                int categoryIndex = categoryBox.SelectedIndex;
                 _categoryBinding[categoryIndex] = newCategoryName;
 
                 // update current category reference
@@ -555,8 +601,8 @@ namespace PowerPointLabs.ShapesLab
             RegulateSelectionRectPoint(ref loc1);
             RegulateSelectionRectPoint(ref loc2);
 
-            var size = new Size(Math.Abs(loc2.X - loc1.X), Math.Abs(loc2.Y - loc1.Y));
-            var rect = new Rectangle(new Point(Math.Min(loc1.X, loc2.X), Math.Min(loc1.Y, loc2.Y)), size);
+            Size size = new Size(Math.Abs(loc2.X - loc1.X), Math.Abs(loc2.Y - loc1.Y));
+            Rectangle rect = new Rectangle(new Point(Math.Min(loc1.X, loc2.X), Math.Min(loc1.Y, loc2.Y)), size);
 
             return rect;
         }
@@ -568,8 +614,8 @@ namespace PowerPointLabs.ShapesLab
             {
                 return;
             }
-            
-            foreach (var thumbnail in _selectedThumbnail)
+
+            foreach (LabeledThumbnail thumbnail in _selectedThumbnail)
             {
                 thumbnail.DeHighlight();
             }
@@ -597,12 +643,12 @@ namespace PowerPointLabs.ShapesLab
                 return -1;
             }
 
-            var totalControl = myShapeFlowLayout.Controls.Count;
-            var thisControlPosition = -1;
+            int totalControl = myShapeFlowLayout.Controls.Count;
+            int thisControlPosition = -1;
 
-            for (var i = 0; i < totalControl; i++)
+            for (int i = 0; i < totalControl; i++)
             {
-                var control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
+                LabeledThumbnail control = myShapeFlowLayout.Controls[i] as LabeledThumbnail;
 
                 if (control == null)
                 {
@@ -615,7 +661,7 @@ namespace PowerPointLabs.ShapesLab
                     thisControlPosition = i;
                     continue;
                 }
-                
+
                 if (_stringComparer.Compare(control.NameLabel, name) > 0)
                 {
                     // immediate next control's name is still bigger than current control, do
@@ -625,7 +671,7 @@ namespace PowerPointLabs.ShapesLab
                     {
                         return thisControlPosition;
                     }
-                    
+
                     // now we have 2 cases:
                     // 1. the replace position is before the current position;
                     // 2. the replace position is behind the current position.
@@ -728,7 +774,7 @@ namespace PowerPointLabs.ShapesLab
                 {
                     contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
                 }
-                
+
                 if (contextMenu.Text != ShapesLabText.ShapeContextStripCopyShape)
                 {
                     contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
@@ -738,7 +784,7 @@ namespace PowerPointLabs.ShapesLab
 
         private bool ImportShapes(string importFilePath, bool fromLibrary)
         {
-            var importShapeGallery = PrepareImportGallery(importFilePath, fromLibrary);
+            PowerPointShapeGalleryPresentation importShapeGallery = PrepareImportGallery(importFilePath, fromLibrary);
 
             try
             {
@@ -775,7 +821,7 @@ namespace PowerPointLabs.ShapesLab
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, e.Message, e);
 
                 return false;
             }
@@ -792,7 +838,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void ImportShapesFromLibrary(PowerPointShapeGalleryPresentation importShapeGallery)
         {
-            foreach (var importCategory in importShapeGallery.Categories)
+            foreach (string importCategory in importShapeGallery.Categories)
             {
                 importShapeGallery.CopyCategory(importCategory);
 
@@ -804,25 +850,25 @@ namespace PowerPointLabs.ShapesLab
 
         private void ImportShapesFromSingleShape(PowerPointShapeGalleryPresentation importShapeGallery)
         {
-            var shapeRange = importShapeGallery.Slides[0].Shapes.Range();
+            ShapeRange shapeRange = importShapeGallery.Slides[0].Shapes.Range();
 
             if (shapeRange.Count < 1)
             {
                 return;
             }
 
-            var shapeName = shapeRange[1].Name;
+            string shapeName = shapeRange[1].Name;
             importShapeGallery.CopyShape(shapeName);
 
             shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
-            var exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
 
             GraphicsUtil.ExportShape(shapeRange, exportPath);
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
         {
-            var loadingDialog = new LoadingDialogBox(ShapesLabText.MigratingDialogTitle,
+            LoadingDialogBox loadingDialog = new LoadingDialogBox(ShapesLabText.MigratingDialogTitle,
                                                     ShapesLabText.MigratingDialogContent);
             loadingDialog.Show();
 
@@ -889,7 +935,7 @@ namespace PowerPointLabs.ShapesLab
             // thumbnail should be dehighlighted
             if (!ModifierKeys.HasFlag(Keys.Control))
             {
-                foreach (var thumbnail in _selectedThumbnail)
+                foreach (LabeledThumbnail thumbnail in _selectedThumbnail)
                 {
                     thumbnail.DeHighlight();
                 }
@@ -928,7 +974,7 @@ namespace PowerPointLabs.ShapesLab
 
         private PowerPointShapeGalleryPresentation PrepareImportGallery(string importFilePath, bool fromCategory)
         {
-            var importFileCopyPath = Path.Combine(ShapeRootFolderPath, ImportFileCopyName);
+            string importFileCopyPath = Path.Combine(ShapeRootFolderPath, ImportFileCopyName);
 
             // copy the file to the current shape root if the file is not under root 
             if (!File.Exists(importFileCopyPath))
@@ -937,12 +983,12 @@ namespace PowerPointLabs.ShapesLab
             }
 
             // init the file as an imported file
-            var importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
+            PowerPointShapeGalleryPresentation importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
                                                                             ImportFileNameNoExtension)
-                                         {
-                                             IsImportedFile = true,
-                                             ImportToCategory = fromCategory ? string.Empty : CurrentCategory
-                                         };
+            {
+                IsImportedFile = true,
+                ImportToCategory = fromCategory ? string.Empty : CurrentCategory
+            };
 
             return importShapeGallery;
         }
@@ -951,11 +997,11 @@ namespace PowerPointLabs.ShapesLab
         {
             PrepareFolder();
 
-            var shapes = Directory.EnumerateFiles(CurrentShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
+            IOrderedEnumerable<string> shapes = Directory.EnumerateFiles(CurrentShapeFolderPath, "*.png").OrderBy(item => item, _stringComparer);
 
-            foreach (var shape in shapes)
+            foreach (string shape in shapes)
             {
-                var shapeName = Path.GetFileNameWithoutExtension(shape);
+                string shapeName = Path.GetFileNameWithoutExtension(shape);
 
                 if (shapeName == null)
                 {
@@ -982,9 +1028,9 @@ namespace PowerPointLabs.ShapesLab
             }
             else
                 if (p.X > myShapeFlowLayout.Width)
-                {
-                    p.X = myShapeFlowLayout.Width;
-                }
+            {
+                p.X = myShapeFlowLayout.Width;
+            }
 
             if (p.Y < 0)
             {
@@ -992,9 +1038,9 @@ namespace PowerPointLabs.ShapesLab
             }
             else
                 if (p.Y > myShapeFlowLayout.Height)
-                {
-                    p.Y = myShapeFlowLayout.Height;
-                }
+            {
+                p.Y = myShapeFlowLayout.Height;
+            }
         }
 
         private void RemoveThumbnail(LabeledThumbnail thumbnail, bool removeSelection = true)
@@ -1020,7 +1066,7 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            var newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLabel);
+            string newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLabel);
 
             File.Move(labeledThumbnail.ImagePath, newPath);
             labeledThumbnail.ImagePath = newPath;
@@ -1032,7 +1078,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void ReorderThumbnail(LabeledThumbnail labeledThumbnail)
         {
-            var index = FindLabeledThumbnailIndex(labeledThumbnail.NameLabel);
+            int index = FindLabeledThumbnailIndex(labeledThumbnail.NameLabel);
 
             // if the current control is the only control or something goes wrong, don't need
             // to reorder
@@ -1060,8 +1106,8 @@ namespace PowerPointLabs.ShapesLab
         # region Event Handlers
         private void CategoryBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedIndex = categoryBox.SelectedIndex;
-            var selectedCategory = _categoryBinding[selectedIndex].ToString();
+            int selectedIndex = categoryBox.SelectedIndex;
+            string selectedCategory = _categoryBinding[selectedIndex].ToString();
 
             CurrentCategory = selectedCategory;
             Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
@@ -1070,7 +1116,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void CategoryBoxOwnerDraw(object sender, DrawItemEventArgs e)
         {
-            var comboBox = sender as ComboBox;
+            ComboBox comboBox = sender as ComboBox;
 
             if (comboBox == null ||
                 e.Index == -1)
@@ -1078,8 +1124,8 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            var font = comboBox.Font;
-            var text = (string)_categoryBinding[e.Index];
+            Font font = comboBox.Font;
+            string text = (string)_categoryBinding[e.Index];
 
             if (text == Globals.ThisAddIn.ShapesLabConfig.DefaultCategory)
             {
@@ -1087,7 +1133,7 @@ namespace PowerPointLabs.ShapesLab
                 font = new Font(font, FontStyle.Bold);
             }
 
-            using (var brush = new SolidBrush(e.ForeColor))
+            using (SolidBrush brush = new SolidBrush(e.ForeColor))
             {
                 e.DrawBackground();
                 e.Graphics.DrawString(text, font, brush, e.Bounds);
@@ -1110,7 +1156,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 if (category != CurrentCategory)
                 {
-                    var item = copyToToolStripMenuItem.DropDownItems.Add(category);
+                    ToolStripItem item = copyToToolStripMenuItem.DropDownItems.Add(category);
                     item.Click += CopyContextMenuStripSubMenuClick;
                 }
             }
@@ -1120,32 +1166,31 @@ namespace PowerPointLabs.ShapesLab
 
         private void CopyContextMenuStripSubMenuClick(object sender, EventArgs e)
         {
-            var item = sender as ToolStripItem;
+            ToolStripItem item = sender as ToolStripItem;
 
             if (item == null)
             {
                 return;
             }
 
-            var categoryName = item.Text;
+            string categoryName = item.Text;
 
             GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
 
-            foreach (var thumbnail in _selectedThumbnail)
+            foreach (LabeledThumbnail thumbnail in _selectedThumbnail)
             {
-                var shapeName = thumbnail.NameLabel;
+                string shapeName = thumbnail.NameLabel;
 
-                var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
-                var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
+                string oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
+                string destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
 
                 // if we have an identical name in the destination category, we won't allow
                 // moving
                 if (File.Exists(destPath))
                 {
-                    MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.",
-                                                  shapeName,
-                                                  categoryName));
-
+                    MessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination,
+                                    shapeName,
+                                    categoryName));
                     break;
                 }
 
@@ -1169,7 +1214,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void FlowlayoutContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var item = e.ClickedItem;
+            ToolStripItem item = e.ClickedItem;
 
             if (item.Name.Contains("settings"))
             {
@@ -1235,11 +1280,11 @@ namespace PowerPointLabs.ShapesLab
             if (_isPanelMouseDown)
             {
                 _curPosition = e.Location;
-                var rect = CreateRect(_curPosition, _startPosition);
+                Rectangle rect = CreateRect(_curPosition, _startPosition);
 
                 _selectRect.Size = rect.Size;
                 _selectRect.Location = myShapeFlowLayout.PointToScreen(rect.Location);
-                
+
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
                     if (!(control is LabeledThumbnail))
@@ -1247,8 +1292,8 @@ namespace PowerPointLabs.ShapesLab
                         continue;
                     }
 
-                    var labeledThumbnail = control as LabeledThumbnail;
-                    var labeledThumbnailRect =
+                    LabeledThumbnail labeledThumbnail = control as LabeledThumbnail;
+                    Rectangle labeledThumbnailRect =
                         myShapeFlowLayout.RectangleToClient(
                             labeledThumbnail.RectangleToScreen(labeledThumbnail.ClientRectangle));
 
@@ -1280,7 +1325,7 @@ namespace PowerPointLabs.ShapesLab
             _isPanelDrawingFinish = true;
             _selectRect.Hide();
 
-            foreach (var thumbnail in _selectingThumbnail)
+            foreach (LabeledThumbnail thumbnail in _selectingThumbnail)
             {
                 if (_selectedThumbnail.Contains(thumbnail))
                 {
@@ -1302,14 +1347,14 @@ namespace PowerPointLabs.ShapesLab
         {
             if (_isPanelMouseDown)
             {
-                var rect = CreateRect(_curPosition, _startPosition);
+                Rectangle rect = CreateRect(_curPosition, _startPosition);
 
-                using (var brush = new SolidBrush(Color.FromArgb(100, 0, 0, 255)))
+                using (SolidBrush brush = new SolidBrush(Color.FromArgb(100, 0, 0, 255)))
                 {
                     e.Graphics.FillRectangle(brush, rect);
                 }
 
-                using (var pen = new Pen(Color.FromArgb(200, 0, 0, 255)))
+                using (Pen pen = new Pen(Color.FromArgb(200, 0, 0, 255)))
                 {
                     e.Graphics.DrawRectangle(pen, rect);
                 }
@@ -1361,11 +1406,11 @@ namespace PowerPointLabs.ShapesLab
                 return;
             }
 
-            var clickedThumbnail = sender as LabeledThumbnail;
+            LabeledThumbnail clickedThumbnail = sender as LabeledThumbnail;
 
-            var shapeName = clickedThumbnail.NameLabel;
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            
+            string shapeName = clickedThumbnail.NameLabel;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+
             if (currentSlide != null)
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -1381,7 +1426,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void NameEditFinishHandler(object sender, string oldName)
         {
-            var labeledThumbnail = sender as LabeledThumbnail;
+            LabeledThumbnail labeledThumbnail = sender as LabeledThumbnail;
 
             // by right, name change only happens when the labeled thumbnail is selected.
             // Therfore, if the notifier doesn't come from the selected object, something
@@ -1416,7 +1461,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 if (category != CurrentCategory)
                 {
-                    var item = moveShapeToolStripMenuItem.DropDownItems.Add(category);
+                    ToolStripItem item = moveShapeToolStripMenuItem.DropDownItems.Add(category);
                     item.Click += MoveContextMenuStripSubMenuClick;
                 }
             }
@@ -1426,31 +1471,31 @@ namespace PowerPointLabs.ShapesLab
 
         private void MoveContextMenuStripSubMenuClick(object sender, EventArgs e)
         {
-            var item = sender as ToolStripItem;
+            ToolStripItem item = sender as ToolStripItem;
 
             if (item == null)
             {
                 return;
             }
 
-            var categoryName = item.Text;
+            string categoryName = item.Text;
 
             GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
 
-            foreach (var thumbnail in _selectedThumbnail)
+            foreach (LabeledThumbnail thumbnail in _selectedThumbnail)
             {
-                var shapeName = thumbnail.NameLabel;
+                string shapeName = thumbnail.NameLabel;
 
-                var oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
-                var destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
+                string oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
+                string destPath = Path.Combine(ShapeRootFolderPath, categoryName, shapeName) + ".png";
 
                 // if we have an identical name in the destination category, we won't allow
                 // moving
                 if (File.Exists(destPath))
                 {
-                    MessageBox.Show(string.Format("{0} exists in {1}. Please rename your shape before moving.", shapeName,
-                                                  categoryName));
-
+                    MessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination, 
+                                    shapeName, 
+                                    categoryName));
                     break;
                 }
 
@@ -1473,7 +1518,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var item = e.ClickedItem;
+            ToolStripItem item = e.ClickedItem;
 
             if (item.Name.Contains("remove"))
             {
@@ -1526,9 +1571,9 @@ namespace PowerPointLabs.ShapesLab
 
             ClickTimerReset();
         }
-        # endregion
+        #endregion
 
-        # region search box appearance and behaviors
+        #region search box appearance and behaviors
         /*
         private bool _searchBoxFocused = false;
         protected override void OnLoad(EventArgs e)
@@ -1575,6 +1620,24 @@ namespace PowerPointLabs.ShapesLab
             }
         }
         */
-        # endregion
+        #endregion
+
+        #region GUI Handles
+
+        private void AddShapeButton_Click(object sender, EventArgs e)
+        {
+            Selection selection = ActionFrameworkExtensions.GetCurrentSelection();
+            ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
+
+            AddShapeFromSelection(selection, addIn);
+        }
+        #endregion
+
+        #region ToolTip
+        private void InitToolTipControl()
+        {
+            toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
+        }
+        #endregion
     }
 }

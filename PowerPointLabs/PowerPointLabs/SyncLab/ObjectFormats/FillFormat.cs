@@ -11,7 +11,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            var duplicateShape = formatShape.Duplicate()[1];
+            Shape duplicateShape = formatShape.Duplicate()[1];
             bool canCopy = Sync(formatShape, duplicateShape);
             duplicateShape.Delete();
             return canCopy;
@@ -43,6 +43,24 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             try
             {
+                // force msoFillMixed to msoFillSolid
+                // freshly created textboxes have the msoFillMixed type 
+                // otherwise, msoFillMixed only appears when multiple shapes are selected
+                // manual conversion is needed as msoFillMixed textboxes risk system forced conversions to msoFillSolid
+                // system forced conversions will set fill color to black
+                //
+                // lines also have the msoFillMixed type
+                // they have no fill, throwing an exception in the following if block
+                // this is desired behavior, disabling FillFormat for lines
+                if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillMixed)
+                {
+                    int oldColor = formatShape.Fill.ForeColor.RGB;
+                    float oldTransparency = formatShape.Fill.Transparency;
+                    formatShape.Fill.Solid();
+                    formatShape.Fill.ForeColor.RGB = oldColor;
+                    formatShape.Fill.Transparency = oldTransparency;
+                }
+                
                 if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillPatterned)
                 {
                     newShape.Fill.Patterned(formatShape.Fill.Pattern);
@@ -72,7 +90,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         private static void SyncGradient(Shape formatShape, Shape newShape) //should return bool?
         {
-            var gradientColorType = formatShape.Fill.GradientColorType;
+            Microsoft.Office.Core.MsoGradientColorType gradientColorType = formatShape.Fill.GradientColorType;
 
             if (gradientColorType == Microsoft.Office.Core.MsoGradientColorType.msoGradientOneColor)
             {

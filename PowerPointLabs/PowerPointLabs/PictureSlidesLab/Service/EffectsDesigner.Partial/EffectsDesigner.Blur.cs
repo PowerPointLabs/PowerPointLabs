@@ -16,9 +16,9 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Source.BlurImageFile = BlurImage(imageFileToBlur
                 ?? Source.FullSizeImageFile
                 ?? Source.ImageFile, degree);
-            var blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
-            var slideWidth = SlideWidth;
-            var slideHeight = SlideHeight;
+            PowerPoint.Shape blurImageShape = AddPicture(Source.BlurImageFile, EffectName.Blur);
+            float slideWidth = SlideWidth;
+            float slideHeight = SlideHeight;
             FitToSlide.AutoFit(blurImageShape, slideWidth, slideHeight);
             CropPicture(blurImageShape);
             return blurImageShape;
@@ -31,16 +31,16 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 return imageFilePath;
             }
 
-            var resizeImageFile = Util.TempPath.GetPath("fullsize_resize");
-            using (var imageFactory = new ImageFactory())
+            string resizeImageFile = Util.TempPath.GetPath("fullsize_resize");
+            using (ImageFactory imageFactory = new ImageFactory())
             {
-                var image = imageFactory
+                Image image = imageFactory
                     .Load(imageFilePath)
                     .Image;
 
-                var ratio = (float)image.Width / image.Height;
-                var targetHeight = Math.Round(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
-                var targetWidth = Math.Round(targetHeight * ratio);
+                float ratio = (float)image.Width / image.Height;
+                double targetHeight = Math.Round(MaxThumbnailHeight - (MaxThumbnailHeight - MinThumbnailHeight) / 100f * degree);
+                double targetWidth = Math.Round(targetHeight * ratio);
 
                 image = imageFactory
                     .Resize(new Size((int)targetWidth, (int)targetHeight))
@@ -48,10 +48,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 image.Save(resizeImageFile);
             }
 
-            var blurImageFile = Util.TempPath.GetPath("fullsize_blur");
-            using (var imageFactory = new ImageFactory())
+            string blurImageFile = Util.TempPath.GetPath("fullsize_blur");
+            using (ImageFactory imageFactory = new ImageFactory())
             {
-                var image = imageFactory
+                Image image = imageFactory
                     .Load(resizeImageFile)
                     .GaussianBlur(5)
                     .Image;

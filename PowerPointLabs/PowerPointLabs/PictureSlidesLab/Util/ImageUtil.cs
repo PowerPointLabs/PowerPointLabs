@@ -17,15 +17,15 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                 return null;
             }
 
-            var thumbnailPath = StoragePath.GetPath("thumbnail-"
+            string thumbnailPath = StoragePath.GetPath("thumbnail-"
                 + DateTime.Now.GetHashCode() + "-"
                 + Guid.NewGuid().ToString().Substring(0, 7));
-            using (var imageFactory = new ImageFactory())
+            using (ImageFactory imageFactory = new ImageFactory())
             {
-                var image = imageFactory
+                Image image = imageFactory
                         .Load(filename)
                         .Image;
-                var ratio = (float) image.Width / image.Height;
+                float ratio = (float) image.Width / image.Height;
                 image = imageFactory
                         .Resize(new Size((int)(ThumbnailHeight * ratio), ThumbnailHeight))
                         .Image;
@@ -37,9 +37,9 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         public static string GetWidthAndHeight(string filename)
         {
             string result;
-            using (var imageFactory = new ImageFactory())
+            using (ImageFactory imageFactory = new ImageFactory())
             {
-                var image = imageFactory
+                Image image = imageFactory
                         .Load(filename)
                         .Image;
                 result = image.Width + " x " + image.Height;

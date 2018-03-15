@@ -6,7 +6,7 @@ using PowerPointLabs.AutoUpdate.Interface;
 
 namespace PowerPointLabs.AutoUpdate
 {
-    public class Downloader : IDownloader
+    public sealed class Downloader : IDownloader, IDisposable
     {
         private readonly WebClient _client = new WebClient();
 
@@ -44,11 +44,17 @@ namespace PowerPointLabs.AutoUpdate
             return this;
         }
 
+        public void Dispose()
+        {
+            // Dispose web client after downloading or when error occurs
+            this._client.Dispose();
+        }
+
         public void Start()
         {
             try
             {
-                var th = new Task(StartDownload);
+                Task th = new Task(StartDownload);
                 th.Start();
             }
             catch (Exception e)
@@ -59,7 +65,7 @@ namespace PowerPointLabs.AutoUpdate
 
         private void CallAfterDownloadDelegate()
         {
-            var handler = AfterDownload;
+            AfterDownloadEventDelegate handler = AfterDownload;
             if (handler != null)
             {
                 handler();
@@ -68,7 +74,7 @@ namespace PowerPointLabs.AutoUpdate
 
         private void CallWhenErrorDelegate(Exception e)
         {
-            var handler = WhenError;
+            ErrorEventDelegate handler = WhenError;
             if (handler != null)
             {
                 handler(e);
@@ -91,6 +97,10 @@ namespace PowerPointLabs.AutoUpdate
             {
                 CallWhenErrorDelegate(e);
                 Logger.LogException(e, "Failed to execute Downloader.StartDownload");
+            }
+            finally
+            {
+                Dispose();
             }
         }
     }

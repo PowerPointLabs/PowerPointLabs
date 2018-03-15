@@ -11,14 +11,14 @@ namespace Test.Util
     {
         public static void WaitForDialogBox(Action openDialogAction, string lpClassName, string lpWindowName, int timeLimit = 5000)
         {
-            var task = new Task(() => openDialogAction());
+            Task task = new Task(() => openDialogAction());
             task.Start();
 
             int pollCount = 10;
             int retryInterval = timeLimit/pollCount;
             for (int i = 0; i <= pollCount; ++i)
             {
-                var spotlightDialog = NativeUtil.FindWindow(null, lpWindowName);
+                IntPtr spotlightDialog = NativeUtil.FindWindow(null, lpWindowName);
                 if (spotlightDialog != IntPtr.Zero) return;
                 ThreadUtil.WaitFor(retryInterval);
             }
@@ -27,7 +27,7 @@ namespace Test.Util
 
         public static void CloseDialogBox(IntPtr dialogBoxHandle, string buttonName)
         {
-            var btnHandle = NativeUtil.FindWindowEx(dialogBoxHandle, IntPtr.Zero, null, buttonName);
+            IntPtr btnHandle = NativeUtil.FindWindowEx(dialogBoxHandle, IntPtr.Zero, null, buttonName);
             Assert.AreNotEqual(IntPtr.Zero, btnHandle, "Failed to find button in the dialog box.");
             NativeUtil.SetForegroundWindow(dialogBoxHandle);
             NativeUtil.SendMessage(btnHandle, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);

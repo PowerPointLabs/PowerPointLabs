@@ -12,8 +12,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 
         protected List<StyleOption> GetOptions()
         {
-            var result = new List<StyleOption>();
-            for (var i = 0; i < 8; i++)
+            List<StyleOption> result = new List<StyleOption>();
+            for (int i = 0; i < 8; i++)
             {
                 result.Add(new StyleOption());
             }
@@ -22,7 +22,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 
         protected List<StyleOption> GetOptionsWithSuitableFontColor()
         {
-            var result = GetOptions();
+            List<StyleOption> result = GetOptions();
             result[0].FontColor = "#000000"; //white(bg color) + black
             result[1].FontColor = "#FFD700"; //black + yellow
             result[2].FontColor = "#000000"; //yellow + black
@@ -34,7 +34,7 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
 
         protected List<StyleOption> UpdateStyleName(List<StyleOption> opts, string styleName)
         {
-            foreach (var styleOption in opts)
+            foreach (StyleOption styleOption in opts)
             {
                 styleOption.StyleName = styleName;
             }

@@ -12,9 +12,9 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
 
         public Factory.SliderPropHandlerFactory.SliderProperties GetSliderProperties(StyleOption option)
         {
-            var sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
-            var type = option.GetType();
-            var prop = type.GetProperty(PropName);
+            Factory.SliderPropHandlerFactory.SliderProperties sliderProperties = new Factory.SliderPropHandlerFactory.SliderProperties();
+            System.Type type = option.GetType();
+            System.Reflection.PropertyInfo prop = type.GetProperty(PropName);
             sliderProperties.Value = (int)prop.GetValue(option, null);
             sliderProperties.Maximum = 100;
             sliderProperties.TickFrequency = 1;
@@ -25,8 +25,8 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler
         public void BindStyleOption(StyleOption option, int value)
         {
             option.OptionName = "Customized";
-            var type = option.GetType();
-            var prop = type.GetProperty(PropName);
+            System.Type type = option.GetType();
+            System.Reflection.PropertyInfo prop = type.GetProperty(PropName);
             prop.SetValue(option, value, null);
         }
 

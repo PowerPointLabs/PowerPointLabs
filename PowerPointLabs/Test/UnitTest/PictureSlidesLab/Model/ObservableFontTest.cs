@@ -12,8 +12,8 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         [TestCategory("UT")]
         public void FontNotification()
         {
-            var font = new ObservableFont();
-            var isNotified = false;
+            ObservableFont font = new ObservableFont();
+            bool isNotified = false;
             font.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Font")

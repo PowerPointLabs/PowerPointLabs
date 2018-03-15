@@ -41,13 +41,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="e"></param>
         private void VariantsColorPanel_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var panel = sender as Border;
+            Border panel = sender as Border;
             if (panel == null)
             {
                 return;
             }
 
-            var colorDialog = new ColorDialog
+            ColorDialog colorDialog = new ColorDialog
             {
                 Color = GetColor(panel.Background as SolidColorBrush),
                 FullOpen = true
@@ -84,10 +84,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void VariantsSlider_OnValueChangedFinal(object sender, EventArgs e)
         {
-            var type = e.GetType();
+            Type type = e.GetType();
             if (type.Equals(typeof(System.Windows.Input.KeyEventArgs)))
             {
-                var eventArgs = (System.Windows.Input.KeyEventArgs)e;
+                System.Windows.Input.KeyEventArgs eventArgs = (System.Windows.Input.KeyEventArgs)e;
                 if (eventArgs.Key != Key.Left && eventArgs.Key != Key.Right)
                 {
                     return;
@@ -118,9 +118,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+            ImageItem selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
-            var currentCategory = (string) VariantsComboBox.SelectedValue;
+            string currentCategory = (string) VariantsComboBox.SelectedValue;
             if (currentCategory == PictureSlidesLabText.VariantCategoryFontFamily
                 && selectedItem != null
                 && selectedItem.Tooltip != PictureSlidesLabText.NoEffect)
@@ -141,9 +141,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+            ImageItem selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
-            var currentCategory = (string) VariantsComboBox.SelectedValue;
+            string currentCategory = (string) VariantsComboBox.SelectedValue;
             if (currentCategory.Contains(PictureSlidesLabText.ColorHasEffect)
                  && selectedItem != null
                  && selectedItem.Tooltip != PictureSlidesLabText.NoEffect)
@@ -164,9 +164,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            var selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
+            ImageItem selectedItem = StylesVariationListBox.SelectedValue as ImageItem;
 
-            var currentCategory = (string)VariantsComboBox.SelectedValue;
+            string currentCategory = (string)VariantsComboBox.SelectedValue;
             if (IsSliderSupported(currentCategory)
                  && selectedItem != null
                  && selectedItem.Tooltip != PictureSlidesLabText.NoEffect)
@@ -187,7 +187,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            var currentCategory = (string) VariantsComboBox.SelectedValue;
+            string currentCategory = (string) VariantsComboBox.SelectedValue;
             if (currentCategory == PictureSlidesLabText.VariantCategoryPicture)
             {
                 PictureAspectRefreshButton.Visibility = Visibility.Visible;

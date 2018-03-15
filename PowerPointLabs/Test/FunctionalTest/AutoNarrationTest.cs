@@ -15,11 +15,11 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_AutoNarrationTest()
         {
-            var actualSlide = PpOperations.SelectSlide(7);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
 
             PplFeatures.AutoNarrate();
 
-            var expSlide = PpOperations.SelectSlide(8);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }
     }

@@ -44,7 +44,7 @@ namespace PowerPointLabs.PictureSlidesLab.Model
         {
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(this))
             {
-                var myAttribute = (DefaultValueAttribute) property
+                DefaultValueAttribute myAttribute = (DefaultValueAttribute) property
                     .Attributes[typeof(DefaultValueAttribute)];
                 if (myAttribute != null)
                 {

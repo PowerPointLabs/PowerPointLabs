@@ -17,15 +17,15 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         private SlideData(Slide slide)
         {
-            var hashCode = DateTime.Now.GetHashCode();
+            int hashCode = DateTime.Now.GetHashCode();
             SlideImage = "slide" + hashCode;
             slide.Export(TempPath.GetTempTestFolder() + SlideImage, "PNG");
 
             Animation = new List<IEffectData>();
-            var seq = slide.TimeLine.MainSequence;
+            Sequence seq = slide.TimeLine.MainSequence;
             for (int i = 1; i <= seq.Count; ++i)
             {
-                var effect = seq[i];
+                Effect effect = seq[i];
                 Animation.Add(EffectData.FromEffect(effect));
             }
         }
