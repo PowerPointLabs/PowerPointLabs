@@ -94,12 +94,12 @@ namespace PowerPointLabs.WPF
         /// </summary>
         private static void OnSaveInvalidated(DependencyObject pDependencyObject, DependencyPropertyChangedEventArgs pDependencyPropertyChangedEventArgs)
         {
-            var window = pDependencyObject as Window;
+            Window window = pDependencyObject as Window;
             if (window != null)
             {
                 if ((bool)pDependencyPropertyChangedEventArgs.NewValue)
                 {
-                    var settings = new WindowSettings(window);
+                    WindowSettings settings = new WindowSettings(window);
                     settings.Attach();
                 }
             }

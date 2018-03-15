@@ -7,11 +7,13 @@
         public const string PasteAtCursorPositionTag = "PasteAtCursorPosition";
         public const string PasteAtOriginalPositionTag = "PasteAtOriginalPosition";
         public const string PasteToFillSlideTag = "PasteToFillSlide";
+        public const string PasteToFitSlideTag = "PasteToFitSlide";
         public const string ReplaceWithClipboardTag = "ReplaceWithClipboard";
         public const string PasteIntoGroupTag = "PasteIntoGroup";
 
         public const string RibbonMenuLabel = "Paste";
         public const string PasteToFillSlideLabel = "Paste To Fill Slide";
+        public const string PasteToFitSlideLabel = "Paste To Fit Slide";
         public const string ReplaceWithClipboardLabel = "Replace With Clipboard";
         public const string PasteIntoGroupLabel = "Paste Into Group";
         public const string PasteAtCursorPositionLabel = "Paste At Cursor Position";
@@ -24,6 +26,9 @@
         public const string PasteToFillSlideSupertip =
             "Paste your copied objects to fill the current slide.\n\n" +
             "To perform this action, with object(s) copied, click this button.";
+        public const string PasteToFitSlideSupertip =
+            "Paste your copied objects to fit the current slide.\n\n" +
+            "To perform this action, with object(s) copied, click this button.";
         public const string PasteAtOriginalPositionSupertip =
             "Paste your copied objects at their original positions when they were copied.\n\n" +
             "To perform this action, with object(s) copied, click this button.";
@@ -34,5 +39,7 @@
             "Paste your copied objects into an existing group.\n\n" +
             "To perform this action, select a group on the slide, then with object(s) copied, click this button.";
         #endregion
+
+        public const string ReplaceWithClipboardActionHandlerReminderText = "Please select at least one shape.";
     }
 }

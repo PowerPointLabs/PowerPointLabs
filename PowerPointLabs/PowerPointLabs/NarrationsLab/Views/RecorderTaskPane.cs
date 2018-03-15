@@ -27,6 +27,7 @@ using PPExtraEventHelper;
 namespace PowerPointLabs.NarrationsLab.Views
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
+    // These task panes use User Control from Container 
     public partial class RecorderTaskPane : UserControl
     {
 #pragma warning disable 0618
@@ -182,7 +183,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         {
             try
             {
-                var buffer = new byte[2048];
+                byte[] buffer = new byte[2048];
                 WaveFileWriter writer = null;
 
                 // delete the old file if it exists
@@ -201,9 +202,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                     return;
                 }
 
-                foreach (var audio in audios)
+                foreach (string audio in audios)
                 {
-                    using (var reader = new WaveFileReader(audio))
+                    using (WaveFileReader reader = new WaveFileReader(audio))
                     {
                         if (writer == null)
                         {
@@ -242,8 +243,8 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void NMergeAudios(string path, string baseName, string outputName)
         {
-            var audioFiles = Directory.EnumerateFiles(path, String.Format("*.{0}", Audio.RecordedFormatExtension));
-            var audios = audioFiles.Where(audio => audio.Contains(baseName)).ToArray();
+            IEnumerable<string> audioFiles = Directory.EnumerateFiles(path, String.Format("*.{0}", Audio.RecordedFormatExtension));
+            string[] audios = audioFiles.Where(audio => audio.Contains(baseName)).ToArray();
 
             NMergeAudios(audios, outputName);
         }
@@ -325,7 +326,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private int GetRecordIndexFromScriptIndex(int relativeId, int scriptIndex)
         {
-            var recordIndex = -1;
+            int recordIndex = -1;
 
             // if no matched script, return -1 directly
             if (scriptIndex == -1)
@@ -333,9 +334,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                 return -1;
             }
 
-            for (var i = 0; i < _audioList[relativeId].Count; i++)
+            for (int i = 0; i < _audioList[relativeId].Count; i++)
             {
-                var audio = _audioList[relativeId][i];
+                Audio audio = _audioList[relativeId][i];
 
                 if (audio.MatchScriptID == scriptIndex)
                 {
@@ -356,7 +357,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private Audio GetPlaybackFromList()
         {
-            var relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
+            int relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
             int playbackIndex = -1;
             
             if (recDisplay.SelectedIndices.Count != 0)
@@ -374,7 +375,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private Audio GetPlaybackFromList(int scriptIndex, int slideId)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slideId);
+            int relativeSlideId = GetRelativeSlideIndex(slideId);
             int recordIndex = -1;
 
             if (scriptIndex == -1)
@@ -399,11 +400,11 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void MapShapesWithAudio(PowerPointSlide slide)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slide.ID);
+            int relativeSlideId = GetRelativeSlideIndex(slide.ID);
             XmlParser xmlParser;
 
             string searchRule = string.Format("^({0}|{1})", SpeechShapePrefixOld, SpeechShapePrefix);
-            var shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound, new Regex(searchRule));
+            List<Shape> shapes = slide.GetShapesWithMediaType(PpMediaType.ppMediaTypeSound, new Regex(searchRule));
 
             if (shapes.Count == 0)
             {
@@ -422,9 +423,9 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
 
             // iterate through all shapes, skip audios that are not generated speech
-            foreach (var shape in shapes)
+            foreach (Shape shape in shapes)
             {
-                var saveName = _tempFullPath + xmlParser.GetCorrespondingAudio(shape.Name);
+                string saveName = _tempFullPath + xmlParser.GetCorrespondingAudio(shape.Name);
                 Audio audio = null;
 
                 try
@@ -465,11 +466,11 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void RefreshScriptList(PowerPointSlide slide)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slide.ID);
+            int relativeSlideId = GetRelativeSlideIndex(slide.ID);
 
-            var taggedNotes = new TaggedText(slide.NotesPageText.Trim());
-            var prettyNotes = taggedNotes.ToPrettyString();
-            var splitScript = (new TaggedText(prettyNotes)).SplitByClicks();
+            TaggedText taggedNotes = new TaggedText(slide.NotesPageText.Trim());
+            string prettyNotes = taggedNotes.ToPrettyString();
+            List<string> splitScript = (new TaggedText(prettyNotes)).SplitByClicks();
 
             while (relativeSlideId >= _scriptList.Count)
             {
@@ -481,7 +482,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void RefreshAudioList(PowerPointSlide slide, string[] names)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slide.ID);
+            int relativeSlideId = GetRelativeSlideIndex(slide.ID);
 
             while (relativeSlideId >= _audioList.Count)
             {
@@ -502,7 +503,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 {
                     string saveName = names[i];
                     string name = String.Format(SpeechShapeFormat, i);
-                    var audio = new Audio(name, saveName, i);
+                    Audio audio = new Audio(name, saveName, i);
 
                     _audioList[relativeSlideId].Add(audio);
                 }
@@ -543,7 +544,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             for (int index = 0; index < _audioList[relativeSlideId].Count; index++)
             {
-                var audio = _audioList[relativeSlideId][index];
+                Audio audio = _audioList[relativeSlideId][index];
 
                 ListViewItem item = recDisplay.Items.Add((index + 1).ToString(CultureInfo.InvariantCulture));
                 item.SubItems.Add(audio.Name);
@@ -617,7 +618,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             scriptDisplay.BeginUpdate();
             for (int i = 0; i < scirpt.Count; i++)
             {
-                var corresRecIndex = GetRecordIndexFromScriptIndex(relativeSlideId, i);
+                int corresRecIndex = GetRecordIndexFromScriptIndex(relativeSlideId, i);
 
                 if (corresRecIndex != -1)
                 {
@@ -689,7 +690,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         public void ClearRecordDataList()
         {
             // clear the data structure
-            foreach (var audioInslide in _audioList)
+            foreach (List<Audio> audioInslide in _audioList)
             {
                 audioInslide.Clear();
             }
@@ -713,7 +714,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         public void ClearScriptDataList()
         {
-            foreach (var slide in _scriptList)
+            foreach (List<string> slide in _scriptList)
             {
                 slide.Clear();
             }
@@ -739,16 +740,16 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private List<Audio> CopySlideAudio(int slideId)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slideId);
-            var audioList = new List<Audio>(_audioList[relativeSlideId]);
+            int relativeSlideId = GetRelativeSlideIndex(slideId);
+            List<Audio> audioList = new List<Audio>(_audioList[relativeSlideId]);
 
             return audioList;
         }
 
         private List<string> CopySlideScript(int slideId)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slideId);
-            var scriptList = new List<string>(_scriptList[relativeSlideId]);
+            int relativeSlideId = GetRelativeSlideIndex(slideId);
+            List<string> scriptList = new List<string>(_scriptList[relativeSlideId]);
 
             return scriptList;
         }
@@ -760,15 +761,15 @@ namespace PowerPointLabs.NarrationsLab.Views
             // some of them haven't been initialized.
             InitializeAudioAndScript(slide, null, false);
 
-            var audio = CopySlideAudio(slide.ID);
-            var script = CopySlideScript(slide.ID);
+            List<Audio> audio = CopySlideAudio(slide.ID);
+            List<string> script = CopySlideScript(slide.ID);
 
             return new Tuple<List<Audio>, List<string>>(audio, script);
         }
 
         private void PasteSlideAudio(int slideId, List<Audio> audioList)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slideId);
+            int relativeSlideId = GetRelativeSlideIndex(slideId);
 
             while (relativeSlideId >= _audioList.Count)
             {
@@ -780,7 +781,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void PasteSlideScript(int slideId, List<string> scriptList)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slideId);
+            int relativeSlideId = GetRelativeSlideIndex(slideId);
 
             while (relativeSlideId >= _scriptList.Count)
             {
@@ -798,10 +799,10 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void DeleteTempAudioFiles()
         {
-            var audioFiles = Directory.EnumerateFiles(_tempFullPath, String.Format("*.{0}", Audio.RecordedFormatExtension));
-            var tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
+            IEnumerable<string> audioFiles = Directory.EnumerateFiles(_tempFullPath, String.Format("*.{0}", Audio.RecordedFormatExtension));
+            string[] tempAudios = audioFiles.Where(audio => audio.Contains("temp")).ToArray();
 
-            foreach (var audio in tempAudios)
+            foreach (string audio in tempAudios)
             {
                 File.Delete(audio);
             }
@@ -850,9 +851,9 @@ namespace PowerPointLabs.NarrationsLab.Views
         {
             try
             {
-                var slides = PowerPointPresentation.Current.Slides.ToList();
+                List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides.ToList();
 
-                foreach (var slide in slides)
+                foreach (PowerPointSlide slide in slides)
                 {
                     // because of lazy loading, each slide will not be initialized
                     // until it is viewed.Therefore we need to remember the original
@@ -862,15 +863,15 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Error", "Error during setup", e);
+                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, TextCollection.CommonText.ErrorDuringSetup, e);
                 throw;
             }
         }
 
         public void InitializeAudioAndScript(PowerPointSlide slide, string[] names, bool forceRefresh)
         {
-            var relativeSlideId = GetRelativeSlideIndex(slide.ID);
-            var initialized = _audioList != null &&
+            int relativeSlideId = GetRelativeSlideIndex(slide.ID);
+            bool initialized = _audioList != null &&
                               _audioList.Count > relativeSlideId &&
                               _audioList[relativeSlideId].Count != 0;
 
@@ -887,7 +888,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         {
             for (int i = 0; i < slides.Count; i++)
             {
-                var slide = slides[i];
+                PowerPointSlide slide = slides[i];
 
                 InitializeAudioAndScript(slide, names[i], forceRefresh);
             }
@@ -934,7 +935,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // been selected
             SetAllRecorderButtonState(false);
 
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 InitializeAudioAndScript(currentSlide, null, false);
@@ -953,7 +954,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             // been selected
             SetAllRecorderButtonState(false);
 
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide != null)
             {
                 RefreshScriptList(currentSlide);
@@ -1006,7 +1007,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
             else
             {
-                var temp = (int) (value / (double) _playbackLenMillis * bar.Maximum);
+                int temp = (int) (value / (double) _playbackLenMillis * bar.Maximum);
                 if (temp > bar.Maximum)
                 {
                     temp = bar.Maximum;
@@ -1133,7 +1134,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             _recordClipCnt = 0;
             _recordTotalLength = 0;
             // construct new save name
-            var tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
+            string tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
 
             // start recording
             NStartRecordAudio(tempSaveName, Audio.RecordedSamplingRate, Audio.RecordedBitRate, Audio.RecordedChannels, true);
@@ -1188,7 +1189,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             recButton.Image = Properties.Resources.Pause;
 
             // start a new recording, name it after clip counter and restart the timer
-            var tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
+            string tempSaveName = String.Format(_tempWaveFileNameFormat, _recordClipCnt);
             NStartRecordAudio(tempSaveName, Audio.RecordedSamplingRate, Audio.RecordedBitRate, Audio.RecordedChannels, true);
             _timer = new System.Threading.Timer(TimerEvent, null, _resumeWaitingTime, 1000);
         }
@@ -1206,7 +1207,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             ResetTimer();
 
             // get current playback, can be null if there's no matched audio
-            var currentPlayback = GetPlaybackFromList(scriptIndex, currentSlide.ID);
+            Audio currentPlayback = GetPlaybackFromList(scriptIndex, currentSlide.ID);
 
             try
             {
@@ -1221,7 +1222,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 NCleanup();
 
                 // ask if the user wants to do the replacement
-                var result = DialogResult.Yes;
+                DialogResult result = DialogResult.Yes;
 
                 // prompt to the user only when escaping the slide show while recording
                 if (_inShowControlBox != null && 
@@ -1255,14 +1256,14 @@ namespace PowerPointLabs.NarrationsLab.Views
                     string displayName;
                     Audio newRec;
 
-                    var relativeSlideId = GetRelativeSlideIndex(currentSlide.ID);
+                    int relativeSlideId = GetRelativeSlideIndex(currentSlide.ID);
 
                     // map the script index with record index
                     // here a simple iteration will find:
                     // 1. the replacement position if a record exists;
                     // 2. an insertion position if a record needs to be added
                     // specially, index == -1 means the record needs to be appended
-                    var recordIndex = -1;
+                    int recordIndex = -1;
 
                     if (scriptIndex == -1)
                     {
@@ -1275,7 +1276,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         for (int i = 0; i < _audioList[relativeSlideId].Count; i++)
                         {
-                            var audio = _audioList[relativeSlideId][i];
+                            Audio audio = _audioList[relativeSlideId][i];
 
                             if (audio.MatchScriptID >= scriptIndex)
                             {
@@ -1291,7 +1292,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         saveName = currentPlayback.SaveName.Replace("." + Audio.RecordedFormatExtension, " rec." + Audio.RecordedFormatExtension);
                         displayName = currentPlayback.Name;
-                        var matchId = currentPlayback.MatchScriptID;
+                        int matchId = currentPlayback.MatchScriptID;
                         
                         if (scriptIndex == -1)
                         {
@@ -1321,7 +1322,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     // script, we need to construct the new record and insert it to a proper
                     // position
                     {
-                        var saveNameSuffix = String.Format(" {0} rec.{1}", scriptIndex, Audio.RecordedFormatExtension);
+                        string saveNameSuffix = String.Format(" {0} rec.{1}", scriptIndex, Audio.RecordedFormatExtension);
                         saveName = _tempFullPath + String.Format(SaveNameFormat, relativeSlideId) + saveNameSuffix;
                         
                         // the display name -> which script it corresponds to
@@ -1370,9 +1371,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!Globals.ThisAddIn.Ribbon.RemoveAudioEnabled)
+                        if (!NotesToAudio.IsRemoveAudioEnabled)
                         {
-                            Globals.ThisAddIn.Ribbon.RemoveAudioEnabled = true;
+                            NotesToAudio.IsRemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }
@@ -1390,7 +1391,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             catch (Exception e)
             {
                 ErrorDialogBox.ShowDialog("Record cannot be saved\n",
-                                              "Error when saving the file", e);
+                                              "Error when saving the file.", e);
                 throw;
             }
             finally
@@ -1429,7 +1430,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             ResetRecorder();
             
             // get play back length
-            var playback = GetPlaybackFromList();
+            Audio playback = GetPlaybackFromList();
 
             if (playback == null)
             {
@@ -1583,10 +1584,10 @@ namespace PowerPointLabs.NarrationsLab.Views
             slideShowButton.Enabled = false;
 
             // get current slide number
-            var slideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
+            int slideIndex = PowerPointCurrentPresentationInfo.CurrentSlide.Index;
             
             // set the starting slide and start the slide show
-            var slideShowSettings = PowerPointPresentation.Current.Presentation.SlideShowSettings;
+            SlideShowSettings slideShowSettings = PowerPointPresentation.Current.Presentation.SlideShowSettings;
             
             // start from the selected slide
             slideShowSettings.StartingSlide = slideIndex;
@@ -1594,7 +1595,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             slideShowSettings.RangeType = PpSlideShowRangeType.ppShowSlideRange;
             
             // get the slideShowWindow and slideShowView object
-            var slideShowWindow = slideShowSettings.Run();
+            SlideShowWindow slideShowWindow = slideShowSettings.Run();
 
             // unhide the pointer
             slideShowWindow.View.PointerType = PpSlideShowPointerType.ppSlideShowPointerArrow;
@@ -1707,9 +1708,9 @@ namespace PowerPointLabs.NarrationsLab.Views
             // ensure there is and only 1 item has been selected
             if (scriptDisplay.SelectedItems.Count == 1)
             {
-                var index = scriptDisplay.SelectedIndices[0];
-                var relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
-                var recordIndex = GetRecordIndexFromScriptIndex(relativeSlideId, index);
+                int index = scriptDisplay.SelectedIndices[0];
+                int relativeSlideId = GetRelativeSlideIndex(PowerPointCurrentPresentationInfo.CurrentSlide.ID);
+                int recordIndex = GetRecordIndexFromScriptIndex(relativeSlideId, index);
                 
                 // there is a corresponding record
                 if (recordIndex != -1)
@@ -1730,7 +1731,7 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void ContextMenuStrip1ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var item = e.ClickedItem;
+            ToolStripItem item = e.ClickedItem;
 
             if (item.Name.Contains("play"))
             {
@@ -1750,11 +1751,11 @@ namespace PowerPointLabs.NarrationsLab.Views
             {
                 if (recDisplay.SelectedItems.Count == 1)
                 {
-                    var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-                    var recordIndex = recDisplay.SelectedIndices[0];
-                    var relativeSlideId = GetRelativeSlideIndex(currentSlide.ID);
-                    var audio = _audioList[relativeSlideId][recordIndex];
-                    var scriptIndex = audio.MatchScriptID;
+                    PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                    int recordIndex = recDisplay.SelectedIndices[0];
+                    int relativeSlideId = GetRelativeSlideIndex(currentSlide.ID);
+                    Audio audio = _audioList[relativeSlideId][recordIndex];
+                    int scriptIndex = audio.MatchScriptID;
 
                     // delete the corresponding audio shape
                     currentSlide.DeleteShapesWithPrefix(audio.Name);
@@ -1781,7 +1782,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         {
             get
             {
-                var createParams = base.CreateParams;
+                CreateParams createParams = base.CreateParams;
                 createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
                 return createParams;
             }

@@ -49,7 +49,7 @@ namespace PowerPointLabs
         {
             if (this._converter != null)
             {
-                var converterdValue = this._converter.Convert(cevent.Value, cevent.DesiredType, _converterParameter,
+                object converterdValue = this._converter.Convert(cevent.Value, cevent.DesiredType, _converterParameter,
                                                               _converterCulture);
                 cevent.Value = converterdValue;
             }
@@ -63,7 +63,7 @@ namespace PowerPointLabs
         {
             if (this._converter != null)
             {
-                var converterdValue = this._converter.ConvertBack(cevent.Value, cevent.DesiredType, _converterParameter,
+                object converterdValue = this._converter.ConvertBack(cevent.Value, cevent.DesiredType, _converterParameter,
                                                                   _converterCulture);
 
                 cevent.Value = converterdValue;

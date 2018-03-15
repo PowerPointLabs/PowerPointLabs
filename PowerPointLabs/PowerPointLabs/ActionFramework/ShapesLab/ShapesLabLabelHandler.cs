@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
     {
         protected override string GetLabel(string ribbonId)
         {
-            return ShapesLabText.RibbonMenuLabel;
+            return ShapesLabText.ShapesLabButtonLabel;
         }
     }
 }

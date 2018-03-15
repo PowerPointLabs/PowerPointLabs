@@ -13,7 +13,7 @@ namespace PowerPointLabs.Utils
         # region Folder Operations
         public static bool CopyFolder(string oldPath, string newPath)
         {
-            var copySuccess = true;
+            bool copySuccess = true;
 
             // create subfolder during recursions
             if (!Directory.Exists(newPath))
@@ -22,11 +22,11 @@ namespace PowerPointLabs.Utils
             }
 
             // copy files in a folder first
-            var files = Directory.GetFiles(oldPath);
+            string[] files = Directory.GetFiles(oldPath);
 
-            foreach (var file in files)
+            foreach (string file in files)
             {
-                var name = Path.GetFileName(file);
+                string name = Path.GetFileName(file);
 
                 // ignore thumb.db
                 if (name == null ||
@@ -35,11 +35,11 @@ namespace PowerPointLabs.Utils
                     continue;
                 }
 
-                var dest = Path.Combine(newPath, name);
+                string dest = Path.Combine(newPath, name);
 
                 try
                 {
-                    var fileAttribute = File.GetAttributes(file);
+                    FileAttributes fileAttribute = File.GetAttributes(file);
                     
                     try
                     {
@@ -58,18 +58,18 @@ namespace PowerPointLabs.Utils
             }
 
             // then recursively copy contents in subfolders
-            var folders = Directory.GetDirectories(oldPath);
+            string[] folders = Directory.GetDirectories(oldPath);
 
-            foreach (var folder in folders)
+            foreach (string folder in folders)
             {
-                var name = Path.GetFileName(folder);
+                string name = Path.GetFileName(folder);
 
                 if (name == null)
                 {
                     continue;
                 }
 
-                var dest = Path.Combine(newPath, name);
+                string dest = Path.Combine(newPath, name);
 
                 copySuccess = copySuccess && CopyFolder(folder, dest);
             }
@@ -79,13 +79,13 @@ namespace PowerPointLabs.Utils
 
         public static bool DeleteFolder(string path)
         {
-            var deleteSuccess = true;
+            bool deleteSuccess = true;
             // copy files in a folder first
-            var files = Directory.GetFiles(path);
+            string[] files = Directory.GetFiles(path);
 
-            foreach (var file in files)
+            foreach (string file in files)
             {
-                var name = Path.GetFileName(file);
+                string name = Path.GetFileName(file);
 
                 if (name == null)
                 {
@@ -102,11 +102,11 @@ namespace PowerPointLabs.Utils
                 }
             }
 
-            var folders = Directory.GetDirectories(path);
+            string[] folders = Directory.GetDirectories(path);
 
-            foreach (var folder in folders)
+            foreach (string folder in folders)
             {
-                var name = Path.GetFileName(folder);
+                string name = Path.GetFileName(folder);
 
                 if (name == null)
                 {
@@ -149,17 +149,17 @@ namespace PowerPointLabs.Utils
         public static void NormalizeFolder(string path)
         {
             // copy files in a folder first
-            var files = Directory.GetFiles(path);
+            string[] files = Directory.GetFiles(path);
 
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 File.SetAttributes(file, FileAttributes.Normal);
             }
 
             // then recursively copy contents in subfolders
-            var folders = Directory.GetDirectories(path);
+            string[] folders = Directory.GetDirectories(path);
 
-            foreach (var folder in folders)
+            foreach (string folder in folders)
             {
                 NormalizeFolder(folder);
             }

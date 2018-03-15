@@ -40,16 +40,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
         {
-            var presentation = FunctionalTestExtensions.GetPresentations().Open(pathToPresentation,
+            Presentation presentation = FunctionalTestExtensions.GetPresentations().Open(pathToPresentation,
                                                                                 WithWindow: MsoTriState.msoFalse);
-            var slideData = presentation.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
+            List<ISlideData> slideData = presentation.Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
             presentation.Close();
             return slideData;
         }
 
         public List<ISlideData> FetchCurrentPresentationData()
         {
-            var slideData = FunctionalTestExtensions.GetCurrentPresentation().Presentation
+            List<ISlideData> slideData = FunctionalTestExtensions.GetCurrentPresentation().Presentation
                 .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
             return slideData;
         }
@@ -110,12 +110,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public Slide SelectSlide(int index)
         {
-            var slides = FunctionalTestExtensions.GetCurrentPresentation().Slides;
+            List<Models.PowerPointSlide> slides = FunctionalTestExtensions.GetCurrentPresentation().Slides;
             for (int i = 0; i <= slides.Count; i++)
             {
                 if (i == (index - 1))
                 {
-                    var slide = slides[i].GetNativeSlide();
+                    Slide slide = slides[i].GetNativeSlide();
                     slide.Select();
                     FunctionalTestExtensions.GetCurrentWindow().View.GotoSlide(index);
                     return slide;
@@ -126,12 +126,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public Slide SelectSlide(string slideName)
         {
-            var slides = FunctionalTestExtensions.GetCurrentPresentation().Slides;
+            List<Models.PowerPointSlide> slides = FunctionalTestExtensions.GetCurrentPresentation().Slides;
             for (int i = 0; i <= slides.Count; i++)
             {
                 if (slideName == slides[i].Name)
                 {
-                    var slide = slides[i].GetNativeSlide();
+                    Slide slide = slides[i].GetNativeSlide();
                     slide.Select();
                     FunctionalTestExtensions.GetCurrentWindow().View.GotoSlide(i + 1);
                     return slide;
@@ -147,8 +147,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 return string.Empty;
             }
 
-            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-            var notesPageBody = notesPagePlaceholders
+            IEnumerable<Shape> notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            Shape notesPageBody = notesPagePlaceholders
                 .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
             string notesText = notesPageBody != null ? notesPageBody.TextFrame.TextRange.Text : string.Empty;
@@ -162,8 +162,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
                 return;
             }
 
-            var notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
-            var notesPageBody = notesPagePlaceholders
+            IEnumerable<Shape> notesPagePlaceholders = slide.NotesPage.Shapes.Placeholders.Cast<Shape>();
+            Shape notesPageBody = notesPagePlaceholders
                 .FirstOrDefault(shape => shape.PlaceholderFormat.Type == PpPlaceholderType.ppPlaceholderBody);
 
             if (notesPageBody != null)
@@ -179,14 +179,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public ShapeRange SelectShape(string shapeName)
         {
-            var nameList = new List<String>();
+            List<string> nameList = new List<String>();
             nameList.Add(shapeName);
             return SelectShapes(nameList);
         }
 
         public ShapeRange SelectShapes(IEnumerable<string> shapeNames)
         {
-            var range = FunctionalTestExtensions.GetCurrentSlide().Shapes.Range(shapeNames.ToArray());
+            ShapeRange range = FunctionalTestExtensions.GetCurrentSlide().Shapes.Range(shapeNames.ToArray());
 
             if (range.Count > 0)
             {
@@ -198,8 +198,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public ShapeRange SelectShapesByPrefix(string prefix)
         {
-            var nameList = new List<String>();
-            var shapes = FunctionalTestExtensions.GetCurrentSlide().Shapes;
+            List<string> nameList = new List<String>();
+            Microsoft.Office.Interop.PowerPoint.Shapes shapes = FunctionalTestExtensions.GetCurrentSlide().Shapes;
             foreach (Shape sh in shapes)
             {
                 if (sh.Name.StartsWith(prefix))
@@ -212,7 +212,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public Shape RecursiveGetShapeWithPrefix(params string[] prefixes)
         {
-            var parentShape = SelectShapesByPrefix(prefixes[0])[1];
+            Shape parentShape = SelectShapesByPrefix(prefixes[0])[1];
             for (int i = 1; i < prefixes.Length; ++i)
             {
                 parentShape = parentShape.GroupItems.Cast<Shape>().FirstOrDefault(shape => shape.Name.StartsWith(prefixes[i]));
@@ -222,29 +222,29 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public FileInfo ExportSelectedShapes()
         {
-            var shapes = FunctionalTestExtensions.GetCurrentSelection().ShapeRange;
-            var hashCode = DateTime.Now.GetHashCode();
-            var pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
+            ShapeRange shapes = FunctionalTestExtensions.GetCurrentSelection().ShapeRange;
+            int hashCode = DateTime.Now.GetHashCode();
+            string pathName = TempPath.GetTempTestFolder() + "shapeName" + hashCode;
             shapes.Export(pathName, PpShapeFormat.ppShapeFormatPNG);
             return new FileInfo(pathName);
         }
 
         public string SelectAllTextInShape(string shapeName)
         {
-            var shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
+            Shape shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
                                                                   .Cast<Shape>()
                                                                   .FirstOrDefault(sh => sh.Name == shapeName);
-            var textRange = shape.TextFrame2.TextRange;
+            TextRange2 textRange = shape.TextFrame2.TextRange;
             textRange.Select();
             return textRange.Text;
         }
 
         public string SelectTextInShape(string shapeName, int startIndex, int endIndex)
         {
-            var shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
+            Shape shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
                                                                       .Cast<Shape>()
                                                                       .FirstOrDefault(sh => sh.Name == shapeName);
-            var textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
+            TextRange2 textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
             textRange.Select();
             return textRange.Text;
         }

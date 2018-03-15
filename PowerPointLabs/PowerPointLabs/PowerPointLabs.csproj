@@ -44,7 +44,7 @@
     <PublishUrl>C:\publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.1.1.3</ApplicationVersion>
+    <ApplicationVersion>4.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -306,6 +306,11 @@
     <Compile Include="ActionFramework\Help\Help\HelpSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\NarrationsLab\NarrationsLabSettings\NarrationsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\FormattingGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\MoreLabsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
@@ -314,6 +319,9 @@
     <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
@@ -620,8 +628,10 @@
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />
@@ -635,7 +645,7 @@
     <Compile Include="TextCollection\HighlightLabText.cs" />
     <Compile Include="TextCollection\ResizeLabText.cs" />
     <Compile Include="TextCollection\HelpText.cs" />
-    <Compile Include="TextCollection\ShortcutsLab.cs" />
+    <Compile Include="TextCollection\ShortcutsLabText.cs" />
     <Compile Include="TextCollection\TimerLabText.cs" />
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
@@ -646,6 +656,7 @@
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorPicker\ColorInformationDialog.cs">
       <SubType>Form</SubType>
@@ -1965,6 +1976,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PasteLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

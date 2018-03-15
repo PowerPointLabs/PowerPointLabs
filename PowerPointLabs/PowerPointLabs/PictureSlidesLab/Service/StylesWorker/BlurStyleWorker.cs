@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            var result = new List<Shape>();
+            List<Shape> result = new List<Shape>();
             if (option.IsUseBlurStyle)
             {
-                var blurImageShape = option.IsUseSpecialEffectStyle
+                Shape blurImageShape = option.IsUseSpecialEffectStyle
                     ? designer.ApplyBlurEffect(source.SpecialEffectImageFile, option.BlurDegree)
                     : designer.ApplyBlurEffect(degree: option.BlurDegree);
                 result.Add(blurImageShape);

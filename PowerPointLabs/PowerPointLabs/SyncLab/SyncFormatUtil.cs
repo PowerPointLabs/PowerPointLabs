@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
-using System.IO;
-
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.Models;
+using PowerPointLabs.SyncLab.ObjectFormats;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab
 {
@@ -15,10 +16,10 @@ namespace PowerPointLabs.SyncLab
 
         public static Shapes GetTemplateShapes()
         {
-            var shapeStorage = SyncLabShapeStorage.Instance;
-            return shapeStorage.Slides[SyncLabShapeStorage.FormatStorageSlide].Shapes;
+            SyncLabShapeStorage shapeStorage = SyncLabShapeStorage.Instance;
+            return shapeStorage.GetTemplateShapes();
         }
-
+        
         public static Bitmap GetTextDisplay(string text, System.Drawing.Font font, Size imageSize)
         {
             Bitmap image = new Bitmap(imageSize.Width, imageSize.Height);
@@ -54,5 +55,6 @@ namespace PowerPointLabs.SyncLab
         }
 
         #endregion
+
     }
 }

@@ -36,15 +36,15 @@ namespace PowerPointLabs.XMLMisc
 
         private void ParseRelation(string path)
         {
-            var doc = File.ReadAllText(path);
+            string doc = File.ReadAllText(path);
             const string relaitonFormat = "<\\w+\\s\\w+=\\\"(\\w+\\d+)\\\" \\w+=\\\"[\\w\\:\\/\\.]+audio\\\" \\w+=\\\"[\\w\\.\\/]+(media\\d+\\.wav)\\\"\\/>";
 
-            var regexRelation = new Regex(relaitonFormat);
-            var matches = regexRelation.Matches(doc);
+            Regex regexRelation = new Regex(relaitonFormat);
+            MatchCollection matches = regexRelation.Matches(doc);
 
             for (int i = 0; i < matches.Count; i++)
             {
-                var match = matches[i];
+                Match match = matches[i];
 
                 audioIDFileMapper[match.Groups[1].Value] = match.Groups[2].Value;
             }
@@ -52,25 +52,25 @@ namespace PowerPointLabs.XMLMisc
 
         private void ParseShape(string path)
         {
-            var doc = XDocument.Load(path);
+            XDocument doc = XDocument.Load(path);
 
-            foreach (var element in doc.Descendants(_p + "spTree"))
+            foreach (XElement element in doc.Descendants(_p + "spTree"))
             {
-                var audioShape = element.Elements(_p + "pic");
-                var pptSpeechFormat = new Regex("PowerPointLabs|AudioGen Speech \\d+");
+                IEnumerable<XElement> audioShape = element.Elements(_p + "pic");
+                Regex pptSpeechFormat = new Regex("PowerPointLabs|AudioGen Speech \\d+");
 
-                var data = from item in audioShape
+                IEnumerable<Data.AudioGenSpeechData> data = from item in audioShape
                            where
                                pptSpeechFormat.IsMatch(item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value)
-                           select new
+                           select new Data.AudioGenSpeechData
                                       {
-                                          name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
-                                          audioID = item.Element(_p + "nvPicPr").Element(_p + "nvPr").Element(_a + "audioFile").Attribute(_r + "link").Value
+                                          Name = item.Element(_p + "nvPicPr").Element(_p + "cNvPr").Attribute("name").Value,
+                                          AudioID = item.Element(_p + "nvPicPr").Element(_p + "nvPr").Element(_a + "audioFile").Attribute(_r + "link").Value
                                       };
 
-                foreach (var entry in data)
+                foreach (Data.AudioGenSpeechData entry in data)
                 {
-                    shapeFileMapper[entry.name] = audioIDFileMapper[entry.audioID];
+                    shapeFileMapper[entry.Name] = audioIDFileMapper[entry.AudioID];
                 }
             }
         }

@@ -1,12 +1,21 @@
 ﻿using System;
-
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
 using PowerPointLabs.Models;
+using PowerPointLabs.SyncLab.ObjectFormats;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab
 {
+    /// <summary>
+    /// Saves shapes into a PowerPointPresentation that exists in the background.
+    /// The exact saved shapes may change in type but style will be retained.
+    /// Eg: PlaceHolders are saved as Textboxes
+    /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
 
@@ -30,22 +39,44 @@ namespace PowerPointLabs.SyncLab
             ClearShapes();
         }
 
-        // Saves shape in storage
-        // Returns a key to find the shape by,
-        // or null if the shape cannot be copied
-        public string CopyShape(Shape shape)
+        public Shapes GetTemplateShapes()
         {
-            // copies a shape, and returns a shape name
-            shape.Copy();
+            return Slides[FormatStorageSlide].Shapes;
+        }
+
+        /// <summary>
+        /// Saves shape in storage
+        /// Returns a key to find the shape by,
+        /// or null if the shape cannot be copied
+        /// </summary>
+        /// <param name="shape"></param>
+        /// <param name="formats">Required for msoPlaceholder</param>
+        /// <returns>identifier of copied shape</returns>
+        public string CopyShape(Shape shape, Format[] formats)
+        {
             Shape copiedShape = null;
-            try
+            if (shape.Type == MsoShapeType.msoPlaceholder)
             {
-                copiedShape = Slides[0].Shapes.Paste()[1];
+                copiedShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, GetTemplateShapes());
             }
-            catch
+            else
+            {
+                try
+                {
+                    shape.Copy();
+                    copiedShape = Slides[0].Shapes.Paste()[1];
+                }
+                catch
+                {
+                    copiedShape = null;
+                }
+            }
+
+            if (copiedShape == null)
             {
                 return null;
             }
+
             string shapeKey = nextKey.ToString();
             nextKey++;
             copiedShape.Name = shapeKey;
@@ -55,7 +86,7 @@ namespace PowerPointLabs.SyncLab
 
         public Shape GetShape(string shapeKey)
         {
-            var shapes = Slides[0].Shapes;
+            Shapes shapes = Slides[0].Shapes;
             for (int i = 1; i <= shapes.Count; i++)
             {
                 if (shapes[i].Name.Equals(shapeKey))
@@ -68,8 +99,8 @@ namespace PowerPointLabs.SyncLab
 
         public void RemoveShape(string shapeKey)
         {
-            var index = 1;
-            var shapes = Slides[0].Shapes;
+            int index = 1;
+            Shapes shapes = Slides[0].Shapes;
             while (index <= shapes.Count)
             {
                 if (shapes[index].Name.Equals(shapeKey))

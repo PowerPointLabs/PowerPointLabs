@@ -12,7 +12,7 @@ namespace Test.Util
         public static void AssertEqual(List<ISlideData> expectedSlides, List<ISlideData> actualSlides)
         {
             Assert.AreEqual(expectedSlides.Count, actualSlides.Count);
-            for (var i = 0; i < expectedSlides.Count; ++i)
+            for (int i = 0; i < expectedSlides.Count; ++i)
             {
                 SlideDataUtil.AssertEqual(expectedSlides[i], actualSlides[i]);
             }
