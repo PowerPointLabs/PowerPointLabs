@@ -29,7 +29,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
-            <gallery idMso="ShapesInsertGallery"/>
+            <gallery idMso="ShapesInsertGallery" onAction="RemainInPPTLabsTab"/>
             <button id="AnimateInSlideButton"
                     tag="AnimateInSlide"
                     getLabel="GetLabel"
