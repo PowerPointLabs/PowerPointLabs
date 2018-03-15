@@ -438,7 +438,6 @@
                   getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
-
           <menu id="AgendaLabMenu"
                 getLabel="GetLabel"
                 getSupertip="GetSupertip"
@@ -477,7 +476,6 @@
                     getSupertip="GetSupertip"
                     onAction="OnAction"/>
           </menu>
-
           <button id="PictureSlidesLabButton"
                   tag="PictureSlidesLab"
                   getLabel="GetLabel"
@@ -590,7 +588,6 @@
       <dynamicMenu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     -->
-    
     <contextMenu idMso="ContextMenuCurve">
 	    <menuSeparator id="separatorCurve" />
 	    <menu id="MenuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
