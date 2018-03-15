@@ -51,7 +51,7 @@ namespace PowerPointLabs.Models
             PromptBuilder builder = new PromptBuilder(CultureUtil.GetOriginalCulture());
             builder.StartVoice(defaultVoice);
 
-            var tags = GetTagsInText();
+            IEnumerable<ITag> tags = GetTagsInText();
 
             int startIndex = 0;
             foreach (ITag tag in tags)
@@ -75,7 +75,7 @@ namespace PowerPointLabs.Models
         public String ToPrettyString()
         {
             StringBuilder builder = new StringBuilder();
-            var tags = GetTagsInText();
+            IEnumerable<ITag> tags = GetTagsInText();
 
             int startIndex = 0;
             foreach (ITag tag in tags)
@@ -102,7 +102,7 @@ namespace PowerPointLabs.Models
             List<ITag> tags = new List<ITag>();
             foreach (ITagMatcher tagMatcher in Matchers.All)
             {
-                var matches = tagMatcher.Matches(_contents);
+                List<ITag> matches = tagMatcher.Matches(_contents);
                 tags.AddRange(matches);
             }
 

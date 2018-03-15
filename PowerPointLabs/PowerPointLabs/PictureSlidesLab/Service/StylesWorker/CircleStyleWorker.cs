@@ -12,10 +12,10 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
     {
         public IList<Shape> Execute(StyleOption option, EffectsDesigner designer, ImageItem source, Shape imageShape, Settings settings)
         {
-            var result = new List<Shape>();
+            List<Shape> result = new List<Shape>();
             if (option.IsUseCircleStyle)
             {
-                var circleOverlayShape = designer.ApplyCircleRingsEffect(option.CircleColor, option.CircleTransparency);
+                Shape circleOverlayShape = designer.ApplyCircleRingsEffect(option.CircleColor, option.CircleTransparency);
                 result.Add(circleOverlayShape);
             }
             return result;

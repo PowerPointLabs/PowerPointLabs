@@ -16,10 +16,10 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
         [TestCategory("UT")]
         public void TestGetTextBoxInfoForEmptyTextBoxes()
         {
-            var shapes = PpOperations.SelectShapesByPrefix("TextBox");
-            var textBoxes = new TextBoxes(shapes, 
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("TextBox");
+            TextBoxes textBoxes = new TextBoxes(shapes, 
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight);
-            var textBoxInfo = textBoxes.GetTextBoxesInfo();
+            TextBoxInfo textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.AreEqual(null, textBoxInfo);
         }
 
@@ -28,10 +28,10 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
         public void TestGetTextBoxInfo()
         {
             PpOperations.SelectSlide(2);
-            var shapes = PpOperations.SelectShapesByPrefix("TextBox");
-            var textBoxes = new TextBoxes(shapes,
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("TextBox");
+            TextBoxes textBoxes = new TextBoxes(shapes,
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight);
-            var textBoxInfo = textBoxes.GetTextBoxesInfo();
+            TextBoxInfo textBoxInfo = textBoxes.GetTextBoxesInfo();
 
             Assert.IsTrue(SlideUtil.IsRoughlySame(57.5200043f, textBoxInfo.Height));
             Assert.IsTrue(SlideUtil.IsRoughlySame(68.2f, textBoxInfo.Left));
@@ -50,15 +50,15 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
         public void TestStartBoxing()
         {
             PpOperations.SelectSlide(2);
-            var shapes = PpOperations.SelectShapesByPrefix("TextBox");
-            var textBoxes = new TextBoxes(shapes,
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("TextBox");
+            TextBoxes textBoxes = new TextBoxes(shapes,
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight);
 
             textBoxes
                 .SetAlignment(Alignment.Centre)
                 .SetPosition(Position.Left)
                 .StartBoxing();
-            var textBoxInfo = textBoxes.GetTextBoxesInfo();
+            TextBoxInfo textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(57.5200043f, textBoxInfo.Height));
             Assert.IsTrue(SlideUtil.IsRoughlySame(25f, textBoxInfo.Left));
             Assert.IsTrue(SlideUtil.IsRoughlySame(241.240036f, textBoxInfo.Top));
@@ -102,8 +102,8 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
         public void TestStartBoxingWithTextWrapping()
         {
             PpOperations.SelectSlide(2);
-            var shapes = PpOperations.SelectShapesByPrefix("TextBox");
-            var textBoxes = new TextBoxes(shapes,
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix("TextBox");
+            TextBoxes textBoxes = new TextBoxes(shapes,
                 Pres.PageSetup.SlideWidth, Pres.PageSetup.SlideHeight);
 
             textBoxes.StartTextWrapping();
@@ -113,7 +113,7 @@ namespace Test.UnitTest.PictureSlidesLab.Service.Effect
                 .SetPosition(Position.Left)
                 .StartBoxing();
 
-            var textBoxInfo = textBoxes.GetTextBoxesInfo();
+            TextBoxInfo textBoxInfo = textBoxes.GetTextBoxesInfo();
             Assert.IsTrue(SlideUtil.IsRoughlySame(105.040009f, textBoxInfo.Height));
             Assert.IsTrue(SlideUtil.IsRoughlySame(25.00004f, textBoxInfo.Left));
             Assert.IsTrue(SlideUtil.IsRoughlySame(217.480042f, textBoxInfo.Top));

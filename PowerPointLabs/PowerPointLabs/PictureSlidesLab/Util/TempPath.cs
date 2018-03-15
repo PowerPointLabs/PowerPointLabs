@@ -26,7 +26,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
             {
                 throw new Exception("TempPath is not initialized!");
             }
-            var fullsizeImageFile = TempFolder + name + "_"
+            string fullsizeImageFile = TempFolder + name + "_"
                                     + Guid.NewGuid().ToString().Substring(0, 6)
                                     + DateTime.Now.GetHashCode();
             return fullsizeImageFile;
@@ -68,7 +68,7 @@ namespace PowerPointLabs.PictureSlidesLab.Util
                 }
                 catch (Exception e)
                 {
-                    ErrorDialogBox.ShowDialog("Error", e.Message, e);
+                    ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, e.Message, e);
                     return false;
                 }
             }

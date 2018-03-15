@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return ShapesLabText.RibbonMenuSupertip;
+            return ShapesLabText.ShapesLabButtonSupertip;
         }
     }
 }

@@ -46,5 +46,7 @@
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
         #endregion
+
+        public const string AddIntoGroupActionHandlerReminderText = "Please select more than one shape.";
     }
 }

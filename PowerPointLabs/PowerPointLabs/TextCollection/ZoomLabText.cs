@@ -34,5 +34,9 @@
         public const string SettingsSlideBackgroundCheckboxTooltip = "Include the slide background while using Zoom Lab.";
         public const string SettingsSeparateSlidesCheckboxTooltip = "Use separate slides for individual animation effects of Zoom To Area.";
         #endregion
+
+        public const string ErrorUnableToAddAnimationsCaption = "Unable to Add Animations";
+        public const string ErrorInvalidNextSlide = "No next slide is found. Please select the correct slide.";
+        public const string ErrorInvalidPreviousSlide = "No previous slide is found. Please select the correct slide.";
     }
 }

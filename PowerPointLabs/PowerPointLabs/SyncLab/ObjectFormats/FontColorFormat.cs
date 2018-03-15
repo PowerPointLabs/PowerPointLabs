@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
-
-using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
+using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -11,7 +12,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public static bool CanCopy(Shape formatShape)
         {
-            return Sync(formatShape, formatShape);
+            return formatShape.HasTextFrame == MsoTriState.msoTrue;
         }
 
         public static void SyncFormat(Shape formatShape, Shape newShape)
@@ -30,8 +31,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     SyncFormatConstants.DisplayImageSize.Width,
                     SyncFormatConstants.DisplayImageSize.Height);
             shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
-            shape.Fill.ForeColor.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
-            shape.Fill.BackColor.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
+            
+            int guessedColor = ShapeUtil.GuessTextColor(formatShape);
+            shape.Fill.ForeColor.RGB = guessedColor;
+            shape.Fill.BackColor.RGB = guessedColor;
             shape.Fill.Solid();
             Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
             shape.Delete();
@@ -42,7 +45,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             try
             {
-                newShape.TextFrame.TextRange.Font.Color.RGB = formatShape.TextFrame.TextRange.Font.Color.RGB;
+                int guessedColor = ShapeUtil.GuessTextColor(formatShape);
+                newShape.TextFrame.TextRange.Font.Color.RGB = guessedColor;
             }
             catch (Exception)
             {

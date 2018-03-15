@@ -32,7 +32,7 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncXPosition()
         {
-            var newShape = GetShape(OriginalShapesSlideNo, UnrotatedRectangle);
+            Shape newShape = GetShape(OriginalShapesSlideNo, UnrotatedRectangle);
             PositionXFormat.SyncFormat(_formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncXPositionSlideNo);
@@ -42,7 +42,7 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncYPosition()
         {
-            var newShape = GetShape(OriginalShapesSlideNo, UnrotatedRectangle);
+            Shape newShape = GetShape(OriginalShapesSlideNo, UnrotatedRectangle);
             PositionYFormat.SyncFormat(_formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncYPositionSlideNo);
@@ -52,7 +52,7 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncHeight()
         {
-            var newShape = GetShape(OriginalShapesSlideNo, Oval);
+            Shape newShape = GetShape(OriginalShapesSlideNo, Oval);
             PositionHeightFormat.SyncFormat(_formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncHeightSlideNo);
@@ -62,7 +62,7 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncWidth()
         {
-            var newShape = GetShape(OriginalShapesSlideNo, RotatedArrow);
+            Shape newShape = GetShape(OriginalShapesSlideNo, RotatedArrow);
             PositionWidthFormat.SyncFormat(_formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncWidthSlideNo);

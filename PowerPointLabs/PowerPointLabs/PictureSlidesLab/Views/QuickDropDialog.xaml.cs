@@ -28,7 +28,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             get
             {
-                var propertyInfo = typeof(Window).GetProperty("IsDisposed",
+                System.Reflection.PropertyInfo propertyInfo = typeof(Window).GetProperty("IsDisposed",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 return (bool) propertyInfo.GetValue(this, null);
             }

@@ -27,12 +27,17 @@ namespace Test.UnitTest.SyncLab
             PpOperations.SelectSlide(slideNumber);
             return PpOperations.SelectShapes(shapeNames);
         }
+        
+        protected PowerPoint.Shapes GetShapesObject(int slideNumber)
+        {
+            return PpOperations.SelectSlide(slideNumber).Shapes;
+        }
 
         protected void CompareSlides(int actualShapesSlideNo, int expectedShapesSlideNo)
         {
-          
-            var actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
-            var expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
+
+            PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
+            PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
 
             SlideUtil.IsSameLooking(actualSlide, expectedSlide);
         }

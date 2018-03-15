@@ -52,6 +52,7 @@ namespace TestInterface
 
         // Paste lab
         void PasteToFillSlide();
+        void PasteToFitSlide();
         void PasteAtOriginalPosition();
         void PasteAtCursorPosition();
         void PasteIntoGroup();

@@ -26,7 +26,7 @@ namespace PowerPointLabs.ResizeLab.Views
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
-            var resizeFactor = ResizeLabUtil.ConvertToFloat(ResizeFactorTextBox.Text);
+            float? resizeFactor = ResizeLabUtil.ConvertToFloat(ResizeFactorTextBox.Text);
             if (ResizeLabUtil.IsValidFactor(resizeFactor))
             {
                 _resizeLab.SlightAdjustResizeFactor = (float)resizeFactor;
@@ -34,7 +34,7 @@ namespace PowerPointLabs.ResizeLab.Views
             }
             else
             {
-                MessageBox.Show("Please enter a value greater than 0", "Error");
+                MessageBox.Show(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZero, TextCollection.CommonText.ErrorTitle);
             }
         }
 

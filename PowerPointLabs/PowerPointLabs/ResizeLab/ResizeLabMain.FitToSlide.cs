@@ -92,7 +92,7 @@ namespace PowerPointLabs.ResizeLab
             {
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    var shape = new PPShape(selectedShapes[i]);
+                    PPShape shape = new PPShape(selectedShapes[i]);
 
                     if ((dimension == Dimension.Height) || (dimension == Dimension.HeightAndWidth))
                     {
@@ -132,14 +132,14 @@ namespace PowerPointLabs.ResizeLab
             {
                 for (int i = 1; i <= selectedShapes.Count; i++)
                 {
-                    var shape = selectedShapes[i];
-                    var anchorPoint = GetVisualAnchorPoint(new PPShape(shape, false));
+                    PowerPoint.Shape shape = selectedShapes[i];
+                    System.Drawing.PointF anchorPoint = GetVisualAnchorPoint(new PPShape(shape, false));
 
                     if (dimension == Dimension.Height)
                     {
                         FitToSlide.FitToHeight(shape, slideWidth, slideHeight);
 
-                        var ppShape = new PPShape(shape, false);
+                        PPShape ppShape = new PPShape(shape, false);
                         AlignVisualShape(ppShape, anchorPoint);
                         ppShape.VisualTop = 0;
                     }
@@ -147,7 +147,7 @@ namespace PowerPointLabs.ResizeLab
                     {
                         FitToSlide.FitToWidth(shape, slideWidth, slideHeight);
 
-                        var ppShape = new PPShape(shape, false);
+                        PPShape ppShape = new PPShape(shape, false);
                         AlignVisualShape(ppShape, anchorPoint);
                         ppShape.VisualLeft = 0;
                     }
