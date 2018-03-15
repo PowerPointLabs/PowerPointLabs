@@ -66,18 +66,18 @@ namespace Test.FunctionalTest
 
             // Paste whatever in clipboard
             Microsoft.Office.Interop.PowerPoint.ShapeRange newShape = actualSlide.Shapes.Paste();
-            // Set the shape location to 0 because the location of the shape being pasted is flaky
-            newShape.Top = 0;
-            newShape.Left = 0; 
 
             // Check if pasted shape is also called "pictocopy"
             Assert.AreEqual("pictocopy", newShape.Name);
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(11);
             PpOperations.SelectShape("text 3")[1].Delete();
+
+            //Set the shape location to pasted shape because the location of the pasted shape is flaky
             Shape copied = PpOperations.SelectShape("copied")[1];
-            copied.Top = 0;
-            copied.Left = 0;
+            copied.Top = newShape.Top;
+            copied.Left = newShape.Left;
+
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
     }
