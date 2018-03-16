@@ -1035,7 +1035,7 @@ namespace PowerPointLabs.PositionsLab
             }
             return true;
         }
-        // Align left and top
+        // Align left and top, Radial
         public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape)
         {
                 Selection selection = this.GetCurrentSelection();
@@ -1132,7 +1132,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
+                    simulatedShapes = DuplicateShapes(selectedShapes);
                     if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                     {
                         positionsAction.Invoke(selectedShapes, dimension);
@@ -1235,7 +1235,7 @@ namespace PowerPointLabs.PositionsLab
         // Adjoin operations
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions (FOR ADJOIN: DO NOT REMOVE)
+            // Run the action 2 times in order to properly execute actions
             for (int i = 0; i < 2; i++)
             {
                 Selection selection = this.GetCurrentSelection();
@@ -1355,9 +1355,13 @@ namespace PowerPointLabs.PositionsLab
                     }
                 }
         }
-        // Distribute operations
+
+        // Distribute horizontal and vertical
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
+            // Run the action 2 times in order to properly execute actions
+            for (int noOfRuns = 0; noOfRuns < 2; noOfRuns++)
+            {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
                 {
@@ -1382,7 +1386,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapes(selectedShapes);
+                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
                     List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1410,10 +1414,15 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
+            }
         }
 
+        // Distribute center
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
+            // Run the action 2 times in order to properly execute actions
+            for (int noOfRuns = 0; noOfRuns < 2; noOfRuns++)
+            {
                 if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
                 {
                     if (!isPreview)
@@ -1440,7 +1449,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapes(selectedShapes);
+                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
                     List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1468,6 +1477,7 @@ namespace PowerPointLabs.PositionsLab
                         GC.Collect();
                     }
                 }
+            }
         }
 
         public void ExecutePositionsAction(Action<List<Shape>> positionsAction, bool isPreview)
@@ -1514,6 +1524,7 @@ namespace PowerPointLabs.PositionsLab
                 }
         }
 
+        // Distribute grid
         private void ExecuteDistributeGrid(int rowLength, int colLength)
         {
             ShapeRange simulatedShapes = null;
