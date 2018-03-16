@@ -3,7 +3,7 @@
   <ribbon>
     <contextualTabs>
       <tabSet idMso="TabSetDrawingTools">
-        <tab idMso="TabDrawingToolsFormat">
+        <tab idMso="TabDrawingToolsFormat" getVisible="GetVisibleFormatTab">
           <group id="AdditionalFeatures"
                  label="Other"
                  insertBeforeMso="GroupShapeStyles"
@@ -29,7 +29,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
-            <gallery idMso="ShapesInsertGallery" onAction="RemainInPPTLabsTab"/>
+            <gallery idMso="ShapesInsertGallery"/>
             <button id="AnimateInSlideButton"
                     tag="AnimateInSlide"
                     getLabel="GetLabel"
@@ -500,6 +500,10 @@
                     onAction="OnAction"/>
           </menu>
           
+        </group>
+
+        <group id="Visibility" label="Show Tabs">
+          <checkBox id="VisibleFormatShapes" enabled="true" label="Disable Format Tab" screentip="Show or Hide Format Tab after inserting shapes" onAction="ToggleVisibility"/>
         </group>
         
       </tab>
