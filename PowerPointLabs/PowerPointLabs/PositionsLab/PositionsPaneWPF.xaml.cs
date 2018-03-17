@@ -1035,7 +1035,7 @@ namespace PowerPointLabs.PositionsLab
             }
             return true;
         }
-        // Align left and top, Radial
+        // Align left and top, Align/Distribute radial
         public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape)
         {
                 Selection selection = this.GetCurrentSelection();
