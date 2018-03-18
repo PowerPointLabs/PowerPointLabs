@@ -2,7 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.PasteLab
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportLabelRibbonId(ShortcutsLabText.FillSlideTag)]
     class FillSlideLabelHandler : LabelHandler

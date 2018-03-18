@@ -3,7 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.PasteLab
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportImageRibbonId(ShortcutsLabText.FillSlideTag)]
     class FillSlideImageHandler : ImageHandler

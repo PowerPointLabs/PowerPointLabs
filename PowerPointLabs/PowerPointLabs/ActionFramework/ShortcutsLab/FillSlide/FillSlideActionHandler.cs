@@ -4,7 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.PasteLab
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportActionRibbonId(ShortcutsLabText.FillSlideTag)]
     class FillSlideActionHandler : ActionHandler
@@ -17,7 +17,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             PowerPointLabs.Models.PowerPointSlide currentSlide = this.GetCurrentSlide();
             float slideHeight = this.GetCurrentPresentation().SlideHeight;
             float slideWidth = this.GetCurrentPresentation().SlideWidth;
-            // Send over to Fill operation to fill up the slide
+
             FillSlide.Fill(currentSelection, currentSlide, slideWidth, slideHeight);
         }
     }
