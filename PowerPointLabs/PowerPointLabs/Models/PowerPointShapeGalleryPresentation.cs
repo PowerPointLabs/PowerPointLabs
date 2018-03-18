@@ -36,7 +36,7 @@ namespace PowerPointLabs.Models
         private const string UntitledCategoryNameFormat = "Untitled Category {0}";
 
         private const int MaxUndoAmount = 20;
-
+        
         private PowerPointSlide _defaultCategory;
         private readonly List<Shape> _categoryNameBoxCollection = new List<Shape>();
 
@@ -66,18 +66,18 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Constructor
-        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name) 
+        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name)
         {
             Categories = new List<string>();
         }
-        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation) 
+        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation)
         {
             Categories = new List<string>();
         }
         # endregion
 
         # region API
-        public void AddCategory(string name, bool setAsDefault = true, bool fromClipBoard = false) 
+        public void AddCategory(string name, bool setAsDefault = true, bool fromClipBoard = false)
         {
             int index = FindCategoryIndex(name, setAsDefault);
 
