@@ -36,7 +36,7 @@ namespace PowerPointLabs.Models
         private const string UntitledCategoryNameFormat = "Untitled Category {0}";
 
         private const int MaxUndoAmount = 20;
-        
+
         private PowerPointSlide _defaultCategory;
         private readonly List<Shape> _categoryNameBoxCollection = new List<Shape>();
 
@@ -66,18 +66,18 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region Constructor
-        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name)
+        public PowerPointShapeGalleryPresentation(string path, string name) : base(path, name) 
         {
             Categories = new List<string>();
         }
-        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation)
+        public PowerPointShapeGalleryPresentation(Presentation presentation) : base(presentation) 
         {
             Categories = new List<string>();
         }
         # endregion
 
         # region API
-        public void AddCategory(string name, bool setAsDefault = true, bool fromClipBoard = false)
+        public void AddCategory(string name, bool setAsDefault = true, bool fromClipBoard = false) 
         {
             int index = FindCategoryIndex(name, setAsDefault);
 
@@ -117,63 +117,20 @@ namespace PowerPointLabs.Models
             Save();
             ActionProtection();
         }
-
-        public string AddShape(ShapeRange shapeRange, string name, string category = "", bool fromClipBoard = false)
+        public string AddShape(PowerPointPresentation pres, PowerPointSlide origSlide, ShapeRange shapeRange, string name, string category = "", bool fromClipBoard = false)
         {
             if (!fromClipBoard)
             {
-                shapeRange.Copy();
-            }
-
-            PowerPointSlide categorySlide = _defaultCategory;
-
-            if (!string.IsNullOrEmpty(category))
-            {
-                int categoryIndex = FindCategoryIndex(category);
-
-                if (categoryIndex == -1)
+                return ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    return string.Empty;
-                }
-
-                categorySlide = Slides[categoryIndex - 1];
-            }
-
-            // check if the name has been used, if used, name it to the next available name
-            if (categorySlide.HasShapeWithRule(GenereateNameSearchPattern(name)))
-            {
-                Regex nameExtractionRegex = new Regex(string.Format(NameExtractionPatternFormat, name, name));
-                List<string> nameList = categorySlide.GetShapesWithRule(nameExtractionRegex)
-                                            .Select(item => nameExtractionRegex.Match(item.Name))
-                                            .Select(match => !string.IsNullOrEmpty(match.Groups[1].Value)
-                                                             ? match.Groups[1].Value
-                                                             : match.Groups[2].Value)
-                                            .Distinct()
-                                            .ToList();
-
-                name = CommonUtil.NextAvailableName(nameList, name);
-            }
-
-            ShapeRange pastedShapeRange = categorySlide.Shapes.Paste();
-
-            if (pastedShapeRange.Count > 1)
-            {
-                for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
-                {
-                    Shape shape = pastedShapeRange[nameCount];
-
-                    shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
-                }
+                    shapeRange.Copy();
+                    return AddShape(shapeRange, name, category);
+                }, pres, origSlide);
             }
             else
             {
-                pastedShapeRange[1].Name = name;
+                return AddShape(shapeRange, name, category);
             }
-
-            Save();
-            ActionProtection();
-
-            return name;
         }
 
         public override void Close()
@@ -691,6 +648,59 @@ namespace PowerPointLabs.Models
 
             File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
             File.SetAttributes(shapeGalleryFileName, FileAttributes.ReadOnly);
+        }
+
+        private string AddShape(ShapeRange shapeRange, string name, string category) 
+        {
+            PowerPointSlide categorySlide = _defaultCategory;
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                int categoryIndex = FindCategoryIndex(category);
+
+                if (categoryIndex == -1)
+                {
+                    return string.Empty;
+                }
+
+                categorySlide = Slides[categoryIndex - 1];
+            }
+
+            // check if the name has been used, if used, name it to the next available name
+            if (categorySlide.HasShapeWithRule(GenereateNameSearchPattern(name)))
+            {
+                Regex nameExtractionRegex = new Regex(string.Format(NameExtractionPatternFormat, name, name));
+                List<string> nameList = categorySlide.GetShapesWithRule(nameExtractionRegex)
+                                            .Select(item => nameExtractionRegex.Match(item.Name))
+                                            .Select(match => !string.IsNullOrEmpty(match.Groups[1].Value)
+                                                             ? match.Groups[1].Value
+                                                             : match.Groups[2].Value)
+                                            .Distinct()
+                                            .ToList();
+
+                name = CommonUtil.NextAvailableName(nameList, name);
+            }
+
+            ShapeRange pastedShapeRange = categorySlide.Shapes.Paste();
+
+            if (pastedShapeRange.Count > 1)
+            {
+                for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
+                {
+                    Shape shape = pastedShapeRange[nameCount];
+
+                    shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+                }
+            }
+            else
+            {
+                pastedShapeRange[1].Name = name;
+            }
+
+            Save();
+            ActionProtection();
+
+            return name;
         }
         # endregion
     }

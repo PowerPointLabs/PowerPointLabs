@@ -189,8 +189,12 @@ namespace PowerPointLabs.ShapesLab
             {
                 selectedShapes = selection.ChildShapeRange;
             }
+
+            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointPresentation pres = PowerPointPresentation.Current;
             // add shape into shape gallery first to reduce flicker
-            string shapeName = addIn.ShapePresentation.AddShape(selectedShapes, selectedShapes[1].Name);
+            string shapeName = addIn.ShapePresentation.AddShape(pres, currentSlide, selectedShapes, selectedShapes[1].Name);
 
             // add the selection into pane and save it as .png locally
             string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
@@ -347,15 +351,21 @@ namespace PowerPointLabs.ShapesLab
 
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
+            // Utilises deprecated PowerPointPresentation class as CustomShapePane does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
             if (currentSlide == null)
             {
                 MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
                 return;
             }
-
-            // all selected shape will be added to the slide
-            Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
-            currentSlide.Shapes.Paste();
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                // all selected shape will be added to the slide
+                Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
+                currentSlide.Shapes.Paste();
+                return 1;
+            }, pres, currentSlide);
         }
 
         private void ContextMenuStripAddCategoryClicked()
@@ -858,12 +868,21 @@ namespace PowerPointLabs.ShapesLab
             }
 
             string shapeName = shapeRange[1].Name;
-            importShapeGallery.CopyShape(shapeName);
 
-            shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
-            string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointPresentation pres = PowerPointPresentation.Current;
 
-            GraphicsUtil.ExportShape(shapeRange, exportPath);
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                importShapeGallery.CopyShape(shapeName);
+                shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
+                string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+
+                GraphicsUtil.ExportShape(shapeRange, exportPath);
+                return 1;
+            }, pres, currentSlide);
+
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
@@ -1411,12 +1430,19 @@ namespace PowerPointLabs.ShapesLab
             string shapeName = clickedThumbnail.NameLabel;
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
+            // Utilises deprecated PowerPointPresentation class as CustomShapePane does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
             if (currentSlide != null)
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
-                currentSlide.Shapes.Paste().Select();
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
+                    currentSlide.Shapes.Paste().Select();
+                    return 1;
+                }, pres, currentSlide);
             }
             else
             {
