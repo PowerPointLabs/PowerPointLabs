@@ -1006,7 +1006,7 @@ namespace PowerPointLabs
                     _documentHashcodeMapper[activeWindow] = tempName;
                 }
 
-                // Refresh ribbon to grey out the menu / buttons if there are now at least one window
+                // Refresh ribbon to enable the menu buttons if there are now at least one window
                 RefreshRibbonMenuButtons();
             }
         }

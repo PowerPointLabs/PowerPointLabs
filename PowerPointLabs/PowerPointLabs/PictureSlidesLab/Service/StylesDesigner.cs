@@ -44,7 +44,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Name = "PictureSlidesLabPreview" + Guid.NewGuid().ToString().Substring(0, 7) + ".pptx";
             Option = new StyleOption();
             Application = app;
-            Open(false, false, false, false);
+            Open(withWindow: false, focus: false);
             // re use effects designer (a background slide) to
             // generate styles
             EffectsDesignerForPreview = CreateEffectsHandlerForPreview();
