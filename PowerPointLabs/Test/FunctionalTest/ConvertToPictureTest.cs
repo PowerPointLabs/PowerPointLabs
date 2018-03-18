@@ -72,6 +72,12 @@ namespace Test.FunctionalTest
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(11);
             PpOperations.SelectShape("text 3")[1].Delete();
+
+            //Set the pasted shape location because the location of the pasted shape is flaky
+            Shape copied = PpOperations.SelectShape("copied")[1];
+            newShape.Top = copied.Top;
+            newShape.Left = copied.Left;
+
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
     }
