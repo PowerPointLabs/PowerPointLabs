@@ -26,7 +26,6 @@ namespace PowerPointLabs.ActionFramework.SaveLab
             {
                 // If no slides return error message or do nothing
                 MessageBox.Show(SaveLabText.ErrorZeroSlidesSelected, CommonText.ErrorSlideSelectionTitle);
-                return;
             }
         }
     }

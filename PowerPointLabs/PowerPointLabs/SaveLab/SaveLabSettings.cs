@@ -7,16 +7,21 @@ namespace PowerPointLabs.SaveLab
 {
     internal static class SaveLabSettings
     {
-        public static string SaveFolderPath;
+        private static string saveFolderPath;
 
         private const string DefaultSaveMasterFolderName = @"\PowerPoint Save Lab Local Storage";
         private static readonly string DefaultSaveMasterFolderPrefix = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
         private static string defaultSavePath = DefaultSaveMasterFolderPrefix + DefaultSaveMasterFolderName;
         private static string defaultSaveTextFile = Path.Combine(defaultSavePath, "SavePath.txt");
 
+        public static string GetSaveFolderPath()
+        {
+            return saveFolderPath;
+        }
+
         public static void ShowSettingsDialog()
         {
-            SaveLabSettingsDialogBox dialog = new SaveLabSettingsDialogBox(SaveFolderPath);
+            SaveLabSettingsDialogBox dialog = new SaveLabSettingsDialogBox(saveFolderPath);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
@@ -30,7 +35,7 @@ namespace PowerPointLabs.SaveLab
                 Directory.CreateDirectory(defaultSavePath);
 
                 // Set initial value for SaveFolderPath
-                SaveFolderPath = DefaultSaveMasterFolderPrefix;
+                saveFolderPath = DefaultSaveMasterFolderPrefix;
 
                 // Create a file to write to
                 using (StreamWriter sw = File.CreateText(defaultSaveTextFile))
@@ -42,7 +47,7 @@ namespace PowerPointLabs.SaveLab
             else
             {
                 // Read the SaveFolderPath from the local storage
-                SaveFolderPath = ReadStoredPathStringFromLocalStorage();
+                saveFolderPath = ReadStoredPathStringFromLocalStorage();
             }
         }
 
@@ -60,7 +65,7 @@ namespace PowerPointLabs.SaveLab
         // Function updates the path string with the new path string
         private static void UpdatePathString(string newPath)
         {
-            SaveFolderPath = newPath;
+            saveFolderPath = newPath;
         }
 
         // Function reads the stored path from the text file in the local storage

@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.SaveLab
 {
-    class SaveLabMain
+    static class SaveLabMain
     {
         public static void SaveFile(Models.PowerPointPresentation currentPresentation)
         {
@@ -20,7 +20,7 @@ namespace PowerPointLabs.SaveLab
             List<Models.PowerPointSlide> selectedSlides = currentPresentation.SelectedSlides;
 
             // Setting for Save File Dialog
-            saveFileDialog.InitialDirectory = SaveLabSettings.SaveFolderPath;
+            saveFileDialog.InitialDirectory = SaveLabSettings.GetSaveFolderPath();
             saveFileDialog.Filter = "PowerPoint Presentations|*.pptx";
             saveFileDialog.Title = "Save Selected Slides";
             saveFileDialog.OverwritePrompt = true;
