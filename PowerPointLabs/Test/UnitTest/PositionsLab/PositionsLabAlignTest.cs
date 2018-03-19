@@ -435,6 +435,117 @@ namespace Test.UnitTest.PositionsLab
 
         [TestMethod]
         [TestCategory("UT")]
+        public void TestAlignOneLeftSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            PositionsLabMain.AlignLeft(actualShapes);
+
+            PpOperations.SelectSlide(AlignOneShapeLeftDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignOneRightSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            PositionsLabMain.AlignRight(actualShapes, slideWidth);
+
+            PpOperations.SelectSlide(AlignOneShapeRightDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignOneTopSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            PositionsLabMain.AlignTop(actualShapes);
+
+            PpOperations.SelectSlide(AlignOneShapeTopDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignOneBottomSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
+            PositionsLabMain.AlignBottom(actualShapes, slideHeight);
+
+            PpOperations.SelectSlide(AlignOneShapeBottomDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignOneHorizontalSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
+            PositionsLabMain.AlignHorizontalCenter(actualShapes, slideHeight);
+
+            PpOperations.SelectSlide(AlignOneShapeHorizontalDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignOneVerticalSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            PositionsLabMain.AlignVerticalCenter(actualShapes, slideWidth);
+
+            PpOperations.SelectSlide(AlignOneShapeVerticalDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestAlignOneCenterSingleShape()
+        {
+            PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.SelectedShape;
+            _shapeNames = new List<string> { RotatedRectangle };
+            var actualShapes = GetShapes(OriginalShapesSlideNo, _shapeNames);
+            var slideHeight = Pres.PageSetup.SlideHeight;
+            var slideWidth = Pres.PageSetup.SlideWidth;
+            PositionsLabMain.AlignCenter(actualShapes, slideHeight, slideWidth);
+
+            PpOperations.SelectSlide(AlignOneShapeCenterDefaultNo);
+            var expectedShapes = PpOperations.SelectShapes(_shapeNames);
+
+            CheckShapes(expectedShapes, actualShapes);
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
         public void TestAlignLeftDefault()
         {
             PositionsLabSettings.AlignReference = PositionsLabSettings.AlignReferenceObject.PowerpointDefaults;

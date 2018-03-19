@@ -44,7 +44,7 @@
     <PublishUrl>C:\publish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.1.1.3</ApplicationVersion>
+    <ApplicationVersion>4.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -318,6 +318,11 @@
     <Compile Include="ActionFramework\Help\Help\HelpSupertipHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\NarrationsLab\NarrationsLabSettings\NarrationsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideLabelHandler.cs" />
+    <Compile Include="ActionFramework\PasteLab\PasteToFitSlide\PasteToFitSlideSupertipHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\FormattingGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\MoreLabsGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\RibbonGroups\EffectsGroupLabelHandler.cs" />
@@ -326,6 +331,9 @@
     <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
@@ -632,6 +640,7 @@
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="SaveLab\SaveLabMain.cs" />
     <Compile Include="SaveLab\SaveLabSettings.cs" />
@@ -640,6 +649,7 @@
     </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
+    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />
@@ -1994,6 +2004,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SaveLabActionButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PasteToFitSlide.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

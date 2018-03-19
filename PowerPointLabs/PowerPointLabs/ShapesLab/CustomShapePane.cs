@@ -7,9 +7,10 @@ using System.Linq;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShapesLab.Views;
+using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -114,7 +115,7 @@ namespace PowerPointLabs.ShapesLab
 
                 // do this optimization only for office 2010 since painting speed on 2013 is
                 // really slow
-                if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2010)
+                if (Globals.ThisAddIn.IsApplicationVersion2010())
                 {
                     createParams.ExStyle |= (int)Native.Message.WS_EX_COMPOSITED;  // Turn on WS_EX_COMPOSITED
                 }
@@ -129,6 +130,8 @@ namespace PowerPointLabs.ShapesLab
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             InitializeComponent();
+            
+            InitToolTipControl();
 
             InitializeContextMenu();
 
@@ -150,7 +153,7 @@ namespace PowerPointLabs.ShapesLab
 
             _timer = new Timer { Interval = _doubleClickTimeSpan };
             _timer.Tick += TimerTickHandler;
-            
+
             myShapeFlowLayout.AutoSize = true;
             myShapeFlowLayout.MouseEnter += FlowLayoutMouseEnterHandler;
             myShapeFlowLayout.MouseDown += FlowLayoutMouseDownHandler;
@@ -159,9 +162,47 @@ namespace PowerPointLabs.ShapesLab
 
             singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
         }
-        # endregion
+        #endregion
 
-        # region API
+        #region API
+
+        public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
+        {
+            // first of all we check if the shape gallery has been opened correctly
+            if (!addIn.ShapePresentation.Opened)
+            {
+                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                return;
+            }
+
+            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
+            if (!ShapeUtil.IsSelectionShapeOrText(selection))
+            {
+                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
+
+            // Finish checks, will add shape(s) from selection
+
+            ShapeRange selectedShapes = selection.ShapeRange;
+            if (selection.HasChildShapeRange)
+            {
+                selectedShapes = selection.ChildShapeRange;
+            }
+            // add shape into shape gallery first to reduce flicker
+            string shapeName = addIn.ShapePresentation.AddShape(selectedShapes, selectedShapes[1].Name);
+
+            // add the selection into pane and save it as .png locally
+            string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+
+            // sync the shape among all opening panels
+            addIn.SyncShapeAdd(shapeName, shapeFullName, CurrentCategory);
+
+            // finally, add the shape into the panel and waiting for name editing
+            AddCustomShape(shapeName, shapeFullName, true);
+        }
+
         public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
         {
             DehighlightSelected();
@@ -238,22 +279,22 @@ namespace PowerPointLabs.ShapesLab
             }
 
             // double buffer starts
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
                 GraphicsUtil.SuspendDrawing(myShapeFlowLayout);
             }
-            
+
             // emptize the panel and load shapes from folder
             myShapeFlowLayout.Controls.Clear();
             PrepareShapes();
-            
+
             // scroll the view to show the first item, and focus the flowlayout to enable
             // scroll if applicable
             myShapeFlowLayout.ScrollControlIntoView(myShapeFlowLayout.Controls[0]);
             myShapeFlowLayout.Focus();
 
             // double buffer ends
-            if (Globals.ThisAddIn.Application.Version == Globals.ThisAddIn.OfficeVersion2013)
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
                 GraphicsUtil.ResumeDrawing(myShapeFlowLayout);
             }
@@ -282,6 +323,11 @@ namespace PowerPointLabs.ShapesLab
         public Presentation GetShapeGallery()
         {
             return Globals.ThisAddIn.ShapePresentation.Presentation;
+        }
+
+        public Button GetAddShapeButton()
+        {
+            return addShapeButton;
         }
 
         # endregion
@@ -342,18 +388,18 @@ namespace PowerPointLabs.ShapesLab
                 _selectedThumbnail[1].DeHighlight();
                 _selectedThumbnail.RemoveAt(1);
             }
-            
+
             _selectedThumbnail[0].StartNameEdit();
         }
 
         private void ContextMenuStripImportCategoryClicked()
         {
             OpenFileDialog fileDialog = new OpenFileDialog
-                                 {
-                                     Filter = ImportLibraryFileDialogFilter,
-                                     Multiselect = false,
-                                     Title = ShapesLabText.ImportLibraryFileDialogTitle
-                                 };
+            {
+                Filter = ImportLibraryFileDialogFilter,
+                Multiselect = false,
+                Title = ShapesLabText.ImportLibraryFileDialogTitle
+            };
 
             flowlayoutContextMenuStrip.Hide();
 
@@ -370,11 +416,11 @@ namespace PowerPointLabs.ShapesLab
         private void ContextMenuStripImportShapesClicked()
         {
             OpenFileDialog fileDialog = new OpenFileDialog
-                                 {
-                                     Filter = ImportShapesFileDialogFilter,
-                                     Multiselect = true,
-                                     Title = ShapesLabText.ImportShapeFileDialogTitle
-                                 };
+            {
+                Filter = ImportShapesFileDialogFilter,
+                Multiselect = true,
+                Title = ShapesLabText.ImportShapeFileDialogTitle
+            };
 
             flowlayoutContextMenuStrip.Hide();
 
@@ -391,7 +437,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 return;
             }
-            
+
             PaneReload(true);
             MessageBox.Show(ShapesLabText.SuccessImport);
         }
@@ -429,7 +475,7 @@ namespace PowerPointLabs.ShapesLab
             FileDir.DeleteFolder(categoryPath);
 
             _categoryBinding.RemoveAt(categoryIndex);
-            
+
             // RemoveAt may NOT change the index, so we need to manually set the default category here
             if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
             {
@@ -568,7 +614,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 return;
             }
-            
+
             foreach (LabeledThumbnail thumbnail in _selectedThumbnail)
             {
                 thumbnail.DeHighlight();
@@ -615,7 +661,7 @@ namespace PowerPointLabs.ShapesLab
                     thisControlPosition = i;
                     continue;
                 }
-                
+
                 if (_stringComparer.Compare(control.NameLabel, name) > 0)
                 {
                     // immediate next control's name is still bigger than current control, do
@@ -625,7 +671,7 @@ namespace PowerPointLabs.ShapesLab
                     {
                         return thisControlPosition;
                     }
-                    
+
                     // now we have 2 cases:
                     // 1. the replace position is before the current position;
                     // 2. the replace position is behind the current position.
@@ -728,7 +774,7 @@ namespace PowerPointLabs.ShapesLab
                 {
                     contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
                 }
-                
+
                 if (contextMenu.Text != ShapesLabText.ShapeContextStripCopyShape)
                 {
                     contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
@@ -939,10 +985,10 @@ namespace PowerPointLabs.ShapesLab
             // init the file as an imported file
             PowerPointShapeGalleryPresentation importShapeGallery = new PowerPointShapeGalleryPresentation(ShapeRootFolderPath,
                                                                             ImportFileNameNoExtension)
-                                         {
-                                             IsImportedFile = true,
-                                             ImportToCategory = fromCategory ? string.Empty : CurrentCategory
-                                         };
+            {
+                IsImportedFile = true,
+                ImportToCategory = fromCategory ? string.Empty : CurrentCategory
+            };
 
             return importShapeGallery;
         }
@@ -982,9 +1028,9 @@ namespace PowerPointLabs.ShapesLab
             }
             else
                 if (p.X > myShapeFlowLayout.Width)
-                {
-                    p.X = myShapeFlowLayout.Width;
-                }
+            {
+                p.X = myShapeFlowLayout.Width;
+            }
 
             if (p.Y < 0)
             {
@@ -992,9 +1038,9 @@ namespace PowerPointLabs.ShapesLab
             }
             else
                 if (p.Y > myShapeFlowLayout.Height)
-                {
-                    p.Y = myShapeFlowLayout.Height;
-                }
+            {
+                p.Y = myShapeFlowLayout.Height;
+            }
         }
 
         private void RemoveThumbnail(LabeledThumbnail thumbnail, bool removeSelection = true)
@@ -1238,7 +1284,7 @@ namespace PowerPointLabs.ShapesLab
 
                 _selectRect.Size = rect.Size;
                 _selectRect.Location = myShapeFlowLayout.PointToScreen(rect.Location);
-                
+
                 foreach (Control control in myShapeFlowLayout.Controls)
                 {
                     if (!(control is LabeledThumbnail))
@@ -1364,7 +1410,7 @@ namespace PowerPointLabs.ShapesLab
 
             string shapeName = clickedThumbnail.NameLabel;
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            
+
             if (currentSlide != null)
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
@@ -1525,9 +1571,9 @@ namespace PowerPointLabs.ShapesLab
 
             ClickTimerReset();
         }
-        # endregion
+        #endregion
 
-        # region search box appearance and behaviors
+        #region search box appearance and behaviors
         /*
         private bool _searchBoxFocused = false;
         protected override void OnLoad(EventArgs e)
@@ -1574,6 +1620,24 @@ namespace PowerPointLabs.ShapesLab
             }
         }
         */
-        # endregion
+        #endregion
+
+        #region GUI Handles
+
+        private void AddShapeButton_Click(object sender, EventArgs e)
+        {
+            Selection selection = ActionFrameworkExtensions.GetCurrentSelection();
+            ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
+
+            AddShapeFromSelection(selection, addIn);
+        }
+        #endregion
+
+        #region ToolTip
+        private void InitToolTipControl()
+        {
+            toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
+        }
+        #endregion
     }
 }

@@ -17,6 +17,8 @@ namespace PowerPointLabs.CaptionsLab
     internal static class NotesToCaptions
     {
 #pragma warning disable 0618
+        public static bool IsRemoveCaptionsEnabled { get; set; } = true;
+        
         public static void EmbedCaptionsOnSelectedSlides()
         {
             if (PowerPointCurrentPresentationInfo.SelectedSlides == null ||
@@ -180,7 +182,10 @@ namespace PowerPointLabs.CaptionsLab
 
         private static void ShowNotesPane()
         {
-            Globals.ThisAddIn.Application.CommandBars.ExecuteMso("ShowNotes");
+            if (!Globals.ThisAddIn.IsApplicationVersion2010())
+            {
+                Globals.ThisAddIn.Application.CommandBars.ExecuteMso("ShowNotes");
+            }
         }
     }
 }

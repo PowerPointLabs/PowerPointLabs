@@ -8,9 +8,10 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
-
+using PowerPointLabs.SyncLab.ObjectFormats;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 using TextFrame2 = Microsoft.Office.Interop.PowerPoint.TextFrame2;
 
 namespace PowerPointLabs.Utils
@@ -106,7 +107,6 @@ namespace PowerPointLabs.Utils
                 return false;
             }
         }
-
         #endregion
 
         #region ShapeRange
@@ -334,13 +334,39 @@ namespace PowerPointLabs.Utils
                 return true;
             }
         }
-
+        /// <summary>
+        /// To avoid corrupted shape.
+        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
+        /// After that, most of operations on corrupted shapes will throw an exception.
+        /// One solution for this is to re-allocate its memory: simply cut/copy and paste before using its property.
+        /// </summary>
+        /// <param name="shape"> Shape to be corrected </param>
+        /// <returns> The corrected shape </returns>
         public static Shape CorruptionCorrection(Shape shape, PowerPointSlide ownerSlide)
         {
-            // in case of random corruption of shape, cut-paste a shape before using its property
-            Shape correctedShape = ownerSlide.CopyShapeToSlide(shape);
-            shape.Delete();
-            return correctedShape;
+            Shape correctedShape = null;
+
+            // Utilises deprecated PowerPointPresentation class as ShapeUtil does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
+            // While doing corruption correction, we don't want to affect the clipboard
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                correctedShape = ownerSlide.CopyShapeToSlide(shape);
+                // Success
+                return correctedShape;
+            }, pres, ownerSlide);
+            
+            if (correctedShape != null)
+            {
+                shape.Delete();
+                return correctedShape;
+            }
+            else
+            {
+                // There were problems with the copying of the shape to the slide (could be a placeholder) thus we just return the original shape
+                return shape;
+            }
         }
 
         public static ShapeRange CorruptionCorrection(ShapeRange shapes, PowerPointSlide ownerSlide)
@@ -353,7 +379,6 @@ namespace PowerPointLabs.Utils
             }
             return ownerSlide.ToShapeRange(correctedShapeList);
         }
-
         #endregion
 
         #region Size and Position
@@ -984,8 +1009,211 @@ namespace PowerPointLabs.Utils
             return shape == null ? null : shape.TextFrame.TextRange;
         }
 
-        #endregion
+        /// <summary>
+        /// Useful when shape has text with more than one color
+        /// Getting color in that case without a workabout will return black
+        /// Assumes that shape has a TextRange
+        /// </summary>
+        /// <param name="shape">RGB color, seems to be the color of the last character</param>
+        /// <returns></returns>
+        public static int GuessTextColor(Shape shape)
+        {
+            // clear the text, to clear presence of more than 1 color
+            // TextRange.Font.Color.RGB then returns the same color of as new text that is added to the shape
+            // 
+            // Unsuccessful workabouts:
+            // Taking a sub TextRange of the shape
+            // Trimming text to the first character
+            Shape duplicate = shape.Duplicate()[1];
+            duplicate.TextFrame.TextRange.Text = "";
+            int color = duplicate.TextFrame.TextRange.Font.Color.RGB;
+            duplicate.Delete();
+            return color;
+        }
 
+        #endregion
+        
+        /// <summary>
+        /// Checks if a placeholder is a Body
+        /// shape.PlaceHolderFormat.Type is insufficient, sometimes returning the more general "ppPlaceHolderObject".
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns></returns>
+        public static bool IsPlaceHolderBody(Shape placeHolder)
+        {
+            return placeHolder.HasTextFrame == MsoTriState.msoTrue;
+        }
+        #endregion
+        
+        #region SyncShape Format utils
+
+        /// <summary>
+        /// Applies the specified formats from one shape to multiple shapes
+        /// </summary>
+        /// <param name="formats">Formats to apply</param>
+        /// <param name="formatShape">source shape</param>
+        /// <param name="newShapes">destination shape</param>
+        public static void ApplyFormats(Format[] formats, Shape formatShape, ShapeRange newShapes)
+        {
+            foreach (Shape newShape in newShapes)
+            {
+                ApplyFormats(formats, formatShape, newShape);
+            }
+        }
+
+        public static void ApplyFormats(Format[] formats, Shape formatShape, Shape newShape)
+        {
+            foreach (Format format in formats)
+            {
+                format.SyncFormat(formatShape, newShape);
+            }
+        }
+        
+        #region PlaceHolder utils
+
+        public static bool CanCopyMsoPlaceHolder(Shape placeholder, Shapes shapesSource)
+        {
+            var emptyArray = new Format[0];
+            Shape copyAttempt = CopyMsoPlaceHolder(emptyArray, placeholder, shapesSource);
+            
+            if (copyAttempt == null)
+            {
+                return false;
+            }
+            
+            copyAttempt.Delete();
+            return true;
+        }
+
+        /// <summary>
+        /// Fake a copy by creating a similar object with the same formats
+        /// Copy/Pasting MsoPlaceHolder doesn't work.
+        /// Note: Shapes.AddPlaceholder(..) does not work as well.
+        /// It restores a deleted placeholder to the slide, not create a shape
+        /// </summary>
+        /// <param name="formats"></param>
+        /// <param name="msoPlaceHolder"></param>
+        /// <param name="shapesSource">Shapes object, source of shapes</param>
+        /// <returns>returns null if input placeholder is not supported</returns>
+        public static Shape CopyMsoPlaceHolder(Format[] formats, Shape msoPlaceHolder, Shapes shapesSource)
+        {
+            PpPlaceholderType realType = msoPlaceHolder.PlaceholderFormat.Type;
+            
+            // charts, tables, pictures & smart shapes may return a general type,
+            // ppPlaceHolderObject or ppPlaceHolderVerticalObject
+            bool isGeneralType = realType == PpPlaceholderType.ppPlaceholderObject ||
+                                 realType == PpPlaceholderType.ppPlaceholderVerticalObject;
+            if (isGeneralType)
+            {
+                realType = GetSpecificPlaceholderType(msoPlaceHolder);
+            }
+            
+            // create an appropriate shape, based on placeholder type
+            Shape shapeTemplate = null;
+            switch (realType)
+            {
+                // the type never seems to be anything other than subtitle, center title, title, body or object.
+                // still, place the rest here to be safe.
+                case PpPlaceholderType.ppPlaceholderBody:
+                case PpPlaceholderType.ppPlaceholderCenterTitle:
+                case PpPlaceholderType.ppPlaceholderTitle:
+                case PpPlaceholderType.ppPlaceholderSubtitle:
+                case PpPlaceholderType.ppPlaceholderVerticalBody:
+                case PpPlaceholderType.ppPlaceholderVerticalTitle:
+                    // not safe to do shape.Duplicate(), the duplicated textbox has differences in configuration
+                    // width is one example. more investigation is required to find out the exact differences
+                    shapeTemplate = shapesSource.AddTextbox(
+                        msoPlaceHolder.TextFrame.Orientation,
+                        msoPlaceHolder.Left,
+                        msoPlaceHolder.Top,
+                        msoPlaceHolder.Width,
+                        msoPlaceHolder.Height);
+                    break;
+                case PpPlaceholderType.ppPlaceholderChart:
+                case PpPlaceholderType.ppPlaceholderOrgChart:
+                    // not much value in copying charts, differed for now
+                    break;
+                case PpPlaceholderType.ppPlaceholderTable:
+                    // not much value in copying tables, differed for now
+                    break;
+                case PpPlaceholderType.ppPlaceholderPicture:
+                case PpPlaceholderType.ppPlaceholderBitmap:
+                    // must use duplicate. there is no way to create a replacement picture
+                    // as the image's source is not obtainable through the Shape API
+                    var tempShape = msoPlaceHolder.Duplicate()[1];
+                    tempShape.Copy();
+                    shapeTemplate = shapesSource.Paste()[1];
+                    tempShape.Delete();
+                    break;
+                case PpPlaceholderType.ppPlaceholderVerticalObject:
+                case PpPlaceholderType.ppPlaceholderObject:
+                    // already narrowed down the type 
+                    // should only perform actions valid for all placeholder objects here 
+                    // do nothing for now
+                    break;
+                default:
+                    // types not listed above are types that do not make sense to be copied in pptlabs
+                    // eg. footer, header, date placeholders
+                    break;
+            }
+            
+            if (shapeTemplate == null)
+            {
+                // placeholder type is not supported, no copy made
+                return null;
+            }
+            
+            ApplyFormats(formats, msoPlaceHolder, shapeTemplate);
+            return shapeTemplate;
+        }
+
+        /// <summary>
+        /// Targets only msoPlaceHolderObject & msoPlaceHolderVerticalObject
+        /// Attempt to return a more specific placeholder type, if we can determine it
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns>a specific type, or the shape's original type</returns>
+        public static PpPlaceholderType GetSpecificPlaceholderType(Shape placeHolder)
+        {
+            bool isPicture = IsPlaceHolderPicture(placeHolder);
+            bool isBody = IsPlaceHolderBody(placeHolder);
+            if (isPicture)
+            {
+                return PpPlaceholderType.ppPlaceholderPicture;
+            }
+            else if (isBody)
+            {
+                return PpPlaceholderType.ppPlaceholderBody;
+            }
+            else
+            {
+                return placeHolder.PlaceholderFormat.Type;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a placeholder is a Picture
+        /// shape.PlaceHolderFormat.Type is insufficient, sometimes returning the more general "ppPlaceHolderObject".
+        /// </summary>
+        /// <param name="placeHolder"></param>
+        /// <returns></returns>
+        public static bool IsPlaceHolderPicture(Shape placeHolder)
+        {
+            try
+            {
+                // attempt to access PictureFormat properties, an exception will be thrown
+                // if shape is not a Picture.
+                float unused = placeHolder.PictureFormat.CropTop;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
+        #endregion
+        
         #endregion
 
         #region Helper Methods

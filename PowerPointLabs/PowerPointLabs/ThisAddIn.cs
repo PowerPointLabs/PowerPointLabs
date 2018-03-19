@@ -17,6 +17,7 @@ using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
+using PowerPointLabs.CaptionsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
@@ -76,6 +77,16 @@ namespace PowerPointLabs
         private IChannel _ftChannel;
 
         #region API
+
+        public bool IsApplicationVersion2010() 
+        {
+            return Application.Version == OfficeVersion2010;
+        }
+
+        public bool IsApplicationVersion2013()
+        {
+            return Application.Version == OfficeVersion2013;
+        }
 
         public Control GetActiveControl(Type type)
         {
@@ -638,12 +649,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (Ribbon.RemoveAudioEnabled)
+                        if (NarrationsLab.NotesToAudio.IsRemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        Ribbon.RemoveAudioEnabled = true;
+                        NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = true;
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -867,8 +878,8 @@ namespace PowerPointLabs
         {
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
-            Ribbon.RemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            Ribbon.RemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+            NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
+            NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
 
             // update recorder pane
             if (sldRange.Count > 0)
@@ -894,11 +905,13 @@ namespace PowerPointLabs
             BreakRecorderEvents();
 
             // ribbon function init
-            Ribbon.HighlightBulletsEnabled = true;
+            HighlightLab.HighlightBulletsText.IsHighlightPointsEnabled = true;
+            HighlightLab.HighlightBulletsBackground.IsHighlightBackgroundEnabled = true;
 
             if (sldRange.Count != 1)
             {
-                Ribbon.HighlightBulletsEnabled = false;
+                HighlightLab.HighlightBulletsText.IsHighlightPointsEnabled = false;
+                HighlightLab.HighlightBulletsBackground.IsHighlightBackgroundEnabled = false;
             }
             else
             {
@@ -998,7 +1011,7 @@ namespace PowerPointLabs
         {
             Trace.TraceInformation("Closing " + pres.Name);
 
-            if (Application.Version == OfficeVersion2010 &&
+            if (IsApplicationVersion2010() &&
                 _deactivatedPresFullName == pres.FullName &&
                 Application.Presentations.Count == 2 &&
                 ShapePresentation != null &&
@@ -1324,8 +1337,8 @@ namespace PowerPointLabs
 
                     _copiedShapes.Sort((x, y) => (x.Id - y.Id));
                 }
-
                 Ribbon.RefreshRibbonControl("PasteToFillSlideButton");
+                Ribbon.RefreshRibbonControl("PasteToFitSlideButton");
                 Ribbon.RefreshRibbonControl("PasteAtOriginalPositionButton");
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
                 Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
@@ -1407,7 +1420,7 @@ namespace PowerPointLabs
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    if (Application.Version == OfficeVersion2010)
+                    if (IsApplicationVersion2010())
                     {
                         OpenPropertyWindowForOffice10();
                     }

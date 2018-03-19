@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="RibbonLoad">
   <ribbon>
     <contextualTabs>
@@ -29,6 +29,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <button id="AnimateInSlideButton"
                     tag="AnimateInSlide"
                     getLabel="GetLabel"
@@ -56,6 +57,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <button id="DrillDownButton"
                     tag="DrillDown"
                     getLabel="GetLabel"
@@ -201,6 +203,7 @@
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinEffectSeparator"
                            title="Builtin Effects"/>
             <gallery idMso="PictureSharpenSoftenGallery"/>
@@ -301,20 +304,27 @@
                   getSupertip="GetSupertip"
                   onAction="OnAction"
                   size="large"/>
-
-          <button id="ShapesLabButton"
-                  tag="ShapesLab"
-                  getLabel="GetLabel"
-                  getImage="GetImage"
-                  getSupertip="GetSupertip"
-                  onAction="OnAction"
-                  size="large"/>
+          
+          <menu id="ShapesLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                size="large">
+            <gallery idMso="ShapesInsertGallery"/>
+            <button id="ShapesLabButton"
+                    tag="ShapesLab"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
           <menu id="CropLabMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
                 size="large">
+            <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinCropSeparator"
                            title="Builtin Crop Features"/>
             <splitButton idMso="PictureCropTools"/>
@@ -374,6 +384,13 @@
                     onAction="OnAction"/>
             <button id="PasteToFillSlideButton"
                     tag="PasteToFillSlide"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <button id="PasteToFitSlideButton"
+                    tag="PasteToFitSlide"
                     getLabel="GetLabel"
                     getImage="GetImage"
                     getSupertip="GetSupertip"
