@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -10,7 +11,7 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteToFillSlide
     {
-        private const float targetDPI = 150.0f;
+        private const float targetDPI = 72.0f;
 
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
@@ -28,36 +29,51 @@ namespace PowerPointLabs.PasteLab
 
             Shape shapeToFillSlide = null;
 
+            string fileName = CommonText.TemporaryImageStorageFileName;
+            string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
+
+            pastingShape.Export(tempPicPath, PpShapeFormat.ppShapeFormatPNG);
+            Image img = Image.FromFile(tempPicPath);
+            Bitmap shapeBitMap = new Bitmap(img);
+
+            img.Dispose();
+            FileInfo file = new FileInfo(tempPicPath);
+            if (file.Exists)
+            {
+                file.Delete();
+            }
             // Add code to compress the slide here, using ShapeToBitmap method from GraphicsUtil.cs
-            System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(pastingShape);
+            //System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(pastingShape);
+            System.Diagnostics.Debug.WriteLine("Original resolution: " + shapeBitMap.HorizontalResolution);
             if (shapeBitMap.HorizontalResolution > targetDPI)
             {
-                string fileName = CommonText.TemporaryImageStorageFileName;
-                string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
+                
 
                 System.Diagnostics.Debug.WriteLine("Previous horizontal resolution: " + shapeBitMap.HorizontalResolution);
-                System.Diagnostics.Debug.WriteLine("Previous vertical resolution: " + shapeBitMap.VerticalResolution);
-                System.Diagnostics.Debug.WriteLine("Previous width: " + shapeBitMap.Size.Width);
-                System.Diagnostics.Debug.WriteLine("Previous height: " + shapeBitMap.Size.Height);
+                //System.Diagnostics.Debug.WriteLine("Previous vertical resolution: " + shapeBitMap.VerticalResolution);
+                //System.Diagnostics.Debug.WriteLine("Previous width: " + shapeBitMap.Size.Width);
+                //System.Diagnostics.Debug.WriteLine("Previous height: " + shapeBitMap.Size.Height);
                 shapeBitMap.SetResolution(targetDPI, targetDPI);
                 System.Diagnostics.Debug.WriteLine("New horizontal resolution: " + shapeBitMap.HorizontalResolution);
-                System.Diagnostics.Debug.WriteLine("New vertical resolution: " + shapeBitMap.VerticalResolution);
-                System.Diagnostics.Debug.WriteLine("New width: " + shapeBitMap.Size.Width);
-                System.Diagnostics.Debug.WriteLine("New height: " + shapeBitMap.Size.Height);
+                //System.Diagnostics.Debug.WriteLine("New vertical resolution: " + shapeBitMap.VerticalResolution);
+                //System.Diagnostics.Debug.WriteLine("New width: " + shapeBitMap.Size.Width);
+                //System.Diagnostics.Debug.WriteLine("New height: " + shapeBitMap.Size.Height);
                 shapeBitMap.Save(tempPicPath);
 
                 shapeToFillSlide = slide.Shapes.AddPicture(tempPicPath,
-                    Microsoft.Office.Core.MsoTriState.msoFalse,
+                    Microsoft.Office.Core.MsoTriState.msoTrue,
                     Microsoft.Office.Core.MsoTriState.msoTrue,
                     pastingShape.Left,
                     pastingShape.Top,
                     pastingShape.Width,
                     pastingShape.Height);
-                FileInfo file = new FileInfo(tempPicPath);
-                if (file.Exists)
+                
+                FileInfo file2 = new FileInfo(tempPicPath);
+                if (file2.Exists)
                 {
-                    file.Delete();
+                    file2.Delete();
                 }
+                
                 pastingShape.Delete();
             }
             else
@@ -65,10 +81,10 @@ namespace PowerPointLabs.PasteLab
                 System.Diagnostics.Debug.WriteLine("Accepted resolution: " + shapeBitMap.HorizontalResolution);
                 shapeToFillSlide = pastingShape;
             }
-            shapeBitMap.Dispose();
+            
 
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-
+            /*
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
             ppShapeToFillSlide.AbsoluteHeight = slideHeight;
             if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
@@ -78,8 +94,8 @@ namespace PowerPointLabs.PasteLab
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
             
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
-
-            shapeToFillSlide.Select();
+            */
+            //shapeToFillSlide.Select();
         }
         public static PPShape Resize(PPShape originalShape, float w, float h)
         {
