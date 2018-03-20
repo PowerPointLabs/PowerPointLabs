@@ -124,12 +124,12 @@ namespace PowerPointLabs.Models
                 return ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
                     shapeRange.Copy();
-                    return AddShape(shapeRange, name, category);
+                    return AddShape(name, category);
                 }, pres, origSlide);
             }
             else
             {
-                return AddShape(shapeRange, name, category);
+                return AddShape(name, category);
             }
         }
 
@@ -650,7 +650,7 @@ namespace PowerPointLabs.Models
             File.SetAttributes(shapeGalleryFileName, FileAttributes.ReadOnly);
         }
 
-        private string AddShape(ShapeRange shapeRange, string name, string category) 
+        private string AddShape(string name, string category) 
         {
             PowerPointSlide categorySlide = _defaultCategory;
 
