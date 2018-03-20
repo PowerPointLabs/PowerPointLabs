@@ -1,12 +1,17 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.IO;
+
+using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PasteLab
 {
     static internal class PasteToFillSlide
     {
+        private const float targetDPI = 150.0f;
+
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
             pastingShapes = ShapeUtil.GetShapesWhenTypeNotMatches(slide, pastingShapes, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
@@ -15,26 +20,57 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            Shape shapeToFillSlide = pastingShapes[1];
+            Shape pastingShape = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {
-                shapeToFillSlide = pastingShapes.Group();
+                pastingShape = pastingShapes.Group();
             }
-            shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
+
+            Shape shapeToFillSlide = null;
 
             // Add code to compress the slide here, using ShapeToBitmap method from GraphicsUtil.cs
-            System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(shapeToFillSlide);
-            if (((System.Drawing.Image)shapeBitMap).HorizontalResolution > 96.0f && ((System.Drawing.Image)shapeBitMap).VerticalResolution > 96.0f)
+            System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(pastingShape);
+            if (shapeBitMap.HorizontalResolution > targetDPI)
             {
-                shapeBitMap.SetResolution(96.0f, 96.0f);
-            }
-            // Comvert bitmap back into shape
+                string fileName = CommonText.TemporaryImageStorageFileName;
+                string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
 
+                System.Diagnostics.Debug.WriteLine("Previous horizontal resolution: " + shapeBitMap.HorizontalResolution);
+                System.Diagnostics.Debug.WriteLine("Previous vertical resolution: " + shapeBitMap.VerticalResolution);
+                System.Diagnostics.Debug.WriteLine("Previous width: " + shapeBitMap.Size.Width);
+                System.Diagnostics.Debug.WriteLine("Previous height: " + shapeBitMap.Size.Height);
+                shapeBitMap.SetResolution(targetDPI, targetDPI);
+                System.Diagnostics.Debug.WriteLine("New horizontal resolution: " + shapeBitMap.HorizontalResolution);
+                System.Diagnostics.Debug.WriteLine("New vertical resolution: " + shapeBitMap.VerticalResolution);
+                System.Diagnostics.Debug.WriteLine("New width: " + shapeBitMap.Size.Width);
+                System.Diagnostics.Debug.WriteLine("New height: " + shapeBitMap.Size.Height);
+                shapeBitMap.Save(tempPicPath);
+
+                shapeToFillSlide = slide.Shapes.AddPicture(tempPicPath,
+                    Microsoft.Office.Core.MsoTriState.msoFalse,
+                    Microsoft.Office.Core.MsoTriState.msoTrue,
+                    pastingShape.Left,
+                    pastingShape.Top,
+                    pastingShape.Width,
+                    pastingShape.Height);
+                FileInfo file = new FileInfo(tempPicPath);
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+                pastingShape.Delete();
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Accepted resolution: " + shapeBitMap.HorizontalResolution);
+                shapeToFillSlide = pastingShape;
+            }
+            shapeBitMap.Dispose();
+
+            shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
-
             ppShapeToFillSlide.AbsoluteHeight = slideHeight;
-
             if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
             {
                 ppShapeToFillSlide.AbsoluteWidth = slideWidth;
@@ -42,6 +78,8 @@ namespace PowerPointLabs.PasteLab
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
             
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
+
+            shapeToFillSlide.Select();
         }
         public static PPShape Resize(PPShape originalShape, float w, float h)
         {
@@ -77,6 +115,43 @@ namespace PowerPointLabs.PasteLab
 
             return thumbnail;
             */
+        }
+
+        private static System.Drawing.Image ScaleByPercent(System.Drawing.Image imgPhoto, int percent)
+        {
+            float nPercent = ((float)percent / 100);
+
+            int sourceWidth = imgPhoto.Width;
+            int sourceHeight = imgPhoto.Height;
+            int sourceX = 0;
+            int sourceY = 0;
+            int destX = 0;
+            int destY = 0;
+
+            //Calcuate height and width of resized image.
+            int destWidth = (int)(sourceWidth * nPercent);
+            int destHeight = (int)(sourceHeight * nPercent);
+
+            //Create a new bitmap object.
+            System.Drawing.Bitmap bmPhoto = new System.Drawing.Bitmap(destWidth, destHeight,
+                                     System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            
+            //Set resolution of bitmap.
+            bmPhoto.SetResolution(imgPhoto.HorizontalResolution,
+                                    imgPhoto.VerticalResolution);
+
+            //Create a graphics object and set quality of graphics.
+            System.Drawing.Graphics grPhoto = System.Drawing.Graphics.FromImage(bmPhoto);
+            grPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+            //Draw image by using DrawImage() method of graphics class.
+            grPhoto.DrawImage(imgPhoto,
+                new System.Drawing.Rectangle(destX, destY, destWidth, destHeight),
+                new System.Drawing.Rectangle(sourceX, sourceY, sourceWidth, sourceHeight),
+                System.Drawing.GraphicsUnit.Pixel);
+
+            grPhoto.Dispose();   //Dispose graphics object.
+            return bmPhoto;
         }
 
     }
