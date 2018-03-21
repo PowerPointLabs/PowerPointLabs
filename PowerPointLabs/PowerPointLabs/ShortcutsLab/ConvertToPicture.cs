@@ -15,14 +15,18 @@ namespace PowerPointLabs.ShortcutsLab
     {
 #pragma warning disable 0618
 
-        public static void Convert(PowerPoint.Selection selection)
+        public static void Convert(PowerPointPresentation pres, PowerPointSlide slide, PowerPoint.Selection selection)
         {
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
                 int originalZOrder = shape.ZOrderPosition;
-                shape = CutPasteShape(shape);
-                ConvertToPictureForShape(shape, originalZOrder);
+                // In case shape is corrupted
+                if (ShapeUtil.IsCorrupted(shape))
+                {
+                    shape = ShapeUtil.CorruptionCorrection(shape, slide);
+                }
+                ConvertToPictureForShape(pres, slide, shape, originalZOrder);
             }
             else
             {
@@ -49,7 +53,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
         }
 
-        private static void ConvertToPictureForShape(PowerPoint.Shape shape, int originalZOrder)
+        private static void ConvertToPictureForShape(PowerPointPresentation pres, PowerPointSlide slide, PowerPoint.Shape shape, int originalZOrder)
         {
             float rotation = 0;
             try
@@ -61,41 +65,31 @@ namespace PowerPointLabs.ShortcutsLab
             {
                 Logger.LogException(e, "Chart cannot be rotated.");
             }
-            shape.Copy();
-            float x = shape.Left;
-            float y = shape.Top;
-            float width = shape.Width;
-            float height = shape.Height;
-            shape.Delete();
-            PowerPoint.Shape pic = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-            pic.Left = x + (width - pic.Width) / 2;
-            pic.Top = y + (height - pic.Height) / 2;
-            pic.Rotation = rotation;
-            // move picture to original z-order
-            while (pic.ZOrderPosition > originalZOrder)
-            {
-                pic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
-            }
-            while (pic.ZOrderPosition < originalZOrder)
-            {
-                pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
-            }
-            pic.Select();
-        }
 
-        /// <summary>
-        /// To avoid corrupted shape.
-        /// Corrupted shape is produced when delete or cut a shape programmatically, but then users undo it.
-        /// After that, most of operations on corrupted shapes will throw an exception.
-        /// One solution for this is to re-allocate its memory: simply cut/copy and paste.
-        /// </summary>
-        /// <param name="shape"></param>
-        /// <returns></returns>
-        private static PowerPoint.Shape CutPasteShape(PowerPoint.Shape shape)
-        {
-            shape.Cut();
-            shape = PowerPointCurrentPresentationInfo.CurrentSlide.Shapes.Paste()[1];
-            return shape;
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                shape.Copy();
+                float x = shape.Left;
+                float y = shape.Top;
+                float width = shape.Width;
+                float height = shape.Height;
+                shape.Delete();
+                PowerPoint.Shape pic = slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                pic.Left = x + (width - pic.Width) / 2;
+                pic.Top = y + (height - pic.Height) / 2;
+                pic.Rotation = rotation;
+                // move picture to original z-order
+                while (pic.ZOrderPosition > originalZOrder)
+                {
+                    pic.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
+                }
+                while (pic.ZOrderPosition < originalZOrder)
+                {
+                    pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
+                }
+                pic.Select();
+                return pic;
+            }, pres, slide);
         }
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
