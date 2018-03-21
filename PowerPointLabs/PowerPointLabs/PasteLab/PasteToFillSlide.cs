@@ -11,7 +11,7 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteToFillSlide
     {
-        private const float targetDPI = 72.0f;
+        private const float targetDPI = 96.0f;
 
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
@@ -29,10 +29,10 @@ namespace PowerPointLabs.PasteLab
 
             Shape shapeToFillSlide = null;
 
-            string fileName = CommonText.TemporaryImageStorageFileName;
+            string fileName = CommonText.TemporaryCompressedImageStorageFileName;
             string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
-
-            pastingShape.Export(tempPicPath, PpShapeFormat.ppShapeFormatPNG);
+            
+            pastingShape.Export(tempPicPath, PpShapeFormat.ppShapeFormatJPG);
             Image img = Image.FromFile(tempPicPath);
             Bitmap shapeBitMap = new Bitmap(img);
 
@@ -42,6 +42,7 @@ namespace PowerPointLabs.PasteLab
             {
                 file.Delete();
             }
+            
             // Add code to compress the slide here, using ShapeToBitmap method from GraphicsUtil.cs
             //System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(pastingShape);
             System.Diagnostics.Debug.WriteLine("Original resolution: " + shapeBitMap.HorizontalResolution);
@@ -64,9 +65,7 @@ namespace PowerPointLabs.PasteLab
                     Microsoft.Office.Core.MsoTriState.msoTrue,
                     Microsoft.Office.Core.MsoTriState.msoTrue,
                     pastingShape.Left,
-                    pastingShape.Top,
-                    pastingShape.Width,
-                    pastingShape.Height);
+                    pastingShape.Top);
                 
                 FileInfo file2 = new FileInfo(tempPicPath);
                 if (file2.Exists)
