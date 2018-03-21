@@ -982,6 +982,9 @@ namespace PowerPointLabs
             string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
             _documentHashcodeMapper[activeWindow] = tempName;
+
+            // Refresh ribbon to enable the menu buttons
+            RefreshRibbonMenuButtons();
         }
 
         // solve new un-modified unsave problem
