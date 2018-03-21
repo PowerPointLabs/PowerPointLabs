@@ -29,6 +29,7 @@ namespace PowerPointLabs.PasteLab
 
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);
+                ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape);
                 selectedShape.Delete();
 
                 return slide.ToShapeRange(pastingShape);
@@ -63,6 +64,7 @@ namespace PowerPointLabs.PasteLab
                         shapeAbove = shape;
                     }
                 }
+                ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, shapeAbove);
 
                 // Remove selected child since it is being replaced
                 ShapeRange shapesToGroup = slide.ToShapeRange(selectedGroupShapeList);

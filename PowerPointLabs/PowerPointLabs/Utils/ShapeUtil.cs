@@ -1069,6 +1069,24 @@ namespace PowerPointLabs.Utils
             }
         }
         
+        public static Format[] GetCopyableFormats(Shape shape)
+        {
+            return (from format in SyncFormatConstants.Formats where format.CanCopy(shape) select format)
+                .ToArray();
+        }
+        
+        /// <summary>
+        /// Applies all applyable formats from one shape to another
+        /// </summary>
+        /// <param name="formatShape">source shape</param>
+        /// <param name="newShape">destination shape</param>
+        public static void ApplyAllPossibleFormats(Shape formatShape, Shape newShape)
+        {
+            // gather all formats
+            Format[] copyableFormats = GetCopyableFormats(formatShape);
+            ApplyFormats(copyableFormats, formatShape, newShape);
+        }
+        
         #region PlaceHolder utils
 
         public static bool CanCopyMsoPlaceHolder(Shape placeholder, Shapes shapesSource)
