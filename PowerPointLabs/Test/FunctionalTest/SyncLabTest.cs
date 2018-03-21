@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PowerPointLabs;
@@ -26,12 +26,14 @@ namespace Test.FunctionalTest
         private const int ExpectedSyncShapeToGroupSlideNo = 39;
         
         private const int HorizontalPlaceHolderSlideNo = 41;
-        private const int VerticalPlaceHolderSlideNo = 43;
         private const int CenterPlaceHolderSlideNo = 42;
+        private const int VerticalPlaceHolderSlideNo = 43;
         
-        private const int PicturePlaceHolderSlideNo = 46;
-        private const int ChartPlaceHolderSlideNo = 45;
         private const int TablePlaceHolderSlideNo = 44;
+        private const int ChartPlaceHolderSlideNo = 45;
+        private const int PicturePlaceHolderSlideNo = 46;
+        
+        private const int SmartArtSlideNo = 47;
 
         private const string Line = "Straight Connector 2";
         private const string RotatedArrow = "Right Arrow 5";
@@ -49,6 +51,7 @@ namespace Test.FunctionalTest
         private const string Table = "Content Placeholder 3";
         private const string Chart = "Content Placeholder 5";
         private const string Picture = "Content Placeholder 4";
+        private const string SmartArt = "SmartArt 1";
 
         protected override string GetTestingSlideName()
         {
@@ -137,6 +140,12 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 "Please select at least one item to apply this format to.", () => syncLab.Sync(0), "Ok");
+            
+            // smart art
+            PpOperations.SelectSlide(SmartArtSlideNo);
+            PpOperations.SelectShape(SmartArt);
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
+                SyncLabText.ErrorSmartArtUnsupported, syncLab.Copy, "Ok");
         }
 
         private void TestSync(ISyncLabController syncLab)
