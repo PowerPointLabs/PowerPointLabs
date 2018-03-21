@@ -99,17 +99,17 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(PicturePlaceHolderSlideNo);
             PpOperations.SelectShape(Picture);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
             
             PpOperations.SelectSlide(ChartPlaceHolderSlideNo);
             PpOperations.SelectShape(Chart);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
             
             PpOperations.SelectSlide(TablePlaceHolderSlideNo);
             PpOperations.SelectShape(Table);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
         }
         
 
@@ -119,18 +119,18 @@ namespace Test.FunctionalTest
 
             // no selection copy
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // 2 item selected copy
             List<String> shapes = new List<string> { Line, RotatedArrow };
             PpOperations.SelectShapes(shapes);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // group selected copy
             PpOperations.SelectShape(Group);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // copy blank item for the paste error dialog test
             PpOperations.SelectShape(Line);    
@@ -139,7 +139,7 @@ namespace Test.FunctionalTest
             // no selection sync
             PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select at least one item to apply this format to.", () => syncLab.Sync(0), "Ok");
+                SyncLabText.ErrorPasteSelectionInvalid, () => syncLab.Sync(0), "Ok");
             
             // smart art
             PpOperations.SelectSlide(SmartArtSlideNo);
@@ -170,10 +170,10 @@ namespace Test.FunctionalTest
 
         private void IsSame(int originalSlideNo, int expectedSlideNo, string shapeToCheck)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(originalSlideNo);
-            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape(shapeToCheck)[1];
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
-            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Slide actualSlide = PpOperations.SelectSlide(originalSlideNo);
+            Shape actualShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            Shape expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameShape(expectedShape, actualShape);
         }
