@@ -11,7 +11,7 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteToFillSlide
     {
-        private const float targetDPI = 96.0f;
+        private const long targetCompression = 95L;
 
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
@@ -27,63 +27,13 @@ namespace PowerPointLabs.PasteLab
                 pastingShape = pastingShapes.Group();
             }
 
-            Shape shapeToFillSlide = null;
-
             string fileName = CommonText.TemporaryCompressedImageStorageFileName;
             string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
-            
-            pastingShape.Export(tempPicPath, PpShapeFormat.ppShapeFormatJPG);
-            Image img = Image.FromFile(tempPicPath);
-            Bitmap shapeBitMap = new Bitmap(img);
 
-            img.Dispose();
-            FileInfo file = new FileInfo(tempPicPath);
-            if (file.Exists)
-            {
-                file.Delete();
-            }
-            
-            // Add code to compress the slide here, using ShapeToBitmap method from GraphicsUtil.cs
-            //System.Drawing.Bitmap shapeBitMap = GraphicsUtil.ShapeToBitmap(pastingShape);
-            System.Diagnostics.Debug.WriteLine("Original resolution: " + shapeBitMap.HorizontalResolution);
-            if (shapeBitMap.HorizontalResolution > targetDPI)
-            {
-                
-
-                System.Diagnostics.Debug.WriteLine("Previous horizontal resolution: " + shapeBitMap.HorizontalResolution);
-                //System.Diagnostics.Debug.WriteLine("Previous vertical resolution: " + shapeBitMap.VerticalResolution);
-                //System.Diagnostics.Debug.WriteLine("Previous width: " + shapeBitMap.Size.Width);
-                //System.Diagnostics.Debug.WriteLine("Previous height: " + shapeBitMap.Size.Height);
-                shapeBitMap.SetResolution(targetDPI, targetDPI);
-                System.Diagnostics.Debug.WriteLine("New horizontal resolution: " + shapeBitMap.HorizontalResolution);
-                //System.Diagnostics.Debug.WriteLine("New vertical resolution: " + shapeBitMap.VerticalResolution);
-                //System.Diagnostics.Debug.WriteLine("New width: " + shapeBitMap.Size.Width);
-                //System.Diagnostics.Debug.WriteLine("New height: " + shapeBitMap.Size.Height);
-                shapeBitMap.Save(tempPicPath);
-
-                shapeToFillSlide = slide.Shapes.AddPicture(tempPicPath,
-                    Microsoft.Office.Core.MsoTriState.msoTrue,
-                    Microsoft.Office.Core.MsoTriState.msoTrue,
-                    pastingShape.Left,
-                    pastingShape.Top);
-                
-                FileInfo file2 = new FileInfo(tempPicPath);
-                if (file2.Exists)
-                {
-                    file2.Delete();
-                }
-                
-                pastingShape.Delete();
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("Accepted resolution: " + shapeBitMap.HorizontalResolution);
-                shapeToFillSlide = pastingShape;
-            }
-            
+            Shape shapeToFillSlide = CompressImageInShape(pastingShape, targetCompression, tempPicPath, slide);
 
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
-            /*
+            
             PPShape ppShapeToFillSlide = new PPShape(shapeToFillSlide);
             ppShapeToFillSlide.AbsoluteHeight = slideHeight;
             if (ppShapeToFillSlide.AbsoluteWidth < slideWidth)
@@ -93,43 +43,78 @@ namespace PowerPointLabs.PasteLab
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
             
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
-            */
-            //shapeToFillSlide.Select();
+            
+            shapeToFillSlide.Select();
         }
-        public static PPShape Resize(PPShape originalShape, float w, float h)
+
+        private static Shape CompressImageInShape(Shape targetShape, long targetCompression, string tempFileStoragePath, PowerPointSlide currentSlide)
         {
-            //Original Image attributes
-            float originalWidth = originalShape.AbsoluteWidth;
-            float originalHeight = originalShape.AbsoluteHeight;
+            // Create a new bitmap from the image represented by the imageShape
+            targetShape.Export(tempFileStoragePath, PpShapeFormat.ppShapeFormatJPG);
+            Image img = Image.FromFile(tempFileStoragePath);
+            Bitmap imgBitMap = new Bitmap(img);
 
-            // Figure out the ratio
-            double ratioX = (double)w / (double)originalWidth;
-            double ratioY = (double)h / (double)originalHeight;
-            // use whichever multiplier is smaller
-            double ratio = ratioX < ratioY ? ratioX : ratioY;
+            // Releases resources held by image object and delete temp file
+            img.Dispose();
+            DeleteSpecificFilePath(tempFileStoragePath);
 
-            // now we can get the new height and width
-            int newHeight = System.Convert.ToInt32(originalHeight * ratio);
-            int newWidth = System.Convert.ToInt32(originalWidth * ratio);
+            // Compresses and save the bitmap based on the specified level of compression (0 -> lowest quality, 100 -> highest quality)
+            SaveJpg(imgBitMap, tempFileStoragePath, targetCompression);
 
-            originalShape.AbsoluteWidth = newWidth;
-            originalShape.AbsoluteHeight = newHeight;
+            // Retrieve the compressed image and return a shape representing the image
+            Shape compressedImgShape = currentSlide.Shapes.AddPicture(tempFileStoragePath,
+                    Microsoft.Office.Core.MsoTriState.msoTrue,
+                    Microsoft.Office.Core.MsoTriState.msoTrue,
+                    targetShape.Left,
+                    targetShape.Top);
 
-            return originalShape;
-            /*
-            Image thumbnail = new System.Drawing.Bitmap(newWidth, newHeight);
-            Graphics graphic = System.Drawing.Graphics.FromImage(thumbnail);
+            // Delete temp file again to return to original empty state
+            DeleteSpecificFilePath(tempFileStoragePath);
 
-            graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            graphic.SmoothingMode = SmoothingMode.HighQuality;
-            graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            graphic.CompositingQuality = CompositingQuality.HighQuality;
+            // Delete targetShape to prevent duplication
+            targetShape.Delete();
 
-            graphic.Clear(Color.Transparent);
-            graphic.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+            return compressedImgShape;
+        }
 
-            return thumbnail;
-            */
+        // Save the file with a specific compression level.
+        private static void SaveJpg(Bitmap bm, string file_name, long compression)
+        {
+            try
+            {
+                System.Drawing.Imaging.EncoderParameters encoder_params = new System.Drawing.Imaging.EncoderParameters(1);
+                encoder_params.Param[0] = new System.Drawing.Imaging.EncoderParameter(
+                    System.Drawing.Imaging.Encoder.Quality, compression);
+
+                System.Drawing.Imaging.ImageCodecInfo image_codec_info = GetEncoderInfo("image/jpeg");
+                File.Delete(file_name);
+                bm.Save(file_name, image_codec_info, encoder_params);
+            }
+            catch (System.Exception)
+            {
+            }
+        }
+
+        private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mime_type)
+        {
+            System.Drawing.Imaging.ImageCodecInfo[] encoders = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
+            for (int i = 0; i <= encoders.Length; i++)
+            {
+                if (encoders[i].MimeType == mime_type)
+                {
+                    return encoders[i];
+                }
+            }
+            return null;
+        }
+
+        private static void DeleteSpecificFilePath(string filePath)
+        {
+            FileInfo file = new FileInfo(filePath);
+            if (file.Exists)
+            {
+                file.Delete();
+            }
         }
 
         private static System.Drawing.Image ScaleByPercent(System.Drawing.Image imgPhoto, int percent)
