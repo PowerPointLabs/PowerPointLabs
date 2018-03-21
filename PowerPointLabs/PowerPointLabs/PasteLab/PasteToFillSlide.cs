@@ -116,43 +116,5 @@ namespace PowerPointLabs.PasteLab
                 file.Delete();
             }
         }
-
-        private static System.Drawing.Image ScaleByPercent(System.Drawing.Image imgPhoto, int percent)
-        {
-            float nPercent = ((float)percent / 100);
-
-            int sourceWidth = imgPhoto.Width;
-            int sourceHeight = imgPhoto.Height;
-            int sourceX = 0;
-            int sourceY = 0;
-            int destX = 0;
-            int destY = 0;
-
-            //Calcuate height and width of resized image.
-            int destWidth = (int)(sourceWidth * nPercent);
-            int destHeight = (int)(sourceHeight * nPercent);
-
-            //Create a new bitmap object.
-            System.Drawing.Bitmap bmPhoto = new System.Drawing.Bitmap(destWidth, destHeight,
-                                     System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            
-            //Set resolution of bitmap.
-            bmPhoto.SetResolution(imgPhoto.HorizontalResolution,
-                                    imgPhoto.VerticalResolution);
-
-            //Create a graphics object and set quality of graphics.
-            System.Drawing.Graphics grPhoto = System.Drawing.Graphics.FromImage(bmPhoto);
-            grPhoto.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-
-            //Draw image by using DrawImage() method of graphics class.
-            grPhoto.DrawImage(imgPhoto,
-                new System.Drawing.Rectangle(destX, destY, destWidth, destHeight),
-                new System.Drawing.Rectangle(sourceX, sourceY, sourceWidth, sourceHeight),
-                System.Drawing.GraphicsUnit.Pixel);
-
-            grPhoto.Dispose();   //Dispose graphics object.
-            return bmPhoto;
-        }
-
     }
 }
