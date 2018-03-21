@@ -37,24 +37,22 @@ namespace PowerPointLabs.SaveLab
                     Presentation tempPresentation = newPres.Open(saveFileDialog.FileName, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoFalse);
                     newPresentation = new Models.PowerPointPresentation(tempPresentation);
 
-                    // Check and remove un-selected slides using unique slide ID
-                    bool removeSlide;
+                    // Hashset to store the unique IDs of selected slides
+                    HashSet<int> idHash = new HashSet<int>();
+                    foreach (Models.PowerPointSlide selectedSlide in selectedSlides)
+                    {
+                        idHash.Add(selectedSlide.ID);
+                    }
+
+                    // Check each slide in new presentation and remove un-selected slides using unique slide ID
                     for (int i = newPresentation.SlideCount - 1; i >= 0; i--)
                     {
-                        removeSlide = true;
-                        foreach (Models.PowerPointSlide selectedSlide in selectedSlides)
-                        {
-                            if (newPresentation.Slides[i].ID == selectedSlide.ID)
-                            {
-                                removeSlide = false;
-                                break;
-                            }
-                        }
-                        if (removeSlide)
+                        if (!idHash.Contains(newPresentation.Slides[i].ID))
                         {
                             newPresentation.RemoveSlide(i);
                         }
                     }
+
                     // Save and then close the presentation
                     newPresentation.Save();
                     newPresentation.Close();

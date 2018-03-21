@@ -51,7 +51,7 @@ namespace PowerPointLabs.SaveLab
             }
         }
 
-        // Function updates the stpred path in the local storage with a new path
+        // Function updates the stored path in the local storage with a new path
         private static void UpdateLocalStorage(string newPath)
         {
             // Overrides text with new path
