@@ -89,6 +89,19 @@ namespace PowerPointLabs.Models
             }
         }
 
+        public void RemoveEmptySections()
+        {
+            SectionProperties sectionProperties = SectionProperties;
+
+            for (int i = sectionProperties.Count; i >= 1; i--)
+            {
+                if (sectionProperties.SlidesCount(i) == 0)
+                {
+                    sectionProperties.Delete(i, false);
+                }
+            }
+        }
+
         public string Name
         {
             get { return _name; }

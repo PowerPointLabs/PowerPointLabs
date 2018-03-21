@@ -52,6 +52,12 @@ namespace PowerPointLabs.SaveLab
                             newPresentation.RemoveSlide(i);
                         }
                     }
+                    
+                    // Check for and remove empty sections in new presentation
+                    if (newPresentation.HasEmptySection)
+                    {
+                        newPresentation.RemoveEmptySections();
+                    }
 
                     // Save and then close the presentation
                     newPresentation.Save();
