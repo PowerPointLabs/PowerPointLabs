@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.SaveLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.SettingsGear);
+            return new Bitmap(Properties.Resources.AgendaSettings);
         }
     }
 }
