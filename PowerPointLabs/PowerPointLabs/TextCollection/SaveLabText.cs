@@ -10,7 +10,7 @@
 
         #region GUI Text
         public const string RibbonMenuLabel = "Save";
-        public const string SavePresentationsButtonLabel = "Save Presentations";
+        public const string SavePresentationsButtonLabel = "Save Presentation";
         public const string SaveLabSettingsButtonLabel = "Settings";
 
         public const string RibbonMenuSupertip = "Use Save Lab to save presentations in a separate PowerPoint file.";
