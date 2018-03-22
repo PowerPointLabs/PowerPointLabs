@@ -103,8 +103,7 @@ namespace Test.UnitTest
         public void TestCopyPicture()
         {
             Shape picture = GetShape(PicturePlaceholderSlide, Picture);
-            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], picture, _templateShapes);
-            Assert.AreEqual(copy, null);
+            EnsureFormatsAreRetainedAfterCopy(picture);
         }
         
         [TestMethod]
