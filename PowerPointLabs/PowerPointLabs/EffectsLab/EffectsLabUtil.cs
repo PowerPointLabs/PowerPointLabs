@@ -22,7 +22,7 @@ namespace PowerPointLabs.EffectsLab
 
             for (int i = 1; i <= shapeRange.Count; i++)
             {
-                var shape = shapeRange[i];
+                Shape shape = shapeRange[i];
                 if (ShapeUtil.IsCorrupted(shape))
                 {
                     shape = ShapeUtil.CorruptionCorrection(shape, curSlide);
@@ -34,7 +34,7 @@ namespace PowerPointLabs.EffectsLab
             {
                 if (originalShapeList[i].Type == Office.MsoShapeType.msoGroup)
                 {
-                    var subRange = originalShapeList[i].Ungroup();
+                    ShapeRange subRange = originalShapeList[i].Ungroup();
                     foreach (Shape item in subRange)
                     {
                         originalShapeList.Add(item);
@@ -53,7 +53,7 @@ namespace PowerPointLabs.EffectsLab
                 }
             }
 
-            var ungroupedShapeRange = curSlide.ToShapeRange(ungroupedShapeList);
+            ShapeRange ungroupedShapeRange = curSlide.ToShapeRange(ungroupedShapeList);
 
             return ungroupedShapeRange;
         }
@@ -77,7 +77,7 @@ namespace PowerPointLabs.EffectsLab
 
                 shapeRange.Cut();
 
-                var effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), generateOnRemainder);
+                PowerPointBgEffectSlide effectSlide = PowerPointBgEffectSlide.BgEffectFactory(curSlide.GetNativeSlide(), generateOnRemainder);
 
                 if (dupSlide != null)
                 {
@@ -106,7 +106,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show("Please select at least 1 shape");
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
                 return null;
             }
             catch (Exception e)
@@ -116,18 +116,18 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                ErrorDialogBox.ShowDialog("Error", e.Message, e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorTitle, e.Message, e);
                 return null;
             }
         }
 
         internal static Shape DuplicateShapeInPlace(Shape shape)
         {
-            var duplicateShape = shape.Duplicate()[1];
+            Shape duplicateShape = shape.Duplicate()[1];
             duplicateShape.Left = shape.Left;
             duplicateShape.Top = shape.Top;
 
-            var match = System.Text.RegularExpressions.Regex.Match(duplicateShape.Name, @"\d+$");
+            System.Text.RegularExpressions.Match match = System.Text.RegularExpressions.Regex.Match(duplicateShape.Name, @"\d+$");
             if (!match.Success || int.Parse(match.Value) != duplicateShape.Id - 1)
             {
                 duplicateShape.Name += " " + (duplicateShape.Id - 1);

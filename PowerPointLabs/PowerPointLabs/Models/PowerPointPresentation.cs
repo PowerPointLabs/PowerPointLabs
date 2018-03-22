@@ -61,14 +61,14 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var sectionProperties = SectionProperties;
+                SectionProperties sectionProperties = SectionProperties;
 
                 // Fix for rare case where the ack slide is the only slide in the section.
                 // This should be counted as an empty section. so we temporarily remove the ack slide and add it back after.
                 bool hasAckSlide = HasAckSlide();
                 RemoveAckSlide();
 
-                for (var i = 1; i <= sectionProperties.Count; i++)
+                for (int i = 1; i <= sectionProperties.Count; i++)
                 {
                     if (sectionProperties.SlidesCount(i) == 0)
                     {
@@ -142,10 +142,10 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var sectionProperty = Presentation.SectionProperties;
-                var sectionNames = new List<string>();
+                SectionProperties sectionProperty = Presentation.SectionProperties;
+                List<string> sectionNames = new List<string>();
 
-                for (var i = 1; i <= sectionProperty.Count; i++)
+                for (int i = 1; i <= sectionProperty.Count; i++)
                 {
                     sectionNames.Add(sectionProperty.Name(i));
                 }
@@ -158,7 +158,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var slides = Presentation.Slides;
+                Slides slides = Presentation.Slides;
                 if (slides.Count > 0)
                 {
                     return PowerPointSlide.FromSlideFactory(slides[1]);
@@ -174,13 +174,13 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var slides = new List<PowerPointSlide>();
+                List<PowerPointSlide> slides = new List<PowerPointSlide>();
 
-                var interopSlides = Presentation.Slides;
+                Slides interopSlides = Presentation.Slides;
 
                 foreach (Slide interopSlide in interopSlides)
                 {
-                    var s = PowerPointSlide.FromSlideFactory(interopSlide);
+                    PowerPointSlide s = PowerPointSlide.FromSlideFactory(interopSlide);
                     slides.Add(s);
                 }
 
@@ -213,7 +213,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var dimensions = Presentation.PageSetup;
+                PageSetup dimensions = Presentation.PageSetup;
                 return dimensions.SlideWidth;
             }
             set
@@ -226,7 +226,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                var dimensions = Presentation.PageSetup;
+                PageSetup dimensions = Presentation.PageSetup;
                 return dimensions.SlideHeight;
             }
             set
@@ -257,11 +257,17 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
+
+        public SlideRange PasteSlide() 
+        {
+            return Presentation.Slides.Paste();
+        }
+
         public void AddAckSlide()
         {
             if (!HasAckSlide())
             {
-                var lastSlide = Slides.Last();
+                PowerPointSlide lastSlide = Slides.Last();
                 lastSlide.CreateAckSlide();
             }
         }
@@ -280,13 +286,13 @@ namespace PowerPointLabs.Models
         /// </summary>
         public void GotoNextSlide()
         {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide == null)
             {
                 return;
             }
 
-            var index = currentSlide.Index;
+            int index = currentSlide.Index;
             if (index < Slides.Count)
             {
                 GotoSlide(index + 1);
@@ -295,13 +301,13 @@ namespace PowerPointLabs.Models
 
         public bool IsLastSlide()
         {
-            var currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             if (currentSlide == null)
             {
                 return false;
             }
 
-            var index = currentSlide.Index;
+            int index = currentSlide.Index;
             return index == Slides.Count;
         }
 
@@ -317,15 +323,15 @@ namespace PowerPointLabs.Models
                 index = SlideCount + 1;
             }
 
-            var customLayout = Presentation.SlideMaster.CustomLayouts[layout];
-            var newSlide = Presentation.Slides.AddSlide(index, customLayout);
+            CustomLayout customLayout = Presentation.SlideMaster.CustomLayouts[layout];
+            Slide newSlide = Presentation.Slides.AddSlide(index, customLayout);
 
             if (name != "")
             {
                 newSlide.Name = name;
             }
 
-            var slideFromFactory = PowerPointSlide.FromSlideFactory(newSlide);
+            PowerPointSlide slideFromFactory = PowerPointSlide.FromSlideFactory(newSlide);
 
             Slides.Add(slideFromFactory);
 
@@ -344,9 +350,9 @@ namespace PowerPointLabs.Models
 
         public void RemoveSlide(Func<Slide, bool> condition, bool deleteAll)
         {
-            var slides = Presentation.Slides.Cast<Slide>().Where(condition).ToList();
+            List<Slide> slides = Presentation.Slides.Cast<Slide>().Where(condition).ToList();
 
-            foreach (var slide in slides)
+            foreach (Slide slide in slides)
             {
                 slide.Delete();
 
@@ -359,9 +365,9 @@ namespace PowerPointLabs.Models
 
         public void RemoveSlide(Regex rule, bool deleteAll)
         {
-            var slides = Presentation.Slides.Cast<Slide>().Where(slide => rule.IsMatch(slide.Name)).ToList();
+            List<Slide> slides = Presentation.Slides.Cast<Slide>().Where(slide => rule.IsMatch(slide.Name)).ToList();
 
-            foreach (var slide in slides)
+            foreach (Slide slide in slides)
             {
                 slide.Delete();
 
@@ -402,7 +408,7 @@ namespace PowerPointLabs.Models
 
             if (!focus && Globals.ThisAddIn != null)
             {
-                var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
+                DocumentWindow workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
                 workingWindow.Activate();
             }
 
@@ -450,7 +456,7 @@ namespace PowerPointLabs.Models
                 return true;
             }
 
-            var workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
+            DocumentWindow workingWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
             try
             {

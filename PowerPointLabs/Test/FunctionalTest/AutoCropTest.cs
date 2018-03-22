@@ -33,19 +33,19 @@ namespace Test.FunctionalTest
 
         public void CropOneShapeSuccessfully()
         {
-            var actualSlide = PpOperations.SelectSlide(4);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(4);
             PpOperations.SelectShape("selectMe");
 
             // Execute the Crop To Shape feature
             PplFeatures.AutoCrop();
 
-            var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var resultShapeInPic = PpOperations.ExportSelectedShapes();
+            Microsoft.Office.Interop.PowerPoint.Shape resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            System.IO.FileInfo resultShapeInPic = PpOperations.ExportSelectedShapes();
 
-            var expSlide = PpOperations.SelectSlide(5);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
 
-            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var expShapeInPic = PpOperations.ExportSelectedShapes();
+            Microsoft.Office.Interop.PowerPoint.Shape expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            System.IO.FileInfo expShapeInPic = PpOperations.ExportSelectedShapes();
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox
@@ -57,8 +57,8 @@ namespace Test.FunctionalTest
 
         public void CropMultipleShapesSuccessfully()
         {
-            var actualSlide = PpOperations.SelectSlide(7);
-            var shapesBeforeCrop = PpOperations.SelectShapesByPrefix("selectMe");
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapesBeforeCrop = PpOperations.SelectShapesByPrefix("selectMe");
             Assert.AreEqual(6, shapesBeforeCrop.Count);
 
             // Execute the Crop To Shape feature
@@ -66,13 +66,13 @@ namespace Test.FunctionalTest
 
             // the result shape after crop multiple shapes will have name starts with
             // Group
-            var resultShape = PpOperations.SelectShapesByPrefix("Group")[1];
-            var resultShapeInPic = PpOperations.ExportSelectedShapes();
+            Microsoft.Office.Interop.PowerPoint.Shape resultShape = PpOperations.SelectShapesByPrefix("Group")[1];
+            System.IO.FileInfo resultShapeInPic = PpOperations.ExportSelectedShapes();
 
-            var expSlide = PpOperations.SelectSlide(8);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
 
-            var expShape = PpOperations.SelectShapesByPrefix("Group")[1];
-            var expShapeInPic = PpOperations.ExportSelectedShapes();
+            Microsoft.Office.Interop.PowerPoint.Shape expShape = PpOperations.SelectShapesByPrefix("Group")[1];
+            System.IO.FileInfo expShapeInPic = PpOperations.ExportSelectedShapes();
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox
@@ -84,19 +84,19 @@ namespace Test.FunctionalTest
 
         private void CropRotatedShapeSuccessfully()
         {
-            var actualSlide = PpOperations.SelectSlide(10);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(10);
             PpOperations.SelectShape("selectMe");
 
             // Execute the Crop To Shape feature
             PplFeatures.AutoCrop();
 
-            var resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var resultShapeInPic = PpOperations.ExportSelectedShapes();
+            Microsoft.Office.Interop.PowerPoint.Shape resultShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            System.IO.FileInfo resultShapeInPic = PpOperations.ExportSelectedShapes();
 
-            var expSlide = PpOperations.SelectSlide(11);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(11);
 
-            var expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
-            var expShapeInPic = PpOperations.ExportSelectedShapes();
+            Microsoft.Office.Interop.PowerPoint.Shape expShape = PpOperations.SelectShapesByPrefix("selectMe")[1];
+            System.IO.FileInfo expShapeInPic = PpOperations.ExportSelectedShapes();
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox

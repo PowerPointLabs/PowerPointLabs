@@ -22,7 +22,7 @@ namespace Test.UnitTest.PictureSlidesLab.Model
         {
             option.OptionName = "Test Option Name";
             option.Save(PathUtil.GetDocTestPath() + "PictureSlidesLab\\option.user");
-            var loadedOption = StyleOption.Load(PathUtil.GetDocTestPath() + "PictureSlidesLab\\option.user");
+            StyleOption loadedOption = StyleOption.Load(PathUtil.GetDocTestPath() + "PictureSlidesLab\\option.user");
             Assert.AreEqual("Test Option Name", loadedOption.OptionName);
         }
 

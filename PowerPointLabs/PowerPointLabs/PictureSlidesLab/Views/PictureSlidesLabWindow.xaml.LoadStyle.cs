@@ -68,14 +68,14 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
+            PowerPointSlide currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
             if (currentSlide == null)
             {
                 return;
             }
 
-            var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
-            var croppedShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
+            List<Shape> originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
+            List<Shape> croppedShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
 
             // if no original shape, show info
             if (originalShapeList.Count == 0)
@@ -84,14 +84,14 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
             else
             {
-                var originalImageShape = originalShapeList[0];
-                var isImageStillInListBox = false;
+                Shape originalImageShape = originalShapeList[0];
+                bool isImageStillInListBox = false;
 
                 // if the image source is still in the listbox,
                 // select it as source and also select the target style
-                for (var i = 0; i < ImageSelectionListBox.Items.Count; i++)
+                for (int i = 0; i < ImageSelectionListBox.Items.Count; i++)
                 {
-                    var imageItem = (ImageItem)ImageSelectionListBox.Items[i];
+                    ImageItem imageItem = (ImageItem)ImageSelectionListBox.Items[i];
                     if (imageItem.FullSizeImageFile == originalImageShape.Tags[Service.Effect.Tag.ReloadOriginImg]
                         || imageItem.ContextLink == originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext])
                     {
@@ -106,7 +106,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 // and put into listbox
                 if (!isImageStillInListBox)
                 {
-                    var imageItem = ExtractImageItem(originalImageShape, croppedShapeList);
+                    ImageItem imageItem = ExtractImageItem(originalImageShape, croppedShapeList);
                     ViewModel.ImageSelectionList.Add(imageItem);
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
@@ -123,13 +123,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             this.HideMetroDialogAsync(_loadStylesDialog, MetroDialogOptions);
 
             // which is the current slide
-            var currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
+            PowerPointSlide currentSlide = this.GetCurrentPresentation().Slides[_loadStylesDialog.SelectedSlide - 1];
             if (currentSlide == null)
             {
                 return;
             }
 
-            var originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
+            List<Shape> originalShapeList = currentSlide.GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
 
             // if no original shape, show info
             if (originalShapeList.Count == 0)
@@ -147,8 +147,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                     UpdatePreviewImages((ImageItem) ImageSelectionListBox.SelectedValue);
                 }
 
-                var originalImageShape = originalShapeList[0];
-                var styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
+                Shape originalImageShape = originalShapeList[0];
+                string styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
                 OpenVariationFlyoutForReload(styleName, originalImageShape, canUseDefaultPicture: true);
             }
         }
@@ -166,10 +166,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return false;
             }
 
-            var isSuccessfullyLoaded = false;
-            var originalShapeList = targetSlide
+            bool isSuccessfullyLoaded = false;
+            List<Shape> originalShapeList = targetSlide
                 .GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Original_DO_NOT_REMOVE);
-            var croppedShapeList = targetSlide
+            List<Shape> croppedShapeList = targetSlide
                 .GetShapesWithPrefix(ShapeNamePrefix + "_" + EffectName.Cropped_DO_NOT_REMOVE);
 
             // if no original shape, show default picture
@@ -185,15 +185,15 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             else if (originalShapeList.Count > 0) // load the style
             {
                 Logger.Log("Original shapes found.");
-                var originalImageShape = originalShapeList[0];
-                var isImageStillInListBox = false;
-                var styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
+                Shape originalImageShape = originalShapeList[0];
+                bool isImageStillInListBox = false;
+                string styleName = originalImageShape.Tags[Service.Effect.Tag.ReloadPrefix + "StyleName"];
 
                 // if the image source is still in the listbox,
                 // select it as source and also select the target style
-                for (var i = 0; i < ImageSelectionListBox.Items.Count; i++)
+                for (int i = 0; i < ImageSelectionListBox.Items.Count; i++)
                 {
-                    var imageItem = (ImageItem)ImageSelectionListBox.Items[i];
+                    ImageItem imageItem = (ImageItem)ImageSelectionListBox.Items[i];
                     if (imageItem.FullSizeImageFile == originalImageShape.Tags[Service.Effect.Tag.ReloadOriginImg]
                         || imageItem.ContextLink == originalImageShape.Tags[Service.Effect.Tag.ReloadImgContext])
                     {
@@ -211,7 +211,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 // and put into listbox
                 if (!isImageStillInListBox)
                 {
-                    var imageItem = ExtractImageItem(originalImageShape, croppedShapeList);
+                    ImageItem imageItem = ExtractImageItem(originalImageShape, croppedShapeList);
                     ViewModel.ImageSelectionList.Add(imageItem);
 
                     ImageSelectionListBox.SelectedIndex = ImageSelectionListBox.Items.Count - 1;
@@ -242,8 +242,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 StylesPreviewListBox.SelectedIndex = MapStyleNameToStyleIndex(styleName);
-                var listOfStyles = ConstructStylesFromShapeInfo(originalImageShape);
-                var variants = ConstructVariantsFromStyle(listOfStyles[0]);
+                List<StyleOption> listOfStyles = ConstructStylesFromShapeInfo(originalImageShape);
+                Dictionary<string, List<StyleVariant>> variants = ConstructVariantsFromStyle(listOfStyles[0]);
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     if (canUseDefaultPicture
@@ -270,15 +270,15 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         private static ImageItem ExtractImageItem(Shape originalImageShape, List<Shape> croppedShapeList)
         {
             // get picture info
-            var fullsizeImageFile = ExtractPictureInfo(originalImageShape);
-            var fullsizeThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(fullsizeImageFile);
+            string fullsizeImageFile = ExtractPictureInfo(originalImageShape);
+            string fullsizeThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(fullsizeImageFile);
             // get dimensions/cropped picture info
-            var croppedImageFile = ExtractCroppedPicture(croppedShapeList);
-            var croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
-            var rect = ExtractDimensionsInfo(originalImageShape);
+            string croppedImageFile = ExtractCroppedPicture(croppedShapeList);
+            string croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
+            Rect rect = ExtractDimensionsInfo(originalImageShape);
 
             // then form image item
-            var imageItem = new ImageItem
+            ImageItem imageItem = new ImageItem
             {
                 ImageFile = fullsizeThumbnailFile,
                 FullSizeImageFile = fullsizeImageFile,
@@ -294,7 +294,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private static string ExtractPictureInfo(Shape originalImageShape)
         {
-            var fullsizeImageFile =
+            string fullsizeImageFile =
                 StoragePath.GetPath("img-" + DateTime.Now.GetHashCode() +
                                     Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
             // need to make shape visible so that can export
@@ -307,9 +307,9 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         private static void UpdatePictureDimensionsInfo(List<Shape> croppedShapeList, Shape originalImageShape, 
             ImageItem imageItem)
         {
-            var croppedImageFile = ExtractCroppedPicture(croppedShapeList);
-            var croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
-            var rect = ExtractDimensionsInfo(originalImageShape);
+            string croppedImageFile = ExtractCroppedPicture(croppedShapeList);
+            string croppedThumbnailFile = ImageUtil.GetThumbnailFromFullSizeImg(croppedImageFile);
+            Rect rect = ExtractDimensionsInfo(originalImageShape);
             imageItem.CroppedImageFile = croppedImageFile;
             imageItem.CroppedThumbnailImageFile = croppedThumbnailFile;
             imageItem.Rect = rect;
@@ -317,10 +317,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private static string ExtractCroppedPicture(List<Shape> croppedShapeList)
         {
-            var croppedImageFile =
+            string croppedImageFile =
                 StoragePath.GetPath("crop-" + DateTime.Now.GetHashCode() +
                                     Guid.NewGuid().ToString().Substring(0, 7) + ".jpg");
-            var croppedImageShape = croppedShapeList.Count > 0 ? croppedShapeList[0] : null;
+            Shape croppedImageShape = croppedShapeList.Count > 0 ? croppedShapeList[0] : null;
             if (croppedImageShape != null)
             {
                 croppedImageShape.Visible = MsoTriState.msoTrue;
@@ -336,7 +336,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private static Rect ExtractDimensionsInfo(Shape originalImageShape)
         {
-            var rect = new Rect();
+            Rect rect = new Rect();
             rect.X = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectX]);
             rect.Y = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectY]);
             rect.Width = double.Parse(originalImageShape.Tags[Service.Effect.Tag.ReloadRectWidth]);
@@ -346,8 +346,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private int MapStyleNameToStyleIndex(string styleName)
         {
-            var allOptions = ViewModel.OptionsFactory.GetAllStylesPreviewOptions();
-            for (var i = 0; i < allOptions.Count; i++)
+            List<StyleOption> allOptions = ViewModel.OptionsFactory.GetAllStylesPreviewOptions();
+            for (int i = 0; i < allOptions.Count; i++)
             {
                 if (allOptions[i].StyleName == styleName)
                 {
@@ -359,8 +359,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private List<StyleOption> ConstructStylesFromShapeInfo(Shape shape)
         {
-            var result = new List<StyleOption>();
-            for (var i = 0; i < 8; i++)
+            List<StyleOption> result = new List<StyleOption>();
+            for (int i = 0; i < 8; i++)
             {
                 result.Add(ConstructStyleFromShapeInfo(shape));
             }
@@ -369,14 +369,14 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private Dictionary<string, List<StyleVariant>> ConstructVariantsFromStyle(StyleOption opt)
         {
-            var variants = ViewModel.VariantsFactory.GetVariants(opt.StyleName);
+            Dictionary<string, List<StyleVariant>> variants = ViewModel.VariantsFactory.GetVariants(opt.StyleName);
             // replace each category/aspect's variant
             // with the new variant from the given style options
-            foreach (var pair in variants)
+            foreach (KeyValuePair<string, List<StyleVariant>> pair in variants)
             {
-                var firstVariant = pair.Value[0];
-                var newFirstVariant = firstVariant.Copy(opt);
-                for (var i = 0; i < pair.Value.Count; i++)
+                StyleVariant firstVariant = pair.Value[0];
+                StyleVariant newFirstVariant = firstVariant.Copy(opt);
+                for (int i = 0; i < pair.Value.Count; i++)
                 {
                     // try to swap out the 'no-effect' style options
                     if (pair.Value[i].IsNoEffect(opt))
@@ -392,23 +392,23 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private StyleOption ConstructStyleFromShapeInfo(Shape shape)
         {
-            var opt = new StyleOption();
-            var props = opt.GetType().GetProperties();
-            foreach (var propertyInfo in props)
+            StyleOption opt = new StyleOption();
+            PropertyInfo[] props = opt.GetType().GetProperties();
+            foreach (PropertyInfo propertyInfo in props)
             {
-                var valueInStr = shape.Tags[Service.Effect.Tag.ReloadPrefix + propertyInfo.Name];
+                string valueInStr = shape.Tags[Service.Effect.Tag.ReloadPrefix + propertyInfo.Name];
                 if (propertyInfo.PropertyType == typeof(string))
                 {
                     propertyInfo.SetValue(opt, valueInStr, null);
                 }
                 else if (propertyInfo.PropertyType == typeof(int))
                 {
-                    var valueInInt = int.Parse(valueInStr);
+                    int valueInInt = int.Parse(valueInStr);
                     propertyInfo.SetValue(opt, valueInInt, null);
                 }
                 else if (propertyInfo.PropertyType == typeof(bool))
                 {
-                    var valueInBool = bool.Parse(valueInStr);
+                    bool valueInBool = bool.Parse(valueInStr);
                     propertyInfo.SetValue(opt, valueInBool, null);
                 }
             }

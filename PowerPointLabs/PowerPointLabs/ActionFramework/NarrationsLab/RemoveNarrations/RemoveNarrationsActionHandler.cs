@@ -1,4 +1,6 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Tools;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
@@ -18,11 +20,11 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
 
             NotesToAudio.RemoveAudioFromSelectedSlides();
 
-            var recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
+            CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
 
             if (recorderPane != null)
             {
-                var recorder = recorderPane.Control as RecorderTaskPane;
+                RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
                 recorder.ClearRecordDataListForSelectedSlides();
 
                 // if current list is visible, update the pane immediately
@@ -35,7 +37,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 }
             }
 
-            this.GetRibbonUi().RemoveAudioEnabled = false;
+            NotesToAudio.IsRemoveAudioEnabled = false;
             this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
         }
     }

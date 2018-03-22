@@ -41,11 +41,11 @@ namespace Test.FunctionalTest
 
             PplFeatures.AutoAnimate();
 
-            var actualSlide = PpOperations.SelectSlide(5);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(5);
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
-            var expSlide = PpOperations.SelectSlide(7);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(7);
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
@@ -64,9 +64,9 @@ namespace Test.FunctionalTest
 
             Assert.IsNotNull(PpOperations.SelectShape("Notched Right Arrow"), 
                 "Copy-Paste failed, this task is flaky so please re-run.");
-            var sh1 = PpOperations.SelectShape("Notched Right Arrow")[1];
+            Shape sh1 = PpOperations.SelectShape("Notched Right Arrow")[1];
             sh1.Rotation += 90;
-            var sh2 = PpOperations.SelectShape("Group")[1];
+            Shape sh2 = PpOperations.SelectShape("Group")[1];
             sh2.Rotation += 90;
 
             // go back to slide 8
@@ -74,11 +74,11 @@ namespace Test.FunctionalTest
 
             PplFeatures.AutoAnimate();
 
-            var actualSlide = PpOperations.SelectSlide(9);
+            Slide actualSlide = PpOperations.SelectSlide(9);
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
-            var expSlide = PpOperations.SelectSlide(11);
+            Slide expSlide = PpOperations.SelectSlide(11);
             // remove elements that affect comparing slides
             PpOperations.SelectShapesByPrefix("text").Delete();
 
@@ -93,11 +93,11 @@ namespace Test.FunctionalTest
 
             PplFeatures.AutoAnimate();
 
-            var actualSlide = PpOperations.SelectSlide(39);
+            Slide actualSlide = PpOperations.SelectSlide(39);
             // remove elements that affect comparing slides
             PpOperations.SelectShape("Text Label Initial Slide")[1].Delete();
 
-            var expSlide = PpOperations.SelectSlide(41);
+            Slide expSlide = PpOperations.SelectSlide(41);
             // remove elements that affect comparing slides
             PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
 
@@ -107,8 +107,8 @@ namespace Test.FunctionalTest
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)
         {
-            var actualSlide = PpOperations.SelectSlide(actualSlideIndex);
-            var expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
+            Slide actualSlide = PpOperations.SelectSlide(actualSlideIndex);
+            Slide expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
         }

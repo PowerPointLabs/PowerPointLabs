@@ -1,4 +1,6 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using Microsoft.Office.Tools;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ResizeLab;
@@ -11,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.ResizeLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            var resizePane =
+            CustomTaskPane resizePane =
                 this.RegisterTaskPane(typeof(ResizeLabPane), ResizeLabText.TaskPaneTitle);
             if (resizePane != null)
             {

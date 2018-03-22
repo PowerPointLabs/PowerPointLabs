@@ -1,6 +1,8 @@
-﻿using System.Drawing;
-
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Documents;
 using PowerPointLabs.SyncLab.Views;
+using Font = System.Drawing.Font;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -31,9 +33,42 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
+        public static List<Format> Formats
+        {
+            get
+            {
+                List<Format> list = new List<Format>();
+                list.AddRange(GetFormatsFromFormatTreeNode(FormatCategories));
+                return list;
+            }
+        }
+        
+        /// <Summary>
+        /// Collect all format objects from an array of FormatTreeNodes
+        /// <Summary>
+        /// <param name="nodes"></param>
+        /// <returns>Collected formats</returns>
+        private static Format[] GetFormatsFromFormatTreeNode(FormatTreeNode[] nodes)
+        {
+            List<Format> list = new List<Format>();
+            foreach (FormatTreeNode node in nodes)
+            {
+                if (node.IsFormatNode)
+                {
+                    list.Add(node.Format);
+                }
+                else if (node.ChildrenNodes != null)
+                {
+                    list.AddRange(GetFormatsFromFormatTreeNode(node.ChildrenNodes));
+                }
+            }
+
+            return list.ToArray();
+        }
+
         private static FormatTreeNode[] InitFormatCategories()
         {
-            FormatTreeNode[] formats = new FormatTreeNode[]
+            FormatTreeNode[] formats =
                 {
                     new FormatTreeNode(
                             "Text",
@@ -53,6 +88,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat))),
                             new FormatTreeNode("Color", new Format(typeof(LineFillFormat))),
                             new FormatTreeNode("Transparency", new Format(typeof(LineTransparencyFormat)))),
+                    new FormatTreeNode(
+                            "Visual Effects",
+                            new FormatTreeNode("Artistic Effect", new Format(typeof(PictureEffectsFormat)))),
                     new FormatTreeNode(
                             "Size/Position",
                             new FormatTreeNode("Width", new Format(typeof(PositionWidthFormat))),

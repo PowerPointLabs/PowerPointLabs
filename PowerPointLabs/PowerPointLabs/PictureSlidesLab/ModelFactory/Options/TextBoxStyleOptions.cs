@@ -13,8 +13,8 @@ namespace PowerPointLabs.PictureSlidesLab.ModelFactory.Options
     {
         public override List<StyleOption> GetOptionsForVariation()
         {
-            var result = GetOptionsWithSuitableFontColor();
-            foreach (var option in result)
+            List<StyleOption> result = GetOptionsWithSuitableFontColor();
+            foreach (StyleOption option in result)
             {
                 option.TextBoxPosition = 7; //bottom-left;
                 option.FontFamily = "Calibri";

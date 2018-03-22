@@ -27,14 +27,14 @@ namespace Test.FunctionalTest
             PplFeatures.SynchronizeAgenda();
 
             // Duplicate template slide and delete original template slide. It should use the duplicate as the new template slide.
-            var firstSlide = PpOperations.SelectSlide(1);
+            Microsoft.Office.Interop.PowerPoint.Slide firstSlide = PpOperations.SelectSlide(1);
 
             PpOperations.SelectShape("PptLabsAgenda_&^@ContentShape_&^@2015061916283877850").TextFrame2.TextRange.Paragraphs[3].Text = " ";
 
             PplFeatures.SynchronizeAgenda();
 
-            var actualSlides = PpOperations.FetchCurrentPresentationData();
-            var expectedSlides = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
+            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextAfterSyncHideUnvisited.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
 
@@ -55,15 +55,15 @@ namespace Test.FunctionalTest
             PplFeatures.SynchronizeAgenda();
 
             // Duplicate template slide and delete original template slide. It should use the duplicate as the new template slide.
-            var firstSlide = PpOperations.SelectSlide(1);
+            Microsoft.Office.Interop.PowerPoint.Slide firstSlide = PpOperations.SelectSlide(1);
             PpOperations.SelectShape("PPTTemplateMarker").Delete();
             firstSlide.Duplicate();
             firstSlide.Delete();
 
             PplFeatures.SynchronizeAgenda();
 
-            var actualSlides = PpOperations.FetchCurrentPresentationData();
-            var expectedSlides = PpOperations.FetchPresentationData(
+            System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
+            System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesTextAfterSync.pptx"));
             PresentationUtil.AssertEqual(expectedSlides, actualSlides);
         }
@@ -72,7 +72,7 @@ namespace Test.FunctionalTest
         public void NoContentShapeUnsuccessful()
         {
             PpOperations.SelectSlide(1);
-            var contentShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@ContentShape")[1];
+            Microsoft.Office.Interop.PowerPoint.Shape contentShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@ContentShape")[1];
             contentShape.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
@@ -83,7 +83,7 @@ namespace Test.FunctionalTest
 
         public void NoRefSlideUnsuccessful()
         {
-            var refSlide = PpOperations.SelectSlide(1);
+            Microsoft.Office.Interop.PowerPoint.Slide refSlide = PpOperations.SelectSlide(1);
             refSlide.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(

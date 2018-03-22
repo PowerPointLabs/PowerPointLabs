@@ -48,8 +48,8 @@ namespace PowerPointLabs.AgendaLab.Templates
         /// </summary>
         public void StoreSlideObjects(List<PowerPointSlide> sectionSlides)
         {
-            var frontSlideObjects = new PowerPointSlide[FrontIndexes.Length];
-            var backSlideObjects = new PowerPointSlide[BackIndexes.Length];
+            PowerPointSlide[] frontSlideObjects = new PowerPointSlide[FrontIndexes.Length];
+            PowerPointSlide[] backSlideObjects = new PowerPointSlide[BackIndexes.Length];
 
             for (int i = 0; i < FrontIndexes.Length; ++i)
             {

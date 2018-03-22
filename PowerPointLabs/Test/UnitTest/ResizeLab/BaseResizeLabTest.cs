@@ -18,12 +18,12 @@ namespace Test.UnitTest.ResizeLab
 
         protected void InitOriginalShapes(int slideNumber, List<string> shapeNames)
         {
-            var shapes = GetShapes(slideNumber, shapeNames);
+            PowerPoint.ShapeRange shapes = GetShapes(slideNumber, shapeNames);
 
             _originalShapeName.Clear();
             foreach(PowerPoint.Shape shape in shapes)
             {
-                var duplicateShape = shape.Duplicate()[1];
+                PowerPoint.Shape duplicateShape = shape.Duplicate()[1];
                 duplicateShape.Top = shape.Top;
                 duplicateShape.Left = shape.Left;
                 duplicateShape.Name = Guid.NewGuid().ToString();
@@ -41,9 +41,9 @@ namespace Test.UnitTest.ResizeLab
         {
             try
             {
-                var duplicatedShapeNames = new List<string>(_originalShapeName.Keys);
-                var executedShapes = GetShapes(slideNumber, shapeNames);
-                var shapes = GetShapes(slideNumber, duplicatedShapeNames);
+                List<string> duplicatedShapeNames = new List<string>(_originalShapeName.Keys);
+                PowerPoint.ShapeRange executedShapes = GetShapes(slideNumber, shapeNames);
+                PowerPoint.ShapeRange shapes = GetShapes(slideNumber, duplicatedShapeNames);
                 executedShapes.Delete();
 
                 foreach (PowerPoint.Shape shape in shapes)
@@ -61,7 +61,7 @@ namespace Test.UnitTest.ResizeLab
         {
             foreach (PowerPoint.Shape actualShape in actualShapes)
             {
-                var isFound = false;
+                bool isFound = false;
 
                 foreach (PowerPoint.Shape expectedShape in expectedShapes)
                 {

@@ -27,7 +27,7 @@ namespace PowerPointLabs.EffectsLab
                 return null;
             }
 
-            var range = BlurSelected(slide, selection, percentage);
+            PowerPoint.ShapeRange range = BlurSelected(slide, selection, percentage);
             if (range != null)
             {
                 range.Select();
@@ -38,7 +38,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            var shapeRange = selection.ShapeRange;
+            PowerPoint.ShapeRange shapeRange = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
                 shapeRange = selection.ChildShapeRange;
@@ -46,10 +46,10 @@ namespace PowerPointLabs.EffectsLab
 
             try
             {
-                var hasManyShapes = shapeRange.Count > 1;
-                var shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
-                var left = shape.Left;
-                var top = shape.Top;
+                bool hasManyShapes = shapeRange.Count > 1;
+                PowerPoint.Shape shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
+                float left = shape.Left;
+                float top = shape.Top;
                 shapeRange.Cut();
 
                 Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
@@ -63,9 +63,9 @@ namespace PowerPointLabs.EffectsLab
                     shapeRange = shapeRange.Ungroup();
                 }
 
-                var ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(slide, shapeRange);
-                var shapeGroupNames = ApplyBlurEffect(slide, BlurPicture, ungroupedRange);
-                var range = slide.Shapes.Range(shapeGroupNames.ToArray());
+                PowerPoint.ShapeRange ungroupedRange = EffectsLabUtil.UngroupAllShapeRange(slide, shapeRange);
+                List<string> shapeGroupNames = ApplyBlurEffect(slide, BlurPicture, ungroupedRange);
+                PowerPoint.ShapeRange range = slide.Shapes.Range(shapeGroupNames.ToArray());
 
                 return range;
             }
@@ -80,7 +80,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void ExecuteBlurRemainder(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            var effectSlide = EffectsLabUtil.GenerateEffectSlide(slide, selection, true);
+            Models.PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(slide, selection, true);
 
             if (effectSlide == null)
             {
@@ -93,7 +93,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static void ExecuteBlurBackground(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            var effectSlide = EffectsLabUtil.GenerateEffectSlide(slide, selection, false);
+            Models.PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(slide, selection, false);
 
             if (effectSlide == null)
             {
@@ -109,18 +109,18 @@ namespace PowerPointLabs.EffectsLab
         {
             if (percentage != 0)
             {
-                var degree = 50 + (percentage / 2);
+                int degree = 50 + (percentage / 2);
 
-                using (var imageFactory = new ImageFactory())
+                using (ImageFactory imageFactory = new ImageFactory())
                 {
-                    var loadedImageFactory = imageFactory.Load(imageFile);
-                    var image = loadedImageFactory.Image;
-                    var originalWidth = image.Width;
-                    var originalHeight = image.Height;
+                    ImageFactory loadedImageFactory = imageFactory.Load(imageFile);
+                    Image image = loadedImageFactory.Image;
+                    int originalWidth = image.Width;
+                    int originalHeight = image.Height;
 
-                    var ratio = (float)originalWidth / originalHeight;
-                    var targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * degree);
-                    var targetWidth = Math.Round(targetHeight * ratio);
+                    float ratio = (float)originalWidth / originalHeight;
+                    double targetHeight = Math.Round(1100f - (1100f - 11f) / 100f * degree);
+                    double targetWidth = Math.Round(targetHeight * ratio);
 
                     loadedImageFactory
                         .Resize(new Size((int)targetWidth, (int)targetHeight))
@@ -148,7 +148,7 @@ namespace PowerPointLabs.EffectsLab
 
             Utils.ShapeUtil.MoveZToJustInFront(overlayShape, blurShape);
 
-            var rgb = Utils.GraphicsUtil.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
+            int rgb = Utils.GraphicsUtil.ConvertColorToRgb(Utils.StringUtil.GetColorFromHexValue(HexColor));
 
             overlayShape.Fill.Solid();
             overlayShape.Fill.ForeColor.RGB = rgb;
@@ -204,21 +204,21 @@ namespace PowerPointLabs.EffectsLab
 
         private static List<string> ApplyBlurEffect(Models.PowerPointSlide slide, string imageFile, PowerPoint.ShapeRange shapeRange)
         {
-            var shapeGroupNames = new List<string>();
+            List<string> shapeGroupNames = new List<string>();
 
             for (int i = 0; i < shapeRange.Count; i++)
             {
-                var shape = shapeRange[i + 1];
+                PowerPoint.Shape shape = shapeRange[i + 1];
 
                 if (shape.Type == Office.MsoShapeType.msoPlaceholder
                     || shape.Type == Office.MsoShapeType.msoTextBox)
                 {
-                    var shapeNames = ApplyBlurEffectTextBox(slide, imageFile, shape);
+                    List<string> shapeNames = ApplyBlurEffectTextBox(slide, imageFile, shape);
                     shapeGroupNames.AddRange(shapeNames);
                 }
                 else // if (shape.Type == Office.MsoShapeType.msoAutoShape || shape.Type == Office.MsoShapeType.msoFreeform)
                 {
-                    var shapeName = ApplyBlurEffectShape(slide, imageFile, shape);
+                    string shapeName = ApplyBlurEffectShape(slide, imageFile, shape);
                     shapeGroupNames.Add(shapeName);
                 }
             }
@@ -228,14 +228,14 @@ namespace PowerPointLabs.EffectsLab
 
         private static List<string> ApplyBlurEffectTextBox(Models.PowerPointSlide slide, string imageFile, PowerPoint.Shape textBox)
         {
-            var shapeNames = new List<string>();
+            List<string> shapeNames = new List<string>();
             shapeNames.Add(textBox.Name);
 
             textBox.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
             textBox.Fill.Visible = Office.MsoTriState.msoFalse;
             textBox.Line.Visible = Office.MsoTriState.msoFalse;
 
-            var blurShape = slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, textBox.Left, textBox.Top, textBox.Width,
+            PowerPoint.Shape blurShape = slide.Shapes.AddShape(Office.MsoAutoShapeType.msoShapeRectangle, textBox.Left, textBox.Top, textBox.Width,
                         textBox.Height);
             blurShape.Rotation = textBox.Rotation;
             Utils.ShapeUtil.MoveZToJustBehind(blurShape, textBox);
@@ -244,15 +244,15 @@ namespace PowerPointLabs.EffectsLab
             
             if (EffectsLabSettings.IsTintSelected)
             {
-                var overlayShape = GenerateOverlayShape(slide, blurShape);
+                PowerPoint.Shape overlayShape = GenerateOverlayShape(slide, blurShape);
                 shapeNames.Add(overlayShape.Name);
             }
 
             // cannot group placeholders
             if (textBox.Type != Office.MsoShapeType.msoPlaceholder)
             {
-                var subRange = slide.Shapes.Range(shapeNames.ToArray());
-                var groupedShape = subRange.Group();
+                PowerPoint.ShapeRange subRange = slide.Shapes.Range(shapeNames.ToArray());
+                PowerPoint.Shape groupedShape = subRange.Group();
                 shapeNames.Clear();
                 shapeNames.Add(groupedShape.Name);
             }
@@ -262,14 +262,14 @@ namespace PowerPointLabs.EffectsLab
 
         private static string ApplyBlurEffectShape(Models.PowerPointSlide slide, string imageFile, PowerPoint.Shape shape)
         {
-            var shapeNames = new List<string>();
+            List<string> shapeNames = new List<string>();
             shapeNames.Add(shape.Name);
 
             if (!string.IsNullOrWhiteSpace(shape.TextFrame2.TextRange.Text))
             {
                 shape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
 
-                var textBox = EffectsLabUtil.DuplicateShapeInPlace(shape);
+                PowerPoint.Shape textBox = EffectsLabUtil.DuplicateShapeInPlace(shape);
                 textBox.Fill.Visible = Office.MsoTriState.msoFalse;
                 textBox.Line.Visible = Office.MsoTriState.msoFalse;
                 Utils.ShapeUtil.MoveZToJustInFront(textBox, shape);
@@ -281,14 +281,14 @@ namespace PowerPointLabs.EffectsLab
 
             if (EffectsLabSettings.IsTintSelected)
             {
-                var overlayShape = GenerateOverlayShape(slide, shape);
+                PowerPoint.Shape overlayShape = GenerateOverlayShape(slide, shape);
                 shapeNames.Add(overlayShape.Name);
             }
 
             if (shapeNames.Count > 1)
             {
-                var subRange = slide.Shapes.Range(shapeNames.ToArray());
-                var groupedShape = subRange.Group();
+                PowerPoint.ShapeRange subRange = slide.Shapes.Range(shapeNames.ToArray());
+                PowerPoint.Shape groupedShape = subRange.Group();
 
                 return groupedShape.Name;
             }
