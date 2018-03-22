@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
-using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;

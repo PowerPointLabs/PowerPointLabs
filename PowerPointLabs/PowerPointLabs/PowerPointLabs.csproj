@@ -636,6 +636,7 @@
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
     <Compile Include="ShortcutsLab\FillSlide.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
@@ -995,7 +996,6 @@
     <Compile Include="SyncLab\ObjectFormats\FontFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FontSizeFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FontStyleFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineArrowFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FillTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineTransparencyFormat.cs" />
