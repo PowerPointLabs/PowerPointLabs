@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
     This section defines project-level properties.
@@ -370,6 +370,10 @@
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabImageHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedActionHandler.cs" />
@@ -650,6 +654,7 @@
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
+    <Compile Include="ShortcutsLab\FillSlide.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />
@@ -2010,6 +2015,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PasteToFitSlide.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FillSlide.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
