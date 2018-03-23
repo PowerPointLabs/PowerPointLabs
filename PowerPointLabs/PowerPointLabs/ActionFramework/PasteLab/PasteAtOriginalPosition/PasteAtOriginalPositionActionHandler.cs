@@ -14,11 +14,11 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes)
         {
             PowerPointSlide tempSlide = presentation.AddSlide(index: slide.Index);
-            ShapeRange tempPastingShapes = ClipboardUtil.PasteShapesFromClipboard(tempSlide);
+            ShapeRange tempPastingShapes = ClipboardUtil.PasteShapesFromClipboard(presentation, tempSlide);
             if (tempPastingShapes == null)
             {
                 tempSlide.Delete();
-                return ClipboardUtil.PasteShapesFromClipboard(slide);
+                return ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
             }
 
             ShapeRange pastingShapes = slide.CopyShapesToSlide(tempPastingShapes);

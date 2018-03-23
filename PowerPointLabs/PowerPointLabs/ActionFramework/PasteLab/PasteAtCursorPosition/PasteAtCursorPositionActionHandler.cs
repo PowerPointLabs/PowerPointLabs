@@ -31,7 +31,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 positionY = ((coordinates.Y - activeWindow.PointsToScreenPixelsY(0)) / yref) * 100;
             }
 
-            ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(slide);
+            ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
             if (pastingShapes == null)
             {
                 return null;
