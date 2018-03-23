@@ -1539,8 +1539,15 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    try
+                    {
+                        simulatedShapes.Delete();
+                        GC.Collect();
+                    }
+                    catch (System.Runtime.InteropServices.COMException)
+                    {
+                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
+                    }
                 }
             }
         }
