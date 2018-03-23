@@ -19,7 +19,7 @@ namespace Test.FunctionalTest
         {
             ConvertSingleObjToPicture();
             CovertGroupObjToPicture();
-            CheckIfClipboardIsRestored();
+            IsClipboardRestored();
         }
 
         private void CovertGroupObjToPicture()
@@ -52,33 +52,13 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
-        private static void CheckIfClipboardIsRestored()
+        private static void IsClipboardRestored()
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(10);
-            Microsoft.Office.Interop.PowerPoint.ShapeRange shapeToBeCopied = PpOperations.SelectShape("pictocopy");
-            Assert.AreEqual(1, shapeToBeCopied.Count);
-            // Add "pictocopy" to clipboard
-            shapeToBeCopied.Copy();
-
-            // Normally run convert to pic function
-            PpOperations.SelectShape("pic");
-            PplFeatures.ConvertToPic();
-
-            // Paste whatever in clipboard
-            Microsoft.Office.Interop.PowerPoint.ShapeRange newShape = actualSlide.Shapes.Paste();
-
-            // Check if pasted shape is also called "pictocopy"
-            Assert.AreEqual("pictocopy", newShape.Name);
-
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(11);
-            PpOperations.SelectShape("text 3")[1].Delete();
-
-            //Set the pasted shape location because the location of the pasted shape is flaky
-            Shape copied = PpOperations.SelectShape("copied")[1];
-            newShape.Top = copied.Top;
-            newShape.Left = copied.Left;
-
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
+            CheckIfClipboardIsRestored(() =>
+            {
+                PpOperations.SelectShape("pic");
+                PplFeatures.ConvertToPic();
+            }, 10, "pictocopy", 11, "text 3", "copied");
         }
     }
 }
