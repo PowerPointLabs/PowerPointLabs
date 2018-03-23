@@ -28,6 +28,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <gallery idMso="ShapesInsertGallery"/>
             <button id="AnimateInSlideButton"
@@ -56,6 +57,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <gallery idMso="ShapesInsertGallery"/>
             <button id="DrillDownButton"
@@ -97,6 +99,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="AddNarrationsButton"
                     tag="AddNarrations"
@@ -130,6 +133,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="AddCaptionsButton"
                     tag="AddCaptions"
@@ -161,6 +165,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="HighlightPointsButton"
                     tag="HighlightPoints"
@@ -202,6 +207,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinEffectSeparator"
@@ -278,6 +284,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
           
@@ -286,6 +293,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -294,6 +302,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -302,6 +311,7 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
           
@@ -309,6 +319,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <gallery idMso="ShapesInsertGallery"/>
             <button id="ShapesLabButton"
@@ -323,6 +334,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinCropSeparator"
@@ -374,6 +386,7 @@
                 getLabel="GetLabel"
                 getImage="GetImage"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 size="large">
             <button id="PasteAtOriginalPositionButton"
                     tag="PasteAtOriginalPosition"
@@ -422,12 +435,13 @@
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
-
           <menu id="AgendaLabMenu"
                 getLabel="GetLabel"
                 getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
                 getImage="GetImage"
                 size="large">
             <button id="TextAgendaButton"
@@ -462,12 +476,12 @@
                     getSupertip="GetSupertip"
                     onAction="OnAction"/>
           </menu>
-
           <button id="PictureSlidesLabButton"
                   tag="PictureSlidesLab"
                   getLabel="GetLabel"
                   getImage="GetImage"
                   getSupertip="GetSupertip"
+                  getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
 
@@ -574,7 +588,6 @@
       <dynamicMenu id="MenuSmartArtEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     -->
-    
     <contextMenu idMso="ContextMenuCurve">
 	    <menuSeparator id="separatorCurve" />
 	    <menu id="MenuCurve" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" enabled="false">
