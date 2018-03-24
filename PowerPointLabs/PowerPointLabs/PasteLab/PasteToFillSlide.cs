@@ -12,6 +12,7 @@ namespace PowerPointLabs.PasteLab
     static internal class PasteToFillSlide
     {
         private const long targetCompression = 95L;
+        private const long desiredFileSizeLimit = 75000L;
 
         public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
@@ -30,7 +31,7 @@ namespace PowerPointLabs.PasteLab
             string fileName = CommonText.TemporaryCompressedImageStorageFileName;
             string tempPicPath = Path.Combine(Path.GetTempPath(), fileName);
 
-            Shape shapeToFillSlide = CompressImageInShape(pastingShape, targetCompression, tempPicPath, slide);
+            Shape shapeToFillSlide = CompressImageInShape(pastingShape, targetCompression, desiredFileSizeLimit, tempPicPath, slide);
 
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
             
@@ -43,14 +44,34 @@ namespace PowerPointLabs.PasteLab
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
             
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
-            
-            shapeToFillSlide.Select();
+
+            try
+            {
+                shapeToFillSlide.Select();
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // do nothing, let user select
+            }
         }
 
-        private static Shape CompressImageInShape(Shape targetShape, long targetCompression, string tempFileStoragePath, PowerPointSlide currentSlide)
+        private static Shape CompressImageInShape(Shape targetShape, long targetCompression, long fileSizeLimit, string tempFileStoragePath, PowerPointSlide currentSlide)
         {
-            // Create a new bitmap from the image represented by the imageShape
+            // Export the shape to extract the image within it
             targetShape.Export(tempFileStoragePath, PpShapeFormat.ppShapeFormatJPG);
+
+            // Check if the image is acceptable in terms of size
+            long fileLength = new FileInfo(tempFileStoragePath).Length;
+            if (fileLength < fileSizeLimit)
+            {
+                // Delete the file as it is not needed anymore
+                DeleteSpecificFilePath(tempFileStoragePath);
+
+                // return the original shape
+                return targetShape;
+            }
+
+            // Create a new bitmap from the image representing the exported shape
             Image img = Image.FromFile(tempFileStoragePath);
             Bitmap imgBitMap = new Bitmap(img);
 
@@ -63,7 +84,7 @@ namespace PowerPointLabs.PasteLab
 
             // Retrieve the compressed image and return a shape representing the image
             Shape compressedImgShape = currentSlide.Shapes.AddPicture(tempFileStoragePath,
-                    Microsoft.Office.Core.MsoTriState.msoTrue,
+                    Microsoft.Office.Core.MsoTriState.msoFalse,
                     Microsoft.Office.Core.MsoTriState.msoTrue,
                     targetShape.Left,
                     targetShape.Top);
