@@ -25,6 +25,7 @@ namespace PowerPointLabs.PasteLab
                 pastingShape = pastingShapes.Group();
             }
 
+            // Compression of large image(s)
             Shape shapeToFillSlide = GraphicsUtil.CompressImageInShape(pastingShape, slide);
 
             shapeToFillSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;

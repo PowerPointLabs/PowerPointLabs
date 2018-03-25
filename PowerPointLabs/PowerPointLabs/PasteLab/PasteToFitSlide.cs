@@ -15,11 +15,15 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            Shape shapeToFitSlide = pastingShapes[1];
+            Shape pastingShape = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {
-                shapeToFitSlide = pastingShapes.Group();
+                pastingShape = pastingShapes.Group();
             }
+
+            // Compression of large image(s)
+            Shape shapeToFitSlide = GraphicsUtil.CompressImageInShape(pastingShape, slide);
+
             shapeToFitSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 
             PPShape ppShapeToFitSlide = new PPShape(shapeToFitSlide);
