@@ -21,8 +21,12 @@ namespace PowerPointLabs.PasteLab
                 pastingShape = pastingShapes.Group();
             }
 
+            // Temporary house the latest clipboard shapes
+            ShapeRange origClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(slide);
             // Compression of large image(s)
             Shape shapeToFitSlide = GraphicsUtil.CompressImageInShape(pastingShape, slide);
+            // Bring the same original shapes back into clipboard, preserving original size
+            origClipboardShapes.Cut();
 
             shapeToFitSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 

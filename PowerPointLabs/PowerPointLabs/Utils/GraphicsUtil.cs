@@ -109,16 +109,18 @@ namespace PowerPointLabs.Utils
             targetShape.Export(tempFileStoragePath, PpShapeFormat.ppShapeFormatJPG);
 
             // Check if the image is acceptable in terms of size
-            long fileLength = new FileInfo(tempFileStoragePath).Length;
+            FileInfo tempFile = new FileInfo(tempFileStoragePath);
+            tempFile.Refresh();
+            long fileLength = tempFile.Length;
             if (fileLength < fileSizeLimit)
             {
                 // Delete the file as it is not needed anymore
                 DeleteSpecificFilePath(tempFileStoragePath);
 
-                // return the original shape
+                // Return the original shape
                 return targetShape;
             }
-            System.Diagnostics.Debug.WriteLine("Compression commence. Exceeded file size: " + fileLength);
+
             // Create a new bitmap from the image representing the exported shape
             Image img = Image.FromFile(tempFileStoragePath);
             Bitmap imgBitMap = new Bitmap(img);
