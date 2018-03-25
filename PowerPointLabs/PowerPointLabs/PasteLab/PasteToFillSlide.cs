@@ -40,14 +40,6 @@ namespace PowerPointLabs.PasteLab
             
             CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
 
-            try
-            {
-                shapeToFillSlide.Select();
-            }
-            catch (System.Runtime.InteropServices.COMException)
-            {
-                // do nothing, let user select
-            }
         }
     }
 }
