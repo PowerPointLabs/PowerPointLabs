@@ -561,13 +561,16 @@ namespace PowerPointLabs
         {
             if (s.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
             {
-                if (Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.HasTextFrame
-                    == Microsoft.Office.Core.MsoTriState.msoTrue)
+                Selection selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+                if (selection == null) 
                 {
-                    if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionText)
+                    return;
+                }
+                if (selection.ShapeRange.HasTextFrame == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    if (selection.Type == PpSelectionType.ppSelectionText)
                     {
-                        TextRange selectedText
-                            = Globals.ThisAddIn.Application.ActiveWindow.Selection.TextRange.TrimText();
+                        TextRange selectedText = selection.TextRange.TrimText();
                         if (selectedText.Text != "" && selectedText != null)
                         {
                             selectedText.Font.Color.RGB = rgb;
@@ -577,7 +580,7 @@ namespace PowerPointLabs
                             s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
                         }
                     }
-                    else if (PowerPointCurrentPresentationInfo.CurrentSelection.Type == PpSelectionType.ppSelectionShapes)
+                    else if (selection.Type == PpSelectionType.ppSelectionShapes)
                     {
                         s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
                     }

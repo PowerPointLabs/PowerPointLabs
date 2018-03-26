@@ -815,7 +815,7 @@ namespace PowerPointLabs
             // Priority High: Application Actions
             ((PowerPoint.EApplication_Event) Application).NewPresentation += ThisAddInNewPresentation;
             Application.AfterNewPresentation += ThisAddInAfterNewPresentation;
-            Application.PresentationOpen += ThisAddInPrensentationOpen;
+            Application.PresentationOpen += ThisAddInPresentationOpen;
             Application.PresentationClose += ThisAddInPresentationClose;
 
             // Priority Mid: Window Actions
@@ -971,7 +971,6 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
-            Ribbon.RefreshRibbonControl("AddSpotlight");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
@@ -982,6 +981,9 @@ namespace PowerPointLabs
             string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
             _documentHashcodeMapper[activeWindow] = tempName;
+
+            // Refresh ribbon to enable the menu buttons
+            RefreshRibbonMenuButtons();
         }
 
         // solve new un-modified unsave problem
@@ -992,15 +994,22 @@ namespace PowerPointLabs
             pres.Saved = Microsoft.Office.Core.MsoTriState.msoTrue;
         }
 
-        private void ThisAddInPrensentationOpen(PowerPoint.Presentation pres)
+        private void ThisAddInPresentationOpen(PowerPoint.Presentation pres)
         {
-            PowerPoint.DocumentWindow activeWindow = pres.Application.ActiveWindow;
-            string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            // if we opened a new window, register the window with its name
-            if (!_documentHashcodeMapper.ContainsKey(activeWindow))
+            // Windows count could be zero if presentation is opened as preview of template slides
+            if (pres.Application.Windows.Count > 0)
             {
-                _documentHashcodeMapper[activeWindow] = tempName;
+                PowerPoint.DocumentWindow activeWindow = pres.Application.ActiveWindow;
+                string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
+
+                // if we opened a new window, register the window with its name
+                if (!_documentHashcodeMapper.ContainsKey(activeWindow))
+                {
+                    _documentHashcodeMapper[activeWindow] = tempName;
+                }
+
+                // Refresh ribbon to enable the menu buttons if there are now at least one window
+                RefreshRibbonMenuButtons();
             }
         }
 
@@ -1058,6 +1067,30 @@ namespace PowerPointLabs
 
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
+
+            // Refresh ribbon to grey out the menu / buttons if there are no windows open
+            RefreshRibbonMenuButtons();
+
+        }
+
+        private void RefreshRibbonMenuButtons() 
+        {
+            Ribbon.RefreshRibbonControl(AnimationLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ZoomLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(NarrationsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(CaptionsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(HighlightLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(EffectsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(PositionsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ResizeLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ColorsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(SyncLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(ShapesLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(CropLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(PasteLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(TimerLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(AgendaLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(PictureSlidesLabText.RibbonMenuId);
         }
 
         private void ShutDownImageSearchPane()

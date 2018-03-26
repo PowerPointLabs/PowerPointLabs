@@ -70,8 +70,15 @@ namespace PowerPointLabs
 
         public bool GetEnabled(Office.IRibbonControl control)
         {
-            ActionFramework.Common.Interface.EnabledHandler enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
-            return enabledHandler.Get(control.Id);
+            if (IsAnyWindowOpen())
+            {
+                ActionFramework.Common.Interface.EnabledHandler enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+                return enabledHandler.Get(control.Id);
+            } 
+            else 
+            {
+                return false;
+            }
         }
 
         public string GetLabel(Office.IRibbonControl control)
@@ -262,6 +269,11 @@ namespace PowerPointLabs
                 }
             }
             return null;
+        }
+
+        private bool IsAnyWindowOpen() 
+        {
+            return Globals.ThisAddIn.Application.Windows.Count > 0;
         }
         #endregion
     }
