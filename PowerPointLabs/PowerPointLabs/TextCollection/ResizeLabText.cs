@@ -2,6 +2,10 @@
 {
     internal static class ResizeLabText
     {
+        #region Action Framework Tags
+        public const string RibbonMenuId = "ResizeLabButton";
+        #endregion
+
         public const string PaneTag = "ResizeLab";
 
         public const string TaskPaneTitle = "Resize Lab";

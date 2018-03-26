@@ -2,13 +2,16 @@
 {
     internal static class PositionsLabText
     {
-        public const string PaneTag = "PositionsLab";
-
-        public const string TaskPanelTitle = "Positions Lab";
+        #region Action Framework Tags
+        public const string RibbonMenuId = "PositionsLabButton";
         public const string RibbonMenuLabel = "Positions";
         public const string RibbonMenuSupertip =
             "Use Positions Lab to accurately position the objects on your slide.\n\n" +
             "Click this button to open the Positions Lab interface.";
+        #endregion
+
+        public const string PaneTag = "PositionsLab";
+        public const string TaskPanelTitle = "Positions Lab";
 
         public const string ErrorUndefined = "Undefined error in Positions Lab.";
 
