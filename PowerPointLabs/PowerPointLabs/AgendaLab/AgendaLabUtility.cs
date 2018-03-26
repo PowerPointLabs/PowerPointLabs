@@ -21,7 +21,8 @@ namespace PowerPointLabs.AgendaLab
         {
             get
             {
-                if (PowerPointCurrentPresentationInfo.CurrentSelection.Type != PpSelectionType.ppSelectionSlides)
+                Selection selection = PowerPointCurrentPresentationInfo.CurrentSelection;
+                if (selection == null || selection.Type != PpSelectionType.ppSelectionSlides)
                 {
                     return new List<PowerPointSlide>();
                 }

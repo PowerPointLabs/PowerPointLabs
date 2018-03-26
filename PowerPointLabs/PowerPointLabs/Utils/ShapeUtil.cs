@@ -148,14 +148,14 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionShape(Selection selection)
         {
-            return selection.Type == PpSelectionType.ppSelectionShapes &&
+            return selection != null && selection.Type == PpSelectionType.ppSelectionShapes &&
                     selection.ShapeRange.Count >= 1;
         }
 
         public static bool IsSelectionShapeOrText(Selection selection)
         {
-            if (selection.Type != PpSelectionType.ppSelectionShapes &&
-                selection.Type != PpSelectionType.ppSelectionText)
+            if ((selection == null) || (selection.Type != PpSelectionType.ppSelectionShapes &&
+                selection.Type != PpSelectionType.ppSelectionText))
             {
                 return false;
             }
@@ -173,7 +173,7 @@ namespace PowerPointLabs.Utils
 
         public static bool HasPlaceholderInSelection(Selection selection)
         {
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return false;
             }
@@ -191,7 +191,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionSingleShape(Selection selection)
         {
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return false;
             }
@@ -206,7 +206,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionMultipleOrGroup(Selection selection)
         {
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return false;
             }
@@ -228,7 +228,7 @@ namespace PowerPointLabs.Utils
         {
             bool result = false;
 
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return result;
             }
@@ -255,7 +255,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionAllRectangle(Selection selection)
         {
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return false;
             }
@@ -275,7 +275,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionAllShapeWithArea(Selection selection)
         {
-            if (selection.Type != PpSelectionType.ppSelectionShapes)
+            if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
             {
                 return false;
             }
@@ -296,7 +296,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsSelectionChildShapeRange(Selection selection)
         {
-            return selection.HasChildShapeRange;
+            return selection != null && selection.HasChildShapeRange;
         }
 
         #endregion

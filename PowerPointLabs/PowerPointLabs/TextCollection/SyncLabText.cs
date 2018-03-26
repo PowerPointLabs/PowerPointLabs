@@ -2,14 +2,16 @@
 {
     internal static class SyncLabText
     {
-        public const string PaneTag = "SyncLab";
-
-        public const string TaskPanelTitle = "Sync Lab";
+        #region Action Framework Tags
+        public const string RibbonMenuId = "SyncLabButton";
         public const string RibbonMenuLabel = "Sync";
         public const string RibbonMenuSupertip =
             "Use Sync Lab to make your slides look more consistent.\n\n" +
             "Click this button to open the Sync Lab interface.";
+        #endregion
 
+        public const string PaneTag = "SyncLab";
+        public const string TaskPanelTitle = "Sync Lab";
         public const string StorageFileName = "Sync Lab - Do not edit";
         public const string DefaultFormatName = "Format";
 

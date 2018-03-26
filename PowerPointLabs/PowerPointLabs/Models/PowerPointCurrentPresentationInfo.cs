@@ -29,7 +29,7 @@ namespace PowerPointLabs.Models
         {
             get
             {
-                return Globals.ThisAddIn.Application.ActiveWindow.Selection;
+                return GetSelectionInActiveWindow();
             }
         }
 
@@ -55,6 +55,18 @@ namespace PowerPointLabs.Models
                 }
 
                 return slides;
+            }
+        }
+
+        private static Selection GetSelectionInActiveWindow() 
+        {
+            try
+            {
+                return Globals.ThisAddIn.Application.ActiveWindow.Selection;
+            }
+            catch (COMException) 
+            {
+                return null;
             }
         }
     }
