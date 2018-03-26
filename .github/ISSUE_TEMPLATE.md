@@ -1,18 +1,21 @@
+<!---
 Before opening a new issue, check that no existing issue covers the same topic.
+Choose one of the follow applicable templates for your issue
+--->
 
-Do follow the following templates for each issue type:
+## Bug Report  
+<!--- Add screenshots if any ---> 
+#### Environment (e.g. version of Microsoft PowerPoint)
+#### Steps to replicate
+#### Expected behavior
+#### Actual behavior
 
-Bug reports  
-- Environment (e.g. version of Microsoft PowerPoint)
-- Steps to replicate
-- Expected behavior
-- Actual behavior
 
-Feature Request  
-- Description of feature
-- Justification
-- Existing similar features, alternatives & their shortcomings
+## Feature Request  
+#### Description of feature
+#### Justification
+#### Existing similar features, alternatives & their shortcomings
 
-Other issue types  
-- Clear issue title
-- Description of the work to be done
+
+## Other issue Type (rename as appropriate)  
+#### Work to be done
