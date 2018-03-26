@@ -1290,7 +1290,6 @@ namespace PowerPointLabs.PositionsLab
                     }
                 }
             }
-            return;
         }
 
         public void ExecutePositionsAction(Action<List<PPShape>, bool> positionsAction, bool booleanVal, bool isPreview)
