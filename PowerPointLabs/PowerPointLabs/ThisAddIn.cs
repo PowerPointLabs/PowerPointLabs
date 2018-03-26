@@ -1087,6 +1087,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl(PositionsLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ResizeLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ColorsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(SaveLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(SyncLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ShapesLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(CropLabText.RibbonMenuId);
