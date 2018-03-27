@@ -1,6 +1,6 @@
 <!--
 Before opening a new issue, check that no existing issue covers the same topic.
-Choose one of the follow applicable templates for your issue
+Choose one of the following applicable templates for your issue
 -->
 
 ## Bug Report  
