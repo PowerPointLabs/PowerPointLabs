@@ -17,5 +17,5 @@ Choose one of the following applicable templates for your issue
 #### Existing similar features, alternatives & their shortcomings
 
 
-## Other issue Type (rename as appropriate)  
+## Other Issue Type (rename as appropriate)  
 #### Work to be done
