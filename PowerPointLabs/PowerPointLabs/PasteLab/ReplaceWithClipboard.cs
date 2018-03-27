@@ -14,6 +14,9 @@ namespace PowerPointLabs.PasteLab
         public static ShapeRange Execute(PowerPointPresentation presentation, PowerPointSlide slide, 
                                         ShapeRange selectedShapes, ShapeRange selectedChildShapes, ShapeRange pastingShapes)
         {
+            // ignore height & width, it doesn't always make sense to sync the height & width especially for circles, squares
+            List<Format> formatsToIgnore = new List<Format> {new PositionHeightFormat(), new PositionWidthFormat()};
+            
             // Replacing individual shape
             if (selectedChildShapes.Count == 0)
             {
@@ -30,7 +33,7 @@ namespace PowerPointLabs.PasteLab
 
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);
-                ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, new List<Format>());
+                ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, formatsToIgnore);
                 selectedShape.Delete();
 
                 return slide.ToShapeRange(pastingShape);
@@ -67,12 +70,15 @@ namespace PowerPointLabs.PasteLab
                 }
 
                 // apply all styles from shapes to be pasted, but ignore x,y positions
-                // x,y must be applied individually each shape in PasteIntoGroup.Execute(...),
-                // each item replaced has a different position
+                // x,y must be applied individually
+                // each item replaced has a different positioneach shape in PasteIntoGroup.Execute(...),
+
                 List<Format> positionFormats = new List<Format> {new PositionXFormat(), new PositionYFormat()};
+                formatsToIgnore.AddRange(positionFormats);
+                
                 for (int i = 1; i <= pastingShapes.Count; i++)
                 {
-                    ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, pastingShapes[i], positionFormats);
+                    ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, pastingShapes[i], formatsToIgnore);
                 }
 
                 // Remove selected child since it is being replaced
