@@ -2,13 +2,16 @@
 {
     internal static class ColorsLabText
     {
-        public const string PaneTag = "ColorsLab";
-
-        public const string TaskPanelTitle = "Colors Lab";
+        #region Action Framework Tags
+        public const string RibbonMenuId = "ColorsLabButton";
         public const string RibbonMenuLabel = "Colors";
         public const string RibbonMenuSupertip =
             "Use Colors Lab to add beautiful colors to your slide.\n\n" +
             "Click this button to open the Colors Lab interface.";
+        #endregion
+
+        public const string PaneTag = "ColorsLab";
+        public const string TaskPanelTitle = "Colors Lab";
 
         public const string MainColorBoxTooltip = "Choose the main color: " +
                                    "\r\nDrag the button to pick a color, " +
