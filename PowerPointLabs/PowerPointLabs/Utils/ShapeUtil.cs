@@ -1080,11 +1080,13 @@ namespace PowerPointLabs.Utils
         /// </summary>
         /// <param name="formatShape">source shape</param>
         /// <param name="newShape">destination shape</param>
-        public static void ApplyAllPossibleFormats(Shape formatShape, Shape newShape)
+        /// <param name="ignoredFormats">formats to ignore</param>
+        public static void ApplyAllPossibleFormats(Shape formatShape, Shape newShape, List<Format> ignoredFormats)
         {
             // gather all formats
-            Format[] copyableFormats = GetCopyableFormats(formatShape);
-            ApplyFormats(copyableFormats, formatShape, newShape);
+            List<Format> copyableFormats = GetCopyableFormats(formatShape).ToList();
+            Format[] withoutIgnored = copyableFormats.Except(ignoredFormats).ToArray();
+            ApplyFormats(withoutIgnored, formatShape, newShape);
         }
         
         #region PlaceHolder utils

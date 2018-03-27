@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
+using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PasteLab
@@ -29,7 +30,7 @@ namespace PowerPointLabs.PasteLab
 
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);
-                ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape);
+                ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, new List<Format>());
                 selectedShape.Delete();
 
                 return slide.ToShapeRange(pastingShape);
@@ -64,7 +65,15 @@ namespace PowerPointLabs.PasteLab
                         shapeAbove = shape;
                     }
                 }
-                ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, shapeAbove);
+
+                // apply all styles from shapes to be pasted, but ignore x,y positions
+                // x,y must be applied individually each shape in PasteIntoGroup.Execute(...),
+                // each item replaced has a different position
+                List<Format> positionFormats = new List<Format> {new PositionXFormat(), new PositionYFormat()};
+                for (int i = 1; i <= pastingShapes.Count; i++)
+                {
+                    ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, pastingShapes[i], positionFormats);
+                }
 
                 // Remove selected child since it is being replaced
                 ShapeRange shapesToGroup = slide.ToShapeRange(selectedGroupShapeList);
