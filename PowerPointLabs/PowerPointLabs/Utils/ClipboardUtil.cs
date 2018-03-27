@@ -92,7 +92,7 @@ namespace PowerPointLabs.Utils
         /// Note that clipboard cannot be restored if last copied item was a placeholder (for now)
         /// </summary>
         /// <returns>True if successfully restored</returns>
-        public static void RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
+        private static void RestoreClipboard(Shape shape = null, ShapeRange shapes = null, SlideRange slides = null) 
         {
             try
             {
@@ -119,7 +119,7 @@ namespace PowerPointLabs.Utils
             }
         }
 
-        public static SlideRange TryPastingAsSlide(PowerPointPresentation pres, PowerPointSlide origSlide)
+        private static SlideRange TryPastingAsSlide(PowerPointPresentation pres, PowerPointSlide origSlide)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace PowerPointLabs.Utils
             }
         }
 
-        public static ShapeRange TryPastingAsText(PowerPointSlide slide)
+        private static ShapeRange TryPastingAsText(PowerPointSlide slide)
         {
             try
             {
@@ -152,7 +152,7 @@ namespace PowerPointLabs.Utils
             }
         }
 
-        public static ShapeRange TryPastingAsShape(PowerPointSlide slide) 
+        private static ShapeRange TryPastingAsShape(PowerPointSlide slide) 
         {
             try
             {
@@ -171,7 +171,7 @@ namespace PowerPointLabs.Utils
         /// Pastes clipboard content into new temp slide using the DocumentWindow's View.Paste()
         /// Though this paste will work for most clipboard objects (even web pictures), it will change the undo history.
         /// </summary>
-        public static Shape TryPastingOntoView(PowerPointPresentation pres, PowerPointSlide tempSlide, PowerPointSlide origSlide)
+        private static Shape TryPastingOntoView(PowerPointPresentation pres, PowerPointSlide tempSlide, PowerPointSlide origSlide)
         {
             try
             {
