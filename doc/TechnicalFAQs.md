@@ -112,7 +112,7 @@ Unable to unzip the installer and/or error message associated with operation of 
 #### Solution
 1. Go to `File Explorer`
 1. Type in `%LocalAppData%\Apps\2.0` in the navigation bar and press `Enter`
-1. Locate the `Manifests` folder
+1. Using the search bar on the top-right corner, locate the `Manifests` folder
 1. Delete all files starting with `powe...` as shown in the below image
 ![Alt text](../doc/images/TechnicalFAQ/preexisting-app2.png)
 
