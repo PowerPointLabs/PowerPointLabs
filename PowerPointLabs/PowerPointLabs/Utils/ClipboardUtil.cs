@@ -36,7 +36,10 @@ namespace PowerPointLabs.Utils
                 {
                     Logger.LogException(e, "PasteShapesFromClipboard");
                     // Delete previously pasted "shapes" because it is not a valid shape
-                    shapes[1].Delete();
+                    if (shapes != null)
+                    {
+                        shapes[1].Delete();
+                    }
                     ShapeRange picture = TryPastingAsPNG(slide);
                     if (picture == null)
                     {
@@ -77,25 +80,25 @@ namespace PowerPointLabs.Utils
                     tempClipboardShapes = TryPastingAsText(tempClipboardSlide);
                 }
 
-                if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
                 {
                     Logger.Log("RestoreClipboardAfterAction: Trying to paste as shape.", ActionFramework.Common.Logger.LogType.Info);
                     tempClipboardShapes = TryPastingAsShape(tempClipboardSlide);
                 }
 
-                if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
                 {
                     Logger.Log("RestoreClipboardAfterAction: Trying to paste as PNG picture", ActionFramework.Common.Logger.LogType.Info);
                     tempClipboardShapes = TryPastingAsPNG(tempClipboardSlide);
                 }
 
-                if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
                 {
                     Logger.Log("RestoreClipboardAfterAction: Trying to paste as bitmap picture", ActionFramework.Common.Logger.LogType.Info);
                     tempClipboardShapes = TryPastingAsBitmap(tempClipboardSlide);
                 }
 
-                if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
                 {
                     Logger.Log("RestoreClipboardAfterAction: Trying to paste onto view", ActionFramework.Common.Logger.LogType.Info);
                     tempClipboardShape = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
@@ -116,6 +119,12 @@ namespace PowerPointLabs.Utils
             }
             return result;
         }
+
+        private static bool CheckIfPastingFailed(SlideRange slide, ShapeRange shapes)
+        {
+            return (slide == null && (shapes == null || shapes.Count < 1));
+        }
+
         #endregion
 
         /// <summary>
