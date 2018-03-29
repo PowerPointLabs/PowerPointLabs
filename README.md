@@ -6,6 +6,21 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 
 [![Build status](https://img.shields.io/appveyor/ci/kai33/powerpointlabs/master.svg)](https://ci.appveyor.com/project/kai33/powerpointlabs)
 
+## Contributing
+We welcome any contributions to make PowerPointLabs better! Before starting, please take a moment to review the guidelines below:
+* [Contributing Guide](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md): Details what you need to know/do to become a contributor
+* [Project Set-up/Testing Guide](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/ProjectSetUp.md): Details how to set-up and test in the dev environment
+* [Software Design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md): Details the design of the project architecture 
+
+## Documentation
+This section contains information that can be beneficial for PowerPointLabs developers.
+* Newcomer Guide
+* Dealing with Functional Tests
+* Common PowerPoint Add-in Development Traps
+* PowerPointLabs Website GIFs Guide
+* Technical Troubleshooting Guide
+* Development Team
+
 ### Contributing To PowerPointLabs
 Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
 
@@ -69,8 +84,8 @@ ZoomLab | Shi Ya |  | Raunak
 
 Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
 
-### Acknowledgements
+## Acknowledgements
 PowerPointLabs is developed at the School of Computing, National University of Singapore, with funding from an NUS Learning Innovation Fund, Technology (LIFT) grant.
 
-### License
+## License
 PowerPointLabs is released under GPLv2.
