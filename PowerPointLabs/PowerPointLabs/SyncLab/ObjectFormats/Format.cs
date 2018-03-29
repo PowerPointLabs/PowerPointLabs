@@ -1,45 +1,25 @@
-﻿using System;
-using System.Drawing;
-using System.Reflection;
-
+﻿using System.Drawing;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    // Class to facilitate accessing format's functions
-    public class Format
+    public abstract class Format
     {
-        readonly Type format;
+        
+        public abstract bool CanCopy(Shape formatShape);
+        
+        public abstract void SyncFormat(Shape formatShape, Shape newShape);
+        
+        public abstract Bitmap DisplayImage(Shape formatShape);
 
-        public Format(Type format)
+        public override bool Equals(object obj)
         {
-            this.format = format;
+            return obj != null && GetType() == obj.GetType();
         }
 
-        public Type FormatType
+        public override int GetHashCode()
         {
-            get
-            {
-                return format;
-            }
-        }
-
-        public bool CanCopy(Shape formatShape)
-        {
-            MethodInfo method = format.GetMethod("CanCopy", BindingFlags.Public | BindingFlags.Static);
-            return (bool)method.Invoke(null, new Object[] { formatShape });
-        }
-
-        public void SyncFormat(Shape formatShape, Shape newShape)
-        {
-            MethodInfo method = format.GetMethod("SyncFormat", BindingFlags.Public | BindingFlags.Static);
-            method.Invoke(null, new Object[] { formatShape, newShape });
-        }
-
-        public Bitmap DisplayImage(Shape formatShape)
-        {
-            MethodInfo method = format.GetMethod("DisplayImage", BindingFlags.Public | BindingFlags.Static);
-            return (Bitmap)method.Invoke(null, new Object[] { formatShape, });
+            return GetType().ToString().GetHashCode();
         }
     }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="RibbonLoad">
   <ribbon>
     <contextualTabs>
@@ -483,6 +483,26 @@
                   getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
+          
+          <menu id="SaveLabMenu"
+                getLabel="GetLabel"
+                getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                size="large">
+            <button id="SavePresentationsButton"
+                    tag="SavePresentations"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="SaveLabSettingsButton"
+                    tag="SaveLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
         </group>
         <group id="HelpGroup"
@@ -626,4 +646,3 @@
     -->
   </contextMenus>
 </customUI>
-
