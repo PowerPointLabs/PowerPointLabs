@@ -168,7 +168,6 @@
     <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabPositionTest.cs" />
-    <Compile Include="UnitTest\SyncLab\SyncLabFormatTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />
