@@ -64,6 +64,7 @@ After installation, PowerPointLabs ribbon do not show even after launching Power
    1. Under PowerPoint options, click `Add-ins`
    1. Beside `Manage`, click `Go`
    1. Check `PowerPointLabs` to enable it and click `OK`
+   1. Restart PowerPoint
 
 ## Renaming VSTOInstaller.exe.config File<a name="rename-vsto-file"></a>
 #### Error Message
