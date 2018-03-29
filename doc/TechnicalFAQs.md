@@ -1,6 +1,8 @@
-# Technical Troubleshooting Guide
+ # Technical Troubleshooting Guide
 
-This guide serves as a collection of technical issues commonly seen when installing PowerPointLabs.
+This guide serves as a collection of technical issues/solutions commonly seen when trying to install PowerPointLabs.
+
+If better solutions to any issue are found, or if there is a need for any clarification, please kindly let us know at pptlabs@comp.nus.edu.sg
 
 ### Table of Issues
 1. [Certificate Not Trusted](#cert-not-trusted)
