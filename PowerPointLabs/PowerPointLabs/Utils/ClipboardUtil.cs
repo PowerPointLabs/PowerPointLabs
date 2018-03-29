@@ -23,18 +23,26 @@ namespace PowerPointLabs.Utils
         {
             try
             {
+                ShapeRange shapes = null;
                 try
                 {
-                    ShapeRange shapes = PasteWithCorrectSlideCheck(slide);
+                    shapes = PasteWithCorrectSlideCheck(slide);
                     // Try to get enumerator and sees if it throws an error
+                    // Will throw error if its a web picture
                     shapes.GetEnumerator();
                     return shapes;
                 }
                 catch (COMException e)
                 {
                     Logger.LogException(e, "PasteShapesFromClipboard");
-                    ShapeRange pastedShape = TryPastingAsPicture(slide);
-                    return pastedShape;
+                    // Delete previously pasted "shapes" because it is not a valid shape
+                    shapes[1].Delete();
+                    ShapeRange picture = TryPastingAsPNG(slide);
+                    if (picture == null)
+                    {
+                        picture = TryPastingAsBitmap(slide);
+                    }
+                    return picture;
                 }
             }
             catch (COMException e)
@@ -44,7 +52,6 @@ namespace PowerPointLabs.Utils
                 return null;
             }
         }
-
         /// <summary>
         /// To avoid changing the clipboard during a copy/cut and paste action. 
         /// One solution for this is to save clipboard into a temp slide and revert clipboard afterwards.
@@ -78,8 +85,20 @@ namespace PowerPointLabs.Utils
 
                 if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
                 {
+                    Logger.Log("RestoreClipboardAfterAction: Trying to paste as PNG picture", ActionFramework.Common.Logger.LogType.Info);
+                    tempClipboardShapes = TryPastingAsPNG(tempClipboardSlide);
+                }
+
+                if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+                {
                     Logger.Log("RestoreClipboardAfterAction: Trying to paste as bitmap picture", ActionFramework.Common.Logger.LogType.Info);
-                    tempClipboardShapes = TryPastingAsPicture(tempClipboardSlide);
+                    tempClipboardShapes = TryPastingAsBitmap(tempClipboardSlide);
+                }
+
+                if (tempPastedSlide == null && (tempClipboardShapes == null || tempClipboardShapes.Count < 1))
+                {
+                    Logger.Log("RestoreClipboardAfterAction: Trying to paste onto view", ActionFramework.Common.Logger.LogType.Info);
+                    tempClipboardShape = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
                 }
 
                 result = action();
@@ -211,24 +230,39 @@ namespace PowerPointLabs.Utils
                 return null;
             }
         }
-
-        private static ShapeRange TryPastingAsPicture(PowerPointSlide slide) 
+        private static ShapeRange TryPastingAsPNG(PowerPointSlide slide)
         {
             try
             {
-                // try pasting as picture
+                // try pasting as PNG picture to preserve transparency
+                return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPastePNG);
+            }
+            catch (COMException e)
+            {
+                // May be thrown if clipboard is not a PNG picture
+                Logger.LogException(e, "TryPastingAsPNG");
+                return null;
+            }
+        }
+
+        private static ShapeRange TryPastingAsBitmap(PowerPointSlide slide)
+        {
+            try
+            {
+                // try pasting as general bitmap picture
                 return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPasteBitmap);
             }
             catch (COMException e)
             {
                 // May be thrown if clipboard is not a picture
-                Logger.LogException(e, "TryPastingAsPicture");
+                Logger.LogException(e, "TryPastingAsBitmap");
                 return null;
             }
         }
+
         /// <summary>
         /// Pastes clipboard content into new temp slide using the DocumentWindow's View.Paste()
-        /// Though this paste will work for most clipboard objects (even web pictures), it will change the undo history.
+        /// Though this paste will work for most clipboard objects (even web pictures), it could possibly change the undo history.
         /// </summary>
         private static Shape TryPastingOntoView(PowerPointPresentation pres, PowerPointSlide tempSlide, PowerPointSlide origSlide = null)
         {
