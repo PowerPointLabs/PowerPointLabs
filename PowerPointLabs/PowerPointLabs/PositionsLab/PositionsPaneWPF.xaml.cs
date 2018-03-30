@@ -1260,7 +1260,7 @@ namespace PowerPointLabs.PositionsLab
                         _previewCallBack = null;
                         this.StartNewUndoEntry();
                     }
-                    simulatedShapes = DuplicateShapesForAdjoinOperation(selectedShapes);
+                    simulatedShapes = selectedShapes.Duplicate();
                     List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1658,11 +1658,6 @@ namespace PowerPointLabs.PositionsLab
                 duplicatedShapeNames[i] = duplicated.Name;
             }
             return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
-        }
-
-        private ShapeRange DuplicateShapesForAdjoinOperation(ShapeRange range)
-        {
-            return range.Duplicate();
         }
 
         private float[,] SaveOriginalPositions(List<PPShape> shapes)
