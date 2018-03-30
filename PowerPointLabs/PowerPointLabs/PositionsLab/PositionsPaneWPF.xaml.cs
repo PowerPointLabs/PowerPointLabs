@@ -1398,7 +1398,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapesForDistributeOperation(selectedShapes);
+                    simulatedShapes = selectedShapes.Duplicate();
                     List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1461,7 +1461,7 @@ namespace PowerPointLabs.PositionsLab
                         this.StartNewUndoEntry();
                     }
 
-                    simulatedShapes = DuplicateShapesForDistributeOperation(selectedShapes);
+                    simulatedShapes = selectedShapes.Duplicate();
                     List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
                     float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
 
@@ -1699,11 +1699,6 @@ namespace PowerPointLabs.PositionsLab
             }
 
             return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
-        }
-
-        private ShapeRange DuplicateShapesForDistributeOperation(ShapeRange range)
-        {
-            return range.Duplicate();
         }
 
         private float[,] SaveOriginalPositions(List<PPShape> shapes)
