@@ -1412,6 +1412,7 @@ namespace PowerPointLabs.PositionsLab
                     if (!isPreview)
                     {
                         ShowErrorMessageBox(ex.Message, ex);
+                        break;
                     }
                 }
                 finally
@@ -1474,6 +1475,7 @@ namespace PowerPointLabs.PositionsLab
                     if (!isPreview)
                     {
                         ShowErrorMessageBox(ex.Message, ex);
+                        break;
                     }
                 }
                 finally
