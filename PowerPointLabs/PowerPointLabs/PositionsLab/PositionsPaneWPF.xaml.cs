@@ -1104,8 +1104,15 @@ namespace PowerPointLabs.PositionsLab
                         simulatedShapes.Delete();
                         GC.Collect();
                     }
+                    // Catch corrupted shapes
                     catch (System.Runtime.InteropServices.COMException)
                     {
+                        // Remove all simulated shapes manually
+                        for (int i = 0; i < simulatedShapes.Count; i++)
+                        {
+                            this.GetCurrentSlide().Shapes[1].Delete();
+                        }
+                        
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
                     }
                 }
@@ -1551,8 +1558,15 @@ namespace PowerPointLabs.PositionsLab
                         simulatedShapes.Delete();
                         GC.Collect();
                     }
+                    // Catch corrupted shapes
                     catch (System.Runtime.InteropServices.COMException)
                     {
+                        // Remove all simulated shapes manually
+                        for (int i = 0; i < simulatedShapes.Count; i++)
+                        {
+                            this.GetCurrentSlide().Shapes[1].Delete();
+                        }
+                        
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
                     }
                 }
