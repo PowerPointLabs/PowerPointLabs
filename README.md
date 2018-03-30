@@ -15,11 +15,11 @@ We welcome any contributions to make PowerPointLabs better! Before starting, ple
 ## Documentation
 This section contains information that can be beneficial for PowerPointLabs developers.
 * Newcomer Guide
-* Project Ideas
-* Dealing with Functional Tests
 * Common PowerPoint Add-in Development Traps
-* PowerPointLabs Website GIFs Guide
+* Dealing with Functional Tests
 * Technical Troubleshooting Guide
+* PowerPointLabs Website GIFs Guide
+* Project Ideas
 * Development Team
 
 ### Contributing To PowerPointLabs
