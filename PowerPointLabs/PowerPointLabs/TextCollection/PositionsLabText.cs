@@ -16,7 +16,7 @@
         public const string ErrorUndefined = "Undefined error in Positions Lab.";
 
         public const string ErrorDialogTitle = "Unable to execute action";
-        public const string ErrorCorruptedSelection = "Shapes appear to be corrupted.\nPlease try again with other shapes.";
+        public const string ErrorCorruptedSelection = "Shapes appear to be corrupted.\nPlease undo and try again with other shapes.";
         public const string ErrorNoSelection = "Please select at least a shape before using this feature.";
         public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature.";
         public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature.";

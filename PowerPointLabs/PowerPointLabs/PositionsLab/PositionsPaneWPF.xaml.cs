@@ -1110,9 +1110,13 @@ namespace PowerPointLabs.PositionsLab
                         // Remove all simulated shapes manually
                         for (int i = 0; i < simulatedShapes.Count; i++)
                         {
-                            this.GetCurrentSlide().Shapes[1].Delete();
+                            // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
+                            if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
+                            {
+                                this.GetCurrentSlide().Shapes[1].Delete();
+                            }
                         }
-                        
+                        // Ask user to undo the operation to remove any excess duplicates
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
                     }
                 }
@@ -1566,9 +1570,13 @@ namespace PowerPointLabs.PositionsLab
                         // Remove all simulated shapes manually
                         for (int i = 0; i < simulatedShapes.Count; i++)
                         {
-                            this.GetCurrentSlide().Shapes[1].Delete();
+                            // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
+                            if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
+                            {
+                                this.GetCurrentSlide().Shapes[1].Delete();
+                            }
                         }
-                        
+                        // Ask user to undo the operation to remove any excess duplicates
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
                     }
                 }
