@@ -241,22 +241,6 @@ namespace PowerPointLabs.Utils
                 return null;
             }
         }
-
-        private static ShapeRange TryPastingAsBitmap(PowerPointSlide slide)
-        {
-            try
-            {
-                // try pasting as general bitmap picture
-                return PasteWithCorrectSlideCheck(slide, true, PpPasteDataType.ppPasteBitmap);
-            }
-            catch (COMException e)
-            {
-                // May be thrown if clipboard is not a picture
-                Logger.LogException(e, "TryPastingAsBitmap");
-                return null;
-            }
-        }
-
         /// <summary>
         /// Pastes clipboard content into new temp slide using the DocumentWindow's View.Paste()
         /// Though this paste will work for most clipboard objects (even web pictures), it could possibly change the undo history.
