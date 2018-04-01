@@ -20,7 +20,7 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
-        private ArtisticEffectFormat _artisticEffectFormat = new ArtisticEffectFormat();
+        private readonly ArtisticEffectFormat _artisticEffectFormat = new ArtisticEffectFormat();
 
         private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
