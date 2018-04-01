@@ -193,12 +193,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             SyncFormatPaneItem item = new SyncFormatPaneItem(this, shapeKey, shapeStorage, formats);
             item.Text = name;
-            
-            // do not show shadow in pane
-            MsoTriState previousShadowVisibility = shape.Shadow.Visible;
-            shape.Shadow.Visible = MsoTriState.msoFalse;
             item.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
-            shape.Shadow.Visible = previousShadowVisibility;
             
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
