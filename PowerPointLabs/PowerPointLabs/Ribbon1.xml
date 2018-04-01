@@ -484,6 +484,25 @@
                   getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
+          <menu id="SaveLabMenu"
+                getLabel="GetLabel"
+                getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                size="large">
+            <button id="SavePresentationsButton"
+                    tag="SavePresentations"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="SaveLabSettingsButton"
+                    tag="SaveLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
         </group>
         <group id="HelpGroup"

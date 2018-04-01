@@ -24,6 +24,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
+using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -806,6 +807,8 @@ namespace PowerPointLabs
             SetupTabActivateHandler();
             SetupAfterCopyPasteHandler();
 
+            SaveLabSettings.InitialiseLocalStorage();
+
             // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
             // follows the defining order. I.e. the earlier you defined, the earlier it will be
             // executed.
@@ -1084,6 +1087,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl(PositionsLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ResizeLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ColorsLabText.RibbonMenuId);
+            Ribbon.RefreshRibbonControl(SaveLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(SyncLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ShapesLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(CropLabText.RibbonMenuId);

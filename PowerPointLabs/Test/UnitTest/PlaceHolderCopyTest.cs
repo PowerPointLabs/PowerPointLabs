@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.PowerPoint;
@@ -104,8 +103,7 @@ namespace Test.UnitTest
         public void TestCopyPicture()
         {
             Shape picture = GetShape(PicturePlaceholderSlide, Picture);
-            Shape copy = ShapeUtil.CopyMsoPlaceHolder(new Format[0], picture, _templateShapes);
-            Assert.AreEqual(copy, null);
+            EnsureFormatsAreRetainedAfterCopy(picture);
         }
         
         [TestMethod]
@@ -121,14 +119,12 @@ namespace Test.UnitTest
         {
             // ensure that each placeholder's copy supports the same or more formats
             Format[] formatsFromOriginal = GetCopyableFormats(placeHolder);
-            List<Type> typesFromOriginal = formatsFromOriginal.Select(format => format.FormatType).ToList();
             
             Shape copy = ShapeUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, _templateShapes);
             Format[] formatsFromCopy = GetCopyableFormats(copy);
-            IEnumerable<Type> typesFromCopy = formatsFromCopy.Select(format => format.FormatType);
 
-            IEnumerable<Type> typesInBoth = typesFromCopy.Intersect(typesFromOriginal);
-            Assert.AreEqual(typesInBoth.Count(), typesFromOriginal.Count);
+            IEnumerable<Format> formatsInBoth = formatsFromCopy.Intersect(formatsFromOriginal);
+            Assert.AreEqual(formatsInBoth.Count(), formatsFromOriginal.Count());
         }
 
         private Format[] GetCopyableFormats(Shape shape)
