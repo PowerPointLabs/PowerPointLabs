@@ -10,11 +10,11 @@ FT is important to prevent software regression in PowerPointLabs. From time to t
 ### How does a FT work?
 When PowerPointLabs add-in starts up, it will set up an Inter-Process Communication (IPC) channel. Then when Functional Test runs, it will try to connect to this IPC channel and communicate with PowerPointLabs add-in through the interface for remoting.
 
-<!-- image of first FT diagram -->
+![Alt text](../doc/images/FTdiagram.png)
 
 This interface for remoting is called `IPowerPointLabsFT`, from which developers can obtain another two interfaces: `IPowerPointOperations` and `IPowerPointLabsFeatures`.
 
-<!-- image of second FT diagram -->
+![Alt text](../doc/images/FTdiagram2.png)
 
 1. `IPowerPointOperations` include basic APIs to operate on PowerPoint objects, e.g. selecting the 4th slide, selecting the shape with name "Text 3", closing the current presentation, etc.
 1. `IPowerPointLabsFeatures` include the APIs to execute PowerPointLabs features, e.g. Auto Crop, Auto Animate, Add Spotlight, etc.
