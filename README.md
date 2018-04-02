@@ -14,13 +14,13 @@ We welcome any contributions to make PowerPointLabs better! Before starting, ple
 
 ## Documentation
 This section contains information that can be beneficial for PowerPointLabs developers.
-* Newcomer Guide
-* Common PowerPoint Add-in Development Traps
-* Dealing with Functional Tests
-* Technical Troubleshooting Guide
-* PowerPointLabs Website GIFs Guide
-* Project Ideas
-* Development Team
+* [Newcomer Guide](doc/NewcomerGuide.md)
+* [Common PowerPoint Add-in Development Traps](doc/CommonTraps.md)
+* [Dealing with Functional Tests](doc/FunctionalTests.md)
+* [Technical Troubleshooting Guide](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/TechnicalFAQs.md)
+* [PowerPointLabs Website GIFs Guide](doc/GIFsGuide.md)
+* [Project Ideas](doc/ProjectIdeas.md)
+* [Development Team](doc/DevTeam.md)
 
 ### Contributing To PowerPointLabs
 Interested to contribute? Please take a moment to review the [guidelines for contributing](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md) and [the design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md).
