@@ -1235,7 +1235,8 @@ namespace PowerPointLabs.PositionsLab
         // Adjoin operations
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
-            // Run the action 2 times in order to properly execute actions
+            // Need to run the action 2 times because of the nature of PowerPoint default operations
+            // This has been determined via manual testing
             for (int i = 0; i < 2; i++)
             {
                 Selection selection = this.GetCurrentSelection();
