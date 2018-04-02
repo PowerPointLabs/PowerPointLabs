@@ -7,11 +7,11 @@ This document details the common pitfalls when developing for PowerPointLabs, so
 
 1. When you delete, cut, or ungroup a shape programmatically, and you undo this change from the PowerPoint UI, then that shape will become corrupted. For a corrupted shape, accessing attributes programatically other than it's `left`/`top`/`width`/`height`/`name` would throw an exception. <br><br>One possible solution would be re-allocate the shape’s memory; copy and paste it programmatically before you handle the shape
 
-1. When paste a shape programmatically, it is not selected in Office 2010, but selected in Office 2013
+1. When pasting a shape programmatically, it is not selected in Office 2010, but selected in Office 2013
 
-1. When using `shape.Duplicate()`, the animations are copied in Office 2013 but not 2016. Recommended to use `slide.RemoveAnimationsForShape()`
+1. When using `shape.Duplicate()`, the animations are copied in Office 2013 but not 2016. Recommended to use `slide.RemoveAnimationsForShape()` to remove animations
 
-1. When paste a shape in the current slide, its naming mechanism is like this:
+1. When pasting a shape in the current slide, its naming mechanism is like this:
    1. Index increment for default name. E.g. Rectangle 1 -> Rectangle 2 
    1. Unchanged for non-default name. E.g. MyRectangle -> MyRectangle
    
