@@ -2,12 +2,12 @@
 
 This guide aims to provide a basic idea of the overall structure of Functional Tests (FTs) in PowerPointLabs.
 
-### What is a FT?
+## What is a FT?
 FT is an automatic integration test, in which PowerPointLabs add-in is running in PowerPoint application, and without any mock or stub components (unlike in Unit Testing).
  
 FT is important to prevent software regression in PowerPointLabs. From time to time, developers keep refactoring the legacy codes. Without adequate test cases, we won’t feel confident when PowerPointLabs is delivered to users. FT is built to help with automating the test processes that is required to ensure the quality of the end-product.
 
-### How does a FT work?
+## How does a FT work?
 When PowerPointLabs add-in starts up, it will set up an Inter-Process Communication (IPC) channel. Then when Functional Test runs, it will try to connect to this IPC channel and communicate with PowerPointLabs add-in through the interface for remoting.
 
 ![Alt text](../doc/images/FTdiagram.png)
@@ -23,18 +23,18 @@ Interfaces `IPowerPointOperations` and `IPowerPointLabsFeatures` are both implem
 
 Currently, FT has utility tools that can support comparing the pictures, shapes, slides, animations, effects, message box etc, which means it has covered most of the testing scenarios. But to some extent, developers still need to verify the animations ***manually***, and then prevent any regression automatically by FT.
 
-### How to run a FT?
+## How to run a FT?
 From inside Visual Studios:
 1. Go to `Test` -> `Windows` -> `Test Explorer`
 1. To run all tests, simply click `Run All`
 1. To run specific FTs, simply ctrl-click all relevant FTs, right-click and select `Run Selected Tests`
 1. Tests results would also be displayed in the Test Explorer
 
-### How to debug a FT?
+## How to debug a FT?
 1. Debug base on error log reported by test results
 1. Comment out the `TearDown` method in `BaseFunctionalTest`, so that the presentation under test would not be closed, allowing you to manually verify the slides in PowerPoint
 
-### How to write new FTs?
+## How to write new FTs?
 1. Create a testing template, which are PowerPoint slides on which the FT would run. Follow the structure of existing testing templates in the ***doc/test*** folder and make sure it is readable and verifiable
 1. In the code, when writing test class, ensure that it is `public`, it has inherited from `BaseFunctionalTest` and that the method `GetTestingSlideName`, which returns the file name of testing template, is implemented
 1. Rebuild to include new test in Test Explorer
