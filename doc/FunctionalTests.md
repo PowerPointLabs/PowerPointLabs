@@ -5,7 +5,7 @@ This guide aims to provide a basic idea of the overall structure of Functional T
 ## What is a FT?
 FT is an automatic integration test, in which PowerPointLabs add-in is running in PowerPoint application, and without any mock or stub components (unlike in Unit Testing).
  
-FT is important to prevent software regression in PowerPointLabs. From time to time, developers keep refactoring the legacy codes. Without adequate test cases, we won’t feel confident when PowerPointLabs is delivered to users. FT is built to help with automating the test processes that is required to ensure the quality of the end-product.
+FT is important to prevent software regression in PowerPointLabs. Because refactoring code happens frequently, without adequate test cases we won’t feel confident when PowerPointLabs is delivered to users. FT is built to help with automating the test processes that is required to ensure the quality of the end-product.
 
 ## How does a FT work?
 When PowerPointLabs add-in starts up, it will set up an Inter-Process Communication (IPC) channel. Then when Functional Test runs, it will try to connect to this IPC channel and communicate with PowerPointLabs add-in through the interface for remoting.
