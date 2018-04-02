@@ -1125,7 +1125,7 @@ namespace PowerPointLabs.PositionsLab
                         {
                         }
                         // Ask user to undo the operation to remove any excess duplicates
-                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
+                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
                     }
                 }
             }
@@ -1593,7 +1593,7 @@ namespace PowerPointLabs.PositionsLab
                         {
                         }
                         // Ask user to undo the operation to remove any excess duplicates
-                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
+                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
                     }
                 }
             }
