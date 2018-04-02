@@ -151,19 +151,13 @@ namespace PowerPointLabs.Utils
         // Save the file with a specific compression level.
         private static void SaveJpg(Bitmap bm, string file_name, long compression)
         {
-            try
-            {
-                System.Drawing.Imaging.EncoderParameters encoder_params = new System.Drawing.Imaging.EncoderParameters(1);
-                encoder_params.Param[0] = new System.Drawing.Imaging.EncoderParameter(
-                    System.Drawing.Imaging.Encoder.Quality, compression);
+            System.Drawing.Imaging.EncoderParameters encoder_params = new System.Drawing.Imaging.EncoderParameters(1);
+            encoder_params.Param[0] = new System.Drawing.Imaging.EncoderParameter(
+                System.Drawing.Imaging.Encoder.Quality, compression);
 
-                System.Drawing.Imaging.ImageCodecInfo image_codec_info = GetEncoderInfo("image/jpeg");
-                File.Delete(file_name);
-                bm.Save(file_name, image_codec_info, encoder_params);
-            }
-            catch (System.Exception)
-            {
-            }
+            System.Drawing.Imaging.ImageCodecInfo image_codec_info = GetEncoderInfo("image/jpeg");
+            File.Delete(file_name);
+            bm.Save(file_name, image_codec_info, encoder_params);
         }
 
         private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mime_type)
