@@ -17,7 +17,7 @@ This section contains information that can be beneficial for PowerPointLabs deve
 * [Newcomer Guide](doc/NewcomerGuide.md)
 * [Common PowerPoint Add-in Development Traps](doc/CommonTraps.md)
 * [Dealing with Functional Tests](doc/FunctionalTests.md)
-* [Technical Troubleshooting Guide](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/TechnicalFAQs.md)
+* [Technical Troubleshooting Guide](doc/TechnicalFAQs.md)
 * [PowerPointLabs Website GIFs Guide](doc/GIFsGuide.md)
 * [Project Ideas](doc/ProjectIdeas.md)
 * [Development Team](doc/DevTeam.md)
