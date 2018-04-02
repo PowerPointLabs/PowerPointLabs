@@ -29,6 +29,9 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             return Globals.ThisAddIn.Application.ActiveWindow;
         }
 
+        /// <summary>
+        /// Gets current selection in Active Window. Returns null if selection cannot be retrieved.
+        /// </summary>
         public static Selection GetCurrentSelection()
         {
             return PowerPointCurrentPresentationInfo.CurrentSelection;
