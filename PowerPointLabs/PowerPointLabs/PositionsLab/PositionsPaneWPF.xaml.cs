@@ -1116,6 +1116,14 @@ namespace PowerPointLabs.PositionsLab
                                 this.GetCurrentSlide().Shapes[1].Delete();
                             }
                         }
+                        // Remove any outlier extra shapes not deleted previously
+                        try
+                        {
+                            this.GetCurrentSelection().Delete();
+                        }
+                        catch (System.Runtime.InteropServices.COMException)
+                        {
+                        }
                         // Ask user to undo the operation to remove any excess duplicates
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
                     }
@@ -1575,6 +1583,14 @@ namespace PowerPointLabs.PositionsLab
                             {
                                 this.GetCurrentSlide().Shapes[1].Delete();
                             }
+                        }
+                        // Remove any outlier extra shapes not deleted previously
+                        try
+                        {
+                            this.GetCurrentSelection().Delete();
+                        }
+                        catch (System.Runtime.InteropServices.COMException)
+                        {
                         }
                         // Ask user to undo the operation to remove any excess duplicates
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorDialogTitle);
