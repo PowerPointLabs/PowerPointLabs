@@ -119,6 +119,39 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        private static ShapeRange PasteWithCorrectSlideCheck(PowerPointSlide slide, bool isPasteSpecial = false, PpPasteDataType pasteType = PpPasteDataType.ppPasteDefault)
+        {
+            // Note: Some copied objects are pasted on currentSlide rather than the desired slide (e.g. jpg from desktop),
+            // so we must check whether it is pasted correctly, else we cut-and-paste it into the correct slide.
+
+            int initialSlideShapesCount = slide.Shapes.Count;
+            ShapeRange pastedShapes = null;
+            if (!isPasteSpecial)
+            {
+                pastedShapes = slide.Shapes.Paste();
+            }
+            else
+            {
+                pastedShapes = slide.Shapes.PasteSpecial(pasteType);
+            }
+
+            int finalSlideShapesCount = slide.Shapes.Count;
+            if (pastedShapes.Count >= 1 && finalSlideShapesCount == initialSlideShapesCount)
+            {
+                pastedShapes.Cut();
+                if (!isPasteSpecial)
+                {
+                    pastedShapes = slide.Shapes.Paste();
+                }
+                else
+                {
+                    pastedShapes = slide.Shapes.PasteSpecial(pasteType);
+                }
+            }
+
+            return pastedShapes;
+        }
+
         private static SlideRange TryPastingAsSlide(PowerPointPresentation pres, PowerPointSlide origSlide)
         {
             try
@@ -199,39 +232,6 @@ namespace PowerPointLabs.Utils
                 Logger.LogException(e, "TryPastingOntoView");
                 return null;
             }
-        }
-
-        private static ShapeRange PasteWithCorrectSlideCheck(PowerPointSlide slide, bool isPasteSpecial = false, PpPasteDataType pasteType = PpPasteDataType.ppPasteDefault)
-        {
-            // Note: Some copied objects are pasted on currentSlide rather than the desired slide (e.g. jpg from desktop),
-            // so we must check whether it is pasted correctly, else we cut-and-paste it into the correct slide.
-
-            int initialSlideShapesCount = slide.Shapes.Count;
-            ShapeRange pastedShapes = null;
-            if (!isPasteSpecial)
-            {
-                pastedShapes = slide.Shapes.Paste();
-            }
-            else
-            {
-                pastedShapes = slide.Shapes.PasteSpecial(pasteType);
-            }
-
-            int finalSlideShapesCount = slide.Shapes.Count;
-            if (pastedShapes.Count >= 1 && finalSlideShapesCount == initialSlideShapesCount)
-            {
-                pastedShapes.Cut();
-                if (!isPasteSpecial)
-                {
-                    pastedShapes = slide.Shapes.Paste();
-                }
-                else
-                {
-                    pastedShapes = slide.Shapes.PasteSpecial(pasteType);
-                }
-            }
-
-            return pastedShapes;
         }
     }
 }
