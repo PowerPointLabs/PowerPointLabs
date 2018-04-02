@@ -8,9 +8,9 @@ PowerPointLabs makes creating engaging PowerPoint presentations easy. Check out 
 
 ## Contributing
 We welcome any contributions to make PowerPointLabs better! Before starting, please take a moment to review the guidelines below:
-* [Contributing Guide](https://github.com/PowerPointLabs/powerpointlabs/blob/master/.github/CONTRIBUTING.md): Details what you need to know/do to become a contributor
-* [Project Set-up/Testing Guide](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/ProjectSetUp.md): Details how to set-up and test in the dev environment
-* [Software Design](https://github.com/PowerPointLabs/PowerPointLabs/blob/master/doc/SoftwareDesign.md): Details the design of the project architecture 
+* [Contributing Guide](.github/CONTRIBUTING.md): Details what you need to know/do to become a contributor
+* [Project Set-up/Testing Guide](doc/ProjectSetUp.md): Details how to set-up and test in the dev environment
+* [Software Design](doc/SoftwareDesign.md): Details the design of the project architecture 
 
 ## Documentation
 This section contains information that can be beneficial for PowerPointLabs developers.
