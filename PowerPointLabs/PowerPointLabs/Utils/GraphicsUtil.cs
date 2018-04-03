@@ -149,23 +149,23 @@ namespace PowerPointLabs.Utils
         }
 
         // Save the file with a specific compression level.
-        private static void SaveJpg(Bitmap bm, string file_name, long compression)
+        private static void SaveJpg(Bitmap bm, string fileName, long compression)
         {
-            System.Drawing.Imaging.EncoderParameters encoder_params = new System.Drawing.Imaging.EncoderParameters(1);
-            encoder_params.Param[0] = new System.Drawing.Imaging.EncoderParameter(
+            System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters(1);
+            encoderParams.Param[0] = new System.Drawing.Imaging.EncoderParameter(
                 System.Drawing.Imaging.Encoder.Quality, compression);
 
-            System.Drawing.Imaging.ImageCodecInfo image_codec_info = GetEncoderInfo("image/jpeg");
-            File.Delete(file_name);
-            bm.Save(file_name, image_codec_info, encoder_params);
+            System.Drawing.Imaging.ImageCodecInfo imageCodecInfo = GetEncoderInfo("image/jpeg");
+            File.Delete(fileName);
+            bm.Save(fileName, imageCodecInfo, encoderParams);
         }
 
-        private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mime_type)
+        private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mimeType)
         {
             System.Drawing.Imaging.ImageCodecInfo[] encoders = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
             for (int i = 0; i <= encoders.Length; i++)
             {
-                if (encoders[i].MimeType == mime_type)
+                if (encoders[i].MimeType == mimeType)
                 {
                     return encoders[i];
                 }
