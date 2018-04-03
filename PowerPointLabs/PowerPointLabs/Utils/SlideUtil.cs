@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
@@ -7,6 +8,7 @@ using PowerPointLabs.Models;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+
 
 namespace PowerPointLabs.Utils
 {
@@ -119,12 +121,13 @@ namespace PowerPointLabs.Utils
         public static void CopyToDesign(string designName, PowerPointSlide refSlide)
         {
             Design design = GetDesign(designName);
-            if (design == null)
+            if (design != null)
             {
-                design = CreateDesign(designName);
+                design.Delete();
             }
-            design.SlideMaster.Background.Fill.ForeColor = refSlide.GetNativeSlide().Background.Fill.ForeColor;
-            design.SlideMaster.Background.Fill.BackColor = refSlide.GetNativeSlide().Background.Fill.BackColor;
+
+            Design newDesign = PowerPointPresentation.Current.Presentation.Designs.Clone(refSlide.Design);
+            newDesign.Name = designName;
         }
 
         # endregion
