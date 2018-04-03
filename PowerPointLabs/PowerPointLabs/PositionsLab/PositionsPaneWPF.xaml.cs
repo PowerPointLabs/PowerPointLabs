@@ -1116,21 +1116,17 @@ namespace PowerPointLabs.PositionsLab
                                 this.GetCurrentSlide().Shapes[1].Delete();
                             }
                         }
-                        /*
-                        Remove any outlier extra shapes not deleted previously
-                        Only triggered for cases where Distribute is called for cases consisting of both
-                        corrupted and non-corrupted shapes
-                        */
+                        // Remove any outlier extra shapes not deleted previously
+                        // Only triggered for cases where Distribute is called for cases consisting of both
+                        // corrupted and non-corrupted shapes
                         try
                         {
                             this.GetCurrentSelection().Delete();
                         }
                         catch (System.Runtime.InteropServices.COMException)
                         {
-                            /*
-                            Exception will trigger whenever Distribute is applied to cases where all shapes are 
-                            either corrupted or non-corrupted, which is already handled before this try-catch block
-                            */
+                            // Exception will trigger whenever Distribute is applied to cases where all shapes are 
+                            // either corrupted or non-corrupted, which is already handled before this try-catch block
                         }
                         // Ask user to undo the operation to remove any excess duplicates
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
@@ -1592,21 +1588,17 @@ namespace PowerPointLabs.PositionsLab
                                 this.GetCurrentSlide().Shapes[1].Delete();
                             }
                         }
-                        /*
-                        Remove any outlier extra shapes not deleted previously
-                        Only triggered for cases where Distribute is called for cases consisting of both
-                        corrupted and non-corrupted shapes
-                        */
+                        // Remove any outlier extra shapes not deleted previously
+                        // Only triggered for cases where Distribute is called for cases consisting of both
+                        // corrupted and non-corrupted shapes
                         try
                         {
                             this.GetCurrentSelection().Delete();
                         }
                         catch (System.Runtime.InteropServices.COMException)
                         {
-                            /*
-                            Exception will trigger whenever Distribute is applied to cases where all shapes are 
-                            either corrupted or non-corrupted, which is already handled before this try-catch block
-                            */
+                            // Exception will trigger whenever Distribute is applied to cases where all shapes are 
+                            // either corrupted or non-corrupted, which is already handled before this try-catch block
                         }
                         // Ask user to undo the operation to remove any excess duplicates
                         MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
