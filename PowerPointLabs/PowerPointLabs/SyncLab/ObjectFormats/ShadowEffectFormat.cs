@@ -18,31 +18,42 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             ShadowFormat srcFormat = formatShape.Shadow;
             ShadowFormat destFormat = newShape.Shadow;
-            // the order in which the items are applied is extremely important
-            // Type seems to change other items like Offset once it is set
-            // A more through investigation is required to learn the exact effects
+            
             destFormat.Visible = srcFormat.Visible;
-            destFormat.Type = srcFormat.Type;
-            destFormat.Style = srcFormat.Style;
-            destFormat.ForeColor = srcFormat.ForeColor;
-            destFormat.Obscured = srcFormat.Obscured;
-            destFormat.RotateWithShape = srcFormat.RotateWithShape;
-            destFormat.Blur = srcFormat.Blur;
-            destFormat.OffsetX = srcFormat.OffsetX;
-            destFormat.OffsetY = srcFormat.OffsetY;
-            destFormat.Transparency = srcFormat.Transparency;
+            if (srcFormat.Type != MsoShadowType.msoShadowMixed)
+            {
+                // no need to set shadow settings manually,
+                // setting non-mixed types automatically sets shadow settings to the shape
+                destFormat.Type = srcFormat.Type;
+            }
+            else
+            {
+                // setting ShadowFormat to MixedType throws an error, skip it here
+                // mixed type requires manual configuration of each shadow setting
+                destFormat.Style = srcFormat.Style;
+                destFormat.ForeColor = srcFormat.ForeColor;
+                destFormat.Obscured = srcFormat.Obscured;
+                destFormat.RotateWithShape = srcFormat.RotateWithShape;
+                destFormat.Blur = srcFormat.Blur;
+                destFormat.Size = srcFormat.Size;
+                destFormat.OffsetX = srcFormat.OffsetX;
+                destFormat.OffsetY = srcFormat.OffsetY;
+                destFormat.Transparency = srcFormat.Transparency;
+            }
         }
 
         public override Bitmap DisplayImage(Shape formatShape)
         {
-            // change transparency to make shadow more visible
-            // don't bother changing fill transparency, it does not affect picture shapes
-            float oldShadowTransparency = formatShape.Shadow.Transparency;
-            formatShape.Shadow.Transparency = 0.3f;
-
-            Bitmap image = GraphicsUtil.ShapeToBitmap(formatShape);
+            // change transparency to make shadow more visible in preview
+            // don't bother changing fill transparency, it does not affect picture type shapes
             
-            formatShape.Shadow.Transparency = oldShadowTransparency;
+            // setting transparency will change the ShadowFormat.Type to MixedType
+            // use a duplicate to avoid complex control flow required for restoring ShadowFormat.Type
+            Shape duplicate = formatShape.Duplicate()[1];
+            duplicate.Shadow.Transparency = 0.3f;
+
+            Bitmap image = GraphicsUtil.ShapeToBitmap(duplicate);
+            duplicate.Delete();
 
             return image;
 
