@@ -3,7 +3,7 @@
   <ribbon>
     <contextualTabs>
       <tabSet idMso="TabSetDrawingTools">
-        <tab idMso="TabDrawingToolsFormat">
+        <tab idMso="TabDrawingToolsFormat" getVisible="SetVisibleFormatTab">
           <group id="AdditionalFeatures"
                  label="Other"
                  insertBeforeMso="GroupShapeStyles"
@@ -542,8 +542,8 @@
           
         </group>
         
-        <group id="Visibility" label="Show Tabs">
-          <checkBox id="VisibleFormatShapes" enabled="true" label="Disable Format Tab" screentip="Show or Hide Format Tab after inserting shapes" onAction="ToggleVisibility"/>
+        <group id="Visibility" label="Show/Hide Tabs">
+          <checkBox id="VisibleFormatShapes" enabled="true" label="Hide Format Tab" screentip="Show or Hide Format Tab after inserting shapes" onAction="ToggleVisibility"/>
         </group>
         
       </tab>

@@ -139,7 +139,7 @@ namespace PowerPointLabs
         //Create callback methods here. For more information about adding callback methods, select the Ribbon XML item in Solution Explorer and then press F1
 
         // Set the visibility of the Drawing Tools Format Tab
-        public bool GetVisibleFormatTab(Office.IRibbonControl control)
+        public bool SetVisibleFormatTab(Office.IRibbonControl control)
         {
             return !disableFormatTab;
         }
