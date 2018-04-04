@@ -25,18 +25,17 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public override Bitmap DisplayImage(Shape formatShape)
         {
 
-            // make reflection more visible 
-            float oldTransparency = formatShape.Reflection.Transparency;
-            float oldSize = formatShape.Reflection.Size;
-            float oldBlur = formatShape.Reflection.Blur;
-            formatShape.Reflection.Size = 100.0f;
-            formatShape.Reflection.Transparency = 0.1f;
-            formatShape.Reflection.Blur = 0.5f;
+            // make reflection more visible in preview
+            // changing any Reflection setting sets ReflectionFormat.Type to msoReflectionTypeMixed 
+            // perform configuration on a duplicate to avoid complex control flow required to
+            // restore ReflectionFormat.Type
+            Shape duplicate = formatShape.Duplicate()[1];
+            duplicate.Reflection.Size = 100.0f;
+            duplicate.Reflection.Transparency = 0.1f;
+            duplicate.Reflection.Blur = 0.5f;
+            
             Bitmap image = Graphics.ShapeToBitmap(formatShape);
-
-            formatShape.Reflection.Size = oldSize;
-            formatShape.Reflection.Transparency = oldTransparency;
-            formatShape.Reflection.Blur = oldBlur;
+            duplicate.Delete();
 
             return image;
         }
@@ -48,11 +47,21 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 ReflectionFormat srcFormat = formatShape.Reflection;
                 ReflectionFormat destFormat = newShape.Reflection;
 
-                destFormat.Type = srcFormat.Type;
-                destFormat.Blur = srcFormat.Blur;
-                destFormat.Offset = srcFormat.Offset;
-                destFormat.Size = srcFormat.Size;
-                destFormat.Transparency = srcFormat.Transparency;
+                if (srcFormat.Type != MsoReflectionType.msoReflectionTypeMixed)
+                {
+                    // setting ReflectionFormat.Type automatically sets Reflection settings
+                    // there is no need to set them manually
+                    destFormat.Type = srcFormat.Type;
+                }
+                else
+                {
+                    // setting mixed type throws an exception
+                    // skip it and set Reflection settings manually
+                    destFormat.Blur = srcFormat.Blur;
+                    destFormat.Offset = srcFormat.Offset;
+                    destFormat.Size = srcFormat.Size;
+                    destFormat.Transparency = srcFormat.Transparency;
+                }
             }
             catch (Exception)
             {
