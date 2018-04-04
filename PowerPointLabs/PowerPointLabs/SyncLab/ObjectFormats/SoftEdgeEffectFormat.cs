@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Speech.Recognition.SrgsGrammar;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
@@ -26,24 +27,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public override Bitmap DisplayImage(Shape formatShape)
         {
-            // bump up soft edge to make effect in display more visible
-            
-            float oldRadius = formatShape.SoftEdge.Radius;
-            MsoSoftEdgeType oldType = formatShape.SoftEdge.Type;
-
-            // must change the type to Type6, not all types allow changing the radius
-            // Note: Setting MixedType throws an exception
-            formatShape.SoftEdge.Type = MsoSoftEdgeType.msoSoftEdgeType6;
+            // bump up soft edge to make effect in preview more visible
+            // work on a duplicate to avoid complex control flow to revert SoftEdge.Type
+            // see comments in Sync(..) for more details
+            Shape duplicate = formatShape.Duplicate()[1];
+            duplicate.SoftEdge.Type = MsoSoftEdgeType.msoSoftEdgeType6;
             float minEdge = Math.Min(formatShape.Height, formatShape.Width);
             float threshold = (float) (minEdge * 0.2);
-            if (oldRadius < threshold)
+            if (duplicate.SoftEdge.Radius < threshold)
             {
                 formatShape.SoftEdge.Radius = threshold;
             }
             
-            Bitmap image = GraphicsUtil.ShapeToBitmap(formatShape);
-            formatShape.SoftEdge.Type = oldType;
-            formatShape.SoftEdge.Radius = oldRadius;
+            Bitmap image = GraphicsUtil.ShapeToBitmap(duplicate);
+            duplicate.Delete();
             
             return image;
         }
@@ -55,8 +52,17 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 SoftEdgeFormat dest = newShape.SoftEdge;
                 SoftEdgeFormat source = formatShape.SoftEdge;
 
-                dest.Type = source.Type;
-                dest.Radius = source.Radius;
+                if (source.Type == MsoSoftEdgeType.msoSoftEdgeTypeMixed)
+                {
+                    // skip setting type, setting msoSoftEdgeTypeMixed will throw an error
+                    // configuring the settings manually will automatically set the Type to TypeMixed
+                    dest.Radius = source.Radius;
+                }
+                else
+                {
+                    // skip changing the settings, setting Type will automatically change settings
+                    dest.Type = source.Type;
+                }
             }
             catch (Exception)
             {
