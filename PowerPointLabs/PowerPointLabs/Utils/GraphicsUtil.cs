@@ -30,9 +30,10 @@ namespace PowerPointLabs.Utils
         private static readonly Object FileLock = new object();
         public const float PictureExportingRatio = 96.0f / 72.0f;
         private const float TargetDpi = 96.0f;
+        private static float dpiScale = 1.0f;
+        // Heuristics for image compression obtained through testing
         private const long targetCompression = 95L;
         private const long fileSizeLimit = 75000L;
-        private static float dpiScale = 1.0f;
 
         // Static initializer to retrieve dpi scale once
         static GraphicsUtil()
