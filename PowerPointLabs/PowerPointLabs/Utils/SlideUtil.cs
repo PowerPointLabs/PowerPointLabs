@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -123,9 +123,15 @@ namespace PowerPointLabs.Utils
             Design design = GetDesign(designName);
             if (design != null)
             {
-                design.Delete();
+                try
+                {
+                    design.Delete();
+                } 
+                catch (COMException e) 
+                {
+                    Logger.LogException(e, "CopyToDesign: Design cannot be deleted.");
+                }
             }
-
             Design newDesign = PowerPointPresentation.Current.Presentation.Designs.Clone(refSlide.Design);
             newDesign.Name = designName;
         }
