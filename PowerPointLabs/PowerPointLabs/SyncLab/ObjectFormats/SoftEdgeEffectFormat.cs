@@ -14,7 +14,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public override bool CanCopy(Shape formatShape)
         {
             SoftEdgeFormat softEdge = formatShape.SoftEdge;
-            return softEdge.Radius > 0 && softEdge.Type != MsoSoftEdgeType.msoSoftEdgeTypeNone;
+            // do not check softEdge.Type, it can sometimes == msoSoftEdgeTypeNone when there is a soft edge
+            return softEdge.Radius > 0;
         }
 
         public override void SyncFormat(Shape formatShape, Shape newShape)
@@ -52,17 +53,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 SoftEdgeFormat dest = newShape.SoftEdge;
                 SoftEdgeFormat source = formatShape.SoftEdge;
 
-                if (source.Type == MsoSoftEdgeType.msoSoftEdgeTypeMixed)
-                {
-                    // skip setting type, setting msoSoftEdgeTypeMixed will throw an error
-                    // configuring the settings manually will automatically set the Type to TypeMixed
-                    dest.Radius = source.Radius;
-                }
-                else
-                {
-                    // skip changing the settings, setting Type will automatically change settings
-                    dest.Type = source.Type;
-                }
+                // skip setting type, SoftEdgeFormat.Type is not reliable
+                dest.Radius = source.Radius;
             }
             catch (Exception)
             {
