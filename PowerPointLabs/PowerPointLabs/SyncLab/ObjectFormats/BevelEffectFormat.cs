@@ -39,18 +39,22 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 // bottom bevel
+                // don't set type if type is TypeMixed, it throws an exception
                 if (source.BevelBottomType != MsoBevelType.msoBevelTypeMixed)
                 {
                     dest.BevelBottomType = source.BevelBottomType;
                 }
+                // set the settings anyway, setting the type alone is insufficient
                 dest.BevelBottomDepth = source.BevelBottomDepth;
                 dest.BevelBottomInset = source.BevelBottomInset;
 
                 // top bevel
+                // don't set type if type is TypeMixed, it throws an exception
                 if (source.BevelTopType != MsoBevelType.msoBevelTypeMixed)
                 {
                     dest.BevelTopType = source.BevelTopType;
                 }
+                // set the settings anyway, setting the type alone is insufficient
                 dest.BevelTopDepth = source.BevelTopDepth;
                 dest.BevelTopInset = source.BevelTopInset;
 
@@ -62,14 +66,14 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
                 // depth (extrusion)
                 dest.Depth = source.Depth;
-                // don't sync type if type is TypeMixed, it throws an exception
+                // don't set type if type is TypeMixed, it throws an exception
                 if (source.ExtrusionColorType != MsoExtrusionColorType.msoExtrusionColorTypeMixed)
                 {
                     dest.ExtrusionColorType = source.ExtrusionColorType;
                 }
                 if (source.ExtrusionColorType != MsoExtrusionColorType.msoExtrusionColorAutomatic)
                 {
-                    // do not set SchemeColor, Brightness & ObjectThemeColor, setting them throws exceptions
+                    // do not set SchemeColor & Brightness, setting them throws exceptions
                     dest.ExtrusionColor.ObjectThemeColor = source.ExtrusionColor.ObjectThemeColor;
                     dest.ExtrusionColor.RGB = source.ExtrusionColor.RGB;
                     dest.ExtrusionColor.TintAndShade = source.ExtrusionColor.TintAndShade;
