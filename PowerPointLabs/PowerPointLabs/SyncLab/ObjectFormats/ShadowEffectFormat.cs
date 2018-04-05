@@ -22,9 +22,11 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             destFormat.Visible = srcFormat.Visible;
             if (srcFormat.Type != MsoShadowType.msoShadowMixed)
             {
-                // no need to set shadow settings manually,
-                // setting non-mixed types automatically sets shadow settings to the shape
                 destFormat.Type = srcFormat.Type;
+                
+                // only set ForeColor manually,
+                // setting non-mixed types automatically sets other shadow settings to the shape
+                destFormat.ForeColor = srcFormat.ForeColor;
             }
             else
             {
