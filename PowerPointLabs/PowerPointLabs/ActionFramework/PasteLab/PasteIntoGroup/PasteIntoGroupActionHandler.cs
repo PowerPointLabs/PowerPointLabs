@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Windows;
+using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -30,6 +31,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
             if (pastingShapes == null)
             {
+                Logger.Log("PasteLab: Could not paste clipboard contents.");
+                MessageBox.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
                 return null;
             }
 

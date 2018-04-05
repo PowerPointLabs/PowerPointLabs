@@ -290,8 +290,8 @@ namespace PowerPointLabs.Utils
                 int finalShapesCount = tempSlide.Shapes.Count;
                 if (finalShapesCount > origShapesCount) 
                 {
-                    int newShapesNo = finalShapesCount - origShapesCount;
-                    int[] shapesToGet = new int[newShapesNo];
+                    int newShapesCount = finalShapesCount - origShapesCount;
+                    int[] shapesToGet = new int[newShapesCount];
                     for (int i = 0; i < shapesToGet.Length; i++)
                     {
                         shapesToGet[i] = origShapesCount + i + 1;

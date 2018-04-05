@@ -1,6 +1,8 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Windows;
+using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -18,7 +20,13 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             if (tempPastingShapes == null)
             {
                 tempSlide.Delete();
-                return ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
+                ShapeRange shapes = ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
+                if (shapes == null) 
+                {
+                    Logger.Log("PasteLab: Could not paste clipboard contents.");
+                    MessageBox.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
+                }
+                return shapes;
             }
 
             ShapeRange pastingShapes = slide.CopyShapesToSlide(tempPastingShapes);
