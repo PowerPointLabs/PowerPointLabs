@@ -24,7 +24,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 return null;
             }
 
-            PasteToFillSlide.Execute(slide, pastingShapes, presentation.SlideWidth, presentation.SlideHeight);
+            PasteToFillSlide.Execute(presentation, slide, pastingShapes, presentation.SlideWidth, presentation.SlideHeight);
             return null;
         }
     }
