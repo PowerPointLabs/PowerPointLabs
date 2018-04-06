@@ -15,11 +15,19 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            Shape shapeToFitSlide = pastingShapes[1];
+            Shape pastingShape = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {
-                shapeToFitSlide = pastingShapes.Group();
+                pastingShape = pastingShapes.Group();
             }
+
+            // Temporary house the latest clipboard shapes
+            ShapeRange origClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(slide);
+            // Compression of large image(s)
+            Shape shapeToFitSlide = GraphicsUtil.CompressImageInShape(pastingShape, slide);
+            // Bring the same original shapes back into clipboard, preserving original size
+            origClipboardShapes.Cut();
+
             shapeToFitSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 
             PPShape ppShapeToFitSlide = new PPShape(shapeToFitSlide);
