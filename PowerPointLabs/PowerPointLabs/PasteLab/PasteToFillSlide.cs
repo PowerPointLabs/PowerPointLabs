@@ -42,12 +42,7 @@ namespace PowerPointLabs.PasteLab
             }
             ppShapeToFillSlide.VisualCenter = new System.Drawing.PointF(slideWidth / 2, slideHeight / 2);
 
-            RectangleF cropArea = CropLab.CropToSlide.GetCropArea(shapeToFillSlide, slideWidth, slideHeight);
-            shapeToFillSlide.PictureFormat.Crop.ShapeHeight = cropArea.Height;
-            shapeToFillSlide.PictureFormat.Crop.ShapeWidth = cropArea.Width;
-            shapeToFillSlide.PictureFormat.Crop.ShapeLeft = cropArea.Left;
-            shapeToFillSlide.PictureFormat.Crop.ShapeTop = cropArea.Top;
-
+            CropLab.CropToSlide.Crop(shapeToFillSlide, slide, slideWidth, slideHeight);
         }
     }
 }
