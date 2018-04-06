@@ -3,7 +3,7 @@
   <ribbon>
     <contextualTabs>
       <tabSet idMso="TabSetDrawingTools">
-        <tab idMso="TabDrawingToolsFormat" getVisible="SetVisibleFormatTab">
+        <tab idMso="TabDrawingToolsFormat" getVisible="ToggleVisibleFormatTab">
           <group id="AdditionalFeatures"
                  label="Other"
                  insertBeforeMso="GroupShapeStyles"
