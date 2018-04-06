@@ -7,7 +7,7 @@ namespace PowerPointLabs.PasteLab
 {
     static internal class PasteToFitSlide
     {
-        public static void Execute(PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
+        public static void Execute(PowerPointPresentation pres, PowerPointSlide slide, ShapeRange pastingShapes, float slideWidth, float slideHeight)
         {
             pastingShapes = ShapeUtil.GetShapesWhenTypeNotMatches(slide, pastingShapes, Microsoft.Office.Core.MsoShapeType.msoPlaceholder);
             if (pastingShapes.Count == 0)
@@ -15,11 +15,19 @@ namespace PowerPointLabs.PasteLab
                 return;
             }
 
-            Shape shapeToFitSlide = pastingShapes[1];
+            Shape pastingShape = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {
-                shapeToFitSlide = pastingShapes.Group();
+                pastingShape = pastingShapes.Group();
             }
+
+            // Temporary house the latest clipboard shapes
+            ShapeRange origClipboardShapes = ClipboardUtil.PasteShapesFromClipboard(pres, slide);
+            // Compression of large image(s)
+            Shape shapeToFitSlide = GraphicsUtil.CompressImageInShape(pastingShape, slide);
+            // Bring the same original shapes back into clipboard, preserving original size
+            origClipboardShapes.Cut();
+
             shapeToFitSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
 
             PPShape ppShapeToFitSlide = new PPShape(shapeToFitSlide);
