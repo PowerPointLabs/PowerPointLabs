@@ -1035,7 +1035,7 @@ namespace PowerPointLabs.PositionsLab
             }
             return true;
         }
-        // align left and top
+        // Align left and top, Align/Distribute radial
         public void ExecutePositionsAction(Action<ShapeRange> positionsAction, bool isPreview, bool isConvertPPShape)
         {
             Selection selection = this.GetCurrentSelection();
@@ -1196,6 +1196,7 @@ namespace PowerPointLabs.PositionsLab
                 }
 
                 simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes.Select();
                 if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
                     positionsAction.Invoke(selectedShapes, dimension1, dimension2);
@@ -1231,59 +1232,63 @@ namespace PowerPointLabs.PositionsLab
                 }
             }
         }
-
+        // Adjoin operations
         public void ExecutePositionsAction(Action<List<PPShape>> positionsAction, bool isPreview)
         {
-            Selection selection = this.GetCurrentSelection();
-            if (!HandleInvalidSelection(isPreview, selection))
+            // Need to run the action 2 times because of the nature of PowerPoint default operations
+            // This has been determined via manual testing
+            for (int i = 0; i < 2; i++)
             {
-                // invalid selection!
-                return;
-            }
-
-            ShapeRange simulatedShapes = null;
-
-            try
-            {
-                ShapeRange selectedShapes = selection.ShapeRange;
-
-                if (isPreview)
+                Selection selection = this.GetCurrentSelection();
+                if (!HandleInvalidSelection(isPreview, selection))
                 {
-                    SaveSelectedShapePositions(selectedShapes, allShapePos);
-                }
-                else
-                {
-                    UndoPreview();
-                    _previewCallBack = null;
-                    this.StartNewUndoEntry();
+                    // invalid selection!
+                    return;
                 }
 
-                simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                ShapeRange simulatedShapes = null;
 
-                positionsAction.Invoke(simulatedPPShapes);
-
-                SyncShapes(selectedShapes, simulatedPPShapes, initialPositions);
-
-                if (isPreview)
+                try
                 {
-                    _previewIsExecuted = true;
+                    ShapeRange selectedShapes = selection.ShapeRange;
+                    if (isPreview)
+                    {
+                        SaveSelectedShapePositions(selectedShapes, allShapePos);
+                    }
+                    else
+                    {
+                        UndoPreview();
+                        _previewCallBack = null;
+                        this.StartNewUndoEntry();
+                    }
+                    simulatedShapes = selectedShapes.Duplicate();
+                    List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+
+                    positionsAction.Invoke(simulatedPPShapes);
+
+                    SyncShapes(selectedShapes, simulatedPPShapes, initialPositions);
+
+                    if (isPreview)
+                    {
+                        _previewIsExecuted = true;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (!isPreview)
+                catch (Exception ex)
                 {
-                    ShowErrorMessageBox(ex.Message, ex);
+                    if (!isPreview)
+                    {
+                        ShowErrorMessageBox(ex.Message, ex);
+                        break;
+                    }
                 }
-            }
-            finally
-            {
-                if (simulatedShapes != null)
+                finally
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    if (simulatedShapes != null)
+                    {
+                        simulatedShapes.Delete();
+                        GC.Collect();
+                    }
                 }
             }
         }
@@ -1351,6 +1356,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        // Distribute horizontal and vertical
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
             Selection selection = this.GetCurrentSelection();
@@ -1407,6 +1413,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        // Distribute center
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
             if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
@@ -1509,6 +1516,7 @@ namespace PowerPointLabs.PositionsLab
             }
         }
 
+        // Distribute grid
         private void ExecuteDistributeGrid(int rowLength, int colLength)
         {
             ShapeRange simulatedShapes = null;
@@ -1641,7 +1649,6 @@ namespace PowerPointLabs.PositionsLab
         private ShapeRange DuplicateShapes(ShapeRange range)
         {
             String[] duplicatedShapeNames = new String[range.Count];
-
             for (int i = 0; i < range.Count; i++)
             {
                 Shape shape = range[i + 1];
@@ -1651,7 +1658,6 @@ namespace PowerPointLabs.PositionsLab
                 duplicated.Top = shape.Top;
                 duplicatedShapeNames[i] = duplicated.Name;
             }
-
             return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
         }
 
