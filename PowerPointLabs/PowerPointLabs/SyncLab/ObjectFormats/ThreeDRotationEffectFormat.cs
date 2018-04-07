@@ -20,11 +20,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public override bool CanCopy(Shape formatShape)
         {
             ThreeDFormat threeD = formatShape.ThreeD;
+            
+            // equality check for floating point numbers
             return Math.Abs(threeD.RotationX) > TOLERANCE
                    || Math.Abs(threeD.RotationY) > TOLERANCE
                    || Math.Abs(threeD.RotationZ) > TOLERANCE
-                   || threeD.Perspective == MsoTriState.msoTrue
-                   || Math.Abs(threeD.FieldOfView) > TOLERANCE;
+                   || Math.Abs(threeD.FieldOfView) > TOLERANCE
+                   || threeD.Perspective == MsoTriState.msoTrue;
         }
 
         public override void SyncFormat(Shape formatShape, Shape newShape)
@@ -76,6 +78,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 }
 
 
+                // ThreeDFormat.Z must be between -4000 & 4000 exclusive.
                 // when source.Z > 4000 or source.Z < - 4000, it actually means 0
                 float nearestZ = source.Z;
                 nearestZ = nearestZ > 4000 ? 0f : nearestZ;
