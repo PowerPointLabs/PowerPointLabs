@@ -29,7 +29,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             // emphasize the glow radius & transparency in the image preview
             float oldRadius = formatShape.Glow.Radius;
             float min = Math.Min(formatShape.Height, formatShape.Width);
-            formatShape.Glow.Radius = (float) (min * 0.6);
+            float emphasizedRadius = (float) (min * 0.6);
+            // radius must be <= 150, or an exception will be thrown
+            emphasizedRadius = emphasizedRadius > 150 ? 150 : emphasizedRadius;
+            formatShape.Glow.Radius = emphasizedRadius;
 
             float threshold = 0.5f;
             float oldTransparency = formatShape.Glow.Transparency;
