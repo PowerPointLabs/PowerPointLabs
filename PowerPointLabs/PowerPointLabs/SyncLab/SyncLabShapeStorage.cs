@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Speech.Recognition;
 using Microsoft.Office.Core;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
@@ -13,6 +15,8 @@ namespace PowerPointLabs.SyncLab
     /// Saves shapes into a PowerPointPresentation that exists in the background.
     /// The exact saved shapes may change in type but style will be retained.
     /// Eg: PlaceHolders are saved as Textboxes
+    /// 
+    /// We also use a workabout for 2013 to sync ArtisticEffecs, (2010 & 2016 do not require this)
     /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
@@ -20,7 +24,8 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
-        private readonly ArtisticEffectFormat _artisticEffectFormat = new ArtisticEffectFormat();
+        private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects = 
+            new Dictionary<string, List<MsoPictureEffectType>>();
 
         private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
@@ -79,27 +84,19 @@ namespace PowerPointLabs.SyncLab
             string shapeKey = nextKey.ToString();
             nextKey++;
             copiedShape.Name = shapeKey;
-            ForceSave();
 
-            // workabout for 2013's artistic effect, (2010 & 2016 do not require this)
-            // copied shapes will have their artistic effect permenantly set to the shape after ForceSave()
-            // try to restore it
-            try
+            // backup artistic effects for 2013
+            // ForceSave() will make artistic effect permernent on the shapes for 2013
+            // and no longer retrievable
+            #pragma warning disable 618
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
-                PictureEffects effects = copiedShape.Fill.PictureEffects;
-                Shape savedShape = GetShape(shapeKey);
-                // only re-insert shapes if we have a discrepency (2010 & 2016 will skip this)
-                if (savedShape.Fill.PictureEffects.Count < effects.Count)
-                {
-                    _artisticEffectFormat.SyncFormat(copiedShape, savedShape);
-                }
+                List<MsoPictureEffectType> extractedEffects = ArtisticEffectFormat.GetArtisticEffects(copiedShape);
+                _backupArtisticEffects.Add(shapeKey, extractedEffects);
             }
-            catch (Exception)
-            {
-                // do nothing, an exeption is thrown when the saved shape is not a picture &
-                // does not supprot artistic effects
-                // use try-catch as placeholders do not accurately return shape type
-            }
+            #pragma warning restore 618
+            
+            ForceSave();
             return shapeKey;
         }
 
@@ -110,7 +107,15 @@ namespace PowerPointLabs.SyncLab
             {
                 if (shapes[i].Name.Equals(shapeKey))
                 {
-                    return shapes[i];
+                    Shape shape = shapes[i];
+                    if (_backupArtisticEffects.ContainsKey(shapeKey))
+                    {
+                        // apply artistic effect from backup only when shape is retrieved, to reduce loading time of CopyShape
+                        List<MsoPictureEffectType> extractedEffects = _backupArtisticEffects[shapeKey];
+                        ArtisticEffectFormat.ClearArtisticEffects(shape);
+                        ArtisticEffectFormat.ApplyArtisticEffects(shape, extractedEffects);
+                    }
+                    return shape;
                 }
             }
             return null;
@@ -125,6 +130,7 @@ namespace PowerPointLabs.SyncLab
                 if (shapes[index].Name.Equals(shapeKey))
                 {
                     shapes[index].Delete();
+                    _backupArtisticEffects.Remove(shapeKey);
                 }
                 else
                 {
@@ -148,6 +154,7 @@ namespace PowerPointLabs.SyncLab
             }
             AddSlide();
             Slides[FormatStorageSlide].DeleteAllShapes();
+            _backupArtisticEffects.Clear();
         }
     }
 }
