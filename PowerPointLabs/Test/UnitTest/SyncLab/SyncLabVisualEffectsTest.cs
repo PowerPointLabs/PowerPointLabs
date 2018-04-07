@@ -45,7 +45,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(sourceSlideNumber, SourceShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(sourceSlideNumber, shapeToPaste);
-            new PictureEffectsFormat().SyncFormat(formatShape, newShape);
+            new ArtisticEffectFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(sourceSlideNumber, expectedSlideNo);
         }

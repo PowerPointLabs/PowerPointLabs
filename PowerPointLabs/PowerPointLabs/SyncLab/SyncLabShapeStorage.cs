@@ -20,6 +20,7 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
+        private ArtisticEffectFormat _artisticEffectFormat = new ArtisticEffectFormat();
 
         private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
@@ -79,6 +80,26 @@ namespace PowerPointLabs.SyncLab
             nextKey++;
             copiedShape.Name = shapeKey;
             ForceSave();
+
+            // workabout for 2013's artistic effect, (2010 & 2016 do not require this)
+            // copied shapes will have their artistic effect permenantly set to the shape after ForceSave()
+            // try to restore it
+            try
+            {
+                PictureEffects effects = copiedShape.Fill.PictureEffects;
+                Shape savedShape = GetShape(shapeKey);
+                // only re-insert shapes if we have a discrepency (2010 & 2016 will skip this)
+                if (savedShape.Fill.PictureEffects.Count < effects.Count)
+                {
+                    _artisticEffectFormat.SyncFormat(copiedShape, savedShape);
+                }
+            }
+            catch (Exception)
+            {
+                // do nothing, an exeption is thrown when the saved shape is not a picture &
+                // does not supprot artistic effects
+                // use try-catch as placeholders do not accurately return shape type
+            }
             return shapeKey;
         }
 

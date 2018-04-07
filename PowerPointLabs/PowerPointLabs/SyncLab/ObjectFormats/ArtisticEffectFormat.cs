@@ -8,7 +8,7 @@ using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class PictureEffectsFormat: Format
+    class ArtisticEffectFormat: Format
     {
         public override bool CanCopy(Shape formatShape)
         {
@@ -26,7 +26,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             if (!Sync(formatShape, newShape))
             {
-                Logger.Log(newShape.Type + " unable to sync PictureEffect Format");
+                Logger.Log(newShape.Type + " unable to sync ArtisticEffect Format");
             }
         }
 
@@ -35,7 +35,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             Bitmap image = GraphicsUtil.ShapeToBitmap(formatShape);
             return image;
         }
-
+        
         private static bool Sync(Shape formatShape, Shape newShape)
         {
             try
@@ -48,7 +48,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 {
                     dest.Delete(i);
                 }
-
+                
                 // add new effects
                 for (int i = 1; i <= source.Count; i++)
                 {
