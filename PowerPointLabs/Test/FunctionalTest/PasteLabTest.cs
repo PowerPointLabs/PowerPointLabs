@@ -14,6 +14,8 @@ namespace Test.FunctionalTest
         private const string ShapeToClick = "Rectangle 1";
         private const string ShapeToReplace = "Rectangle 5";
         private const string GroupToPaste = "Group 1";
+        private const string ShapeToCopyToClipboard = "pictocopy";
+        private const string ShapeToCompareCopied = "copied";
 
         //Slide Numbers
         private const int OriginalPasteToFillSlideSlideNo = 4;
@@ -47,6 +49,12 @@ namespace Test.FunctionalTest
         private const int OriginalGroupPasteToFitSlideSlideNo = 32;
         private const int ExpectedGroupPasteToFitSlideSlideNo = 33;
 
+        private const int OrigIsClipboardRestoredReplaceWithClipboardSlideNo = 35;
+        private const int ExpIsClipboardRestoredReplaceWithClipboardSlideNo = 36;
+
+        private const int OrigIsClipboardRestoredPasteIntoGroupSlideNo = 37;
+        private const int ExpIsClipboardRestoredPasteIntoGroupSlideNo = 38;
+
         protected override string GetTestingSlideName()
         {
             return "PasteLab\\PasteLab.pptx";
@@ -73,6 +81,9 @@ namespace Test.FunctionalTest
             PasteToFitSlide(OriginalDiagonalPasteToFitSlideSlideNo, ExpectedDiagonalPasteToFitSlideSlideNo);
             PasteToFitSlide(OriginalMultiplePasteToFitSlideSlideNo, ExpectedMultiplePasteToFitSlideSlideNo);
             PasteToFitSlide(OriginalGroupPasteToFitSlideSlideNo, ExpectedGroupPasteToFitSlideSlideNo);
+
+            IsClipboardRestoredReplaceWithClipboard(OrigIsClipboardRestoredReplaceWithClipboardSlideNo, ExpIsClipboardRestoredReplaceWithClipboardSlideNo);
+            IsClipboardRestoredPasteIntoGroup(OrigIsClipboardRestoredPasteIntoGroupSlideNo, ExpIsClipboardRestoredPasteIntoGroupSlideNo);
         }
 
         private void PasteToFillSlide(int originalSlideNo, int expSlideNo)
@@ -138,6 +149,33 @@ namespace Test.FunctionalTest
             PplFeatures.PasteToFitSlide();
 
             AssertIsSame(originalSlideNo, expSlideNo);
+        }
+        private void IsClipboardRestoredReplaceWithClipboard(int originalSlideNo, int expSlideNo)
+        {
+            CheckIfClipboardIsRestored(() =>
+            {
+                Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(OrigIsClipboardRestoredReplaceWithClipboardSlideNo, ShapeToCopyPrefix);
+                // This should be restored to clipboard later
+                shapes.Cut();
+
+                PpOperations.SelectShapes(new List<string> { ShapeToReplace });
+                PplFeatures.ReplaceWithClipboard();
+
+            }, originalSlideNo, ShapeToCopyPrefix, expSlideNo, "", ShapeToCompareCopied);
+        }
+
+        private void IsClipboardRestoredPasteIntoGroup(int originalSlideNo, int expSlideNo)
+        {
+            CheckIfClipboardIsRestored(() =>
+            {
+                Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(OrigIsClipboardRestoredPasteIntoGroupSlideNo, ShapeToCopyPrefix);
+                // This should be restored to clipboard later
+                shapes.Cut();
+
+                PpOperations.SelectShape(GroupToPaste);
+                PplFeatures.PasteIntoGroup();
+
+            }, originalSlideNo, ShapeToCopyPrefix, expSlideNo, "", ShapeToCompareCopied);
         }
 
         private void AssertIsSame(int actualSlideNo, int expectedSlideNo)

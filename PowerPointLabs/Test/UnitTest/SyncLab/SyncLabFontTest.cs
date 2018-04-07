@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
 namespace Test.UnitTest.SyncLab
@@ -26,7 +25,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FontFormat.SyncFormat(formatShape, newShape);
+            new FontFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncFontFamilySlideNo);
             CheckFontStyle(OriginalShapesSlideNo, SyncFontFamilySlideNo);
@@ -39,7 +38,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FontSizeFormat.SyncFormat(formatShape, newShape);
+            new FontSizeFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncFontSizeSlideNo);
             CheckFontStyle(OriginalShapesSlideNo, SyncFontSizeSlideNo);
@@ -52,7 +51,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FontColorFormat.SyncFormat(formatShape, newShape);
+            new FontColorFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncFontFillSlideNo);
             CheckFontStyle(OriginalShapesSlideNo, SyncFontFillSlideNo);
@@ -65,7 +64,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FontStyleFormat.SyncFormat(formatShape, newShape);
+            new FontStyleFormat().SyncFormat(formatShape, newShape);
 
             CheckFontStyle(OriginalShapesSlideNo, SyncOneFontStyleSlideNo);
         }
@@ -77,7 +76,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromSmallShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FontStyleFormat.SyncFormat(formatShape, newShape);
+            new FontStyleFormat().SyncFormat(formatShape, newShape);
 
             CheckFontStyle(OriginalShapesSlideNo, SyncAllFontStyleSlideNo);
         }

@@ -8,9 +8,9 @@ using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class PictureEffectsFormat
+    class PictureEffectsFormat: Format
     {
-        public static bool CanCopy(Shape formatShape)
+        public override bool CanCopy(Shape formatShape)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public override void SyncFormat(Shape formatShape, Shape newShape)
         {
             if (!Sync(formatShape, newShape))
             {
@@ -30,7 +30,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
-        public static Bitmap DisplayImage(Shape formatShape)
+        public override Bitmap DisplayImage(Shape formatShape)
         {
             Bitmap image = GraphicsUtil.ShapeToBitmap(formatShape);
             return image;

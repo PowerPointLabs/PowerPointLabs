@@ -73,6 +73,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
 
                 shortcuts.Items.Add(ShortcutsLabText.HideShapeTag);
                 shortcuts.Items.Add(ShortcutsLabText.AddCustomShapeTag);
+                shortcuts.Items.Add(ShortcutsLabText.FillSlideTag);
 
                 // Context menu group will have these buttons
                 if (ribbonId == ShortcutsLabText.MenuGroup)
