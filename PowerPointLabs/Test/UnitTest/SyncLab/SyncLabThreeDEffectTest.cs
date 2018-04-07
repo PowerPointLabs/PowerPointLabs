@@ -12,6 +12,19 @@ namespace Test.UnitTest.SyncLab
         
         private const string SourceShape = "Source";
         private const string DestinationShape = "Destination";
+
+        private Format[] _threeDFormats =
+        {
+            new BevelBottomFormat(),
+            new BevelTopFormat(),
+            new ContourColorFormat(),
+            new ContourWidthFormat(),
+            new DepthColorFormat(), 
+            new DepthSizeFormat(), 
+            new LightingAngleFormat(), 
+            new LightingEffectFormat(), 
+            new MaterialEffectFormat() 
+        };
         
         protected override string GetTestingSlideName()
         {
@@ -20,17 +33,20 @@ namespace Test.UnitTest.SyncLab
         
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncBevel()
+        public void TestSyncThreeDEffects()
         {
-            SyncBevel(DestinationShape, OriginalSlideNo, ExpectedSlideNo);
+            SyncEffects(DestinationShape, OriginalSlideNo, ExpectedSlideNo);
         }
 
-        private void SyncBevel(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo)
+        private void SyncEffects(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo)
         {
             Shape formatShape = GetShape(sourceSlideNumber, SourceShape);
 
             Shape newShape = GetShape(sourceSlideNumber, shapeToBeSynced);
-            new BevelEffectFormat().SyncFormat(formatShape, newShape);
+            foreach (Format format in _threeDFormats)
+            {
+                format.SyncFormat(formatShape, newShape);
+            }
 
             CompareSlides(sourceSlideNumber, expectedSlideNo);
         }
