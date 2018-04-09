@@ -848,14 +848,22 @@ namespace PowerPointLabs.ShapesLab
 
         private void ImportShapesFromLibrary(PowerPointShapeGalleryPresentation importShapeGallery)
         {
-            foreach (string importCategory in importShapeGallery.Categories)
+            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                importShapeGallery.CopyCategory(importCategory);
+                foreach (string importCategory in importShapeGallery.Categories)
+                {
+                    importShapeGallery.CopyCategory(importCategory);
 
-                Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
+                    Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
 
-                _categoryBinding.Add(importCategory);
-            }
+                    _categoryBinding.Add(importCategory);
+                }
+                return 1;
+            }, pres, currentSlide);
         }
 
         private void ImportShapesFromSingleShape(PowerPointShapeGalleryPresentation importShapeGallery)
@@ -1213,8 +1221,12 @@ namespace PowerPointLabs.ShapesLab
                     break;
                 }
 
+                // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                PowerPointPresentation pres = PowerPointPresentation.Current;
+
                 // move shape in ShapeGallery to correct place
-                Globals.ThisAddIn.ShapePresentation.CopyShapeToCategory(shapeName, categoryName);
+                Globals.ThisAddIn.ShapePresentation.CopyShapeToCategory(pres, currentSlide, shapeName, categoryName);
 
                 // move shape on the disk to correct place
                 File.Copy(oriPath, destPath);
@@ -1525,8 +1537,12 @@ namespace PowerPointLabs.ShapesLab
                     break;
                 }
 
+                // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                PowerPointPresentation pres = PowerPointPresentation.Current;
+
                 // move shape in ShapeGallery to correct place
-                Globals.ThisAddIn.ShapePresentation.MoveShapeToCategory(shapeName, categoryName);
+                Globals.ThisAddIn.ShapePresentation.MoveShapeToCategory(pres, currentSlide, shapeName, categoryName);
 
                 // move shape on the disk to correct place
                 File.Move(oriPath, destPath);

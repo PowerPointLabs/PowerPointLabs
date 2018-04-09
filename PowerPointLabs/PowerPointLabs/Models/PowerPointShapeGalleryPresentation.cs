@@ -171,7 +171,7 @@ namespace PowerPointLabs.Models
             _defaultCategory.Shapes.Range(fullList.ToArray()).Copy();
         }
 
-        public void CopyShapeToCategory(string name, string categoryName)
+        public void CopyShapeToCategory(PowerPointPresentation pres, PowerPointSlide origSlide, string name, string categoryName)
         {
             int index = FindCategoryIndex(categoryName);
 
@@ -184,8 +184,13 @@ namespace PowerPointLabs.Models
             List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
             PowerPointSlide destCategory = Slides[index - 1];
 
-            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
-            destCategory.Shapes.Paste();
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
+                destCategory.Shapes.Paste();
+                return 1;
+            }, pres, origSlide);
+
 
             Save();
             ActionProtection();
@@ -196,7 +201,7 @@ namespace PowerPointLabs.Models
             return Slides.Any(category => category.Name == name);
         }
 
-        public void MoveShapeToCategory(string name, string categoryName)
+        public void MoveShapeToCategory(PowerPointPresentation pres, PowerPointSlide origSlide, string name, string categoryName)
         {
             int index = FindCategoryIndex(categoryName);
 
@@ -209,8 +214,12 @@ namespace PowerPointLabs.Models
             List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
             PowerPointSlide destCategory = Slides[index - 1];
 
-            _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
-            destCategory.Shapes.Paste();
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
+                destCategory.Shapes.Paste();
+                return 1;
+            }, pres, origSlide);
 
             Save();
             ActionProtection();
