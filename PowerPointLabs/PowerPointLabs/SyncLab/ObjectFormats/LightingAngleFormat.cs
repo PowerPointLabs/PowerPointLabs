@@ -40,18 +40,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
             try
             {
-                // set lighting manually if of type Mixed
-                if (source.PresetLighting == MsoLightRigType.msoLightRigMixed)
-                {
-                    dest.PresetLightingDirection = source.PresetLightingDirection;
-                    dest.PresetLightingSoftness = source.PresetLightingSoftness;
-                }
-                else
-                {
-                    // set lighting preset if is not type Mixed
-                    dest.PresetLighting = source.PresetLighting;
-                }
-
+                dest.LightAngle = source.LightAngle;
                 return true;
             }
             catch

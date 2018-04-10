@@ -38,7 +38,12 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.ThreeD.BevelBottomType = SyncFormatConstants.DisplayBevelType;
             shape.ThreeD.BevelBottomDepth = SyncFormatConstants.DisplayBevelHeight;
             shape.ThreeD.BevelBottomInset = SyncFormatConstants.DisplayBevelWidth;
-            shape.ThreeD.PresetLighting = formatShape.ThreeD.PresetLighting;
+            
+            // setting mixed throws an exception
+            if (formatShape.ThreeD.PresetLighting != MsoLightRigType.msoLightRigMixed)
+            {
+                shape.ThreeD.PresetLighting = formatShape.ThreeD.PresetLighting;
+            }
             shape.ThreeD.SetPresetCamera(SyncFormatConstants.DisplayCameraPreset);
             
             Bitmap image = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));

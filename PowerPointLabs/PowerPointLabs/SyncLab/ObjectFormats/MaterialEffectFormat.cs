@@ -12,7 +12,10 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public override bool CanCopy(Shape formatShape)
         {
-            return true;
+            // there's no None material type
+            // assume that Mixed represents None
+            // there are no settings aside from PresetMaterial that affect material
+            return formatShape.ThreeD.PresetMaterial != MsoPresetMaterial.msoPresetMaterialMixed;
         }
 
         public override void SyncFormat(Shape formatShape, Shape newShape)
@@ -38,7 +41,11 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.ThreeD.BevelBottomType = SyncFormatConstants.DisplayBevelType;
             shape.ThreeD.BevelBottomDepth = SyncFormatConstants.DisplayBevelHeight;
             shape.ThreeD.BevelBottomInset = SyncFormatConstants.DisplayBevelWidth;
-            shape.ThreeD.PresetMaterial = formatShape.ThreeD.PresetMaterial;
+            // setting mixed throws an exception
+            if (formatShape.ThreeD.PresetMaterial != MsoPresetMaterial.msoPresetMaterialMixed)
+            {
+                shape.ThreeD.PresetMaterial = formatShape.ThreeD.PresetMaterial;
+            }
             shape.ThreeD.SetPresetCamera(SyncFormatConstants.DisplayCameraPreset);
             Bitmap image = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             shape.Delete();

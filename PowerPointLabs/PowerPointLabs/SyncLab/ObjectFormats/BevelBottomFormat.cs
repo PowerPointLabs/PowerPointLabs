@@ -62,10 +62,15 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 if (source.BevelBottomType != MsoBevelType.msoBevelTypeMixed)
                 {
                     dest.BevelBottomType = source.BevelBottomType;
+                    // set depth & inset only if type is not none,
+                    // adjusting these 2 will automatically set type from None to Round
+                    if (source.BevelBottomType != MsoBevelType.msoBevelNone)
+                    {
+                        // set the settings anyway, setting the type alone is insufficient
+                        dest.BevelBottomDepth = source.BevelBottomDepth;
+                        dest.BevelBottomInset = source.BevelBottomInset;
+                    }
                 }
-                // set the settings anyway, setting the type alone is insufficient
-                dest.BevelBottomDepth = source.BevelBottomDepth;
-                dest.BevelBottomInset = source.BevelBottomInset;
 
                 return true;
             }
