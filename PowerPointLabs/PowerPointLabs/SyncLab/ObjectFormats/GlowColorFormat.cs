@@ -8,7 +8,7 @@ using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class GlowEffectFormat: Format
+    class GlowColorFormat: Format
     {
         public override bool CanCopy(Shape formatShape)
         {
@@ -26,25 +26,20 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public override Bitmap DisplayImage(Shape formatShape)
         {
-            // emphasize the glow radius & transparency in the image preview
-            float oldRadius = formatShape.Glow.Radius;
-            float min = Math.Min(formatShape.Height, formatShape.Width);
-            float emphasizedRadius = (float) (min * 0.6);
-            // radius must be <= 150, or an exception will be thrown
-            emphasizedRadius = emphasizedRadius > 150 ? 150 : emphasizedRadius;
-            formatShape.Glow.Radius = emphasizedRadius;
-
-            float threshold = 0.5f;
-            float oldTransparency = formatShape.Glow.Transparency;
-            if (oldTransparency < threshold)
-            {
-                formatShape.Glow.Transparency = 0.5f;
-            }
+            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
+            Shape shape = shapes.AddShape(
+                    Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle, 0, 0,
+                    SyncFormatConstants.DisplayImageSize.Width,
+                    SyncFormatConstants.DisplayImageSize.Height);
+            shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
             
-            Bitmap image = GraphicsUtil.ShapeToBitmap(formatShape);
-            formatShape.Glow.Radius = oldRadius;
-            formatShape.Glow.Transparency = oldTransparency;
+            shape.Fill.ForeColor.RGB = formatShape.Glow.Color.RGB;
+            shape.Fill.ForeColor.Brightness = formatShape.Glow.Color.Brightness;
+            shape.Fill.ForeColor.TintAndShade = formatShape.Glow.Color.TintAndShade;
+            shape.Fill.Solid();
             
+            Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
+            shape.Delete();
             return image;
         }
 
@@ -62,9 +57,6 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 dest.Color.RGB = source.Color.RGB;
                 dest.Color.Brightness = source.Color.Brightness;
                 dest.Color.TintAndShade = source.Color.TintAndShade;
-
-                dest.Transparency = source.Transparency;
-                dest.Radius = source.Radius;
             }
             catch (Exception)
             {

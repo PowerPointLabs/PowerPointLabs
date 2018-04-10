@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
     This section defines project-level properties.
@@ -652,7 +652,9 @@
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
-    <Compile Include="SyncLab\ObjectFormats\GlowEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />

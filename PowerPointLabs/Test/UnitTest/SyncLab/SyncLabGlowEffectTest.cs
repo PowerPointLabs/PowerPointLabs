@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MahApps.Metro.Controls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
 namespace Test.UnitTest.SyncLab
@@ -6,8 +7,12 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabGlowEffectTest: BaseSyncLabTest
     {
-        private const int OriginalShadowSlideNo = 1;
-        private const int DesiredShadowSlideNo = 2;
+        private const int OriginalSizeSlideNo = 1;
+        private const int DesiredSizeSlideNo = 2;
+        private const int OriginalColorSlideNo = 3;
+        private const int DesiredColorSlideNo = 4;
+        private const int OriginalTransparencySlideNo = 5;
+        private const int DesiredTransparencySlideNo = 6;
         
         private const string SourceShape = "Source";
         private const string DestinationShape = "Destination";
@@ -19,17 +24,31 @@ namespace Test.UnitTest.SyncLab
         
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncGlowEffect()
+        public void TestSyncGlowColor()
         {
-            SyncGlowEffect(DestinationShape, OriginalShadowSlideNo, DesiredShadowSlideNo);
+            SyncAndCompareFormat(DestinationShape, OriginalColorSlideNo, DesiredColorSlideNo, new GlowColorFormat());
+        }
+        
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncGlowSize()
+        {
+            SyncAndCompareFormat(DestinationShape, OriginalSizeSlideNo, DesiredSizeSlideNo, new GlowSizeFormat());
+        }
+        
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncGlowTransparency()
+        {
+            SyncAndCompareFormat(DestinationShape, OriginalTransparencySlideNo, DesiredTransparencySlideNo, new GlowTransparencyFormat());
         }
 
-        private void SyncGlowEffect(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo)
+        private void SyncAndCompareFormat(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo, Format format)
         {
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(sourceSlideNumber, SourceShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(sourceSlideNumber, shapeToBeSynced);
-            new GlowEffectFormat().SyncFormat(formatShape, newShape);
+            format.SyncFormat(formatShape, newShape);
 
             CompareSlides(sourceSlideNumber, expectedSlideNo);
         }
