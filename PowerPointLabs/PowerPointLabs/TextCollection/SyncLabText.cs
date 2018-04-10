@@ -22,5 +22,10 @@
         public const string ErrorPasteSelectionInvalid = "Please select at least one item to apply this format to.";
         public const string ErrorShapeDeleted = "Error in loading shape formats. Removing invalid formats from the list.";
         public const string ErrorSyncPaneNotOpened = "Error: SyncPane not opened.";
+
+        public const string WarningDialogTitle = "Warning";
+        public const string WarningSyncPerspectiveShadow =
+            "PowerPoint does not allow us to differentiate between perspective and outer shadows with custom settings.\n\n" +
+            "The shape will have an outer shadow when synced.";
     }
 }

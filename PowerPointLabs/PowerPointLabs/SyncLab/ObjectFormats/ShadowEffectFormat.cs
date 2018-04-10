@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using Microsoft.Office.Core;
+using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using ShadowFormat = Microsoft.Office.Interop.PowerPoint.ShadowFormat;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -30,17 +32,21 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
             else
             {
-                // setting ShadowFormat to MixedType throws an error, skip it here
-                // mixed type requires manual configuration of each shadow setting
+                // setting Type to MixedType throws an error, skip it 
+                // MixedType requires manual configuration of each shadow setting
+                // we are unable to figure out of a shape has a custom perspective shadow or custom outer shadow
+                // see MightHaveCustomPerspectiveShadow(..) for more information
+            
+                // setting style sets RotateWithShape, skip RotateWithShape
+                // setting style sets Obscured, skip Obscured
                 destFormat.Style = srcFormat.Style;
                 destFormat.ForeColor = srcFormat.ForeColor;
-                destFormat.Obscured = srcFormat.Obscured;
-                destFormat.RotateWithShape = srcFormat.RotateWithShape;
                 destFormat.Blur = srcFormat.Blur;
-                destFormat.Size = srcFormat.Size;
                 destFormat.OffsetX = srcFormat.OffsetX;
                 destFormat.OffsetY = srcFormat.OffsetY;
+                destFormat.Size = srcFormat.Size;
                 destFormat.Transparency = srcFormat.Transparency;
+                
             }
         }
 
@@ -59,6 +65,21 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
             return image;
 
+        }
+        
+        public static bool MightHaveCustomPerspectiveShadow(Shape shape)
+        {
+            // we are unable to figure out of a shape has a custom perspective shadow or custom outer shadow
+            // also, we are unable to give a shape a custom perspective shadow.
+            // there are 5 perspective shadow types, but the api does not tell us which was used
+            return shape.Shadow.Type == MsoShadowType.msoShadowMixed &&
+                   (shape.Shadow.Style == MsoShadowStyle.msoShadowStyleMixed ||
+                    shape.Shadow.Style == MsoShadowStyle.msoShadowStyleOuterShadow);
+        }
+
+        public static void ShowErrorMessageForMixedStylePerspective()
+        {
+            MessageBox.Show(SyncLabText.WarningSyncPerspectiveShadow, SyncLabText.WarningDialogTitle);
         }
     }
 }

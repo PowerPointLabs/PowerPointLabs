@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
-using Microsoft.Office.Interop.PowerPoint;
-
+using Microsoft.Office.Core;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -19,6 +18,7 @@ namespace PowerPointLabs.SyncLab.Views
         public FormatTreeNode[] Formats { get; private set; }
 
         private string originalName;
+        private Shape shape;
 
         public SyncFormatDialog(Shape shape) : this(shape, shape.Name, SyncFormatConstants.FormatCategories)
         {
@@ -27,6 +27,7 @@ namespace PowerPointLabs.SyncLab.Views
         public SyncFormatDialog(Shape shape, string formatName, FormatTreeNode[] formats)
         {
             InitializeComponent();
+            this.shape = shape;
 
             formatName = formatName.Trim();
             if (SyncFormatUtil.IsValidFormatName(formatName))
@@ -102,10 +103,64 @@ namespace PowerPointLabs.SyncLab.Views
                 return result;
             }
         }
+        
+        private FormatTreeNode GetNodeWithFormatType(FormatTreeNode[] nodes, Type type)
+        {
+            List<FormatTreeNode> list = GetNodeWithFormatTypeHelper(nodes, type);
+            
+            if (list.Count == 0)
+            {
+                return null;
+            }
+            return list[0];
+        }
+        
+        private List<FormatTreeNode> GetNodeWithFormatTypeHelper(FormatTreeNode[] nodes, Type type)
+        {
+            List<FormatTreeNode> list = new List<FormatTreeNode>();
+            foreach (FormatTreeNode node in nodes)
+            {
+                if (node.IsFormatNode)
+                {
+                    if (node.Format.GetType() == type)
+                    {
+                        list.Add(node);
+                    }
+                }
+                else
+                {
+                    list.AddRange(GetNodeWithFormatTypeHelper(node.ChildrenNodes, type));
+                }
+            }
+            return list;
+        }
+
+        private bool IsNodeTypeChecked(FormatTreeNode[] nodes, Type type)
+        {
+            foreach (FormatTreeNode node in nodes)
+            {
+                if (node.IsFormatNode
+                    && node.Format.GetType() == type
+                    && node.IsChecked.HasValue
+                    && node.IsChecked.Value)
+                {
+                    return true;
+                }
+
+                return IsNodeTypeChecked(node.ChildrenNodes, type);
+            }
+            return false;
+        }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+
+            if (ShadowEffectFormat.MightHaveCustomPerspectiveShadow(shape) 
+                && IsNodeTypeChecked(Formats, typeof(ShadowEffectFormat)))
+            {
+                ShadowEffectFormat.ShowErrorMessageForMixedStylePerspective();
+            }
         }
 
         private void ScrollToTop()
