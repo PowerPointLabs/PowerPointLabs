@@ -76,7 +76,11 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Transparency", new LineTransparencyFormat())),
                     new FormatTreeNode(
                             "Visual Effects",
-                            new FormatTreeNode("Artistic Effect", new PictureEffectsFormat())),
+                            new FormatTreeNode("Artistic Effect", new PictureEffectsFormat()),
+                            new FormatTreeNode("Glow", 
+                                new FormatTreeNode("Color", new GlowColorFormat()),
+                                new FormatTreeNode("Size", new GlowSizeFormat()),
+                                new FormatTreeNode("Transparency", new GlowTransparencyFormat()))),
                     new FormatTreeNode(
                             "Size/Position",
                             new FormatTreeNode("Width", new PositionWidthFormat()),
