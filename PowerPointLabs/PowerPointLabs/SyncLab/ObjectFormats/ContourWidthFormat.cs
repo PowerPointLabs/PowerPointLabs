@@ -26,7 +26,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public override Bitmap DisplayImage(Shape formatShape)
         {
             return SyncFormatUtil.GetTextDisplay(
-                $"{Math.Round(formatShape.ThreeD.ContourWidth)} {SyncFormatConstants.DisplaySizeUnit}",
+                $"{Math.Round(formatShape.ThreeD.ContourWidth, 1)} {SyncFormatConstants.DisplaySizeUnit}",
                 SyncFormatConstants.DisplayImageFont,
                 SyncFormatConstants.DisplayImageSize);
         }
