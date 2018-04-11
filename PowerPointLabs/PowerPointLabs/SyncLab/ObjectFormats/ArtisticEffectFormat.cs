@@ -10,9 +10,9 @@ using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
     /**
-     * ArtisticEffects, unlike most other effects, can be chained.
-     * In other words, one shape can have more than 1 artistic effect applied.
-     * Finally, ArtisticEffects are only compatible with shapes of type Picture.
+     * ArtisticEffects cannot be chained, despite the PictureEffect returning a collection of PictureEffect objects
+     * It is not clear what a PictureEffect truly represents
+     * Users cannot manually select picture effects they wish to apply
      */
     class ArtisticEffectFormat: Format
     {
@@ -109,7 +109,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 PictureEffects source = formatShape.Fill.PictureEffects;
                 
                 List<MsoPictureEffectType> effectTypes = GetArtisticEffects(formatShape);
-                // clear the existing artistic effects, as artistic effects can be chained
+                // clear the existing artistic effects,
+                // might experience unexpected behavior if they are left in the shape
                 ClearArtisticEffects(newShape);
                 ApplyArtisticEffects(newShape, effectTypes);
             }

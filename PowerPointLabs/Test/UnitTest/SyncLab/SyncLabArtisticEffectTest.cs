@@ -16,9 +16,8 @@ namespace Test.UnitTest.SyncLab
         private const int OriginalReplaceEffectSlideNo = 6;
         private const int DesiredReplaceEffectSlideNo = 7;
         
-        private const string SourceShape = "Picture 2";
-        private const string SetArtisticEffect = "Picture 9";
-        private const string ReplacedArtisticEffect = "Picture 10";
+        private const string SourceShape = "Source";
+        private const string DestinationShape = "Destination";
         
         protected override string GetTestingSlideName()
         {
@@ -29,24 +28,24 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSetArtisticEffect()
         {
-            SyncArtisticEffect(SetArtisticEffect, OriginalSetEffectSlideNo, DesiredSetEffectSlideNo);
+            SyncAndCompareFormat(DestinationShape, OriginalSetEffectSlideNo, DesiredSetEffectSlideNo, new ArtisticEffectFormat());
         }
         
         [TestMethod]
         [TestCategory("UT")]
         public void TestReplaceArtisticEffect()
         {
-            SyncArtisticEffect(ReplacedArtisticEffect, OriginalReplaceEffectSlideNo, DesiredReplaceEffectSlideNo);
+            SyncAndCompareFormat(DestinationShape, OriginalReplaceEffectSlideNo, DesiredReplaceEffectSlideNo, new ArtisticEffectFormat());
         }
 
-        private void SyncArtisticEffect(string shapeToSync, int sourceSlideNumber, int expectedSlideNo)
+        private void SyncAndCompareFormat(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo, Format format)
         {
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(sourceSlideNumber, SourceShape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(sourceSlideNumber, shapeToSync);
-            new ArtisticEffectFormat().SyncFormat(formatShape, newShape);
+            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(sourceSlideNumber, shapeToBeSynced);
+            format.SyncFormat(formatShape, newShape);
 
-            CompareSlides(sourceSlideNumber, expectedSlideNo);
+            CompareSlides(sourceSlideNumber, expectedSlideNo, 0.99);
         }
 
     }
