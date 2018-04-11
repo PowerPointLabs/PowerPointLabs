@@ -543,7 +543,7 @@
         </group>
         
         <group id="Visibility" label="Show/Hide Tabs">
-          <checkBox id="VisibleFormatShapes" enabled="true" label="Hide Format Tab" screentip="Show or Hide Format Tab after inserting shapes" onAction="ToggleVisibility"/>
+          <checkBox id="VisibleFormatShapes" enabled="true" label="Hide Format Tab" supertip="Allows you to remain on the PowerPointLabs tab after inserting shapes" onAction="ToggleVisibility"/>
         </group>
         
       </tab>
