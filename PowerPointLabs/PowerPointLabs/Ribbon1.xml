@@ -543,7 +543,7 @@
         </group>
         
         <group id="Visibility" label="Tab Management">
-          <checkBox id="VisibleFormatShapes" enabled="true" label="Maintain Tab Focus" supertip="Allows you to remain on the PowerPointLabs tab after inserting shapes" onAction="ToggleVisibility"/>
+          <checkBox id="VisibleFormatShapes" enabled="true" label="Maintain Tab Focus" supertip="Stay on PowerPointLabs tab after inserting a shape" onAction="ToggleVisibility"/>
         </group>
         
       </tab>
