@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.PowerPoint;
@@ -118,20 +119,14 @@ namespace Test.UnitTest
         private void EnsureFormatsAreRetainedAfterCopy(Shape placeHolder)
         {
             // ensure that each placeholder's copy supports the same or more formats
-            Format[] formatsFromOriginal = GetCopyableFormats(placeHolder);
+            Format[] formatsFromOriginal = ShapeUtil.GetCopyableFormats(placeHolder);
             
             Shape copy = ShapeUtil.CopyMsoPlaceHolder(formatsFromOriginal, placeHolder, _templateShapes);
-            Format[] formatsFromCopy = GetCopyableFormats(copy);
+            Format[] formatsFromCopy = ShapeUtil.GetCopyableFormats(copy);
 
             IEnumerable<Format> formatsInBoth = formatsFromCopy.Intersect(formatsFromOriginal);
             Assert.AreEqual(formatsInBoth.Count(), formatsFromOriginal.Count());
         }
 
-        private Format[] GetCopyableFormats(Shape shape)
-        {
-            return (from format in SyncFormatConstants.Formats 
-                    where format.CanCopy(shape) select format)
-                .ToArray();
-        }
     }
 }

@@ -164,6 +164,7 @@
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabThreeDRotationEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabGlowEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabVisualEffectsTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
