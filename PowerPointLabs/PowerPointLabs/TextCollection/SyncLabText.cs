@@ -25,7 +25,7 @@
 
         public const string WarningDialogTitle = "Warning";
         public const string WarningSyncPerspectiveShadow =
-            "PowerPoint does not allow us to differentiate between perspective and outer shadows with custom settings.\n\n" +
-            "The shape will have an outer shadow when synced.";
+            "PowerPoint is unable to differentiate between custom perspective shadows and custom outer shadows.\n\n" +
+            "Outer shadows will be applied when syncing.";
     }
 }

@@ -77,9 +77,5 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     shape.Shadow.Style == MsoShadowStyle.msoShadowStyleOuterShadow);
         }
 
-        public static void ShowErrorMessageForMixedStylePerspective()
-        {
-            MessageBox.Show(SyncLabText.WarningSyncPerspectiveShadow, SyncLabText.WarningDialogTitle);
-        }
     }
 }

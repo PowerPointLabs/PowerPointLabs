@@ -135,31 +135,33 @@ namespace PowerPointLabs.SyncLab.Views
             return list;
         }
 
-        private bool IsNodeTypeChecked(FormatTreeNode[] nodes, Type type)
-        {
-            foreach (FormatTreeNode node in nodes)
-            {
-                if (node.IsFormatNode
-                    && node.Format.GetType() == type
-                    && node.IsChecked.HasValue
-                    && node.IsChecked.Value)
-                {
-                    return true;
-                }
-
-                return IsNodeTypeChecked(node.ChildrenNodes, type);
-            }
-            return false;
-        }
-
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
 
-            if (ShadowEffectFormat.MightHaveCustomPerspectiveShadow(shape) 
-                && IsNodeTypeChecked(Formats, typeof(ShadowEffectFormat)))
+            ShowWarningMessageForMixedStylePerspective();
+        }
+
+        /**
+         * Check if custom perspective shadow was used & show a warning if so
+         * We cannot handle it accurately, see ShadowEffectFormat.cs for more information
+         */
+        private void ShowWarningMessageForMixedStylePerspective()
+        {
+            // check if custom perspective shadow was used,
+            FormatTreeNode shadowNode = GetNodeWithFormatType(Formats, typeof(ShadowEffectFormat));
+            if (shadowNode == null)
             {
-                ShadowEffectFormat.ShowErrorMessageForMixedStylePerspective();
+                return;
+            }
+
+            bool shadowNodeIsChecked = shadowNode.IsChecked != null 
+                                       && shadowNode.IsChecked.Value;
+
+            if (ShadowEffectFormat.MightHaveCustomPerspectiveShadow(shape) 
+                && shadowNodeIsChecked)
+            {
+                MessageBox.Show(SyncLabText.WarningSyncPerspectiveShadow, SyncLabText.WarningDialogTitle);
             }
         }
 
