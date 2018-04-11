@@ -1383,7 +1383,8 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
-            // Run twice to get the right operation
+            // Need to run the action 2 times because of the nature of PowerPoint default operations
+            // This has been determined via manual testing
             for (int noOfRuns = 0; noOfRuns < 2; noOfRuns++)
             {
                 Selection selection = this.GetCurrentSelection();
@@ -1444,7 +1445,8 @@ namespace PowerPointLabs.PositionsLab
 
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            // Run twice to get the right operation
+            // Need to run the action 2 times because of the nature of PowerPoint default operations
+            // This has been determined via manual testing
             for (int noOfRuns = 0; noOfRuns < 2; noOfRuns++)
             {
                 if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
