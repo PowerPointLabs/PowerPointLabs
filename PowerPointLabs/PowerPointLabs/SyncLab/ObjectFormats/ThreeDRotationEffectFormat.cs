@@ -65,8 +65,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     dest.RotationY = source.RotationY;
 
                     // set perspective only if it is different,
-                    // it changes the lighting of the shape when set to the same value
-                    // this change cannot be reverted using code
+                    // setting the same perspective applies an unknown change to the lighting of the shape
+                    // this change visible to the eye, but we cannot undo it
                     if (dest.Perspective != source.Perspective)
                     {
                         dest.Perspective = source.Perspective;
