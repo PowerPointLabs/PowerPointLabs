@@ -1099,8 +1099,42 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    try
+                    {
+                        simulatedShapes.Delete();
+                        GC.Collect();
+                    }
+                    // Catch corrupted shapes
+                    catch (System.Runtime.InteropServices.COMException)
+                    {
+                        // Remove all simulated shapes manually
+                        for (int i = 0; i < simulatedShapes.Count; i++)
+                        {
+                            // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
+                            if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
+                            {
+                                this.GetCurrentSlide().Shapes[1].Delete();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        // Remove any outlier extra shapes not deleted previously
+                        // Only triggered for cases where Distribute is called for cases consisting of both
+                        // corrupted and non-corrupted shapes
+                        try
+                        {
+                            this.GetCurrentSelection().Delete();
+                        }
+                        catch (System.Runtime.InteropServices.COMException)
+                        {
+                            // Exception will trigger whenever Distribute is applied to cases where all shapes are 
+                            // either corrupted or non-corrupted, which is already handled before this try-catch block
+                        }
+                        // Ask user to undo the operation to remove any excess duplicates
+                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
+                    }
                 }
             }
         }
@@ -1359,56 +1393,62 @@ namespace PowerPointLabs.PositionsLab
         // Distribute horizontal and vertical
         public void ExecutePositionsAction(Action<List<PPShape>, float> positionsAction, float dimension, bool isPreview)
         {
-            Selection selection = this.GetCurrentSelection();
-            if (!HandleInvalidSelection(isPreview, selection))
+            // Need to run the action 2 times because of the nature of PowerPoint default operations
+            // This has been determined via manual testing
+            for (int numOfRuns = 0; numOfRuns < 2; numOfRuns++)
             {
-                // invalid selection!
-                return;
-            }
-
-            ShapeRange simulatedShapes = null;
-
-            try
-            {
-                ShapeRange selectedShapes = selection.ShapeRange;
-
-                if (isPreview)
+                Selection selection = this.GetCurrentSelection();
+                if (!HandleInvalidSelection(isPreview, selection))
                 {
-                    SaveSelectedShapePositions(selectedShapes, allShapePos);
-                }
-                else
-                {
-                    UndoPreview();
-                    _previewCallBack = null;
-                    this.StartNewUndoEntry();
+                    // invalid selection!
+                    return;
                 }
 
-                simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                ShapeRange simulatedShapes = null;
 
-                positionsAction.Invoke(simulatedPPShapes, dimension);
-
-                SyncShapes(selectedShapes, simulatedPPShapes, initialPositions);
-
-                if (isPreview)
+                try
                 {
-                    _previewIsExecuted = true;
+                    ShapeRange selectedShapes = selection.ShapeRange;
+
+                    if (isPreview)
+                    {
+                        SaveSelectedShapePositions(selectedShapes, allShapePos);
+                    }
+                    else
+                    {
+                        UndoPreview();
+                        _previewCallBack = null;
+                        this.StartNewUndoEntry();
+                    }
+
+                    simulatedShapes = selectedShapes.Duplicate();
+                    List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+
+                    positionsAction.Invoke(simulatedPPShapes, dimension);
+
+                    SyncShapes(selectedShapes, simulatedPPShapes, initialPositions);
+
+                    if (isPreview)
+                    {
+                        _previewIsExecuted = true;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (!isPreview)
+                catch (Exception ex)
                 {
-                    ShowErrorMessageBox(ex.Message, ex);
+                    if (!isPreview)
+                    {
+                        ShowErrorMessageBox(ex.Message, ex);
+                        break;
+                    }
                 }
-            }
-            finally
-            {
-                if (simulatedShapes != null)
+                finally
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    if (simulatedShapes != null)
+                    {
+                        simulatedShapes.Delete();
+                        GC.Collect();
+                    }
                 }
             }
         }
@@ -1416,58 +1456,64 @@ namespace PowerPointLabs.PositionsLab
         // Distribute center
         public void ExecutePositionsAction(Action<List<PPShape>, float, float> positionsAction, float dimension1, float dimension2, bool isPreview)
         {
-            if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
+            // Need to run the action 2 times because of the nature of PowerPoint default operations
+            // This has been determined via manual testing
+            for (int numOfRuns = 0; numOfRuns < 2; numOfRuns++)
             {
-                if (!isPreview)
+                if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
                 {
-                    ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
-                }
-                return;
-            }
-
-            ShapeRange simulatedShapes = null;
-
-            try
-            {
-                ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
-
-                if (isPreview)
-                {
-                    SaveSelectedShapePositions(selectedShapes, allShapePos);
-                }
-                else
-                {
-                    UndoPreview();
-                    _previewCallBack = null;
-                    this.StartNewUndoEntry();
+                    if (!isPreview)
+                    {
+                        ShowErrorMessageBox(PositionsLabText.ErrorNoSelection);
+                    }
+                    return;
                 }
 
-                simulatedShapes = DuplicateShapes(selectedShapes);
-                List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
-                float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+                ShapeRange simulatedShapes = null;
 
-                positionsAction.Invoke(simulatedPPShapes, dimension1, dimension2);
-
-                SyncShapes(selectedShapes, simulatedPPShapes, initialPositions);
-
-                if (isPreview)
+                try
                 {
-                    _previewIsExecuted = true;
+                    ShapeRange selectedShapes = this.GetCurrentSelection().ShapeRange;
+
+                    if (isPreview)
+                    {
+                        SaveSelectedShapePositions(selectedShapes, allShapePos);
+                    }
+                    else
+                    {
+                        UndoPreview();
+                        _previewCallBack = null;
+                        this.StartNewUndoEntry();
+                    }
+
+                    simulatedShapes = selectedShapes.Duplicate();
+                    List<PPShape> simulatedPPShapes = ConvertShapeRangeToPPShapeList(simulatedShapes, 1);
+                    float[,] initialPositions = SaveOriginalPositions(simulatedPPShapes);
+
+                    positionsAction.Invoke(simulatedPPShapes, dimension1, dimension2);
+
+                    SyncShapes(selectedShapes, simulatedPPShapes, initialPositions);
+
+                    if (isPreview)
+                    {
+                        _previewIsExecuted = true;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (!isPreview)
+                catch (Exception ex)
                 {
-                    ShowErrorMessageBox(ex.Message, ex);
+                    if (!isPreview)
+                    {
+                        ShowErrorMessageBox(ex.Message, ex);
+                        break;
+                    }
                 }
-            }
-            finally
-            {
-                if (simulatedShapes != null)
+                finally
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    if (simulatedShapes != null)
+                    {
+                        simulatedShapes.Delete();
+                        GC.Collect();
+                    }
                 }
             }
         }
@@ -1539,8 +1585,42 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    try
+                    {
+                        simulatedShapes.Delete();
+                        GC.Collect();
+                    }
+                    // Catch corrupted shapes
+                    catch (System.Runtime.InteropServices.COMException)
+                    {
+                        // Remove all simulated shapes manually
+                        for (int i = 0; i < simulatedShapes.Count; i++)
+                        {
+                            // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
+                            if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
+                            {
+                                this.GetCurrentSlide().Shapes[1].Delete();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        // Remove any outlier extra shapes not deleted previously
+                        // Only triggered for cases where Distribute is called for cases consisting of both
+                        // corrupted and non-corrupted shapes
+                        try
+                        {
+                            this.GetCurrentSelection().Delete();
+                        }
+                        catch (System.Runtime.InteropServices.COMException)
+                        {
+                            // Exception will trigger whenever Distribute is applied to cases where all shapes are 
+                            // either corrupted or non-corrupted, which is already handled before this try-catch block
+                        }
+                        // Ask user to undo the operation to remove any excess duplicates
+                        MessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
+                    }
                 }
             }
         }

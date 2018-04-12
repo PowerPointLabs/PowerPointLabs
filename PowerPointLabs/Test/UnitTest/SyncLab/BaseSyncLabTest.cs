@@ -33,13 +33,19 @@ namespace Test.UnitTest.SyncLab
             return PpOperations.SelectSlide(slideNumber).Shapes;
         }
 
-        protected void CompareSlides(int actualShapesSlideNo, int expectedShapesSlideNo)
+        /**
+         * Compares between 2 slides
+         * 
+         * Changes in slides may sometimes be too minute for detection
+         * Bump up the threshold or compare them manually if so
+         */
+        protected void CompareSlides(int actualShapesSlideNo, int expectedShapesSlideNo, double tolerance = 0.95)
         {
 
             PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualShapesSlideNo);
             PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedShapesSlideNo);
 
-            SlideUtil.IsSameLooking(actualSlide, expectedSlide);
+            SlideUtil.IsSameLooking(actualSlide, expectedSlide, tolerance);
         }
     }
 }
