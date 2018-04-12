@@ -40,12 +40,17 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             {
                 // paste the effect type on the top bevel to reuse the rotation constants
                 shape.ThreeD.BevelTopType = formatShape.ThreeD.BevelBottomType;
-                shape.ThreeD.BevelTopDepth = SyncFormatConstants.DisplayBevelHeight;
-                shape.ThreeD.BevelTopInset = SyncFormatConstants.DisplayBevelWidth;
+                // set depth & inset only if type is not none,
+                // adjusting these 2 will automatically set type from None to Round
+                if (shape.ThreeD.BevelTopType != MsoBevelType.msoBevelNone)
+                {
+                    shape.ThreeD.BevelTopDepth = SyncFormatConstants.DisplayBevelHeight;
+                    shape.ThreeD.BevelTopInset = SyncFormatConstants.DisplayBevelWidth;
+                }
             }
             shape.ThreeD.BevelBottomType = MsoBevelType.msoBevelNone;
             shape.ThreeD.SetPresetCamera(MsoPresetCamera.msoCameraPerspectiveBelow);
-            shape.ThreeD.PresetLighting = MsoLightRigType.msoLightRigBrightRoom;
+            shape.ThreeD.PresetLighting = MsoLightRigType.msoLightRigBalanced;
             Bitmap image = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             shape.Delete();
             return image;
