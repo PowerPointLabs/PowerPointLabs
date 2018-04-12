@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
-using Microsoft.Office.Interop.PowerPoint;
-
+using Microsoft.Office.Core;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
+using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -19,6 +18,7 @@ namespace PowerPointLabs.SyncLab.Views
         public FormatTreeNode[] Formats { get; private set; }
 
         private string originalName;
+        private Shape shape;
 
         public SyncFormatDialog(Shape shape) : this(shape, shape.Name, SyncFormatConstants.FormatCategories)
         {
@@ -27,6 +27,7 @@ namespace PowerPointLabs.SyncLab.Views
         public SyncFormatDialog(Shape shape, string formatName, FormatTreeNode[] formats)
         {
             InitializeComponent();
+            this.shape = shape;
 
             formatName = formatName.Trim();
             if (SyncFormatUtil.IsValidFormatName(formatName))
@@ -102,10 +103,66 @@ namespace PowerPointLabs.SyncLab.Views
                 return result;
             }
         }
+        
+        private FormatTreeNode GetNodeWithFormatType(FormatTreeNode[] nodes, Type type)
+        {
+            List<FormatTreeNode> list = GetNodeWithFormatTypeHelper(nodes, type);
+            
+            if (list.Count == 0)
+            {
+                return null;
+            }
+            return list[0];
+        }
+        
+        private List<FormatTreeNode> GetNodeWithFormatTypeHelper(FormatTreeNode[] nodes, Type type)
+        {
+            List<FormatTreeNode> list = new List<FormatTreeNode>();
+            foreach (FormatTreeNode node in nodes)
+            {
+                if (node.IsFormatNode)
+                {
+                    if (node.Format.GetType() == type)
+                    {
+                        list.Add(node);
+                    }
+                }
+                else
+                {
+                    list.AddRange(GetNodeWithFormatTypeHelper(node.ChildrenNodes, type));
+                }
+            }
+            return list;
+        }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+
+            ShowWarningMessageForMixedStylePerspective();
+        }
+
+        /**
+         * Check if custom perspective shadow was used & show a warning if so
+         * We cannot handle it accurately, see ShadowEffectFormat.cs for more information
+         */
+        private void ShowWarningMessageForMixedStylePerspective()
+        {
+            // check if custom perspective shadow was used,
+            FormatTreeNode shadowNode = GetNodeWithFormatType(Formats, typeof(ShadowEffectFormat));
+            if (shadowNode == null)
+            {
+                return;
+            }
+
+            bool shadowNodeIsChecked = shadowNode.IsChecked != null 
+                                       && shadowNode.IsChecked.Value;
+
+            if (ShadowEffectFormat.MightHaveCustomPerspectiveShadow(shape) 
+                && shadowNodeIsChecked)
+            {
+                MessageBox.Show(SyncLabText.WarningSyncPerspectiveShadow, SyncLabText.WarningDialogTitle);
+            }
         }
 
         private void ScrollToTop()

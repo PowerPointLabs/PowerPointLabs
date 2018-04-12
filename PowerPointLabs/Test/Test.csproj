@@ -104,6 +104,7 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\SaveLabTest.cs" />
     <Compile Include="FunctionalTest\FillSlideTest.cs" />
     <Compile Include="FunctionalTest\PasteLabTest.cs" />
     <Compile Include="FunctionalTest\SyncLabTest.cs" />
@@ -162,12 +163,13 @@
     <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabGlowEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabShadowEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabVisualEffectsTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabPositionTest.cs" />
-    <Compile Include="UnitTest\SyncLab\SyncLabFormatTest.cs" />
     <Compile Include="UnitTest\TagMatchers\EndSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\EndVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\PauseTest.cs" />

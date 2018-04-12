@@ -3,7 +3,7 @@
   <ribbon>
     <contextualTabs>
       <tabSet idMso="TabSetDrawingTools">
-        <tab idMso="TabDrawingToolsFormat">
+        <tab idMso="TabDrawingToolsFormat" getVisible="ToggleVisibleFormatTab">
           <group id="AdditionalFeatures"
                  label="Other"
                  insertBeforeMso="GroupShapeStyles"
@@ -339,8 +339,7 @@
             <gallery idMso="ShapesInsertGallery"/>
             <menuSeparator id="builtinCropSeparator"
                            title="Builtin Crop Features"/>
-            <splitButton idMso="PictureCropTools"/>
-            <splitButton idMso="PictureCropToolsMenu"/>
+            <toggleButton idMso="PictureCrop"/>
             <menuSeparator id="NewCropSeparator"
                            title="New Crop Features"/>
             <button id="CropToShapeButton"
@@ -484,6 +483,26 @@
                   getEnabled="GetEnabled"
                   onAction="OnAction"
                   size="large"/>
+          
+          <menu id="SaveLabMenu"
+                getLabel="GetLabel"
+                getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
+                getImage="GetImage"
+                size="large">
+            <button id="SavePresentationsButton"
+                    tag="SavePresentations"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+            <button id="SaveLabSettingsButton"
+                    tag="SaveLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
         </group>
         <group id="HelpGroup"
@@ -521,6 +540,10 @@
                     onAction="OnAction"/>
           </menu>
           
+        </group>
+        
+        <group id="Visibility" label="Tab Management">
+          <checkBox id="VisibleFormatShapes" enabled="true" label="Maintain Tab Focus" supertip="Stay on PowerPointLabs tab after inserting a shape" onAction="ToggleVisibility"/>
         </group>
         
       </tab>

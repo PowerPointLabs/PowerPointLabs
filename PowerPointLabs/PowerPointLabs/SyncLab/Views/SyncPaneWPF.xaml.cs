@@ -194,6 +194,7 @@ namespace PowerPointLabs.SyncLab.Views
             SyncFormatPaneItem item = new SyncFormatPaneItem(this, shapeKey, shapeStorage, formats);
             item.Text = name;
             item.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
+            
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
         }
