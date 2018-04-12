@@ -123,6 +123,8 @@ namespace PowerPointLabs
 
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
+        // Initial bool value for whether the Drawing Tools Format Tab is disabled
+        private bool disableFormatTab = false;
 
         #region IRibbonExtensibility Members
 
@@ -135,6 +137,19 @@ namespace PowerPointLabs
 
         #region Ribbon Callbacks
         //Create callback methods here. For more information about adding callback methods, select the Ribbon XML item in Solution Explorer and then press F1
+
+        // Set the visibility of the Drawing Tools Format Tab
+        public bool ToggleVisibleFormatTab(Office.IRibbonControl control)
+        {
+            return !disableFormatTab;
+        }
+
+        // Toggles the boolean controlling the visibility of the Drawing Tools Format Tab
+        public void ToggleVisibility(Office.IRibbonControl control, bool pressed)
+        {
+            disableFormatTab = !disableFormatTab;
+            _ribbon.InvalidateControlMso("TabDrawingToolsFormat");
+        }
 
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {

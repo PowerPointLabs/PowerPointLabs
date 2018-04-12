@@ -9,6 +9,22 @@ namespace Test.FunctionalTest
     [TestClass]
     public class ShapesLabTest : BaseFunctionalTest
     {
+        private const int SaveShapesShapesSlide = 3;
+        private const int SaveShapesTestSlide = 4;
+        private const int SaveShapesExpSlide = 5;
+        private const int AddShapesShapesSlide = 6;
+        private const int AddShapesTestSlide = 7;
+        private const int AddShapesExpSlide = 8;
+
+        //Check clipboard restored
+        private const int SaveShapesClipboardRestoredActualSlide = 10;
+        private const int SaveShapesClipboardRestoredTestSlide = 11;
+        private const int SaveShapesClipboardRestoredExpSlide = 12;
+        private const int AddShapesClipboardRestoredActualSlide = 13;
+        private const int AddShapesClipboardRestoredTestSlide = 14;
+        private const int AddShapesClipboardRestoredExpSlide = 15;
+
+
         protected override string GetTestingSlideName()
         {
             return "ShapesLab\\ShapesLab.pptx";
@@ -32,9 +48,12 @@ namespace Test.FunctionalTest
             IShapesLabController shapesLab = PplFeatures.ShapesLab;
             shapesLab.OpenPane();
 
-            TestSaveShapesToShapesLab(shapesLab);
+            TestSaveShapesToShapesLab(shapesLab, SaveShapesShapesSlide, SaveShapesTestSlide, SaveShapesExpSlide);
             TestImportLibraryAndShape(shapesLab);
-            TestSaveShapesToShapesLabWithAddShapesButton(shapesLab);
+            TestSaveShapesToShapesLabWithAddShapesButton(shapesLab, AddShapesShapesSlide, AddShapesTestSlide, AddShapesExpSlide);
+            IsClipboardRestoredAfterSaveShape(shapesLab, SaveShapesClipboardRestoredActualSlide, SaveShapesClipboardRestoredTestSlide, SaveShapesClipboardRestoredExpSlide);
+            IsClipboardRestoredAfterAddShape(shapesLab, AddShapesClipboardRestoredActualSlide, AddShapesClipboardRestoredTestSlide, 
+                AddShapesClipboardRestoredExpSlide);
         }
 
         private void TestImportLibraryAndShape(IShapesLabController shapesLab)
@@ -61,34 +80,44 @@ namespace Test.FunctionalTest
             }
         }
 
-        private void TestSaveShapesToShapesLab(IShapesLabController shapesLab)
+        private void SaveShapesToShapesLab(IShapesLabController shapesLab, int shapesSlideNum, int testSlideNum)
         {
-            PpOperations.SelectSlide(3);
+            PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMe");
             // save shapes
             shapesLab.SaveSelectedShapes();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(4);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(testSlideNum);
             AddShapesToSlideFromShapesLab(shapesLab, "selectMe1", "Group selectMe1");
+        }
+        private void TestSaveShapesToShapesLab(IShapesLabController shapesLab, int shapesSlideNum, int testSlideNum, int expSlideNum)
+        {
+            SaveShapesToShapesLab(shapesLab, shapesSlideNum, testSlideNum);
 
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(testSlideNum);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(expSlideNum);
 
             SlideUtil.IsSameLooking(expSlide, actualSlide);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }
 
-        private void TestSaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab)
+        private void SaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum, int testSlideNum)
         {
-            PpOperations.SelectSlide(6);
+            PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMeNow");
 
             shapesLab.ClickAddShapeButton();
 
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(testSlideNum);
             AddShapesToSlideFromShapesLab(shapesLab, "selectMeNow1", "Group selectMeNow1");
+        }
 
-            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
+        private void TestSaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum, int testSlideNum, int expSlideNum)
+        {
+            SaveShapesToShapesLabWithAddShapesButton(shapesLab, shapesSlideNum, testSlideNum);
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(expSlideNum);
 
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(testSlideNum);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }
@@ -107,6 +136,18 @@ namespace Test.FunctionalTest
         {
             Point pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
             MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
+        }
+
+        private void IsClipboardRestoredAfterSaveShape(IShapesLabController shapesLab, int actualSlideNum, int testSlideNum, int expSlideNum)
+        {
+            CheckIfClipboardIsRestored(() => SaveShapesToShapesLab(shapesLab, actualSlideNum, testSlideNum),
+                actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
+        }
+
+        private void IsClipboardRestoredAfterAddShape(IShapesLabController shapesLab, int actualSlideNum, int testSlideNum, int expSlideNum)
+        {
+            CheckIfClipboardIsRestored(() => SaveShapesToShapesLabWithAddShapesButton(shapesLab, actualSlideNum, testSlideNum), 
+                actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
         }
     }
 }
