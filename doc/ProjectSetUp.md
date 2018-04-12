@@ -5,7 +5,7 @@ This section will go through: the basic prerequisites needed to develop for Powe
 ## Dev Prerequisites
 1. Install Office 2016 or 2013 with PowerPoint
 1. Install SourceTree (recommended), GitHub for Windows, or at least, Git
-1. Install Visual Studio 2015
+1. Install Visual Studio 2017
 1. Install `VSTO for IDE` (Visual Studio Tools for Office, AKA the Office SDK):<br>
    for VS2015 - http://aka.ms/OfficeDevToolsForVS2015<br>
 1. Install Microsoft .NET Framework 4.6
