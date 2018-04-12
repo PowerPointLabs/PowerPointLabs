@@ -81,7 +81,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                                 new FormatTreeNode("Color", new GlowColorFormat()),
                                 new FormatTreeNode("Size", new GlowSizeFormat()),
                                 new FormatTreeNode("Transparency", new GlowTransparencyFormat())),
-                            new FormatTreeNode("Shadow", new ShadowEffectFormat())),
+                            new FormatTreeNode("Shadow", new ShadowEffectFormat()),
+                            new FormatTreeNode("Soft Edge", new SoftEdgeEffectFormat())),
                     new FormatTreeNode(
                             "Size/Position",
                             new FormatTreeNode("Width", new PositionWidthFormat()),
