@@ -122,7 +122,7 @@ namespace Test.UnitTest.SyncLab
             Shape newShape = GetShape(sourceSlideNumber, DestinationShape);
             format.SyncFormat(formatShape, newShape);
 
-            CompareSlides(sourceSlideNumber, expectedSlideNo);
+            CompareSlides(sourceSlideNumber, expectedSlideNo, 0.99);
         }
 
     }
