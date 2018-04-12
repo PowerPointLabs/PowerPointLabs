@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Speech.Recognition;
 using Microsoft.Office.Core;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
@@ -13,6 +15,8 @@ namespace PowerPointLabs.SyncLab
     /// Saves shapes into a PowerPointPresentation that exists in the background.
     /// The exact saved shapes may change in type but style will be retained.
     /// Eg: PlaceHolders are saved as Textboxes
+    /// 
+    /// We also use a workabout for 2013 to sync ArtisticEffecs, (2010 & 2016 do not require this)
     /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
@@ -20,6 +24,8 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
+        private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects = 
+            new Dictionary<string, List<MsoPictureEffectType>>();
 
         private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
@@ -78,6 +84,18 @@ namespace PowerPointLabs.SyncLab
             string shapeKey = nextKey.ToString();
             nextKey++;
             copiedShape.Name = shapeKey;
+
+            // backup artistic effects for 2013
+            // ForceSave() will make artistic effect permernent on the shapes for 2013
+            // and no longer retrievable
+            #pragma warning disable 618
+            if (Globals.ThisAddIn.IsApplicationVersion2013())
+            {
+                List<MsoPictureEffectType> extractedEffects = ArtisticEffectFormat.GetArtisticEffects(copiedShape);
+                _backupArtisticEffects.Add(shapeKey, extractedEffects);
+            }
+            #pragma warning restore 618
+            
             ForceSave();
             return shapeKey;
         }
@@ -89,7 +107,15 @@ namespace PowerPointLabs.SyncLab
             {
                 if (shapes[i].Name.Equals(shapeKey))
                 {
-                    return shapes[i];
+                    Shape shape = shapes[i];
+                    if (_backupArtisticEffects.ContainsKey(shapeKey))
+                    {
+                        // apply artistic effect from backup only when shape is retrieved, to reduce loading time of CopyShape
+                        List<MsoPictureEffectType> extractedEffects = _backupArtisticEffects[shapeKey];
+                        ArtisticEffectFormat.ClearArtisticEffects(shape);
+                        ArtisticEffectFormat.ApplyArtisticEffects(shape, extractedEffects);
+                    }
+                    return shape;
                 }
             }
             return null;
@@ -104,6 +130,7 @@ namespace PowerPointLabs.SyncLab
                 if (shapes[index].Name.Equals(shapeKey))
                 {
                     shapes[index].Delete();
+                    _backupArtisticEffects.Remove(shapeKey);
                 }
                 else
                 {
@@ -127,6 +154,7 @@ namespace PowerPointLabs.SyncLab
             }
             AddSlide();
             Slides[FormatStorageSlide].DeleteAllShapes();
+            _backupArtisticEffects.Clear();
         }
     }
 }
