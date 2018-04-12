@@ -27,9 +27,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public override Bitmap DisplayImage(Shape formatShape)
         {
             float depth = formatShape.ThreeD.Depth;
-            if (IsFreshShape(formatShape))
+            if (HasErrorneousDepth(formatShape))
             {
-                // fresh shapes actually have 0 depth
                 depth = 0f;
             }
             return SyncFormatUtil.GetTextDisplay(
@@ -45,14 +44,16 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
             try
             {
-                if (IsFreshShape(formatShape) && IsFreshShape(newShape))
+                if (HasErrorneousDepth(formatShape) && HasErrorneousDepth(newShape))
                 {
-                    // both are fresh shapes, do nothing
+                    // both have no 3d settings, do nothing
+                    // setting depth here changes the color of the shape slightly for unknown reasons
+                    // we cannot revert this change
                     return true;
                 }
 
                 float depth = source.Depth;
-                if (IsFreshShape(formatShape))
+                if (HasErrorneousDepth(formatShape))
                 {
                     // fresh shapes actually have 0 depth
                     depth = 0f;
@@ -70,16 +71,14 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         }
         
         /**
-         * Checks if a shape does not have any 3d setting edited (excluding bevel)
-         * The API gives the wrong depth value for these shapes, it should return 0 instead of 36.
+         * Checks if the shape gives the wrong depth
+         * The API gives the wrong depth value at times (gives 36, when it should be 0)
          */
-        private static bool IsFreshShape(Shape shape)
+        private static bool HasErrorneousDepth(Shape shape)
         {
-            // PresetMaterial == Mixed and LightRig == Mixed when a shape is just created
-            // and 3d effects have not been modified
-            bool isFreshShape = shape.ThreeD.PresetMaterial == MsoPresetMaterial.msoPresetMaterialMixed
-                                && shape.ThreeD.PresetLighting == MsoLightRigType.msoLightRigMixed;
-            return isFreshShape;
+            // seems to happen PresetMaterial == Mixed 
+            // the Mixed type seems to be reserved for shapes with untouched depth, material or contour
+            return shape.ThreeD.PresetMaterial == MsoPresetMaterial.msoPresetMaterialMixed;
         }
 
     }
