@@ -23,6 +23,8 @@ This document details the common pitfalls when developing for PowerPointLabs, so
 
 1. When a shape is rotated, its position attributes, i.e. `left` and `top`, will always return the value when its rotation angle is at zero. Thus to get the rotated position, you may calculate it using its [rotation matrix](http://en.wikipedia.org/wiki/Rotation_matrix)
 
+1. When you need to convert Shape(s) to a ShapeRange object, you can consider using the `ToShapeRange` method in `PowerPointSlide`
+
 1. Effects rendering is slow, especially for pictures and 3D images. You may try to avoid it, or make it rendered (e.g. export the picture with effects, and then insert it again)
 
 1. When you copy and paste a slide, the slide name will be lost:
