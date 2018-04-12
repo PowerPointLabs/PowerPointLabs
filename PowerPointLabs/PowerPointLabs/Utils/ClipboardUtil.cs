@@ -11,6 +11,8 @@ namespace PowerPointLabs.Utils
 #pragma warning disable 0618
     internal static class ClipboardUtil
     {
+        public const int ClipboardRestoreSuccess = 1;
+
         #region API
 
         public static bool IsClipboardEmpty()

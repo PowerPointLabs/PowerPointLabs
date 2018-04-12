@@ -153,7 +153,7 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(string name)
         {
-            List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
+            List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenerateNameSearchPattern(name));
 
             _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
         }
@@ -164,7 +164,7 @@ namespace PowerPointLabs.Models
 
             foreach (string name in nameList)
             {
-                fullList.AddRange(_defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name))
+                fullList.AddRange(_defaultCategory.GetShapesWithRule(GenerateNameSearchPattern(name))
                                                   .Select(item => item.Name));
             }
 
@@ -181,14 +181,13 @@ namespace PowerPointLabs.Models
             }
 
             // copy a shape with name from default category to another category
-            List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
+            List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenerateNameSearchPattern(name));
             PowerPointSlide destCategory = Slides[index - 1];
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
-                destCategory.Shapes.Paste();
-                return 1;
+                return destCategory.Shapes.Paste();
             }, pres, origSlide);
 
 
@@ -211,14 +210,13 @@ namespace PowerPointLabs.Models
             }
 
             // move a shape with name from default category to another category
-            List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenereateNameSearchPattern(name));
+            List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenerateNameSearchPattern(name));
             PowerPointSlide destCategory = Slides[index - 1];
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
-                destCategory.Shapes.Paste();
-                return 1;
+                return destCategory.Shapes.Paste();
             }, pres, origSlide);
 
             Save();
@@ -269,7 +267,7 @@ namespace PowerPointLabs.Models
 
         public void RemoveShape(string name)
         {
-            _defaultCategory.DeleteShapeWithRule(GenereateNameSearchPattern(name));
+            _defaultCategory.DeleteShapeWithRule(GenerateNameSearchPattern(name));
             
             Save();
             ActionProtection();
@@ -277,7 +275,7 @@ namespace PowerPointLabs.Models
 
         public void RenameShape(string oldName, string newName)
         {
-            Regex nameRegex = GenereateNameSearchPattern(oldName);
+            Regex nameRegex = GenerateNameSearchPattern(oldName);
             Regex replaceRegex = new Regex(oldName);
             List<Shape> shapes = _defaultCategory.GetShapesWithRule(nameRegex);
 
@@ -422,7 +420,7 @@ namespace PowerPointLabs.Models
             foreach (string pngShape in pngShapes)
             {
                 string shapeName = System.IO.Path.GetFileNameWithoutExtension(pngShape);
-                Regex searchPattern = GenereateNameSearchPattern(shapeName);
+                Regex searchPattern = GenerateNameSearchPattern(shapeName);
                 bool found = category.HasShapeWithRule(searchPattern);
 
                 if (!found)
@@ -546,7 +544,7 @@ namespace PowerPointLabs.Models
             return index;
         }
 
-        private Regex GenereateNameSearchPattern(string name)
+        private Regex GenerateNameSearchPattern(string name)
         {
             string skippedName = CommonUtil.SkipRegexCharacter(name);
             string searchPattern = string.Format(NameSearchPattern, skippedName, skippedName);
@@ -676,7 +674,7 @@ namespace PowerPointLabs.Models
             }
 
             // check if the name has been used, if used, name it to the next available name
-            if (categorySlide.HasShapeWithRule(GenereateNameSearchPattern(name)))
+            if (categorySlide.HasShapeWithRule(GenerateNameSearchPattern(name)))
             {
                 Regex nameExtractionRegex = new Regex(string.Format(NameExtractionPatternFormat, name, name));
                 List<string> nameList = categorySlide.GetShapesWithRule(nameExtractionRegex)

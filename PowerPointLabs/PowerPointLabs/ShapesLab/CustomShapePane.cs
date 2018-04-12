@@ -363,8 +363,7 @@ namespace PowerPointLabs.ShapesLab
             {
                 // all selected shape will be added to the slide
                 Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
-                currentSlide.Shapes.Paste();
-                return 1;
+                return currentSlide.Shapes.Paste();
             }, pres, currentSlide);
         }
 
@@ -862,7 +861,7 @@ namespace PowerPointLabs.ShapesLab
 
                     _categoryBinding.Add(importCategory);
                 }
-                return 1;
+                return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, currentSlide);
         }
 
@@ -888,7 +887,7 @@ namespace PowerPointLabs.ShapesLab
                 string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
 
                 GraphicsUtil.ExportShape(shapeRange, exportPath);
-                return 1;
+                return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, currentSlide);
 
         }
@@ -1453,7 +1452,7 @@ namespace PowerPointLabs.ShapesLab
                 {
                     Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
                     currentSlide.Shapes.Paste().Select();
-                    return 1;
+                    return ClipboardUtil.ClipboardRestoreSuccess;
                 }, pres, currentSlide);
             }
             else
