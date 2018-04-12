@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Xml;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
@@ -12,10 +13,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
         public override bool CanCopy(Shape formatShape)
         {
-            // there's no None material type
-            // assume that Mixed represents None
-            // there are no settings aside from PresetMaterial that affect material
-            return formatShape.ThreeD.PresetMaterial != MsoPresetMaterial.msoPresetMaterialMixed;
+            return true;
         }
 
         public override void SyncFormat(Shape formatShape, Shape newShape)
@@ -42,7 +40,12 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.ThreeD.BevelBottomDepth = SyncFormatConstants.DisplayBevelHeight;
             shape.ThreeD.BevelBottomInset = SyncFormatConstants.DisplayBevelWidth;
             // setting mixed throws an exception
-            if (formatShape.ThreeD.PresetMaterial != MsoPresetMaterial.msoPresetMaterialMixed)
+            // show flat type instead, which looks very similar
+            if (formatShape.ThreeD.PresetMaterial == MsoPresetMaterial.msoPresetMaterialMixed)
+            {
+                shape.ThreeD.PresetMaterial = MsoPresetMaterial.msoMaterialFlat;
+            }
+            else
             {
                 shape.ThreeD.PresetMaterial = formatShape.ThreeD.PresetMaterial;
             }
@@ -59,7 +62,18 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
             try
             {
-                dest.PresetMaterial = source.PresetMaterial;
+                // setting Mixed throws an exception
+                // the user is unable to set Mixed type manually
+                // it seems to be reserved for shapes that have all 3d settings set to default
+                // show Flat type instead, which looks very similar
+                if (source.PresetMaterial == MsoPresetMaterial.msoPresetMaterialMixed)
+                {
+                    dest.PresetMaterial = MsoPresetMaterial.msoMaterialFlat;
+                }
+                else
+                {
+                    dest.PresetMaterial = source.PresetMaterial;
+                }
 
                 return true;
             }
