@@ -165,7 +165,7 @@
     <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabGlowEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabShadowEffectTest.cs" />
-    <Compile Include="UnitTest\SyncLab\SyncLabVisualEffectsTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabArtisticEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
