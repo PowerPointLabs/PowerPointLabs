@@ -5,6 +5,8 @@ Please read this document carefully before you start development on PowerPointLa
 
 This document would assume that you have already forked the PowerPointLabs and PowerPointLabs-Website repositories on your local computer.
 
+For official Microsoft documentation on PowerPoint API, visit the website [here](https://msdn.microsoft.com/en-us/library/microsoft.office.interop.powerpoint(v=office.14).aspx).
+
 ## Workflow of PowerPointLabs
 1. Create a branch from `PowerPointLabs/dev-release`. Your branch name should follow this convention: `issueNumber-description-of-issue` e.g. `123-fix-blur-incorrect-selection`
 1. Fix bugs or develop on that branch
@@ -15,7 +17,7 @@ This document would assume that you have already forked the PowerPointLabs and P
 1. Create a branch from `master`
 1. Make desired changes to website and test locally
 1. Make a pull request with similar naming convention as above
-1. Once the change is accepted, wait for reviewer to merge the branch into `master` and upload the website for the public. Ensure that the [website](http://www.comp.nus.edu.sg/~pptlabs/) can be viewed
+1. Once the change is accepted, wait for reviewer to merge the branch into `master` and upload the website for the public. Ensure that the [website](http://www.comp.nus.edu.sg/~pptlabs/) can be viewed and displays the latest changes correctly
 
 ## Creating a New Lab
 As a rule of thumb:
