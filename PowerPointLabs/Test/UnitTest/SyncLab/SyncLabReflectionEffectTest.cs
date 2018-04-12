@@ -59,7 +59,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(sourceSlideNumber, shapeToBeSynced);
             format.SyncFormat(formatShape, newShape);
 
-            CompareSlides(sourceSlideNumber, expectedSlideNo);
+            CompareSlides(sourceSlideNumber, expectedSlideNo, 0.99);
         }
 
     }
