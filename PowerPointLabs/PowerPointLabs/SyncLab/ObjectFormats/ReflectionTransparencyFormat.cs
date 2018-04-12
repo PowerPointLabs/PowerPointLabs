@@ -24,6 +24,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public override Bitmap DisplayImage(Shape formatShape)
         {
+            // transparency is a float from 0-1, multiply by 100 to get percentage
             return SyncFormatUtil.GetTextDisplay(
                 Math.Round(formatShape.Reflection.Transparency * 100).ToString() + "%",
                 SyncFormatConstants.DisplayImageFont,
