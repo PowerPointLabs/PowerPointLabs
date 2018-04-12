@@ -1385,7 +1385,7 @@ namespace PowerPointLabs.PositionsLab
         {
             // Need to run the action 2 times because of the nature of PowerPoint default operations
             // This has been determined via manual testing
-            for (int noOfRuns = 0; noOfRuns < 2; noOfRuns++)
+            for (int numOfRuns = 0; numOfRuns < 2; numOfRuns++)
             {
                 Selection selection = this.GetCurrentSelection();
                 if (!HandleInvalidSelection(isPreview, selection))
@@ -1447,7 +1447,7 @@ namespace PowerPointLabs.PositionsLab
         {
             // Need to run the action 2 times because of the nature of PowerPoint default operations
             // This has been determined via manual testing
-            for (int noOfRuns = 0; noOfRuns < 2; noOfRuns++)
+            for (int numOfRuns = 0; numOfRuns < 2; numOfRuns++)
             {
                 if (this.GetCurrentSelection().Type != PpSelectionType.ppSelectionShapes)
                 {
