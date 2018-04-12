@@ -38,10 +38,11 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             // don't set type if type is TypeMixed, it throws an exception
             if (formatShape.ThreeD.BevelBottomType != MsoBevelType.msoBevelTypeMixed)
             {
+                // paste the effect type on the top bevel to reuse the rotation constants
                 shape.ThreeD.BevelTopType = formatShape.ThreeD.BevelBottomType;
+                shape.ThreeD.BevelTopDepth = SyncFormatConstants.DisplayBevelHeight;
+                shape.ThreeD.BevelTopInset = SyncFormatConstants.DisplayBevelWidth;
             }
-            shape.ThreeD.BevelTopDepth = SyncFormatConstants.DisplayBevelHeight;
-            shape.ThreeD.BevelTopInset = SyncFormatConstants.DisplayBevelWidth;
             shape.ThreeD.BevelBottomType = MsoBevelType.msoBevelNone;
             shape.ThreeD.SetPresetCamera(MsoPresetCamera.msoCameraPerspectiveBelow);
             shape.ThreeD.PresetLighting = MsoLightRigType.msoLightRigBrightRoom;

@@ -40,9 +40,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             if (formatShape.ThreeD.BevelTopType != MsoBevelType.msoBevelTypeMixed)
             {
                 shape.ThreeD.BevelTopType = formatShape.ThreeD.BevelTopType;
+                shape.ThreeD.BevelTopDepth = SyncFormatConstants.DisplayBevelHeight;
+                shape.ThreeD.BevelTopInset = SyncFormatConstants.DisplayBevelWidth;
             }
-            shape.ThreeD.BevelTopDepth = SyncFormatConstants.DisplayBevelHeight;
-            shape.ThreeD.BevelTopInset = SyncFormatConstants.DisplayBevelWidth;
             shape.ThreeD.BevelBottomType = MsoBevelType.msoBevelNone;
             shape.ThreeD.SetPresetCamera(MsoPresetCamera.msoCameraPerspectiveAbove);
             shape.ThreeD.PresetLighting = MsoLightRigType.msoLightRigBrightRoom;
