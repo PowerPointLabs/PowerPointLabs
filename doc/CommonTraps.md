@@ -5,7 +5,7 @@ This document details the common pitfalls when developing for PowerPointLabs, so
 1. The index of an Office collection starts from 1, however note that the index of a collection provided by .NET starts from 0
 `ShapeRange range = getCurrentSelectedShapes(); range[1] ... ; //the first element`
 
-1. When you delete, cut, or ungroup a shape programmatically, and you undo this change from the PowerPoint UI, then that shape will become corrupted. For a corrupted shape, accessing attributes programatically other than it's `left`/`top`/`width`/`height`/`name` would throw an exception.<br><br>One possible solution would be re-allocate the shape’s memory; copy and paste it programmatically before you handle the shape.<br><br>Another possible solution would be to use the method called `CorruptionCorrection`, located in `ShapeUtil`, for fixing corrupted shapes though it may not work for every type of corruption
+1. When you delete, cut, or ungroup a shape programmatically, and you undo this change from the PowerPoint UI, then that shape will become corrupted. For a corrupted shape, accessing attributes programatically other than it's `left`/`top`/`width`/`height`/`name` would throw an exception.<br><br>One possible solution would be re-allocate the shape’s memory; copy and paste it programmatically before you handle the shape.<br><br>Another possible solution would be to use the method called `CorruptionCorrection`, located in `ShapeUtil`, for fixing corrupted shapes although it may not work for every type of corruption
 
 1. When pasting a shape programmatically, it is not selected in Office 2010, but selected in Office 2013
 
