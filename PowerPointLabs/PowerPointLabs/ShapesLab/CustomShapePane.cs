@@ -189,8 +189,12 @@ namespace PowerPointLabs.ShapesLab
             {
                 selectedShapes = selection.ChildShapeRange;
             }
+
+            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointPresentation pres = PowerPointPresentation.Current;
             // add shape into shape gallery first to reduce flicker
-            string shapeName = addIn.ShapePresentation.AddShape(selectedShapes, selectedShapes[1].Name);
+            string shapeName = addIn.ShapePresentation.AddShape(pres, currentSlide, selectedShapes, selectedShapes[1].Name);
 
             // add the selection into pane and save it as .png locally
             string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
@@ -347,15 +351,20 @@ namespace PowerPointLabs.ShapesLab
 
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
+            // Utilises deprecated PowerPointPresentation class as CustomShapePane does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
             if (currentSlide == null)
             {
                 MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
                 return;
             }
-
-            // all selected shape will be added to the slide
-            Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
-            currentSlide.Shapes.Paste();
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                // all selected shape will be added to the slide
+                Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
+                return currentSlide.Shapes.Paste();
+            }, pres, currentSlide);
         }
 
         private void ContextMenuStripAddCategoryClicked()
@@ -838,14 +847,22 @@ namespace PowerPointLabs.ShapesLab
 
         private void ImportShapesFromLibrary(PowerPointShapeGalleryPresentation importShapeGallery)
         {
-            foreach (string importCategory in importShapeGallery.Categories)
+            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                importShapeGallery.CopyCategory(importCategory);
+                foreach (string importCategory in importShapeGallery.Categories)
+                {
+                    importShapeGallery.CopyCategory(importCategory);
 
-                Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
+                    Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
 
-                _categoryBinding.Add(importCategory);
-            }
+                    _categoryBinding.Add(importCategory);
+                }
+                return ClipboardUtil.ClipboardRestoreSuccess;
+            }, pres, currentSlide);
         }
 
         private void ImportShapesFromSingleShape(PowerPointShapeGalleryPresentation importShapeGallery)
@@ -858,12 +875,21 @@ namespace PowerPointLabs.ShapesLab
             }
 
             string shapeName = shapeRange[1].Name;
-            importShapeGallery.CopyShape(shapeName);
 
-            shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(null, shapeName, fromClipBoard: true);
-            string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+            PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+            PowerPointPresentation pres = PowerPointPresentation.Current;
 
-            GraphicsUtil.ExportShape(shapeRange, exportPath);
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                importShapeGallery.CopyShape(shapeName);
+                shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
+                string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+
+                GraphicsUtil.ExportShape(shapeRange, exportPath);
+                return ClipboardUtil.ClipboardRestoreSuccess;
+            }, pres, currentSlide);
+
         }
 
         private bool MigrateShapeFolder(string oldPath, string newPath)
@@ -1194,8 +1220,12 @@ namespace PowerPointLabs.ShapesLab
                     break;
                 }
 
+                // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                PowerPointPresentation pres = PowerPointPresentation.Current;
+
                 // move shape in ShapeGallery to correct place
-                Globals.ThisAddIn.ShapePresentation.CopyShapeToCategory(shapeName, categoryName);
+                Globals.ThisAddIn.ShapePresentation.CopyShapeToCategory(pres, currentSlide, shapeName, categoryName);
 
                 // move shape on the disk to correct place
                 File.Copy(oriPath, destPath);
@@ -1411,12 +1441,19 @@ namespace PowerPointLabs.ShapesLab
             string shapeName = clickedThumbnail.NameLabel;
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
+            // Utilises deprecated PowerPointPresentation class as CustomShapePane does not utilise ActionFramework
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+
             if (currentSlide != null)
             {
                 Globals.ThisAddIn.Application.StartNewUndoEntry();
 
-                Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
-                currentSlide.Shapes.Paste().Select();
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    Globals.ThisAddIn.ShapePresentation.CopyShape(shapeName);
+                    currentSlide.Shapes.Paste().Select();
+                    return ClipboardUtil.ClipboardRestoreSuccess;
+                }, pres, currentSlide);
             }
             else
             {
@@ -1499,8 +1536,12 @@ namespace PowerPointLabs.ShapesLab
                     break;
                 }
 
+                // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
+                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                PowerPointPresentation pres = PowerPointPresentation.Current;
+
                 // move shape in ShapeGallery to correct place
-                Globals.ThisAddIn.ShapePresentation.MoveShapeToCategory(shapeName, categoryName);
+                Globals.ThisAddIn.ShapePresentation.MoveShapeToCategory(pres, currentSlide, shapeName, categoryName);
 
                 // move shape on the disk to correct place
                 File.Move(oriPath, destPath);

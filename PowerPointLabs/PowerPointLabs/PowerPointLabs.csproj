@@ -654,11 +654,12 @@
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
-    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ArtisticEffectFormat.cs" />
     <Compile Include="ShortcutsLab\FillSlide.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
