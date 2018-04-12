@@ -32,8 +32,9 @@ namespace Test.FunctionalTest
         private const int TablePlaceHolderSlideNo = 44;
         private const int ChartPlaceHolderSlideNo = 45;
         private const int PicturePlaceHolderSlideNo = 46;
-        
         private const int SmartArtSlideNo = 47;
+        
+        private const int CustomPerspectiveShadowSlideNo = 48;
 
         private const string Line = "Straight Connector 2";
         private const string RotatedArrow = "Right Arrow 5";
@@ -41,6 +42,7 @@ namespace Test.FunctionalTest
         private const string Oval = "Oval 4";
         private const string CopyFromShape = "CopyFrom";
         private const string UnrotatedRectangle = "Rectangle 3";
+        private const string CustomPerspectiveShadow = "Custom Perspective Shadow";
         
         private const string HorizontalTitle = "Title 1";
         private const string HorizontalBody = "Content Placeholder 2";
@@ -69,6 +71,7 @@ namespace Test.FunctionalTest
             TestErrorDialogs(syncLab);
             TestCopySupportedPlaceHolders(syncLab);
             TestCopyUnsupportedPlaceHolders(syncLab);
+            TestCopyCustomPerspectiveShadow(syncLab);
         }
 
         private void TestCopySupportedPlaceHolders(ISyncLabController syncLab)
@@ -112,6 +115,25 @@ namespace Test.FunctionalTest
                 SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
         }
         
+        private void TestCopyCustomPerspectiveShadow(ISyncLabController syncLab)
+        {
+            
+            PpOperations.SelectSlide(CustomPerspectiveShadowSlideNo);
+            PpOperations.SelectShape(CustomPerspectiveShadow);
+
+            // shadow item
+            int categoryIndex = 3;
+            int itemIndex = 0;
+            
+            new Task(() =>
+            {
+                ThreadUtil.WaitFor(1000);
+                syncLab.DialogSelectItem(categoryIndex, itemIndex);
+                MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.WarningDialogTitle,
+                    SyncLabText.WarningSyncPerspectiveShadow, syncLab.DialogClickOk, "Ok");
+            }).Start();
+            syncLab.Copy();
+        }
 
         private void TestErrorDialogs(ISyncLabController syncLab)
         {
