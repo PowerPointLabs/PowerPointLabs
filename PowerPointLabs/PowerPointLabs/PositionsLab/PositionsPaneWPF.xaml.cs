@@ -1115,6 +1115,10 @@ namespace PowerPointLabs.PositionsLab
                             {
                                 this.GetCurrentSlide().Shapes[1].Delete();
                             }
+                            else
+                            {
+                                break;
+                            }
                         }
                         // Remove any outlier extra shapes not deleted previously
                         // Only triggered for cases where Distribute is called for cases consisting of both
@@ -1588,6 +1592,10 @@ namespace PowerPointLabs.PositionsLab
                             if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
                             {
                                 this.GetCurrentSlide().Shapes[1].Delete();
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
                         // Remove any outlier extra shapes not deleted previously
