@@ -14,7 +14,7 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. [Installation Failure caused by ClickOnce Cache](#clickonce-cache)
 1. [Referenced Assembly Not Installed](#assembly-not-installed)
 1. [Corrupted Zip Installer](#corrupted-zip)
-1. [Preexisting Similar Application Issue](#preexisting-application)
+1. [Installation Error due to Preexisting Similar Application](#preexisting-application)
 1. [Error Loading Manifest from MahApps.Metro.dll](#error-manifest)
 
 ## Certificate Not Trusted<a name="cert-not-trusted"></a>
@@ -106,7 +106,7 @@ Unable to unzip the installer and/or error message associated with operation of 
 1. Re-download the installer files and try installing again
 1. If multiple re-downloads fail, download the setup.exe directly [here](https://www.google.com/url?q=http%3A%2F%2Fwww.comp.nus.edu.sg%2F~pptlabs%2Fdownload-78563%2FPowerPointLabsInstaller.zip) and re-install
 
-## Preexisting Similar Application Issue<a name="preexisting-application"></a>
+## Installation Error due to Preexisting Similar Application<a name="preexisting-application"></a>
 #### Error Message
 ![Alt text](../doc/images/TechnicalFAQ/preexisting-app.png)
 #### Solution
