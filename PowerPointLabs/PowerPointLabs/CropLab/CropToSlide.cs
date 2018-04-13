@@ -55,6 +55,19 @@ namespace PowerPointLabs.CropLab
             return true;
         }
 
+        private static RectangleF GetCropArea(Shape shape, float slideWidth, float slideHeight)
+        {
+            float cropTop = Math.Max(0, shape.Top);
+            float cropLeft = Math.Max(0, shape.Left);
+            float cropHeight = shape.Height - Math.Max(0, -shape.Top);
+            float cropWidth = shape.Width - Math.Max(0, -shape.Left);
+
+            cropHeight = Math.Min(slideHeight - cropTop, cropHeight);
+            cropWidth = Math.Min(slideWidth - cropLeft, cropWidth);
+
+            return new RectangleF(cropLeft, cropTop, cropWidth, cropHeight);
+        }
+
         private static RectangleF GetAbsoluteBounds(Shape shape)
         {
             float rotation = (float)CommonUtil.DegreeToRadian(shape.Rotation);
@@ -85,19 +98,6 @@ namespace PowerPointLabs.CropLab
         {
             return new PointF((float)(point.X * Math.Cos(theta) - point.Y * Math.Sin(theta)),
                             (float)(point.X * Math.Sin(theta) + point.Y * Math.Cos(theta)));
-        }
-
-        private static RectangleF GetCropArea(Shape shape, float slideWidth, float slideHeight)
-        {
-            float cropTop = Math.Max(0, shape.Top);
-            float cropLeft = Math.Max(0, shape.Left);
-            float cropHeight = shape.Height - Math.Max(0, -shape.Top);
-            float cropWidth = shape.Width - Math.Max(0, -shape.Left);
-
-            cropHeight = Math.Min(slideHeight - cropTop, cropHeight);
-            cropWidth = Math.Min(slideWidth - cropLeft, cropWidth);
-
-            return new RectangleF(cropLeft, cropTop, cropWidth, cropHeight);
         }
 
         private static bool CrossesSlideBoundary(RectangleF shape, float slideWidth, float slideHeight)

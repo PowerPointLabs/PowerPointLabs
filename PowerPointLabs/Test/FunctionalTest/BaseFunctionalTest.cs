@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting;
 using TestInterface;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Base;
 using Test.Util;
@@ -61,6 +62,37 @@ namespace Test.FunctionalTest
                         GetTestingSlideName()));
             }
             PpOperations.ClosePresentation();
+        }
+
+        protected static void CheckIfClipboardIsRestored(Action action, int actualSlideNum, string shapeNameToBeCopied, int expSlideNum, string expShapeNameToDelete, string expCopiedShapeName)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(actualSlideNum);
+            ShapeRange shapeToBeCopied = PpOperations.SelectShape(shapeNameToBeCopied);
+            Assert.AreEqual(1, shapeToBeCopied.Count);
+
+            // Add this shape to clipboard
+            shapeToBeCopied.Copy();
+            action();
+
+            // Paste whatever in clipboard
+            ShapeRange newShape = actualSlide.Shapes.Paste();
+
+            // Check if pasted shape is the same as the shape added to clipboard originally
+            Assert.AreEqual(shapeNameToBeCopied, newShape.Name);
+            Assert.AreEqual(shapeToBeCopied.Count, newShape.Count);
+
+            Slide expSlide = PpOperations.SelectSlide(expSlideNum);
+            if (expShapeNameToDelete != "")
+            {
+                PpOperations.SelectShape(expShapeNameToDelete)[1].Delete();
+            }
+
+            //Set the pasted shape location because the location of the pasted shape is flaky
+            Shape expCopied = PpOperations.SelectShape(expCopiedShapeName)[1];
+            newShape.Top = expCopied.Top;
+            newShape.Left = expCopied.Left;
+
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
         private void ConnectPpl()

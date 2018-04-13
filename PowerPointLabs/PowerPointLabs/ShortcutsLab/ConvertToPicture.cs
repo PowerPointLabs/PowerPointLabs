@@ -88,6 +88,7 @@ namespace PowerPointLabs.ShortcutsLab
                     pic.ZOrder(Office.MsoZOrderCmd.msoBringForward);
                 }
                 pic.Select();
+                return pic;
             }, pres, slide);
         }
 

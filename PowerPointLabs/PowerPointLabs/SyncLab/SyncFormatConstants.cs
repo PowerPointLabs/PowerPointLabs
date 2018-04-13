@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Documents;
 using PowerPointLabs.SyncLab.Views;
 using Font = System.Drawing.Font;
 
@@ -18,20 +17,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public static readonly int ColorBlack = 0;
         public static readonly int DisplayLineWeight = 5;
 
-        private static FormatTreeNode[] formatCategories = InitFormatCategories();
-
-        public static FormatTreeNode[] FormatCategories
-        {
-            get
-            {
-                FormatTreeNode[] result = new FormatTreeNode[formatCategories.Length];
-                for (int i = 0; i < result.Length; i++)
-                {
-                    result[i] = formatCategories[i].Clone();
-                }
-                return result;
-            }
-        }
+        public static FormatTreeNode[] FormatCategories => CreateFormatCategories();
 
         public static List<Format> Formats
         {
@@ -45,7 +31,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         
         /// <Summary>
         /// Collect all format objects from an array of FormatTreeNodes
-        /// <Summary>
+        /// </Summary>
         /// <param name="nodes"></param>
         /// <returns>Collected formats</returns>
         private static Format[] GetFormatsFromFormatTreeNode(FormatTreeNode[] nodes)
@@ -66,37 +52,42 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             return list.ToArray();
         }
 
-        private static FormatTreeNode[] InitFormatCategories()
+        private static FormatTreeNode[] CreateFormatCategories()
         {
             FormatTreeNode[] formats =
                 {
                     new FormatTreeNode(
                             "Text",
-                            new FormatTreeNode("Font", new Format(typeof(FontFormat))),
-                            new FormatTreeNode("Font Size", new Format(typeof(FontSizeFormat))),
-                            new FormatTreeNode("Font Color", new Format(typeof(FontColorFormat))),
-                            new FormatTreeNode("Style", new Format(typeof(FontStyleFormat)))),
+                            new FormatTreeNode("Font", new FontFormat()),
+                            new FormatTreeNode("Font Size", new FontSizeFormat()),
+                            new FormatTreeNode("Font Color", new FontColorFormat()),
+                            new FormatTreeNode("Style", new FontStyleFormat())),
                     new FormatTreeNode(
                             "Fill",
-                            new FormatTreeNode("Color", new Format(typeof(FillFormat))),
-                            new FormatTreeNode("Transparency", new Format(typeof(FillTransparencyFormat)))),
+                            new FormatTreeNode("Color", new FillFormat()),
+                            new FormatTreeNode("Transparency", new FillTransparencyFormat())),
                     new FormatTreeNode(
                             "Line",
-                            new FormatTreeNode("Width", new Format(typeof(LineWeightFormat))),
-                            new FormatTreeNode("Compound Type", new Format(typeof(LineCompoundTypeFormat))),
-                            new FormatTreeNode("Dash Type", new Format(typeof(LineDashTypeFormat))),
-                            new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat))),
-                            new FormatTreeNode("Color", new Format(typeof(LineFillFormat))),
-                            new FormatTreeNode("Transparency", new Format(typeof(LineTransparencyFormat)))),
+                            new FormatTreeNode("Width", new LineWeightFormat()),
+                            new FormatTreeNode("Compound Type", new LineCompoundTypeFormat()),
+                            new FormatTreeNode("Dash Type", new LineDashTypeFormat()),
+                            new FormatTreeNode("Arrow", new LineArrowFormat()),
+                            new FormatTreeNode("Color", new LineFillFormat()),
+                            new FormatTreeNode("Transparency", new LineTransparencyFormat())),
                     new FormatTreeNode(
                             "Visual Effects",
-                            new FormatTreeNode("Artistic Effect", new Format(typeof(PictureEffectsFormat)))),
+                            new FormatTreeNode("Artistic Effect", new PictureEffectsFormat()),
+                            new FormatTreeNode("Glow", 
+                                new FormatTreeNode("Color", new GlowColorFormat()),
+                                new FormatTreeNode("Size", new GlowSizeFormat()),
+                                new FormatTreeNode("Transparency", new GlowTransparencyFormat())),
+                            new FormatTreeNode("Shadow", new ShadowEffectFormat())),
                     new FormatTreeNode(
                             "Size/Position",
-                            new FormatTreeNode("Width", new Format(typeof(PositionWidthFormat))),
-                            new FormatTreeNode("Height", new Format(typeof(PositionHeightFormat))),
-                            new FormatTreeNode("X", new Format(typeof(PositionXFormat))),
-                            new FormatTreeNode("Y", new Format(typeof(PositionYFormat))))
+                            new FormatTreeNode("Width", new PositionWidthFormat()),
+                            new FormatTreeNode("Height", new PositionHeightFormat()),
+                            new FormatTreeNode("X", new PositionXFormat()),
+                            new FormatTreeNode("Y", new PositionYFormat()))
                 };
             return formats;
         }

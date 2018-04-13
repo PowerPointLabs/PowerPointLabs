@@ -7,9 +7,9 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class FillFormat
+    class FillFormat: Format 
     {
-        public static bool CanCopy(Shape formatShape)
+        public override bool CanCopy(Shape formatShape)
         {
             Shape duplicateShape = formatShape.Duplicate()[1];
             bool canCopy = Sync(formatShape, duplicateShape);
@@ -17,7 +17,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             return canCopy;
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public override void SyncFormat(Shape formatShape, Shape newShape)
         {
             if (!Sync(formatShape, newShape))
             {
@@ -25,7 +25,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
-        public static Bitmap DisplayImage(Shape formatShape)
+        public override Bitmap DisplayImage(Shape formatShape)
         {
             Shapes shapes = SyncFormatUtil.GetTemplateShapes();
             Shape shape = shapes.AddShape(
@@ -146,5 +146,6 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
             newShape.Fill.RotateWithObject = formatShape.Fill.RotateWithObject;
         }
+
     }
 }
