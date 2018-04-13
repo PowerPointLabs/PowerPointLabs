@@ -5,14 +5,14 @@ using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class PositionHeightFormat
+    class PositionHeightFormat: Format
     {
-        public static bool CanCopy(Shape formatShape)
+        public override bool CanCopy(Shape formatShape)
         {
             return true;
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public override void SyncFormat(Shape formatShape, Shape newShape)
         {
             MsoTriState lockState = newShape.LockAspectRatio;
             newShape.LockAspectRatio = MsoTriState.msoFalse;
@@ -20,7 +20,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             newShape.LockAspectRatio = lockState;
         }
 
-        public static Bitmap DisplayImage(Shape formatShape)
+        public override Bitmap DisplayImage(Shape formatShape)
         {
             return SyncFormatUtil.GetTextDisplay(
                 Math.Round(formatShape.Height).ToString(),

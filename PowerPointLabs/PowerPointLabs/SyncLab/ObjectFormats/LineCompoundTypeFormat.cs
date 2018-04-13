@@ -7,14 +7,14 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class LineCompoundTypeFormat
+    class LineCompoundTypeFormat: Format
     {
-        public static bool CanCopy(Shape formatShape)
+        public override bool CanCopy(Shape formatShape)
         {
             return Sync(formatShape, formatShape);
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public override void SyncFormat(Shape formatShape, Shape newShape)
         {
             if (!Sync(formatShape, newShape))
             {
@@ -22,7 +22,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
-        public static Bitmap DisplayImage(Shape formatShape)
+        public override Bitmap DisplayImage(Shape formatShape)
         {
             Shapes shapes = SyncFormatUtil.GetTemplateShapes();
             Shape shape = shapes.AddLine(

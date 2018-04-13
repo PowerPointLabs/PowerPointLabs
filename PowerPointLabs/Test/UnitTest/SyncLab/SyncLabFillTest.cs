@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
 namespace Test.UnitTest.SyncLab
@@ -34,20 +34,20 @@ namespace Test.UnitTest.SyncLab
         [TestCategory("UT")]
         public void TestSyncFill()
         {
-            syncFill(SolidFill, SyncSolidFillSlideNo);
-            syncFill(PatternFill, SyncPatternFillSlideNo);
-            syncFill(BackgroundFill, SyncBackgroundFillSlideNo);
+            SyncFill(SolidFill, SyncSolidFillSlideNo);
+            SyncFill(PatternFill, SyncPatternFillSlideNo);
+            SyncFill(BackgroundFill, SyncBackgroundFillSlideNo);
         }
 
         [TestMethod]
         [TestCategory("UT")]
         public void TestSyncGradientFill()
         {
-            syncFill(TwoGradientFill, SyncTwoGradientFillSlideNo);
-            syncFill(DiagonalGradientFill, SyncDiagonalGradientFillSlideNo);
-            syncFill(RectangularGradientFill, SyncRectangularGradientFillSlideNo);
-            syncFill(PathGradientFill, SyncPathGradientFillSlideNo);
-            syncFill(NineGradientFill, SyncNineGradientFillSlideNo);
+            SyncFill(TwoGradientFill, SyncTwoGradientFillSlideNo);
+            SyncFill(DiagonalGradientFill, SyncDiagonalGradientFillSlideNo);
+            SyncFill(RectangularGradientFill, SyncRectangularGradientFillSlideNo);
+            SyncFill(PathGradientFill, SyncPathGradientFillSlideNo);
+            SyncFill(NineGradientFill, SyncNineGradientFillSlideNo);
         }
 
         [TestMethod]
@@ -57,18 +57,18 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, SolidFill);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FillTransparencyFormat.SyncFormat(formatShape, newShape);
+            new FillTransparencyFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncTransparencySlideNo);
             CheckTransparency(CopyToShape, OriginalShapesSlideNo, SyncTransparencySlideNo);
         }
 
-        protected void syncFill(string shapeToCopy, int expectedSlideNo)
+        protected void SyncFill(string shapeToCopy, int expectedSlideNo)
         {
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, shapeToCopy);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            FillFormat.SyncFormat(formatShape, newShape);
+            new FillFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, expectedSlideNo);
             CheckTransparency(CopyToShape, OriginalShapesSlideNo, expectedSlideNo);
@@ -80,7 +80,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape actualShape = GetShape(actualShapesSlideNo, shape);
             Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, shape);
 
-            Assert.IsTrue(actualShape.Fill.Transparency == expectedShape.Fill.Transparency,
+            Assert.IsTrue(Math.Abs(actualShape.Fill.Transparency - expectedShape.Fill.Transparency) < 0.001,
                 "different transparency. exp:{0}, actual:{1}",
                 expectedShape.Fill.Transparency, actualShape.Fill.Transparency);
         }
