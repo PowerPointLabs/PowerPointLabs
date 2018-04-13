@@ -110,7 +110,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                                 new FormatTreeNode("Lighting", 
                                     new FormatTreeNode("Angle", new LightingAngleFormat()),
                                     new FormatTreeNode("Preset Lighting", new LightingEffectFormat())),
-                                new FormatTreeNode("Material", new MaterialEffectFormat()))),
+                                new FormatTreeNode("Material", new MaterialEffectFormat())),
+                            new FormatTreeNode("3D Rotation", new ThreeDRotationEffectFormat())),
                     new FormatTreeNode(
                             "Size/Position",
                             new FormatTreeNode("Width", new PositionWidthFormat()),
