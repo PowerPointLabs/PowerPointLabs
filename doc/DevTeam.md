@@ -7,35 +7,38 @@ Team Leads: Ian Teo, Ong Heng Le
 
 Senior Devs: Ang Shi Ya, Jamos Tay, Kenneth Loh, Syed Abdullah
 
+Team Members: Alex Fong, Lee Yan Hwa, Tan Jun Kiat
+
 ## Project Areas
-Area | Responsibilities | Lead | Co-Lead | Past Leads
------|------------------|------|---------|-----|
-Community | Community growth, user support | Kenneth | Heng Le | Fiona |
-Docs | Website, tutorials, dev docs | Jamos | Shi Ya | Fiona |
-DevOps | Installer, issue tracker, releases, CI | Syed | Kenneth | Hanyang |
-Quality | Code quality, design quality | Heng Le | Jamos | Kai |
-Testing | Test coverage, test automation | Ian | Syed | Kai |
-UI/UX | UI matters, UX matters | Shi Ya | Ian |  |
+Area | Responsibilities | Lead | Past Leads
+-----|------------------|------|-----|
+Community | Community growth, user support | Alex | Kenneth |
+Docs | Website, tutorials, dev docs | Jun Kiat | Jamos |
+DevOps | Installer, issue tracker, releases, CI | Yan Hwa | Syed |
+Quality | Code quality, design quality | Alex | Heng Le |
+Testing | Test coverage, test automation | Yan Hwa | Ian |
+UI/UX | UI matters, UX matters | Jun Kiat | Shi Ya |
 
 ## Project Features
-Feature  | Lead | Co-Lead | Past Leads
------|------|---------|-----|
-AgendaLab | Syed |  | Shunhao, Huang Da
-AnimationLab (d) | Ian |  | Raunak
-CaptionsLab | Kenneth |  | Jerome
-ColorsLab | Ian | Heng Le | Karan
-CropLab | Heng Le | Jamos | Raunak
-EffectsLab | Ian | Heng Le | Fiona
-HighlightLab | Syed |  | Karan
-NarrationsLab | Kenneth |  | Jerome
-PasteLab | Syed | Heng Le |
-PictureSlideLab | Shi Ya |  | Xie Kai
-PositionsLab | Jamos |  | Oswell, Victor
-ResizeLab | Min Oo | Yu Ting |  
-ShapesLab (d) | Ian | Kenneth | Huang Da
-ShortcutsLab | Heng Le | Ian | Raunak
-SyncLab | Ian | Kenneth |
-TimerLab | Shi Ya | Heng Le |
-ZoomLab | Shi Ya |  | Raunak
+Feature  | Lead | Past Leads
+-----|------|-----|
+AgendaLab | Yan Hwa | Syed
+AnimationLab (d) | Ian |
+CaptionsLab | Yan Hwa | Kenneth
+ColorsLab | Ian |
+CropLab | Jun Kiat | Heng Le
+EffectsLab | Ian |
+HighlightLab | Syed |
+NarrationsLab | Kenneth |
+PasteLab | Jun Kiat | Syed
+PictureSlideLab | Shi Ya |
+PositionsLab | Jamos |
+ResizeLab | Min Oo |
+SaveLab | Jun Kiat |
+ShapesLab (d) | Yan Hwa | Ian
+ShortcutsLab | Heng Le | Heng Le
+SyncLab | Alex | Ian
+TimerLab | Shi Ya |
+ZoomLab | Shi Ya |
 
 Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
