@@ -11,7 +11,7 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. [VSTO Opens as XML Error](#vsto-as-xml)
 1. [Missing PowerPointLabs Ribbon](#missing-ribbon)
 1. [Corruption requiring renaming of VSTOInstaller.exe.config File](#rename-vsto-file)
-1. [Installation failure caused by ClickOnce Cache](#clickonce-cache)
+1. [Installation Failure caused by ClickOnce Cache](#clickonce-cache)
 1. [Referenced Assembly Not Installed](#assembly-not-installed)
 1. [Corrupted Zip Installer](#corrupted-zip)
 1. [Preexisting Similar Application Issue](#preexisting-application)
@@ -74,7 +74,7 @@ After installation, PowerPointLabs ribbon do not show even after launching Power
 1. Ensure that you have admin permissions and follow these [instructions](https://msdn.microsoft.com/en-sg/library/ms178739.aspx) to re-install Visual Studio Tools for Office runtime
 1. Ensure that you right-click on the `vstor_redist.exe` (VSTO Installer) installation file and choose `Run as Administrator` before starting the installation
 
-## Installation failure caused by ClickOnce Cache<a name="clickonce-cache"></a>
+## Installation Failure caused by ClickOnce Cache<a name="clickonce-cache"></a>
 #### Error Message
 ![Alt text](../doc/images/TechnicalFAQ/clickonce-cache.png)
 #### Solution
