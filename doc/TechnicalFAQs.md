@@ -6,12 +6,12 @@ If better solutions to any issue are found, or if there is a need for any clarif
 
 ### Table of Issues
 1. [Certificate Not Trusted](#cert-not-trusted)
-1. [VSTO Installer Config](#vsto-installer-config)
+1. [VSTO Installer Config Error](#vsto-installer-config)
 1. [NET Framework Not Installed](#net-not-installed)
-1. [VSTO Opens as XML](#vsto-as-xml)
+1. [VSTO Opens as XML Error](#vsto-as-xml)
 1. [Missing PowerPointLabs Ribbon](#missing-ribbon)
-1. [Renaming VSTOInstaller.exe.config File](#rename-vsto-file)
-1. [ClickOnce Cache](#clickonce-cache)
+1. [Corruption requiring renaming of VSTOInstaller.exe.config File](#rename-vsto-file)
+1. [Installation failure caused by ClickOnce Cache](#clickonce-cache)
 1. [Referenced Assembly Not Installed](#assembly-not-installed)
 1. [Corrupted Zip Installer](#corrupted-zip)
 1. [Preexisting Similar Application](#preexisting-application)
@@ -25,7 +25,7 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. If standalone is not working, click OK for the batch file and install again
 1. Else, verify admin permission and install again
 
-## VSTO Installer Config<a name="vsto-installer-config"></a>
+## VSTO Installer Config Error<a name="vsto-installer-config"></a>
 #### Error Message
 ![Alt text](../doc/images/TechnicalFAQ/vsto-installer-config.png)
 #### Solution
@@ -43,7 +43,7 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. Follow these [instructions](https://msdn.microsoft.com/en-sg/library/ms178739.aspx) to install Visual Studio Tools for Office runtime
 1. Install PowerPointLabs again
 
-## VSTO Opens as XML<a name="vsto-as-xml"></a>
+## VSTO Opens as XML Error<a name="vsto-as-xml"></a>
 #### Error
 Add-in failed to install, and browswer opens up with the following image
 ![Alt text](../doc/images/TechnicalFAQ/vsto-as-xml.png)
@@ -66,7 +66,7 @@ After installation, PowerPointLabs ribbon do not show even after launching Power
    1. Check `PowerPointLabs` to enable it and click `OK`
    1. Restart PowerPoint
 
-## Renaming VSTOInstaller.exe.config File<a name="rename-vsto-file"></a>
+## Corruption requiring renaming of VSTOInstaller.exe.config File<a name="rename-vsto-file"></a>
 #### Error Message
 ![Alt text](../doc/images/TechnicalFAQ/rename-vsto-file.png)
 #### Solution
@@ -74,7 +74,7 @@ After installation, PowerPointLabs ribbon do not show even after launching Power
 1. Ensure that you have admin permissions and follow these [instructions](https://msdn.microsoft.com/en-sg/library/ms178739.aspx) to re-install Visual Studio Tools for Office runtime
 1. Ensure that you right-click on the `vstor_redist.exe` (VSTO Installer) installation file and choose `Run as Administrator` before starting the installation
 
-## ClickOnce Cache<a name="clickonce-cache"></a>
+## Installation failure caused by ClickOnce Cache<a name="clickonce-cache"></a>
 #### Error Message
 ![Alt text](../doc/images/TechnicalFAQ/clickonce-cache.png)
 #### Solution
