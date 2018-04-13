@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Documents;
 using PowerPointLabs.SyncLab.Views;
+using Font = System.Drawing.Font;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -87,6 +88,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Arrow", new Format(typeof(LineArrowFormat))),
                             new FormatTreeNode("Color", new Format(typeof(LineFillFormat))),
                             new FormatTreeNode("Transparency", new Format(typeof(LineTransparencyFormat)))),
+                    new FormatTreeNode(
+                            "Visual Effects",
+                            new FormatTreeNode("Artistic Effect", new Format(typeof(PictureEffectsFormat)))),
                     new FormatTreeNode(
                             "Size/Position",
                             new FormatTreeNode("Width", new Format(typeof(PositionWidthFormat))),
