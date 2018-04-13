@@ -36,7 +36,7 @@ PositionsLab | Jamos |
 ResizeLab | Min Oo |
 SaveLab | Jun Kiat |
 ShapesLab (d) | Yan Hwa | Ian
-ShortcutsLab | Heng Le | Heng Le
+ShortcutsLab | Heng Le |
 SyncLab | Alex | Ian
 TimerLab | Shi Ya |
 ZoomLab | Shi Ya |
