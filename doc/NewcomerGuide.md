@@ -11,7 +11,9 @@ For official Microsoft documentation on PowerPoint API, visit the website [here]
 1. Create a branch from `PowerPointLabs/dev-release`. Your branch name should follow this convention: `issueNumber-description-of-issue` e.g. `123-fix-blur-incorrect-selection`
 1. Fix bugs or develop on that branch
 1. Do a pull request to `PowerPointLabs/dev-release` from your branch. The pull request title should be same as the issue title with the issue number included (refer to past pull requests). Give a brief description of what you fixed and the reasoning behind your fix to aid the reviewer
-1. Most of your codes will be in dev-release until they are properly tested. When ready, they will be merged into master and released to the public.
+1. Most of your codes will be in dev-release until they are properly tested. When ready, they will be merged into master and released to the public
+
+Note: If you are going update any documentation on the PowerPointLabs Github page, create your branch from `PowerPointLabs/master` and make any subsequent pull request(s) to `PowerPointLabs/master` instead of `PowerPointLabs/dev-release`
 
 ## Workflow of PowerPointLabs-Website
 1. Create a branch from `master`
