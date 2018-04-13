@@ -19,9 +19,9 @@ For official Microsoft documentation on PowerPoint API, visit the website [here]
 1. Make a pull request with similar naming convention as above
 1. Once the change is accepted, wait for reviewer to merge the branch into `master` and upload the website for the public. Ensure that the [website](http://www.comp.nus.edu.sg/~pptlabs/) can be viewed and displays the latest changes correctly
 
-## Creating a New Lab
+## Creating Features/Enhancements/New labs
 As a rule of thumb:
-1. Your codes should never use `#pragma warning disable 0618`. Use methods from ActionFramework instead
+1. Your codes should refrain from using `#pragma warning disable 0618`, unless absolutely needed. Use methods from `ActionFramework` instead
 1. All features/bug fixes should be accompanied by tests and documentation
 1. When creating a new lab, use the following existing labs as a guide:
    1. If lab does not require a pane: *Crop Lab*
