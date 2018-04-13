@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using Microsoft.Office.Core;
 using PowerPointLabs.SyncLab.Views;
 using Font = System.Drawing.Font;
 
@@ -9,8 +10,17 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     {
 
         public static readonly Size DisplayImageSize = new Size(30, 30);
+        
+        // values for bevel display
+        public static readonly float DisplayImageDepth = 15;
+        public static readonly float DisplayBevelWidth = 5;
+        public static readonly float DisplayBevelHeight = 5;
+        public static readonly MsoBevelType DisplayBevelType = MsoBevelType.msoBevelCircle;
+        public static readonly MsoPresetCamera DisplayCameraPreset = MsoPresetCamera.msoCameraIsometricOffAxis2Top;
 
+        public static readonly string DisplaySizeUnit = "pt";
         public static readonly string DisplayFontString = "Text";
+        public static readonly string DisplayDegreeSymbol = "°";
         public static readonly int DisplayImageFontSize = 12;
         public static readonly Font DisplayImageFont = new Font("Arial", DisplayImageFontSize);
 
@@ -88,6 +98,19 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                                 new FormatTreeNode("Distance", new ReflectionDistanceFormat())),
                             new FormatTreeNode("Shadow", new ShadowEffectFormat()),
                             new FormatTreeNode("Soft Edge", new SoftEdgeEffectFormat()),
+                            new FormatTreeNode("3D Effects", 
+                                new FormatTreeNode("Bevel Top", new BevelTopFormat()),
+                                new FormatTreeNode("Bevel Bottom", new BevelBottomFormat()),
+                                new FormatTreeNode("Contour", 
+                                    new FormatTreeNode("Color", new ContourColorFormat()),
+                                    new FormatTreeNode("Width", new ContourWidthFormat())),
+                                new FormatTreeNode("Depth", 
+                                    new FormatTreeNode("Color", new DepthColorFormat()),
+                                    new FormatTreeNode("Size", new DepthSizeFormat())),
+                                new FormatTreeNode("Lighting", 
+                                    new FormatTreeNode("Angle", new LightingAngleFormat()),
+                                    new FormatTreeNode("Preset Lighting", new LightingEffectFormat())),
+                                new FormatTreeNode("Material", new MaterialEffectFormat())),
                             new FormatTreeNode("3D Rotation", new ThreeDRotationEffectFormat())),
                     new FormatTreeNode(
                             "Size/Position",

@@ -652,6 +652,15 @@
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="SyncLab\ObjectFormats\BevelBottomFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\BevelTopFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ContourColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ContourWidthFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\DepthColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\DepthSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LightingAngleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LightingEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
