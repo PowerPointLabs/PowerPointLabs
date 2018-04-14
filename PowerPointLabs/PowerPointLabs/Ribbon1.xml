@@ -3,7 +3,7 @@
   <ribbon>
     <contextualTabs>
       <tabSet idMso="TabSetDrawingTools">
-        <tab idMso="TabDrawingToolsFormat">
+        <tab idMso="TabDrawingToolsFormat" getVisible="ToggleVisibleFormatTab">
           <group id="AdditionalFeatures"
                  label="Other"
                  insertBeforeMso="GroupShapeStyles"
@@ -540,6 +540,10 @@
                     onAction="OnAction"/>
           </menu>
           
+        </group>
+        
+        <group id="Visibility" label="Tab Management">
+          <checkBox id="VisibleFormatShapes" enabled="true" label="Maintain Tab Focus" supertip="Stay on PowerPointLabs tab after inserting a shape" onAction="ToggleVisibility"/>
         </group>
         
       </tab>

@@ -44,7 +44,7 @@
     <PublishUrl>C:\publish\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.2.0.0</ApplicationVersion>
+    <ApplicationVersion>4.3.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -652,9 +652,28 @@
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="SyncLab\ObjectFormats\BevelBottomFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\BevelTopFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ContourColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ContourWidthFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\DepthColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\DepthSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LightingAngleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LightingEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
-    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ArtisticEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionBlurFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionDistanceFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionTransparencyFormat.cs" />
     <Compile Include="ShortcutsLab\FillSlide.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />

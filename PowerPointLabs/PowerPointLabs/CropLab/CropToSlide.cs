@@ -55,7 +55,7 @@ namespace PowerPointLabs.CropLab
             return true;
         }
 
-        public static RectangleF GetCropArea(Shape shape, float slideWidth, float slideHeight)
+        private static RectangleF GetCropArea(Shape shape, float slideWidth, float slideHeight)
         {
             float cropTop = Math.Max(0, shape.Top);
             float cropLeft = Math.Max(0, shape.Left);

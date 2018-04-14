@@ -163,8 +163,14 @@
     <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
-    <Compile Include="UnitTest\SyncLab\SyncLabVisualEffectsTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabReflectionEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabThreeDRotationEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabGlowEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabShadowEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabArtisticEffectTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabSoftEdgeEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabLineTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabThreeDEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFontTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabFillTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabPositionTest.cs" />
