@@ -7,7 +7,7 @@ Follow these instructions to produce consistent GIFs to be displayed in the Powe
    1. Recordings: Use Recorded Timings and Narrations
    1. Seconds spent on each slide: 00.50
 1. Click `Create Video`
-1. [Download](https://www.google.com/url?q=https%3A%2F%2Ffree_video_to_gif_converter.en.softonic.com%2F) a MP4-to-GIF Converter
+1. [Download](https://free_video_to_gif_converter.en.softonic.com/) a MP4-to-GIF Converter
 1. Convert exported video into GIF using following settings:
    1. Dimensions: 200px by 150px
    1. Color Matching: Excellent Quality
