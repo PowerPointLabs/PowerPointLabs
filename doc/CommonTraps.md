@@ -19,7 +19,7 @@ This document details the common pitfalls when developing for PowerPointLabs, so
    
 1. Some Office APIs are not supported for Office 2010, e.g. `MergeShape`. When developing, special attention needs to be given to APIs available for Office 2010
 
-1. Some Office APIs may not work correctly, e.g. `WindowBeforeDoubleClick` event. You may have to use a workaround
+1. Some Office APIs may not work correctly, e.g. `WindowBeforeDoubleClick` event. You may have to use a workaround. Be sure to include a short comment in the code if a non-conventional workaround is used
 
 1. When a shape is rotated, its position attributes, i.e. `left` and `top`, will always return the value when its rotation angle is at zero. Thus to get the rotated position, you may calculate it using its [rotation matrix](http://en.wikipedia.org/wiki/Rotation_matrix)
 
