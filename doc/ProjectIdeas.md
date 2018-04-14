@@ -6,8 +6,8 @@ This guide serves as a curated list of possible new features or potential enhanc
 
 ### Widgets Lab
 This lab can represent a collection of commonly used PowerPoint widgets such as:
-1. [Polls](https://www.google.com/url?q=http%3A%2F%2Fwww.participoll.com%2F)
-1. [Timer](https://www.google.com/url?q=http%3A%2F%2Fyoupresent.biz%2Ffree-stuff%2Ffree-powerpoint-stopwatch%2F)
+1. [Polls](https://www.participoll.com/)
+1. [Timer](http://youpresent.co.uk/free-stuff/free-powerpoint-stopwatch/)
 1. [Wheel of fortune](http://www.giftedguru.com/wheel-of-choice-free-download/)
 1. Progress Bar
 
