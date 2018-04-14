@@ -29,12 +29,12 @@ If better solutions to any issue are found, or if there is a need for any clarif
 #### Error Message
 ![Alt text](../doc/images/TechnicalFAQ/vsto-installer-config.png)
 #### Solution
-1. Click the Windows Start button and paste `<VSTO Folder Path>` into the search box. Note that `<VSTO Folder Path>` would be stated in the error message
+1. Click the Windows Start button and paste `<VSTO Folder Path>` into the search box. Note that `<VSTO Folder Path>` would be stated in the error message, e.g. `C:\Program Files (x86)\Common Files\Microsoft Shared\VSTO\10.0`
 1. Enter and it should open up the VSTO folder
-1. Find a file named `VSTOInstaller.exe.config`
-1. Rename the file to `VSTOInstaller.exe.config.old`. Ignore Windows warning about the file becoming unusable
+1. Find a file named `VSTOInstaller.exe.Config`
+1. Rename the file to `VSTOInstaller.exe.Config.old`. Ignore Windows warning about the file becoming unusable
 1. Run PowerPointLabs installer again
-1. After installation has completed, reopen the VSTO folder and rename the file back to `VSTOInstaller.exe.config` again
+1. After installation has completed, reopen the VSTO folder and rename the file back to `VSTOInstaller.exe.Config` again
 
 ## NET Framework Not Installed<a name="net-not-installed"></a>
 #### Error Message
@@ -122,7 +122,7 @@ Unable to unzip the installer and/or error message associated with operation of 
 #### Solution
 1. Open `Start`
 1. Type `cmd` and press `Enter`
-1. Type in `cd C:\Users\pvolowz\AppData\Local\Temp\Deployment\1HKX7LKW.XZD\HYEJO9YP.GNM`
+1. Type in `cd %LocalAppData%\Temp\Deployment\1HKX7LKW.XZD\HYEJO9YP.GNM`
 1. Type in `tasklist.exe /m MahApps.Metro.dll`
 1. Determine which process is using the dll and end it if possible
-1. Else, delete folder `C:\Users\pvolowz\AppData\Local\Temp\Deployment` and reinstall PowerPointLabs again
+1. Else, temporarily disable any anti-virus software that may be preventing the use of the .dll file and then delete folder `%LocalAppData%\Temp\Deployment`, before reinstalling PowerPointLabs again
