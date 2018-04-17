@@ -17,8 +17,8 @@ namespace PowerPointLabs.SyncLab
     /// Eg: PlaceHolders are saved as Textboxes
     /// 
     /// 2013:
-    /// Fill color is wrong on 2013 after copying the shape, use a workabout to fix this
-    /// We use a workabout for 2013 to sync ArtisticEffecs, (2010 & 2016 do not require this)
+    /// We use a workabout to sync fill color, copying shapes gives the wrong fill
+    /// We use a workabout to sync ArtisticEffecs, (2010 & 2016 do not require this)
     /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
