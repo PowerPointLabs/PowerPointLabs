@@ -17,7 +17,7 @@ namespace PowerPointLabs.SyncLab
     /// Eg: PlaceHolders are saved as Textboxes
     /// 
     /// 2013:
-    /// Fill color is wrong on 2013 after copying the shape we use a workabout to fix this
+    /// Fill color is wrong on 2013 after copying the shape, use a workabout to fix this
     /// We use a workabout for 2013 to sync ArtisticEffecs, (2010 & 2016 do not require this)
     /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
@@ -106,7 +106,7 @@ namespace PowerPointLabs.SyncLab
             #pragma warning disable 618
             if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
-                // sync glow, 2013 gives the wrong glow color after copying the shape
+                // sync glow, 2013 gives the wrong Glow.Fill color after copying the shape
                 SyncFormats(shape, copiedShape, _glowFormats);
                 // sync fill, 2013 gives the wrong fill color after copying the shape
                 SyncFormats(shape, copiedShape, _fillFormats);
