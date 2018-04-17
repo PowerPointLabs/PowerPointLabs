@@ -53,7 +53,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 // Color.SchemeColor must be skipped, setting it sometimes throws an exception for unknown reasons.
                 // Color.ObjectThemeColor must be set despite the unrelated description in documentation.
                 // The color intensity of glow will not match otherwise
-                dest.Color.ObjectThemeColor = source.Color.ObjectThemeColor;
+                
+                // syncing NotThemeColor throws an exception
+                if (source.Color.ObjectThemeColor != MsoThemeColorIndex.msoNotThemeColor)
+                {
+                    dest.Color.ObjectThemeColor = source.Color.ObjectThemeColor;
+                }
+                
                 dest.Color.RGB = source.Color.RGB;
                 dest.Color.Brightness = source.Color.Brightness;
                 dest.Color.TintAndShade = source.Color.TintAndShade;
