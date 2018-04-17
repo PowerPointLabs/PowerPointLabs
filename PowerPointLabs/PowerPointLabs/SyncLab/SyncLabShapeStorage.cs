@@ -29,11 +29,21 @@ namespace PowerPointLabs.SyncLab
         private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects = 
             new Dictionary<string, List<MsoPictureEffectType>>();
 
+        // need to sync all glow formats, syncing color alone resets transparency & radius
         // color must be synced first, it resets the transparency
         private readonly List<Format> _glowFormats = 
-            new List<Format> {new GlowColorFormat(),
-            new GlowTransparencyFormat(),
-            new GlowSizeFormat()};
+            new List<Format> 
+            {
+                new GlowColorFormat(),
+                new GlowTransparencyFormat(),
+                new GlowSizeFormat()
+            };
+
+        private readonly List<Format> _fillFormats =
+            new List<Format>
+            {
+                new FillFormat()
+            };
 
         private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
@@ -96,8 +106,11 @@ namespace PowerPointLabs.SyncLab
             #pragma warning disable 618
             if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
-                // need to sync all glow formats, syncing color alone resets transparency & radius
-                SyncGlowFormats(shape, copiedShape);
+                // sync glow, 2013 gives the wrong glow color after copying the shape
+                SyncFormats(shape, copiedShape, _glowFormats);
+                // sync fill, 2013 gives the wrong fill color after copying the shape
+                SyncFormats(shape, copiedShape, _fillFormats);
+                
                 // backup artistic effects for 2013
                 // ForceSave() will make artistic effect permernent on the shapes for 2013 and no longer retrievable
                 List<MsoPictureEffectType> extractedEffects = ArtisticEffectFormat.GetArtisticEffects(copiedShape);
@@ -165,9 +178,10 @@ namespace PowerPointLabs.SyncLab
             Slides[FormatStorageSlide].DeleteAllShapes();
             _backupArtisticEffects.Clear();
         }
-        private void SyncGlowFormats(Shape source, Shape destination)
+        
+        private void SyncFormats(Shape source, Shape destination, List<Format> formats)
         {
-            foreach (var format in _glowFormats)
+            foreach (var format in formats)
             {
                 if (format.CanCopy(source))
                 {
