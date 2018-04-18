@@ -5,19 +5,19 @@ using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class PositionXFormat
+    class PositionXFormat: Format
     {
-        public static bool CanCopy(Shape formatShape)
+        public override bool CanCopy(Shape formatShape)
         {
             return true;
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public override void SyncFormat(Shape formatShape, Shape newShape)
         {
             newShape.Left = formatShape.Left;
         }
 
-        public static Bitmap DisplayImage(Shape formatShape)
+        public override Bitmap DisplayImage(Shape formatShape)
         {
             return SyncFormatUtil.GetTextDisplay(
                 Math.Round(formatShape.Left).ToString(),

@@ -31,6 +31,9 @@ namespace PowerPointLabs.Utils
         public const float PictureExportingRatio = 96.0f / 72.0f;
         private const float TargetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+        // Heuristics for image compression obtained through testing
+        private const long targetCompression = 95L;
+        private const long fileSizeLimit = 75000L;
 
         // Static initializer to retrieve dpi scale once
         static GraphicsUtil()
@@ -94,6 +97,89 @@ namespace PowerPointLabs.Utils
                     file.Delete();
                 }
                 return bitmap;
+            }
+        }
+
+        public static Shape CompressImageInShape(Shape targetShape, PowerPointSlide currentSlide)
+        {
+            // Specify the temp location to be saved. Must be cleared before each new access to that location
+            string fileName = CommonText.TemporaryCompressedImageStorageFileName;
+            string tempFileStoragePath = Path.Combine(Path.GetTempPath(), fileName);
+
+            // Export the shape to extract the image within it
+            targetShape.Export(tempFileStoragePath, PpShapeFormat.ppShapeFormatJPG);
+
+            // Check if the image is acceptable in terms of size
+            FileInfo tempFile = new FileInfo(tempFileStoragePath);
+            tempFile.Refresh();
+            long fileLength = tempFile.Length;
+            if (fileLength < fileSizeLimit)
+            {
+                // Delete the file as it is not needed anymore
+                DeleteSpecificFilePath(tempFileStoragePath);
+
+                // Return the original shape
+                return targetShape;
+            }
+
+            // Create a new bitmap from the image representing the exported shape
+            Image img = Image.FromFile(tempFileStoragePath);
+            Bitmap imgBitMap = new Bitmap(img);
+
+            // Releases resources held by image object and delete temp file
+            img.Dispose();
+            DeleteSpecificFilePath(tempFileStoragePath);
+
+            // Compresses and save the bitmap based on the specified level of compression (0 -> lowest quality, 100 -> highest quality)
+            SaveJpg(imgBitMap, tempFileStoragePath, targetCompression);
+
+            // Retrieve the compressed image and return a shape representing the image
+            Shape compressedImgShape = currentSlide.Shapes.AddPicture(tempFileStoragePath,
+                    Microsoft.Office.Core.MsoTriState.msoFalse,
+                    Microsoft.Office.Core.MsoTriState.msoTrue,
+                    targetShape.Left,
+                    targetShape.Top);
+
+            // Delete temp file again to return to original empty state
+            DeleteSpecificFilePath(tempFileStoragePath);
+
+            // Delete targetShape to prevent duplication
+            targetShape.Delete();
+
+            return compressedImgShape;
+        }
+
+        // Save the file with a specific compression level.
+        private static void SaveJpg(Bitmap bm, string fileName, long compression)
+        {
+            System.Drawing.Imaging.EncoderParameters encoderParams = new System.Drawing.Imaging.EncoderParameters(1);
+            encoderParams.Param[0] = new System.Drawing.Imaging.EncoderParameter(
+                System.Drawing.Imaging.Encoder.Quality, compression);
+
+            System.Drawing.Imaging.ImageCodecInfo imageCodecInfo = GetEncoderInfo("image/jpeg");
+            File.Delete(fileName);
+            bm.Save(fileName, imageCodecInfo, encoderParams);
+        }
+
+        private static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mimeType)
+        {
+            System.Drawing.Imaging.ImageCodecInfo[] encoders = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
+            for (int i = 0; i <= encoders.Length; i++)
+            {
+                if (encoders[i].MimeType == mimeType)
+                {
+                    return encoders[i];
+                }
+            }
+            return null;
+        }
+
+        private static void DeleteSpecificFilePath(string filePath)
+        {
+            FileInfo file = new FileInfo(filePath);
+            if (file.Exists)
+            {
+                file.Delete();
             }
         }
 
