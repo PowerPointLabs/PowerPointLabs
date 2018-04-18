@@ -167,7 +167,7 @@ namespace PowerPointLabs.SyncLab.Views
         private ShapeRange GetSelectedShapesForFormatting()
         {
             Selection selection = this.GetCurrentSelection();
-            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
+            if ((selection == null) || (selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
             {
@@ -194,6 +194,7 @@ namespace PowerPointLabs.SyncLab.Views
             SyncFormatPaneItem item = new SyncFormatPaneItem(this, shapeKey, shapeStorage, formats);
             item.Text = name;
             item.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
+            
             formatListBox.Items.Insert(0, item);
             formatListBox.SelectedIndex = 0;
         }
@@ -212,6 +213,13 @@ namespace PowerPointLabs.SyncLab.Views
             }
 
             Shape shape = selection.ShapeRange[1];
+
+            if (shape.Type == MsoShapeType.msoSmartArt) 
+            {
+                MessageBox.Show(SyncLabText.ErrorSmartArtUnsupported, SyncLabText.ErrorDialogTitle);
+                return;
+            }
+            
             if (selection.HasChildShapeRange)
             {
                 if (selection.ChildShapeRange.Count != 1)
