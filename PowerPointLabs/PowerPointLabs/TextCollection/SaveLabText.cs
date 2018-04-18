@@ -13,10 +13,10 @@
         public const string SavePresentationsButtonLabel = "Save Presentation";
         public const string SaveLabSettingsButtonLabel = "Settings";
 
-        public const string RibbonMenuSupertip = "Use Save Lab to save presentations in a separate PowerPoint file.";
+        public const string RibbonMenuSupertip = "Use Save Lab to save selected slides as a separate presentation.";
         public const string SavePresentationsButtonSupertip =
-            "Save presentations to a desired file and location.\n\n" +
-            "To perform this action, select the slides to export, then click this button.";
+            "Save selected slides as a new presentation at a desired file location.\n\n" +
+            "To perform this action, select the desired slides to save, then click this button.";
         public const string SaveLabSettingsButtonSupertip = "Configure the default directory for Save Lab for a quick save.";
 
         public const string ErrorSavingPresentations = "Presentations could not be saved.";
