@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PowerPointLabs;
@@ -26,12 +26,15 @@ namespace Test.FunctionalTest
         private const int ExpectedSyncShapeToGroupSlideNo = 39;
         
         private const int HorizontalPlaceHolderSlideNo = 41;
-        private const int VerticalPlaceHolderSlideNo = 43;
         private const int CenterPlaceHolderSlideNo = 42;
+        private const int VerticalPlaceHolderSlideNo = 43;
         
-        private const int PicturePlaceHolderSlideNo = 46;
-        private const int ChartPlaceHolderSlideNo = 45;
         private const int TablePlaceHolderSlideNo = 44;
+        private const int ChartPlaceHolderSlideNo = 45;
+        private const int PicturePlaceHolderSlideNo = 46;
+        private const int SmartArtSlideNo = 47;
+        
+        private const int CustomPerspectiveShadowSlideNo = 48;
 
         private const string Line = "Straight Connector 2";
         private const string RotatedArrow = "Right Arrow 5";
@@ -39,6 +42,7 @@ namespace Test.FunctionalTest
         private const string Oval = "Oval 4";
         private const string CopyFromShape = "CopyFrom";
         private const string UnrotatedRectangle = "Rectangle 3";
+        private const string CustomPerspectiveShadow = "Custom Perspective Shadow";
         
         private const string HorizontalTitle = "Title 1";
         private const string HorizontalBody = "Content Placeholder 2";
@@ -49,6 +53,7 @@ namespace Test.FunctionalTest
         private const string Table = "Content Placeholder 3";
         private const string Chart = "Content Placeholder 5";
         private const string Picture = "Content Placeholder 4";
+        private const string SmartArt = "SmartArt 1";
 
         protected override string GetTestingSlideName()
         {
@@ -66,6 +71,7 @@ namespace Test.FunctionalTest
             TestErrorDialogs(syncLab);
             TestCopySupportedPlaceHolders(syncLab);
             TestCopyUnsupportedPlaceHolders(syncLab);
+            TestCopyCustomPerspectiveShadow(syncLab);
         }
 
         private void TestCopySupportedPlaceHolders(ISyncLabController syncLab)
@@ -101,14 +107,33 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(ChartPlaceHolderSlideNo);
             PpOperations.SelectShape(Chart);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
             
             PpOperations.SelectSlide(TablePlaceHolderSlideNo);
             PpOperations.SelectShape(Table);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
         }
         
+        private void TestCopyCustomPerspectiveShadow(ISyncLabController syncLab)
+        {
+            
+            PpOperations.SelectSlide(CustomPerspectiveShadowSlideNo);
+            PpOperations.SelectShape(CustomPerspectiveShadow);
+
+            // shadow item
+            int categoryIndex = 3;
+            int itemIndex = 0;
+            
+            new Task(() =>
+            {
+                ThreadUtil.WaitFor(1000);
+                syncLab.DialogSelectItem(categoryIndex, itemIndex);
+                MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.WarningDialogTitle,
+                    SyncLabText.WarningSyncPerspectiveShadow, syncLab.DialogClickOk, "Ok");
+            }).Start();
+            syncLab.Copy();
+        }
 
         private void TestErrorDialogs(ISyncLabController syncLab)
         {
@@ -116,18 +141,18 @@ namespace Test.FunctionalTest
 
             // no selection copy
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // 2 item selected copy
             List<String> shapes = new List<string> { Line, RotatedArrow };
             PpOperations.SelectShapes(shapes);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // group selected copy
             PpOperations.SelectShape(Group);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select one shape to copy.", syncLab.Copy, "Ok");
+                SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // copy blank item for the paste error dialog test
             PpOperations.SelectShape(Line);    
@@ -136,7 +161,13 @@ namespace Test.FunctionalTest
             // no selection sync
             PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
-                "Please select at least one item to apply this format to.", () => syncLab.Sync(0), "Ok");
+                SyncLabText.ErrorPasteSelectionInvalid, () => syncLab.Sync(0), "Ok");
+            
+            // smart art
+            PpOperations.SelectSlide(SmartArtSlideNo);
+            PpOperations.SelectShape(SmartArt);
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
+                SyncLabText.ErrorSmartArtUnsupported, syncLab.Copy, "Ok");
         }
 
         private void TestSync(ISyncLabController syncLab)
@@ -161,10 +192,10 @@ namespace Test.FunctionalTest
 
         private void IsSame(int originalSlideNo, int expectedSlideNo, string shapeToCheck)
         {
-            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(originalSlideNo);
-            Microsoft.Office.Interop.PowerPoint.Shape actualShape = PpOperations.SelectShape(shapeToCheck)[1];
-            Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
-            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Slide actualSlide = PpOperations.SelectSlide(originalSlideNo);
+            Shape actualShape = PpOperations.SelectShape(shapeToCheck)[1];
+            Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
+            Shape expectedShape = PpOperations.SelectShape(shapeToCheck)[1];
             SlideUtil.IsSameLooking(expectedSlide, actualSlide);
             SlideUtil.IsSameShape(expectedShape, actualShape);
         }
