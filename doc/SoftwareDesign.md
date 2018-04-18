@@ -1,4 +1,4 @@
-## Software Design
+# Software Design
 
 ![Architecture](images/DesignAndConventions.png)  
 PowerPointLabs is an add-in for PowerPoint. Given above is an overview of the main components.
