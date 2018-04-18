@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
 namespace Test.UnitTest.SyncLab
@@ -27,7 +27,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
-            LineFillFormat.SyncFormat(formatShape, newShape);
+            new LineFillFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineFillSlideNo);
             CheckLineStyle(StraightLine, OriginalShapesSlideNo, SyncLineFillSlideNo);
@@ -40,7 +40,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, Arrow);
-            LineWeightFormat.SyncFormat(formatShape, newShape);
+            new LineWeightFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineWidthSlideNo);
             CheckLineStyle(Arrow, OriginalShapesSlideNo, SyncLineWidthSlideNo);
@@ -53,7 +53,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
-            LineCompoundTypeFormat.SyncFormat(formatShape, newShape);
+            new LineCompoundTypeFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineCompoundTypeSlideNo);
             CheckLineStyle(StraightLine, OriginalShapesSlideNo, SyncLineCompoundTypeSlideNo);
@@ -66,7 +66,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
-            LineDashTypeFormat.SyncFormat(formatShape, newShape);
+            new LineDashTypeFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineDashTypeSlideNo);
             CheckLineStyle(StraightLine, OriginalShapesSlideNo, SyncLineDashTypeSlideNo);
@@ -79,7 +79,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, StraightLine);
-            LineArrowFormat.SyncFormat(formatShape, newShape);
+            new LineArrowFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineArrowSlideNo);
             CheckLineStyle(StraightLine, OriginalShapesSlideNo, SyncLineArrowSlideNo);
@@ -92,7 +92,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromShape);
 
             Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, Arrow);
-            LineTransparencyFormat.SyncFormat(formatShape, newShape);
+            new LineTransparencyFormat().SyncFormat(formatShape, newShape);
 
             CompareSlides(OriginalShapesSlideNo, SyncLineTransparencySlideNo);
             CheckLineStyle(Arrow, OriginalShapesSlideNo, SyncLineTransparencySlideNo);
@@ -105,7 +105,7 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, shape);
 
             //Check transparency style
-            Assert.IsTrue(actualShape.Line.Transparency == expectedShape.Line.Transparency,
+            Assert.IsTrue(Math.Abs(actualShape.Line.Transparency - expectedShape.Line.Transparency) < 0.001,
                 "different transparency. exp:{0}, actual:{1}",
                 expectedShape.Line.Transparency, actualShape.Line.Transparency);
 

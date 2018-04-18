@@ -70,8 +70,15 @@ namespace PowerPointLabs
 
         public bool GetEnabled(Office.IRibbonControl control)
         {
-            ActionFramework.Common.Interface.EnabledHandler enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
-            return enabledHandler.Get(control.Id);
+            if (IsAnyWindowOpen())
+            {
+                ActionFramework.Common.Interface.EnabledHandler enabledHandler = EnabledHandlerFactory.CreateInstance(control.Id, control.Tag);
+                return enabledHandler.Get(control.Id);
+            } 
+            else 
+            {
+                return false;
+            }
         }
 
         public string GetLabel(Office.IRibbonControl control)
@@ -116,6 +123,8 @@ namespace PowerPointLabs
 
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
+        // Initial bool value for whether the Drawing Tools Format Tab is disabled
+        private bool DisableFormatTab { get; set; }
 
         #region IRibbonExtensibility Members
 
@@ -129,6 +138,31 @@ namespace PowerPointLabs
         #region Ribbon Callbacks
         //Create callback methods here. For more information about adding callback methods, select the Ribbon XML item in Solution Explorer and then press F1
 
+        // Set the visibility of the Drawing Tools Format Tab
+        public bool ToggleVisibleFormatTab(Office.IRibbonControl control)
+        {
+            return !DisableFormatTab;
+        }
+
+        // Toggles the boolean controlling the visibility of the Drawing Tools Format Tab
+        public void ToggleVisibility(Office.IRibbonControl control, bool pressed)
+        {
+            DisableFormatTab = pressed;
+            _ribbon.InvalidateControlMso("TabDrawingToolsFormat");
+            _ribbon.InvalidateControl("VisibleFormatShapes");
+        }
+
+        public void InitialiseVisibilityCheckbox()
+        {
+            _ribbon.InvalidateControl("VisibleFormatShapes");
+        }
+        
+        // Sets the default starting status of the checkbox (whether checked or not)
+        public bool SetVisibility(Office.IRibbonControl control)
+        {
+            return DisableFormatTab;
+        }
+
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
             ActionHandlerFactory = new ActionHandlerFactory();
@@ -139,6 +173,8 @@ namespace PowerPointLabs
             ContentHandlerFactory = new ContentHandlerFactory();
             PressedHandlerFactory = new PressedHandlerFactory();
             CheckBoxActionHandlerFactory = new CheckBoxActionHandlerFactory();
+
+            DisableFormatTab = new Boolean();
 
             _ribbon = ribbonUi;
 
@@ -262,6 +298,11 @@ namespace PowerPointLabs
                 }
             }
             return null;
+        }
+
+        private bool IsAnyWindowOpen() 
+        {
+            return Globals.ThisAddIn.Application.Windows.Count > 0;
         }
         #endregion
     }

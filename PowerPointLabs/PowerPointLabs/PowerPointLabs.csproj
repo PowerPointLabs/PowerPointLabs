@@ -41,10 +41,10 @@
     </NuGetPackageImportStamp>
     <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\publish\</PublishUrl>
+    <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>http://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.2.0.0</ApplicationVersion>
+    <ApplicationVersion>4.3.0.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -256,6 +256,17 @@
   -->
   <ItemGroup>
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonSupertipHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingssActionHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabSettings\SaveLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabMenu\SaveLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabMenu\SaveLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\SaveLab\SaveLabMenu\SaveLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurBackground\BlurBackgroundImageHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurBackground\BlurRemainderLabelHandler.cs" />
     <Compile Include="ActionFramework\EffectsLab\BlurBackground\BlurRemainderSupertipHandler.cs" />
@@ -359,6 +370,10 @@
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabImageHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabLabelHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesLabSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\FillSlide\FillSlideLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\SpeakSelected\SpeakSelectedActionHandler.cs" />
@@ -631,8 +646,35 @@
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
+    <Compile Include="SaveLab\SaveLabMain.cs" />
+    <Compile Include="SaveLab\SaveLabSettings.cs" />
+    <Compile Include="SaveLab\Views\SaveLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
-    <Compile Include="SyncLab\ObjectFormats\PictureEffectsFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\BevelBottomFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\BevelTopFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ContourColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ContourWidthFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\DepthColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\DepthSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LightingAngleFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\LightingEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
+    <Compile Include="TextCollection\SaveLabText.cs" />
+    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ArtisticEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionBlurFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionDistanceFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ReflectionTransparencyFormat.cs" />
+    <Compile Include="ShortcutsLab\FillSlide.cs" />
     <Compile Include="TextCollection\PasteLabText.cs" />
     <Compile Include="TextCollection\AnimationLabText.cs" />
     <Compile Include="TextCollection\ColorsLabText.cs" />
@@ -990,7 +1032,6 @@
     <Compile Include="SyncLab\ObjectFormats\FontFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FontSizeFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FontStyleFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineArrowFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\FillTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\LineTransparencyFormat.cs" />
@@ -1416,6 +1457,10 @@
     <Page Include="ResizeLab\Views\SlightAdjustSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SaveLab\Views\SaveLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SyncLab\Views\SyncFormatPaneItem.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1979,10 +2024,19 @@
     <None Include="Resources\PasteLab.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SaveLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SaveLabActionButton.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\PasteToFitSlide.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PasteToFitSlide.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FillSlide.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

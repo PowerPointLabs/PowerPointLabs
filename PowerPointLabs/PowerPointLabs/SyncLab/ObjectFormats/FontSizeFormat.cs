@@ -6,14 +6,14 @@ using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class FontSizeFormat
+    class FontSizeFormat: Format
     {
-        public static bool CanCopy(Shape formatShape)
+        public override bool CanCopy(Shape formatShape)
         {
             return Sync(formatShape, formatShape);
         }
 
-        public static void SyncFormat(Shape formatShape, Shape newShape)
+        public override void SyncFormat(Shape formatShape, Shape newShape)
         {
             if (!Sync(formatShape, newShape))
             {
@@ -21,7 +21,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
         }
 
-        public static Bitmap DisplayImage(Shape formatShape)
+        public override Bitmap DisplayImage(Shape formatShape)
         {
             return SyncFormatUtil.GetTextDisplay(
                 Math.Round(formatShape.TextEffect.FontSize).ToString(),

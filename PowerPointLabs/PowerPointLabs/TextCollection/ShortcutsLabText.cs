@@ -29,6 +29,7 @@
         public const string AddCustomShapeTag = "AddShape";
         public const string AddIntoGroupTag = "AddIntoGroup";
         public const string SpeakSelectedTag = "SpeakSelected";
+        public const string FillSlideTag = "FillSlide";
         #endregion
 
         #region GUI Text
@@ -42,6 +43,7 @@
         public const string AddCustomShapeLabel = "Add To Shapes Lab";
         public const string HideSelectedShapeLabel = "Hide Shape";
         public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";
+        public const string FillSlideLabel = "Fill Slide";
 
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";
