@@ -16,9 +16,9 @@ namespace PowerPointLabs.SyncLab
     /// The exact saved shapes may change in type but style will be retained.
     /// Eg: PlaceHolders are saved as Textboxes
     /// 
-    /// 2013:
+    /// 2013 only:
     /// We use a workabout to sync fill color, copying shapes gives the wrong fill
-    /// We use a workabout to sync ArtisticEffecs, (2010 & 2016 do not require this)
+    /// We use a workabout to sync ArtisticEffecs
     /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
@@ -26,9 +26,12 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
+        
+        // only for 2013
         private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects = 
             new Dictionary<string, List<MsoPictureEffectType>>();
-
+        
+        // only for 2013
         // need to sync all glow formats, syncing color alone resets transparency & radius
         // color must be synced first, it resets the transparency
         private readonly List<Format> _glowFormats = 
@@ -38,7 +41,8 @@ namespace PowerPointLabs.SyncLab
                 new GlowTransparencyFormat(),
                 new GlowSizeFormat()
             };
-
+        
+        // only for 2013
         private readonly List<Format> _fillFormats =
             new List<Format>
             {
@@ -108,11 +112,11 @@ namespace PowerPointLabs.SyncLab
             {
                 // sync glow, 2013 gives the wrong Glow.Fill color after copying the shape
                 SyncFormats(shape, copiedShape, _glowFormats);
-                // sync fill, 2013 gives the wrong fill color after copying the shape
+                // sync shape fill, 2013 gives the wrong fill color after copying the shape
                 SyncFormats(shape, copiedShape, _fillFormats);
                 
                 // backup artistic effects for 2013
-                // ForceSave() will make artistic effect permernent on the shapes for 2013 and no longer retrievable
+                // ForceSave() will make artistic effect permanent on the shapes for 2013 and no longer retrievable
                 List<MsoPictureEffectType> extractedEffects = ArtisticEffectFormat.GetArtisticEffects(copiedShape);
                 _backupArtisticEffects.Add(shapeKey, extractedEffects);
             }
@@ -179,6 +183,7 @@ namespace PowerPointLabs.SyncLab
             _backupArtisticEffects.Clear();
         }
         
+        // Convenience method for syncing formats
         private void SyncFormats(Shape source, Shape destination, List<Format> formats)
         {
             foreach (var format in formats)
