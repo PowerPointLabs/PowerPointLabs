@@ -124,7 +124,7 @@ namespace PowerPointLabs
 #pragma warning disable 0618
         private Office.IRibbonUI _ribbon;
         // Initial bool value for whether the Drawing Tools Format Tab is disabled
-        private bool disableFormatTab = false;
+        private bool DisableFormatTab { get; set; }
 
         #region IRibbonExtensibility Members
 
@@ -141,14 +141,26 @@ namespace PowerPointLabs
         // Set the visibility of the Drawing Tools Format Tab
         public bool ToggleVisibleFormatTab(Office.IRibbonControl control)
         {
-            return !disableFormatTab;
+            return !DisableFormatTab;
         }
 
         // Toggles the boolean controlling the visibility of the Drawing Tools Format Tab
         public void ToggleVisibility(Office.IRibbonControl control, bool pressed)
         {
-            disableFormatTab = !disableFormatTab;
+            DisableFormatTab = pressed;
             _ribbon.InvalidateControlMso("TabDrawingToolsFormat");
+            _ribbon.InvalidateControl("VisibleFormatShapes");
+        }
+
+        public void InitialiseVisibilityCheckbox()
+        {
+            _ribbon.InvalidateControl("VisibleFormatShapes");
+        }
+        
+        // Sets the default starting status of the checkbox (whether checked or not)
+        public bool SetVisibility(Office.IRibbonControl control)
+        {
+            return DisableFormatTab;
         }
 
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
@@ -161,6 +173,8 @@ namespace PowerPointLabs
             ContentHandlerFactory = new ContentHandlerFactory();
             PressedHandlerFactory = new PressedHandlerFactory();
             CheckBoxActionHandlerFactory = new CheckBoxActionHandlerFactory();
+
+            DisableFormatTab = new Boolean();
 
             _ribbon = ribbonUi;
 
