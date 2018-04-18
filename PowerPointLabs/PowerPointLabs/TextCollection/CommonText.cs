@@ -82,6 +82,7 @@
 
         #region Graphics
         public const string TemporaryImageStorageFileName = "temp.png";
+        public const string TemporaryCompressedImageStorageFileName = "temp.jpeg";
         #endregion
 
         #region Control - Loading Dialog

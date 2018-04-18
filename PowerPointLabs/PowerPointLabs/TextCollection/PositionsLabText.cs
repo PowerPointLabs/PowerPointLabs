@@ -2,17 +2,22 @@
 {
     internal static class PositionsLabText
     {
-        public const string PaneTag = "PositionsLab";
-
-        public const string TaskPanelTitle = "Positions Lab";
+        #region Action Framework Tags
+        public const string RibbonMenuId = "PositionsLabButton";
         public const string RibbonMenuLabel = "Positions";
         public const string RibbonMenuSupertip =
             "Use Positions Lab to accurately position the objects on your slide.\n\n" +
             "Click this button to open the Positions Lab interface.";
+        #endregion
+
+        public const string PaneTag = "PositionsLab";
+        public const string TaskPanelTitle = "Positions Lab";
 
         public const string ErrorUndefined = "Undefined error in Positions Lab.";
 
         public const string ErrorDialogTitle = "Unable to execute action";
+        public const string ErrorCorruptedShapesTitle = "Corrupted shapes detected";
+        public const string ErrorCorruptedSelection = "Please undo the last operation and try again.";
         public const string ErrorNoSelection = "Please select at least a shape before using this feature.";
         public const string ErrorFewerThanTwoSelection = "Please select at least two shapes before using this feature.";
         public const string ErrorFewerThanThreeSelection = "Please select at least three shapes before using this feature.";
