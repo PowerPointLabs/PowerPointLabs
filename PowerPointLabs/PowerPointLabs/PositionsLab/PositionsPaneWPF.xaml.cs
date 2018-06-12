@@ -1062,7 +1062,7 @@ namespace PowerPointLabs.PositionsLab
                     this.StartNewUndoEntry();
                 }
 
-                simulatedShapes = DuplicateShapes(selectedShapes);
+                simulatedShapes = DuplicateShapes(selectedShapes); // selectedShapes.Duplicate() may return a list with revresed sequence  
 
                 if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
@@ -1728,15 +1728,15 @@ namespace PowerPointLabs.PositionsLab
 
         private ShapeRange DuplicateShapes(ShapeRange range)
         {
-            String[] duplicatedShapeNames = new String[range.Count];
-            for (int i = 0; i < range.Count; i++)
+            String[] duplicatedShapeNames = new String[range.Count + 1];
+            int i = 0;
+            foreach (Shape shape in range)
             {
-                Shape shape = range[i + 1];
                 Shape duplicated = shape.Duplicate()[1];
-                duplicated.Name = shape.Name + "_Copy";
+                duplicated.Name = shape.Name + "_Copy_" + i.ToString();
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
-                duplicatedShapeNames[i] = duplicated.Name;
+                duplicatedShapeNames[i++] = duplicated.Name;
             }
             return this.GetCurrentSlide().Shapes.Range(duplicatedShapeNames);
         }
