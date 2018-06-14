@@ -1062,7 +1062,8 @@ namespace PowerPointLabs.PositionsLab
                     this.StartNewUndoEntry();
                 }
 
-                simulatedShapes = DuplicateShapes(selectedShapes); // selectedShapes.Duplicate() may return a list with revresed sequence  
+                // selectedShapes.Duplicate() may return a list with reversed sequence  
+                simulatedShapes = DuplicateShapes(selectedShapes); 
 
                 if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
@@ -1733,7 +1734,10 @@ namespace PowerPointLabs.PositionsLab
             {
                 Shape shape = range[i + 1];
                 Shape duplicated = shape.Duplicate()[1];
+
+                // Add a number at end of name in case the name of shapes are same
                 duplicated.Name = shape.Name + "_Copy_" + i.ToString();
+
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
                 duplicatedShapeNames[i] = duplicated.Name;
