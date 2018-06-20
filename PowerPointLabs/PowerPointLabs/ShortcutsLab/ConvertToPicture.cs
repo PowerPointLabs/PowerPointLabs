@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -34,22 +35,17 @@ namespace PowerPointLabs.ShortcutsLab
             }
         }
 
-        public static void ConvertAndSave(PowerPoint.Selection selection, string fileName)
+        public static bool ConvertAndSave(ShapeRange selectedShapes, string fileName)
         {
-            if (ShapeUtil.IsSelectionShapeOrText(selection))
+            try
             {
-                if (selection.HasChildShapeRange)
-                {
-                    GraphicsUtil.ExportShape(selection.ChildShapeRange, fileName);
-                }
-                else
-                {
-                    GraphicsUtil.ExportShape(selection.ShapeRange, fileName);
-                }
+                GraphicsUtil.ExportShape(selectedShapes, fileName);
+                return true;
             }
-            else
+            catch
             {
                 MessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
+                return false;
             }
         }
 

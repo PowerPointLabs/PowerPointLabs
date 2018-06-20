@@ -193,12 +193,17 @@ namespace PowerPointLabs.ShapesLab
             // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
             PowerPointPresentation pres = PowerPointPresentation.Current;
+
             // add shape into shape gallery first to reduce flicker
             string shapeName = addIn.ShapePresentation.AddShape(pres, currentSlide, selectedShapes, selectedShapes[1].Name);
 
             // add the selection into pane and save it as .png locally
             string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
-            ConvertToPicture.ConvertAndSave(selection, shapeFullName);
+            bool success = ConvertToPicture.ConvertAndSave(selectedShapes, shapeFullName);
+            if (!success)
+            {
+                return;
+            }
 
             // sync the shape among all opening panels
             addIn.SyncShapeAdd(shapeName, shapeFullName, CurrentCategory);
