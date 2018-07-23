@@ -32,8 +32,8 @@ namespace PowerPointLabs.Utils
         private const float TargetDpi = 96.0f;
         private static float dpiScale = 1.0f;
         // Heuristics for image compression obtained through testing
-        private const long targetCompression = 95L;
-        private const long fileSizeLimit = 75000L;
+        private const long targetCompression = 75L;
+        private const long fileSizeLimit = 40000L;
 
         // Static initializer to retrieve dpi scale once
         static GraphicsUtil()
