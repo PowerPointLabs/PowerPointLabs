@@ -8,8 +8,13 @@ namespace Test.UnitTest.SyncLab
     public class SyncLabThreeDRotationEffectTest : BaseSyncLabTest
     {
         private const int OriginalSlideNo = 1;
-        private const int ExpectedSlideNo = 2;
-        
+        private const int ExpectedRotationXSlideNo = 2;
+        private const int ExpectedRotationYSlideNo = 3;
+        private const int ExpectedRotationZSlideNo = 4;
+        private const int ExpectedPerspectiveSlideNo = 5;
+        private const int ExpectedProjectTextSlideNo = 6;
+        private const int ExpectedZSlideNo = 7;
+
         private const string SourceShape = "Source";
         private const string DestinationShape = "Destination";
         
@@ -20,17 +25,69 @@ namespace Test.UnitTest.SyncLab
         
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncThreeDRotation()
+        public void TestSyncThreeDRotationEffectRotationX()
         {
-            SyncThreeDRotation(DestinationShape, OriginalSlideNo, ExpectedSlideNo);
+            SyncThreeDRotationEffect(DestinationShape, 
+                OriginalSlideNo,
+                ExpectedRotationXSlideNo, 
+                new ThreeDRotationEffectRotationXFormat());
+        }
+        
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncThreeDRotationEffectRotationY()
+        {
+            SyncThreeDRotationEffect(DestinationShape,
+                OriginalSlideNo,
+                ExpectedRotationYSlideNo,
+                new ThreeDRotationEffectRotationYFormat());
         }
 
-        private void SyncThreeDRotation(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo)
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncThreeDRotationEffectRotationZ()
+        {
+            SyncThreeDRotationEffect(DestinationShape,
+                OriginalSlideNo,
+                ExpectedRotationZSlideNo,
+                new ThreeDRotationEffectRotationZFormat());
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncThreeDRotationEffectPerspective()
+        {
+            SyncThreeDRotationEffect(DestinationShape,
+                OriginalSlideNo,
+                ExpectedPerspectiveSlideNo,
+                new ThreeDRotationEffectPerspectiveFormat());
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncThreeDRotationEffectProjectText()
+        {
+            SyncThreeDRotationEffect(DestinationShape,
+                OriginalSlideNo,
+                ExpectedProjectTextSlideNo,
+                new ThreeDRotationEffectProjectTextFormat());
+        }
+
+        [TestMethod]
+        [TestCategory("UT")]
+        public void TestSyncThreeDRotationEffectZ()
+        {
+            SyncThreeDRotationEffect(DestinationShape,
+                OriginalSlideNo,
+                ExpectedZSlideNo,
+                new ThreeDRotationEffectZFormat());
+        }
+
+        private void SyncThreeDRotationEffect(string shapeToBeSynced, int sourceSlideNumber, int expectedSlideNo, Format format)
         {
             Shape formatShape = GetShape(sourceSlideNumber, SourceShape);
-
             Shape newShape = GetShape(sourceSlideNumber, shapeToBeSynced);
-            new ThreeDRotationEffectFormat().SyncFormat(formatShape, newShape);
+            format.SyncFormat(formatShape, newShape);
 
             CompareSlides(sourceSlideNumber, expectedSlideNo);
         }

@@ -663,7 +663,12 @@
     <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
-    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectProjectTextFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectPerspectiveFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectZFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectRotationZFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectRotationYFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectRotationXFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
