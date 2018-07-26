@@ -52,8 +52,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             
             try
             {
-                // set perspective only if it is different,	
-                // setting the same perspective applies an unknown change to the lighting of the shape	
+                // set perspective only if it is different,
+                // setting the same perspective applies an unknown change to the lighting of the shape
                 // this change is visible to the eye, but we cannot undo it
                 if (dest.Perspective != source.Perspective)
                 {
