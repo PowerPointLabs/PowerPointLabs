@@ -32,6 +32,13 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 return;
             }
 
+            if (slide == null)
+            {
+                Logger.Log(ribbonId + " failed. Selection is empty.");
+                MessageBox.Show(PasteLabText.ErrorNoSelection, PasteLabText.ErrorDialogTitle);
+                return;
+            }
+
             ShapeRange passedSelectedShapes = null;
             ShapeRange passedSelectedChildShapes = null;
 
