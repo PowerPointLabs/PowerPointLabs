@@ -27,7 +27,7 @@ namespace PowerPointLabs.ActionFramework.Help
             {
                 if (sourceFile != "")
                 {
-                    Process.Start("POWERPNT", sourceFile);
+                    Process.Start(sourceFile);
                 }
             }
             catch
