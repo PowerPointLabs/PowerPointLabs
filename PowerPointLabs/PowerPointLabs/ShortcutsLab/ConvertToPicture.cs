@@ -37,14 +37,20 @@ namespace PowerPointLabs.ShortcutsLab
 
         public static bool ConvertAndSave(ShapeRange selectedShapes, string fileName)
         {
+            if (ShapeUtil.IsShapeRangeShapeOrText(selectedShapes))
+            {
+                MessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
+                return false;
+            }
+
             try
             {
                 GraphicsUtil.ExportShape(selectedShapes, fileName);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
+                MessageBox.Show("Exception during export shapes: " + e.Message, ShortcutsLabText.ErrorWindowTitle);
                 return false;
             }
         }

@@ -160,7 +160,17 @@ namespace PowerPointLabs.Utils
                 return false;
             }
 
-            foreach (Shape shape in selection.ShapeRange)
+            return IsShapeRangeShapeOrText(selection.ShapeRange);
+        }
+
+        public static bool IsShapeRangeShapeOrText(ShapeRange selectedShapes)
+        {
+            if ((selectedShapes == null))
+            {
+                return false;
+            }
+
+            foreach (Shape shape in selectedShapes)
             {
                 if (shape.Type == MsoShapeType.msoPlaceholder)
                 {
