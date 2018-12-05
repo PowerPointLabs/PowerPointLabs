@@ -27,8 +27,9 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>PowerPointLabs</RootNamespace>
     <AssemblyName>PowerPointLabs</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>True</IsWebBootstrapper>
     <FileUpgradeFlags>
@@ -219,6 +220,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
@@ -643,7 +646,44 @@
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
+    <Compile Include="NarrationsLab\Data\AudioOutputFormat.cs" />
+    <Compile Include="NarrationsLab\Data\EndpointToUriMapping.cs" />
+    <Compile Include="NarrationsLab\Data\Gender.cs" />
+    <Compile Include="NarrationsLab\Data\HumanVoice.cs" />
+    <Compile Include="NarrationsLab\Data\HumanVoiceList.cs" />
+    <Compile Include="NarrationsLab\Data\Locale.cs" />
+    <Compile Include="NarrationsLab\Data\LocaleMapping.cs" />
+    <Compile Include="NarrationsLab\Data\NarrationsLabSettingsPage.cs" />
+    <Compile Include="NarrationsLab\Data\UserAccount.cs" />
+    <Compile Include="NarrationsLab\Data\Voice.cs" />
     <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
+    <Compile Include="NarrationsLab\Storage\NarrationsLabStorageConfig.cs" />
+    <Compile Include="NarrationsLab\ValueConverters\BaseValueConverter.cs" />
+    <Compile Include="NarrationsLab\ValueConverters\NarrationsLabSettingsPageValueConverter.cs" />
+    <Compile Include="NarrationsLab\ViewModel\Authentication.cs" />
+    <Compile Include="NarrationsLab\ViewModel\GenericEventArgs.cs" />
+    <Compile Include="NarrationsLab\ViewModel\Synthesize.cs" />
+    <Compile Include="NarrationsLab\Views\HumanVoiceLoginPage.xaml.cs">
+      <DependentUpon>HumanVoiceLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NarrationsLab\Views\InShowRecordingControl.xaml.cs">
+      <DependentUpon>InShowRecordingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NarrationsLab\Views\NarrationsLabMainSettingsPage.xaml.cs">
+      <DependentUpon>NarrationsLabMainSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NarrationsLab\Views\NarrationsLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>NarrationsLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NarrationsLab\Views\RecorderTaskPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NarrationsLab\Views\RecorderTaskPane.Designer.cs">
+      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml.cs">
+      <DependentUpon>SpeechPlayingDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="SaveLab\SaveLabMain.cs" />
@@ -1118,9 +1158,6 @@
     <Compile Include="Utils\PPShape.Helper.cs" />
     <Compile Include="Utils\TempPath.cs" />
     <Compile Include="Utils\StringUtil.cs" />
-    <Compile Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml.cs">
-      <DependentUpon>SpeechPlayingDialogBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ZoomLab\Views\ZoomLabSettingsDialogBox.xaml.cs">
       <DependentUpon>ZoomLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1132,12 +1169,6 @@
     </Compile>
     <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
       <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NarrationsLab\Views\NarrationsLabSettingsDialogBox.xaml.cs">
-      <DependentUpon>NarrationsLabSettingsDialogBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NarrationsLab\Views\InShowRecordingControl.xaml.cs">
-      <DependentUpon>InShowRecordingControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="HighlightLab\Views\HighlightLabSettingsDialogBox.xaml.cs">
       <DependentUpon>HighlightLabSettingsDialogBox.xaml</DependentUpon>
@@ -1165,12 +1196,6 @@
     <Compile Include="Models\PowerPointMagnifyingSlide.cs" />
     <Compile Include="Models\PowerPointStepBackSlide.cs" />
     <Compile Include="LegacyShapeUtil.cs" />
-    <Compile Include="NarrationsLab\Views\RecorderTaskPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="NarrationsLab\Views\RecorderTaskPane.Designer.cs">
-      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
-    </Compile>
     <Compile Include="AnimationLab\AnimateInSlide.cs" />
     <Compile Include="AnimationLab\DefaultMotionAnimation.cs" />
     <Compile Include="Views\FolderDialogLauncher.cs" />
@@ -1249,6 +1274,9 @@
       <DependentUpon>ColorPane.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="NarrationsLab\Views\RecorderTaskPane.resx">
+      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -1272,9 +1300,6 @@
     <EmbeddedResource Include="ShapesLab\CustomShapePane.resx">
       <DependentUpon>CustomShapePane.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NarrationsLab\Views\RecorderTaskPane.resx">
-      <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -1418,6 +1443,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="NarrationsLab\Views\HumanVoiceLoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NarrationsLab\Views\InShowRecordingControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NarrationsLab\Views\NarrationsLabMainSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NarrationsLab\Views\NarrationsLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PositionsLab\Views\AlignSettingsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1482,10 +1527,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\ErrorDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1503,14 +1544,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="NarrationsLab\Views\NarrationsLabSettingsDialogBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="NarrationsLab\Views\InShowRecordingControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

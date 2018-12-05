@@ -12,6 +12,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Models;
+using PowerPointLabs.NarrationsLab.Data;
 using PowerPointLabs.SpeechEngine;
 using PowerPointLabs.Views;
 
@@ -27,6 +28,7 @@ namespace PowerPointLabs.NarrationsLab
         public const string SpeechShapePrefixOld = "AudioGen Speech";
 
         public static bool IsRemoveAudioEnabled { get; set; } = true;
+        public static bool IsHumanVoiceSelected { get; set; } = false;
 
         private static string TempFolderName
         {
@@ -162,6 +164,12 @@ namespace PowerPointLabs.NarrationsLab
         public static void SetDefaultVoice(string voiceName)
         {
             TextToSpeech.DefaultVoiceName = voiceName;
+        }
+
+        public static void SetDefaultVoice(string voiceName, HumanVoice humanVoice)
+        {
+            TextToSpeech.DefaultVoiceName = voiceName;
+            TextToSpeech.humanVoice = humanVoice;
         }
 
         public static void ReplaceSelectedAudio()
