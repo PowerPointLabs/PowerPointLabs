@@ -98,8 +98,7 @@ namespace PowerPointLabs.SyncLab.Views
             if (image == null)
             {
                 imageBox.Visibility = Visibility.Hidden;
-                label.Margin = new Thickness(30, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
+                col1.Width = new GridLength(0);
                 return;
             }
             else
@@ -111,8 +110,7 @@ namespace PowerPointLabs.SyncLab.Views
                                         BitmapSizeOptions.FromEmptyOptions());
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
-                label.Margin = new Thickness(65, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
+                col1.Width = new GridLength(60);
             }
         }
 
@@ -120,11 +118,12 @@ namespace PowerPointLabs.SyncLab.Views
         {
             get
             {
-                return label.Content.ToString();
+                return textBlock.Text;
             }
             set
             {
-                label.Content = value;
+                textBlock.Text = value;
+                textBlock.ToolTip = value;
             }
         }
 
