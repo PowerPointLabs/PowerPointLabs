@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Speech.Synthesis;
-using System.Text;
+
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.SpeechEngine

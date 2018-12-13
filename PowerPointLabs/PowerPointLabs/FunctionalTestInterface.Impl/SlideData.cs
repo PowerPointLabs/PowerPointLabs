@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Utils;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl

@@ -11,7 +11,6 @@ using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.ZoomLab;
 
-using GraphicsUtil = PowerPointLabs.Utils.GraphicsUtil;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.SyncLab.ObjectFormats;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
+
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab

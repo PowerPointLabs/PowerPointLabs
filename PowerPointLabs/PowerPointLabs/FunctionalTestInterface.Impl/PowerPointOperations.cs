@@ -6,8 +6,10 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
+
 using TestInterface;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Controls;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
+
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension

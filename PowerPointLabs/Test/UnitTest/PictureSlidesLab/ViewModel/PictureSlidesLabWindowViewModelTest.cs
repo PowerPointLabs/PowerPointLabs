@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Moq;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.Interface;
-using PowerPointLabs.PictureSlidesLab.Views.Interface;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
+using PowerPointLabs.PictureSlidesLab.Views.Interface;
 
 namespace Test.UnitTest.PictureSlidesLab.ViewModel
 {

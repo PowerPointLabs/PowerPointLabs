@@ -1,7 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+
 using Test.Util;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Test.UnitTest.SyncLab

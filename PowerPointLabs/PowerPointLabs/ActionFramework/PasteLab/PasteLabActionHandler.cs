@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;

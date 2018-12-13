@@ -1,14 +1,12 @@
 ﻿using System;
-using System.CodeDom;
-using System.ComponentModel.Design;
 using System.Drawing;
-using System.Windows;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 using ThreeDFormat = Microsoft.Office.Interop.PowerPoint.ThreeDFormat;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats

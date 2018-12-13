@@ -1,10 +1,10 @@
-﻿﻿using System;
+﻿using System;
 using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
-using PowerPointLabs.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Views;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 

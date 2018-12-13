@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs;
 using PowerPointLabs.TextCollection;
 
-using TestInterface;
-
 using Test.Util;
+
+using TestInterface;
 
 namespace Test.FunctionalTest
 {

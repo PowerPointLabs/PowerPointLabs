@@ -6,6 +6,7 @@ using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.ZoomLab;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl

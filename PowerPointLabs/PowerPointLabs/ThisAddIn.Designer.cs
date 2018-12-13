@@ -11,9 +11,10 @@
 using System;
 
 #pragma warning disable 414
-namespace PowerPointLabs {
-    
-    
+namespace PowerPointLabs
+{
+
+
     /// 
     [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(0)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]

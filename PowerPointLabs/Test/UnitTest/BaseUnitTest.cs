@@ -1,13 +1,18 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using TestInterface;
+
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Test.Util;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Utils;
+
 using Test.Base;
+using Test.Util;
+
+using TestInterface;
+
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace Test.UnitTest
 {
