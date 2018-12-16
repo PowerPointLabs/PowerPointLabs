@@ -14,7 +14,7 @@
             <ColumnDefinition x:Name="col3" Width="100" MaxWidth="100"/>
         </Grid.ColumnDefinitions>
         <Image x:Name="imageBox" Grid.Column="0" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
-        <TextBlock x:Name="textBlock" Grid.Column="1" Margin="0,10,0,10" MaxWidth="140" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+        <TextBlock x:Name="textBlock" Grid.Column="1" Margin="0,10,0,10" MaxWidth="100" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
         <Button x:Name="pasteButton" Grid.Column="2" Margin="0,10,65,10" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
             <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabPasteButton.png" Stretch="Fill"/>
             <Button.ToolTip>
