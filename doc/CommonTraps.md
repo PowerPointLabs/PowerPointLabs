@@ -42,6 +42,9 @@ This document details the common pitfalls when developing for PowerPointLabs, so
 	The default fix is to delete the .vs folder in ./PowerPointLabs/PowerPointLabs for Visual Studio to recreate the configuration files. Alternatively, you can do the following:
 
 	Step 1. Right click Solution 'PowerPointLabs' (3 projects) in the solution explorer.
+	
 	Step 2. Click Properties.
+	
 	Step 3. Navigate to Common Properties > Startup Project.
+	
 	Step 4. Select Single startup project and choose PowerPointLabs from the drop down list.
