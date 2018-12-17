@@ -16,7 +16,6 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. [Corrupted Zip Installer](#corrupted-zip)
 1. [Installation Error due to Preexisting Similar Application](#preexisting-application)
 1. [Error Loading Manifest from MahApps.Metro.dll](#error-manifest)
-1. [Output Type of Class Library cannot be started directly due to errors in Visual Studio's project configuration](#output-type-class-library)
 
 ## Certificate Not Trusted<a name="cert-not-trusted"></a>
 #### Error Message
@@ -127,9 +126,3 @@ Unable to unzip the installer and/or error message associated with operation of 
 1. Type in `tasklist.exe /m MahApps.Metro.dll`
 1. Determine which process is using the dll and end it if possible
 1. Else, temporarily disable any anti-virus software that may be preventing the use of the .dll file and then delete folder `%LocalAppData%\Temp\Deployment`, before reinstalling PowerPointLabs again
-
-## Output Type of Class Library cannot be started directly due to errors in Visual Studio's project configuration<a name="output-type-class-library"></a>
-#### Error Message
-![Alt text](../doc/images/TechnicalFAQ/output-type-class-library.png)
-#### Solution
-1. Delete the .vs folder in ./PowerPointLabs/PowerPointLabs for Visual Studio to recreate the configuration files, fixing the error.
