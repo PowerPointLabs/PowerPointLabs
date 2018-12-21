@@ -43,6 +43,16 @@ namespace PowerPointLabs.TimerLab
             return duration;
         }
 
+        private bool Countdown()
+        {
+            bool isCountdown = TimerLabConstants.DefaultCountdownSetting;
+            if (CountdownCheckBox.IsChecked.HasValue)
+            {
+                isCountdown = CountdownCheckBox.IsChecked.Value;
+            }
+            return isCountdown;
+        }
+
         private float TimerWidth()
         {
             float width = (float)WidthSlider.Value;
@@ -212,7 +222,7 @@ namespace PowerPointLabs.TimerLab
                     else
                     {
                         int leftoverSeconds = remainingDuration % TimerLabConstants.SecondsInMinute;
-                        if (currentMarker == 0)
+                        if (currentMarker == 0 && leftoverSeconds != 0)
                         {
                             timeMarker.TextFrame.TextRange.Text = (remainingDuration / TimerLabConstants.SecondsInMinute).ToString() +
                                                                     "." + leftoverSeconds.ToString("D2");
@@ -364,11 +374,9 @@ namespace PowerPointLabs.TimerLab
             {
                 // Properties
                 int duration = Duration();
+                bool isCountdown = Countdown();
                 float timerWidth = TimerWidth();
                 float timerHeight = TimerHeight();
-
-                // TODO: create the option to select countdown
-                bool isCountdown = true;
 
                 // Position
                 float timerLeft = DefaultTimerLeft(SlideWidth(), timerWidth);
@@ -661,7 +669,7 @@ namespace PowerPointLabs.TimerLab
             }
 
             // add new markers
-            AddMarkers(Duration(), timerBody.Width, timerBody.Height, timeMarkerColor, lineMarkerColor);
+            AddMarkers(Duration(), timerBody.Width, timerBody.Height, timeMarkerColor, lineMarkerColor, Countdown());
             timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
         }
 
