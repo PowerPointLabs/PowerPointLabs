@@ -64,7 +64,8 @@
                                             ValueIncremented="DurationTextBox_ValueIncremented"
                                             LostFocus="DurationTextBox_LostFocus"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center">Countdown</TextBlock>
-                    <CheckBox x:Name="CountdownCheckBox" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="CountdownCheckBox" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Checked="CountdownCheckBox_StateChanged" Unchecked="CountdownCheckBox_StateChanged"/>
                     <Image Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                            Width="23" Height="15" Source="../Resources/TimerLab/MinWidth.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                     <Image Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 

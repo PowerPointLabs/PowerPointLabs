@@ -166,7 +166,16 @@ namespace PowerPointLabs.TimerLab
                 {
                     break;
                 }
-                currentMarker = Math.Min(currentMarker + denomination, duration);
+
+                // If it's Countdown Timer and we are at the start, take into account specified durations that are not multiple of denomination
+                if (isCountdown && currentMarker == 0 && duration % denomination != 0)
+                {
+                    currentMarker = duration % denomination;
+                }
+                else
+                {
+                    currentMarker = Math.Min(currentMarker + denomination, duration);
+                }
             }
 
             lineMarkerGroup = null;
@@ -193,7 +202,7 @@ namespace PowerPointLabs.TimerLab
             while (currentMarker <= duration)
             {
                 bool isStart = currentMarker == 0;
-                bool isMinuteMark = isCountdown ? Math.Abs(currentMarker - duration) % TimerLabConstants.SecondsInMinute == 0 : currentMarker % TimerLabConstants.SecondsInMinute == 0;
+                bool isMinuteMark = isCountdown ? (duration - currentMarker) % TimerLabConstants.SecondsInMinute == 0 : currentMarker % TimerLabConstants.SecondsInMinute == 0;
                 bool isEnd = currentMarker == duration;
 
                 // Add time markers for start, every minute, and end
@@ -238,8 +247,9 @@ namespace PowerPointLabs.TimerLab
                 // Add line marker if it is not the start or end
                 if (currentMarker != TimerLabConstants.StartTime && currentMarker != duration)
                 {
-                    //Thicken the line if it is a minute marker
-                    bool isMinuteMarker = (currentMarker % TimerLabConstants.SecondsInMinute == 0);
+                    // Thicken the line if it is a minute marker
+                    bool isMinuteMarker = isCountdown ? ((duration - currentMarker) % TimerLabConstants.SecondsInMinute == 0) : 
+                                                         (currentMarker % TimerLabConstants.SecondsInMinute == 0);
                     float markerLineWeight = isMinuteMarker ? TimerLabConstants.DefaultMinutesLineMarkerWidth :
                                                                 TimerLabConstants.DefaultSecondsLineMarkerWidth;
                     Shape lineMarker = AddLineMarker(currentMarker, widthPerSec, timerHeight, markerLineWeight, lineMarkerColor);
@@ -250,15 +260,19 @@ namespace PowerPointLabs.TimerLab
                 {
                     break;
                 }
-                currentMarker = Math.Min(currentMarker + denomination, duration);
+
+                // If it's Countdown Timer and we are at the start, take into account specified durations that are not multiple of denomination
+                if (isCountdown && isStart && duration % denomination != 0)
+                {
+                    currentMarker = duration % denomination;
+                }
+                else
+                {
+                    currentMarker = Math.Min(currentMarker + denomination, duration);
+                }
             }
 
             lineMarkerGroup = GroupShapes(TimerLabConstants.TimerLineMarkerId, TimerLabConstants.TimerLineMarkerGroupId);
-            // Flip the lineMarkerGroup Shape if it is a countdown timer so that line markers align with time markers.
-            if (isCountdown)
-            {
-                lineMarkerGroup.Flip(Microsoft.Office.Core.MsoFlipCmd.msoFlipHorizontal);
-            }
             timeMarkerGroup = GroupShapes(TimerLabConstants.TimerTimeMarkerId, TimerLabConstants.TimerTimeMarkerGroupId);
         }
 
@@ -449,6 +463,27 @@ namespace PowerPointLabs.TimerLab
                 UpdateSliderAnimationDuration();
             }
         }
+        #endregion
+
+        #region Countdown Control
+
+        private void CountdownCheckBox_StateChanged(object sender, RoutedEventArgs e)
+        {
+            if (CountdownCheckBox.IsChecked == null)
+            {
+                return;
+            }
+
+            if (FindTimer())
+            {
+                ReformMissingComponents();
+                RecreateMarkers();
+                AdjustZOrder();
+                UpdateSliderPosition();
+                UpdateSliderAnimationDuration();
+            }
+        }
+
         #endregion
 
         #region Width Control
@@ -707,6 +742,11 @@ namespace PowerPointLabs.TimerLab
                 int numOfLineMarkers = (int)(Math.Ceiling((double)Duration() / TimerLabConstants.DefaultDenomination)) - 2;
                 lineMarkerGroup.Left = timerBody.Left + lineSpacing;
                 lineMarkerGroup.Width = numOfLineMarkers * lineSpacing;
+                if (Countdown())
+                {
+                    float spaceOnRight = timerBody.Width - lineSpacing - lineMarkerGroup.Width;
+                    lineMarkerGroup.Left = timerBody.Left + spaceOnRight;
+                }
             }
             timeMarkerGroup.Left = timerBody.Left;
             timeMarkerGroup.Width = timerBody.Width;
