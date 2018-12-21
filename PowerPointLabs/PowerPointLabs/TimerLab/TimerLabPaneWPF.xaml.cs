@@ -87,10 +87,10 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Timer Creation
-        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop)
+        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop, bool isCountdown)
         {
             AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, TimerBodyColor());
-            AddMarkers(duration, timerWidth, timerHeight, TimeMarkerColor(), LineMarkerColor());
+            AddMarkers(duration, timerWidth, timerHeight, TimeMarkerColor(), LineMarkerColor(), isCountdown);
             AddSlider(duration, timerWidth, timerHeight, SliderColor(), SlideWidth());
         }
 
@@ -107,28 +107,28 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Markers
-        private void AddMarkers(int duration, float timerWidth, float timerHeight, int timeMarkerColor, int lineMarkerColor)
+        private void AddMarkers(int duration, float timerWidth, float timerHeight, int timeMarkerColor, int lineMarkerColor, bool isCountdown)
         {
             if (duration <= TimerLabConstants.SecondsInMinute)
             {
                 AddSecondsMarker(duration, TimerLabConstants.DefaultDenomination, timerWidth, timerHeight, 
                                 TimerLabConstants.DefaultMinutesLineMarkerWidth, 
                                 TimerLabConstants.DefaultTimeMarkerWidth, TimerLabConstants.DefaultTimeMarkerHeight,
-                                timeMarkerColor, lineMarkerColor);
+                                timeMarkerColor, lineMarkerColor, isCountdown);
             }
             else
             {
                 AddMinutesMarker(duration, TimerLabConstants.DefaultDenomination, timerWidth, timerHeight,
                                 TimerLabConstants.DefaultMinutesLineMarkerWidth,
                                 TimerLabConstants.DefaultTimeMarkerWidth, TimerLabConstants.DefaultTimeMarkerHeight,
-                                timeMarkerColor, lineMarkerColor);
+                                timeMarkerColor, lineMarkerColor, isCountdown);
             }
             UpdateMarkerPosition();
         }
 
         private void AddSecondsMarker(int duration, int denomination, float timerWidth, float timerHeight, 
                                     float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight,
-                                    int timeMarkerColor, int lineMarkerColor)
+                                    int timeMarkerColor, int lineMarkerColor, bool isCountdown)
         {
             List<Shape> lineMarkers = new List<Shape>();
             List<Shape> timeMarkers = new List<Shape>();
@@ -137,8 +137,11 @@ namespace PowerPointLabs.TimerLab
             int currentMarker = TimerLabConstants.StartTime;
             while (currentMarker <= duration) 
             {
+                // Get the marker text to be printed
+                String markerText = isCountdown ? (duration - currentMarker).ToString() : currentMarker.ToString();
+
                 // Add time marker
-                Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight, timeMarkerColor);
+                Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight, timeMarkerColor, markerText);
                 timeMarkers.Add(timeMarker);
 
                 // Add line marker if it is not the start or end
@@ -170,7 +173,7 @@ namespace PowerPointLabs.TimerLab
 
         private void AddMinutesMarker(int duration, int denomination, float timerWidth, float timerHeight, 
                                     float lineMarkerWidth, float timeMarkerWidth, float timeMarkerHeight, 
-                                    int timeMarkerColor, int lineMarkerColor)
+                                    int timeMarkerColor, int lineMarkerColor, bool isCountdown)
         {
             List<Shape> lineMarkers = new List<Shape>();
             List<Shape> timeMarkers = new List<Shape>();
@@ -179,23 +182,46 @@ namespace PowerPointLabs.TimerLab
             int currentMarker = TimerLabConstants.StartTime;
             while (currentMarker <= duration)
             {
-                // Add time markers for start, every minute, and end
-                if (currentMarker % TimerLabConstants.SecondsInMinute == 0 || currentMarker == duration)
-                {
-                    // Add time marker
-                    Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight, timeMarkerColor);
+                bool isStart = currentMarker == 0;
+                bool isMinuteMark = isCountdown ? Math.Abs(currentMarker - duration) % TimerLabConstants.SecondsInMinute == 0 : currentMarker % TimerLabConstants.SecondsInMinute == 0;
+                bool isEnd = currentMarker == duration;
 
-                    int remainingSeconds = currentMarker % TimerLabConstants.SecondsInMinute;
-                    if (currentMarker == duration && remainingSeconds != 0)
+                // Add time markers for start, every minute, and end
+                if (isStart || isMinuteMark || isEnd)
+                {
+                    // Get the marker text to be printed
+                    int remainingDuration = duration - currentMarker;
+                    String markerText = isCountdown ? remainingDuration.ToString() : currentMarker.ToString();
+
+                    // Add time marker
+                    Shape timeMarker = AddTimeMarker(currentMarker, widthPerSec, timerHeight, timeMarkerWidth, timeMarkerHeight, timeMarkerColor, markerText);
+
+                    if (!isCountdown)
                     {
-                        timeMarker.TextFrame.TextRange.Text = (currentMarker / TimerLabConstants.SecondsInMinute).ToString() + 
-                                                                "." + remainingSeconds.ToString("D2");
+                        int remainingSeconds = currentMarker % TimerLabConstants.SecondsInMinute;
+                        if (currentMarker == duration && remainingSeconds != 0)
+                        {
+                            timeMarker.TextFrame.TextRange.Text = (currentMarker / TimerLabConstants.SecondsInMinute).ToString() +
+                                                                    "." + remainingSeconds.ToString("D2");
+                        }
+                        else
+                        {
+                            timeMarker.TextFrame.TextRange.Text = (currentMarker / TimerLabConstants.SecondsInMinute).ToString();
+                        }
                     }
                     else
                     {
-                        timeMarker.TextFrame.TextRange.Text = (currentMarker / TimerLabConstants.SecondsInMinute).ToString();
+                        int leftoverSeconds = remainingDuration % TimerLabConstants.SecondsInMinute;
+                        if (currentMarker == 0)
+                        {
+                            timeMarker.TextFrame.TextRange.Text = (remainingDuration / TimerLabConstants.SecondsInMinute).ToString() +
+                                                                    "." + leftoverSeconds.ToString("D2");
+                        }
+                        else
+                        {
+                            timeMarker.TextFrame.TextRange.Text = (remainingDuration / TimerLabConstants.SecondsInMinute).ToString();
+                        }
                     }
-
                     timeMarkers.Add(timeMarker);
                 }
 
@@ -218,13 +244,17 @@ namespace PowerPointLabs.TimerLab
             }
 
             lineMarkerGroup = GroupShapes(TimerLabConstants.TimerLineMarkerId, TimerLabConstants.TimerLineMarkerGroupId);
+            // Flip the lineMarkerGroup Shape if it is a countdown timer so that line markers align with time markers.
+            if (isCountdown)
+            {
+                lineMarkerGroup.Flip(Microsoft.Office.Core.MsoFlipCmd.msoFlipHorizontal);
+            }
             timeMarkerGroup = GroupShapes(TimerLabConstants.TimerTimeMarkerId, TimerLabConstants.TimerTimeMarkerGroupId);
         }
 
         private Shape AddTimeMarker(int currentMarker, float widthPerSec, float timerHeight, 
-                                    float timeMarkerWidth, float timeMarkerHeight, int timeMarkerColor)
+                                    float timeMarkerWidth, float timeMarkerHeight, int timeMarkerColor, string markerText)
         {
-            string markerText = currentMarker.ToString();
             Shape timeMarker = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
                                                                     currentMarker * widthPerSec, 0, 
                                                                     timeMarkerWidth, timeMarkerHeight);
@@ -337,11 +367,14 @@ namespace PowerPointLabs.TimerLab
                 float timerWidth = TimerWidth();
                 float timerHeight = TimerHeight();
 
+                // TODO: create the option to select countdown
+                bool isCountdown = true;
+
                 // Position
                 float timerLeft = DefaultTimerLeft(SlideWidth(), timerWidth);
                 float timerTop = DefaultTimerTop(SlideHeight(), timerHeight);
 
-                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop);
+                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop, isCountdown);
             }
         }
         #endregion
