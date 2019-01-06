@@ -32,6 +32,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 voiceList.Visibility = Visibility.Collapsed;
                 humanVoiceBtn.Visibility = Visibility.Visible;
                 changeAcctBtn.Visibility = Visibility.Hidden;
+                RadioHumanVoice.IsEnabled = false;
             }
             else
             {
@@ -41,6 +42,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 voiceList.Visibility = Visibility.Visible;
                 humanVoiceBtn.Visibility = Visibility.Collapsed;
                 changeAcctBtn.Visibility = Visibility.Visible;
+                RadioHumanVoice.IsEnabled = true;
             }
             voiceList.ItemsSource = voices;
             voiceList.DisplayMemberPath = "Voice";
@@ -58,12 +60,14 @@ namespace PowerPointLabs.NarrationsLab.Views
                     instance.voiceList.Visibility = Visibility.Collapsed;
                     instance.humanVoiceBtn.Visibility = Visibility.Visible;
                     instance.changeAcctBtn.Visibility = Visibility.Hidden;
+                    instance.RadioHumanVoice.IsEnabled = false;
                 }
                 else
                 {
                     instance.voiceList.Visibility = Visibility.Visible;
                     instance.humanVoiceBtn.Visibility = Visibility.Collapsed;
                     instance.changeAcctBtn.Visibility = Visibility.Visible;
+                    instance.RadioHumanVoice.IsEnabled = true;
                 }
             }
             return instance;
