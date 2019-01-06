@@ -8,8 +8,17 @@
     <StackPanel>
         <TextBlock Text="Enter your access key" Margin="30 10 30 0" FontWeight="Bold"/>
         <TextBox x:Name="key" Padding="2" Margin="30 5 30 0"></TextBox>
-        <TextBlock Text="Enter access endpoint" Margin="30 10 30 0" FontWeight="Bold"/>
-        <TextBox x:Name="endpoint" Padding="2" Margin="30 5 30 0"></TextBox>
+        <TextBlock Text="Choose access endpoint" Margin="30 10 30 0" FontWeight="Bold"/>
+        <ComboBox x:Name="endpoint" Padding="2" Margin="30 5 30 0">
+            <ComboBoxItem Content="West US"/>
+            <ComboBoxItem Content="West US2"/>
+            <ComboBoxItem Content="East US"/>
+            <ComboBoxItem Content="East US2"/>
+            <ComboBoxItem Content="East Asia"/>
+            <ComboBoxItem Content="South East Asia"/>
+            <ComboBoxItem Content="North Europe"/>
+            <ComboBoxItem Content="West Europe"/>
+        </ComboBox>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

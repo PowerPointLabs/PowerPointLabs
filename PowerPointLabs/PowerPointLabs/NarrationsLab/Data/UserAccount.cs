@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PowerPointLabs.ActionFramework.Common.Log;
+
 namespace PowerPointLabs.NarrationsLab.Data
 {
     public class UserAccount
@@ -22,7 +24,7 @@ namespace PowerPointLabs.NarrationsLab.Data
             return instance;
         }
 
-        public void SetUserKeyAndEndpoint(string key, string endpoint)
+        public void SetUserKeyAndRegion(string key, string endpoint)
         {
             this.key = key;
             this.endpoint = endpoint;
@@ -32,7 +34,7 @@ namespace PowerPointLabs.NarrationsLab.Data
         {
             return key;
         }
-        public string GetEndpoint()
+        public string GetRegion()
         {
             return endpoint;
         }

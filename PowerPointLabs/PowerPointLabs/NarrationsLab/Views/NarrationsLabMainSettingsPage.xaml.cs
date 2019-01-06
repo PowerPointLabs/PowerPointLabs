@@ -36,7 +36,7 @@ namespace PowerPointLabs.NarrationsLab.Views
             else
             {
                 string _key = UserAccount.GetInstance().GetKey();
-                string _endpoint = UserAccount.GetInstance().GetEndpoint();
+                string _endpoint = UserAccount.GetInstance().GetRegion();
 
                 voiceList.Visibility = Visibility.Visible;
                 humanVoiceBtn.Visibility = Visibility.Collapsed;
@@ -96,7 +96,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         private bool IsValidUserAccount()
         {
             string _key = UserAccount.GetInstance().GetKey();
-            string _endpoint = UserAccount.GetInstance().GetEndpoint();
+            string _endpoint = EndpointToUriMapping.regionToEndpointMapping[UserAccount.GetInstance().GetRegion()];
 
             try
             {

@@ -42,7 +42,8 @@ namespace PowerPointLabs.NarrationsLab.Views
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             string _key = key.Text.Trim();
-            string _endpoint = endpoint.Text.Trim() + "/issueToken";
+            string region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
+            string _endpoint = EndpointToUriMapping.regionToEndpointMapping[region];
 
             try
             {
@@ -61,7 +62,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 return;
             }
             
-            UserAccount.GetInstance().SetUserKeyAndEndpoint(_key, _endpoint);
+            UserAccount.GetInstance().SetUserKeyAndRegion(_key, region);
             NarrationsLabStorageConfig.SaveUserAccount(UserAccount.GetInstance());
             NarrationsLabSettingsDialogBox.GetInstance()
                 .SetCurrentPage(Data.NarrationsLabSettingsPage.MainSettingsPage);
