@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+
 using PowerPointLabs.PictureSlidesLab.Model;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface

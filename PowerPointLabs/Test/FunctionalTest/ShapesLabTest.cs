@@ -1,8 +1,11 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using TestInterface;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
+
+using TestInterface;
 
 namespace Test.FunctionalTest
 {

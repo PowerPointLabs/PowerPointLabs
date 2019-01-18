@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Data;
 
 namespace PowerPointLabs.Converters.ColorPane

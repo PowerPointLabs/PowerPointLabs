@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;

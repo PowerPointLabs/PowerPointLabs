@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Service

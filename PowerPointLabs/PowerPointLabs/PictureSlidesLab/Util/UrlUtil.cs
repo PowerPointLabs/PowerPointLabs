@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+
 using PowerPointLabs.PictureSlidesLab.Model;
+
 using RestSharp.Contrib;
 
 namespace PowerPointLabs.PictureSlidesLab.Util

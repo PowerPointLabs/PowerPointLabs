@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
+
 using ImageProcessor;
 
 namespace PowerPointLabs.PictureSlidesLab.Util

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PowerPointLabs.XMLMisc.Data
+﻿namespace PowerPointLabs.XMLMisc.Data
 {
     class AudioGenSpeechData
     {

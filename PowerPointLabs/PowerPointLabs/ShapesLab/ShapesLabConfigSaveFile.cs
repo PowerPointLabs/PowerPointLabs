@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+
 using PowerPointLabs.FunctionalTestInterface.Impl;
-using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ShapesLab

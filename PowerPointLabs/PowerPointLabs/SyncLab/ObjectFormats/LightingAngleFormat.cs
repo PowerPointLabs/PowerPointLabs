@@ -1,10 +1,7 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using Microsoft.Office.Core;
+﻿using System.Drawing;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ThreeDFormat = Microsoft.Office.Interop.PowerPoint.ThreeDFormat;
 
