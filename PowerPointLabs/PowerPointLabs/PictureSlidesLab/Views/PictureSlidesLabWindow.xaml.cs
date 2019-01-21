@@ -131,7 +131,6 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             double windowWidth = systemWidth / StandardSystemWidth;
             double windowHeight = systemHeight / StandardSystemHeight;
 
-
             this.Window.Width = StandardWindowWidth * windowWidth;
             this.Window.Height = StandardWindowHeight * windowHeight;
             this.Window.StylesPreviewGrid.Width = StandardPrewienGridWidth * windowWidth;
