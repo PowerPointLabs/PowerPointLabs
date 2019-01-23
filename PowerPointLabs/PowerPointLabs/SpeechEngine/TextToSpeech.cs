@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
+using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab;
@@ -165,6 +166,7 @@ namespace PowerPointLabs.SpeechEngine
         }
         private static void ErrorHandler(object sender, GenericEventArgs<Exception> e)
         {
+            MessageBox.Show("Unable to complete the TTS request: " + e.ToString(), "Network Error");
             Console.WriteLine("Unable to complete the TTS request: [{0}]", e.ToString());
         }
     }
