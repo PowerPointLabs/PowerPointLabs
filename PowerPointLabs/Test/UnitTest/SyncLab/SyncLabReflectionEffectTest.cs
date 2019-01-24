@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.SyncLab.ObjectFormats;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace Test.UnitTest.SyncLab
 {

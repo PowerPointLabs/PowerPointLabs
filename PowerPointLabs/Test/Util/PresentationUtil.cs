@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
-using TestInterface;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using TestInterface;
 
 namespace Test.Util
 {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using TestInterface;
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Test.Util;
-using Point = System.Drawing.Point;
+
 using PowerPointLabs.AudioMisc;
 
 namespace Test.FunctionalTest

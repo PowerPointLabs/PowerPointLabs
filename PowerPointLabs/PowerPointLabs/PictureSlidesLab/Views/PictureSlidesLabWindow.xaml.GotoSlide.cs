@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows;
+
 using MahApps.Metro.Controls.Dialogs;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 

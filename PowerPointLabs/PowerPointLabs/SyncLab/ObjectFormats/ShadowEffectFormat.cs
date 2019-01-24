@@ -1,9 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Drawing;
+
 using Microsoft.Office.Core;
-using PowerPointLabs.TextCollection;
+
 using PowerPointLabs.Utils;
+
 using ShadowFormat = Microsoft.Office.Interop.PowerPoint.ShadowFormat;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 

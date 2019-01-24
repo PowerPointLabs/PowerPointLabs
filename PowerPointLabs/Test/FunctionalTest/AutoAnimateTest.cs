@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Test.Util;
+
 using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Test.Util;
 
 namespace Test.FunctionalTest
 {

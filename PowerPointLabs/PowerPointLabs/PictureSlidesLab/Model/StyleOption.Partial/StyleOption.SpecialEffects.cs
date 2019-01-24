@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+
 using ImageProcessor.Imaging.Filters;
 
 namespace PowerPointLabs.PictureSlidesLab.Model

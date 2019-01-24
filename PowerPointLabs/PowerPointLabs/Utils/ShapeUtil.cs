@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
@@ -160,7 +161,17 @@ namespace PowerPointLabs.Utils
                 return false;
             }
 
-            foreach (Shape shape in selection.ShapeRange)
+            return IsShapeRangeShapeOrText(selection.ShapeRange);
+        }
+
+        public static bool IsShapeRangeShapeOrText(ShapeRange selectedShapes)
+        {
+            if ((selectedShapes == null))
+            {
+                return false;
+            }
+
+            foreach (Shape shape in selectedShapes)
             {
                 if (shape.Type == MsoShapeType.msoPlaceholder)
                 {

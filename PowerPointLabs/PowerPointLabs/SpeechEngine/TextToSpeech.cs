@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
 using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Log;
+
 using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab;
 using PowerPointLabs.NarrationsLab.Data;

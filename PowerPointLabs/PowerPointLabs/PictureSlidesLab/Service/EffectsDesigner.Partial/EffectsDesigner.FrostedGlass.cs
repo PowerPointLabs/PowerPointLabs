@@ -1,7 +1,8 @@
 ﻿using Microsoft.Office.Core;
+
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
-using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.PictureSlidesLab.Service

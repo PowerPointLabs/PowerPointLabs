@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ThreeDFormat = Microsoft.Office.Interop.PowerPoint.ThreeDFormat;
 
