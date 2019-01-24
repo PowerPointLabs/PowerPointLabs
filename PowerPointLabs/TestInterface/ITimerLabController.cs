@@ -7,6 +7,7 @@
         void ClickCreateButton();
 
         void SetDurationTextBoxValue(double value);
+        void SetCountdownCheckBoxState(bool isChecked);
         void SetHeightTextBoxValue(int value);
         void SetWidthTextBoxValue(int value);
         void SetHeightSliderValue(int value);
