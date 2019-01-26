@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.PictureSlidesLab.Model

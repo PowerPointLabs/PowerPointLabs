@@ -1,12 +1,11 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using TestInterface;
+﻿using System.Collections.Generic;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
-using Point = System.Drawing.Point;
-using System.Collections.Generic;
+
+using TestInterface;
 
 namespace Test.FunctionalTest
 {
@@ -23,6 +22,9 @@ namespace Test.FunctionalTest
         private const int ChangeTextColorAndRecreateSliderSlideNo = 11;
         private const int ChangeDurationAndWidthSlideNo = 12;
         private const int DurationInvalidSlideNo = 13;
+        private const int CountdownCheckedSlideNo = 14;
+        private const int ChangeDurationWithCountdownSlideNo = 15;
+        private const int CountdownAndNonMultipleDenominationDurationSlideNo = 16;
 
         private const string TimerBody = "TimerBody";
         private const string TimerLineMarkerGroup = "TimerLineMarkerGroup";
@@ -52,12 +54,16 @@ namespace Test.FunctionalTest
             TestEditTextColorAndDeleteSlider(timerLab);
             TestEditDurationAndWidth(timerLab);
             TestInvalidDuration(timerLab);
+            TestEditCountdownState(timerLab);
+            TestEditDurationWithCountdownTimer(timerLab);
+            TestNonMultipleDenominationDurationWithCountdownTimer(timerLab);
         }
 
         private void TestCreateInitialTimer(ITimerLabController timerLab)
         {
             PpOperations.SelectSlide(OriginalSlideNo);
             timerLab.SetDurationTextBoxValue(1.05);
+            timerLab.SetCountdownCheckBoxState(false);
             timerLab.ClickCreateButton();
             AssertIsSame(OriginalSlideNo, InitialTimerSlideNo);
         }
@@ -142,6 +148,30 @@ namespace Test.FunctionalTest
             timerLab.SetDurationTextBoxValue(5.67);
 
             AssertIsSame(OriginalSlideNo, DurationInvalidSlideNo);
+        }
+
+        private void TestEditCountdownState(ITimerLabController timerLab)
+        {
+            PpOperations.SelectSlide(OriginalSlideNo);
+            timerLab.SetCountdownCheckBoxState(true);
+
+            AssertIsSame(OriginalSlideNo, CountdownCheckedSlideNo);
+        }
+
+        private void TestEditDurationWithCountdownTimer(ITimerLabController timerLab)
+        {
+            PpOperations.SelectSlide(OriginalSlideNo);
+            timerLab.SetDurationTextBoxValue(0.30);
+
+            AssertIsSame(OriginalSlideNo, ChangeDurationWithCountdownSlideNo);
+        }
+
+        private void TestNonMultipleDenominationDurationWithCountdownTimer(ITimerLabController timerLab)
+        {
+            PpOperations.SelectSlide(OriginalSlideNo);
+            timerLab.SetDurationTextBoxValue(4.16);
+
+            AssertIsSame(OriginalSlideNo, CountdownAndNonMultipleDenominationDurationSlideNo);
         }
 
         private void AssertIsSame(int actualSlideNo, int expectedSlideNo)

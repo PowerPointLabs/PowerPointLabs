@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+
 using MahApps.Metro.Controls;
+
 using PowerPointLabs.PictureSlidesLab.Util;
 
 namespace PowerPointLabs.PictureSlidesLab.Views

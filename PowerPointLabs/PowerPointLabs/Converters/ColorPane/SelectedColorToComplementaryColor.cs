@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
+
 using PowerPointLabs.ColorPicker;
 
 namespace PowerPointLabs.Converters.ColorPane

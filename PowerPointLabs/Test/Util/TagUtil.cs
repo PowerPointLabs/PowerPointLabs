@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Util

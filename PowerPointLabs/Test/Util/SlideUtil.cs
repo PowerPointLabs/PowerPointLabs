@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Office.Interop.PowerPoint;
+
 using EyeOpen.Imaging.Processing;
+
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Util

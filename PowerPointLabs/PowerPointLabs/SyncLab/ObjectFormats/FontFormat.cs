@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats

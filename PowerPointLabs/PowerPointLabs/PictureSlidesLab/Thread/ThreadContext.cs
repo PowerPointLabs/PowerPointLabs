@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Threading;
+
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.Thread

@@ -1,7 +1,10 @@
 ﻿using System.Drawing;
+
 using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
+
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PictureSlidesLab.Service

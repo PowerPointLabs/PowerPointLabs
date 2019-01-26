@@ -1,11 +1,14 @@
 ﻿using ImageProcessor.Imaging.Filters;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
+
 using Test.Util;
 
 namespace Test.UnitTest.PictureSlidesLab.Service

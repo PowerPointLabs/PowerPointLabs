@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.SyncLab.Views;
+
 using Font = System.Drawing.Font;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats

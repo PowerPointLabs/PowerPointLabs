@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -29,6 +30,13 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             {
                 Logger.Log(ribbonId + " failed. Clipboard is empty.");
                 MessageBox.Show(PasteLabText.ErrorEmptyClipboard, PasteLabText.ErrorDialogTitle);
+                return;
+            }
+
+            if (slide == null)
+            {
+                Logger.Log(ribbonId + " failed. Selection is empty.");
+                MessageBox.Show(PasteLabText.ErrorNoSelection, PasteLabText.ErrorDialogTitle);
                 return;
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.Properties;

@@ -4,8 +4,10 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.Utils;
+
 using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.Views

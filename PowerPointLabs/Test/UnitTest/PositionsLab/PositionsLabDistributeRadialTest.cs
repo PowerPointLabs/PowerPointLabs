@@ -1,9 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.PositionsLab;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.Utils;
 
 namespace Test.UnitTest.PositionsLab
 {

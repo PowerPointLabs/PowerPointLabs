@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-
-namespace TestInterface
+﻿namespace TestInterface
 {
     public interface ISyncLabController
     {

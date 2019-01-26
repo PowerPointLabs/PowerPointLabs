@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.Variants.Interface;
 using PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface;

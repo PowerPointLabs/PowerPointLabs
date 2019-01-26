@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+
 using PowerPointLabs.PictureSlidesLab.Util;
 
 namespace PowerPointLabs.PictureSlidesLab.Model
