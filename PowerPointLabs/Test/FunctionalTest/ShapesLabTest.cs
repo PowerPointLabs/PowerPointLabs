@@ -17,7 +17,7 @@ namespace Test.FunctionalTest
         private const int AddShapesShapesSlide = 6;
         private const int AddShapesTestSlide = 7;
         private const int AddShapesExpSlide = 8;
-        private const int AddShapesPlaceholder = 9;
+        private const int AddShapesPlaceholderSlide = 9;
 
         //Check clipboard restored
         private const int SaveShapesClipboardRestoredActualSlide = 11;
