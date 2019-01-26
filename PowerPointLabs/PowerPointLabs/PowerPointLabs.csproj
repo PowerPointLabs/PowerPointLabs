@@ -694,7 +694,7 @@
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />
-    <Compile Include="TimerLab\NotesToTimer.cs" />
+    <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />

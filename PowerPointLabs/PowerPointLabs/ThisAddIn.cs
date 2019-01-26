@@ -905,12 +905,12 @@ namespace PowerPointLabs
                 }
 
                 UpdateRecorderPane(sldRange.Count, slideID);
-                NotesToTimer.IsTimerEnabled = true;
+                TimerLab.TimerLab.IsTimerEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
-                NotesToTimer.IsTimerEnabled = false;
+                TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
             }
 

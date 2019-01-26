@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.TimerLab
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            return NotesToTimer.IsTimerEnabled;
+            return PowerPointLabs.TimerLab.TimerLab.IsTimerEnabled;
         }
     }
 }
