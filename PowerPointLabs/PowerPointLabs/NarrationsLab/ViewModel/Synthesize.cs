@@ -5,8 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.NarrationsLab.Data;
 
 namespace PowerPointLabs.NarrationsLab.ViewModel

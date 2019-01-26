@@ -48,5 +48,11 @@ namespace PowerPointLabs.NarrationsLab.Data
         {
             return key == null || endpoint == null;
         }
+
+        public void Clear()
+        {
+            key = null;
+            endpoint = null;
+        }
     }
 }

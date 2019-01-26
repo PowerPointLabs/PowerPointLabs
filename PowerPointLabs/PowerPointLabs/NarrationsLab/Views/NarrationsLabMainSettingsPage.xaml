@@ -46,12 +46,25 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioHumanVoice" Margin="20,10,21,0" FontSize="12" Checked="RadioHumanVoice_Checked">
                     Human-Like Voice
                 </RadioButton>
                 <Button x:Name="changeAcctBtn" Cursor="Hand" Grid.Column="0" Grid.Row="1" Click="Button_Click" Background="Transparent" BorderThickness="0" Margin="20, -10, 21, 0"
                         FontWeight="Light" Content="Click to change user account" FontSize="7">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="logoutBtn" Cursor="Hand" Grid.Column="0" Grid.Row="2" Click="LogOutButton_Click" Background="Transparent" BorderThickness="0" Margin="20, -5, 21, 0"
+                        FontWeight="Light" Content="Click to log out" FontSize="7">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>

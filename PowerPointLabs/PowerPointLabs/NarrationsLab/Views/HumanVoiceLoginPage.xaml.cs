@@ -41,9 +41,20 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            string _key = key.Text.Trim();
-            string region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
-            string _endpoint = EndpointToUriMapping.regionToEndpointMapping[region];
+            string _endpoint = "";
+            string _key = "";
+
+            try
+            {
+                _key = key.Text.Trim();
+                string region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
+                _endpoint = EndpointToUriMapping.regionToEndpointMapping[region];
+            }
+            catch
+            {
+                MessageBox.Show("Key or Region cannot be empty!", "Invalid Input");
+                return;
+            }
 
             try
             {
@@ -61,8 +72,8 @@ namespace PowerPointLabs.NarrationsLab.Views
                 Logger.Log("auth failed");
                 return;
             }
-            
-            UserAccount.GetInstance().SetUserKeyAndRegion(_key, region);
+            string _region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
+            UserAccount.GetInstance().SetUserKeyAndRegion(_key, _region);
             NarrationsLabStorageConfig.SaveUserAccount(UserAccount.GetInstance());
             NarrationsLabSettingsDialogBox.GetInstance()
                 .SetCurrentPage(NarrationsLabSettingsPage.MainSettingsPage);

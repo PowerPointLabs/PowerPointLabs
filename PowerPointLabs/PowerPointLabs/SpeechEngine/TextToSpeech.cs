@@ -128,10 +128,8 @@ namespace PowerPointLabs.SpeechEngine
 
         private static void SaveAudioToWaveFile(object sender, GenericEventArgs<Stream> args)
         {
-            Console.WriteLine(args.EventData);
-            SaveStreamToFile(args.FilePath, args.EventData);
-            Console.WriteLine("saving to wav");
-            args.EventData.Dispose();
+                SaveStreamToFile(args.FilePath, args.EventData);
+                args.EventData.Dispose();
         }
 
         private static byte[] ReadFully(Stream input)
@@ -161,6 +159,7 @@ namespace PowerPointLabs.SpeechEngine
             }
             catch (Exception e)
             {
+                MessageBox.Show("Error generating audio files. ");
                 Debug.WriteLine(e.Message);
             }
         }

@@ -71,5 +71,13 @@ namespace PowerPointLabs.NarrationsLab.Storage
                 Logger.Log(e.Message);
             }
         }
+
+        public static void DeleteUserAccount()
+        {
+            if (Directory.Exists(GetAccessKeyStoragePath()) && File.Exists(GetAccessKeyFilePath()))
+            {
+                File.Delete(GetAccessKeyFilePath());
+            }
+        }
     }
 }

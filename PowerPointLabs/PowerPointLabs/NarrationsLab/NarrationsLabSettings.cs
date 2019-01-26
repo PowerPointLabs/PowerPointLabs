@@ -35,15 +35,12 @@ namespace PowerPointLabs.NarrationsLab
                 NotesToAudio.SetDefaultVoice(voiceName);
                 VoiceSelectedIndex = VoiceNameList.IndexOf(voiceName);
             }
-            //TODO: This is a simplifying logic. As long as human voice textbox is non-empty, then human voice is always selected
-            //To remove human voice, set text box to empty.
-
-            if (voice != null)
+            else if (voice != null)
             {
                 humanVoice = voice;
                 NotesToAudio.SetDefaultVoice(humanVoice.voiceName, humanVoice);
-                NotesToAudio.IsHumanVoiceSelected = isHumanVoiceSelected;
             }
+            NotesToAudio.IsHumanVoiceSelected = isHumanVoiceSelected;
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
-
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.NarrationsLab.Data;
+using PowerPointLabs.NarrationsLab.Storage;
 using PowerPointLabs.NarrationsLab.ViewModel;
 using PowerPointLabs.TextCollection;
 
@@ -32,6 +32,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 voiceList.Visibility = Visibility.Collapsed;
                 humanVoiceBtn.Visibility = Visibility.Visible;
                 changeAcctBtn.Visibility = Visibility.Hidden;
+                logoutBtn.Visibility = Visibility.Hidden;
                 RadioHumanVoice.IsEnabled = false;
             }
             else
@@ -42,6 +43,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 voiceList.Visibility = Visibility.Visible;
                 humanVoiceBtn.Visibility = Visibility.Collapsed;
                 changeAcctBtn.Visibility = Visibility.Visible;
+                logoutBtn.Visibility = Visibility.Visible;
                 RadioHumanVoice.IsEnabled = true;
             }
             voiceList.ItemsSource = voices;
@@ -60,6 +62,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     instance.voiceList.Visibility = Visibility.Collapsed;
                     instance.humanVoiceBtn.Visibility = Visibility.Visible;
                     instance.changeAcctBtn.Visibility = Visibility.Hidden;
+                    instance.logoutBtn.Visibility = Visibility.Hidden;
                     instance.RadioHumanVoice.IsEnabled = false;
                 }
                 else
@@ -67,6 +70,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                     instance.voiceList.Visibility = Visibility.Visible;
                     instance.humanVoiceBtn.Visibility = Visibility.Collapsed;
                     instance.changeAcctBtn.Visibility = Visibility.Visible;
+                    instance.logoutBtn.Visibility = Visibility.Visible;
                     instance.RadioHumanVoice.IsEnabled = true;
                 }
             }
@@ -121,9 +125,21 @@ namespace PowerPointLabs.NarrationsLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            string defaultVoiceSelected = RadioDefaultVoice.IsChecked == true? voiceSelectionInput.Content.ToString() : null;
-            HumanVoice humanVoiceSelected = RadioHumanVoice.IsChecked == true ? (HumanVoice)voiceList.SelectedItem : null;
-            DialogConfirmedHandler(defaultVoiceSelected, humanVoiceSelected, humanVoiceSelected != null, previewCheckbox.IsChecked.GetValueOrDefault());
+            try
+            {
+                string defaultVoiceSelected = RadioDefaultVoice.IsChecked == true ? voiceSelectionInput.Content.ToString() : null;
+                HumanVoice humanVoiceSelected = RadioHumanVoice.IsChecked == true ? (HumanVoice)voiceList.SelectedItem : null;
+                if (humanVoiceSelected == null && RadioHumanVoice.IsChecked == true)
+                {
+                    throw new Exception();
+                }
+                DialogConfirmedHandler(defaultVoiceSelected, humanVoiceSelected, humanVoiceSelected != null, previewCheckbox.IsChecked.GetValueOrDefault());
+            }
+            catch
+            {
+                MessageBox.Show( "Voice selected cannot be empty!", "Invalid Input");
+                return;
+            }
             NarrationsLabSettingsDialogBox.GetInstance().Close();
             NarrationsLabSettingsDialogBox.GetInstance().Destroy();
         }
@@ -152,6 +168,18 @@ namespace PowerPointLabs.NarrationsLab.Views
             NarrationsLabSettingsDialogBox.GetInstance().SetCurrentPage(NarrationsLabSettingsPage.LoginPage);
         }
 
+        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            UserAccount.GetInstance().Clear();
+            NarrationsLabStorageConfig.DeleteUserAccount();
+            voiceList.Visibility = Visibility.Collapsed;
+            humanVoiceBtn.Visibility = Visibility.Visible;
+            changeAcctBtn.Visibility = Visibility.Hidden;
+            logoutBtn.Visibility = Visibility.Hidden;
+            RadioHumanVoice.IsEnabled = false;
+            RadioDefaultVoice.IsChecked = true;
+        }
+
         private void RadioDefaultVoice_Checked(object sender, RoutedEventArgs e)
         {
             RadioHumanVoice.IsChecked = false;
@@ -160,6 +188,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         private void RadioHumanVoice_Checked(object sender, RoutedEventArgs e)
         {
             RadioDefaultVoice.IsChecked = false;
+            MessageBox.Show("Note that we only support English language at this stage.");
         }
     }
 }
