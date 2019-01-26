@@ -57,6 +57,7 @@ namespace PowerPointLabs
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
+        private const string SyncLabPptxName = "Sync Lab - Do not edit";
         private const string TempZipName = "tempZip.zip";
 
         private string _deactivatedPresFullName;
@@ -485,6 +486,15 @@ namespace PowerPointLabs
             }
         }
 
+        private void ShutDownImageSearchPane()
+        {
+            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
+            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen)
+            {
+                pictureSlidesLabWindow.Close();
+            }
+        }
+
         private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)
         {
             if (!_documentPaneMapper.ContainsKey(activeWindow))
@@ -785,6 +795,51 @@ namespace PowerPointLabs
                 recorder.ForceStopEvent();
             }
         }
+
+        private void CloseSyncLab()
+        {
+            if (_isClosing)
+            {
+                // If sync lab open, then close it.
+                PowerPoint.Presentation syncLabPpt = GetOpenedSyncLabPresentation();
+                if (syncLabPpt != null)
+                {
+                    syncLabPpt.Close();
+                    Trace.TraceInformation("Sync Lab Ppt closed.");
+                }
+            }
+
+        }
+
+        private PowerPoint.Presentation GetOpenedSyncLabPresentation()
+        {
+            foreach (PowerPoint.Presentation presentation in Application.Presentations)
+            {
+                if (presentation.Name.Contains(SyncLabPptxName))
+                {
+                    return presentation;
+                }
+            }
+            return null;
+        }
+
+        private void CloseShapesLab()
+        {
+            // in this case, we are closing the last client presentation,
+            // therefore we can close the shape gallery
+            if (_isClosing &&
+                ShapePresentation != null &&
+                ShapePresentation.Opened)
+            {
+                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
+                {
+                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
+                }
+
+                ShapePresentation.Close();
+                Trace.TraceInformation("Shape Gallery terminated.");
+            }
+        }
         # endregion
 
         # region Powerpoint Application Event Handlers
@@ -840,21 +895,8 @@ namespace PowerPointLabs
 
             _deactivatedPresFullName = pres.FullName;
 
-            // in this case, we are closing the last client presentation,
-            // therefore we can close the shape gallery
-            if (_isClosing &&
-                Application.Presentations.Count == 2 &&
-                ShapePresentation != null &&
-                ShapePresentation.Opened)
-            {
-                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
-                {
-                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
-                }
-
-                ShapePresentation.Close();
-                Trace.TraceInformation("Shape Gallery terminated.");
-            }
+            CloseSyncLab();
+            CloseShapesLab();
         }
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -1099,15 +1141,6 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl(TimerLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(AgendaLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(PictureSlidesLabText.RibbonMenuId);
-        }
-
-        private void ShutDownImageSearchPane()
-        {
-            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
-            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen && Application.Presentations.Count == 2)
-            {
-                pictureSlidesLabWindow.Close();
-            }
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
