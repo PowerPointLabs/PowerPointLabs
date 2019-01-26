@@ -61,8 +61,18 @@ namespace PowerPointLabs.NarrationsLab.ViewModel
                 Content = new StringContent(GenerateSsml(inputOptions.Locale, genderValue, inputOptions.VoiceName, inputOptions.Text))
             };
 
-            var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);                      
+            var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
+            for (int i = 0; i < 3 && !httpTask.Result.IsSuccessStatusCode; i++)
+            {
+                Thread.Sleep(20000);
+                request = new HttpRequestMessage(HttpMethod.Post, inputOptions.RequestUri)
+                {
+                    Content = new StringContent(GenerateSsml(inputOptions.Locale, genderValue, inputOptions.VoiceName, inputOptions.Text))
+                };
+                httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            }
+           // Logger.Log(httpTask.Result.StatusCode.ToString());
             var saveTask = httpTask.ContinueWith(
                 async (responseMessage, token) =>
                 {

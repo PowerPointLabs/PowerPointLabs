@@ -130,9 +130,9 @@ namespace PowerPointLabs.SpeechEngine
 
         private static void SaveAudioToWaveFile(object sender, GenericEventArgs<Stream> args)
         {
-            Logger.Log("saving " + args.FilePath);
-                SaveStreamToFile(args.FilePath, args.EventData);
-                args.EventData.Dispose();
+            //  Logger.Log("saving " + args.FilePath);
+            SaveStreamToFile(args.FilePath, args.EventData);
+            args.EventData.Dispose();
         }
 
         private static byte[] ReadFully(Stream input)
