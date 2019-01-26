@@ -165,7 +165,6 @@ namespace PowerPointLabs.SpeechEngine
         }
         private static void ErrorHandler(object sender, GenericEventArgs<Exception> e)
         {
-            MessageBox.Show("Unable to complete the TTS request: " + e.ToString(), "Network Error");
             Console.WriteLine("Unable to complete the TTS request: [{0}]", e.ToString());
         }
     }
