@@ -6,6 +6,8 @@ namespace PowerPointLabs.TimerLab
         public const double DefaultDisplayDuration = 1.00;
         public const int DefaultDenomination = 10;
 
+        public const bool DefaultCountdownSetting = false;
+
         public const int SizeStringLimit = 3;
 
         public const float DefaultTimerWidth = 600;
