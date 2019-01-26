@@ -19,7 +19,7 @@ namespace PowerPointLabs.SpeechEngine
     static class TextToSpeech
     {
         public static String DefaultVoiceName;
-        public static HumanVoice humanVoice;
+        public static AzureVoice humanVoice;
 
         public static IEnumerable<string> GetVoices()
         {
@@ -46,9 +46,9 @@ namespace PowerPointLabs.SpeechEngine
                 String fileName = i > 0 ? baseFileName + " (OnClick)" : baseFileName;
 
                 String filePath = folderPath + "\\" + fileName + ".wav";
-                if (NotesToAudio.IsHumanVoiceSelected)
+                if (NotesToAudio.IsAzureVoiceSelected)
                 {
-                    SaveStringToWaveFileWithHumanVoice(textToSave, filePath);
+                    SaveStringToWaveFileWithAzureVoice(textToSave, filePath);
                 }
                 else
                 {
@@ -68,11 +68,10 @@ namespace PowerPointLabs.SpeechEngine
             PromptToAudio.Speak(builder);
         }
 
-        private static void SaveStringToWaveFileWithHumanVoice(string textToSave, string filePath)
+        private static void SaveStringToWaveFileWithAzureVoice(string textToSave, string filePath)
         {
             string accessToken;
             string textToSpeak = GetHumanSpeakNotesForText(textToSave);
-
             try
             {
                 Authentication auth = Authentication.GetInstance();
@@ -87,6 +86,10 @@ namespace PowerPointLabs.SpeechEngine
                 return;
             }
             string requestUri = UserAccount.GetInstance().GetUri();
+            if (requestUri == null)
+            {
+                return;
+            }
             var cortana = new Synthesize();
 
             cortana.OnAudioAvailable += SaveAudioToWaveFile;
@@ -104,9 +107,8 @@ namespace PowerPointLabs.SpeechEngine
                 OutputFormat = AudioOutputFormat.Riff24Khz16BitMonoPcm,
                 AuthorizationToken = "Bearer " + accessToken,
             }, filePath).Wait();
-
         }
-      
+
         private static void SaveStringToWaveFile(String textToSave, String filePath)
         {
             PromptBuilder builder = GetPromptForText(textToSave);
@@ -128,6 +130,7 @@ namespace PowerPointLabs.SpeechEngine
 
         private static void SaveAudioToWaveFile(object sender, GenericEventArgs<Stream> args)
         {
+            Logger.Log("saving " + args.FilePath);
                 SaveStreamToFile(args.FilePath, args.EventData);
                 args.EventData.Dispose();
         }
@@ -165,7 +168,7 @@ namespace PowerPointLabs.SpeechEngine
         }
         private static void ErrorHandler(object sender, GenericEventArgs<Exception> e)
         {
-            Console.WriteLine("Unable to complete the TTS request: [{0}]", e.ToString());
+            Logger.Log("Unable to complete the TTS request: " + e.ToString());
         }
     }
 }

@@ -649,8 +649,8 @@
     <Compile Include="NarrationsLab\Data\AudioOutputFormat.cs" />
     <Compile Include="NarrationsLab\Data\EndpointToUriMapping.cs" />
     <Compile Include="NarrationsLab\Data\Gender.cs" />
-    <Compile Include="NarrationsLab\Data\HumanVoice.cs" />
-    <Compile Include="NarrationsLab\Data\HumanVoiceList.cs" />
+    <Compile Include="NarrationsLab\Data\AzureVoice.cs" />
+    <Compile Include="NarrationsLab\Data\AzureVoiceList.cs" />
     <Compile Include="NarrationsLab\Data\Locale.cs" />
     <Compile Include="NarrationsLab\Data\LocaleMapping.cs" />
     <Compile Include="NarrationsLab\Data\NarrationsLabSettingsPage.cs" />
@@ -663,8 +663,8 @@
     <Compile Include="NarrationsLab\ViewModel\Authentication.cs" />
     <Compile Include="NarrationsLab\ViewModel\GenericEventArgs.cs" />
     <Compile Include="NarrationsLab\ViewModel\Synthesize.cs" />
-    <Compile Include="NarrationsLab\Views\HumanVoiceLoginPage.xaml.cs">
-      <DependentUpon>HumanVoiceLoginPage.xaml</DependentUpon>
+    <Compile Include="NarrationsLab\Views\AzureVoiceLoginPage.xaml.cs">
+      <DependentUpon>AzureVoiceLoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="NarrationsLab\Views\InShowRecordingControl.xaml.cs">
       <DependentUpon>InShowRecordingControl.xaml</DependentUpon>
@@ -1443,7 +1443,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NarrationsLab\Views\HumanVoiceLoginPage.xaml">
+    <Page Include="NarrationsLab\Views\AzureVoiceLoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -15,14 +15,14 @@ namespace PowerPointLabs.NarrationsLab.Views
     /// <summary>
     /// Interaction logic for NarrationsLabMainSettingsPage.xaml
     /// </summary>
-    public partial class NarrationsLabMainSettingsPage: Page
+    public partial class NarrationsLabMainSettingsPage : Page
     {
-        public delegate void DialogConfirmedDelegate(string voiceName, HumanVoice humanVoiceName, bool isHumanVoiceSelected, bool preview);
+        public delegate void DialogConfirmedDelegate(string voiceName, AzureVoice azureVoiceName, bool isAzureVoiceSelected, bool preview);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
-       
+
         private static NarrationsLabMainSettingsPage instance;
 
-        private ObservableCollection<HumanVoice> voices = HumanVoiceList.voices;
+        private ObservableCollection<AzureVoice> voices = AzureVoiceList.voices;
 
         private NarrationsLabMainSettingsPage()
         {
@@ -30,10 +30,10 @@ namespace PowerPointLabs.NarrationsLab.Views
             if (UserAccount.GetInstance().IsEmpty() || !IsValidUserAccount())
             {
                 voiceList.Visibility = Visibility.Collapsed;
-                humanVoiceBtn.Visibility = Visibility.Visible;
+                azureVoiceBtn.Visibility = Visibility.Visible;
                 changeAcctBtn.Visibility = Visibility.Hidden;
                 logoutBtn.Visibility = Visibility.Hidden;
-                RadioHumanVoice.IsEnabled = false;
+                RadioAzureVoice.IsEnabled = false;
             }
             else
             {
@@ -41,10 +41,10 @@ namespace PowerPointLabs.NarrationsLab.Views
                 string _endpoint = UserAccount.GetInstance().GetRegion();
 
                 voiceList.Visibility = Visibility.Visible;
-                humanVoiceBtn.Visibility = Visibility.Collapsed;
+                azureVoiceBtn.Visibility = Visibility.Collapsed;
                 changeAcctBtn.Visibility = Visibility.Visible;
                 logoutBtn.Visibility = Visibility.Visible;
-                RadioHumanVoice.IsEnabled = true;
+                RadioAzureVoice.IsEnabled = true;
             }
             voiceList.ItemsSource = voices;
             voiceList.DisplayMemberPath = "Voice";
@@ -60,24 +60,24 @@ namespace PowerPointLabs.NarrationsLab.Views
                 if (UserAccount.GetInstance().IsEmpty())
                 {
                     instance.voiceList.Visibility = Visibility.Collapsed;
-                    instance.humanVoiceBtn.Visibility = Visibility.Visible;
+                    instance.azureVoiceBtn.Visibility = Visibility.Visible;
                     instance.changeAcctBtn.Visibility = Visibility.Hidden;
                     instance.logoutBtn.Visibility = Visibility.Hidden;
-                    instance.RadioHumanVoice.IsEnabled = false;
+                    instance.RadioAzureVoice.IsEnabled = false;
                 }
                 else
                 {
                     instance.voiceList.Visibility = Visibility.Visible;
-                    instance.humanVoiceBtn.Visibility = Visibility.Collapsed;
+                    instance.azureVoiceBtn.Visibility = Visibility.Collapsed;
                     instance.changeAcctBtn.Visibility = Visibility.Visible;
                     instance.logoutBtn.Visibility = Visibility.Visible;
-                    instance.RadioHumanVoice.IsEnabled = true;
+                    instance.RadioAzureVoice.IsEnabled = true;
                 }
             }
             return instance;
         }
 
-        public void SetNarrationsLabMainSettings(int selectedVoiceIndex, HumanVoice humanVoice, List<string> voices, bool isHumanVoiceSelected, bool isPreviewChecked)
+        public void SetNarrationsLabMainSettings(int selectedVoiceIndex, AzureVoice humanVoice, List<string> voices, bool isAzureVoiceSelected, bool isPreviewChecked)
         {
             voiceSelectionInput.ItemsSource = voices;
             voiceSelectionInput.ToolTip = NarrationsLabText.SettingsVoiceSelectionInputTooltip;
@@ -90,10 +90,10 @@ namespace PowerPointLabs.NarrationsLab.Views
 
             previewCheckbox.IsChecked = isPreviewChecked;
             previewCheckbox.ToolTip = NarrationsLabText.SettingsPreviewCheckboxTooltip;
-          
-                RadioHumanVoice.IsChecked = isHumanVoiceSelected;
-                RadioDefaultVoice.IsChecked = !isHumanVoiceSelected;
-            
+
+            RadioAzureVoice.IsChecked = isAzureVoiceSelected;
+            RadioDefaultVoice.IsChecked = !isAzureVoiceSelected;
+
         }
 
         public void Destroy()
@@ -101,13 +101,12 @@ namespace PowerPointLabs.NarrationsLab.Views
             instance = null;
         }
 
-        private bool IsValidUserAccount()
+        private bool IsValidUserAccount(bool showErrorMessage = true)
         {
-            string _key = UserAccount.GetInstance().GetKey();
-            string _endpoint = EndpointToUriMapping.regionToEndpointMapping[UserAccount.GetInstance().GetRegion()];
-
             try
             {
+                string _key = UserAccount.GetInstance().GetKey();
+                string _endpoint = EndpointToUriMapping.regionToEndpointMapping[UserAccount.GetInstance().GetRegion()];
                 Authentication auth = Authentication.GetInstance(_endpoint, _key);
                 string accessToken = auth.GetAccessToken();
                 Console.WriteLine("Token: {0}\n", accessToken);
@@ -117,7 +116,12 @@ namespace PowerPointLabs.NarrationsLab.Views
                 Console.WriteLine("Failed authentication.");
                 Console.WriteLine(ex.ToString());
                 Console.WriteLine(ex.Message);
-                MessageBox.Show("Failed authentication");
+                if (showErrorMessage)
+                {
+                    MessageBox.Show("Failed authentication");
+                }
+                UserAccount.GetInstance().Clear();
+                NarrationsLabStorageConfig.DeleteUserAccount();
                 return false;
             }
             return true;
@@ -128,16 +132,16 @@ namespace PowerPointLabs.NarrationsLab.Views
             try
             {
                 string defaultVoiceSelected = RadioDefaultVoice.IsChecked == true ? voiceSelectionInput.Content.ToString() : null;
-                HumanVoice humanVoiceSelected = RadioHumanVoice.IsChecked == true ? (HumanVoice)voiceList.SelectedItem : null;
-                if (humanVoiceSelected == null && RadioHumanVoice.IsChecked == true)
+                AzureVoice azureVoiceSelected = RadioAzureVoice.IsChecked == true ? (AzureVoice)voiceList.SelectedItem : null;
+                if (azureVoiceSelected == null && RadioAzureVoice.IsChecked == true)
                 {
                     throw new Exception();
                 }
-                DialogConfirmedHandler(defaultVoiceSelected, humanVoiceSelected, humanVoiceSelected != null, previewCheckbox.IsChecked.GetValueOrDefault());
+                DialogConfirmedHandler(defaultVoiceSelected, azureVoiceSelected, azureVoiceSelected != null, previewCheckbox.IsChecked.GetValueOrDefault());
             }
             catch
             {
-                MessageBox.Show( "Voice selected cannot be empty!", "Invalid Input");
+                MessageBox.Show("Voice selected cannot be empty!", "Invalid Input");
                 return;
             }
             NarrationsLabSettingsDialogBox.GetInstance().Close();
@@ -153,17 +157,22 @@ namespace PowerPointLabs.NarrationsLab.Views
             }
         }
 
-        private void HumanVoiceBtn_Click(object sender, RoutedEventArgs e)
-        {           
-            NarrationsLabSettingsDialogBox.GetInstance().SetCurrentPage(NarrationsLabSettingsPage.LoginPage);           
+        private void AzureVoiceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NarrationsLabSettingsDialogBox.GetInstance().SetCurrentPage(NarrationsLabSettingsPage.LoginPage);
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            if (NotesToAudio.IsAzureVoiceSelected && !IsValidUserAccount(false))
+            {
+                string defaultVoiceSelected = voiceSelectionInput.Content.ToString();
+                DialogConfirmedHandler(defaultVoiceSelected, null, false, previewCheckbox.IsChecked.GetValueOrDefault());
+            }
             NarrationsLabSettingsDialogBox.GetInstance().Destroy();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ChangeAccountButton_Click(object sender, RoutedEventArgs e)
         {
             NarrationsLabSettingsDialogBox.GetInstance().SetCurrentPage(NarrationsLabSettingsPage.LoginPage);
         }
@@ -173,19 +182,19 @@ namespace PowerPointLabs.NarrationsLab.Views
             UserAccount.GetInstance().Clear();
             NarrationsLabStorageConfig.DeleteUserAccount();
             voiceList.Visibility = Visibility.Collapsed;
-            humanVoiceBtn.Visibility = Visibility.Visible;
+            azureVoiceBtn.Visibility = Visibility.Visible;
             changeAcctBtn.Visibility = Visibility.Hidden;
             logoutBtn.Visibility = Visibility.Hidden;
-            RadioHumanVoice.IsEnabled = false;
+            RadioAzureVoice.IsEnabled = false;
             RadioDefaultVoice.IsChecked = true;
         }
 
         private void RadioDefaultVoice_Checked(object sender, RoutedEventArgs e)
         {
-            RadioHumanVoice.IsChecked = false;
+            RadioAzureVoice.IsChecked = false;
         }
 
-        private void RadioHumanVoice_Checked(object sender, RoutedEventArgs e)
+        private void RadioAzureVoice_Checked(object sender, RoutedEventArgs e)
         {
             RadioDefaultVoice.IsChecked = false;
             MessageBox.Show("Note that we only support English language at this stage.");

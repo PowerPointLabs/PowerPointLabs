@@ -27,7 +27,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <RadioButton Grid.Column="0" x:Name="RadioDefaultVoice" Margin="20,30,0,0" FontSize="12" Checked="RadioDefaultVoice_Checked">
-                    Default Voice
+                    In-Computer Voice
                 </RadioButton>
                 <controls:DropDownButton Grid.Column="1" x:Name="voiceSelectionInput" Height="23" Margin="0,25,20,0">
                     <controls:DropDownButton.ItemTemplate>
@@ -39,20 +39,21 @@
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25*"/>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="22*"/>
+                    <ColumnDefinition Width="103*"/>
+                    <ColumnDefinition Width="72*"/>
+                    <ColumnDefinition Width="21*"/>
+                    <ColumnDefinition Width="154*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioHumanVoice" Margin="20,10,21,0" FontSize="12" Checked="RadioHumanVoice_Checked">
-                    Human-Like Voice
+                <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioAzureVoice" Margin="20,10,20.667,0" FontSize="12" Checked="RadioAzureVoice_Checked" Grid.ColumnSpan="2">
+                    Cloud Voice
                 </RadioButton>
-                <Button x:Name="changeAcctBtn" Cursor="Hand" Grid.Column="0" Grid.Row="1" Click="Button_Click" Background="Transparent" BorderThickness="0" Margin="20, -10, 21, 0"
-                        FontWeight="Light" Content="Click to change user account" FontSize="7">
+                <Button x:Name="changeAcctBtn" Cursor="Hand" Grid.Column="0" Click="ChangeAccountButton_Click" Background="Transparent" BorderThickness="0" Margin="20,26,20.667,0.333"
+                        FontWeight="Light" Content="Click to change user account" FontSize="7" Grid.ColumnSpan="2" Grid.RowSpan="2">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
@@ -63,8 +64,8 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button x:Name="logoutBtn" Cursor="Hand" Grid.Column="0" Grid.Row="2" Click="LogOutButton_Click" Background="Transparent" BorderThickness="0" Margin="20, -5, 21, 0"
-                        FontWeight="Light" Content="Click to log out" FontSize="7">
+                <Button x:Name="logoutBtn" Cursor="Hand" Grid.Column="0" Click="LogOutButton_Click" Background="Transparent" BorderThickness="0" Margin="20,32,20.667,0"
+                        FontWeight="Light" Content="Click to log out" FontSize="7" Grid.ColumnSpan="2" Grid.RowSpan="3">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
@@ -75,9 +76,9 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <ComboBox x:Name="voiceList" Grid.Column="1" Padding="2" Margin="0.333,10,20,-0.333" Grid.ColumnSpan="2"/>
-                <Button Cursor="Hand" Grid.Column="1" x:Name="humanVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,-0.33" 
-                        Grid.ColumnSpan="2" Click="HumanVoiceBtn_Click"
+                <ComboBox x:Name="voiceList" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" Grid.ColumnSpan="2"/>
+                <Button Cursor="Hand" Grid.Column="2" x:Name="azureVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,0" 
+                        Grid.ColumnSpan="2" Click="AzureVoiceBtn_Click"
                         BorderThickness="0" Background="Transparent" FontWeight="Medium">
                     <Button.Style>
                         <Style TargetType="Button">

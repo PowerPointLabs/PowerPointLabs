@@ -41,7 +41,7 @@ namespace PowerPointLabs.NarrationsLab.Views
         }
         public void Destroy()
         {
-            HumanVoiceLoginPage.GetInstance().Destroy();
+            AzureVoiceLoginPage.GetInstance().Destroy();
             NarrationsLabMainSettingsPage.GetInstance().Destroy();
             instance = null;
         }

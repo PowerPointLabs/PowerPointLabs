@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 
 using Microsoft.Office.Core;
@@ -14,6 +15,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.Models;
 using PowerPointLabs.NarrationsLab.Data;
+using PowerPointLabs.NarrationsLab.ViewModel;
 using PowerPointLabs.SpeechEngine;
 using PowerPointLabs.Views;
 
@@ -29,7 +31,7 @@ namespace PowerPointLabs.NarrationsLab
         public const string SpeechShapePrefixOld = "AudioGen Speech";
 
         public static bool IsRemoveAudioEnabled { get; set; } = true;
-        public static bool IsHumanVoiceSelected { get; set; } = false;
+        public static bool IsAzureVoiceSelected { get; set; } = false;
 
         private static string TempFolderName
         {
@@ -71,7 +73,11 @@ namespace PowerPointLabs.NarrationsLab
             List<string[]> audioList = new List<string[]>();
 
             List<PowerPointSlide> slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
-
+            if (NotesToAudio.IsAzureVoiceSelected && UserAccount.GetInstance().IsEmpty())
+            {
+                MessageBox.Show("Invalid user account. Please log in again.");
+                throw new Exception();
+            }
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
             {
@@ -167,7 +173,7 @@ namespace PowerPointLabs.NarrationsLab
             TextToSpeech.DefaultVoiceName = voiceName;
         }
 
-        public static void SetDefaultVoice(string voiceName, HumanVoice humanVoice)
+        public static void SetDefaultVoice(string voiceName, AzureVoice humanVoice)
         {
             TextToSpeech.DefaultVoiceName = voiceName;
             TextToSpeech.humanVoice = humanVoice;

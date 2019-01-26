@@ -11,22 +11,22 @@ namespace PowerPointLabs.NarrationsLab
         public static int VoiceSelectedIndex = 0;
 
         public static bool IsPreviewEnabled = false;
-        public static HumanVoice humanVoice;
+        public static AzureVoice azureVoice;
 
         public static void ShowSettingsDialog()
         {
             NarrationsLabSettingsDialogBox dialog = NarrationsLabSettingsDialogBox.GetInstance();
             NarrationsLabMainSettingsPage.GetInstance().SetNarrationsLabMainSettings(
                 VoiceSelectedIndex,
-                humanVoice,
+                azureVoice,
                 VoiceNameList,
-                NotesToAudio.IsHumanVoiceSelected,
+                NotesToAudio.IsAzureVoiceSelected,
                 IsPreviewEnabled);
             NarrationsLabMainSettingsPage.GetInstance().DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 
-        private static void OnSettingsDialogConfirmed(string voiceName, HumanVoice voice, bool isHumanVoiceSelected, bool isPreviewCurrentSlide)
+        private static void OnSettingsDialogConfirmed(string voiceName, AzureVoice voice, bool isAzureVoiceSelected, bool isPreviewCurrentSlide)
         {
             IsPreviewEnabled = isPreviewCurrentSlide;
 
@@ -37,10 +37,10 @@ namespace PowerPointLabs.NarrationsLab
             }
             else if (voice != null)
             {
-                humanVoice = voice;
-                NotesToAudio.SetDefaultVoice(humanVoice.voiceName, humanVoice);
+                azureVoice = voice;
+                NotesToAudio.SetDefaultVoice(azureVoice.voiceName, azureVoice);
             }
-            NotesToAudio.IsHumanVoiceSelected = isHumanVoiceSelected;
+            NotesToAudio.IsAzureVoiceSelected = isAzureVoiceSelected;
         }
     }
 }

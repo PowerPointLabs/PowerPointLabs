@@ -41,7 +41,11 @@ namespace PowerPointLabs.NarrationsLab.Data
 
         public string GetUri()
         {
-            return EndpointToUriMapping.endpointToUriMapping[endpoint];
+            if (!string.IsNullOrEmpty(endpoint))
+            {
+                return EndpointToUriMapping.endpointToUriMapping[endpoint];
+            }
+            return null;
         }
 
         public bool IsEmpty()

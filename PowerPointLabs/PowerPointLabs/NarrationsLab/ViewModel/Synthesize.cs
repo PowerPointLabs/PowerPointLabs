@@ -61,8 +61,7 @@ namespace PowerPointLabs.NarrationsLab.ViewModel
                 Content = new StringContent(GenerateSsml(inputOptions.Locale, genderValue, inputOptions.VoiceName, inputOptions.Text))
             };
 
-            var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            Console.WriteLine("Response status code: [{0}]", httpTask.Result.StatusCode);
+            var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);                      
 
             var saveTask = httpTask.ContinueWith(
                 async (responseMessage, token) =>

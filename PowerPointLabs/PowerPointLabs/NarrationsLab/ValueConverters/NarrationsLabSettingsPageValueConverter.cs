@@ -17,7 +17,7 @@ namespace PowerPointLabs.NarrationsLab.ValueConverters
                 case NarrationsLabSettingsPage.MainSettingsPage:
                     return NarrationsLabMainSettingsPage.GetInstance();
                 case NarrationsLabSettingsPage.LoginPage:
-                    HumanVoiceLoginPage loginInstance = HumanVoiceLoginPage.GetInstance();
+                    AzureVoiceLoginPage loginInstance = AzureVoiceLoginPage.GetInstance();
                     loginInstance.key.Text = "";
                     loginInstance.endpoint.SelectedIndex = -1;
                     return loginInstance;             

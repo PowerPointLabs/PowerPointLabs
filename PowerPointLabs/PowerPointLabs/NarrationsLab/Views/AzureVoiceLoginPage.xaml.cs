@@ -12,19 +12,19 @@ namespace PowerPointLabs.NarrationsLab.Views
     /// <summary>
     /// Interaction logic for HumanVoiceLoginPage.xaml
     /// </summary>
-    public partial class HumanVoiceLoginPage : Page
+    public partial class AzureVoiceLoginPage : Page
     {
-        private static HumanVoiceLoginPage instance;
-        private HumanVoiceLoginPage()
+        private static AzureVoiceLoginPage instance;
+        private AzureVoiceLoginPage()
         {
             InitializeComponent();
         }
 
-        public static HumanVoiceLoginPage GetInstance()
+        public static AzureVoiceLoginPage GetInstance()
         {
             if (instance == null)
             {
-                instance = new HumanVoiceLoginPage();
+                instance = new AzureVoiceLoginPage();
             }
             return instance;
         }

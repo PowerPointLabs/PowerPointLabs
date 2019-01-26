@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PowerPointLabs.NarrationsLab.Data
 {
-    public class HumanVoice
+    public class AzureVoice
     {
         public Gender voiceType;
         public Locale locale;
@@ -25,7 +25,7 @@ namespace PowerPointLabs.NarrationsLab.Data
         private const string COMMA = ",";
         private const string SPACE = " ";
 
-        public HumanVoice(Gender gender, Locale locale, Voice voice)
+        public AzureVoice(Gender gender, Locale locale, Voice voice)
         {
             voiceType = gender;
             this.locale = locale;
