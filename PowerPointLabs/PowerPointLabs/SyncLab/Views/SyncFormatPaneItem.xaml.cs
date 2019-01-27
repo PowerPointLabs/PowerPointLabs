@@ -49,6 +49,13 @@ namespace PowerPointLabs.SyncLab.Views
                 IntPtr.Zero,
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
+
+            String toolTipBodyText = "";
+            foreach (FormatTreeNode format in formats)
+            {
+                toolTipBodyText += GetNamesOfCheckNodes(format);
+            }
+            toolTipBody.Text = toolTipBodyText;
         }
 
         public string FormatShapeKey
@@ -123,9 +130,41 @@ namespace PowerPointLabs.SyncLab.Views
             set
             {
                 textBlock.Text = value;
-                textBlock.ToolTip = value;
+                toolTipName.Text = value;
             }
         }
+
+        #region Helper Functions
+
+        private String GetNamesOfCheckNodes(FormatTreeNode node)
+        {
+            if (node.IsChecked ?? false)
+            {
+                return node.Name + "\n";
+            }
+            String result = "";
+            foreach (FormatTreeNode child in node.ChildrenNodes ?? new FormatTreeNode[] { })
+            {
+                result += GetNamesOfCheckNodes(child);
+            }
+            return result;
+        }
+
+        private void ApplyFormatToSelected()
+        {
+            Shape formatShape = shapeStorage.GetShape(shapeKey);
+            if (formatShape == null)
+            {
+                MessageBox.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
+                parent.ClearInvalidFormats();
+            }
+            this.StartNewUndoEntry();
+            parent.ApplyFormats(formats, formatShape);
+        }
+
+        #endregion
+
+        #region Event Handlers
 
         private void PasteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -157,16 +196,7 @@ namespace PowerPointLabs.SyncLab.Views
             ApplyFormatToSelected();
         }
 
-        private void ApplyFormatToSelected()
-        {
-            Shape formatShape = shapeStorage.GetShape(shapeKey);
-            if (formatShape == null)
-            {
-                MessageBox.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
-                parent.ClearInvalidFormats();
-            }
-            this.StartNewUndoEntry();
-            parent.ApplyFormats(formats, formatShape);
-        }
+        #endregion
+
     }
 }

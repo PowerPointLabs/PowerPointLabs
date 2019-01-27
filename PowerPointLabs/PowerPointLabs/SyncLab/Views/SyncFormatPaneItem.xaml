@@ -10,11 +10,9 @@
     <Grid x:Name="grid" ClipToBounds="True" Background="Transparent">
         <Grid.ToolTip>
             <StackPanel>
-                <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5" Text="BindNameHere"/>
+                <TextBlock x:Name="toolTipName" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
                 <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
-                <TextBlock>
-                    Bind description here
-                </TextBlock>
+                <TextBlock x:Name="toolTipBody"/>
             </StackPanel>
         </Grid.ToolTip>
         <Grid.ColumnDefinitions>
