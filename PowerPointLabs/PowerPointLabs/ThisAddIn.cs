@@ -62,7 +62,7 @@ namespace PowerPointLabs
 
         private string _deactivatedPresFullName;
 
-        private bool _isClosing;
+        private bool _pptLabsShouldTerminate;
 
         private bool isResizePaneVisible;
 
@@ -486,7 +486,7 @@ namespace PowerPointLabs
             }
         }
 
-        private void ShutDownImageSearchPane()
+        private void ShutDownPictureSlidesLab()
         {
             PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
             if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen)
@@ -739,8 +739,6 @@ namespace PowerPointLabs
 
         private void CleanUp(PowerPoint.DocumentWindow associatedWindow)
         {
-            _isClosing = true;
-
             if (_documentHashcodeMapper.ContainsKey(associatedWindow))
             {
                 _documentHashcodeMapper.Remove(associatedWindow);
@@ -796,19 +794,15 @@ namespace PowerPointLabs
             }
         }
 
-        private void CloseSyncLab()
+        private void ShutDownSyncLab()
         {
-            if (_isClosing)
+            // If sync lab open, then close it.
+            PowerPoint.Presentation syncLabPpt = GetOpenedSyncLabPresentation();
+            if (syncLabPpt != null)
             {
-                // If sync lab open, then close it.
-                PowerPoint.Presentation syncLabPpt = GetOpenedSyncLabPresentation();
-                if (syncLabPpt != null)
-                {
-                    syncLabPpt.Close();
-                    Trace.TraceInformation("Sync Lab Ppt closed.");
-                }
+                syncLabPpt.Close();
+                Trace.TraceInformation("SyncLab terminated.");
             }
-
         }
 
         private PowerPoint.Presentation GetOpenedSyncLabPresentation()
@@ -823,12 +817,9 @@ namespace PowerPointLabs
             return null;
         }
 
-        private void CloseShapesLab()
+        private void ShutDownShapesLab()
         {
-            // in this case, we are closing the last client presentation,
-            // therefore we can close the shape gallery
-            if (_isClosing &&
-                ShapePresentation != null &&
+            if (ShapePresentation != null &&
                 ShapePresentation.Opened)
             {
                 if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
@@ -837,7 +828,7 @@ namespace PowerPointLabs
                 }
 
                 ShapePresentation.Close();
-                Trace.TraceInformation("Shape Gallery terminated.");
+                Trace.TraceInformation("ShapesLab terminated.");
             }
         }
         # endregion
@@ -889,20 +880,16 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            Trace.TraceInformation(pres.Name + " terminating...");
-            Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing,
-                Application.Presentations.Count));
-
+            Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) deactivated.");
             _deactivatedPresFullName = pres.FullName;
-
-            CloseSyncLab();
-            CloseShapesLab();
         }
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
             if (pres != null)
             {
+                Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
+
                 CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
 
                 // make sure ShapeGallery's default category is consistent with current presentation
@@ -912,7 +899,8 @@ namespace PowerPointLabs
                     ShapePresentation.DefaultCategory = currentCategory;
                 }
 
-                _isClosing = false;
+                // If a window was activated in any way, PptLabs should not terminate.
+                _pptLabsShouldTerminate = false;
             }
         }
 
@@ -1064,7 +1052,14 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
-            Trace.TraceInformation("Closing " + pres.Name);
+            Trace.TraceInformation("Closing " + pres.Name + "...");
+
+            if (Application.Windows.Count == 1 &&
+                Application.ActiveWindow.Presentation.FullName == pres.FullName)
+            {
+                // If this current window we are closing is the last window, then PptLabs should terminate.
+                _pptLabsShouldTerminate = true;
+            }
 
             if (IsApplicationVersion2010() &&
                 _deactivatedPresFullName == pres.FullName &&
@@ -1075,15 +1070,21 @@ namespace PowerPointLabs
                 ShapePresentation.Close();
             }
 
-            // special case: if we are closing ShapeGallery.pptx, no other action will be done
-            if (pres.Name.Contains(ShapeGalleryPptxName))
+            // special case: if we are closing 'ShapeGallery.pptx' or 'Sync Lab - Do not edit.pptx', no other action will be done
+            if (pres.Name.Contains(ShapeGalleryPptxName) || pres.Name.Contains(SyncLabPptxName)) 
             {
                 return;
             }
 
+            if (_pptLabsShouldTerminate)
+            {
+                ShutDownSyncLab();
+                ShutDownShapesLab();
+                ShutDownPictureSlidesLab();
+            }
+
             ShutDownColorPane();
             ShutDownRecorderPane();
-            ShutDownImageSearchPane();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception
@@ -1091,18 +1092,19 @@ namespace PowerPointLabs
 
             try
             {
-                Trace.TraceInformation("Total Windows at Close Stage " + pres.Windows.Count);
+                Trace.TraceInformation("Total windows of closing presentation = " + pres.Windows.Count);
                 Trace.TraceInformation("Windows are: ");
 
                 foreach (PowerPoint.DocumentWindow window in pres.Windows)
                 {
-                    Trace.TraceInformation(window.Presentation.Name);
+                    Trace.TraceInformation("\t" + window.Caption);
                 }
 
                 associatedWindow = pres.Windows[1];
             }
             catch (Exception)
             {
+                Trace.TraceInformation("Closing presentation - " + pres.FullName + " - has no window.");
                 return;
             }
 
