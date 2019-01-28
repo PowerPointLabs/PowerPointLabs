@@ -26,6 +26,8 @@
                         Opens a dialog box that will allow you to copy formats
                         <LineBreak/>
                         from the shape that is currently selected.
+                        <LineBreak/>
+                        Start by selecting a shape.
                     </TextBlock>
                 </StackPanel>
             </Button.ToolTip>
