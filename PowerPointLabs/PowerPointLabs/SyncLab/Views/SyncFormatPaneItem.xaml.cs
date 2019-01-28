@@ -57,7 +57,7 @@ namespace PowerPointLabs.SyncLab.Views
             {
                 toolTipBodyText += GetNamesOfCheckNodes(format);
             }
-            toolTipBody.Text = toolTipBodyText;
+            toolTipBody.Text = toolTipBodyText.Trim("\n".ToCharArray());
         }
 
         #endregion
@@ -192,6 +192,13 @@ namespace PowerPointLabs.SyncLab.Views
             this.formats = parent.Dialog.Formats;
             this.Text = parent.Dialog.ObjectName;
             parent.Dialog = null;
+
+            String toolTipBodyText = "";
+            foreach (FormatTreeNode format in formats)
+            {
+                toolTipBodyText += GetNamesOfCheckNodes(format);
+            }
+            toolTipBody.Text = toolTipBodyText.Trim("\n".ToCharArray());
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
