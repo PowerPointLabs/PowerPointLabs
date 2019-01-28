@@ -26,6 +26,8 @@ namespace PowerPointLabs.SyncLab.Views
         private SyncLabShapeStorage shapeStorage;
         private FormatTreeNode[] formats = null;
 
+        #region Constructors
+
         public SyncFormatPaneItem(SyncPaneWPF parent, string shapeKey,
                     SyncLabShapeStorage shapeStorage, FormatTreeNode[] formats)
         {
@@ -57,6 +59,10 @@ namespace PowerPointLabs.SyncLab.Views
             }
             toolTipBody.Text = toolTipBodyText;
         }
+
+        #endregion
+
+        #region Getters and Setters
 
         public string FormatShapeKey
         {
@@ -133,6 +139,8 @@ namespace PowerPointLabs.SyncLab.Views
                 toolTipName.Text = value;
             }
         }
+
+        #endregion
 
         #region Helper Functions
 
