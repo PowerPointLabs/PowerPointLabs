@@ -52,12 +52,7 @@ namespace PowerPointLabs.SyncLab.Views
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
 
-            String toolTipBodyText = "";
-            foreach (FormatTreeNode format in formats)
-            {
-                toolTipBodyText += GetNamesOfCheckNodes(format);
-            }
-            toolTipBody.Text = toolTipBodyText.Trim("\n".ToCharArray());
+            UpdateToolTipBody();
         }
 
         #endregion
@@ -144,16 +139,26 @@ namespace PowerPointLabs.SyncLab.Views
 
         #region Helper Functions
 
-        private String GetNamesOfCheckNodes(FormatTreeNode node)
+        private void UpdateToolTipBody()
+        {
+            String toolTipBodyText = "";
+            foreach (FormatTreeNode format in formats)
+            {
+                toolTipBodyText += GetNamesOfCheckNodes(format.Name, format);
+            }
+            toolTipBody.Text = toolTipBodyText.Trim("\n".ToCharArray());
+        }
+
+        private String GetNamesOfCheckNodes(String rootName, FormatTreeNode node)
         {
             if (node.IsChecked ?? false)
             {
-                return node.Name + "\n";
+                return (node.Name.Equals(rootName) ? "" : rootName + ">" ) + node.Name + "\n";
             }
             String result = "";
             foreach (FormatTreeNode child in node.ChildrenNodes ?? new FormatTreeNode[] { })
             {
-                result += GetNamesOfCheckNodes(child);
+                result += GetNamesOfCheckNodes(rootName, child);
             }
             return result;
         }
@@ -192,13 +197,7 @@ namespace PowerPointLabs.SyncLab.Views
             this.formats = parent.Dialog.Formats;
             this.Text = parent.Dialog.ObjectName;
             parent.Dialog = null;
-
-            String toolTipBodyText = "";
-            foreach (FormatTreeNode format in formats)
-            {
-                toolTipBodyText += GetNamesOfCheckNodes(format);
-            }
-            toolTipBody.Text = toolTipBodyText.Trim("\n".ToCharArray());
+            UpdateToolTipBody();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

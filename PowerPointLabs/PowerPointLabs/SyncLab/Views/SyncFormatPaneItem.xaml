@@ -10,7 +10,7 @@
     <Grid x:Name="grid" ClipToBounds="True" Background="Transparent">
         <Grid.ToolTip>
             <StackPanel>
-                <TextBlock x:Name="toolTipName" FontWeight="Bold" FontSize="14" Margin="0,0,0,5"/>
+                <TextBlock x:Name="toolTipName" FontWeight="Bold" FontSize="14" Margin="0,0,0,5" MaxWidth="400" TextWrapping="Wrap"/>
                 <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
                 <TextBlock x:Name="toolTipBody"/>
             </StackPanel>
