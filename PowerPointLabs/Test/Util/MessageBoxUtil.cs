@@ -7,6 +7,8 @@ namespace Test.Util
 {
     class MessageBoxUtil
     {
+        private const String MessageBoxIdentifier = "#32770";
+
         public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action messageBoxTrigger,
             string buttonNameToClick = null, int retryCount = 5, int waitTime = 1000)
         {
@@ -36,7 +38,7 @@ namespace Test.Util
                 IntPtr msgBoxHandle = IntPtr.Zero;
                 while (msgBoxHandle == IntPtr.Zero && retryCount > 0)
                 {
-                    msgBoxHandle = NativeUtil.FindWindow("#32770", title);
+                    msgBoxHandle = NativeUtil.FindWindow(MessageBoxIdentifier, title);
                     if (msgBoxHandle == IntPtr.Zero)
                     {
                         ThreadUtil.WaitFor(waitTime);
@@ -86,7 +88,7 @@ namespace Test.Util
                 IntPtr msgBoxHandle = IntPtr.Zero;
                 while (msgBoxHandle == IntPtr.Zero && retryCount > 0)
                 {
-                    msgBoxHandle = NativeUtil.FindWindow("#32770", title);
+                    msgBoxHandle = NativeUtil.FindWindow(MessageBoxIdentifier, title);
                     if (msgBoxHandle == IntPtr.Zero)
                     {
                         ThreadUtil.WaitFor(waitTime);
