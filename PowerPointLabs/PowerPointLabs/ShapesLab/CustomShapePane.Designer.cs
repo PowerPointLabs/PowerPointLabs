@@ -213,6 +213,7 @@ namespace PowerPointLabs.ShapesLab
             this.addShapeButton.TabIndex = 6;
             this.addShapeButton.UseVisualStyleBackColor = false;
             this.addShapeButton.Click += new System.EventHandler(this.AddShapeButton_Click);
+            this.addShapeButton.MouseMove += new MouseEventHandler(this.AddShapeButton_MouseMove);
             // 
             // label2
             // 

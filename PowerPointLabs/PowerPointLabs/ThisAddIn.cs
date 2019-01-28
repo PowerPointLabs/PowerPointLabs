@@ -26,6 +26,7 @@ using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
 using PowerPointLabs.Utils;
@@ -961,6 +962,7 @@ namespace PowerPointLabs
                 try
                 {
                     sh = sel.ShapeRange[1];
+                    
                 }
                 catch (AccessViolationException e)
                 {
@@ -976,6 +978,18 @@ namespace PowerPointLabs
                         : Office.MsoTriState.msoFalse;
                 }
 
+            }
+
+            if (GetActivePane(typeof(SyncPane)) != null)
+            {
+                SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
+                syncPane.UpdateOnSelectionChange();
+            }
+
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                CustomShapePane customShapePane = GetActivePane(typeof(CustomShapePane)).Control as CustomShapePane;
+                customShapePane.UpdateOnSelectionChange(sel);
             }
 
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
@@ -1574,7 +1588,7 @@ namespace PowerPointLabs
                 // ignore exception
             }
         }
-        # endregion
+        #endregion
 
         private void SetupFunctionalTestChannels()
         {

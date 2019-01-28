@@ -47,7 +47,9 @@ namespace PowerPointLabs.SyncLab.Views
             }
             SyncPane syncLab = syncLabPane.Control as SyncPane;
 
-            syncLab.HandleDestroyed += SyncPane_Closing;
+            UpdateCopyButtonEnabledStatus();
+
+            syncLab.HandleDestroyed += SyncPane_Closing;       
         }
 
         public void SyncPane_Closing(Object sender, EventArgs e)
@@ -69,6 +71,18 @@ namespace PowerPointLabs.SyncLab.Views
             get
             {
                 return formatListBox.Items.Count;
+            }
+        }
+
+        public void UpdateCopyButtonEnabledStatus()
+        {
+            if (GetSelectedShapesForFormatting() == null)
+            {
+                copyButton.IsEnabled = false;
+            }
+            else
+            {
+                copyButton.IsEnabled = true;
             }
         }
 

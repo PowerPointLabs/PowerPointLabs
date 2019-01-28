@@ -56,7 +56,7 @@ namespace PowerPointLabs.ShapesLab
         private readonly Timer _timer;
 
         private readonly Comparers.AtomicNumberStringCompare _stringComparer = new Comparers.AtomicNumberStringCompare();
-
+        
         # region Properties
         public List<string> Categories { get; private set; }
 
@@ -174,16 +174,8 @@ namespace PowerPointLabs.ShapesLab
                 MessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
-
-            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
-            if (!ShapeUtil.IsSelectionShapeOrText(selection))
-            {
-                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
-                return;
-            }
-
+            
             // Finish checks, will add shape(s) from selection
-
             ShapeRange selectedShapes = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
@@ -309,6 +301,11 @@ namespace PowerPointLabs.ShapesLab
             }
 
             _firstTimeLoading = false;
+        }
+
+        public void UpdateOnSelectionChange(Selection selection)
+        {
+            SelectionChanged(selection);
         }
         #endregion
 
@@ -621,6 +618,14 @@ namespace PowerPointLabs.ShapesLab
             return rect;
         }
 
+        private void DisableAddShapesButton()
+        {
+            addShapeButton.Enabled = false;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapesDisabled;
+            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
+            addShapeButton.BackColor = Color.LightGray;
+        }
+   
         private void DehighlightSelected()
         {
             if (_selectedThumbnail == null ||
@@ -635,6 +640,14 @@ namespace PowerPointLabs.ShapesLab
             }
 
             _selectedThumbnail.Clear();
+        }
+
+        private void EnableAddShapesButton()
+        {
+            addShapeButton.Enabled = true;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapes;
+            addShapeButton.FlatAppearance.BorderColor = Color.Black;
+            addShapeButton.BackColor = SystemColors.Control;
         }
 
         private LabeledThumbnail FindLabeledThumbnail(string name)
@@ -1121,7 +1134,7 @@ namespace PowerPointLabs.ShapesLab
 
             myShapeFlowLayout.Controls.SetChildIndex(labeledThumbnail, index);
         }
-
+        
         private void ShowNoShapeMessage()
         {
             if (_noShapePanel.Controls.Count == 0)
@@ -1562,6 +1575,19 @@ namespace PowerPointLabs.ShapesLab
             _selectedThumbnail.Clear();
         }
 
+        private void SelectionChanged(Selection selection)
+        {
+            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
+            if (!ShapeUtil.IsSelectionShapeOrText(selection))
+            {
+                DisableAddShapesButton();
+            }
+            else
+            {
+                EnableAddShapesButton();
+            }
+        }
+
         private void ThumbnailContextMenuStripItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripItem item = e.ClickedItem;
@@ -1677,6 +1703,22 @@ namespace PowerPointLabs.ShapesLab
 
             AddShapeFromSelection(selection, addIn);
         }
+
+        private void AddShapeButton_MouseMove(object sender, MouseEventArgs e)
+        {
+            Control control = GetChildAtPoint(e.Location);
+            if (control != null)
+            {
+                if (control.Enabled)
+                {
+                    toolTip1.Show(ShapesLabText.AddShapeToolTip, control, control.Width / 2, control.Height / 2);
+                } 
+                else
+                {
+                    toolTip1.Show(ShapesLabText.ErrorAddSelectionInvalid, control, control.Width / 2, control.Height / 2);
+                }
+            }
+        }
         #endregion
 
         #region ToolTip
@@ -1685,5 +1727,7 @@ namespace PowerPointLabs.ShapesLab
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
         #endregion
+
+        
     }
 }
