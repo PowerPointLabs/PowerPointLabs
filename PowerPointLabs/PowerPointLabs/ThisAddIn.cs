@@ -27,6 +27,7 @@ using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.TimerLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -719,6 +720,15 @@ namespace PowerPointLabs
             }
         }
 
+        private void UpdateTimerPane(bool isVisible)
+        {
+            CustomTaskPane timerPane = GetActivePane(typeof(TimerPane));
+            if (timerPane != null)
+            {
+                timerPane.Visible = isVisible;
+            }
+        }
+
         private string GetPresentationTempFolder(string presName)
         {
             string tempName = presName.GetHashCode().ToString(CultureInfo.InvariantCulture);
@@ -880,7 +890,7 @@ namespace PowerPointLabs
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
-
+            
             // update recorder pane
             if (sldRange.Count > 0)
             {
@@ -895,10 +905,13 @@ namespace PowerPointLabs
                 }
 
                 UpdateRecorderPane(sldRange.Count, slideID);
+                TimerLab.TimerLab.IsTimerEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
+                TimerLab.TimerLab.IsTimerEnabled = false;
+                UpdateTimerPane(false);
             }
 
             // in case the recorder is on event
@@ -931,7 +944,7 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
-            
+            Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");

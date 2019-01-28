@@ -512,6 +512,7 @@
     <Compile Include="ActionFramework\Common\Factory\ImageHandlerFactory.cs" />
     <Compile Include="ActionFramework\Common\Interface\ImageHandler.cs" />
     <Compile Include="ActionFramework\Common\Attribute\ExportLabelRibbonIdAttribute.cs" />
+    <Compile Include="ActionFramework\TimerLab\TimerLabEnabledHandler.cs" />
     <Compile Include="ActionFramework\TimerLab\TimerLabImageHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightLabMenu\HighlightLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\HighlightLab\HighlightlabSettings\HighlightLabSettingsImageHandler.cs" />
@@ -693,6 +694,7 @@
     <Compile Include="TextCollection\ZoomLabText.cs" />
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />
+    <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
