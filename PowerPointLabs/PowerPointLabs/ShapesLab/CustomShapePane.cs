@@ -623,8 +623,8 @@ namespace PowerPointLabs.ShapesLab
         {
             addShapeButton.Enabled = false;
             addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapesDisabled;
-            addShapeButton.FlatAppearance.BorderColor = SystemColors.ControlDark;
-            addShapeButton.BackColor = SystemColors.ControlDark;
+            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
+            addShapeButton.BackColor = Color.LightGray;
         }
    
         private void DehighlightSelected()
