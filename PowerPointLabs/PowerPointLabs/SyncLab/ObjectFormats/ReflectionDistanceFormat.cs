@@ -40,12 +40,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 ReflectionFormat destFormat = newShape.Reflection;
 
                 destFormat.Offset = srcFormat.Offset;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ReflectionDistanceFormat");
                 return false;
             }
-            return true;
         }
     }
 }

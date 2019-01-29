@@ -82,8 +82,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     SyncGradient(formatShape, newShape);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FillFormat");
                 return false;
             }
             return true;

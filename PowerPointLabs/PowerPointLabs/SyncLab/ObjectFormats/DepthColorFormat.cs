@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 using Microsoft.Office.Core;
 
@@ -64,8 +65,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync DepthColorFormat");
                 return false;
             }
 
