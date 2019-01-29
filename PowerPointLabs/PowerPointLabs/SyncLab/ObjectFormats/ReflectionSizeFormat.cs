@@ -40,12 +40,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 ReflectionFormat destFormat = newShape.Reflection;
 
                 destFormat.Size = srcFormat.Size;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ReflectionSizeFormat");
                 return false;
             }
-            return true;
         }
     }
 }
