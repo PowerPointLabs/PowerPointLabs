@@ -159,7 +159,6 @@ namespace PowerPointLabs.SyncLab.Views
 
         private void ApplyFormatToSelected()
         {
-            // A comment
             Shape formatShape = shapeStorage.GetShape(shapeKey);
             if (formatShape == null)
             {
