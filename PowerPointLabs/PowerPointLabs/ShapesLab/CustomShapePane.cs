@@ -1687,7 +1687,7 @@ namespace PowerPointLabs.ShapesLab
         #region ToolTip
         private void InitToolTipControl()
         {
-            toolTip1.ShowAlways = true;
+            // a longer comment message than before
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
         #endregion
