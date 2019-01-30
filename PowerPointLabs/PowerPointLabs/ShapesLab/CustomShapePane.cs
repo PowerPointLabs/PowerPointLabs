@@ -175,8 +175,16 @@ namespace PowerPointLabs.ShapesLab
                 MessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
-            
+
+            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
+            if (!ShapeUtil.IsSelectionShapeOrText(selection))
+            {
+                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
+
             // Finish checks, will add shape(s) from selection
+
             ShapeRange selectedShapes = selection.ShapeRange;
             if (selection.HasChildShapeRange)
             {
@@ -1578,8 +1586,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void SelectionChanged(Selection selection)
         {
-            // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
-            if (!ShapeUtil.IsSelectionShapeOrText(selection))
+            if (selection == null || selection.Type == PpSelectionType.ppSelectionNone)
             {
                 DisableAddShapesButton();
             }
@@ -1746,8 +1753,6 @@ namespace PowerPointLabs.ShapesLab
         {
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
-        #endregion
-
-        
+        #endregion    
     }
 }

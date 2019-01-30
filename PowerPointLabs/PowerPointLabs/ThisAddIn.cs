@@ -980,6 +980,9 @@ namespace PowerPointLabs
 
             }
 
+
+            // When there is no selection on the slide, disable the add/copy buttons on
+            // customshapepane and syncpane respectively
             if (GetActivePane(typeof(SyncPane)) != null)
             {
                 SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
