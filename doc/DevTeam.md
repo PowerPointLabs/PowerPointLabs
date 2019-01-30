@@ -24,21 +24,21 @@ Feature  | Lead | Past Leads
 -----|------|-----|
 AgendaLab | Yan Hwa | Syed
 AnimationLab (d) | Ian |
-CaptionsLab | Yan Hwa | Kenneth
+CaptionsLab | Bryan | Kenneth, Yan Hwa 
 ColorsLab | Ian |
 CropLab | Jun Kiat | Heng Le
 EffectsLab | Ian |
 HighlightLab | Syed |
-NarrationsLab | Kenneth |
+NarrationsLab | Bryan | Kenneth
 PasteLab | Jun Kiat | Syed
-PictureSlideLab | Shi Ya |
+PictureSlideLab | Chester | Shi Ya
 PositionsLab | Jamos |
 ResizeLab | Min Oo |
 SaveLab | Jun Kiat |
-ShapesLab (d) | Yan Hwa | Ian
+ShapesLab (d) | Henry | Ian, Yan Hwa
 ShortcutsLab | Heng Le |
-SyncLab | Alex | Ian
-TimerLab | Shi Ya |
+SyncLab | Henry | Alex, Ian
+TimerLab | Bryan | Shi Ya
 ZoomLab | Shi Ya |
 
 Features marked as _(d)_ are deprecated because PowerPoint has added similar features in the recent versions.
