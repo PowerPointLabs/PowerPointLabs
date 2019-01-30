@@ -149,6 +149,7 @@ namespace PowerPointLabs.SyncLab.Views
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            // a comment
             parent.RemoveFormatItem(this);
         }
 
