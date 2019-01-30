@@ -1429,11 +1429,6 @@ namespace PowerPointLabs.ShapesLab
 
             FirstClickOnThumbnail(sender as LabeledThumbnail);
 
-            startTimer();
-        }
-
-        private void startTimer()
-        {
             // if it's left button click, we need to wait for potential second click
             _timer.Start();
         }
