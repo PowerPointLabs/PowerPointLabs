@@ -618,14 +618,6 @@ namespace PowerPointLabs.ShapesLab
 
             return rect;
         }
-
-        private void DisableAddShapesButton()
-        {
-            addShapeButton.Enabled = false;
-            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapesDisabled;
-            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
-            addShapeButton.BackColor = Color.LightGray;
-        }
    
         private void DehighlightSelected()
         {
@@ -641,6 +633,14 @@ namespace PowerPointLabs.ShapesLab
             }
 
             _selectedThumbnail.Clear();
+        }
+
+        private void DisableAddShapesButton()
+        {
+            addShapeButton.Enabled = false;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapesDisabled;
+            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
+            addShapeButton.BackColor = Color.LightGray;
         }
 
         private void EnableAddShapesButton()
