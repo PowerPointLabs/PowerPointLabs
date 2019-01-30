@@ -1578,7 +1578,6 @@ namespace PowerPointLabs
 
         private void SetupFunctionalTestChannels()
         {
-            // a comment
             _ftChannel = new IpcChannel("PowerPointLabsFT");
             ChannelServices.RegisterChannel(_ftChannel, false);
             RemotingConfiguration.RegisterWellKnownServiceType(typeof(PowerPointLabsFT),
