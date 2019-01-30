@@ -1746,8 +1746,6 @@ namespace PowerPointLabs.ShapesLab
         {
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
-        #endregion
-
-        
+        #endregion    
     }
 }
