@@ -49,7 +49,7 @@ namespace PowerPointLabs.SyncLab.Views
 
             UpdateCopyButtonEnabledStatus();
 
-            syncLab.HandleDestroyed += SyncPane_Closing;       
+            syncLab.HandleDestroyed += SyncPane_Closing;
         }
 
         public void SyncPane_Closing(Object sender, EventArgs e)
@@ -76,7 +76,8 @@ namespace PowerPointLabs.SyncLab.Views
 
         public void UpdateCopyButtonEnabledStatus()
         {
-            if (GetSelectedShapesForFormatting() == null)
+            Selection selection = this.GetCurrentSelection();
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone))
             {
                 copyButton.IsEnabled = false;
             }
@@ -183,7 +184,7 @@ namespace PowerPointLabs.SyncLab.Views
         private ShapeRange GetSelectedShapesForFormatting()
         {
             Selection selection = this.GetCurrentSelection();
-            if ((selection == null) || (selection.Type != PpSelectionType.ppSelectionShapes &&
+            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
             {
