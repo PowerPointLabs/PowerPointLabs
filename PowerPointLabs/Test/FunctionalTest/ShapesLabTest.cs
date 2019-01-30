@@ -54,7 +54,7 @@ namespace Test.FunctionalTest
             TestSaveShapesToShapesLab(shapesLab, SaveShapesShapesSlide, SaveShapesTestSlide, SaveShapesExpSlide);
             TestImportLibraryAndShape(shapesLab);
             TestSaveShapesToShapesLabWithAddShapesButton(shapesLab, AddShapesShapesSlide, AddShapesTestSlide, AddShapesExpSlide);
-            TestSavePlaceholderToShapesLabWithAddShapesButton(shapesLab, AddShapesPlaceholder);
+            TestSavePlaceholderToShapesLabWithAddShapesButton(shapesLab, AddShapesPlaceholderSlide);
             IsClipboardRestoredAfterSaveShape(shapesLab, SaveShapesClipboardRestoredActualSlide, SaveShapesClipboardRestoredTestSlide, SaveShapesClipboardRestoredExpSlide);
             IsClipboardRestoredAfterAddShape(shapesLab, AddShapesClipboardRestoredActualSlide, AddShapesClipboardRestoredTestSlide, 
                 AddShapesClipboardRestoredExpSlide);
