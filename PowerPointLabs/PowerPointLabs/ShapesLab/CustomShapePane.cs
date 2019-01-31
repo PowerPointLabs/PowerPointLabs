@@ -1712,9 +1712,6 @@ namespace PowerPointLabs.ShapesLab
             AddShapeFromSelection(selection, addIn);
         }
 
-        // A disabled button cannot respond to any events.
-        // Thus we register the event to the pane and when the mouse moves over
-        // the button, the tool tip will display.
         private void CustomShapePane_MouseMove(object sender, MouseEventArgs e)
         {
             var parent = sender as Control;
