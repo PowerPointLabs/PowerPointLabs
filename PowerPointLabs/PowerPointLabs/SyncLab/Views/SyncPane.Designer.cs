@@ -7,6 +7,11 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        public void UpdateOnSelectionChange()
+        {
+            this.SyncPaneWPF1.UpdateCopyButtonEnabledStatus();
+        }
+
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
@@ -54,7 +59,7 @@
         }
 
         #endregion
-
+        
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         public SyncPaneWPF SyncPaneWPF1 { get; private set; }
     }
