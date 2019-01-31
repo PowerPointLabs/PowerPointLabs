@@ -37,7 +37,8 @@ namespace PowerPointLabs.ShortcutsLab
 
         public static bool ConvertAndSave(ShapeRange selectedShapes, string fileName)
         {
-            if (ShapeUtil.IsShapeRangeShapeOrText(selectedShapes))
+            //please sonarQube this is not some violation
+            if (!ShapeUtil.IsShapeRangeShapeOrText(selectedShapes))
             {
                 MessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
                 return false;
