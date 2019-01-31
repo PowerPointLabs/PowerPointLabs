@@ -1583,6 +1583,18 @@ namespace PowerPointLabs.ShapesLab
             }
         }
 
+        private void SelectionChanged(Selection selection)
+        {
+            if (selection == null || selection.Type == PpSelectionType.ppSelectionNone)
+            {
+                DisableAddShapesButton();
+            }
+            else
+            {
+                EnableAddShapesButton();
+            }
+        }
+
         private void ThumbnailContextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (Categories.Count < 2)
