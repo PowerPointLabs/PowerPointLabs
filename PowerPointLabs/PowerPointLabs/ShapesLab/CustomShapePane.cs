@@ -40,8 +40,7 @@ namespace PowerPointLabs.ShapesLab
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
-        private bool _variable = true;
-
+        
         private bool _isPanelMouseDown;
         private bool _isPanelDrawingFinish;
         private Point _startPosition;
