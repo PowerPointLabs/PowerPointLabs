@@ -311,6 +311,11 @@ namespace PowerPointLabs.ShapesLab
 
             _firstTimeLoading = false;
         }
+
+        public void UpdateOnSelectionChange(Selection selection)
+        {
+            SelectionChanged(selection);
+        }
         #endregion
 
         #region Functional Test APIs
