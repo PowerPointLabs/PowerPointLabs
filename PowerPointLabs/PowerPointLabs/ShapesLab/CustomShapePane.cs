@@ -638,6 +638,23 @@ namespace PowerPointLabs.ShapesLab
             _selectedThumbnail.Clear();
         }
 
+        private void DisableAddShapesButton()
+        {
+            addShapeButton.Enabled = false;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapesDisabled;
+            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
+            addShapeButton.BackColor = Color.LightGray;
+        }
+
+        private void EnableAddShapesButton()
+        {
+            addShapeButton.Enabled = true;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapes;
+            addShapeButton.FlatAppearance.BorderColor = Color.Black;
+            addShapeButton.BackColor = SystemColors.Control;
+        }
+
+
         private LabeledThumbnail FindLabeledThumbnail(string name)
         {
             if (myShapeFlowLayout.Controls.Count == 0 ||
