@@ -1670,11 +1670,6 @@ namespace PowerPointLabs.ShapesLab
         #endregion
 
         #region GUI Handles
-        
-        private void GUI_Click()
-        {
-            throw new NotImplementedException();
-        }
 
         private void AddShapeButton_Click(object sender, EventArgs e)
         {
