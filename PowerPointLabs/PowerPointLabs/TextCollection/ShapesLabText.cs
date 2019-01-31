@@ -69,6 +69,6 @@
         public const string FolderDialogDescription = "Select the directory that you want to use as the default.";
         public const string ErrorFolderNonEmpty = "Please select an empty folder as default saving folder.";
 
-        public const string AddShapeToolTip = "Adds a shape to Shapes Lab.";
+        public const string AddShapeToolTip = "Adds a shape to Shapes Lab. \nStart by selecting a shape.";
     }
 }
