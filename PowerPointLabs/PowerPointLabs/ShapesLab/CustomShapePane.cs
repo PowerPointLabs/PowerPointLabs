@@ -40,6 +40,7 @@ namespace PowerPointLabs.ShapesLab
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
+        private bool _toolTipshown = false;
 
         private bool _isPanelMouseDown;
         private bool _isPanelDrawingFinish;
@@ -1682,6 +1683,7 @@ namespace PowerPointLabs.ShapesLab
         #region ToolTip
         private void InitToolTipControl()
         {
+            _toolTipshown = true;
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
         #endregion
