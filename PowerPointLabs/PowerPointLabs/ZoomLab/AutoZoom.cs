@@ -65,8 +65,7 @@ namespace PowerPointLabs.ZoomLab
                     shapeToZoom = addedSlide.Shapes.Paste()[1];
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
-                    currentSlide.Copy();
-                    PowerPoint.Shape backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    PowerPoint.Shape backgroundShape = AddSlideAsShape(currentSlide, addedSlide);
                     backgroundShape.Apply();
                     ShapeUtil.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
@@ -89,8 +88,7 @@ namespace PowerPointLabs.ZoomLab
                     shapeToZoom = addedSlide.Shapes.Paste()[1];
                     addedSlide.DeleteShapeAnimations(shapeToZoom);
 
-                    currentSlide.Copy();
-                    PowerPoint.Shape backgroundShape = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                    PowerPoint.Shape backgroundShape = AddSlideAsShape(currentSlide, addedSlide);
                     backgroundShape.Apply();
                     ShapeUtil.FitShapeToSlide(ref backgroundShape);
                     backgroundShape.ZOrder(Office.MsoZOrderCmd.msoSendBackward);
@@ -314,9 +312,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 s.Delete();
             }
-
-            nextSlideCopy.Copy();
-            PowerPoint.Shape slidePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape slidePicture = AddSlideAsShape(nextSlideCopy, currentSlide);
             nextSlideCopy.Delete();
             return slidePicture;
         }
@@ -331,9 +327,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 s.Delete();
             }
-
-            previousSlideCopy.Copy();
-            PowerPoint.Shape slidePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape slidePicture = AddSlideAsShape(previousSlideCopy, currentSlide);
             previousSlideCopy.Delete();
             return slidePicture;
         }
@@ -388,8 +382,8 @@ namespace PowerPointLabs.ZoomLab
 
         private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture, out PowerPoint.Shape backgroundShape)
         {
-            currentSlide.Copy();
-            PowerPoint.Shape currentSlideCopy = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape currentSlideCopy = AddSlideAsShape(currentSlide, addedSlide);
+
             ShapeUtil.FitShapeToSlide(ref currentSlideCopy);
             currentSlideCopy.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -459,6 +453,21 @@ namespace PowerPointLabs.ZoomLab
             {
                 shapeCopy.Select(Office.MsoTriState.msoFalse);
             }
+        }
+
+        private static PowerPoint.Shape AddSlideAsShape(PowerPointSlide slideToAdd, PowerPointSlide targetSlide)
+        {
+            // Export the slide as .png to a temporary location, then add it to shapes.
+            // This yields a higher quality image compared to copy-pasting slide as image.
+            string tempFilePath = FileDir.GetTemporaryPngFilePath();
+            GraphicsUtil.ExportSlide(slideToAdd, tempFilePath);
+            PowerPoint.Shape slideAsShape = targetSlide.Shapes.AddPicture2(tempFilePath,
+                                                                             Microsoft.Office.Core.MsoTriState.msoFalse,
+                                                                             Microsoft.Office.Core.MsoTriState.msoTrue,
+                                                                             0,
+                                                                             0);
+            FileDir.DeleteFile(tempFilePath);
+            return slideAsShape;
         }
     }
 }
