@@ -7,7 +7,7 @@ Team Leads: Ong Heng Le
 
 Senior Devs: Alex Fong, Ang Shi Ya, Jamos Tay, Kenneth Loh, Lee Yan Hwa, Syed Abdullah, Tan Jun Kiat
 
-Team Members: Bryan Lew, Chester Sng, Henry Yu
+Team Members: Bryan Lew, Chester Sng, Henry Yu, Li Xiao Wei
 
 ## Project Areas
 Area | Responsibilities | Lead | Past Leads
@@ -24,15 +24,15 @@ Feature  | Lead | Past Leads
 -----|------|-----|
 AgendaLab | Yan Hwa | Syed
 AnimationLab (d) | Ian |
-CaptionsLab | Bryan | Kenneth, Yan Hwa 
+CaptionsLab | Xiao Wei | Kenneth, Yan Hwa 
 ColorsLab | Ian |
 CropLab | Jun Kiat | Heng Le
 EffectsLab | Ian |
 HighlightLab | Syed |
-NarrationsLab | Bryan | Kenneth
+NarrationsLab | Xiao Wei | Kenneth
 PasteLab | Jun Kiat | Syed
-PictureSlideLab | Chester | Shi Ya
-PositionsLab | Jamos |
+PictureSlidesLab | Chester | Shi Ya
+PositionsLab | Chester | Jamos
 ResizeLab | Min Oo |
 SaveLab | Jun Kiat |
 ShapesLab (d) | Henry | Ian, Yan Hwa
