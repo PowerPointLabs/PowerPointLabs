@@ -40,7 +40,7 @@ namespace PowerPointLabs.ShapesLab
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
-        private bool _toolTipshown = false;
+        private bool _toolTipShown = false;
 
         private bool _isPanelMouseDown;
         private bool _isPanelDrawingFinish;
@@ -1678,12 +1678,46 @@ namespace PowerPointLabs.ShapesLab
 
             AddShapeFromSelection(selection, addIn);
         }
+
+        // A disabled button cannot respond to any events.
+        // Thus we register the event to the pane and when the mouse moves over
+        // the button, the tool tip will display.
+        private void CustomShapePane_MouseMove(object sender, MouseEventArgs e)
+        {
+            var parent = sender as Control;
+            if (parent == null)
+            {
+                return;
+            }
+            var ctrl = parent.GetChildAtPoint(e.Location);
+            if (ctrl != null)
+            {
+                if (ctrl.Visible && toolTip1.Tag == null)
+                {
+                    if (!_toolTipShown)
+                    {
+                        toolTip1.Show(ShapesLabText.AddShapeToolTip, ctrl, ctrl.Width / 2, ctrl.Height / 2);
+                        toolTip1.Tag = ctrl;
+                        _toolTipShown = true;
+                    }
+                }
+            }
+            else
+            {
+                ctrl = toolTip1.Tag as Control;
+                if (ctrl != null)
+                {
+                    toolTip1.Hide(ctrl);
+                    toolTip1.Tag = null;
+                    _toolTipShown = false;
+                }
+            }
+        }
         #endregion
 
         #region ToolTip
         private void InitToolTipControl()
         {
-            _toolTipshown = true;
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
         #endregion
