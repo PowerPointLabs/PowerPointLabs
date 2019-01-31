@@ -626,7 +626,7 @@ namespace PowerPointLabs.ShapesLab
 
             return rect;
         }
-   
+        
         private void DehighlightSelected()
         {
             if (_selectedThumbnail == null ||
@@ -1750,6 +1750,6 @@ namespace PowerPointLabs.ShapesLab
         {
             toolTip1.SetToolTip(addShapeButton, ShapesLabText.AddShapeToolTip);
         }
-        #endregion 
+        #endregion
     }
 }
