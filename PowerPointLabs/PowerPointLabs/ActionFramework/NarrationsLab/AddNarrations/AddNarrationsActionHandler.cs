@@ -43,6 +43,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
             catch
             {
+                MessageBox.Show("Failed to generate audio files.");
                 return;
             }
 

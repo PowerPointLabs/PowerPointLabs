@@ -29,7 +29,7 @@ namespace PowerPointLabs.NarrationsLab.ValueConverters
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

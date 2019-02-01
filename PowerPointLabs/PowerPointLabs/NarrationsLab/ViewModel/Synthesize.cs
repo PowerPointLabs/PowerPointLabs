@@ -56,23 +56,19 @@ namespace PowerPointLabs.NarrationsLab.ViewModel
                     break;
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Post, inputOptions.RequestUri)
-            {
-                Content = new StringContent(GenerateSsml(inputOptions.Locale, genderValue, inputOptions.VoiceName, inputOptions.Text))
-            };
-
-            var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            Tuple<Task<HttpResponseMessage>, HttpRequestMessage> tuple = SendAsyncHttpRequest(inputOptions, genderValue, cancellationToken);
+            var httpTask = tuple.Item1;
+            var request = tuple.Item2;
 
             for (int i = 0; i < 3 && !httpTask.Result.IsSuccessStatusCode; i++)
             {
+                MessageBox.Show("Too many requests, please wait for 20 seconds.");
                 Thread.Sleep(20000);
-                request = new HttpRequestMessage(HttpMethod.Post, inputOptions.RequestUri)
-                {
-                    Content = new StringContent(GenerateSsml(inputOptions.Locale, genderValue, inputOptions.VoiceName, inputOptions.Text))
-                };
-                httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                tuple = SendAsyncHttpRequest(inputOptions, genderValue, cancellationToken);
+                httpTask = tuple.Item1;
+                request = tuple.Item2;
             }
-           // Logger.Log(httpTask.Result.StatusCode.ToString());
+           
             var saveTask = httpTask.ContinueWith(
                 async (responseMessage, token) =>
                 {
@@ -102,6 +98,18 @@ namespace PowerPointLabs.NarrationsLab.ViewModel
                 cancellationToken);
 
             return saveTask;
+        }
+
+        private Tuple<Task<HttpResponseMessage>, HttpRequestMessage> SendAsyncHttpRequest(InputOptions inputOptions, string genderValue, CancellationToken cancellationToken)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, inputOptions.RequestUri)
+            {
+                Content = new StringContent(GenerateSsml(inputOptions.Locale, genderValue, inputOptions.VoiceName, inputOptions.Text))
+            };
+
+            var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+            return Tuple.Create(httpTask, request);
         }
 
         private string GenerateSsml(string locale, string gender, string name, string text)

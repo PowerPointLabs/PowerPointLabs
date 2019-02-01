@@ -76,7 +76,7 @@ namespace PowerPointLabs.NarrationsLab
             if (NotesToAudio.IsAzureVoiceSelected && UserAccount.GetInstance().IsEmpty())
             {
                 MessageBox.Show("Invalid user account. Please log in again.");
-                throw new Exception();
+                throw new Exception("Invalid user account.");
             }
             int numberOfSlides = slides.Count;
             for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)

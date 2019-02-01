@@ -63,7 +63,10 @@ namespace PowerPointLabs.NarrationsLab.Storage
                 {
                     UserAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
                 }
-                Logger.Log("valid user account found");
+                else
+                {
+                    File.Delete(GetAccessKeyFilePath());
+                }
             }
             catch (Exception e)
             {

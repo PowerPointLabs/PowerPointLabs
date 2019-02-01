@@ -17,7 +17,7 @@ namespace PowerPointLabs.NarrationsLab.Views
     /// </summary>
     public partial class NarrationsLabMainSettingsPage : Page
     {
-        public delegate void DialogConfirmedDelegate(string voiceName, AzureVoice azureVoiceName, bool isAzureVoiceSelected, bool preview);
+        public delegate void DialogConfirmedDelegate(string voiceName, AzureVoice azureVoiceName, bool isAzureVoiceSelected, bool isPreviewing);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         private static NarrationsLabMainSettingsPage instance;
@@ -135,7 +135,7 @@ namespace PowerPointLabs.NarrationsLab.Views
                 AzureVoice azureVoiceSelected = RadioAzureVoice.IsChecked == true ? (AzureVoice)voiceList.SelectedItem : null;
                 if (azureVoiceSelected == null && RadioAzureVoice.IsChecked == true)
                 {
-                    throw new Exception();
+                    throw new Exception("Azure voice checked but no voice selected.");
                 }
                 DialogConfirmedHandler(defaultVoiceSelected, azureVoiceSelected, azureVoiceSelected != null, previewCheckbox.IsChecked.GetValueOrDefault());
             }
