@@ -2040,9 +2040,6 @@
   <ItemGroup>
     <None Include="Resources\FillSlide.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\AddToCustomShapesDisabled.png" />
-  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
