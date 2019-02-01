@@ -180,7 +180,8 @@ namespace PowerPointLabs.ShapesLab
             {
 
                 MessageBox.Show(new Form() { TopMost = true },
-                    ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle); return;
+                    ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                return;
             }
 
             // Finish checks, will add shape(s) from selection
