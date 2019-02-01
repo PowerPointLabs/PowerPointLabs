@@ -1054,6 +1054,11 @@ namespace PowerPointLabs
         {
             Trace.TraceInformation("Closing " + pres.Name + "...");
 
+
+            // We need to check if there is only one window AND the active window's presentation 
+            // has the same name as the one we are closing because it is possible for background 
+            // presentation (those without windows) to close and trigger this event as well.
+            // We only want to shut down PPTLabs if we are closing the main presentation.
             if (Application.Windows.Count == 1 &&
                 Application.ActiveWindow.Presentation.FullName == pres.FullName)
             {
