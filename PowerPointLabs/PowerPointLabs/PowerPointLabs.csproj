@@ -664,10 +664,13 @@
     <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextAlignmentFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextLineSpacingFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextOrientationFormat.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\ArtisticEffectFormat.cs" />
