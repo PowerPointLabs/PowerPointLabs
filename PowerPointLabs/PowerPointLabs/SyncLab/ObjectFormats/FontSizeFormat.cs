@@ -39,7 +39,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             }
             catch (Exception e)
             {
-                Logger.LogException(e, "Sync FonttSizeFormat");
+                Logger.LogException(e, "Sync FontSizeFormat");
                 return false;
             }
         }
