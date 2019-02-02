@@ -8,7 +8,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
-    class TextAlignmentFormat : Format
+    class TextHorizontalAlignmentFormat : Format
     {
         public override bool CanCopy(Shape formatShape)
         {
@@ -42,7 +42,6 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.TextFrame.HorizontalAnchor = formatShape.TextFrame2.HorizontalAnchor;
-                newShape.TextFrame.VerticalAnchor = formatShape.TextFrame2.VerticalAnchor;
             }
             catch (Exception e)
             {
