@@ -25,16 +25,15 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public override Bitmap DisplayImage(Shape formatShape)
         {
-            Shapes shapes = SyncFormatUtil.GetTemplateShapes();
-            Shape shape = shapes.AddLine(
-                0, SyncFormatConstants.DisplayImageSize.Height,
-                SyncFormatConstants.DisplayImageSize.Width, 0);
-            SyncFormat(formatShape, shape);
-            shape.Line.ForeColor.RGB = SyncFormatConstants.ColorBlack;
-            shape.Line.Weight = SyncFormatConstants.DisplayLineWeight;
-            Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
-            shape.Delete();
-            return image;
+            string alignmentArt =
+                "||\n" +
+                "||\n";
+            return SyncFormatUtil.GetTextDisplay(
+                alignmentArt,
+                new System.Drawing.Font(formatShape.TextEffect.FontName,
+                                        SyncFormatConstants.DisplayImageFontSize,
+                                        FontStyle.Bold),
+                SyncFormatConstants.DisplayImageSize);
         }
 
         private static bool Sync(Shape formatShape, Shape newShape)
