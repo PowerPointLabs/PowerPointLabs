@@ -19,7 +19,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             if (!Sync(formatShape, newShape))
             {
-                Logger.Log(newShape.Type + " unable to sync Dash Style");
+                Logger.Log(newShape.Type + " unable to sync Vertical Text Alignment");
             }
         }
 
