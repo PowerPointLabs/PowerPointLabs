@@ -488,7 +488,7 @@ namespace PowerPointLabs
 
         private void ShutDownPictureSlidesLab()
         {
-            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
+            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Ribbon.PictureSlidesLabWindow;
             if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen)
             {
                 pictureSlidesLabWindow.Close();
