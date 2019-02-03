@@ -1718,12 +1718,12 @@ namespace PowerPointLabs.ShapesLab
         // the button, the tool tip will display.
         private void CustomShapePane_MouseMove(object sender, MouseEventArgs e)
         {
-            var parent = sender as Control;
+            Control parent = sender as Control;
             if (parent == null)
             {
                 return;
             }
-            var ctrl = parent.GetChildAtPoint(e.Location);
+            Control ctrl = parent.GetChildAtPoint(e.Location);
             if (ctrl != null)
             {
                 if (ctrl.Visible && toolTip1.Tag == null)
@@ -1738,10 +1738,10 @@ namespace PowerPointLabs.ShapesLab
             }
             else
             {
-                ctrl = toolTip1.Tag as Control;
-                if (ctrl != null)
+                Control toolTipCtrl = toolTip1.Tag as Control;
+                if (toolTipCtrl != null)
                 {
-                    toolTip1.Hide(ctrl);
+                    toolTip1.Hide(toolTipCtrl);
                     toolTip1.Tag = null;
                     _toolTipShown = false;
                 }
