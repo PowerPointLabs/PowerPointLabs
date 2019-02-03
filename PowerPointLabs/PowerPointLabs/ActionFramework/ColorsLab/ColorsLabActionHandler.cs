@@ -3,6 +3,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ColorsLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ColorsLab
@@ -12,11 +13,17 @@ namespace PowerPointLabs.ActionFramework.ColorsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            CustomTaskPane colorPane = 
-                this.RegisterTaskPane(typeof(ColorPane), ColorsLabText.TaskPanelTitle);
-            if (colorPane != null)
+            this.RegisterTaskPane(typeof(ColorsLabPane), ColorsLabText.TaskPanelTitle);
+            CustomTaskPane colorPane = this.GetTaskPane(typeof(ColorsLabPane));
+            // if currently the pane is hidden, show the pane
+            if (!colorPane.Visible)
             {
-                colorPane.Visible = !colorPane.Visible;
+                // fire the pane visble change event
+                colorPane.Visible = true;
+            }
+            else
+            {
+                colorPane.Visible = false;
             }
         }
     }
