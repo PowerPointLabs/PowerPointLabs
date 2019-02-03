@@ -178,7 +178,8 @@ namespace PowerPointLabs.ShapesLab
             // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
             if (!ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                MessageBox.Show(new Form() { TopMost = true },
+                    ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
                 return;
             }
 
