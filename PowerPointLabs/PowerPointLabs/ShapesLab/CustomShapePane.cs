@@ -1730,7 +1730,7 @@ namespace PowerPointLabs.ShapesLab
                 {
                     if (!_toolTipShown)
                     {
-                        toolTip1.Show(ShapesLabText.AddShapeToolTip, ctrl, ctrl.Width / 2, ctrl.Height / 2);
+                        toolTip1.Show(ShapesLabText.DisabledAddShapeToolTip, ctrl, ctrl.Width / 2, ctrl.Height / 2);
                         toolTip1.Tag = ctrl;
                         _toolTipShown = true;
                     }

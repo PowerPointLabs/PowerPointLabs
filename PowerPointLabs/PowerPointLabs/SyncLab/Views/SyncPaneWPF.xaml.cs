@@ -80,10 +80,12 @@ namespace PowerPointLabs.SyncLab.Views
             if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone))
             {
                 copyButton.IsEnabled = false;
+                toolTipTextBox.Text = SyncLabText.DisabledToolTipText;
             }
             else
             {
                 copyButton.IsEnabled = true;
+                toolTipTextBox.Text = SyncLabText.EnabledToolTipText;
             }
         }
 
