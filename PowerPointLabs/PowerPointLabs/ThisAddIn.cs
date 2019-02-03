@@ -961,7 +961,7 @@ namespace PowerPointLabs
                 PowerPoint.Shape sh = null;
                 try
                 {
-                    sh = sel.ShapeRange[1];                    
+                    sh = sel.ShapeRange[1];             
                 }
                 catch (AccessViolationException e)
                 {
