@@ -468,7 +468,14 @@ namespace PowerPointLabs.ZoomLab
                                                                                  Microsoft.Office.Core.MsoTriState.msoTrue,
                                                                                  0,
                                                                                  0);
-                FileDir.DeleteFile(tempFilePath);
+                try
+                {
+                    FileDir.DeleteFile(tempFilePath);
+                }
+                catch (Exception)
+                {
+                    return slideAsShape;
+                }
                 return slideAsShape;
             }
             catch (Exception)
