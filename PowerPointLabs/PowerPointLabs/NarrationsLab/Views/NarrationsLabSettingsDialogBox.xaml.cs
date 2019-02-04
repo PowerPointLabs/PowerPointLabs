@@ -1,49 +1,54 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.ComponentModel;
 
-using PowerPointLabs.TextCollection;
+using PowerPointLabs.NarrationsLab.Data;
 
 namespace PowerPointLabs.NarrationsLab.Views
 {
     /// <summary>
     /// Interaction logic for NarrationsLabSettingsDialogBox.xaml
     /// </summary>
-    public partial class NarrationsLabSettingsDialogBox
+    public partial class NarrationsLabSettingsDialogBox : INotifyPropertyChanged
     {
-        public delegate void DialogConfirmedDelegate(string voiceName, bool preview);
-        public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
-        public NarrationsLabSettingsDialogBox()
+
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+        public NarrationsLabSettingsPage CurrentPage
+        {
+            get
+            {
+                return _currentPage;
+            }
+            set
+            {
+                _currentPage = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("CurrentPage"));
+            }
+        }
+        private static NarrationsLabSettingsDialogBox instance;
+        private NarrationsLabSettingsPage _currentPage { get; set; } = NarrationsLabSettingsPage.MainSettingsPage;
+        public void SetCurrentPage(NarrationsLabSettingsPage page)
+        {
+            CurrentPage = page;
+        }
+
+        public static NarrationsLabSettingsDialogBox GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new NarrationsLabSettingsDialogBox();
+            }
+            return instance;
+        }
+        public void Destroy()
+        {
+            AzureVoiceLoginPage.GetInstance().Destroy();
+            NarrationsLabMainSettingsPage.GetInstance().Destroy();
+            instance = null;
+        }
+        private NarrationsLabSettingsDialogBox()
         {
             InitializeComponent();
-        }
-        
-        public NarrationsLabSettingsDialogBox(int selectedVoiceIndex, List<string> voices, bool isPreviewChecked)
-            : this()
-        {
-            voiceSelectionInput.ItemsSource = voices;
-            voiceSelectionInput.ToolTip = NarrationsLabText.SettingsVoiceSelectionInputTooltip;
-            voiceSelectionInput.Content = voices[selectedVoiceIndex];
-
-            previewCheckbox.IsChecked = isPreviewChecked;
-            previewCheckbox.ToolTip = NarrationsLabText.SettingsPreviewCheckboxTooltip;
-        }
-
-        private void OkButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogConfirmedHandler(voiceSelectionInput.Content.ToString(), previewCheckbox.IsChecked.GetValueOrDefault());
-            Close();
-        }
-        
-        void VoiceSelectionInput_Item_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left && voiceSelectionInput.IsExpanded)
-            {
-                string value = ((TextBlock)e.Source).Text;
-                voiceSelectionInput.Content = value;
-            }
+            this.DataContext = this;
         }
     }
 }
