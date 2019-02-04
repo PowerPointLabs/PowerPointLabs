@@ -35,12 +35,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.Line.Weight = formatShape.Line.Weight;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LineWeightFormat");
                 return false;
             }
-            return true;
         }
     }
 }
