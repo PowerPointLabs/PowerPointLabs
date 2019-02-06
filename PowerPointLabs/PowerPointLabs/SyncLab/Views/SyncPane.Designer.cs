@@ -1,4 +1,6 @@
-﻿namespace PowerPointLabs.SyncLab.Views
+﻿using Microsoft.Office.Interop.PowerPoint;
+
+namespace PowerPointLabs.SyncLab.Views
 {
     partial class SyncPane
     {
@@ -7,9 +9,9 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        public void UpdateOnSelectionChange()
+        public void UpdateOnSelectionChange(Selection sel)
         {
-            this.SyncPaneWPF1.UpdateCopyButtonEnabledStatus();
+            this.SyncPaneWPF1.UpdateCopyButtonEnabledStatus(sel);
         }
 
         /// <summary> 

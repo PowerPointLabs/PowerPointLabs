@@ -47,7 +47,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             SyncPane syncLab = syncLabPane.Control as SyncPane;
 
-            UpdateCopyButtonEnabledStatus();
+            UpdateCopyButtonEnabledStatus(this.GetCurrentSelection());
 
             syncLab.HandleDestroyed += SyncPane_Closing;
         }
@@ -74,10 +74,10 @@ namespace PowerPointLabs.SyncLab.Views
             }
         }
 
-        public void UpdateCopyButtonEnabledStatus()
+        public void UpdateCopyButtonEnabledStatus(Selection selection)
         {
-            Selection selection = this.GetCurrentSelection();
-            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone))
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone) 
+                || (selection.Type == PpSelectionType.ppSelectionSlides))
             {
                 copyButton.IsEnabled = false;
                 toolTipTextBox.Text = SyncLabText.DisabledToolTipText;
@@ -87,6 +87,11 @@ namespace PowerPointLabs.SyncLab.Views
                 copyButton.IsEnabled = true;
                 toolTipTextBox.Text = SyncLabText.EnabledToolTipText;
             }
+        }
+
+        public bool GetCopyButtonEnabledStatus()
+        {
+            return copyButton.IsEnabled;
         }
 
         public FormatTreeNode[] GetFormats(int index)

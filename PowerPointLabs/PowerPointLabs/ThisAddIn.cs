@@ -985,7 +985,7 @@ namespace PowerPointLabs
             if (GetActivePane(typeof(SyncPane)) != null)
             {
                 SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
-                syncPane.UpdateOnSelectionChange();
+                syncPane.UpdateOnSelectionChange(sel);
             }
 
             if (GetActivePane(typeof(CustomShapePane)) != null)

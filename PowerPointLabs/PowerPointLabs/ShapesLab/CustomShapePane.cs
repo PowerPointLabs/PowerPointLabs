@@ -1607,7 +1607,8 @@ namespace PowerPointLabs.ShapesLab
 
         private void SelectionChanged(Selection selection)
         {
-            if (selection == null || selection.Type == PpSelectionType.ppSelectionNone)
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone)
+                || (selection.Type == PpSelectionType.ppSelectionSlides))
             {
                 DisableAddShapesButton();
             }
