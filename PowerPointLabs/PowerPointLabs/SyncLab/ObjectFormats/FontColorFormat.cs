@@ -50,12 +50,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             {
                 int guessedColor = ShapeUtil.GuessTextColor(formatShape);
                 newShape.TextFrame.TextRange.Font.Color.RGB = guessedColor;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FontColorFormat");
                 return false;
             }
-            return true;
         }
     }
 }

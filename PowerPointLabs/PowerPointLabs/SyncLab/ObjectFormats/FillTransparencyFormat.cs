@@ -35,12 +35,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.Fill.Transparency = formatShape.Fill.Transparency;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FillTransparencyFormat");
                 return false;
             }
-            return true;
         }
     }
 }

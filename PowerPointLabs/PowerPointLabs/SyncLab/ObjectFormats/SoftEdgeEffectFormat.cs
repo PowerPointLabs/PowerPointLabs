@@ -43,12 +43,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
                 // skip setting type, SoftEdgeFormat.Type is not reliable
                 dest.Radius = source.Radius;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync SoftEdgeEffectFormat");
                 return false;
             }
-            return true;
         }
     }
 }
