@@ -91,7 +91,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMe");
-            ExpectAddShapeButtonEnabled(shapesLab.GetAddShapeButtonStatus());
+            ExpectAddShapeButtonEnabled(shapesLab);
             // save shapes
             shapesLab.SaveSelectedShapes();
 
@@ -112,9 +112,8 @@ namespace Test.FunctionalTest
         private void SaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum, int testSlideNum)
         {
             PpOperations.SelectSlide(shapesSlideNum);
-            ExpectAddShapeButtonDisabled(shapesLab.GetAddShapeButtonStatus());
             PpOperations.SelectShapesByPrefix("selectMeNow");
-            ExpectAddShapeButtonEnabled(shapesLab.GetAddShapeButtonStatus());
+            ExpectAddShapeButtonEnabled(shapesLab);
 
             MessageBoxUtil.ExpectMessageBoxWillNotPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
@@ -137,9 +136,9 @@ namespace Test.FunctionalTest
         private void TestSavePlaceholderToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum)
         {
             PpOperations.SelectSlide(shapesSlideNum);
-            ExpectAddShapeButtonDisabled(shapesLab.GetAddShapeButtonStatus());
+            ExpectAddShapeButtonDisabled(shapesLab);
             PpOperations.SelectShapesByPrefix("Placeholder");
-            ExpectAddShapeButtonEnabled(shapesLab.GetAddShapeButtonStatus());
+            ExpectAddShapeButtonEnabled(shapesLab);
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
@@ -174,14 +173,16 @@ namespace Test.FunctionalTest
                 actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
         }
 
-        private void ExpectAddShapeButtonEnabled(bool isButtonEnabled)
+        private void ExpectAddShapeButtonEnabled(IShapesLabController shapesLab)
         {
-            Assert.IsTrue(isButtonEnabled);
+            ThreadUtil.WaitFor(1000);
+            Assert.IsTrue(shapesLab.GetAddShapeButtonStatus());
         }
 
-        private void ExpectAddShapeButtonDisabled(bool isButtonEnabled)
+        private void ExpectAddShapeButtonDisabled(IShapesLabController shapesLab)
         {
-            Assert.IsFalse(isButtonEnabled);
+            ThreadUtil.WaitFor(1000);
+            Assert.IsFalse(shapesLab.GetAddShapeButtonStatus());
         }
     }
 }

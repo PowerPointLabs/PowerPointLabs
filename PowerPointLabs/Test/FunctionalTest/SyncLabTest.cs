@@ -140,40 +140,38 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(OriginalSyncGroupToShapeSlideNo);
 
             // no selection copy
-            //ThreadUtil.WaitFor(100);
-            ExpectCopyButtonDisabled(syncLab.GetCopyButtonEnabledStatus());
+            ExpectCopyButtonDisabled(syncLab);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // 2 item selected copy
             List<String> shapes = new List<string> { Line, RotatedArrow };
             PpOperations.SelectShapes(shapes);
-            ExpectCopyButtonEnabled(syncLab.GetCopyButtonEnabledStatus());
+            ExpectCopyButtonEnabled(syncLab);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // group selected copy
             PpOperations.SelectShape(Group);
-            ExpectCopyButtonEnabled(syncLab.GetCopyButtonEnabledStatus());
+            ExpectCopyButtonEnabled(syncLab);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 SyncLabText.ErrorCopySelectionInvalid, syncLab.Copy, "Ok");
 
             // copy blank item for the paste error dialog test
             PpOperations.SelectShape(Line);
-            ExpectCopyButtonEnabled(syncLab.GetCopyButtonEnabledStatus());
+            ExpectCopyButtonEnabled(syncLab);
             CopyStyle(syncLab);
 
             // no selection sync
             PpOperations.SelectSlide(ExpectedSyncShapeToGroupSlideNo);
-            ExpectCopyButtonDisabled(syncLab.GetCopyButtonEnabledStatus());
+            ExpectCopyButtonDisabled(syncLab);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 SyncLabText.ErrorPasteSelectionInvalid, () => syncLab.Sync(0), "Ok");
             
             // smart art
             PpOperations.SelectSlide(SmartArtSlideNo);
             PpOperations.SelectShape(SmartArt);
-            ThreadUtil.WaitFor(100);
-            ExpectCopyButtonEnabled(syncLab.GetCopyButtonEnabledStatus());
+            ExpectCopyButtonEnabled(syncLab);
             MessageBoxUtil.ExpectMessageBoxWillPopUp(SyncLabText.ErrorDialogTitle,
                 SyncLabText.ErrorSmartArtUnsupported, syncLab.Copy, "Ok");
         }
@@ -238,14 +236,16 @@ namespace Test.FunctionalTest
             syncLab.Copy();
         }
 
-        private void ExpectCopyButtonEnabled(bool isButtonEnabled)
+        private void ExpectCopyButtonEnabled(ISyncLabController syncLab)
         {
-            Assert.IsTrue(isButtonEnabled);
+            ThreadUtil.WaitFor(500);
+            Assert.IsTrue(syncLab.GetCopyButtonEnabledStatus());
         }
 
-        private void ExpectCopyButtonDisabled(bool isButtonEnabled)
+        private void ExpectCopyButtonDisabled(ISyncLabController syncLab)
         {
-            Assert.IsFalse(isButtonEnabled);
+            ThreadUtil.WaitFor(500);
+            Assert.IsFalse(syncLab.GetCopyButtonEnabledStatus());
         }
     }
 }
