@@ -91,6 +91,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMe");
+            ExpectAddShapeButtonEnabled(shapesLab.GetAddShapeButtonStatus());
             // save shapes
             shapesLab.SaveSelectedShapes();
 
@@ -111,7 +112,9 @@ namespace Test.FunctionalTest
         private void SaveShapesToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum, int testSlideNum)
         {
             PpOperations.SelectSlide(shapesSlideNum);
+            ExpectAddShapeButtonDisabled(shapesLab.GetAddShapeButtonStatus());
             PpOperations.SelectShapesByPrefix("selectMeNow");
+            ExpectAddShapeButtonEnabled(shapesLab.GetAddShapeButtonStatus());
 
             MessageBoxUtil.ExpectMessageBoxWillNotPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
@@ -134,7 +137,9 @@ namespace Test.FunctionalTest
         private void TestSavePlaceholderToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum)
         {
             PpOperations.SelectSlide(shapesSlideNum);
+            ExpectAddShapeButtonDisabled(shapesLab.GetAddShapeButtonStatus());
             PpOperations.SelectShapesByPrefix("Placeholder");
+            ExpectAddShapeButtonEnabled(shapesLab.GetAddShapeButtonStatus());
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
@@ -167,6 +172,16 @@ namespace Test.FunctionalTest
         {
             CheckIfClipboardIsRestored(() => SaveShapesToShapesLabWithAddShapesButton(shapesLab, actualSlideNum, testSlideNum),
                 actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
+        }
+
+        private void ExpectAddShapeButtonEnabled(bool isButtonEnabled)
+        {
+            Assert.IsTrue(isButtonEnabled);
+        }
+
+        private void ExpectAddShapeButtonDisabled(bool isButtonEnabled)
+        {
+            Assert.IsFalse(isButtonEnabled);
         }
     }
 }
