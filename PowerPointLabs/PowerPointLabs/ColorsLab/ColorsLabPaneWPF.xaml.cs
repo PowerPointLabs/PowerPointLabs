@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +9,7 @@ using System.Windows.Media.Imaging;
 
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.DataSources;
 using PowerPointLabs.Utils;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -20,10 +22,42 @@ namespace PowerPointLabs.ColorsLab
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
+        
+        // Data-bindings datasource
+        ColorDataSource dataSource = new ColorDataSource();
+
         public ColorsLabPaneWPF()
         {
+            DataContext = dataSource;
+
             InitializeComponent();
 
+            SetupImageSources();
+
+            SetDefaultColor(Color.CornflowerBlue);
+        }
+
+
+        private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dummy code, to complete
+            dataSource.SelectedColor = Color.Red;
+        }
+
+        private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dummy code, to complete
+            dataSource.SelectedColor = Color.Yellow;
+        }
+
+        private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dummy code, to complete
+            dataSource.SelectedColor = Color.Gold;
+        }
+
+        private void SetupImageSources()
+        {
             textColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     Properties.Resources.TextColor_icon.GetHbitmap(),
                     IntPtr.Zero,
@@ -79,20 +113,31 @@ namespace PowerPointLabs.ColorsLab
                     BitmapSizeOptions.FromEmptyOptions());
         }
 
-        private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
+
+        private void SetDefaultColor(Color color)
         {
-            
+            dataSource.SelectedColor = color;
+            // UpdateUIForNewColor();
         }
 
-        private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
+        private void BrightnessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            double newBrightness = e.NewValue;
+            HSLColor newColor = new HSLColor();
+            newColor.Hue = dataSource.SelectedColor.Hue;
+            newColor.Saturation = dataSource.SelectedColor.Saturation;
+            newColor.Luminosity = newBrightness;
+            dataSource.SelectedColor = newColor;
         }
 
-        private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
+        private void SaturationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            double newSaturation = e.NewValue;
+            HSLColor newColor = new HSLColor();
+            newColor.Hue = dataSource.SelectedColor.Hue;
+            newColor.Saturation = newSaturation;
+            newColor.Luminosity = dataSource.SelectedColor.Luminosity;
+            dataSource.SelectedColor = newColor;
         }
-
     }
 }

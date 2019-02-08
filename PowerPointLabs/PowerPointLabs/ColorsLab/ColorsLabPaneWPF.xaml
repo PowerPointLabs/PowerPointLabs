@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.ColorsLab"
+             xmlns:converter="clr-namespace:PowerPointLabs.Converters.ColorPane"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              Height="725" Width="300">
@@ -21,7 +22,7 @@
     <ScrollViewer x:Name="PaneScroll">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="175" />
+                <RowDefinition Height="200" />
                 <RowDefinition Height="180" />
                 <RowDefinition Height="165" />
                 <RowDefinition Height="*" />
@@ -31,8 +32,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="36" />
-                        <RowDefinition Height="36" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -42,7 +46,7 @@
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Background="AliceBlue"/>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Background="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
                     <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Click="ApplyTextColorButton_Click" Background="White">
                         <Image x:Name="textColorIcon" Source="..\Resources\TextColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
@@ -85,10 +89,18 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <Image x:Name="brightnessIcon" Grid.Row="2" Grid.Column="0" Margin="17,10,17,10" Source="..\Resources\Brightness-icon_25x25.png" Stretch="Fill"/>
-                    <Slider x:Name="brightnessSlider" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"/>
-                    <Image x:Name="saturationIcon" Grid.Row="3" Grid.Column="0" Margin="18,11,18,11" Source="..\Resources\Saturation-icon_18x18.png" Stretch="Fill"/>
-                    <Slider x:Name="saturationSlider" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"/>
+                    <Image x:Name="brightnessIcon" Grid.Row="2" Grid.Column="0" Margin="15,0,15,0" Source="..\Resources\Brightness-icon_25x25.png" Stretch="Fill"/>
+                    <StackPanel x:Name="brightnessPanel" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2" 
+                                Background="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Slider x:Name="brightnessSlider" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"
+                            Minimum="0" Maximum="240" Value="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToBrightnessValue.Instance}}"
+                            ValueChanged="BrightnessSlider_ValueChanged" />
+                    <Image x:Name="saturationIcon" Grid.Row="5" Grid.Column="0" Margin="16,1,16,1" Source="..\Resources\Saturation-icon_18x18.png" Stretch="Fill"/>
+                    <StackPanel x:Name="saturationPanel" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2" 
+                                Background="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Slider x:Name="saturationSlider" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"
+                            Minimum="0" Maximum="240" Value="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSaturationValue.Instance}}"
+                            ValueChanged="SaturationSlider_ValueChanged" />
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="MatchingColorsGroupBox" Header="Matching Colors" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

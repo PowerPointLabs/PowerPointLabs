@@ -1,23 +1,18 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Data;
 
 namespace PowerPointLabs.Converters.ColorPane
 {
-    [ValueConversion(typeof(HSLColor), typeof(int))]
-    class SelectedColorToBrightnessValue : IValueConverter
+    [ValueConversion(typeof(HSLColor), typeof(string))]
+    class HSLColorToHex : IValueConverter
     {
-
-        public static SelectedColorToBrightnessValue Instance = new SelectedColorToBrightnessValue();
+        public static HSLColorToHex Instance = new HSLColorToHex();
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null)
-            {
-                return 0;
-            }
-
-            HSLColor selectedColor = (HSLColor)value;
-            return (int)(selectedColor.Luminosity);
+            Color color = (HSLColor)value;
+            return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

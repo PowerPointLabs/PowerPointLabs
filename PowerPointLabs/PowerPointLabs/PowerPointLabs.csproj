@@ -650,6 +650,7 @@
     <Compile Include="ColorsLab\ColorsLabPane.Designer.cs">
       <DependentUpon>ColorsLabPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
