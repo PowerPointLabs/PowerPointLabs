@@ -1066,15 +1066,6 @@ namespace PowerPointLabs
                 _pptLabsShouldTerminate = true;
             }
 
-            if (IsApplicationVersion2010() &&
-                _deactivatedPresFullName == pres.FullName &&
-                Application.Presentations.Count == 2 &&
-                ShapePresentation != null &&
-                ShapePresentation.Opened)
-            {
-                ShapePresentation.Close();
-            }
-
             // special case: if we are closing 'ShapeGallery.pptx' or 'Sync Lab - Do not edit.pptx', no other action will be done
             if (pres.Name.Contains(ShapeGalleryPptxName) || pres.Name.Contains(SyncLabPptxName)) 
             {
