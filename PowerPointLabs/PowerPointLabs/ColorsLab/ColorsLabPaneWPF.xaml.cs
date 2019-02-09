@@ -36,7 +36,7 @@ namespace PowerPointLabs.ColorsLab
 
             SetDefaultColor(Color.CornflowerBlue);
 
-            selectedColorRectangle.MouseDown += SelectedColorRectangle_Click;
+            SetupRectangleClickEvents();
         }
 
 
@@ -115,6 +115,31 @@ namespace PowerPointLabs.ColorsLab
                     BitmapSizeOptions.FromEmptyOptions());
         }
 
+        private void SetupRectangleClickEvents()
+        {
+            selectedColorRectangle.MouseDown += SelectedColorRectangle_Click;
+            monochromaticRectangleOne.MouseDown += MonochromaticRectangle_Click;
+            monochromaticRectangleTwo.MouseDown += MonochromaticRectangle_Click;
+            monochromaticRectangleThree.MouseDown += MonochromaticRectangle_Click;
+            monochromaticRectangleFour.MouseDown += MonochromaticRectangle_Click;
+            monochromaticRectangleFive.MouseDown += MonochromaticRectangle_Click;
+            monochromaticRectangleSix.MouseDown += MonochromaticRectangle_Click;
+            monochromaticRectangleSeven.MouseDown += MonochromaticRectangle_Click;
+            analogousLowerRectangle.MouseDown += MonochromaticRectangle_Click;
+            analogousMiddleRectangle.MouseDown += MonochromaticRectangle_Click;
+            analogousHigherRectangle.MouseDown += MonochromaticRectangle_Click;
+            complementaryLowerRectangle.MouseDown += MonochromaticRectangle_Click;
+            complementaryMiddleRectangle.MouseDown += MonochromaticRectangle_Click;
+            complementaryHigherRectangle.MouseDown += MonochromaticRectangle_Click;
+            triadicLowerRectangle.MouseDown += MonochromaticRectangle_Click;
+            triadicMiddleRectangle.MouseDown += MonochromaticRectangle_Click;
+            triadicHigherRectangle.MouseDown += MonochromaticRectangle_Click;
+            tetradicOneRectangle.MouseDown += MonochromaticRectangle_Click;
+            tetradicTwoRectangle.MouseDown += MonochromaticRectangle_Click;
+            tetradicThreeRectangle.MouseDown += MonochromaticRectangle_Click;
+            tetradicFourRectangle.MouseDown += MonochromaticRectangle_Click;
+
+        }
 
         private void SetDefaultColor(Color color)
         {
@@ -155,6 +180,14 @@ namespace PowerPointLabs.ColorsLab
             {
                 dataSource.SelectedColor = colorPickerDialog.Color;
             }
+        }
+
+        private void MonochromaticRectangle_Click(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            System.Windows.Media.Color color = ((System.Windows.Media.SolidColorBrush)rect.Fill).Color;
+            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            dataSource.SelectedColor = new HSLColor(selectedColor);
         }
 
     }

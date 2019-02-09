@@ -7,7 +7,6 @@ namespace PowerPointLabs.Converters.ColorPane
     [ValueConversion(typeof(HSLColor), typeof(string))]
     class SelectedColorToMaximumBrightnessHex : IValueConverter
     {
-
         public static SelectedColorToMaximumBrightnessHex Instance = new SelectedColorToMaximumBrightnessHex();
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

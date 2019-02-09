@@ -139,41 +139,56 @@
                         <ColumnDefinition Width="20" />
                         <ColumnDefinition Width="20" />
                         <ColumnDefinition Width="20" />
-                        <ColumnDefinition Width="20" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" HorizontalAlignment="Left" VerticalAlignment="Center">Monochromatic</TextBlock>
-                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="2" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="3" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="4" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="5" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="6" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="7" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="8" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="9" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="10" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="11" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="1" Grid.Column="12" Margin="2,2,2,2" Background="AliceBlue"/>
-                    
+                    <Rectangle x:Name="monochromaticRectangleOne" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticOne.Instance}}"/>
+                    <Rectangle x:Name="monochromaticRectangleTwo" Grid.Row="1" Grid.Column="1" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticTwo.Instance}}"/>
+                    <Rectangle x:Name="monochromaticRectangleThree" Grid.Row="1" Grid.Column="2" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticThree.Instance}}"/>
+                    <Rectangle x:Name="monochromaticRectangleFour" Grid.Row="1" Grid.Column="3" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticFour.Instance}}"/>
+                    <Rectangle x:Name="monochromaticRectangleFive" Grid.Row="1" Grid.Column="4" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticFive.Instance}}"/>
+                    <Rectangle x:Name="monochromaticRectangleSix" Grid.Row="1" Grid.Column="5" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticSix.Instance}}"/>
+                    <Rectangle x:Name="monochromaticRectangleSeven" Grid.Row="1" Grid.Column="6" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticSeven.Instance}}"/>
+
                     <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Analogous</TextBlock>
-                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="3" Grid.Column="2" Margin="2,2,2,2" Background="AliceBlue"/>
+                    <Rectangle x:Name="analogousLowerRectangle" Grid.Row="3" Grid.Column="0" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToAnalogousLower.Instance}}"/>
+                    <Rectangle x:Name="analogousMiddleRectangle" Grid.Row="3" Grid.Column="1" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Rectangle x:Name="analogousHigherRectangle" Grid.Row="3" Grid.Column="2" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToAnalogousHigher.Instance}}"/>
+                    
                     <TextBlock Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Complementary</TextBlock>
-                    <StackPanel Grid.Row="3" Grid.Column="6" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="3" Grid.Column="7" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="3" Grid.Column="8" Margin="2,2,2,2" Background="AliceBlue"/>
+                    <Rectangle x:Name="complementaryLowerRectangle" Grid.Row="3" Grid.Column="6" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSplitComplementaryLower.Instance}}"/>
+                    <Rectangle x:Name="complementaryMiddleRectangle" Grid.Row="3" Grid.Column="7" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToComplementaryColor.Instance}}"/>
+                    <Rectangle x:Name="complementaryHigherRectangle" Grid.Row="3" Grid.Column="8" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSplitComplementaryHigher.Instance}}"/>
                     
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Triadic</TextBlock>
-                    <StackPanel Grid.Row="5" Grid.Column="0" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="5" Grid.Column="1" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="5" Grid.Column="2" Margin="2,2,2,2" Background="AliceBlue"/>
+                    <Rectangle x:Name="triadicLowerRectangle" Grid.Row="5" Grid.Column="0" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTriadicLower.Instance}}"/>
+                    <Rectangle x:Name="triadicMiddleRectangle" Grid.Row="5" Grid.Column="1" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Rectangle x:Name="triadicHigherRectangle" Grid.Row="5" Grid.Column="2" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTriadicHigher.Instance}}"/>
+                    
                     <TextBlock Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Tetradic</TextBlock>
-                    <StackPanel Grid.Row="5" Grid.Column="6" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="5" Grid.Column="7" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="5" Grid.Column="8" Margin="2,2,2,2" Background="AliceBlue"/>
-                    <StackPanel Grid.Row="5" Grid.Column="9" Margin="2,2,2,2" Background="AliceBlue"/>
+                    <Rectangle x:Name="tetradicOneRectangle" Grid.Row="5" Grid.Column="6" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTetradicOne.Instance}}"/>
+                    <Rectangle x:Name="tetradicFourRectangle" Grid.Row="5" Grid.Column="7" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Rectangle x:Name="tetradicTwoRectangle" Grid.Row="5" Grid.Column="8" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTetradicTwo.Instance}}"/>
+                    <Rectangle x:Name="tetradicThreeRectangle" Grid.Row="5" Grid.Column="9" Margin="2,2,2,2" 
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTetradicThree.Instance}}"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="FavoritesGroupBox" Header="Favorites" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
