@@ -3,9 +3,11 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using PowerPointLabs.DataSources;
+using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.ColorsLab
 {
@@ -14,7 +16,9 @@ namespace PowerPointLabs.ColorsLab
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
-        
+
+        private System.Windows.Media.Brush _previousFill;
+
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
 
@@ -222,7 +226,7 @@ namespace PowerPointLabs.ColorsLab
         private void MatchingColorsRectangle_Click(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
-            System.Windows.Media.Color color = ((System.Windows.Media.SolidColorBrush)rect.Fill).Color;
+            System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
@@ -231,5 +235,86 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
+        private void MonochromaticRectangleOne_MouseMove(object sender, MouseEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            if (rect != null && e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragDrop.DoDragDrop(rect, rect.Fill.ToString(), DragDropEffects.Copy);
+            }
+        }
+
+        private void FavoriteRect_DragEnter(object sender, DragEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            if (rect != null)
+            {
+                // Save the current Fill brush so that you can revert back to this value in DragLeave.
+                _previousFill = rect.Fill;
+
+                // If the DataObject contains string data, extract it.
+                if (e.Data.GetDataPresent(DataFormats.StringFormat))
+                {
+                    string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
+
+                    // If the string can be converted into a Brush, convert it.
+                    BrushConverter converter = new BrushConverter();
+                    if (converter.IsValid(dataString))
+                    {
+                        System.Windows.Media.Brush newFill = (System.Windows.Media.Brush)converter.ConvertFromString(dataString);
+                        rect.Fill = newFill;
+                    }
+                }
+            }
+        }
+
+        private void FavoriteRect_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.None;
+
+            // If the DataObject contains string data, extract it.
+            if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            {
+                string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
+
+                // If the string can be converted into a Brush, allow copying.
+                BrushConverter converter = new BrushConverter();
+                if (converter.IsValid(dataString))
+                {
+                    e.Effects = DragDropEffects.Copy | DragDropEffects.Move;
+                }
+            }
+        }
+
+        private void FavoriteRect_DragLeave(object sender, DragEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            if (rect != null)
+            {
+                rect.Fill = _previousFill;
+            }
+        }
+
+        private void FavoriteRect_Drop(object sender, DragEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            if (rect != null)
+            {
+                // If the DataObject contains string data, extract it.
+                if (e.Data.GetDataPresent(DataFormats.StringFormat))
+                {
+                    string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
+
+                    // If the string can be converted into a Brush, 
+                    // convert it and apply it to the ellipse.
+                    BrushConverter converter = new BrushConverter();
+                    if (converter.IsValid(dataString))
+                    {
+                        System.Windows.Media.Brush newFill = (System.Windows.Media.Brush)converter.ConvertFromString(dataString);
+                        rect.Fill = newFill;
+                    }
+                }
+            }
+        }
     }
 }
