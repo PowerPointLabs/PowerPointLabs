@@ -651,6 +651,11 @@
       <DependentUpon>ColorsLabPane.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMiddleBrightnessHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMinimumSaturationHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMaximumSaturationHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMaximumBrightnessHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorToMinimumBrightnessHex.cs" />
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />

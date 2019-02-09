@@ -46,7 +46,8 @@
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Background="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
+                               Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
                     <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Click="ApplyTextColorButton_Click" Background="White">
                         <Image x:Name="textColorIcon" Source="..\Resources\TextColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
@@ -90,14 +91,27 @@
                         </Button.ToolTip>
                     </Button>
                     <Image x:Name="brightnessIcon" Grid.Row="2" Grid.Column="0" Margin="15,0,15,0" Source="..\Resources\Brightness-icon_25x25.png" Stretch="Fill"/>
-                    <StackPanel x:Name="brightnessPanel" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2" 
-                                Background="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Rectangle x:Name="brightnessRectangle" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMinimumBrightnessHex.Instance}}" Offset="0.0" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMiddleBrightnessHex.Instance}}" Offset="0.5" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMaximumBrightnessHex.Instance}}" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
                     <Slider x:Name="brightnessSlider" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"
                             Minimum="0" Maximum="240" Value="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToBrightnessValue.Instance}}"
                             ValueChanged="BrightnessSlider_ValueChanged" />
                     <Image x:Name="saturationIcon" Grid.Row="5" Grid.Column="0" Margin="16,1,16,1" Source="..\Resources\Saturation-icon_18x18.png" Stretch="Fill"/>
-                    <StackPanel x:Name="saturationPanel" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2" 
-                                Background="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                    <Rectangle x:Name="saturationRectangle" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMinimumSaturationHex.Instance}}" Offset="0.0" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMaximumSaturationHex.Instance}}" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
                     <Slider x:Name="saturationSlider" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"
                             Minimum="0" Maximum="240" Value="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSaturationValue.Instance}}"
                             ValueChanged="SaturationSlider_ValueChanged" />
