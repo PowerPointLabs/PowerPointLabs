@@ -35,6 +35,8 @@ namespace PowerPointLabs.ColorsLab
             SetupImageSources();
 
             SetDefaultColor(Color.CornflowerBlue);
+
+            selectedColorRectangle.MouseDown += SelectedColorRectangle_Click;
         }
 
 
@@ -139,5 +141,21 @@ namespace PowerPointLabs.ColorsLab
             newColor.Luminosity = dataSource.SelectedColor.Luminosity;
             dataSource.SelectedColor = newColor;
         }
+
+        private void SelectedColorRectangle_Click(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorPickerDialog = new System.Windows.Forms.ColorDialog();
+            colorPickerDialog.FullOpen = true;
+
+            // Sets the initial color select to the current selected color.
+            colorPickerDialog.Color = dataSource.SelectedColor;
+
+            // Update the selected color if the user clicks OK
+            if (colorPickerDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                dataSource.SelectedColor = colorPickerDialog.Color;
+            }
+        }
+
     }
 }

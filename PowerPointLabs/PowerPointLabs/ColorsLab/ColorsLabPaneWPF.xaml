@@ -47,7 +47,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
-                               Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
+                               Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}" />
                     <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Click="ApplyTextColorButton_Click" Background="White">
                         <Image x:Name="textColorIcon" Source="..\Resources\TextColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
