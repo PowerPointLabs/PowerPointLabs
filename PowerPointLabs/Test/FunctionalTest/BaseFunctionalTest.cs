@@ -81,8 +81,8 @@ namespace Test.FunctionalTest
             ShapeRange newShape = actualSlide.Shapes.Paste();
 
             // Check if pasted shape is the same as the shape added to clipboard originally
-            //Assert.AreEqual(shapeNameToBeCopied, newShape.Name);
-            //Assert.AreEqual(shapeToBeCopied.Count, newShape.Count);
+            Assert.AreEqual(shapeNameToBeCopied, newShape.Name);
+            Assert.AreEqual(shapeToBeCopied.Count, newShape.Count);
 
             Slide expSlide = PpOperations.SelectSlide(expSlideNum);
             if (expShapeNameToDelete != "")
