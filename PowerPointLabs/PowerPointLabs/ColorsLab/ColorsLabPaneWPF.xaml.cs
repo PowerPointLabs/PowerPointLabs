@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-
-using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.DataSources;
-using PowerPointLabs.Utils;
-
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ColorsLab
 {
@@ -28,36 +20,23 @@ namespace PowerPointLabs.ColorsLab
 
         public ColorsLabPaneWPF()
         {
+            // Set data context to data source for XAML to reference.
             DataContext = dataSource;
 
+            // Do not remove. Default generated code.
             InitializeComponent();
 
+            // Setup code
             SetupImageSources();
-
-            SetDefaultColor(Color.CornflowerBlue);
-
             SetupRectangleClickEvents();
+            SetDefaultColor(Color.CornflowerBlue);
         }
 
+        #region Setup Code
 
-        private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Dummy code, to complete
-            dataSource.SelectedColor = Color.Red;
-        }
-
-        private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Dummy code, to complete
-            dataSource.SelectedColor = Color.Yellow;
-        }
-
-        private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Dummy code, to complete
-            dataSource.SelectedColor = Color.Gold;
-        }
-
+        /// <summary>
+        /// Function that handles the setting up of all the images in the pane.
+        /// </summary>
         private void SetupImageSources()
         {
             textColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
@@ -115,38 +94,77 @@ namespace PowerPointLabs.ColorsLab
                     BitmapSizeOptions.FromEmptyOptions());
         }
 
+        /// <summary>
+        /// Handles setting up of the click events for all the color rectangles in the pane.
+        /// We are setting up the click events in code because WPF Rectangles do not have an intrinsic OnClick event.
+        /// </summary>
         private void SetupRectangleClickEvents()
         {
             selectedColorRectangle.MouseDown += SelectedColorRectangle_Click;
-            monochromaticRectangleOne.MouseDown += MonochromaticRectangle_Click;
-            monochromaticRectangleTwo.MouseDown += MonochromaticRectangle_Click;
-            monochromaticRectangleThree.MouseDown += MonochromaticRectangle_Click;
-            monochromaticRectangleFour.MouseDown += MonochromaticRectangle_Click;
-            monochromaticRectangleFive.MouseDown += MonochromaticRectangle_Click;
-            monochromaticRectangleSix.MouseDown += MonochromaticRectangle_Click;
-            monochromaticRectangleSeven.MouseDown += MonochromaticRectangle_Click;
-            analogousLowerRectangle.MouseDown += MonochromaticRectangle_Click;
-            analogousMiddleRectangle.MouseDown += MonochromaticRectangle_Click;
-            analogousHigherRectangle.MouseDown += MonochromaticRectangle_Click;
-            complementaryLowerRectangle.MouseDown += MonochromaticRectangle_Click;
-            complementaryMiddleRectangle.MouseDown += MonochromaticRectangle_Click;
-            complementaryHigherRectangle.MouseDown += MonochromaticRectangle_Click;
-            triadicLowerRectangle.MouseDown += MonochromaticRectangle_Click;
-            triadicMiddleRectangle.MouseDown += MonochromaticRectangle_Click;
-            triadicHigherRectangle.MouseDown += MonochromaticRectangle_Click;
-            tetradicOneRectangle.MouseDown += MonochromaticRectangle_Click;
-            tetradicTwoRectangle.MouseDown += MonochromaticRectangle_Click;
-            tetradicThreeRectangle.MouseDown += MonochromaticRectangle_Click;
-            tetradicFourRectangle.MouseDown += MonochromaticRectangle_Click;
-
+            monochromaticRectangleOne.MouseDown += MatchingColorsRectangle_Click;
+            monochromaticRectangleTwo.MouseDown += MatchingColorsRectangle_Click;
+            monochromaticRectangleThree.MouseDown += MatchingColorsRectangle_Click;
+            monochromaticRectangleFour.MouseDown += MatchingColorsRectangle_Click;
+            monochromaticRectangleFive.MouseDown += MatchingColorsRectangle_Click;
+            monochromaticRectangleSix.MouseDown += MatchingColorsRectangle_Click;
+            monochromaticRectangleSeven.MouseDown += MatchingColorsRectangle_Click;
+            analogousLowerRectangle.MouseDown += MatchingColorsRectangle_Click;
+            analogousMiddleRectangle.MouseDown += MatchingColorsRectangle_Click;
+            analogousHigherRectangle.MouseDown += MatchingColorsRectangle_Click;
+            complementaryLowerRectangle.MouseDown += MatchingColorsRectangle_Click;
+            complementaryMiddleRectangle.MouseDown += MatchingColorsRectangle_Click;
+            complementaryHigherRectangle.MouseDown += MatchingColorsRectangle_Click;
+            triadicLowerRectangle.MouseDown += MatchingColorsRectangle_Click;
+            triadicMiddleRectangle.MouseDown += MatchingColorsRectangle_Click;
+            triadicHigherRectangle.MouseDown += MatchingColorsRectangle_Click;
+            tetradicOneRectangle.MouseDown += MatchingColorsRectangle_Click;
+            tetradicTwoRectangle.MouseDown += MatchingColorsRectangle_Click;
+            tetradicThreeRectangle.MouseDown += MatchingColorsRectangle_Click;
+            tetradicFourRectangle.MouseDown += MatchingColorsRectangle_Click;
         }
 
+        /// <summary>
+        /// Set default color upon startup.
+        /// </summary>
+        /// <param name="color"></param>
         private void SetDefaultColor(Color color)
         {
             dataSource.SelectedColor = color;
-            // UpdateUIForNewColor();
         }
 
+        #endregion
+
+        #region Event Handlers
+
+        #region Button Click Handlers
+
+        private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dummy code, to complete
+            dataSource.SelectedColor = Color.Red;
+        }
+
+        private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dummy code, to complete
+            dataSource.SelectedColor = Color.Yellow;
+        }
+
+        private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dummy code, to complete
+            dataSource.SelectedColor = Color.Gold;
+        }
+
+        #endregion
+
+        #region Slider Value Changed Handlers
+
+        /// <summary>
+        /// Updates selected color when brightness slider is moved.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BrightnessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double newBrightness = e.NewValue;
@@ -156,7 +174,12 @@ namespace PowerPointLabs.ColorsLab
             newColor.Luminosity = newBrightness;
             dataSource.SelectedColor = newColor;
         }
-
+        
+        /// <summary>
+        /// Updates selected color when saturation slider is moved.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaturationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double newSaturation = e.NewValue;
@@ -167,6 +190,15 @@ namespace PowerPointLabs.ColorsLab
             dataSource.SelectedColor = newColor;
         }
 
+        #endregion
+
+        #region Color Rectangle Click Handlers
+
+        /// <summary>
+        /// Opens up a Windows.Forms ColorDialog upon click of the selectedColor rectangle.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectedColorRectangle_Click(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Forms.ColorDialog colorPickerDialog = new System.Windows.Forms.ColorDialog();
@@ -182,13 +214,22 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
-        private void MonochromaticRectangle_Click(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Updates the selected color in the data source when rectangle is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MatchingColorsRectangle_Click(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             System.Windows.Media.Color color = ((System.Windows.Media.SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
+
+        #endregion
+
+        #endregion
 
     }
 }

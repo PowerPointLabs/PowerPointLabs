@@ -179,9 +179,13 @@ namespace PowerPointLabs
         }
         #endregion
 
+
         #region DataBindings
+
         private void BindDataToPanels()
         {
+
+            /*
             this.panel1.DataBindings.Add(new CustomBinding(
                 "BackColor",
                 dataSource,
@@ -397,6 +401,7 @@ namespace PowerPointLabs
                         dataSource,
                         "isFontColorSelected",
                         new ColorPaneConverters.IsActiveBoolToButtonBackColorConverter()));
+                        */
         }
 
         #endregion

@@ -94,9 +94,12 @@
                     <Rectangle x:Name="brightnessRectangle" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2">
                         <Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMinimumBrightnessHex.Instance}}" Offset="0.0" />
-                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMiddleBrightnessHex.Instance}}" Offset="0.5" />
-                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMaximumBrightnessHex.Instance}}" Offset="1.0" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, 
+                                    Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.0}" Offset="0.0" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, 
+                                    Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.5}" Offset="0.5" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, 
+                                    Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=1.0}" Offset="1.0" />
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
@@ -107,8 +110,10 @@
                     <Rectangle x:Name="saturationRectangle" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2">
                         <Rectangle.Fill>
                             <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMinimumSaturationHex.Instance}}" Offset="0.0" />
-                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMaximumSaturationHex.Instance}}" Offset="1.0" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, 
+                                    Converter={x:Static converter:SelectedColorShiftSaturationByFactor.Instance}, ConverterParameter=0.0}" Offset="0.0" />
+                                <GradientStop Color="{Binding SelectedColor, Mode=OneWay, 
+                                    Converter={x:Static converter:SelectedColorShiftSaturationByFactor.Instance}, ConverterParameter=1.0}" Offset="1.0" />
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
@@ -142,53 +147,53 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" HorizontalAlignment="Left" VerticalAlignment="Center">Monochromatic</TextBlock>
                     <Rectangle x:Name="monochromaticRectangleOne" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticOne.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.80}"/>
                     <Rectangle x:Name="monochromaticRectangleTwo" Grid.Row="1" Grid.Column="1" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticTwo.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.70}"/>
                     <Rectangle x:Name="monochromaticRectangleThree" Grid.Row="1" Grid.Column="2" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticThree.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.60}"/>
                     <Rectangle x:Name="monochromaticRectangleFour" Grid.Row="1" Grid.Column="3" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticFour.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.50}"/>
                     <Rectangle x:Name="monochromaticRectangleFive" Grid.Row="1" Grid.Column="4" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticFive.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.40}"/>
                     <Rectangle x:Name="monochromaticRectangleSix" Grid.Row="1" Grid.Column="5" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticSix.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.30}"/>
                     <Rectangle x:Name="monochromaticRectangleSeven" Grid.Row="1" Grid.Column="6" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToMonochromaticSeven.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.20}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Analogous</TextBlock>
                     <Rectangle x:Name="analogousLowerRectangle" Grid.Row="3" Grid.Column="0" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToAnalogousLower.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=-30.0}"/>
                     <Rectangle x:Name="analogousMiddleRectangle" Grid.Row="3" Grid.Column="1" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
                     <Rectangle x:Name="analogousHigherRectangle" Grid.Row="3" Grid.Column="2" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToAnalogousHigher.Instance}}"/>
-                    
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=30.0}"/>
+
                     <TextBlock Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Complementary</TextBlock>
                     <Rectangle x:Name="complementaryLowerRectangle" Grid.Row="3" Grid.Column="6" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSplitComplementaryLower.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=150.0}"/>
                     <Rectangle x:Name="complementaryMiddleRectangle" Grid.Row="3" Grid.Column="7" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToComplementaryColor.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=180.0}"/>
                     <Rectangle x:Name="complementaryHigherRectangle" Grid.Row="3" Grid.Column="8" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSplitComplementaryHigher.Instance}}"/>
-                    
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=210.0}"/>
+
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Triadic</TextBlock>
                     <Rectangle x:Name="triadicLowerRectangle" Grid.Row="5" Grid.Column="0" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTriadicLower.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=-120.0}"/>
                     <Rectangle x:Name="triadicMiddleRectangle" Grid.Row="5" Grid.Column="1" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
                     <Rectangle x:Name="triadicHigherRectangle" Grid.Row="5" Grid.Column="2" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTriadicHigher.Instance}}"/>
-                    
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=120.0}"/>
+
                     <TextBlock Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Tetradic</TextBlock>
                     <Rectangle x:Name="tetradicOneRectangle" Grid.Row="5" Grid.Column="6" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTetradicOne.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=90.0}"/>
                     <Rectangle x:Name="tetradicFourRectangle" Grid.Row="5" Grid.Column="7" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"/>
                     <Rectangle x:Name="tetradicTwoRectangle" Grid.Row="5" Grid.Column="8" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTetradicTwo.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=180.0}"/>
                     <Rectangle x:Name="tetradicThreeRectangle" Grid.Row="5" Grid.Column="9" Margin="2,2,2,2" 
-                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToTetradicThree.Instance}}"/>
+                               Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=270.0}"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="FavoritesGroupBox" Header="Favorites" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

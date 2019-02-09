@@ -2,14 +2,12 @@
 using System.Drawing;
 using System.Windows.Data;
 
-using PowerPointLabs.ColorPicker;
-
 namespace PowerPointLabs.Converters.ColorPane
 {
     [ValueConversion(typeof(HSLColor), typeof(string))]
-    class SelectedColorToTriadicHigher : IValueConverter
+    class SelectedColorShiftSaturationByFactor : IValueConverter
     {
-        public static SelectedColorToTriadicHigher Instance = new SelectedColorToTriadicHigher();
+        public static SelectedColorShiftSaturationByFactor Instance = new SelectedColorShiftSaturationByFactor();
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -19,7 +17,8 @@ namespace PowerPointLabs.Converters.ColorPane
                 return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
             }
             HSLColor selectedColor = (HSLColor)value;
-            Color convertedColor = ColorHelper.GetColorShiftedByAngle(selectedColor, 120.0f);
+            float shiftFactor = float.Parse((string)parameter);
+            Color convertedColor = new HSLColor(selectedColor.Hue, shiftFactor * 240, selectedColor.Luminosity);
             return "#" + convertedColor.R.ToString("X2") + convertedColor.G.ToString("X2") + convertedColor.B.ToString("X2");
         }
 

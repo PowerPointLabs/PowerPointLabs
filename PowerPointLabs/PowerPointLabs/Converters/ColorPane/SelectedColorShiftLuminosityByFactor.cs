@@ -5,9 +5,9 @@ using System.Windows.Data;
 namespace PowerPointLabs.Converters.ColorPane
 {
     [ValueConversion(typeof(HSLColor), typeof(string))]
-    class SelectedColorToMaximumBrightnessHex : IValueConverter
+    class SelectedColorShiftLuminosityByFactor : IValueConverter
     {
-        public static SelectedColorToMaximumBrightnessHex Instance = new SelectedColorToMaximumBrightnessHex();
+        public static SelectedColorShiftLuminosityByFactor Instance = new SelectedColorShiftLuminosityByFactor();
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -17,12 +17,9 @@ namespace PowerPointLabs.Converters.ColorPane
                 return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
             }
             HSLColor selectedColor = (HSLColor)value;
-            HSLColor maxBrightnessHslColor = new HSLColor();
-            maxBrightnessHslColor.Hue = selectedColor.Hue;
-            maxBrightnessHslColor.Saturation = selectedColor.Saturation;
-            maxBrightnessHslColor.Luminosity = 240;
-            Color maxBrightnessColor = maxBrightnessHslColor;
-            return "#" + maxBrightnessColor.R.ToString("X2") + maxBrightnessColor.G.ToString("X2") + maxBrightnessColor.B.ToString("X2");
+            float shiftFactor = float.Parse((string)parameter);
+            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, shiftFactor * 240);
+            return "#" + convertedColor.R.ToString("X2") + convertedColor.G.ToString("X2") + convertedColor.B.ToString("X2");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

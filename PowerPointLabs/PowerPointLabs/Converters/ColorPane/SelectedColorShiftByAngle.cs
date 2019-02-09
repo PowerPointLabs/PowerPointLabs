@@ -7,9 +7,9 @@ using PowerPointLabs.ColorPicker;
 namespace PowerPointLabs.Converters.ColorPane
 {
     [ValueConversion(typeof(HSLColor), typeof(string))]
-    class SelectedColorToComplementaryColor : IValueConverter
+    class SelectedColorShiftByAngle : IValueConverter
     {
-        public static SelectedColorToComplementaryColor Instance = new SelectedColorToComplementaryColor();
+        public static SelectedColorShiftByAngle Instance = new SelectedColorShiftByAngle();
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
@@ -19,7 +19,7 @@ namespace PowerPointLabs.Converters.ColorPane
                 return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
             }
             HSLColor selectedColor = (HSLColor)value;
-            Color convertedColor = ColorHelper.GetColorShiftedByAngle(selectedColor, 180.0f);
+            Color convertedColor = ColorHelper.GetColorShiftedByAngle(selectedColor, float.Parse((string)parameter));
             return "#" + convertedColor.R.ToString("X2") + convertedColor.G.ToString("X2") + convertedColor.B.ToString("X2");
         }
 
