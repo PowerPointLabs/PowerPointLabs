@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorPicker;
 using PowerPointLabs.DataSources;
 
 using Color = System.Drawing.Color;
@@ -29,6 +30,7 @@ namespace PowerPointLabs.ColorsLab
         };
 
         private Brush _previousFill;
+        private Color _previousColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
 
@@ -117,6 +119,14 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void SetupRectangleClickEvents()
         {
+            // TOOD: MouseDown is NOT ideal here. We want to select the rect's color
+            // only if it's a click, not just a MouseDown or MouseUp. However, WPF Rects 
+            // don't have a click event. Need to figure out a way here. This affects functionality
+            // of drag and drop also, because the rects changes colour upon a click and drag and the 
+            // wrong color is dragged to the favourites panel.
+
+            // TODO: Acutally all these can be moved to XAML. It's better that way.
+
             selectedColorRectangle.MouseDown += SelectedColorRectangle_Click;
             monochromaticRectangleOne.MouseDown += MatchingColorsRectangle_Click;
             monochromaticRectangleTwo.MouseDown += MatchingColorsRectangle_Click;
@@ -158,46 +168,70 @@ namespace PowerPointLabs.ColorsLab
         private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
         {
             ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FONT);
+            _previousColor = Color.Empty;
         }
 
         private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
         {
             ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.LINE);
+            _previousColor = Color.Empty;
         }
 
         private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
         {
             ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FILL);
+            _previousColor = Color.Empty;
         }
 
         private void ApplyTextColorButton_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            _previousColor = GetSelectedShapeColor(MODE.FONT);
+            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FONT);
         }
 
         private void ApplyTextColorButton_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (_previousColor == Color.Empty)
+            {
+                return;
+            }
 
+            ColorSelectedShapesWithColor(_previousColor, MODE.FONT);
+            _previousColor = Color.Empty;
         }
 
         private void ApplyLineColorButton_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            _previousColor = GetSelectedShapeColor(MODE.LINE);
+            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.LINE);
         }
 
         private void ApplyLineColorButton_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (_previousColor == Color.Empty)
+            {
+                return;
+            }
 
+            ColorSelectedShapesWithColor(_previousColor, MODE.LINE);
+            _previousColor = Color.Empty;
         }
 
         private void ApplyFillColorButton_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            _previousColor = GetSelectedShapeColor(MODE.FILL);
+            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FILL);
         }
 
         private void ApplyFillColorButton_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (_previousColor == Color.Empty)
+            {
+                return;
+            }
 
+            ColorSelectedShapesWithColor(_previousColor, MODE.FILL);
+            _previousColor = Color.Empty;
         }
 
         #endregion
@@ -236,7 +270,7 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
-        #region Color Rectangle Click Handlers
+        #region Color Rectangle Handlers
 
         /// <summary>
         /// Opens up a Windows.Forms ColorDialog upon click of the selectedColor rectangle.
@@ -271,11 +305,12 @@ namespace PowerPointLabs.ColorsLab
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
 
-        #endregion
-
-        #endregion
-
-        private void MonochromaticRectangleOne_MouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Handles drag and drop functionality for matching colors rectangles.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MatchingColorsRectangle_MouseMove(object sender, MouseEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null && e.LeftButton == MouseButtonState.Pressed)
@@ -284,6 +319,11 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Handles drag and drop functionality for favourtie color rectangles.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoriteRect_DragEnter(object sender, DragEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
@@ -308,6 +348,11 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Handles drag and drop functionality for favourtie color rectangles.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoriteRect_DragOver(object sender, DragEventArgs e)
         {
             e.Effects = DragDropEffects.None;
@@ -326,6 +371,11 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Handles drag and drop functionality for favourtie color rectangles.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoriteRect_DragLeave(object sender, DragEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
@@ -335,6 +385,11 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Handles drag and drop functionality for favourtie color rectangles.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoriteRect_Drop(object sender, DragEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
@@ -346,17 +401,30 @@ namespace PowerPointLabs.ColorsLab
                     string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
 
                     // If the string can be converted into a Brush, 
-                    // convert it and apply it to the ellipse.
+                    // convert it and apply it to the rect.
                     BrushConverter converter = new BrushConverter();
                     if (converter.IsValid(dataString))
                     {
-                        System.Windows.Media.Brush newFill = (System.Windows.Media.Brush)converter.ConvertFromString(dataString);
+                        Brush newFill = (Brush)converter.ConvertFromString(dataString);
                         rect.Fill = newFill;
                     }
                 }
             }
         }
 
+        #endregion
+
+        #endregion
+
+        #region Helpers
+
+        #region Apply Colors (Text, Fill, Line)
+
+        /// <summary>
+        /// Color selected shapes with selected color, in the given mode.
+        /// </summary>
+        /// <param name="selectedColor"></param>
+        /// <param name="colorMode"></param>
         private void ColorSelectedShapesWithColor(HSLColor selectedColor, MODE colorMode)
         {
             SelectShapes();
@@ -398,6 +466,9 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Retrieves selected shapes or text.
+        /// </summary>
         private void SelectShapes()
         {
             try
@@ -434,6 +505,12 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Colors specified text range with given color.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="rgb"></param>
+        /// <param name="mode"></param>
         private void ColorTextWithColor(PowerPoint.TextRange text, int rgb, MODE mode)
         {
             PowerPoint.TextFrame frame = text.Parent as PowerPoint.TextFrame;
@@ -444,6 +521,12 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Colors specified shape with color, in the given mode.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="rgb"></param>
+        /// <param name="mode"></param>
         private void ColorShapeWithColor(PowerPoint.Shape s, int rgb, MODE mode)
         {
             switch (mode)
@@ -461,6 +544,11 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Colors specified shape with color.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="rgb"></param>
         private void ColorShapeFontWithColor(PowerPoint.Shape s, int rgb)
         {
             if (s.HasTextFrame == MsoTriState.msoTrue)
@@ -493,6 +581,10 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        /// <summary>
+        /// Recreates any specified corrupted shape.
+        /// </summary>
+        /// <param name="s"></param>
         private void RecreateCorruptedShape(PowerPoint.Shape s)
         {
             s.Copy();
@@ -510,6 +602,106 @@ namespace PowerPointLabs.ColorsLab
             s.Delete();
         }
 
+        /// <summary>
+        /// Retrieves color of the selected shape(s).
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        private Color GetSelectedShapeColor(MODE mode)
+        {
+            SelectShapes();
+            if (_selectedShapes == null && _selectedText == null)
+            {
+                return dataSource.SelectedColor;
+            }
 
+            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                return GetSelectedShapeColor(_selectedShapes, mode);
+            }
+            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionText)
+            {
+                PowerPoint.TextFrame frame = _selectedText.Parent as PowerPoint.TextFrame;
+                PowerPoint.Shape selectedShape = frame.Parent as PowerPoint.Shape;
+                return GetSelectedShapeColor(selectedShape, mode);
+            }
+
+            return dataSource.SelectedColor;
+        }
+
+        /// <summary>
+        /// Retrieves color of the selected shapeRange, 
+        /// returning Black if shapeRange contains shapes with different colors.
+        /// </summary>
+        /// <param name="selectedShapes"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        private Color GetSelectedShapeColor(PowerPoint.ShapeRange selectedShapes, MODE mode)
+        {
+            Color colorToReturn = Color.Empty;
+            foreach (object selectedShape in selectedShapes)
+            {
+                Color color = GetSelectedShapeColor(selectedShape as PowerPoint.Shape, mode);
+                if (colorToReturn.Equals(Color.Empty))
+                {
+                    colorToReturn = color;
+                }
+                else if (!colorToReturn.Equals(color))
+                {
+                    return Color.Black;
+                }
+            }
+            return colorToReturn;
+        }
+
+        /// <summary>
+        /// Retrieves color of the selected shape.
+        /// </summary>
+        /// <param name="selectedShape"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        private Color GetSelectedShapeColor(PowerPoint.Shape selectedShape, MODE mode)
+        {
+            switch (mode)
+            {
+                case MODE.FILL:
+                    return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Fill.ForeColor.RGB));
+                case MODE.LINE:
+                    return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedShape.Line.ForeColor.RGB));
+                case MODE.FONT:
+                    if (selectedShape.HasTextFrame == MsoTriState.msoTrue
+                        && this.GetApplication().ActiveWindow.Selection.ShapeRange.HasTextFrame
+                        == MsoTriState.msoTrue)
+                    {
+                        if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionText)
+                        {
+                            PowerPoint.TextRange selectedText
+                                = this.GetApplication().ActiveWindow.Selection.TextRange.TrimText();
+                            if (selectedText != null && selectedText.Text != "")
+                            {
+                                return Color.FromArgb(ColorHelper.ReverseRGBToArgb(selectedText.Font.Color.RGB));
+                            }
+                            else
+                            {
+                                return
+                                Color.FromArgb(
+                                    ColorHelper.ReverseRGBToArgb(selectedShape.TextFrame.TextRange.Font.Color.RGB));
+                            }
+                        }
+                        else if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                        {
+                            return
+                                Color.FromArgb(
+                                    ColorHelper.ReverseRGBToArgb(selectedShape.TextFrame.TextRange.Font.Color.RGB));
+                        }
+                    }
+                    break;
+            }
+            return dataSource.SelectedColor;
+        }
+
+        #endregion
+
+        #endregion
     }
 }
