@@ -11,5 +11,6 @@ namespace TestInterface
         void ImportShape(string pathToShape);
         List<ISlideData> FetchShapeGalleryPresentationData();
         void ClickAddShapeButton();
+        bool GetAddShapeButtonStatus();
     }
 }

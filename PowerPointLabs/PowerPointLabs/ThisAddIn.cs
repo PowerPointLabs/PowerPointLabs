@@ -26,6 +26,7 @@ using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
 using PowerPointLabs.Utils;
@@ -978,6 +979,21 @@ namespace PowerPointLabs
 
             }
 
+
+            // When there is no selection on the slide, disable the add/copy buttons on
+            // customshapepane and syncpane respectively
+            if (GetActivePane(typeof(SyncPane)) != null)
+            {
+                SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
+                syncPane.UpdateOnSelectionChange(sel);
+            }
+
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                CustomShapePane customShapePane = GetActivePane(typeof(CustomShapePane)).Control as CustomShapePane;
+                customShapePane.UpdateOnSelectionChange(sel);
+            }
+
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
             Ribbon.RefreshRibbonControl("DrillDownButton");
             Ribbon.RefreshRibbonControl("StepBackButton");
@@ -1574,7 +1590,7 @@ namespace PowerPointLabs
                 // ignore exception
             }
         }
-        # endregion
+        #endregion
 
         private void SetupFunctionalTestChannels()
         {

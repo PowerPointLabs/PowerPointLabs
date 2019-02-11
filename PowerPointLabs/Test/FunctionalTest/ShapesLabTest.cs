@@ -91,6 +91,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMe");
+            ExpectAddShapeButtonEnabled(shapesLab);
             // save shapes
             shapesLab.SaveSelectedShapes();
 
@@ -112,6 +113,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMeNow");
+            ExpectAddShapeButtonEnabled(shapesLab);
 
             MessageBoxUtil.ExpectMessageBoxWillNotPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
@@ -134,7 +136,9 @@ namespace Test.FunctionalTest
         private void TestSavePlaceholderToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum)
         {
             PpOperations.SelectSlide(shapesSlideNum);
+            ExpectAddShapeButtonDisabled(shapesLab);
             PpOperations.SelectShapesByPrefix("Placeholder");
+            ExpectAddShapeButtonEnabled(shapesLab);
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
@@ -167,6 +171,18 @@ namespace Test.FunctionalTest
         {
             CheckIfClipboardIsRestored(() => SaveShapesToShapesLabWithAddShapesButton(shapesLab, actualSlideNum, testSlideNum),
                 actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
+        }
+
+        private void ExpectAddShapeButtonEnabled(IShapesLabController shapesLab)
+        {
+            ThreadUtil.WaitFor(1000);
+            Assert.IsTrue(shapesLab.GetAddShapeButtonStatus());
+        }
+
+        private void ExpectAddShapeButtonDisabled(IShapesLabController shapesLab)
+        {
+            ThreadUtil.WaitFor(1000);
+            Assert.IsFalse(shapesLab.GetAddShapeButtonStatus());
         }
     }
 }
