@@ -943,8 +943,9 @@ namespace PowerPointLabs
             {
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
-                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
                 UpdateTimerPane(false);
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
+                ShutDownPictureSlidesLab();
             }
 
             // in case the recorder is on event
