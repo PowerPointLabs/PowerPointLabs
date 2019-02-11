@@ -92,5 +92,10 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
 
         }
+
+        public bool GetAddShapeButtonStatus()
+        {
+            return _pane.GetAddShapeButton().Enabled;
+        }
     }
 }
