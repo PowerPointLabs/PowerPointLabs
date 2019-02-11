@@ -54,11 +54,6 @@ namespace PowerPointLabs.SyncLab.Views
 
         public void SyncPane_Closing(Object sender, EventArgs e)
         {
-            if (this.GetAddIn().Application.Presentations.Count == 2)
-            {
-                shapeStorage.Close();
-            }
-
             if (Dialog != null)
             {
                 Dialog.Close();
