@@ -7,17 +7,21 @@ namespace Test.UnitTest.SyncLab
     [TestClass]
     public class SyncLabTextAlignmentTest : BaseSyncLabTest
     {
-        private const int OriginalShapesSlideNo = 21;
-        private const string CopyFromSmallShape = "CopyFromSmall";
-        private const string CopyFromLargeShape = "CopyFromLarge";
-        private const string CopyToShape = "Rectangle 3";
+        private const int HorizontalAlignmentSlidesNo = 4;
+        private const int HorizontalExpectedSlidesNo = 5;
+        private const int VerticalAlignmentSlidesNo = 6;
+        private const int VerticalExpectedSlidesNo = 7;
+        private const string SourceSuffix = " source";
+        private const string TargetSuffix = " target";
 
-        //Results of Operations
-        private const int SyncFontFamilySlideNo = 22;
-        private const int SyncFontSizeSlideNo = 23;
-        private const int SyncFontFillSlideNo = 24;
-        private const int SyncOneFontStyleSlideNo = 25;
-        private const int SyncAllFontStyleSlideNo = 26;
+        //Types of text formats
+        private const string Left = "Left";
+        private const string Center = "Center";
+        private const string Right = "Right";
+        private const string Justify = "Justify";
+        private const string Top = "Top";
+        private const string Middle = "Middle";
+        private const string Bottom = "Bottom";
 
         protected override string GetTestingSlideName()
         {
@@ -26,83 +30,61 @@ namespace Test.UnitTest.SyncLab
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncFontFamily()
+        public void TestSyncHorizontalAlignment()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            string[] prefixes = { Left, Center, Right, Justify };
+            foreach (string prefix in prefixes)
+            {
+                Microsoft.Office.Interop.PowerPoint.Shape formatShape =
+                    GetShape(HorizontalAlignmentSlidesNo, prefix + SourceSuffix);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            new FontFormat().SyncFormat(formatShape, newShape);
+                Microsoft.Office.Interop.PowerPoint.Shape newShape =
+                    GetShape(HorizontalAlignmentSlidesNo, prefix + TargetSuffix);
+                new TextHorizontalAlignmentFormat().SyncFormat(formatShape, newShape);
+                CheckTextAlignment(prefix + TargetSuffix,
+                    HorizontalAlignmentSlidesNo, HorizontalExpectedSlidesNo);
+            }
 
-            CompareSlides(OriginalShapesSlideNo, SyncFontFamilySlideNo);
-            CheckFontStyle(OriginalShapesSlideNo, SyncFontFamilySlideNo);
+            CompareSlides(HorizontalAlignmentSlidesNo, HorizontalExpectedSlidesNo);
         }
 
         [TestMethod]
         [TestCategory("UT")]
-        public void TestSyncFontSize()
+        public void TestSyncVerticalAlignment()
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            string[] prefixes = { Top, Middle, Bottom };
+            foreach (string prefix in prefixes)
+            {
+                Microsoft.Office.Interop.PowerPoint.Shape formatShape =
+                    GetShape(VerticalAlignmentSlidesNo, prefix + SourceSuffix);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            new FontSizeFormat().SyncFormat(formatShape, newShape);
+                Microsoft.Office.Interop.PowerPoint.Shape newShape =
+                    GetShape(VerticalAlignmentSlidesNo, prefix + TargetSuffix);
+                new TextVerticalAlignmentFormat().SyncFormat(formatShape, newShape);
 
-            CompareSlides(OriginalShapesSlideNo, SyncFontSizeSlideNo);
-            CheckFontStyle(OriginalShapesSlideNo, SyncFontSizeSlideNo);
+                CheckTextAlignment(prefix + TargetSuffix,
+                    VerticalAlignmentSlidesNo, VerticalExpectedSlidesNo);
+            }
+
+            CompareSlides(VerticalAlignmentSlidesNo, VerticalExpectedSlidesNo);
         }
 
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestSyncFontFill()
+        //Changes in text alignment are too minute for CompareSlide to detect so we need to check them manually
+        protected void CheckTextAlignment(string shape, int actualShapesSlideNo, int expectedShapesSlideNo)
         {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
+            Microsoft.Office.Interop.PowerPoint.Shape actualShape = GetShape(actualShapesSlideNo, shape);
+            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, shape);
 
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            new FontColorFormat().SyncFormat(formatShape, newShape);
+            Microsoft.Office.Interop.PowerPoint.TextFrame2 actualTextFrame = actualShape.TextFrame2;
+            Microsoft.Office.Interop.PowerPoint.TextFrame2 expectedTextFrame = expectedShape.TextFrame2;
 
-            CompareSlides(OriginalShapesSlideNo, SyncFontFillSlideNo);
-            CheckFontStyle(OriginalShapesSlideNo, SyncFontFillSlideNo);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestSyncOneFontStyle()
-        {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromLargeShape);
-
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            new FontStyleFormat().SyncFormat(formatShape, newShape);
-
-            CheckFontStyle(OriginalShapesSlideNo, SyncOneFontStyleSlideNo);
-        }
-
-        [TestMethod]
-        [TestCategory("UT")]
-        public void TestSyncAllFontStyle()
-        {
-            Microsoft.Office.Interop.PowerPoint.Shape formatShape = GetShape(OriginalShapesSlideNo, CopyFromSmallShape);
-
-            Microsoft.Office.Interop.PowerPoint.Shape newShape = GetShape(OriginalShapesSlideNo, CopyToShape);
-            new FontStyleFormat().SyncFormat(formatShape, newShape);
-
-            CheckFontStyle(OriginalShapesSlideNo, SyncAllFontStyleSlideNo);
-        }
-
-        //Changes in font style are too minute for CompareSlide to detect so we need to check them manually
-        protected void CheckFontStyle(int actualShapesSlideNo, int expectedShapesSlideNo)
-        {
-            Microsoft.Office.Interop.PowerPoint.Shape actualShape = GetShape(actualShapesSlideNo, CopyToShape);
-            Microsoft.Office.Interop.PowerPoint.Shape expectedShape = GetShape(expectedShapesSlideNo, CopyToShape);
-
-            Microsoft.Office.Interop.PowerPoint.Font actualFont = actualShape.TextFrame.TextRange.Font;
-            Microsoft.Office.Interop.PowerPoint.Font expectedFont = expectedShape.TextFrame.TextRange.Font;
-
-            Assert.IsTrue(actualFont.Bold == expectedFont.Bold
-                && actualFont.Italic == expectedFont.Italic
-                && actualFont.Underline == expectedFont.Underline,
-                "Font Style does not match expected font style. Expected bold:{0}, italic: {1}, underline: {2}."
-                    + "Actual bold:{3}, italic:{4}, underline: {5}",
-                expectedFont.Bold, expectedFont.Italic, expectedFont.Underline,
-                actualFont.Bold, actualFont.Italic, actualFont.Underline);
+            Assert.IsTrue(actualTextFrame.HorizontalAnchor == expectedTextFrame.HorizontalAnchor
+                && actualTextFrame.VerticalAnchor == expectedTextFrame.VerticalAnchor,
+                "Text alignment does not match expected text alignment." +
+                "Expected horizontalAlignment:{0}, verticalAlignment: {1}."
+                    + "Actual horizontalAlignment:{2}, verticalAlignment:{3}.",
+                expectedTextFrame.HorizontalAnchor, expectedTextFrame.VerticalAnchor,
+                actualTextFrame.HorizontalAnchor, actualTextFrame.VerticalAnchor);
         }
     }
 }
