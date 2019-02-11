@@ -1,23 +1,36 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.DataSources;
+
 using Color = System.Drawing.Color;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ColorsLab
 {
+    
     /// <summary>
     /// Interaction logic for TimerLabPaneWPF.xaml
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
+        // To set color mode
+        private enum MODE
+        {
+            FILL,
+            LINE,
+            FONT,
+            NONE
+        };
 
-        private System.Windows.Media.Brush _previousFill;
+        private Brush _previousFill;
+        private PowerPoint.ShapeRange _selectedShapes;
+        private PowerPoint.TextRange _selectedText;
 
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
@@ -140,24 +153,51 @@ namespace PowerPointLabs.ColorsLab
 
         #region Event Handlers
 
-        #region Button Click Handlers
+        #region Button Handlers
 
         private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Dummy code, to complete
-            dataSource.SelectedColor = Color.Red;
+            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FONT);
         }
 
         private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Dummy code, to complete
-            dataSource.SelectedColor = Color.Yellow;
+            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.LINE);
         }
 
         private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Dummy code, to complete
-            dataSource.SelectedColor = Color.Gold;
+            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FILL);
+        }
+
+        private void ApplyTextColorButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ApplyTextColorButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ApplyLineColorButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ApplyLineColorButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ApplyFillColorButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void ApplyFillColorButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+
         }
 
         #endregion
@@ -316,5 +356,160 @@ namespace PowerPointLabs.ColorsLab
                 }
             }
         }
+
+        private void ColorSelectedShapesWithColor(HSLColor selectedColor, MODE colorMode)
+        {
+            SelectShapes();
+            if (_selectedShapes != null
+                && this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                foreach (PowerPoint.Shape s in _selectedShapes)
+                {
+                    try
+                    {
+                        Byte r = ((Color)selectedColor).R;
+                        Byte g = ((Color)selectedColor).G;
+                        Byte b = ((Color)selectedColor).B;
+
+                        int rgb = (b << 16) | (g << 8) | (r);
+                        ColorShapeWithColor(s, rgb, colorMode);
+                    }
+                    catch (Exception)
+                    {
+                        RecreateCorruptedShape(s);
+                    }
+                }
+            }
+            if (_selectedText != null
+                && this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionText)
+            {
+                try
+                {
+                    Byte r = ((Color)selectedColor).R;
+                    Byte g = ((Color)selectedColor).G;
+                    Byte b = ((Color)selectedColor).B;
+
+                    int rgb = (b << 16) | (g << 8) | (r);
+                    ColorTextWithColor(_selectedText, rgb, colorMode);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        private void SelectShapes()
+        {
+            try
+            {
+                PowerPoint.Selection selection = this.GetCurrentSelection();
+                if (selection == null)
+                {
+                    return;
+                }
+
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes &&
+                    selection.HasChildShapeRange)
+                {
+                    _selectedShapes = selection.ChildShapeRange;
+                }
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                {
+                    _selectedShapes = selection.ShapeRange;
+                }
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                {
+                    _selectedText = selection.TextRange;
+                }
+                else
+                {
+                    _selectedShapes = null;
+                    _selectedText = null;
+                }
+            }
+            catch (Exception)
+            {
+                _selectedShapes = null;
+                _selectedText = null;
+            }
+        }
+
+        private void ColorTextWithColor(PowerPoint.TextRange text, int rgb, MODE mode)
+        {
+            PowerPoint.TextFrame frame = text.Parent as PowerPoint.TextFrame;
+            PowerPoint.Shape selectedShape = frame.Parent as PowerPoint.Shape;
+            if (mode != MODE.NONE)
+            {
+                ColorShapeWithColor(selectedShape, rgb, mode);
+            }
+        }
+
+        private void ColorShapeWithColor(PowerPoint.Shape s, int rgb, MODE mode)
+        {
+            switch (mode)
+            {
+                case MODE.FILL:
+                    s.Fill.ForeColor.RGB = rgb;
+                    break;
+                case MODE.LINE:
+                    s.Line.ForeColor.RGB = rgb;
+                    s.Line.Visible = MsoTriState.msoTrue;
+                    break;
+                case MODE.FONT:
+                    ColorShapeFontWithColor(s, rgb);
+                    break;
+            }
+        }
+
+        private void ColorShapeFontWithColor(PowerPoint.Shape s, int rgb)
+        {
+            if (s.HasTextFrame == MsoTriState.msoTrue)
+            {
+                PowerPoint.Selection selection = this.GetCurrentSelection();
+                if (selection == null)
+                {
+                    return;
+                }
+
+                if (selection.ShapeRange.HasTextFrame == MsoTriState.msoTrue)
+                {
+                    if (selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                    {
+                        PowerPoint.TextRange selectedText = selection.TextRange.TrimText();
+                        if (selectedText.Text != "" && selectedText != null)
+                        {
+                            selectedText.Font.Color.RGB = rgb;
+                        }
+                        else
+                        {
+                            s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
+                        }
+                    }
+                    else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                    {
+                        s.TextFrame.TextRange.TrimText().Font.Color.RGB = rgb;
+                    }
+                }
+            }
+        }
+
+        private void RecreateCorruptedShape(PowerPoint.Shape s)
+        {
+            s.Copy();
+            PowerPoint.Shape newShape = this.GetCurrentSlide().Shapes.Paste()[1];
+
+            newShape.Select();
+
+            newShape.Name = s.Name;
+            newShape.Left = s.Left;
+            newShape.Top = s.Top;
+            while (newShape.ZOrderPosition > s.ZOrderPosition)
+            {
+                newShape.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoSendBackward);
+            }
+            s.Delete();
+        }
+
+
     }
 }

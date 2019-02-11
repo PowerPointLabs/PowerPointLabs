@@ -48,7 +48,8 @@
                     </Grid.ColumnDefinitions>
                     <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
                                Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}" />
-                    <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Click="ApplyTextColorButton_Click" Background="White">
+                    <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Background="White"
+                            Click="ApplyTextColorButton_Click" MouseEnter="ApplyTextColorButton_MouseEnter" MouseLeave="ApplyTextColorButton_MouseLeave">
                         <Image x:Name="textColorIcon" Source="..\Resources\TextColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>
@@ -62,7 +63,8 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <Button x:Name="applyLineColorButton" Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Click="ApplyLineColorButton_Click" Background="White">
+                    <Button x:Name="applyLineColorButton" Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Background="White"
+                            Click="ApplyLineColorButton_Click" MouseEnter="ApplyLineColorButton_MouseEnter" MouseLeave="ApplyLineColorButton_MouseLeave">
                         <Image x:Name="lineColorIcon" Source="..\Resources\LineColor_icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>
@@ -76,7 +78,8 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <Button x:Name="applyFillColorButton" Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" Click="ApplyFillColorButton_Click" Background="White">
+                    <Button x:Name="applyFillColorButton" Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" Background="White"
+                            Click="ApplyFillColorButton_Click" MouseEnter="ApplyFillColorButton_MouseEnter" MouseLeave="ApplyFillColorButton_MouseLeave">
                         <Image x:Name="fillColorIcon" Source="..\Resources\FillColor_icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>
