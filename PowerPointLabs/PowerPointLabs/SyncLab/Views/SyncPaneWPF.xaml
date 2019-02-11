@@ -7,16 +7,22 @@
              d:DesignHeight="833" d:DesignWidth="300" 
              Loaded="SyncPaneWPF_Loaded">
     <Grid>
-        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White">
+        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White" IsEnabled="True">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
             <Image x:Name="copyImage" Source="..\..\Resources\SyncLabCopyButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
                     <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Copy Format</TextBlock>
                     <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
-                    <TextBlock>
-                        Opens a dialog box that will allow you to copy formats
-                        <LineBreak/>
-                        from the shape that is currently selected.
+                    <TextBlock x:Name="toolTipTextBox">
                     </TextBlock>
                 </StackPanel>
             </Button.ToolTip>

@@ -11,5 +11,7 @@
         void DialogSelectItem(int categoryIndex, int itemIndex);
 
         void DialogClickOk();
+
+        bool GetCopyButtonEnabledStatus();
     }
 }
