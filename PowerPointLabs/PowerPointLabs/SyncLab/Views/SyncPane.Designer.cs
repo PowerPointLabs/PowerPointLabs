@@ -1,4 +1,6 @@
-﻿namespace PowerPointLabs.SyncLab.Views
+﻿using Microsoft.Office.Interop.PowerPoint;
+
+namespace PowerPointLabs.SyncLab.Views
 {
     partial class SyncPane
     {
@@ -6,6 +8,11 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        public void UpdateOnSelectionChange(Selection sel)
+        {
+            this.SyncPaneWPF1.UpdateCopyButtonEnabledStatus(sel);
+        }
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -54,7 +61,7 @@
         }
 
         #endregion
-
+        
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         public SyncPaneWPF SyncPaneWPF1 { get; private set; }
     }

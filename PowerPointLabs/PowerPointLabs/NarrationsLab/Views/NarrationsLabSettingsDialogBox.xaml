@@ -4,15 +4,17 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:local="clr-namespace:PowerPointLabs.NarrationsLab.ValueConverters"
                       mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
                       Height="195"
                       Width="350"
                       BorderThickness="1"
                       BorderBrush="#0070c0"
                       ResizeMode="NoResize"
+                      WindowTransitionsEnabled="False"
                       Title="Narrations Lab Settings"
-                      WindowStartupLocation="CenterScreen"
-                      WindowTransitionsEnabled="False">
+                      ShowCloseButton="False"
+                      WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,16 +27,7 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
-        <TextBlock x:Name="voiceLabel" FontSize="12" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,30,0,0">Default Voice</TextBlock>
-        <controls:DropDownButton x:Name="voiceSelectionInput" VerticalAlignment="Top" HorizontalAlignment="Right" Height="23" Width="200" Margin="0,25,20,0">
-            <controls:DropDownButton.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" MouseUp="VoiceSelectionInput_Item_MouseUp" />
-                </DataTemplate>
-            </controls:DropDownButton.ItemTemplate>
-        </controls:DropDownButton>
-        <CheckBox x:Name="previewCheckbox" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,80,0,0">Preview</CheckBox>
-        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Right" Margin="0,0,100,10" VerticalAlignment="Bottom" Width="80" IsDefault="True" Click="OkButton_Click"/>
-        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="80" IsCancel="True"/>
+        <Frame NavigationUIVisibility="Hidden" x:Name="NarrationsLabSettingsMainFrame" Content="{Binding CurrentPage, 
+            Converter={local:NarrationsLabSettingsPageValueConverter}}"/>
     </Grid>
 </controls:MetroWindow>

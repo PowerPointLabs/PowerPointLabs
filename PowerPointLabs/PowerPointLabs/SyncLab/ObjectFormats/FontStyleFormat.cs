@@ -49,12 +49,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 SyncTextRange(formatShape.TextFrame.TextRange, newShape.TextFrame.TextRange);
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FontStyleFormat");
                 return false;
             }
-            return true;
         }
 
         private static void SyncTextRange(TextRange formatTextRange, TextRange newTextRange)

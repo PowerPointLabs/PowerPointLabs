@@ -115,12 +115,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 // might experience unexpected behavior if they are left in the shape
                 ClearArtisticEffects(newShape);
                 ApplyArtisticEffects(newShape, effectTypes);
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ArtisticEffectFormat");
                 return false;
             }
-            return true;
         }
     }
 }
