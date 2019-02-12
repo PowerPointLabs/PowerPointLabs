@@ -36,9 +36,11 @@ namespace PowerPointLabs.TooltipsLab
             for (int i = 2; i <= shapes.Count; i++)
             {
                 Shape animationShape = shapes[i];
-                MsoAnimEffect appearEffect = MsoAnimEffect.msoAnimEffectAppear;
+                MsoAnimEffect appearEffect = MsoAnimEffect.msoAnimEffectFade;
                 MsoAnimTriggerType triggerOnShapeClick = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
-                currentSlide.TimeLine.MainSequence.AddTriggerEffect(animationShape, appearEffect, triggerOnShapeClick, triggerShape);
+                TimeLine timeline = currentSlide.TimeLine;
+                Sequence sequence = timeline.InteractiveSequences.Add();
+                sequence.AddTriggerEffect(animationShape, appearEffect, triggerOnShapeClick, triggerShape);
             }
 
         }
