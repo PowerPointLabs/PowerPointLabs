@@ -1275,6 +1275,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ColorsLab\ColorsLabPane.resx">
       <DependentUpon>ColorsLabPane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NarrationsLab\Views\RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </EmbeddedResource>
