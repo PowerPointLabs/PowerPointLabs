@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.TooltipsLab
 {
@@ -16,7 +17,10 @@ namespace PowerPointLabs.TooltipsLab
 
                 if (selectedShapes.Count < 2)
                 {
-                    throw new Exception("Please select more than one shape.");
+                    MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
+                        TooltipsLabText.ErrorTooltipsDialogTitle);
+
+                    return;
                 }
 
                 Shape triggerShape = selectedShapes[1];
@@ -52,19 +56,17 @@ namespace PowerPointLabs.TooltipsLab
             {
                 Shape animationShape = shapesToAnimate[i];
                 MsoAnimTriggerType triggerType;
+                // The first shape will be triggered by the click
                 if (i == 0)
                 {
                     triggerType = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
                     sequence.AddTriggerEffect(animationShape, appearEffect, triggerType, triggerShape);
                 }
+                // Rest of the shapes will appear with the first shape
                 else
                 {
                     triggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
                     sequence.AddEffect(shapesToAnimate[i], appearEffect, MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
-                }
-                if (i == 0)
-                {
-                    //triggerShape = shapesToAnimate[0];
                 }
             }
         }
