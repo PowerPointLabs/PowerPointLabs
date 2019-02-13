@@ -29,9 +29,9 @@ namespace PowerPointLabs.TooltipsLab
 
                 AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                
+                throw exception;
             }
         }
 
