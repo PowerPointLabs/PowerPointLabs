@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.TooltipsLab
 {
@@ -15,7 +14,16 @@ namespace PowerPointLabs.TooltipsLab
             {
                 ShapeRange selectedShapes = selection.ShapeRange;
 
-                AddTriggerAnimation(currentSlide, selectedShapes);
+                if (selectedShapes.Count < 2)
+                {
+                    throw new Exception("Please select more than one shape.");
+                }
+
+                Shape triggerShape = selectedShapes[1];
+
+                List<Shape> shapesToAnimate = GetShapesToAnimate(selectedShapes);
+
+                AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
             }
             catch (Exception)
             {
@@ -23,26 +31,42 @@ namespace PowerPointLabs.TooltipsLab
             }
         }
 
-
-        private static void AddTriggerAnimation(PowerPointSlide currentSlide, ShapeRange shapes)
+        private static List<Shape> GetShapesToAnimate(ShapeRange selectedShapes)
         {
-            if (shapes.Count < 2)
+            List<Shape> animatedShapes = new List<Shape>();
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
             {
-                throw new Exception("Please use at least 2 shapes.");
+                animatedShapes.Add(selectedShapes[i]);
             }
 
-            Shape triggerShape = shapes[1];
+            return animatedShapes;
+        }
 
-            for (int i = 2; i <= shapes.Count; i++)
+        private static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
+        {
+            TimeLine timeline = currentSlide.TimeLine;
+            MsoAnimEffect appearEffect = MsoAnimEffect.msoAnimEffectFade;
+            Sequence sequence = timeline.InteractiveSequences.Add();
+            for (int i = 0; i < shapesToAnimate.Count; i++)
             {
-                Shape animationShape = shapes[i];
-                MsoAnimEffect appearEffect = MsoAnimEffect.msoAnimEffectFade;
-                MsoAnimTriggerType triggerOnShapeClick = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
-                TimeLine timeline = currentSlide.TimeLine;
-                Sequence sequence = timeline.InteractiveSequences.Add();
-                sequence.AddTriggerEffect(animationShape, appearEffect, triggerOnShapeClick, triggerShape);
+                Shape animationShape = shapesToAnimate[i];
+                MsoAnimTriggerType triggerType;
+                if (i == 0)
+                {
+                    triggerType = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
+                    sequence.AddTriggerEffect(animationShape, appearEffect, triggerType, triggerShape);
+                }
+                else
+                {
+                    triggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                    sequence.AddEffect(shapesToAnimate[i], appearEffect, MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                }
+                if (i == 0)
+                {
+                    //triggerShape = shapesToAnimate[0];
+                }
             }
-
         }
 
     }
