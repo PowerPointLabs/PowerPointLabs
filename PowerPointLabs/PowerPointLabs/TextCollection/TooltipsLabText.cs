@@ -6,6 +6,7 @@
         public const string RibbonMenuId = "TooltipsLabMenu";
         public const string CreateTooltipTag = "CreateTooltip";
         public const string AssignTooltipTag = "AssignTooltip";
+        public const string AddTextboxTag = "AddTextbox";
         public const string SettingsTag = "TooltipsLabSettings";
         #endregion
 
@@ -13,6 +14,7 @@
         public const string RibbonMenuLabel = "Tooltips";
         public const string CreateTooltipButtonLabel = "Create Tooltip";
         public const string AssignTooltipButtonLabel = "Assign Tooltip";
+        public const string AddTextboxButtonLabel = "Add Textbox";
         public const string SettingsButtonLabel = "Settings";
 
         public const string RibbonMenuSupertip = "Use Animation Lab to add animations your slides easily.";

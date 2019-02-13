@@ -73,6 +73,12 @@
                     getImage="GetImage"
                     getSupertip="GetSupertip"
                     onAction="OnAction"/>
+            <button id="AddTextboxButton"
+                    tag="AddTextbox"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
             <menuSeparator id="TooltipsLabSettingsSeparator"/>
             <button id="TooltipsLabSettingsButton"
                     tag="TooltipsLabSettings"
