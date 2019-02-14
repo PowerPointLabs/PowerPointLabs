@@ -18,10 +18,12 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
@@ -661,12 +663,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (NarrationsLab.NotesToAudio.IsRemoveAudioEnabled)
+                        if (ELearningLab.Service.ComputerVoiceRuntimeService.IsRemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = true;
+                        ELearningLab.Service.ComputerVoiceRuntimeService.IsRemoveAudioEnabled = true;
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -737,6 +739,15 @@ namespace PowerPointLabs
             if (timerPane != null)
             {
                 timerPane.Visible = isVisible;
+            }
+        }
+
+        private void UpdateELearningPane(bool isVisible)
+        {
+            CustomTaskPane elearningLabPane = GetActivePane(typeof(ELearningLabTaskpane));
+            if (elearningLabPane != null)
+            {
+                elearningLabPane.Visible = false;
             }
         }
 
@@ -920,8 +931,8 @@ namespace PowerPointLabs
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
-            
+            ComputerVoiceRuntimeService.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+
             // update recorder pane
             if (sldRange.Count > 0)
             {
@@ -937,13 +948,17 @@ namespace PowerPointLabs
 
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
+                ELearningService.IsELearningWorkspaceEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
+                ELearningService.IsELearningWorkspaceEnabled = false;
             }
+
+            UpdateELearningPane(false);
 
             // in case the recorder is on event
             BreakRecorderEvents();
@@ -980,6 +995,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
             Ribbon.RefreshRibbonControl("RemoveAudioButton");
+            Ribbon.RefreshRibbonControl("ELearningTaskPaneButton");
         }
 
         // To handle AccessViolationException
@@ -1077,6 +1093,8 @@ namespace PowerPointLabs
                 // Initialise the "Maintain Tab Focus" checkbox
                 Ribbon.InitialiseVisibilityCheckbox();
             }
+            // load audio setting preference for elearning lab
+            AudioSettingStorageService.LoadAudioSettingPreference();
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
@@ -1143,6 +1161,9 @@ namespace PowerPointLabs
 
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
+
+            // save audio setting preference for elearning lab
+            AudioSettingStorageService.SaveAudioSettingPreference();
 
             // Refresh ribbon to grey out the menu / buttons if there are no windows open
             RefreshRibbonMenuButtons();

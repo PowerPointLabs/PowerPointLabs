@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
@@ -10,7 +11,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            NotesToAudio.SpeakSelectedText();
+            ComputerVoiceRuntimeService.SpeakSelectedText(
+                AudioSettingService.selectedVoice as ComputerVoice);
         }
     }
 }
