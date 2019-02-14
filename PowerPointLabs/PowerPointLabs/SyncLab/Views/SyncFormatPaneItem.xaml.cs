@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.SyncLab.Views
@@ -122,7 +124,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
         }
 
-        public String Text
+        public string Text
         {
             get
             {
@@ -141,26 +143,27 @@ namespace PowerPointLabs.SyncLab.Views
 
         private void UpdateToolTipBody()
         {
-            String toolTipBodyText = "";
+            StringBuilder toolTipBodyText = new StringBuilder();
             foreach (FormatTreeNode format in formats)
             {
-                toolTipBodyText += GetNamesOfCheckNodes(format.Name, format);
+                toolTipBodyText.Append(GetNamesOfCheckedNodes(format.Name, format));
             }
-            toolTipBody.Text = toolTipBodyText.Trim("\n".ToCharArray());
+            toolTipBody.Text = toolTipBodyText.ToString().Trim("\n".ToCharArray());
         }
 
-        private String GetNamesOfCheckNodes(String rootName, FormatTreeNode node)
+        private string GetNamesOfCheckedNodes(string rootName, FormatTreeNode node)
         {
             if (node.IsChecked ?? false)
             {
-                return (node.Name.Equals(rootName) ? "" : rootName + ">" ) + node.Name + "\n";
+                return (node.Name.Equals(rootName) ? "" : rootName +
+                    SyncFormatConstants.FormatNameSeparator) + node.Name + "\n";
             }
-            String result = "";
+            StringBuilder result = new StringBuilder();
             foreach (FormatTreeNode child in node.ChildrenNodes ?? new FormatTreeNode[] { })
             {
-                result += GetNamesOfCheckNodes(rootName, child);
+                result.Append(GetNamesOfCheckedNodes(rootName, child));
             }
-            return result;
+            return result.ToString();
         }
 
         private void ApplyFormatToSelected()

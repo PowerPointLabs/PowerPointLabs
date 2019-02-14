@@ -30,6 +30,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public static readonly int ColorBlack = 0;
         public static readonly int DisplayLineWeight = 5;
 
+        public static readonly string FormatNameSeparator = ">";
+
         public static FormatTreeNode[] FormatCategories => CreateFormatCategories();
 
         public static List<Format> Formats
