@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,7 +9,7 @@ using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.DataSources;
-
+using PowerPointLabs.TextCollection;
 using Color = System.Drawing.Color;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -33,6 +34,8 @@ namespace PowerPointLabs.ColorsLab
         private Color _previousColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
+        private bool _isEyedropperMode = false;
+        private MODE _eyedropperMode;
 
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
@@ -49,6 +52,11 @@ namespace PowerPointLabs.ColorsLab
             SetupImageSources();
             SetupRectangleClickEvents();
             SetDefaultColor(Color.CornflowerBlue);
+
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+
+            // Hook the mouse process if it has not
+            PPExtraEventHelper.PPMouse.TryStartHook();
         }
 
         #region Setup Code
@@ -171,69 +179,6 @@ namespace PowerPointLabs.ColorsLab
             _previousColor = Color.Empty;
         }
 
-        private void ApplyLineColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.LINE);
-            _previousColor = Color.Empty;
-        }
-
-        private void ApplyFillColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FILL);
-            _previousColor = Color.Empty;
-        }
-
-        private void ApplyTextColorButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            _previousColor = GetSelectedShapeColor(MODE.FONT);
-            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FONT);
-        }
-
-        private void ApplyTextColorButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (_previousColor == Color.Empty)
-            {
-                return;
-            }
-
-            ColorSelectedShapesWithColor(_previousColor, MODE.FONT);
-            _previousColor = Color.Empty;
-        }
-
-        private void ApplyLineColorButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            _previousColor = GetSelectedShapeColor(MODE.LINE);
-            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.LINE);
-        }
-
-        private void ApplyLineColorButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (_previousColor == Color.Empty)
-            {
-                return;
-            }
-
-            ColorSelectedShapesWithColor(_previousColor, MODE.LINE);
-            _previousColor = Color.Empty;
-        }
-
-        private void ApplyFillColorButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            _previousColor = GetSelectedShapeColor(MODE.FILL);
-            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FILL);
-        }
-
-        private void ApplyFillColorButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (_previousColor == Color.Empty)
-            {
-                return;
-            }
-
-            ColorSelectedShapesWithColor(_previousColor, MODE.FILL);
-            _previousColor = Color.Empty;
-        }
-
         #endregion
 
         #region Slider Value Changed Handlers
@@ -279,6 +224,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void SelectedColorRectangle_Click(object sender, MouseButtonEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             System.Windows.Forms.ColorDialog colorPickerDialog = new System.Windows.Forms.ColorDialog();
             colorPickerDialog.FullOpen = true;
 
@@ -299,6 +249,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void MatchingColorsRectangle_Click(object sender, MouseButtonEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
@@ -312,6 +267,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void MatchingColorsRectangle_MouseMove(object sender, MouseEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null && e.LeftButton == MouseButtonState.Pressed)
             {
@@ -326,6 +286,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void FavoriteRect_DragEnter(object sender, DragEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
@@ -355,6 +320,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void FavoriteRect_DragOver(object sender, DragEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             e.Effects = DragDropEffects.None;
 
             // If the DataObject contains string data, extract it.
@@ -378,6 +348,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void FavoriteRect_DragLeave(object sender, DragEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
@@ -392,6 +367,11 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void FavoriteRect_Drop(object sender, DragEventArgs e)
         {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
@@ -703,5 +683,81 @@ namespace PowerPointLabs.ColorsLab
         #endregion
 
         #endregion
+
+        private const float MAGNIFICATION_FACTOR = 2.5f;
+        private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
+        private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
+        private System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+
+        private void BeginEyedropping()
+        {
+            _isEyedropperMode = true;
+            timer1.Start();
+            // Mouse.OverrideCursor = eyeDropperCursor;
+            PPExtraEventHelper.PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
+            magnifier.Show();
+        }
+
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+
+            System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
+            IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
+            
+            Color _pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+            ColorSelectedShapesWithColor(_pickedColor, _eyedropperMode);
+           
+        }
+
+        void LeftMouseButtonUpEventHandler()
+        {
+            PPExtraEventHelper.PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
+            magnifier.Hide();
+            timer1.Stop();
+            _isEyedropperMode = false;
+            _eyedropperMode = MODE.NONE;
+        }
+
+        private void ApplyTextColorButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
+            {
+                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
+                return;
+            }
+
+            _eyedropperMode = MODE.FONT;
+            BeginEyedropping();
+            this.GetApplication().StartNewUndoEntry();
+        }
+
+        private void ApplyLineColorButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
+            {
+                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
+                return;
+            }
+
+            _eyedropperMode = MODE.LINE;
+            BeginEyedropping();
+            this.GetApplication().StartNewUndoEntry();
+        }
+
+        private void ApplyFillColorButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
+            {
+                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
+                return;
+            }
+
+            _eyedropperMode = MODE.FILL;
+            BeginEyedropping();
+            this.GetApplication().StartNewUndoEntry();
+        }
+
+
+
     }
 }
