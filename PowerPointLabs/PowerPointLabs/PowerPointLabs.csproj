@@ -258,6 +258,10 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipLabelHandler.cs" />
@@ -753,6 +757,8 @@
     <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
+    <Compile Include="TooltipsLab\AddTextbox.cs" />
+    <Compile Include="TooltipsLab\AttachTriggerAnimation.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
@@ -2109,7 +2115,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="55214155BE32CF10E93E0815C7758604B8DF3CF2" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>

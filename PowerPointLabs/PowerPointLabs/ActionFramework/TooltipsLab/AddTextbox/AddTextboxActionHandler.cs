@@ -5,24 +5,19 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TooltipsLab;
-using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportActionRibbonId(TooltipsLabText.AssignTooltipTag)]
-    class AssignTooltipActionHandler : ActionHandler
+    [ExportActionRibbonId(TooltipsLabText.AddTextboxTag)]
+    class AddTextboxActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
             Selection selection = this.GetCurrentSelection();
             PowerPointSlide currentSlide = this.GetCurrentSlide();
+            this.StartNewUndoEntry();
 
-            if (!ShapeUtil.IsSelectionShape(selection))
-            {
-                return;
-            }
-
-            AttachTriggerAnimation.AddTriggerAnimation(currentSlide, selection);
+            AddTextbox.AddTextboxToCallout(currentSlide, selection);
         }
     }
 }
