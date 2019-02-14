@@ -28,7 +28,11 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
                 // simply grey out the button??
                 if (currentSlide != null)
                 {
-                    CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShapes[1]);
+                    foreach (PowerPoint.Shape selectedShape in selectedShapes)
+                    {
+                        CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
+
+                    }
 
                     // TODO: After generating the callout and trigger shapes, trigger animation should go here.
                 }
