@@ -47,13 +47,16 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
                         selfExplanation.CalloutText = effect.Shape.TextFrame.TextRange.Text.Trim();
                         break;
                     case ELearningLabText.AudioIdentifier:
-                        selfExplanation.IsVoice = true;
-                        selfExplanation.VoiceLabel = StringUtility.ExtractVoiceNameFromString(shapeName); 
-                        if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanation.VoiceLabel)
-                            .Equals(ELearningLabText.DefaultAudioIdentifier))
+                        if (shapes.Count() > 0)
                         {
-                            selfExplanation.VoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat,
-                                AudioSettingService.selectedVoice.ToString());
+                            selfExplanation.IsVoice = true;
+                            selfExplanation.VoiceLabel = StringUtility.ExtractVoiceNameFromString(shapeName);
+                            if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanation.VoiceLabel)
+                                .Equals(ELearningLabText.DefaultAudioIdentifier))
+                            {
+                                selfExplanation.VoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat,
+                                    AudioSettingService.selectedVoice.ToString());
+                            }
                         }
                         break;
                     default:

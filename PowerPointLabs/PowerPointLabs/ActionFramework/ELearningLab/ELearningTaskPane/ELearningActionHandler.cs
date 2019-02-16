@@ -26,19 +26,18 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
         private void ELearningTaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
         {
             CustomTaskPane eLearningTaskpane = this.GetTaskPane(typeof(ELearningLabTaskpane));
+            if (eLearningTaskpane == null)
+            {
+                return;
+            }
+            ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             if (eLearningTaskpane.Visible)
             {
-                ELearningLabMainPanel.GetInstance().HandleELearningPaneVisibilityChanged();
+                taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();
             }
-            else if (!ELearningLabMainPanel.GetInstance().IsInSync())
+            else
             {
-                DialogResult result = MessageBox.Show(
-                    "ELearningLab detected that you have unsynced items in your workspace.\n" +
-                    "Do you want to sync them now?", "ELearningLab", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    ELearningLabMainPanel.GetInstance().SyncClickItems();
-                }
+                taskpane.eLearningLabMainPanel1.HandleTaskPaneHiddenEvent();
             }
         }
     }

@@ -23,7 +23,11 @@ namespace PowerPointLabs.ELearningLab.Service
             SyncAppearEffectAnimations(slide, selfExplanationItems);
             SyncExitEffectAnimations(slide, selfExplanationItems);
         }
-
+        public static void DeleteShapesForUnusedItem(PowerPointSlide slide, SelfExplanationClickItem selfExplanationClickItem)
+        {
+            CalloutService.DeleteCalloutShape(slide, selfExplanationClickItem.tagNo);
+            CaptionService.DeleteCaptionShape(slide, selfExplanationClickItem.tagNo);
+        }
         private static void SyncAppearEffectAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
         {
          //   slide.DeleteShapeWithNameRegex(ELearningLabText.VoiceShapeNameRegex);
@@ -111,12 +115,6 @@ namespace PowerPointLabs.ELearningLab.Service
                 Shape captionShape = slide.GetShapeWithName(captionShapeName)[0];
                 CaptionService.CreateExitEffectCaptionAnimation(slide, captionShape, selfExplanationItem.ClickNo);
             }
-        }
-
-        private static void DeleteShapesForUnusedItem(PowerPointSlide slide, SelfExplanationClickItem selfExplanationClickItem)
-        {
-                CalloutService.DeleteCalloutShape(slide, selfExplanationClickItem.tagNo);
-                CaptionService.DeleteCaptionShape(slide, selfExplanationClickItem.tagNo);           
         }
 
         private static void DeleteUnusedAudioShapes(PowerPointSlide slide)

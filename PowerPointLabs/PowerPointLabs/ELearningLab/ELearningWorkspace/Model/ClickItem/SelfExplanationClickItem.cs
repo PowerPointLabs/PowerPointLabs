@@ -173,7 +173,6 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 && CalloutText.Equals(other.CalloutText)
                 && CaptionText.Equals(other.CaptionText)
                 && VoiceLabel.Equals(other.VoiceLabel)
-                && TriggerIndex == other.TriggerIndex
                 && HasShortVersion == other.hasShortVersion 
                 && ClickNo == other.ClickNo;
         }

@@ -742,10 +742,21 @@ namespace PowerPointLabs
             }
         }
 
-        private void UpdateELearningPane(bool isVisible)
+        private void UpdateELearningPane(int selectedSlidesCount)
         {
             CustomTaskPane elearningLabPane = GetActivePane(typeof(ELearningLabTaskpane));
-            if (elearningLabPane != null)
+            if (elearningLabPane == null)
+            {
+                return;
+            }
+            ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
+            if (selectedSlidesCount > 0)
+            {              
+                    taskpane.eLearningLabMainPanel1.HandleTaskPaneHiddenEvent();
+                    taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();
+                
+            }
+            else
             {
                 elearningLabPane.Visible = false;
             }
@@ -958,8 +969,7 @@ namespace PowerPointLabs
                 ELearningService.IsELearningWorkspaceEnabled = false;
             }
 
-            UpdateELearningPane(false);
-
+            UpdateELearningPane(sldRange.Count);
             // in case the recorder is on event
             BreakRecorderEvents();
 

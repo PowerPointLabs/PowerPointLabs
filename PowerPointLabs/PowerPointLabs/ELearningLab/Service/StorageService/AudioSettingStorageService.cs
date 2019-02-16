@@ -33,7 +33,10 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Directory.CreateDirectory(GetELearningLabStoragePath());
             }
-            File.Delete(GetAudioSettingFilePath());
+            if (File.Exists(GetAudioSettingFilePath()))
+            {
+                File.Delete(GetAudioSettingFilePath());
+            }
             Dictionary<string, string> audioSetting = new Dictionary<string, string>()
             {
                 { "voiceName", AudioSettingService.selectedVoice.ToString() }

@@ -8,7 +8,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
-
+using PowerPointLabs.TextCollection;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Utility
@@ -90,14 +90,31 @@ namespace PowerPointLabs.ELearningLab.Utility
             // templatedShape and its associated animations are duplicated
             Shape copiedShape = templatedShape.Duplicate()[1];
             copiedShape.Name = shapeName;
+            // copy shape to the default callout / caption position
+            if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CalloutIdentifier)
+            {
+                copiedShape.Left = 10;
+                copiedShape.Top = 10;
+            }
+            else if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)
+            {
+                copiedShape.Left = 0;
+                copiedShape.Top = slideHeight - 100;
+                copiedShape.Width = slideWidth;
+                copiedShape.Height = 100;
+                copiedShape.Top = slideHeight - copiedShape.Height;
+            }
+
             copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             copiedShape.TextFrame.TextRange.Text = text;
             copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;
             copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-
             // remove associated animation with copiedShape because we only want the shape to be copied.
             slide.RemoveAnimationsForShape(copiedShape);
-
+            if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)
+            {
+                copiedShape.Top = slideHeight - copiedShape.Height;
+            }
             return copiedShape;
         }
 

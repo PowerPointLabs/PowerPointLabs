@@ -6,7 +6,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
     {
         /// <summary> 
         /// Required designer variable.
-        /// </summary>
+        /// </summary> 
+        public ELearningLabMainPanel eLearningLabMainPanel1;
         private System.ComponentModel.IContainer components = null;
 
         /// <summary> 
@@ -31,7 +32,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
         private void InitializeComponent()
         {
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.eLearningLabMainPanel1 = ELearningLabMainPanel.GetInstance();
+            this.eLearningLabMainPanel1 = new ELearningLabMainPanel();
             this.SuspendLayout();
             // 
             // elementHost1
@@ -57,6 +58,5 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private ELearningLabMainPanel eLearningLabMainPanel1;
     }
 }

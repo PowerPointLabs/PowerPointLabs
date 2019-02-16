@@ -30,7 +30,16 @@ namespace PowerPointLabs.ELearningLab.Service
         public static Effect CreateAppearEffectAudioAnimation(PowerPointSlide slide, string captionText, string voiceLabel,
            int clickNo, int tagNo, bool isSeperateClick)
         {
-            Shape shape = InsertAudioShapeToSlide(slide, captionText, tagNo, voiceLabel);
+            Shape shape;
+            try
+            {
+                shape = InsertAudioShapeToSlide(slide, captionText, tagNo, voiceLabel);
+            }
+            catch (Exception e)
+            {
+                Logger.Log(e.Message);
+                return null;
+            }
             Effect effect;
             if (shape == null)
             {
@@ -103,6 +112,10 @@ namespace PowerPointLabs.ELearningLab.Service
         /// <returns></returns>
         private static Shape InsertAudioShapeToSlide(PowerPointSlide slide, string captionText, int tagNo, string voiceLabel)
         {
+            if (string.IsNullOrEmpty(captionText.Trim()))
+            {
+                return null;
+            }
             string shapeName = string.Format(ELearningLabText.AudioCustomShapeNameFormat, tagNo, voiceLabel);
             if (!Directory.Exists(Path.Combine(Path.GetTempPath(), TempFolderName)))
             {

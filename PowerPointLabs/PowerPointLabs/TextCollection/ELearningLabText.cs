@@ -47,5 +47,8 @@ namespace PowerPointLabs.TextCollection
             + AudioIdentifier + Underscore + @".*";
         public const string CalloutShapeNameRegex = Identifier + Underscore + @"[1-9][0-9]*" + Underscore
             + CalloutIdentifier;
+
+        public const string PromptToSyncMessage = "ELearningLab detected that you have unsynced items in your workspace.\n" +
+                    "Do you want to sync them now?";
     }
 }

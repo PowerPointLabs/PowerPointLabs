@@ -121,8 +121,8 @@
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="2*"/>
+                    <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <Image x:Name="startImage" MinHeight="10" MaxHeight="10" MinWidth="5" MaxWidth="5" VerticalAlignment="Center"
@@ -141,13 +141,14 @@
                           IsChecked="{Binding IsCallout}" FontSize="9" Margin="2 2 1 2"/>
                     <CheckBox Content="Caption"  VerticalContentAlignment="Center" 
                           IsChecked="{Binding IsCaption}" FontSize="9" Margin="1 2 1 2"/>
-                    <Grid  Margin="1 2 1 2">
+                    <Grid  Margin="1 1 1 1">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="7" />
+                            <RowDefinition Height="9" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" x:Name="audioNameLabel" Margin="0 -5 0 0"
-                               Content="{Binding VoiceLabel, Mode=TwoWay}" FontSize="5" Padding="0" HorizontalAlignment="Right"/>
+                        <Label Grid.Row="0" x:Name="audioNameLabel" Margin="0 0 0 0"
+                               Content="{Binding VoiceLabel, Mode=TwoWay}" FontSize="5" Padding="0" 
+                               HorizontalAlignment="Right"/>
                         <StackPanel Orientation="Horizontal" Grid.Row="1">
                             <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" 
                           IsChecked="{Binding IsVoice}" FontSize="9" Margin="0 -5 0 0"/>

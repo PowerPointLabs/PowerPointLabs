@@ -20,6 +20,9 @@ namespace PowerPointLabs.ELearningLab.Views
     {
         public delegate void DialogConfirmedDelegate(VoiceType selectedVoiceType, IVoice selectedVoice, bool isPreviewCurrentSlide);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
+
+        public delegate void DefaultVoiceChangedDelegate();
+        public DefaultVoiceChangedDelegate DefaultVoiceChangedHandler { get; set; }
         public VoiceType SelectedVoiceType
         {
             get
@@ -108,7 +111,9 @@ namespace PowerPointLabs.ELearningLab.Views
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             DialogConfirmedHandler(SelectedVoiceType, SelectedVoice, previewCheckbox.IsChecked.GetValueOrDefault());
-            ELearningLabMainPanel.GetInstance().RefreshVoiceLabelOnAudioSettingChanged();
+            // TODO
+            DefaultVoiceChangedHandler();
+          //  ELearningLabMainPanel.GetInstance().RefreshVoiceLabelOnAudioSettingChanged();
             AudioSettingsDialogWindow.GetInstance().Close();
             AudioSettingsDialogWindow.GetInstance().Destroy();
         }
