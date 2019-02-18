@@ -1108,7 +1108,7 @@ namespace PowerPointLabs
                 ShutDownPictureSlidesLab();
             }
 
-            ShutDownColorPane();
+            // ShutDownColorPane();
             ShutDownRecorderPane();
 
             // find the document that holds the presentation with pres.Name

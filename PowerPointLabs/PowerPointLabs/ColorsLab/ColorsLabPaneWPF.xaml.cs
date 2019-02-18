@@ -10,6 +10,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorPicker;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Views;
 using Color = System.Drawing.Color;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -34,7 +35,7 @@ namespace PowerPointLabs.ColorsLab
         };
 
         private MODE _eyedropperMode;
-        private Brush _previousFill;
+        private Color _previousFillColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
         private bool _isEyedropperMode = false;
@@ -51,6 +52,11 @@ namespace PowerPointLabs.ColorsLab
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
+        // Saving color themes
+        private string _defaultThemeColorDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
+            "PowerPointLabs.defaultThemeColor.thm");
+
         #endregion
 
         #region Constructor
@@ -65,8 +71,9 @@ namespace PowerPointLabs.ColorsLab
 
             // Setup code
             SetupImageSources();
-            SetDefaultColor(Color.CornflowerBlue);
             SetupEyedropperTimer();
+            SetDefaultColor(Color.CornflowerBlue);
+            SetDefaultThemeColors();
 
             // Hook the mouse process if it has not
             PPExtraEventHelper.PPMouse.TryStartHook();
@@ -146,6 +153,14 @@ namespace PowerPointLabs.ColorsLab
         }
 
         /// <summary>
+        /// Set default theme colors for favourite colors panel.
+        /// </summary>
+        private void SetDefaultThemeColors()
+        {
+            LoadDefaultThemePanel();
+        }
+
+        /// <summary>
         /// Setup the timer tick handler.
         /// </summary>
         private void SetupEyedropperTimer()
@@ -156,6 +171,40 @@ namespace PowerPointLabs.ColorsLab
         #endregion
 
         #region Event Handlers
+
+        #region ColorsLabPane Handlers
+
+        /// <summary>
+        /// This method handles the loaded ColorsLabPane.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColorsLabPaneWPF_Loaded(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Office.Tools.CustomTaskPane colorsLabPane = this.GetAddIn().GetActivePane(typeof(ColorsLabPane));
+            if (colorsLabPane == null || !(colorsLabPane.Control is ColorsLabPane))
+            {
+                MessageBox.Show("Error: ColorsLabPane not opened.");
+                return;
+            }
+            ColorsLabPane colorsLab = colorsLabPane.Control as ColorsLabPane;
+
+            // Add handler for closing of ColorsLab
+            colorsLab.HandleDestroyed += ColorsLab_Closing;
+        }
+
+        /// <summary>
+        /// This handler is called when ColorsLab is destroyed, i.e. when PPTLabs closes.
+        /// Current colors in the panel are saved when this happens.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColorsLab_Closing(Object sender, EventArgs e)
+        {
+            SaveDefaultColorPaneThemeColors();
+        }
+
+        #endregion
 
         #region Button Handlers
 
@@ -359,22 +408,26 @@ namespace PowerPointLabs.ColorsLab
             }
 
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+
+            System.Windows.Media.Color prevMediaColor = ((SolidColorBrush)rect.Fill).Color;
+            _previousFillColor = Color.FromArgb(prevMediaColor.A, prevMediaColor.R, prevMediaColor.G, prevMediaColor.B);
+
             if (rect != null)
             {
-                // Save the current Fill brush so that you can revert back to this value in DragLeave.
-                _previousFill = rect.Fill;
-
                 // If the DataObject contains string data, extract it.
                 if (e.Data.GetDataPresent(DataFormats.StringFormat))
                 {
                     string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
 
-                    // If the string can be converted into a Brush, convert it.
-                    BrushConverter converter = new BrushConverter();
+                    // If the string can be converted into a Color, 
+                    // convert it and apply it to the rect.
+                    ColorConverter converter = new ColorConverter();
                     if (converter.IsValid(dataString))
                     {
-                        System.Windows.Media.Brush newFill = (System.Windows.Media.Brush)converter.ConvertFromString(dataString);
-                        rect.Fill = newFill;
+                        System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
+                        Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+
+                        SetThemeColorRectangle(rect.Name, color);
                     }
                 }
             }
@@ -423,7 +476,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
-                rect.Fill = _previousFill;
+                SetThemeColorRectangle(rect.Name, _previousFillColor);
             }
         }
 
@@ -447,13 +500,15 @@ namespace PowerPointLabs.ColorsLab
                 {
                     string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
 
-                    // If the string can be converted into a Brush, 
+                    // If the string can be converted into a Color, 
                     // convert it and apply it to the rect.
-                    BrushConverter converter = new BrushConverter();
+                    ColorConverter converter = new ColorConverter();
                     if (converter.IsValid(dataString))
                     {
-                        Brush newFill = (Brush)converter.ConvertFromString(dataString);
-                        rect.Fill = newFill;
+                        System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
+                        Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+
+                        SetThemeColorRectangle(rect.Name, color);
                     }
                 }
             }
@@ -497,6 +552,64 @@ namespace PowerPointLabs.ColorsLab
             {
                 MessageBox.Show("Please drag", ColorsLabText.ErrorDialogTitle);
             }
+        }
+
+        #endregion
+
+        #region Favourite Colors Button Handlers
+
+        /// <summary>
+        /// Saves the current theme panel as a custom theme file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveColorButton_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK &&
+                dataSource.SaveThemeColorsInFile(saveFileDialog.FileName))
+            {
+                SaveDefaultColorPaneThemeColors();
+            }
+        }
+
+        /// <summary>
+        /// Loads a theme panel from an existing theme file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadColorButton_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK &&
+                dataSource.LoadThemeColorsFromFile(openFileDialog.FileName))
+            {
+                SaveDefaultColorPaneThemeColors();
+            }
+        }
+
+        /// <summary>
+        /// Reset to the last loaded theme panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ReloadColorButton_Click(object sender, EventArgs e)
+        {
+            ResetThemePanel();
+        }
+
+        /// <summary>
+        /// Clears the current theme panel, i.e. set all favourite colors to white.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClearColorButton_Click(object sender, EventArgs e)
+        {
+            EmptyThemePanel();
         }
 
         #endregion
@@ -825,6 +938,128 @@ namespace PowerPointLabs.ColorsLab
             Mouse.OverrideCursor = eyeDropperCursor;
             PPExtraEventHelper.PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
             magnifier.Show();
+        }
+
+        #endregion
+
+        #region Favourite Colors
+
+        /// <summary>
+        /// Load default panel from default file, or clear the panel if unsuccessful.
+        /// </summary>
+        private void LoadDefaultThemePanel()
+        {
+            bool isSuccessful = dataSource.LoadThemeColorsFromFile(_defaultThemeColorDirectory);
+            if (!isSuccessful)
+            {
+                EmptyThemePanel();
+            }
+        }
+
+        /// <summary>
+        /// Reset panel to the last loaded theme panel.
+        /// </summary>
+        private void ResetThemePanel()
+        {
+            try
+            {
+                LoadDefaultThemePanel();
+            }
+            catch (Exception e)
+            {
+                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+            }
+        }
+
+        /// <summary>
+        /// Clear the panel to all white color.
+        /// </summary>
+        private void EmptyThemePanel()
+        {
+            try
+            {
+                if (this.GetCurrentSlide() != null)
+                {
+                    dataSource.ThemeColorOne = Color.White;
+                    dataSource.ThemeColorTwo = Color.White;
+                    dataSource.ThemeColorThree = Color.White;
+                    dataSource.ThemeColorFour = Color.White;
+                    dataSource.ThemeColorFive = Color.White;
+                    dataSource.ThemeColorSix = Color.White;
+                    dataSource.ThemeColorSeven = Color.White;
+                    dataSource.ThemeColorEight = Color.White;
+                    dataSource.ThemeColorNine = Color.White;
+                    dataSource.ThemeColorTen = Color.White;
+                    dataSource.ThemeColorEleven = Color.White;
+                    dataSource.ThemeColorTwelve = Color.White;
+                    dataSource.ThemeColorThirteen = Color.White;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+            }
+        }
+
+        /// <summary>
+        /// Set the color rect given the name of the rect, and the color to set.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="color"></param>
+        private void SetThemeColorRectangle(string name, Color color)
+        {
+            switch (name)
+            {
+                case "favoriteColorRectangleOne":
+                dataSource.ThemeColorOne = color;
+                break;
+                case "favoriteColorRectangleTwo":
+                dataSource.ThemeColorTwo = color;
+                break;
+                case "favoriteColorRectangleThree":
+                dataSource.ThemeColorThree = color;
+                break;
+                case "favoriteColorRectangleFour":
+                dataSource.ThemeColorFour = color;
+                break;
+                case "favoriteColorRectangleFive":
+                dataSource.ThemeColorFive = color;
+                break;
+                case "favoriteColorRectangleSix":
+                dataSource.ThemeColorSix = color;
+                break;
+                case "favoriteColorRectangleSeven":
+                dataSource.ThemeColorSeven = color;
+                break;
+                case "favoriteColorRectangleEight":
+                dataSource.ThemeColorEight = color;
+                break;
+                case "favoriteColorRectangleNine":
+                dataSource.ThemeColorNine = color;
+                break;
+                case "favoriteColorRectangleTen":
+                dataSource.ThemeColorTen = color;
+                break;
+                case "favoriteColorRectangleEleven":
+                dataSource.ThemeColorEleven = color;
+                break;
+                case "favoriteColorRectangleTwelve":
+                dataSource.ThemeColorTwelve = color;
+                break;
+                case "favoriteColorRectangleThirteen":
+                dataSource.ThemeColorThirteen = color;
+                break;
+                default:
+                break;
+            }
+        }
+
+        /// <summary>
+        /// Save current panel as default theme color.
+        /// </summary>
+        private void SaveDefaultColorPaneThemeColors()
+        {
+            dataSource.SaveThemeColorsInFile(_defaultThemeColorDirectory);
         }
 
         #endregion
