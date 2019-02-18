@@ -31,7 +31,6 @@ namespace PowerPointLabs.ColorsLab
         };
 
         private Brush _previousFill;
-        private Color _previousColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
         private bool _isEyedropperMode = false;
@@ -138,8 +137,7 @@ namespace PowerPointLabs.ColorsLab
 
         private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
         {
-            ColorSelectedShapesWithColor(dataSource.SelectedColor, MODE.FONT);
-            _previousColor = Color.Empty;
+            MessageBox.Show("hi");
         }
 
         #endregion
@@ -743,25 +741,28 @@ namespace PowerPointLabs.ColorsLab
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
         private System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private const int CLICK_THRESHOLD = 2;
+        private int timer1Ticks;
 
         private void BeginEyedropping()
         {
             _isEyedropperMode = true;
+            timer1Ticks = 0;
             timer1.Start();
-            // Mouse.OverrideCursor = eyeDropperCursor;
+            Mouse.OverrideCursor = eyeDropperCursor;
             PPExtraEventHelper.PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
             magnifier.Show();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
+            timer1Ticks++;
 
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
             
             Color _pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
             ColorSelectedShapesWithColor(_pickedColor, _eyedropperMode);
-            
         }
 
         void LeftMouseButtonUpEventHandler()
@@ -769,8 +770,16 @@ namespace PowerPointLabs.ColorsLab
             PPExtraEventHelper.PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
             magnifier.Hide();
             timer1.Stop();
+
+            // A click is detected, prompt user to drag.
+            if (timer1Ticks < CLICK_THRESHOLD)
+            {
+                MessageBox.Show("Drag pls", ColorsLabText.ErrorDialogTitle);
+            }
+
             _isEyedropperMode = false;
             _eyedropperMode = MODE.NONE;
+            Mouse.OverrideCursor = null;
             ReleaseMouseCapture();
         }
 
