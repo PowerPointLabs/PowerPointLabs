@@ -65,7 +65,7 @@
                         </Button.ToolTip>
                     </Button>
                     <Button x:Name="applyLineColorButton" Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" 
-                            PreviewMouseDown="ApplyLineColorButton_MouseDown"  Background="White">
+                            PreviewMouseDown="ApplyLineColorButton_MouseDown" Background="White">
                         <Image x:Name="lineColorIcon" Source="..\Resources\LineColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>

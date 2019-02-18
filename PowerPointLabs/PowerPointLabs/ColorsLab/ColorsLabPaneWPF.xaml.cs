@@ -771,17 +771,17 @@ namespace PowerPointLabs.ColorsLab
             magnifier.Hide();
             timer1.Stop();
 
-            // A click is detected, prompt user to drag.
-            if (timer1Ticks < CLICK_THRESHOLD)
-            {
-                MessageBox.Show("Drag pls", ColorsLabText.ErrorDialogTitle);
-            }
-
             _isEyedropperMode = false;
             _eyedropperMode = MODE.NONE;
             Mouse.OverrideCursor = null;
-            ReleaseMouseCapture();
+            Mouse.Capture(null);
+
+            if (timer1Ticks < CLICK_THRESHOLD)
+            {
+                MessageBox.Show("Please drag", ColorsLabText.ErrorDialogTitle);
+            }
         }
+
 
         private void ApplyTextColorButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -825,6 +825,6 @@ namespace PowerPointLabs.ColorsLab
             this.GetApplication().StartNewUndoEntry();
         }
 
-  
+
     }
 }
