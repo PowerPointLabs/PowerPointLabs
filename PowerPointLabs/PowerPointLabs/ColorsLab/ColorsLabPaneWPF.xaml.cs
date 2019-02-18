@@ -21,6 +21,9 @@ namespace PowerPointLabs.ColorsLab
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
+
+        #region Private variables
+
         // To set color mode
         private enum MODE
         {
@@ -30,15 +33,27 @@ namespace PowerPointLabs.ColorsLab
             NONE
         };
 
+        private MODE _eyedropperMode;
         private Brush _previousFill;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
         private bool _isEyedropperMode = false;
-        private MODE _eyedropperMode;
         private bool _shouldAllowDrag = false;
 
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
+
+        // Eyedropper-related
+        private const float MAGNIFICATION_FACTOR = 2.5f;
+        private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
+        private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
+        private System.Windows.Forms.Timer eyeDropperTimer = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private const int CLICK_THRESHOLD = 2;
+        private int timer1Ticks;
+
+        #endregion
+
+        #region Constructor
 
         public ColorsLabPaneWPF()
         {
@@ -51,12 +66,13 @@ namespace PowerPointLabs.ColorsLab
             // Setup code
             SetupImageSources();
             SetDefaultColor(Color.CornflowerBlue);
-
-            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            SetupEyedropperTimer();
 
             // Hook the mouse process if it has not
             PPExtraEventHelper.PPMouse.TryStartHook();
         }
+
+        #endregion
 
         #region Setup Code
 
@@ -129,6 +145,14 @@ namespace PowerPointLabs.ColorsLab
             dataSource.SelectedColor = color;
         }
 
+        /// <summary>
+        /// Setup the timer tick handler.
+        /// </summary>
+        private void SetupEyedropperTimer()
+        {
+            this.eyeDropperTimer.Tick += new System.EventHandler(this.Timer1_Tick);
+        }
+
         #endregion
 
         #region Event Handlers
@@ -138,6 +162,25 @@ namespace PowerPointLabs.ColorsLab
         private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("hi");
+        }
+
+        /// <summary>
+        /// On mouse down, init eyedropper mode.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ApplyColorButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
+            {
+                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
+                return;
+            }
+
+            CaptureMouse();
+            SetEyedropperMode(((Button)sender).Name);
+            BeginEyedropping();
+            this.GetApplication().StartNewUndoEntry();
         }
 
         #endregion
@@ -220,13 +263,17 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
-        private void SelectedColorRectangle_MouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Handles drag-and-drop functionality for color rects that can be dragged to favourite colors.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DraggableColorRectangle_MouseMove(object sender, MouseEventArgs e)
         {
             if (_isEyedropperMode)
             {
                 return;
             }
-
 
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
 
@@ -242,7 +289,12 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
-        private void SelectedColorRectangle_MouseLeave(object sender, MouseEventArgs e)
+        /// <summary>
+        /// This function prevents user to begin the drag from outside the rectangle.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DraggableColorRectangle_MouseLeave(object sender, MouseEventArgs e)
         {
             if (_isEyedropperMode)
             {
@@ -252,7 +304,11 @@ namespace PowerPointLabs.ColorsLab
             _shouldAllowDrag = false;
 
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
-            rect.MouseUp -= SelectedColorRectangle_MouseUp;
+
+            if (rect.Name == "selectedColorRectangle")
+            {
+                rect.MouseUp -= SelectedColorRectangle_MouseUp;
+            }
         }
 
         /// <summary>
@@ -288,48 +344,6 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
             dataSource.SelectedColor = new HSLColor(selectedColor);
-        }
-
-        /// <summary>
-        /// Handles drag and drop functionality for matching colors rectangles.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MatchingColorsRectangle_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_isEyedropperMode)
-            {
-                return;
-            }
-
-            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
-
-            if (rect != null && e.LeftButton == MouseButtonState.Released)
-            {
-                _shouldAllowDrag = true;
-            }
-
-            if (rect != null && e.LeftButton == MouseButtonState.Pressed && _shouldAllowDrag)
-            {
-                DragDrop.DoDragDrop(rect, rect.Fill.ToString(), DragDropEffects.Copy);
-                _shouldAllowDrag = false;
-            }
-        }
-
-        /// <summary>
-        /// Handles drag and drop functionality for matching colors rectangles.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MatchingColorsRectangle_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (_isEyedropperMode)
-            {
-                return;
-            }
-
-            _shouldAllowDrag = false;
-  
         }
 
         /// <summary>
@@ -442,6 +456,46 @@ namespace PowerPointLabs.ColorsLab
                         rect.Fill = newFill;
                     }
                 }
+            }
+        }
+
+        #endregion
+
+        #region Eye Dropper Event Handlers
+
+        /// <summary>
+        /// Gets the mouse position and pixel color value every tick of the timer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            timer1Ticks++;
+
+            System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
+            IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
+
+            Color _pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+            ColorSelectedShapesWithColor(_pickedColor, _eyedropperMode);
+        }
+
+        /// <summary>
+        /// Handles the end of eye dropper mode.
+        /// </summary>
+        void LeftMouseButtonUpEventHandler()
+        {
+            PPExtraEventHelper.PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
+            magnifier.Hide();
+            eyeDropperTimer.Stop();
+
+            _isEyedropperMode = false;
+            _eyedropperMode = MODE.NONE;
+            Mouse.OverrideCursor = null;
+            Mouse.Capture(null);
+
+            if (timer1Ticks < CLICK_THRESHOLD)
+            {
+                MessageBox.Show("Please drag", ColorsLabText.ErrorDialogTitle);
             }
         }
 
@@ -735,96 +789,47 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
-        #endregion
+        #region Eye Dropper
 
-        private const float MAGNIFICATION_FACTOR = 2.5f;
-        private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
-        private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
-        private const int CLICK_THRESHOLD = 2;
-        private int timer1Ticks;
+        /// <summary>
+        /// Sets the eyedropper mode given the name of the rectangle.
+        /// </summary>
+        /// <param name="rectName"></param>
+        private void SetEyedropperMode(string rectName)
+        {
+            switch (rectName)
+            {
+                case "applyTextColorButton":
+                    _eyedropperMode = MODE.FONT;
+                    break;
+                case "applyLineColorButton":
+                    _eyedropperMode = MODE.LINE;
+                    break;
+                case "applyFillColorButton":
+                    _eyedropperMode = MODE.FILL;
+                    break;
+                default:
+                    _eyedropperMode = MODE.NONE;
+                    break;
+            }
+        }
 
+        /// <summary>
+        /// Show magnifier and begin eye dropping.
+        /// </summary>
         private void BeginEyedropping()
         {
             _isEyedropperMode = true;
             timer1Ticks = 0;
-            timer1.Start();
+            eyeDropperTimer.Start();
             Mouse.OverrideCursor = eyeDropperCursor;
             PPExtraEventHelper.PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
             magnifier.Show();
         }
 
-        private void Timer1_Tick(object sender, EventArgs e)
-        {
-            timer1Ticks++;
+        #endregion
 
-            System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
-            IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
-            
-            Color _pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
-            ColorSelectedShapesWithColor(_pickedColor, _eyedropperMode);
-        }
-
-        void LeftMouseButtonUpEventHandler()
-        {
-            PPExtraEventHelper.PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
-            magnifier.Hide();
-            timer1.Stop();
-
-            _isEyedropperMode = false;
-            _eyedropperMode = MODE.NONE;
-            Mouse.OverrideCursor = null;
-            Mouse.Capture(null);
-
-            if (timer1Ticks < CLICK_THRESHOLD)
-            {
-                MessageBox.Show("Please drag", ColorsLabText.ErrorDialogTitle);
-            }
-        }
-
-
-        private void ApplyTextColorButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
-            {
-                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
-                return;
-            }
-
-            CaptureMouse();
-            _eyedropperMode = MODE.FONT;
-            BeginEyedropping();
-            this.GetApplication().StartNewUndoEntry();
-        }
-
-        private void ApplyLineColorButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
-            {
-                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
-                return;
-            }
-
-            CaptureMouse();
-            _eyedropperMode = MODE.LINE;
-            BeginEyedropping();
-            this.GetApplication().StartNewUndoEntry();
-        }
-
-        private void ApplyFillColorButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
-            {
-                MessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
-                return;
-            }
-
-            CaptureMouse();
-            _eyedropperMode = MODE.FILL;
-            BeginEyedropping();
-            this.GetApplication().StartNewUndoEntry();
-        }
-
+        #endregion
 
     }
 }

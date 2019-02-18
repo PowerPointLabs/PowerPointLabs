@@ -48,9 +48,10 @@
                     </Grid.ColumnDefinitions>
                     <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
                                Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}" 
-                               MouseDown="SelectedColorRectangle_MouseDown" MouseMove="SelectedColorRectangle_MouseMove" MouseLeave="SelectedColorRectangle_MouseLeave"/>
+                               MouseDown="SelectedColorRectangle_MouseDown" 
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" 
-                            PreviewMouseDown="ApplyTextColorButton_MouseDown"  Background="White">
+                            PreviewMouseDown="ApplyColorButton_MouseDown"  Background="White">
                         <Image x:Name="textColorIcon" Source="..\Resources\TextColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>
@@ -65,7 +66,7 @@
                         </Button.ToolTip>
                     </Button>
                     <Button x:Name="applyLineColorButton" Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" 
-                            PreviewMouseDown="ApplyLineColorButton_MouseDown" Background="White">
+                            PreviewMouseDown="ApplyColorButton_MouseDown" Background="White">
                         <Image x:Name="lineColorIcon" Source="..\Resources\LineColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>
@@ -80,7 +81,7 @@
                         </Button.ToolTip>
                     </Button>
                     <Button x:Name="applyFillColorButton" Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" 
-                            PreviewMouseDown="ApplyFillColorButton_MouseDown"  Background="White">
+                            PreviewMouseDown="ApplyColorButton_MouseDown"  Background="White">
                         <Image x:Name="fillColorIcon" Source="..\Resources\FillColor_Icon.png" Stretch="Fill"/>
                         <Button.ToolTip>
                             <StackPanel>
@@ -155,72 +156,72 @@
 
                     <Rectangle x:Name="monochromaticRectangleOne" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.80}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="monochromaticRectangleTwo" Grid.Row="1" Grid.Column="1" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.70}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="monochromaticRectangleThree" Grid.Row="1" Grid.Column="2" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.60}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="monochromaticRectangleFour" Grid.Row="1" Grid.Column="3" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.50}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="monochromaticRectangleFive" Grid.Row="1" Grid.Column="4" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.40}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="monochromaticRectangleSix" Grid.Row="1" Grid.Column="5" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.30}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="monochromaticRectangleSeven" Grid.Row="1" Grid.Column="6" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftLuminosityByFactor.Instance}, ConverterParameter=0.20}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Analogous</TextBlock>
                     <Rectangle x:Name="analogousLowerRectangle" Grid.Row="3" Grid.Column="0" Margin="0,2,4,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=-30.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="analogousMiddleRectangle" Grid.Row="3" Grid.Column="1" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="analogousHigherRectangle" Grid.Row="3" Grid.Column="2" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=30.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Complementary</TextBlock>
                     <Rectangle x:Name="complementaryLowerRectangle" Grid.Row="3" Grid.Column="6" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=150.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="complementaryMiddleRectangle" Grid.Row="3" Grid.Column="7" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=180.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="complementaryHigherRectangle" Grid.Row="3" Grid.Column="8" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=210.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
 
                     <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Triadic</TextBlock>
                     <Rectangle x:Name="triadicLowerRectangle" Grid.Row="5" Grid.Column="0" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=-120.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="triadicMiddleRectangle" Grid.Row="5" Grid.Column="1" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="triadicHigherRectangle" Grid.Row="5" Grid.Column="2" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=120.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
 
                     <TextBlock Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="6" HorizontalAlignment="Left" VerticalAlignment="Center">Tetradic</TextBlock>
                     <Rectangle x:Name="tetradicOneRectangle" Grid.Row="5" Grid.Column="6" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=90.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="tetradicFourRectangle" Grid.Row="5" Grid.Column="7" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:HSLColorToHex.Instance}}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="tetradicTwoRectangle" Grid.Row="5" Grid.Column="8" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=180.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                     <Rectangle x:Name="tetradicThreeRectangle" Grid.Row="5" Grid.Column="9" Margin="2,2,2,2" 
                                Fill="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorShiftByAngle.Instance}, ConverterParameter=270.0}"
-                               MouseMove="MatchingColorsRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="MatchingColorsRectangle_MouseLeave"/>
+                               MouseMove="DraggableColorRectangle_MouseMove" MouseDown="MatchingColorsRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="FavoritesGroupBox" Header="Favorites" Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
