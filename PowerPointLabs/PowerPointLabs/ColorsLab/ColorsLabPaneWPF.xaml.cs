@@ -771,6 +771,7 @@ namespace PowerPointLabs.ColorsLab
             timer1.Stop();
             _isEyedropperMode = false;
             _eyedropperMode = MODE.NONE;
+            ReleaseMouseCapture();
         }
 
         private void ApplyTextColorButton_MouseDown(object sender, MouseButtonEventArgs e)
@@ -781,6 +782,7 @@ namespace PowerPointLabs.ColorsLab
                 return;
             }
 
+            CaptureMouse();
             _eyedropperMode = MODE.FONT;
             BeginEyedropping();
             this.GetApplication().StartNewUndoEntry();
@@ -794,6 +796,7 @@ namespace PowerPointLabs.ColorsLab
                 return;
             }
 
+            CaptureMouse();
             _eyedropperMode = MODE.LINE;
             BeginEyedropping();
             this.GetApplication().StartNewUndoEntry();
@@ -807,6 +810,7 @@ namespace PowerPointLabs.ColorsLab
                 return;
             }
 
+            CaptureMouse();
             _eyedropperMode = MODE.FILL;
             BeginEyedropping();
             this.GetApplication().StartNewUndoEntry();
