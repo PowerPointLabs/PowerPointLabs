@@ -36,6 +36,7 @@ namespace PowerPointLabs.ColorsLab
         private PowerPoint.TextRange _selectedText;
         private bool _isEyedropperMode = false;
         private MODE _eyedropperMode;
+        private bool _shouldAllowDrag = false;
 
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
@@ -50,7 +51,6 @@ namespace PowerPointLabs.ColorsLab
 
             // Setup code
             SetupImageSources();
-            SetupRectangleClickEvents();
             SetDefaultColor(Color.CornflowerBlue);
 
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
@@ -122,43 +122,6 @@ namespace PowerPointLabs.ColorsLab
         }
 
         /// <summary>
-        /// Handles setting up of the click events for all the color rectangles in the pane.
-        /// We are setting up the click events in code because WPF Rectangles do not have an intrinsic OnClick event.
-        /// </summary>
-        private void SetupRectangleClickEvents()
-        {
-            // TOOD: MouseDown is NOT ideal here. We want to select the rect's color
-            // only if it's a click, not just a MouseDown or MouseUp. However, WPF Rects 
-            // don't have a click event. Need to figure out a way here. This affects functionality
-            // of drag and drop also, because the rects changes colour upon a click and drag and the 
-            // wrong color is dragged to the favourites panel.
-
-            // TODO: Acutally all these can be moved to XAML. It's better that way.
-
-            selectedColorRectangle.MouseDown += SelectedColorRectangle_Click;
-            monochromaticRectangleOne.MouseDown += MatchingColorsRectangle_Click;
-            monochromaticRectangleTwo.MouseDown += MatchingColorsRectangle_Click;
-            monochromaticRectangleThree.MouseDown += MatchingColorsRectangle_Click;
-            monochromaticRectangleFour.MouseDown += MatchingColorsRectangle_Click;
-            monochromaticRectangleFive.MouseDown += MatchingColorsRectangle_Click;
-            monochromaticRectangleSix.MouseDown += MatchingColorsRectangle_Click;
-            monochromaticRectangleSeven.MouseDown += MatchingColorsRectangle_Click;
-            analogousLowerRectangle.MouseDown += MatchingColorsRectangle_Click;
-            analogousMiddleRectangle.MouseDown += MatchingColorsRectangle_Click;
-            analogousHigherRectangle.MouseDown += MatchingColorsRectangle_Click;
-            complementaryLowerRectangle.MouseDown += MatchingColorsRectangle_Click;
-            complementaryMiddleRectangle.MouseDown += MatchingColorsRectangle_Click;
-            complementaryHigherRectangle.MouseDown += MatchingColorsRectangle_Click;
-            triadicLowerRectangle.MouseDown += MatchingColorsRectangle_Click;
-            triadicMiddleRectangle.MouseDown += MatchingColorsRectangle_Click;
-            triadicHigherRectangle.MouseDown += MatchingColorsRectangle_Click;
-            tetradicOneRectangle.MouseDown += MatchingColorsRectangle_Click;
-            tetradicTwoRectangle.MouseDown += MatchingColorsRectangle_Click;
-            tetradicThreeRectangle.MouseDown += MatchingColorsRectangle_Click;
-            tetradicFourRectangle.MouseDown += MatchingColorsRectangle_Click;
-        }
-
-        /// <summary>
         /// Set default color upon startup.
         /// </summary>
         /// <param name="color"></param>
@@ -218,16 +181,33 @@ namespace PowerPointLabs.ColorsLab
         #region Color Rectangle Handlers
 
         /// <summary>
-        /// Opens up a Windows.Forms ColorDialog upon click of the selectedColor rectangle.
+        /// Add MouseUp event to rectangle to simulate a click event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SelectedColorRectangle_Click(object sender, MouseButtonEventArgs e)
+        private void SelectedColorRectangle_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_isEyedropperMode)
             {
                 return;
             }
+
+            // We remove the MouseUp event first before adding it to ensure that at anytime there's only
+            // one listener for the MouseUp event.
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            rect.MouseUp -= SelectedColorRectangle_MouseUp;
+            rect.MouseUp += SelectedColorRectangle_MouseUp;
+        }
+
+        /// <summary>
+        /// Opens up a Windows.Forms ColorDialog upon click of the selectedColor rectangle.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SelectedColorRectangle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            rect.MouseUp -= SelectedColorRectangle_MouseUp;
 
             System.Windows.Forms.ColorDialog colorPickerDialog = new System.Windows.Forms.ColorDialog();
             colorPickerDialog.FullOpen = true;
@@ -242,19 +222,71 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
-        /// <summary>
-        /// Updates the selected color in the data source when rectangle is clicked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MatchingColorsRectangle_Click(object sender, MouseButtonEventArgs e)
+        private void SelectedColorRectangle_MouseMove(object sender, MouseEventArgs e)
         {
             if (_isEyedropperMode)
             {
                 return;
             }
 
+
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+
+            if (rect != null && e.LeftButton == MouseButtonState.Released)
+            {
+                _shouldAllowDrag = true;
+            }
+
+            if (rect != null && e.LeftButton == MouseButtonState.Pressed && _shouldAllowDrag)
+            {
+                DragDrop.DoDragDrop(rect, rect.Fill.ToString(), DragDropEffects.Copy);
+                _shouldAllowDrag = false;
+            }
+        }
+
+        private void SelectedColorRectangle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
+            _shouldAllowDrag = false;
+
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            rect.MouseUp -= SelectedColorRectangle_MouseUp;
+        }
+
+        /// <summary>
+        /// Adds a MouseUp listener to the sender object when it detects a MouseDown.
+        /// The purpose of this is to simulate a click event on the Rectangle object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MatchingColorsRectangle_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
+            // We remove the MouseUp event first before adding it to ensure that at anytime there's only
+            // one listener for the MouseUp event.
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            rect.MouseUp -= MachingColorsRectangle_MouseUp;
+            rect.MouseUp += MachingColorsRectangle_MouseUp;
+        }
+
+        /// <summary>
+        /// Change the selectedColor to the color of the matching color rect.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MachingColorsRectangle_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
+            rect.MouseUp -= MachingColorsRectangle_MouseUp;
+
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
             dataSource.SelectedColor = new HSLColor(selectedColor);
@@ -273,10 +305,33 @@ namespace PowerPointLabs.ColorsLab
             }
 
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
-            if (rect != null && e.LeftButton == MouseButtonState.Pressed)
+
+            if (rect != null && e.LeftButton == MouseButtonState.Released)
+            {
+                _shouldAllowDrag = true;
+            }
+
+            if (rect != null && e.LeftButton == MouseButtonState.Pressed && _shouldAllowDrag)
             {
                 DragDrop.DoDragDrop(rect, rect.Fill.ToString(), DragDropEffects.Copy);
+                _shouldAllowDrag = false;
             }
+        }
+
+        /// <summary>
+        /// Handles drag and drop functionality for matching colors rectangles.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MatchingColorsRectangle_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (_isEyedropperMode)
+            {
+                return;
+            }
+
+            _shouldAllowDrag = false;
+  
         }
 
         /// <summary>
@@ -706,7 +761,7 @@ namespace PowerPointLabs.ColorsLab
             
             Color _pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
             ColorSelectedShapesWithColor(_pickedColor, _eyedropperMode);
-           
+            
         }
 
         void LeftMouseButtonUpEventHandler()
@@ -757,7 +812,6 @@ namespace PowerPointLabs.ColorsLab
             this.GetApplication().StartNewUndoEntry();
         }
 
-
-
+  
     }
 }
