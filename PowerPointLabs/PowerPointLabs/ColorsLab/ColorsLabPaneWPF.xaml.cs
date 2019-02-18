@@ -366,7 +366,7 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MatchingColorsRectangle_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ColorRectangle_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_isEyedropperMode)
             {
@@ -376,8 +376,8 @@ namespace PowerPointLabs.ColorsLab
             // We remove the MouseUp event first before adding it to ensure that at anytime there's only
             // one listener for the MouseUp event.
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
-            rect.MouseUp -= MachingColorsRectangle_MouseUp;
-            rect.MouseUp += MachingColorsRectangle_MouseUp;
+            rect.MouseUp -= ColorRectangle_MouseUp;
+            rect.MouseUp += ColorRectangle_MouseUp;
         }
 
         /// <summary>
@@ -385,10 +385,10 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void MachingColorsRectangle_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ColorRectangle_MouseUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
-            rect.MouseUp -= MachingColorsRectangle_MouseUp;
+            rect.MouseUp -= ColorRectangle_MouseUp;
 
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
