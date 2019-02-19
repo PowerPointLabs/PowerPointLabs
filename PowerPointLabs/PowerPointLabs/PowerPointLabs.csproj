@@ -2079,6 +2079,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\AddToCustomShapesDisabled.png" />
+    <None Include="Resources\EyeDropper_icon.png" />
+    <None Include="Resources\EyeDropper_icon.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

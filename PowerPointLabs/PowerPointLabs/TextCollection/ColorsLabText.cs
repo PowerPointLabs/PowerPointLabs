@@ -22,6 +22,8 @@
                                                  "\r\nDrag the button to pick a color.";
         public const string FillColorButtonTooltip = "Change the fill color of the selected shapes: " +
                                                  "\r\nDrag the button to pick a color.";
+        public const string EyeDropperButtonTooltip = "Choose the main color with eyedropper: " +
+                                                    "\r\nDrag the button to pick a color.";
         public const string BrightnessSliderTooltip = "Move the slider to adjust the main color’s brightness.";
         public const string SaturationSliderTooltip = "Move the slider to adjust the main color’s saturation.";
         public const string SaveFavoriteColorsButtonTooltip = "Save the favorite color palette.";

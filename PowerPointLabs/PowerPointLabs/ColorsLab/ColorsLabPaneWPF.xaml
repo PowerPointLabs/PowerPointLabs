@@ -46,6 +46,7 @@
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
@@ -115,7 +116,26 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-
+                    <Button x:Name="eyeDropperButton" Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" 
+                            PreviewMouseDown="EyeDropperButton_PreviewMouseDown"  Background="White">
+                        <Image x:Name="eyeDropperIcon" Source="..\Resources\EyeDropper_Icon.png" Stretch="Fill" Margin="4,4,4,4"/>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.3" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Eye Dropper Tool</TextBlock>
+                                <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                                <TextBlock Text="{x:Static textCollection:ColorsLabText.EyeDropperButtonTooltip}" />
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
 
                     <Image x:Name="brightnessIcon" Grid.Row="2" Grid.Column="0" Margin="15,0,15,0" Source="..\Resources\Brightness-icon_25x25.png" Stretch="Fill"/>
                     <Rectangle x:Name="brightnessRectangle" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2"

@@ -31,11 +31,13 @@ namespace PowerPointLabs.ColorsLab
             FILL,
             LINE,
             FONT,
+            MAIN,
             NONE
         };
 
         private MODE _eyedropperMode;
         private Color _previousFillColor;
+        private Color _currentSelectedColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
         private bool _isEyedropperMode = false;
@@ -102,6 +104,12 @@ namespace PowerPointLabs.ColorsLab
 
             fillColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     Properties.Resources.FillColor_icon.GetHbitmap(),
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions());
+
+            eyeDropperIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    Properties.Resources.EyeDropper_icon.GetHbitmap(),
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
@@ -530,8 +538,17 @@ namespace PowerPointLabs.ColorsLab
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
 
-            Color _pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
-            ColorSelectedShapesWithColor(_pickedColor, _eyedropperMode);
+            Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+
+            if (_eyedropperMode == MODE.MAIN)
+            {
+                ColorMainColorRect(pickedColor);
+                _currentSelectedColor = pickedColor;
+            }
+            else
+            {
+                ColorSelectedShapesWithColor(pickedColor, _eyedropperMode);
+            }
         }
 
         /// <summary>
@@ -542,6 +559,12 @@ namespace PowerPointLabs.ColorsLab
             PPExtraEventHelper.PPMouse.LeftButtonUp -= LeftMouseButtonUpEventHandler;
             magnifier.Hide();
             eyeDropperTimer.Stop();
+
+            // Only change the actual datasource selectedColor at the end of eyedropping.
+            if (_eyedropperMode == MODE.MAIN)
+            {
+                dataSource.SelectedColor = _currentSelectedColor;
+            }
 
             _isEyedropperMode = false;
             _eyedropperMode = MODE.NONE;
@@ -921,6 +944,9 @@ namespace PowerPointLabs.ColorsLab
                 case "applyFillColorButton":
                     _eyedropperMode = MODE.FILL;
                     break;
+                case "eyeDropperButton":
+                    _eyedropperMode = MODE.MAIN;
+                    break;
                 default:
                     _eyedropperMode = MODE.NONE;
                     break;
@@ -938,6 +964,12 @@ namespace PowerPointLabs.ColorsLab
             Mouse.OverrideCursor = eyeDropperCursor;
             PPExtraEventHelper.PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
             magnifier.Show();
+        }
+
+        private void ColorMainColorRect(Color color)
+        {
+            selectedColorRectangle.Fill = 
+                new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
         #endregion
@@ -1066,5 +1098,12 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
+        private void EyeDropperButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CaptureMouse();
+            SetEyedropperMode(((Button)sender).Name);
+            BeginEyedropping();
+            this.GetApplication().StartNewUndoEntry();
+        }
     }
 }
