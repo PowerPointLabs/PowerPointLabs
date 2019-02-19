@@ -613,6 +613,7 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 dataSource.SelectedColor = _currentSelectedColor;
+                selectedColorRectangle.Opacity = 1;
             }
 
             _isEyedropperMode = false;
@@ -1013,11 +1014,17 @@ namespace PowerPointLabs.ColorsLab
             Mouse.OverrideCursor = eyeDropperCursor;
             PPExtraEventHelper.PPMouse.LeftButtonUp += LeftMouseButtonUpEventHandler;
             magnifier.Show();
+
+            if (_eyedropperMode == MODE.MAIN)
+            {
+                eyeDropperPreviewRectangle.Fill = selectedColorRectangle.Fill;
+                selectedColorRectangle.Opacity = 0;
+            }
         }
 
         private void ColorMainColorRect(Color color)
         {
-            selectedColorRectangle.Fill = 
+            eyeDropperPreviewRectangle.Fill = 
                 new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
