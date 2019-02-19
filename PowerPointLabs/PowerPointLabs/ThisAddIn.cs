@@ -295,18 +295,6 @@ namespace PowerPointLabs
                 TaskPaneVisibleValueChangedEventHandler, null);
         }
 
-        public void RegisterColorPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(ColorPane)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new ColorPane(), ColorsLabText.TaskPanelTitle, activeWindow, null, null);
-        }
-
         public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
         {
             if (GetActivePane(typeof(CustomShapePane)) != null)
@@ -469,22 +457,6 @@ namespace PowerPointLabs
                 recorder.HasEvent())
             {
                 recorder.ForceStopEvent();
-            }
-        }
-
-        private void ShutDownColorPane()
-        {
-            CustomTaskPane colorPane = GetActivePane(typeof(ColorPane));
-
-            if (colorPane == null)
-            {
-                return;
-            }
-
-            ColorPane colorLabs = colorPane.Control as ColorPane;
-            if (colorLabs != null)
-            {
-                colorLabs.SaveDefaultColorPaneThemeColors();
             }
         }
 
@@ -1108,7 +1080,6 @@ namespace PowerPointLabs
                 ShutDownPictureSlidesLab();
             }
 
-            // ShutDownColorPane();
             ShutDownRecorderPane();
 
             // find the document that holds the presentation with pres.Name
