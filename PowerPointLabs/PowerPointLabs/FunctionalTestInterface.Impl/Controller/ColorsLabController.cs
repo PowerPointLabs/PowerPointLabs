@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorsLab;
@@ -8,6 +11,8 @@ using PowerPointLabs.TextCollection;
 using TestInterface;
 
 using Button = System.Windows.Controls.Button;
+using Point = System.Windows.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
@@ -21,7 +26,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         private ColorsLabPane _pane;
 
         private ColorsLabController() {}
-
+        
         public void OpenPane()
         {
             UIThreadExecutor.Execute((Action)(() =>
@@ -171,5 +176,211 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
+        public void ClickAnalogousRect(int index)
+        {
+            System.Windows.Shapes.Rectangle rect;
+
+            switch (index)
+            {
+                case 1:
+                rect = _pane.ColorsLabPaneWPF1.analogousLowerRectangle;
+                break;
+                case 2:
+                rect = _pane.ColorsLabPaneWPF1.analogousMiddleRectangle;
+                break;
+                case 3:
+                rect = _pane.ColorsLabPaneWPF1.analogousHigherRectangle;
+                break;
+                default:
+                rect = null;
+                break;
+            }
+
+            if (_pane != null && rect != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    rect.RaiseEvent(
+                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                        {
+                            RoutedEvent = UIElement.MouseDownEvent
+                        });
+
+                    rect.RaiseEvent(
+                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                       {
+                           RoutedEvent = UIElement.MouseUpEvent
+                       });
+                }));
+            }
+        }
+
+        public void ClickComplementaryRect(int index)
+        {
+            System.Windows.Shapes.Rectangle rect;
+
+            switch (index)
+            {
+                case 1:
+                rect = _pane.ColorsLabPaneWPF1.complementaryLowerRectangle;
+                break;
+                case 2:
+                rect = _pane.ColorsLabPaneWPF1.complementaryMiddleRectangle;
+                break;
+                case 3:
+                rect = _pane.ColorsLabPaneWPF1.complementaryHigherRectangle;
+                break;
+                default:
+                rect = null;
+                break;
+            }
+
+            if (_pane != null && rect != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    rect.RaiseEvent(
+                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                        {
+                            RoutedEvent = UIElement.MouseDownEvent
+                        });
+
+                    rect.RaiseEvent(
+                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                       {
+                           RoutedEvent = UIElement.MouseUpEvent
+                       });
+                }));
+            }
+        }
+
+        public void ClickTriadicRect(int index)
+        {
+            System.Windows.Shapes.Rectangle rect;
+
+            switch (index)
+            {
+                case 1:
+                rect = _pane.ColorsLabPaneWPF1.triadicLowerRectangle;
+                break;
+                case 2:
+                rect = _pane.ColorsLabPaneWPF1.triadicMiddleRectangle;
+                break;
+                case 3:
+                rect = _pane.ColorsLabPaneWPF1.triadicHigherRectangle;
+                break;
+                default:
+                rect = null;
+                break;
+            }
+
+            if (_pane != null && rect != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    rect.RaiseEvent(
+                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                        {
+                            RoutedEvent = UIElement.MouseDownEvent
+                        });
+
+                    rect.RaiseEvent(
+                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                       {
+                           RoutedEvent = UIElement.MouseUpEvent
+                       });
+                }));
+            }
+        }
+
+        public void ClickTetradicRect(int index)
+        {
+            System.Windows.Shapes.Rectangle rect;
+
+            switch (index)
+            {
+                case 1:
+                rect = _pane.ColorsLabPaneWPF1.tetradicOneRectangle;
+                break;
+                case 2:
+                rect = _pane.ColorsLabPaneWPF1.tetradicTwoRectangle;
+                break;
+                case 3:
+                rect = _pane.ColorsLabPaneWPF1.tetradicThreeRectangle;
+                break;
+                case 4:
+                rect = _pane.ColorsLabPaneWPF1.tetradicFourRectangle;
+                break;
+                default:
+                rect = null;
+                break;
+            }
+
+            if (_pane != null && rect != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    rect.RaiseEvent(
+                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                        {
+                            RoutedEvent = UIElement.MouseDownEvent
+                        });
+
+                    rect.RaiseEvent(
+                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                       {
+                           RoutedEvent = UIElement.MouseUpEvent
+                       });
+                }));
+            }
+        }
+
+        public void LoadFavoriteColors(string filePath)
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ColorsLabPaneWPF1.LoadFavoriteColorsFromPath(filePath);
+                }));
+            }
+        }
+
+        public void ResetFavoriteColors()
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ColorsLabPaneWPF1.reloadColorButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }));
+            }
+        }
+
+        public void ClearFavoriteColors()
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ColorsLabPaneWPF1.clearColorButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }));
+            }
+        }
+
+        public List<Color> GetCurrentFavoritePanel()
+        {
+            List<Color> list = null;
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    list = _pane.ColorsLabPaneWPF1.GetFavoriteColorsPanelAsList();
+                }));
+            }
+            return list;
+        }
+
+     
     }
 }

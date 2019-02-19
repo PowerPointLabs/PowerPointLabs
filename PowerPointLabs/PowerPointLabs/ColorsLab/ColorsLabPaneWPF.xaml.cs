@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -68,6 +69,30 @@ namespace PowerPointLabs.ColorsLab
             return new Point(
                 topLeftOfButton.X + eyeDropperButton.ActualWidth / 2,
                 topLeftOfButton.Y + eyeDropperButton.ActualHeight / 2);
+        }
+
+        public List<Color> GetFavoriteColorsPanelAsList()
+        {
+            List<Color> list = new List<Color>();
+            list.Add(dataSource.ThemeColorOne);
+            list.Add(dataSource.ThemeColorTwo);
+            list.Add(dataSource.ThemeColorThree);
+            list.Add(dataSource.ThemeColorFour);
+            list.Add(dataSource.ThemeColorFive);
+            list.Add(dataSource.ThemeColorSix);
+            list.Add(dataSource.ThemeColorSeven);
+            list.Add(dataSource.ThemeColorEight);
+            list.Add(dataSource.ThemeColorNine);
+            list.Add(dataSource.ThemeColorTen);
+            list.Add(dataSource.ThemeColorEleven);
+            list.Add(dataSource.ThemeColorTwelve);
+            list.Add(dataSource.ThemeColorThirteen);
+            return list;
+        }
+
+        public void LoadFavoriteColorsFromPath(string filePath)
+        {
+            dataSource.LoadThemeColorsFromFile(filePath);
         }
 
         #endregion
