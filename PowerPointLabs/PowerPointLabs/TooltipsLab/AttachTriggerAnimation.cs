@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.TooltipsLab
 {
@@ -11,31 +11,65 @@ namespace PowerPointLabs.TooltipsLab
     {
         public static void AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
+            ShapeRange selectedShapes = selection.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
+                    TooltipsLabText.ErrorTooltipsDialogTitle);
+
+                // TODO: New Exception for TooltipsLab
+                throw new Exception();
+            }
+
             try
             {
-                ShapeRange selectedShapes = selection.ShapeRange;
+                Shape triggerShape = selectedShapes[1];
 
-                AddTriggerAnimation(currentSlide, selectedShapes);
+                List<Shape> shapesToAnimate = GetShapesToAnimate(selectedShapes);
+
+                AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-
+                throw exception;
             }
         }
 
-
-        private static void AddTriggerAnimation(PowerPointSlide currentSlide, ShapeRange shapes)
+        private static List<Shape> GetShapesToAnimate(ShapeRange selectedShapes)
         {
-            MsoAnimTriggerType trigger = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+            List<Shape> animatedShapes = new List<Shape>();
 
-            foreach (Shape animationShape in shapes)
+            for (int i = 2; i <= selectedShapes.Count; i++)
             {
-                Effect effectRotate = currentSlide.TimeLine.MainSequence.AddEffect(animationShape, MsoAnimEffect.msoAnimEffectSpin, MsoAnimateByLevel.msoAnimateLevelNone, trigger);
-                AnimationBehavior rotate = effectRotate.Behaviors[1];
-                effectRotate.Timing.Duration = 1.0F;
-                effectRotate.EffectParameters.Amount = LegacyShapeUtil.GetMinimumRotation(0.0F, 180.0F);
+                animatedShapes.Add(selectedShapes[i]);
             }
 
+            return animatedShapes;
+        }
+
+        private static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
+        {
+            TimeLine timeline = currentSlide.TimeLine;
+            MsoAnimEffect appearEffect = MsoAnimEffect.msoAnimEffectFade;
+            Sequence sequence = timeline.InteractiveSequences.Add();
+            for (int i = 0; i < shapesToAnimate.Count; i++)
+            {
+                Shape animationShape = shapesToAnimate[i];
+                MsoAnimTriggerType triggerType;
+                // The first shape will be triggered by the click
+                if (i == 0)
+                {
+                    triggerType = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
+                    sequence.AddTriggerEffect(animationShape, appearEffect, triggerType, triggerShape);
+                }
+                // Rest of the shapes will appear with the first shape
+                else
+                {
+                    triggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                    sequence.AddEffect(shapesToAnimate[i], appearEffect, MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                }
+            }
         }
 
     }

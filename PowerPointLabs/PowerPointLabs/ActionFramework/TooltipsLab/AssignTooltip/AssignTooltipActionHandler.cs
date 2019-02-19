@@ -1,4 +1,7 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
@@ -22,7 +25,19 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
                 return;
             }
 
-            AttachTriggerAnimation.AddTriggerAnimation(currentSlide, selection);
+            try
+            {
+                AttachTriggerAnimation.AddTriggerAnimation(currentSlide, selection);
+                // Open the animation custom pane if it is not opened
+                if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+                {
+                    this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
