@@ -653,6 +653,9 @@
     <Compile Include="ColorsLab\ColorsLabPane.Designer.cs">
       <DependentUpon>ColorsLabPane.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorsLab\ColorInformationDialog.xaml.cs">
+      <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftByAngle.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftSaturationByFactor.cs" />
@@ -1428,6 +1431,10 @@
     <Page Include="ColorsLab\ColorsLabPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ColorsLab\ColorInformationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CropLab\Views\CropLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -12,7 +12,7 @@ using TestInterface;
 
 using Point = System.Windows.Point;
 using Button = System.Windows.Controls.Button;
-
+using System.Threading;
 
 namespace Test.FunctionalTest
 {
@@ -255,14 +255,10 @@ namespace Test.FunctionalTest
             currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
             AssertEqual(DefaultTestColors, currentFavoritePanel);
 
-            // Clear and reset panel
+            // Clear panel
             colorsLab.ClearFavoriteColors();
             currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
             AssertEqual(AllWhiteColorList, currentFavoritePanel);
-
-            colorsLab.ResetFavoriteColors();
-            currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
-            AssertEqual(DefaultTestColors, currentFavoritePanel);
         }
 
         # region Helper methods

@@ -652,6 +652,14 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
+        private void EyeDropperButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CaptureMouse();
+            SetEyedropperMode(((Button)sender).Name);
+            BeginEyedropping();
+            this.GetApplication().StartNewUndoEntry();
+        }
+
         #endregion
 
         #region Favourite Colors Button Handlers
@@ -708,6 +716,50 @@ namespace PowerPointLabs.ColorsLab
         private void ClearColorButton_Click(object sender, EventArgs e)
         {
             EmptyThemePanel();
+        }
+
+        #endregion
+
+        #region Context Menu Handlers
+
+        private void Color_Information_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem == null)
+            {
+                return;
+            }
+            System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
+            System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
+            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            ColorInformationDialog dialog = new ColorInformationDialog(selectedColor);
+            dialog.Show();
+        }
+
+        private void Set_Main_Color_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem == null)
+            {
+                return;
+            }
+            System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
+            System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
+            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            dataSource.SelectedColor = new HSLColor(selectedColor);
+        }
+
+        private void Add_Favorite_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            if (menuItem == null)
+            {
+                return;
+            }
+            System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
+            System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
+            HSLColor clickedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            dataSource.AddColorToFavorites(clickedColor);
         }
 
         #endregion
@@ -1179,13 +1231,6 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
-        private void EyeDropperButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            CaptureMouse();
-            SetEyedropperMode(((Button)sender).Name);
-            BeginEyedropping();
-            this.GetApplication().StartNewUndoEntry();
-        }
-        
+       
     }
 }

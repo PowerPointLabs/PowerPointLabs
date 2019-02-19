@@ -375,6 +375,23 @@ namespace PowerPointLabs.DataSources
             return true;
         }
 
+        public void AddColorToFavorites(HSLColor color)
+        {
+            ThemeColorThirteen = ThemeColorTwelve;
+            ThemeColorTwelve = ThemeColorEleven;
+            ThemeColorEleven = ThemeColorTen;
+            ThemeColorTen = ThemeColorNine;
+            ThemeColorNine = ThemeColorEight;
+            ThemeColorEight = ThemeColorSeven;
+            ThemeColorSeven = ThemeColorSix;
+            ThemeColorSix = ThemeColorFive;
+            ThemeColorFive = ThemeColorFour;
+            ThemeColorFour = ThemeColorThree;
+            ThemeColorThree = ThemeColorTwo;
+            ThemeColorTwo = ThemeColorOne;
+            ThemeColorOne = color;
+        }
+
         public ColorDataSource()
         {
         }
