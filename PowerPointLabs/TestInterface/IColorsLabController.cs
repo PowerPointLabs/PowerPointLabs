@@ -1,30 +1,19 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows;
 
 namespace TestInterface
 {
     public interface IColorsLabController
     {
         void OpenPane();
+        Point GetApplyTextButtonLocation();
+        Point GetApplyLineButtonLocation();
+        Point GetApplyFillButtonLocation();
+        Point GetMainColorRectangleLocation();
+        Point GetEyeDropperButtonLocation();
 
-        Panel GetDropletPanel();
+        void SlideBrightnessSlider(int value);
+        void SlideSaturationSlider(int value);
 
-        Panel GetFontColorButton();
-
-        Panel GetLineColorButton();
-
-        Panel GetFillColorButton();
-
-        Panel GetMonoPanel1();
-
-        Panel GetMonoPanel7();
-
-        Panel GetFavColorPanel1();
-
-        Button GetResetFavColorsButton();
-
-        Button GetEmptyFavColorsButton();
-
-        IColorsLabMoreInfoDialog ShowMoreColorInfo(Color color);
+        void ClickMonochromeRect(int index);
     }
 }

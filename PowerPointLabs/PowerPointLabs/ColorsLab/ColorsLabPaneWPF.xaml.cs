@@ -23,6 +23,55 @@ namespace PowerPointLabs.ColorsLab
     public partial class ColorsLabPaneWPF : UserControl
     {
 
+        #region Functional Test API
+
+        public Point GetApplyTextButtonLocationAsPoint()
+        {
+            Point locationFromWindow = applyTextColorButton.TranslatePoint(new Point(0, 0), this);
+            Point topLeftOfButton = PointToScreen(locationFromWindow);
+            return new Point(
+                topLeftOfButton.X + applyTextColorButton.ActualWidth / 2, 
+                topLeftOfButton.Y + applyTextColorButton.ActualHeight / 2);
+        }
+
+        public Point GetApplyLineButtonLocationAsPoint()
+        {
+            Point locationFromWindow = applyLineColorButton.TranslatePoint(new Point(0, 0), this);
+            Point topLeftOfButton = PointToScreen(locationFromWindow);
+            return new Point(
+                topLeftOfButton.X + applyLineColorButton.ActualWidth / 2,
+                topLeftOfButton.Y + applyLineColorButton.ActualHeight / 2);
+        }
+
+        public Point GetApplyFillButtonLocationAsPoint()
+        {
+            Point locationFromWindow = applyFillColorButton.TranslatePoint(new Point(0, 0), this);
+            Point topLeftOfButton = PointToScreen(locationFromWindow);
+            return new Point(
+                topLeftOfButton.X + applyFillColorButton.ActualWidth / 2,
+                topLeftOfButton.Y + applyFillColorButton.ActualHeight / 2);
+        }
+
+        public Point GetMainColorRectangleLocationAsPoint()
+        {
+            Point locationFromWindow = selectedColorRectangle.TranslatePoint(new Point(0, 0), this);
+            Point topLeftOfButton = PointToScreen(locationFromWindow);
+            return new Point(
+                topLeftOfButton.X + selectedColorRectangle.ActualWidth / 2,
+                topLeftOfButton.Y + selectedColorRectangle.ActualHeight / 2);
+        }
+
+        public Point GetEyeDropperButtonLocationAsPoint()
+        {
+            Point locationFromWindow = eyeDropperButton.TranslatePoint(new Point(0, 0), this);
+            Point topLeftOfButton = PointToScreen(locationFromWindow);
+            return new Point(
+                topLeftOfButton.X + eyeDropperButton.ActualWidth / 2,
+                topLeftOfButton.Y + eyeDropperButton.ActualHeight / 2);
+        }
+
+        #endregion
+
         #region Private variables
 
         // To set color mode
@@ -573,7 +622,7 @@ namespace PowerPointLabs.ColorsLab
 
             if (timer1Ticks < CLICK_THRESHOLD)
             {
-                MessageBox.Show("Please drag", ColorsLabText.ErrorDialogTitle);
+                MessageBox.Show("pls drag", ColorsLabText.ErrorDialogTitle);
             }
         }
 
@@ -1105,5 +1154,6 @@ namespace PowerPointLabs.ColorsLab
             BeginEyedropping();
             this.GetApplication().StartNewUndoEntry();
         }
+        
     }
 }

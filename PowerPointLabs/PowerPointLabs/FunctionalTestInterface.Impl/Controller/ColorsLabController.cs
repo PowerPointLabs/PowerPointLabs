@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
+using System.Windows;
+using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorsLab;
 using PowerPointLabs.TextCollection;
 
 using TestInterface;
+
+using Button = System.Windows.Controls.Button;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
@@ -16,7 +18,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public static IColorsLabController Instance { get { return _instance; } }
 
-        private ColorPane _pane;
+        private ColorsLabPane _pane;
 
         private ColorsLabController() {}
 
@@ -27,103 +29,147 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
                     new RibbonControl(ColorsLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
-                    typeof(ColorPane)).Control as ColorPane;
+                    typeof(ColorsLabPane)).Control as ColorsLabPane;
             }));
         }
 
-        public Panel GetDropletPanel()
+        public Point GetApplyTextButtonLocation()
         {
+            Point point = new Point(0, 0);
             if (_pane != null)
             {
-                return _pane.GetDropletPanel();
-            }
-            return null;
-        }
-
-        public Panel GetFontColorButton()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetFontColorButton();
-            }
-            return null;
-        }
-
-        public Panel GetLineColorButton()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetLineColorButton();
-            }
-            return null;
-        }
-
-        public Panel GetFillColorButton()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetFillColorButton();
-            }
-            return null;
-        }
-
-        public Panel GetMonoPanel1()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetMonoPanel1();
-            }
-            return null;
-        }
-
-        public Panel GetMonoPanel7()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetMonoPanel7();
-            }
-            return null;
-        }
-
-        public Panel GetFavColorPanel1()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetFavColorPanel1();
-            }
-            return null;
-        }
-
-        public Button GetResetFavColorsButton()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetResetFavColorsButton();
-            }
-            return null;
-        }
-
-        public Button GetEmptyFavColorsButton()
-        {
-            if (_pane != null)
-            {
-                return _pane.GetEmptyFavColorsButton();
-            }
-            return null;
-        }
-
-        public IColorsLabMoreInfoDialog ShowMoreColorInfo(Color color)
-        {
-            if (_pane != null)
-            {
-                IColorsLabMoreInfoDialog dialog = null;
-                UIThreadExecutor.Execute(() =>
+                UIThreadExecutor.Execute((Action)(() =>
                 {
-                    dialog = _pane.ShowMoreColorInfo(color);
-                });
-                return dialog;
+                    point = _pane.ColorsLabPaneWPF1.GetApplyTextButtonLocationAsPoint();
+                }));
             }
-            return null;
+            return point;
         }
+
+        public Point GetApplyLineButtonLocation()
+        {
+            Point point = new Point(0, 0);
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    point = _pane.ColorsLabPaneWPF1.GetApplyLineButtonLocationAsPoint();
+                }));
+            }
+            return point;
+        }
+
+        public Point GetApplyFillButtonLocation()
+        {
+            Point point = new Point(0, 0);
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    point = _pane.ColorsLabPaneWPF1.GetApplyFillButtonLocationAsPoint();
+                }));
+            }
+            return point;
+        }
+
+        public Point GetMainColorRectangleLocation()
+        {
+            Point point = new Point(0, 0);
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    point = _pane.ColorsLabPaneWPF1.GetMainColorRectangleLocationAsPoint();
+                }));
+            }
+            return point;
+        }
+
+        public Point GetEyeDropperButtonLocation()
+        {
+            Point point = new Point(0, 0);
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    point = _pane.ColorsLabPaneWPF1.GetEyeDropperButtonLocationAsPoint();
+                }));
+            }
+            return point;
+        }
+
+        public void SlideBrightnessSlider(int value)
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ColorsLabPaneWPF1.brightnessSlider.Value = value;
+                }));
+            }
+        }
+
+        public void SlideSaturationSlider(int value)
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ColorsLabPaneWPF1.saturationSlider.Value = value;
+                }));
+            }
+        }
+
+        public void ClickMonochromeRect(int index)
+        {
+            System.Windows.Shapes.Rectangle rect;
+
+            switch (index)
+            {
+                case 1:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleOne;
+                    break;
+                case 2:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleTwo;
+                    break;
+                case 3:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleThree;
+                    break;
+                case 4:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleFour;
+                    break;
+                case 5:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleFive;
+                    break;
+                case 6:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleSix;
+                    break;
+                case 7:
+                    rect = _pane.ColorsLabPaneWPF1.monochromaticRectangleSeven;
+                    break;
+                default:
+                    rect = null;
+                    break;
+            }
+
+            if (_pane != null && rect != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    rect.RaiseEvent(
+                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                        {
+                            RoutedEvent = UIElement.MouseDownEvent
+                        });
+
+                    rect.RaiseEvent(
+                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                       {
+                           RoutedEvent = UIElement.MouseUpEvent
+                       });
+                }));
+            }
+        }
+
     }
 }
