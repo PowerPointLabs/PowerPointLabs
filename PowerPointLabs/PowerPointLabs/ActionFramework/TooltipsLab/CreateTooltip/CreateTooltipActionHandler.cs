@@ -20,30 +20,21 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             PowerPointSlide currentSlide = this.GetCurrentSlide();
 
-            try
-            {
-                PowerPoint.ShapeRange selectedShapes = this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange;
+            PowerPoint.Selection selection = this.GetCurrentSelection();
 
-                // Maybe this check should be changed to do it in such a way that if there's no current slide,
-                // simply grey out the button??
-                if (currentSlide != null)
+            if (currentSlide != null)
+            {
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    foreach (PowerPoint.Shape selectedShape in selectedShapes)
+                    foreach (PowerPoint.Shape selectedShape in this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange)
                     {
                         CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
-
                     }
-
-                    // TODO: After generating the callout and trigger shapes, trigger animation should go here.
                 }
-            }
-            catch (Exception)
-            {
-                if (currentSlide != null)
+                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
                 {
                     PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
-                    CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
-
+                    PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
                 }
             }
         }

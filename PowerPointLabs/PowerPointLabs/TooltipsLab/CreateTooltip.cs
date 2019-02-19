@@ -14,7 +14,7 @@ namespace PowerPointLabs.TooltipsLab
     internal static class CreateTooltip
     {
 
-        public static void GenerateCalloutWithReferenceTriggerShape(PowerPointSlide currentSlide, PowerPoint.Shape triggerShape)
+        public static PowerPoint.Shape GenerateCalloutWithReferenceTriggerShape(PowerPointSlide currentSlide, PowerPoint.Shape triggerShape)
         {
             float midpointX = ShapeUtil.GetMidpointX(triggerShape);
 
@@ -30,18 +30,21 @@ namespace PowerPointLabs.TooltipsLab
             // - 1.125 is the vertical percentage adjustment of the arrowhead of the callout.
             //   Same explanation as the horizontal adjustment, just that this is for the height.
             // - 10 is for extra padding between the arrowhead of the callout and the trigger shape.
-            PowerPoint.Shape callout1 = currentSlide.Shapes.AddShape(
+            PowerPoint.Shape callout = currentSlide.Shapes.AddShape(
                 Microsoft.Office.Core.MsoAutoShapeType.msoShapeRoundedRectangularCallout,
                 midpointX - width/2 + (float)(0.20833 * width),
                 triggerShape.Top - (float)(1.125 * height) - 10,
                 width,
                 height);
+
+            return callout;
         }
 
         public static PowerPoint.Shape GenerateTriggerShape(PowerPointSlide currentSlide)
         {
             // TODO: These are all hardcoded values for now. They should be replaced in the future.
-            return currentSlide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, 200, 200, 25, 25);
+            PowerPoint.Shape triggerShape = currentSlide.Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, 200, 200, 25, 25);
+            return triggerShape;
         }
 
 
