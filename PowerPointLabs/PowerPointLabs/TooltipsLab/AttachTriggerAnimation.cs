@@ -11,18 +11,19 @@ namespace PowerPointLabs.TooltipsLab
     {
         public static void AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
+            ShapeRange selectedShapes = selection.ShapeRange;
+
+            if (selectedShapes.Count < 2)
+            {
+                MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
+                    TooltipsLabText.ErrorTooltipsDialogTitle);
+
+                // TODO: New Exception for TooltipsLab
+                throw new Exception();
+            }
+
             try
             {
-                ShapeRange selectedShapes = selection.ShapeRange;
-
-                if (selectedShapes.Count < 2)
-                {
-                    MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
-                        TooltipsLabText.ErrorTooltipsDialogTitle);
-
-                    return;
-                }
-
                 Shape triggerShape = selectedShapes[1];
 
                 List<Shape> shapesToAnimate = GetShapesToAnimate(selectedShapes);
