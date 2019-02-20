@@ -415,7 +415,23 @@ namespace PowerPointLabs.ColorsLab
 
             if (rect != null && e.LeftButton == MouseButtonState.Pressed && _shouldAllowDrag)
             {
-                DragDrop.DoDragDrop(rect, rect.Fill.ToString(), DragDropEffects.Copy);
+                try
+                {
+                    DragDrop.DoDragDrop(rect, rect.Fill.ToString(), DragDropEffects.Copy);
+                } 
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    // This exception occurs when user tries to drag the color rect to a textbox/shape on the slide.
+                    // Due to lack of drag and drop support for some PowerPoint objects, exception will be thrown.
+                    // When this is detected, to insert the data to the textbox instead.
+                    // More info: https://social.msdn.microsoft.com/Forums/en-US/9925d6c7-e92f-40e7-9467-7b4e69174e9e/vsto-addin-gt-facing-problem-in-implementing-dragdrop-functionality-gt-need-help?forum=vsto
+                    PowerPoint.Selection currSelection = this.GetCurrentSelection();
+                    if (currSelection.Type == PowerPoint.PpSelectionType.ppSelectionShapes ||
+                        currSelection.Type == PowerPoint.PpSelectionType.ppSelectionText)
+                    {
+                        currSelection.TextRange2.Text = rect.Fill.ToString();
+                    }
+                }
                 _shouldAllowDrag = false;
             }
         }
