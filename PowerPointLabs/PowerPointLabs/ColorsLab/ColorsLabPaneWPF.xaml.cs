@@ -614,6 +614,12 @@ namespace PowerPointLabs.ColorsLab
 
             Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
 
+            // If button has not been held long enough to register as a drag, then don't pick a color.
+            if (timer1Ticks < CLICK_THRESHOLD)
+            {
+                return;
+            }
+
             if (_eyedropperMode == MODE.MAIN)
             {
                 ColorMainColorRect(pickedColor);
@@ -637,8 +643,11 @@ namespace PowerPointLabs.ColorsLab
             // Only change the actual datasource selectedColor at the end of eyedropping.
             if (_eyedropperMode == MODE.MAIN)
             {
-                dataSource.SelectedColor = _currentSelectedColor;
                 selectedColorRectangle.Opacity = 1;
+                if (timer1Ticks > CLICK_THRESHOLD)
+                {
+                    dataSource.SelectedColor = _currentSelectedColor;
+                }
             }
 
             _isEyedropperMode = false;
@@ -648,7 +657,7 @@ namespace PowerPointLabs.ColorsLab
 
             if (timer1Ticks < CLICK_THRESHOLD)
             {
-                MessageBox.Show("pls drag", ColorsLabText.ErrorDialogTitle);
+                MessageBox.Show("To use this button, click and drag to desired color.", ColorsLabText.ErrorDialogTitle);
             }
         }
 
