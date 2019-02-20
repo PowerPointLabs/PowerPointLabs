@@ -271,6 +271,7 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
@@ -744,6 +745,7 @@
       <DependentUpon>SpeechPlayingDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
+    <Compile Include="PictureSlidesLab\PictureSlidesLab.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="SaveLab\SaveLabMain.cs" />
     <Compile Include="SaveLab\SaveLabSettings.cs" />

@@ -960,6 +960,7 @@ namespace PowerPointLabs
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
                 ELearningService.IsELearningWorkspaceEnabled = true;
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
             {
@@ -967,6 +968,8 @@ namespace PowerPointLabs
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
                 ELearningService.IsELearningWorkspaceEnabled = false;
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
+                ShutDownPictureSlidesLab();
             }
 
             UpdateELearningPane(sldRange.Count);
@@ -1000,6 +1003,7 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
+            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
