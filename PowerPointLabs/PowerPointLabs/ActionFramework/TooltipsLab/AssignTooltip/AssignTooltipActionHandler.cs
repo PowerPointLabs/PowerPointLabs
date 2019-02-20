@@ -27,7 +27,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             try
             {
-                AttachTriggerAnimation.AddTriggerAnimation(currentSlide, selection);
+                AssignTooltip.AddTriggerAnimation(currentSlide, selection);
                 // Open the animation custom pane if it is not opened
                 if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
                 {

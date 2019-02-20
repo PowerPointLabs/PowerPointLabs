@@ -7,7 +7,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.TooltipsLab
 {
-    internal static class AttachTriggerAnimation
+    internal static class AssignTooltip
     {
         public static void AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
@@ -36,16 +36,11 @@ namespace PowerPointLabs.TooltipsLab
             }
         }
 
-        private static List<Shape> GetShapesToAnimate(ShapeRange selectedShapes)
+        public static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, Shape calloutShape)
         {
-            List<Shape> animatedShapes = new List<Shape>();
-
-            for (int i = 2; i <= selectedShapes.Count; i++)
-            {
-                animatedShapes.Add(selectedShapes[i]);
-            }
-
-            return animatedShapes;
+            List<Shape> calloutShapeList = new List<Shape>();
+            calloutShapeList.Add(calloutShape);
+            AddTriggerAnimation(currentSlide, triggerShape, calloutShapeList);
         }
 
         private static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
@@ -72,5 +67,16 @@ namespace PowerPointLabs.TooltipsLab
             }
         }
 
+        private static List<Shape> GetShapesToAnimate(ShapeRange selectedShapes)
+        {
+            List<Shape> animatedShapes = new List<Shape>();
+
+            for (int i = 2; i <= selectedShapes.Count; i++)
+            {
+                animatedShapes.Add(selectedShapes[i]);
+            }
+
+            return animatedShapes;
+        }
     }
 }

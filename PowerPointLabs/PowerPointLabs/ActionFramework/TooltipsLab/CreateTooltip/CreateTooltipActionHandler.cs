@@ -1,7 +1,4 @@
-﻿using System;
-
-
-using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
@@ -22,20 +19,24 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             PowerPoint.Selection selection = this.GetCurrentSelection();
 
-            if (currentSlide != null)
+            if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
+                foreach (PowerPoint.Shape selectedShape in this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange)
                 {
-                    foreach (PowerPoint.Shape selectedShape in this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange)
-                    {
-                        CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
-                    }
+                    PowerPoint.Shape callout= CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
+                    AssignTooltip.AddTriggerAnimation(currentSlide, selectedShape, callout);
                 }
-                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
-                {
-                    PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
-                    PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
-                }
+            }
+            else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
+            {
+                PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
+                PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
+                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
+            }
+
+            if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+            {
+                this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
             }
         }
     }
