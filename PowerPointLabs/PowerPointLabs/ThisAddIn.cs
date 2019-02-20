@@ -937,12 +937,15 @@ namespace PowerPointLabs
 
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
+                ShutDownPictureSlidesLab();
             }
 
             // in case the recorder is on event
@@ -976,6 +979,7 @@ namespace PowerPointLabs
                 }
             }
             Ribbon.RefreshRibbonControl("CreateTooltipButton");
+            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
