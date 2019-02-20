@@ -86,7 +86,9 @@
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="textBox" Grid.Column="0" Margin="4 4 4 4" AcceptsReturn="True">
+                <TextBox x:Name="textBox" Grid.Column="0" Margin="4 4 4 4" AcceptsReturn="True" TextWrapping="Wrap"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <TextBox.Style>
                         <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                             <Style.Resources>

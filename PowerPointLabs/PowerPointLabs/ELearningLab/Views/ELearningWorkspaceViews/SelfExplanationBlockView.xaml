@@ -39,10 +39,15 @@
                                                 RelativeSource={RelativeSource TemplatedParent}, 
                                                 Mode=TwoWay,
                                                 UpdateSourceTrigger=PropertyChanged}"
-                                 x:Name="textSource" 
-                                 Background="Transparent" BorderThickness="0"
+                                 x:Name="textSource" AcceptsReturn="True" TextWrapping="Wrap"
+                                 Background="Transparent" BorderThickness="0" 
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
                                  Panel.ZIndex="2" />
-                                <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" Panel.ZIndex="1" BorderThickness="0">
+                                <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" 
+                                         AcceptsReturn="True" Panel.ZIndex="1" BorderThickness="0" TextWrapping="Wrap"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}">
                                             <Setter Property="Foreground" Value="Transparent"/>
@@ -185,7 +190,7 @@
                  TextWrapping="Wrap" FontSize="10" Tag="Enter your caption / voice notes here..."
                              AcceptsReturn="True" Margin="0" MaxHeight="40" MinHeight="30"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
                     <TextBox x:Name="calloutTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
                              Text="{Binding CalloutText, Mode=TwoWay}" Tag="Enter your shorter notes for callout here..." Padding="2 2 2 2"
                  TextWrapping="Wrap" FontSize="10" 

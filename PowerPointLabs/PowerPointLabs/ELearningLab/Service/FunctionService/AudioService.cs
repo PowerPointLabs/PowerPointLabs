@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -86,6 +87,13 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
+        public static bool IsAzureVoiceSelectedForItem(SelfExplanationClickItem selfExplanationClickItem)
+        {
+            string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(selfExplanationClickItem.VoiceLabel);
+            IVoice voice = GetVoiceFromString(voiceName);
+            return voice is AzureVoice;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -94,6 +102,11 @@ namespace PowerPointLabs.ELearningLab.Service
         /// <returns></returns>
         public static Shape InsertAudioFileOnSlide(PowerPointSlide slide, string fileName)
         {
+            if (!File.Exists(fileName))
+            {
+                return null;
+            }
+
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
 
             Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
@@ -126,13 +139,20 @@ namespace PowerPointLabs.ELearningLab.Service
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(voiceLabel);
             IVoice voice = GetVoiceFromString(voiceName);
             Shape shape = null;
-            if (!IsSameCaptionText(slide, captionText, voiceLabel, tagNo))
+            bool isSavedSuccessful = false;
+            bool isSameCaptionText = IsSameCaptionText(slide, captionText, voiceLabel, tagNo);
+            if (!isSameCaptionText)
             {
-                SaveTextToWaveFile(captionText, audioFilePath, voice);
+                isSavedSuccessful = SaveTextToWaveFile(captionText, audioFilePath, voice);
             }
-            shape = InsertAudioFileOnSlide(slide, audioFilePath);
-            shape.Name = shapeName;
-           // ReadWavFileTimeSpan(audioFilePath);
+            if (isSameCaptionText || isSavedSuccessful)
+            {
+                shape = InsertAudioFileOnSlide(slide, audioFilePath);
+            }
+            if (shape != null)
+            {
+                shape.Name = shapeName;
+            }
             return shape;
 
         }
@@ -141,8 +161,7 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             if (voice is AzureVoice)
             {
-                AzureRuntimeService.SaveStringToWaveFileWithAzureVoice(text, filePath, voice as AzureVoice);
-                return true;
+                return AzureRuntimeService.SaveStringToWaveFileWithAzureVoice(text, filePath, voice as AzureVoice);            
             }
             else if (voice is ComputerVoice)
             {

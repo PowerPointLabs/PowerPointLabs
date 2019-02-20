@@ -101,7 +101,7 @@ namespace PowerPointLabs.ELearningLab.Service
         #endregion
 
         #region Audio Generation
-        public static void SaveStringToWaveFileWithAzureVoice(string textToSave, string filePath, AzureVoice voice)
+        public static bool SaveStringToWaveFileWithAzureVoice(string textToSave, string filePath, AzureVoice voice)
         {
             string accessToken;
             string textToSpeak = GetHumanSpeakNotesForText(textToSave);
@@ -115,12 +115,12 @@ namespace PowerPointLabs.ELearningLab.Service
             catch
             {
                 Logger.Log("Failed authentication.");
-                return;
+                return false;
             }
             string requestUri = AzureAccount.GetInstance().GetUri();
             if (requestUri == null)
             {
-                return;
+                return false;
             }
             var azureVoiceSynthesizer = new SynthesizeAzureVoice();
 
@@ -139,6 +139,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 OutputFormat = AudioOutputFormat.Riff24Khz16BitMonoPcm,
                 AuthorizationToken = "Bearer " + accessToken,
             }, filePath).Wait();
+            return true;
         }
 
         private static string GetHumanSpeakNotesForText(string textToSave)

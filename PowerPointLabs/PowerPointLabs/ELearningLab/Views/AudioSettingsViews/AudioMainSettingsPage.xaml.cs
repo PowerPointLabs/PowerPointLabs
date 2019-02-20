@@ -23,6 +23,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         public delegate void DefaultVoiceChangedDelegate();
         public DefaultVoiceChangedDelegate DefaultVoiceChangedHandler { get; set; }
+        public bool IsDefaultVoiceChangedHandlerAssigned { get; set; } = false;
         public VoiceType SelectedVoiceType
         {
             get
@@ -112,8 +113,10 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             DialogConfirmedHandler(SelectedVoiceType, SelectedVoice, previewCheckbox.IsChecked.GetValueOrDefault());
             // TODO
-            DefaultVoiceChangedHandler();
-          //  ELearningLabMainPanel.GetInstance().RefreshVoiceLabelOnAudioSettingChanged();
+            if (IsDefaultVoiceChangedHandlerAssigned)
+            { 
+                DefaultVoiceChangedHandler();
+            }
             AudioSettingsDialogWindow.GetInstance().Close();
             AudioSettingsDialogWindow.GetInstance().Destroy();
         }

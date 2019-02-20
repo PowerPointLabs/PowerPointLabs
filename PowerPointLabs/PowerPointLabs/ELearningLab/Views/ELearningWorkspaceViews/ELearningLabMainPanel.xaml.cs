@@ -55,7 +55,6 @@ namespace PowerPointLabs.ELearningLab.Views
                IntPtr.Zero,
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
-            AudioMainSettingsPage.GetInstance().DefaultVoiceChangedHandler += RefreshVoiceLabelOnAudioSettingChanged;
         }
 
         public void HandleELearningPaneSlideSelectionChanged()
@@ -78,10 +77,35 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
             }
         }
+
+        public void RefreshVoiceLabelOnAudioSettingChanged()
+        {
+            if (Visibility == Visibility.Visible)
+            {
+                ObservableCollection<ClickItem> clickItems = listView.ItemsSource as ObservableCollection<ClickItem>;
+                foreach (ClickItem item in clickItems)
+                {
+                    if (item is SelfExplanationClickItem)
+                    {
+                        SelfExplanationClickItem selfExplanationClickItem = item as SelfExplanationClickItem;
+                        if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanationClickItem.VoiceLabel)
+                            .Equals(ELearningLabText.DefaultAudioIdentifier))
+                        {
+                            selfExplanationClickItem.VoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat,
+                                AudioSettingService.selectedVoice.ToString());
+                        }
+                    }
+                }
+            }
+        }
         private void SyncClickItems()
         {
-            CheckAzureAccountValidity();
-            SyncCustomAnimationToTaskpane();
+            bool removeAzureAudioIfAccountInvalid = false;
+            if (IsAzureVoiceSelected())
+            {
+                removeAzureAudioIfAccountInvalid = !CheckAzureAccountValidity();
+            }
+            SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid);
             RefreshListViewItemsSource();
             RemoveLabAnimationsFromAnimationPane();
             SyncLabItemToAnimationPane();
@@ -154,27 +178,6 @@ namespace PowerPointLabs.ELearningLab.Views
             RefreshListViewItemsSource();
         }
 
-        private void RefreshVoiceLabelOnAudioSettingChanged()
-        {
-            if (Visibility == Visibility.Visible)
-            {
-                ObservableCollection<ClickItem> clickItems = listView.ItemsSource as ObservableCollection<ClickItem>;
-                foreach (ClickItem item in clickItems)
-                {
-                    if (item is SelfExplanationClickItem)
-                    {
-                        SelfExplanationClickItem selfExplanationClickItem = item as SelfExplanationClickItem;
-                        if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanationClickItem.VoiceLabel)
-                            .Equals(ELearningLabText.DefaultAudioIdentifier))
-                        {
-                            selfExplanationClickItem.VoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat,
-                                AudioSettingService.selectedVoice.ToString());
-                        }
-                    }
-                }
-            }
-        }
-
         #endregion
 
         #region XMAL-Binded Event Handler
@@ -218,11 +221,11 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        private void SyncCustomAnimationToTaskpane()
+        private void SyncCustomAnimationToTaskpane(bool uncheckAzureAudio)
         {
             Queue<CustomClickItem> customClickItems = LoadCustomClickItems();
             ReplaceCustomItemsInItemsSource(customClickItems);
-            UpdateClickNoInItemsSource();
+            UpdatePropertiesInItemsSource(uncheckAzureAudio: uncheckAzureAudio);
         } 
 
         private void SyncLabItemToAnimationPane()
@@ -256,7 +259,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
         
-        private void UpdateSelfExplanationItem(SelfExplanationClickItem item)
+        private void UpdateSelfExplanationItem(SelfExplanationClickItem item, bool uncheckAzureAudio)
         {
             if (string.IsNullOrEmpty(item.CaptionText.Trim()))
             {
@@ -270,6 +273,11 @@ namespace PowerPointLabs.ELearningLab.Views
             if (item.CaptionText.Trim().Equals(item.CalloutText.Trim()))
             {
                 item.HasShortVersion = false;
+            }
+            if (uncheckAzureAudio)
+            {
+                item.IsVoice = false;
+                item.VoiceLabel = string.Empty;
             }
         }
 
@@ -351,7 +359,7 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         /// <param name="clickItems"></param>
         /// <returns></returns>
-        private ObservableCollection<ClickItem> UpdateClickNoInItemsSource()
+        private ObservableCollection<ClickItem> UpdatePropertiesInItemsSource(bool uncheckAzureAudio)
         {
             int clickNo = FirstClickNumber;
             for (int i = 0; i < Items.Count(); i++)
@@ -360,19 +368,33 @@ namespace PowerPointLabs.ELearningLab.Views
                 UpdateClickNoOnClickItem(clickItem, clickNo, i);
                 if (clickItem is SelfExplanationClickItem)
                 {
-                    UpdateSelfExplanationItem(clickItem as SelfExplanationClickItem);
+                    UpdateSelfExplanationItem(clickItem as SelfExplanationClickItem, uncheckAzureAudio);
                 }
             }
             return Items;
         }
 
-        private void CheckAzureAccountValidity()
+        private bool CheckAzureAccountValidity()
         {
             AzureAccountStorageService.LoadUserAccount();
             if (!AzureRuntimeService.IsAzureAccountPresent() || !AzureRuntimeService.IsValidUserAccount())
             {
-                MessageBox.Show("Azure Account Authentication Failed. \n Azure Voices Cannot Be Generated.");
+                MessageBox.Show("Azure Account Authentication Failed. \nAzure Voices Cannot Be Generated.");
+                return false;
             }
+            return true;
+        }
+
+        private bool IsAzureVoiceSelected()
+        {
+            foreach (ClickItem item in Items)
+            {
+                if (item is SelfExplanationClickItem && AudioService.IsAzureVoiceSelectedForItem(item as SelfExplanationClickItem))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
