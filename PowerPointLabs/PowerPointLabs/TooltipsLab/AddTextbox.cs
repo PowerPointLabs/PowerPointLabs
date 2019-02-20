@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.TooltipsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -15,8 +16,13 @@ namespace PowerPointLabs.TooltipsLab
             {
                 return;
             }
-            Shape callout = selection.ShapeRange[1];
+            AddTextboxToCallout(currentSlide, selection.ShapeRange[1]);
+        }
+
+        public static void AddTextboxToCallout(PowerPointSlide currentSlide, Shape callout)
+        {
             Shape textbox = AddTextboxToSlide(currentSlide, callout.Left, callout.Top, callout.Width, callout.Height);
+            Selection selection = AddTextboxActionHandler.GetNewSelection(callout, textbox);
             Shape group = selection.ShapeRange.Group();
             group.ZOrder(MsoZOrderCmd.msoSendBackward);
             textbox.Select(MsoTriState.msoTrue);
@@ -27,7 +33,6 @@ namespace PowerPointLabs.TooltipsLab
             Shape textbox = slide.GetNativeSlide().Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, left, top, width, height);
             textbox.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             textbox.ZOrder(MsoZOrderCmd.msoBringForward);
-            textbox.Select(MsoTriState.msoFalse);
             return textbox;
         }
 

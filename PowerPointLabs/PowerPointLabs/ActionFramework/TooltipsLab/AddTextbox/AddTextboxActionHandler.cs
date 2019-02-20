@@ -11,6 +11,14 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
     [ExportActionRibbonId(TooltipsLabText.AddTextboxTag)]
     class AddTextboxActionHandler : ActionHandler
     {
+        public static Selection GetNewSelection(Shape shape1, Shape shape2)
+        {
+            Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
+            shape1.Select();
+            shape2.Select(Microsoft.Office.Core.MsoTriState.msoFalse);
+            return Globals.ThisAddIn.Application.ActiveWindow.Selection;
+        }
+
         protected override void ExecuteAction(string ribbonId)
         {
             Selection selection = this.GetCurrentSelection();
