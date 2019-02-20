@@ -756,6 +756,7 @@
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="TimerLab\TimerLab.cs" />
+    <Compile Include="TooltipsLab\CreateTooltip.cs" />
     <Compile Include="TooltipsLab\AddTextbox.cs" />
     <Compile Include="TooltipsLab\AttachTriggerAnimation.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
