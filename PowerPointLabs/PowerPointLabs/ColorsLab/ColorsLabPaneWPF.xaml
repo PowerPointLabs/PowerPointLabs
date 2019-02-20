@@ -31,14 +31,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="200" />
                 <RowDefinition Height="180" />
-                <RowDefinition Height="165" />
+                <RowDefinition Height="180" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <GroupBox x:Name="GeneralGroupBox" Header="General" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="45" />
+                        <RowDefinition Height="24" />
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
                         <RowDefinition Height="*" />
@@ -47,16 +47,16 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="52" />
+                        <ColumnDefinition Width="52" />
+                        <ColumnDefinition Width="52" />
+                        <ColumnDefinition Width="52" />
+                        <ColumnDefinition Width="52" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Rectangle x:Name="eyeDropperPreviewRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5"
+                    <Rectangle x:Name="eyeDropperPreviewRectangle" Grid.Row="0" Grid.Column="0" Margin="6,5,6,0"
                                Panel.ZIndex="0"/>
-                    <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" 
+                    <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="6,5,6,0" 
                                Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"
                                Stroke="Black" StrokeThickness="0.5"
                                MouseLeftButtonDown="SelectedColorRectangle_MouseDown" 
@@ -65,7 +65,7 @@
                                ToolTip="{x:Static textCollection:ColorsLabText.MainColorBoxTooltip}"
                                ContextMenu="{DynamicResource ColorRectContextMenu}">
                     </Rectangle>
-                    <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" 
+                    <Button x:Name="applyTextColorButton" Grid.Row="0" Grid.Column="1" Margin="6,5,6,0" 
                             PreviewMouseDown="ApplyColorButton_MouseDown"  Background="White">
                         <Image x:Name="textColorIcon" Source="..\Resources\TextColor_Icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                         <Button.Style>
@@ -85,7 +85,8 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <Button x:Name="applyLineColorButton" Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" 
+                    <TextBlock Text="Text Color" Grid.Row="1" Grid.Column="1" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+                    <Button x:Name="applyLineColorButton" Grid.Row="0" Grid.Column="2" Margin="6,5,6,0" 
                             PreviewMouseDown="ApplyColorButton_MouseDown" Background="White">
                         <Image x:Name="lineColorIcon" Source="..\Resources\LineColor_Icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                         <Button.Style>
@@ -105,7 +106,8 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <Button x:Name="applyFillColorButton" Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" 
+                    <TextBlock Text="Line Color" Grid.Row="1" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+                    <Button x:Name="applyFillColorButton" Grid.Row="0" Grid.Column="3" Margin="6,5,6,0" 
                             PreviewMouseDown="ApplyColorButton_MouseDown"  Background="White">
                         <Image x:Name="fillColorIcon" Source="..\Resources\FillColor_Icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                         <Button.Style>
@@ -125,7 +127,8 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
-                    <Button x:Name="eyeDropperButton" Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" 
+                    <TextBlock Text="Fill Color" Grid.Row="1" Grid.Column="3" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+                    <Button x:Name="eyeDropperButton" Grid.Row="0" Grid.Column="4" Margin="6,5,6,0" 
                             PreviewMouseDown="EyeDropperButton_PreviewMouseDown"  Background="White">
                         <Image x:Name="eyeDropperIcon" Source="..\Resources\EyeDropper_Icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                         <Button.Style>
@@ -145,8 +148,9 @@
                             </StackPanel>
                         </Button.ToolTip>
                     </Button>
+                    <TextBlock Text="Eyedropper" Grid.Row="1" Grid.Column="4" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
 
-                    <Image x:Name="brightnessIcon" Grid.Row="2" Grid.Column="0" Margin="15,0,15,0" Source="..\Resources\Brightness-icon_25x25.png" Stretch="Fill"/>
+                    <Image x:Name="brightnessIcon" Grid.Row="2" Grid.Column="0" Margin="16,0,16,0" Source="..\Resources\Brightness-icon_25x25.png" Stretch="Fill"/>
                     <Rectangle x:Name="brightnessRectangle" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2"
                                Stroke="Black" StrokeThickness="0.5">
                         <Rectangle.Fill>
@@ -163,7 +167,7 @@
                     <Slider x:Name="brightnessSlider" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"
                             Minimum="0" Maximum="240" Value="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToBrightnessValue.Instance}}"
                             ValueChanged="BrightnessSlider_ValueChanged" ToolTip="{x:Static textCollection:ColorsLabText.BrightnessSliderTooltip}"/>
-                    <Image x:Name="saturationIcon" Grid.Row="5" Grid.Column="0" Margin="16,1,16,1" Source="..\Resources\Saturation-icon_18x18.png" Stretch="Fill"/>
+                    <Image x:Name="saturationIcon" Grid.Row="5" Grid.Column="0" Margin="17,1,17,1" Source="..\Resources\Saturation-icon_18x18.png" Stretch="Fill"/>
                     <Rectangle x:Name="saturationRectangle" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2,30,2"
                                Stroke="Black" StrokeThickness="0.5">
                         <Rectangle.Fill>
@@ -319,7 +323,7 @@
                 <Grid Margin="5,0,5,5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
-                        <RowDefinition Height="70" />
+                        <RowDefinition Height="90" />
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
@@ -436,16 +440,18 @@
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="20" />
-                            <RowDefinition Height="50" />
+                            <RowDefinition Height="43" />
+                            <RowDefinition Height="20" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" HorizontalAlignment="Left" VerticalAlignment="Center">Actions</TextBlock>
-                        <Button x:Name="saveColorButton" Grid.Row="1" Grid.Column="0" Margin="0,3,10,5" 
+                        <Button x:Name="saveColorButton" Grid.Row="1" Grid.Column="0" Margin="0,3,0,0" 
                                 Click="SaveColorButton_Click" Background="White">
                             <Image x:Name="saveColorIcon" Source="..\Resources\Save_icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                             <Button.Style>
@@ -465,7 +471,7 @@
                                 </StackPanel>
                             </Button.ToolTip>
                         </Button>
-                        <Button x:Name="loadColorButton" Grid.Row="1" Grid.Column="1" Margin="0,3,10,5" 
+                        <Button x:Name="loadColorButton" Grid.Row="1" Grid.Column="1" Margin="10,3,10,0" 
                                 Click="LoadColorButton_Click" Background="White">
                             <Image x:Name="loadColorIcon" Source="..\Resources\Load_icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                             <Button.Style>
@@ -485,7 +491,7 @@
                                 </StackPanel>
                             </Button.ToolTip>
                         </Button>
-                        <Button x:Name="reloadColorButton" Grid.Row="1" Grid.Column="2" Margin="0,3,10,5" 
+                        <Button x:Name="reloadColorButton" Grid.Row="1" Grid.Column="2" Margin="0,3,0,0" 
                                 Click="ReloadColorButton_Click" Background="White">
                             <Image x:Name="reloadColorIcon" Source="..\Resources\Reload_icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                             <Button.Style>
@@ -505,7 +511,7 @@
                                 </StackPanel>
                             </Button.ToolTip>
                         </Button>
-                        <Button x:Name="clearColorButton" Grid.Row="1" Grid.Column="3" Margin="0,3,10,5" 
+                        <Button x:Name="clearColorButton" Grid.Row="1" Grid.Column="3" Margin="10,3,10,0" 
                                 Click="ClearColorButton_Click" Background="White">
                             <Image x:Name="clearColorIcon" Source="..\Resources\Clear_icon.png" Stretch="Fill" Margin="4,4,4,4"/>
                             <Button.Style>
@@ -525,6 +531,11 @@
                                 </StackPanel>
                             </Button.ToolTip>
                         </Button>
+                        <TextBlock Text="Save" Grid.Row="2" Grid.Column="0" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+                        <TextBlock Text="Load" Grid.Row="2" Grid.Column="1" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+                        <TextBlock Text="Reset" Grid.Row="2" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+                        <TextBlock Text="Clear" Grid.Row="2" Grid.Column="3" TextAlignment="Center" VerticalAlignment="Top" FontSize="10" Margin="0,2,0,0"/>
+
                     </Grid>
                 </Grid>
             </GroupBox>
