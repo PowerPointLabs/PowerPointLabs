@@ -22,6 +22,11 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             
             EditNameDialogBox editForm = new EditNameDialogBox(selectedShape);
             editForm.ShowDialog();
+
+            if (!this.GetApplication().CommandBars.GetPressedMso("SelectionPane"))
+            {
+                this.GetApplication().CommandBars.ExecuteMso("SelectionPane");
+            }
         }
     }
 }
