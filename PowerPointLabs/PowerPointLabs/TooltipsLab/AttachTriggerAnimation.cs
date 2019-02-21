@@ -47,7 +47,10 @@ namespace PowerPointLabs.TooltipsLab
         {
             TimeLine timeline = currentSlide.TimeLine;
             MsoAnimEffect fadeEffect = MsoAnimEffect.msoAnimEffectFade;
+            ISet<Shape> shapes = RemoveAnimationsInInteractiveSequence(currentSlide, triggerShape);
             Sequence sequence = timeline.InteractiveSequences.Add();
+            // Append existing shapes to the list of shapes to animate
+            shapesToAnimate.AddRange(shapes);
             // Add Entrance Effect to Shapes
             for (int i = 0; i < shapesToAnimate.Count; i++)
             {
@@ -87,6 +90,35 @@ namespace PowerPointLabs.TooltipsLab
                 }
                 effect.Exit = Microsoft.Office.Core.MsoTriState.msoTrue;
             }
+        }
+
+        private static ISet<Shape> RemoveAnimationsInInteractiveSequence(PowerPointSlide currentSlide, Shape triggerShape)
+        {
+            Sequences sequences = currentSlide.TimeLine.InteractiveSequences;
+            // A set is used here so no duplicate shapes will be added
+            ISet<Shape> existingAnimatedShapes = new HashSet<Shape>();
+            // Find the existing sequence that has the triggerShape
+            for (int i = 1; i <= sequences.Count; i++)
+            {
+                Sequence sequence = sequences[i];
+                // Iterate from the back because we are deleting
+                for (int j = sequence.Count; j >= 1; j--)
+                {
+                    Effect effect = sequence[i];
+                    // Get existing shapes and only those with entrance effect
+                    if (effect.Timing.TriggerShape == triggerShape)
+                    {
+                        existingAnimatedShapes.Add(effect.Shape);
+                        effect.Delete();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return existingAnimatedShapes;
         }
 
         private static List<Shape> GetShapesToAnimate(ShapeRange selectedShapes)
