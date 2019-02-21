@@ -39,11 +39,15 @@ namespace Test.UnitTest.SyncLab
             string[] nodes2 = { _testNodesNames[4], _testNodesNames[6], _testNodesNames[8] };
             string[] nodes3 = { _testNodesNames[7], _testNodesNames[11], _testNodesNames[18] };
 
-            testFollowingNodes(nodes1);
-            testFollowingNodes(nodes2);
-            testFollowingNodes(nodes3);
+            TestFollowingNodes(nodes1);
+            TestFollowingNodes(nodes2);
+            TestFollowingNodes(nodes3);
         }
 
+        /// <summary>
+        /// Get the node names of all format nodes.
+        /// </summary>
+        /// <returns></returns>
         private string[] GetAllFormatNames()
         {
             Queue<FormatTreeNode> queue = new Queue<FormatTreeNode>(SyncFormatConstants.FormatCategories);
@@ -77,12 +81,16 @@ namespace Test.UnitTest.SyncLab
         {
             foreach (string name in formatNames)
             {
-                getEndNode(formats, name).IsChecked = true;
+                GetEndNode(formats, name).IsChecked = true;
             }
             return formats;
         }
 
-        private FormatTreeNode getEndNode(FormatTreeNode[] formats, string name)
+        /// <summary>
+        /// Gets the node at the end of the format tree, as specified by the string name
+        /// Returns early with the last matching node if the next node cannot be found
+        /// </summary>
+        private FormatTreeNode GetEndNode(FormatTreeNode[] formats, string name)
         {
             string[] path = name.Split(SyncFormatConstants.FormatNameSeparator.ToCharArray());
             FormatTreeNode currentRoot = new FormatTreeNode("root", formats);
@@ -112,7 +120,10 @@ namespace Test.UnitTest.SyncLab
             return index;
         }
 
-        private void testFollowingNodes(string[] nodeNames)
+        /// <summary>
+        /// Test the node names displayed by the tooltip against the expected node names.
+        /// </summary>
+        private void TestFollowingNodes(string[] nodeNames)
         {
             FormatTreeNode[] nodes = SyncFormatConstants.FormatCategories;
             nodes = SelectFormats(SyncFormatConstants.FormatCategories, nodeNames);
