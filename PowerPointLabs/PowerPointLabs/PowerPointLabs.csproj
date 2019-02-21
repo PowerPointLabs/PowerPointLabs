@@ -263,6 +263,7 @@
     <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipSupertipHandler.cs" />
@@ -279,6 +280,7 @@
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
@@ -706,6 +708,7 @@
       <DependentUpon>SpeechPlayingDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
+    <Compile Include="PictureSlidesLab\PictureSlidesLab.cs" />
     <Compile Include="PositionsLab\PositionsLabSettings.cs" />
     <Compile Include="SaveLab\SaveLabMain.cs" />
     <Compile Include="SaveLab\SaveLabSettings.cs" />

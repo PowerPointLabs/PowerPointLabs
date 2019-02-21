@@ -937,12 +937,15 @@ namespace PowerPointLabs
 
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
+                ShutDownPictureSlidesLab();
             }
 
             // in case the recorder is on event
@@ -975,6 +978,8 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
+            Ribbon.RefreshRibbonControl("CreateTooltipButton");
+            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
@@ -1033,6 +1038,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
+            Ribbon.RefreshRibbonControl("AssignTooltipButton");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
