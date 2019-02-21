@@ -55,7 +55,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Rectangle x:Name="eyeDropperPreviewRectangle" Grid.Row="0" Grid.Column="0" Margin="6,5,6,0"
-                               Panel.ZIndex="0"/>
+                               Panel.ZIndex="0" Stroke="Black" StrokeThickness="0.5"/>
                     <Rectangle x:Name="selectedColorRectangle" Grid.Row="0" Grid.Column="0" Margin="6,5,6,0" 
                                Fill="{Binding SelectedColor, Converter={x:Static converter:HSLColorToHex.Instance}}"
                                Stroke="Black" StrokeThickness="0.5"
