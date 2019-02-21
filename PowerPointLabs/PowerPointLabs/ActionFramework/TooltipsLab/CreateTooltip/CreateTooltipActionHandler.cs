@@ -24,14 +24,16 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
                 foreach (PowerPoint.Shape selectedShape in this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange)
                 {
                     PowerPoint.Shape callout= CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
-                    AssignTooltip.AddTriggerAnimation(currentSlide, selectedShape, callout);
+                    PowerPoint.Shape group = AddTextbox.AddTextboxToCallout(currentSlide, callout);
+                    AssignTooltip.AddTriggerAnimation(currentSlide, selectedShape, group);
                 }
             }
             else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionNone)
             {
                 PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
                 PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
-                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
+                PowerPoint.Shape group = AddTextbox.AddTextboxToCallout(currentSlide, callout);
+                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, group);
             }
 
             if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))

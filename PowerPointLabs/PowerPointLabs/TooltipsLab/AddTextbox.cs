@@ -18,7 +18,7 @@ namespace PowerPointLabs.TooltipsLab
             AddTextboxToCallout(currentSlide, selection.ShapeRange[1]);
         }
 
-        public static void AddTextboxToCallout(PowerPointSlide currentSlide, Shape callout)
+        public static Shape AddTextboxToCallout(PowerPointSlide currentSlide, Shape callout)
         {
             Shape textbox = AddTextboxToSlide(currentSlide, callout.Left, callout.Top, callout.Width, callout.Height);
             string[] rangeArray = new string[2];
@@ -27,6 +27,7 @@ namespace PowerPointLabs.TooltipsLab
             Shape group = currentSlide.Shapes.Range(rangeArray).Group();
             group.ZOrder(MsoZOrderCmd.msoSendBackward);
             textbox.Select(MsoTriState.msoTrue);
+            return group;
         }
 
         private static Shape AddTextboxToSlide(PowerPointSlide slide, float left, float top, float width, float height)
