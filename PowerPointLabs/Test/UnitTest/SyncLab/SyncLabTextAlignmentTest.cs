@@ -78,12 +78,15 @@ namespace Test.UnitTest.SyncLab
             Microsoft.Office.Interop.PowerPoint.TextFrame2 actualTextFrame = actualShape.TextFrame2;
             Microsoft.Office.Interop.PowerPoint.TextFrame2 expectedTextFrame = expectedShape.TextFrame2;
 
-            Assert.IsTrue(actualTextFrame.HorizontalAnchor == expectedTextFrame.HorizontalAnchor
+            Assert.IsTrue(actualTextFrame.TextRange.ParagraphFormat.Alignment == expectedTextFrame.TextRange.ParagraphFormat.Alignment
+                && actualTextFrame.HorizontalAnchor == expectedTextFrame.HorizontalAnchor
                 && actualTextFrame.VerticalAnchor == expectedTextFrame.VerticalAnchor,
                 "Text alignment does not match expected text alignment." +
-                "Expected horizontalAlignment:{0}, verticalAlignment: {1}."
-                    + "Actual horizontalAlignment:{2}, verticalAlignment:{3}.",
+                "Expected paragraphAlignment: {0}, horizontalAlignment:{1}, verticalAlignment: {2}."
+                    + "Actual paragraphAlignment: {3}, horizontalAlignment:{4}, verticalAlignment:{5}.",
+                expectedTextFrame.TextRange.ParagraphFormat.Alignment,
                 expectedTextFrame.HorizontalAnchor, expectedTextFrame.VerticalAnchor,
+                actualTextFrame.TextRange.ParagraphFormat.Alignment,
                 actualTextFrame.HorizontalAnchor, actualTextFrame.VerticalAnchor);
         }
     }

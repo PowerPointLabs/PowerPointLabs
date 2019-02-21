@@ -40,6 +40,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.TextFrame.HorizontalAnchor = formatShape.TextFrame2.HorizontalAnchor;
+                newShape.TextFrame.TextRange.ParagraphFormat.Alignment =
+                    formatShape.TextFrame.TextRange.ParagraphFormat.Alignment;
             }
             catch (Exception e)
             {
