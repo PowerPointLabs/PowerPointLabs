@@ -14,14 +14,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
         protected override bool GetEnabled(string ribbonId)
         {
             Selection currentSelection = this.GetCurrentSelection();
-            if (!ShapeUtil.IsSelectionShape(currentSelection))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }            
+            return ShapeUtil.IsSelectionShape(currentSelection);      
         }
     }
 }

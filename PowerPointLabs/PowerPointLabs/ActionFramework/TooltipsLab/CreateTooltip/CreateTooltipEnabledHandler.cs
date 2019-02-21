@@ -13,14 +13,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
         protected override bool GetEnabled(string ribbonId)
         {
             PowerPointSlide currentSlide = this.GetCurrentSlide();
-            if (currentSlide != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return currentSlide != null;
         }
     }
 }
