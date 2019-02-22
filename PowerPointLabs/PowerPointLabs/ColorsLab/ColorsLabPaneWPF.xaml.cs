@@ -290,11 +290,6 @@ namespace PowerPointLabs.ColorsLab
 
         #region Button Handlers
 
-        private void ApplyTextColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("hi");
-        }
-
         /// <summary>
         /// On mouse down, init eyedropper mode.
         /// </summary>
