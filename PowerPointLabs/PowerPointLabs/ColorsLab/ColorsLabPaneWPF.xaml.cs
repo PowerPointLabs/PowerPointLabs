@@ -692,6 +692,10 @@ namespace PowerPointLabs.ColorsLab
         private void SaveColorButton_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.DefaultExt = "thm";
+            saveFileDialog.Filter = "PPTLabsThemes|*.thm";
+            saveFileDialog.Title = "Save Theme";
+            
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
@@ -709,6 +713,10 @@ namespace PowerPointLabs.ColorsLab
         private void LoadColorButton_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog.DefaultExt = "thm";
+            openFileDialog.Filter = "PPTLabsTheme|*.thm";
+            openFileDialog.Title = "Load Theme";
+
             System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
