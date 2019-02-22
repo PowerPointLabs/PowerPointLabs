@@ -22,18 +22,12 @@ namespace PowerPointLabs.TooltipsLab
                 throw new Exception();
             }
 
-            try
-            {
-                Shape triggerShape = selectedShapes[1];
+            Shape triggerShape = selectedShapes[1];
 
-                List<Shape> shapesToAnimate = GetShapesToAnimate(selectedShapes);
+            List<Shape> shapesToAnimate = GetShapesToAnimate(selectedShapes);
 
-                AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
+            AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
+
         }
 
         public static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, Shape calloutShape)
@@ -43,15 +37,22 @@ namespace PowerPointLabs.TooltipsLab
             AddTriggerAnimation(currentSlide, triggerShape, calloutShapeList);
         }
 
-        private static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
+        private static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> newShapesToAnimate)
         {
             TimeLine timeline = currentSlide.TimeLine;
+            // TODO: Get effect from settings
             MsoAnimEffect fadeEffect = MsoAnimEffect.msoAnimEffectFade;
-            ISet<Shape> shapes = RemoveAnimationsInInteractiveSequence(currentSlide, triggerShape);
+
+            // Get the shapes that are already associated with trigger shape
+            List<Shape> shapesToAnimate = RemoveAnimationsInInteractiveSequence(currentSlide, triggerShape, newShapesToAnimate);
             Sequence sequence = timeline.InteractiveSequences.Add();
-            // Append existing shapes to the list of shapes to animate
-            shapesToAnimate.AddRange(shapes);
-            // Add Entrance Effect to Shapes
+
+            AddTriggerEffect(triggerShape, shapesToAnimate, fadeEffect, sequence);
+        }
+
+        private static void AddTriggerEffect(Shape triggerShape, List<Shape> shapesToAnimate, MsoAnimEffect effect, Sequence sequence)
+        {
+            // Add Entrance Effect
             for (int i = 0; i < shapesToAnimate.Count; i++)
             {
                 Shape animationShape = shapesToAnimate[i];
@@ -60,13 +61,14 @@ namespace PowerPointLabs.TooltipsLab
                 if (i == 0)
                 {
                     triggerType = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
-                    sequence.AddTriggerEffect(animationShape, fadeEffect, triggerType, triggerShape);
+                    sequence.AddTriggerEffect(animationShape, effect, triggerType, triggerShape);
                 }
                 // Rest of the shapes will appear with the first shape
                 else
                 {
                     triggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                    sequence.AddEffect(shapesToAnimate[i], fadeEffect, MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    sequence.AddEffect(shapesToAnimate[i], effect,
+                        MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 }
             }
 
@@ -75,40 +77,44 @@ namespace PowerPointLabs.TooltipsLab
             {
                 Shape animationShape = shapesToAnimate[i];
                 MsoAnimTriggerType triggerType;
-                Effect effect;
+                Effect effectInSequence;
                 // The first shape will be triggered by the click to disappear
                 if (i == 0)
                 {
                     triggerType = MsoAnimTriggerType.msoAnimTriggerOnShapeClick;
-                    effect = sequence.AddTriggerEffect(animationShape, fadeEffect, triggerType, triggerShape);
+                    effectInSequence = sequence.AddTriggerEffect(animationShape, effect, triggerType, triggerShape);
                 }
                 // Rest of the shapes will disappear with the first shape
                 else
                 {
                     triggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
-                    effect = sequence.AddEffect(shapesToAnimate[i], fadeEffect, MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
+                    effectInSequence = sequence.AddEffect(shapesToAnimate[i], effect, 
+                        MsoAnimateByLevel.msoAnimateLevelNone, MsoAnimTriggerType.msoAnimTriggerWithPrevious);
                 }
-                effect.Exit = Microsoft.Office.Core.MsoTriState.msoTrue;
+                effectInSequence.Exit = Microsoft.Office.Core.MsoTriState.msoTrue;
             }
         }
 
-        private static ISet<Shape> RemoveAnimationsInInteractiveSequence(PowerPointSlide currentSlide, Shape triggerShape)
+        private static List<Shape> RemoveAnimationsInInteractiveSequence(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
         {
             Sequences sequences = currentSlide.TimeLine.InteractiveSequences;
             // A set is used here so no duplicate shapes will be added
-            ISet<Shape> existingAnimatedShapes = new HashSet<Shape>();
+            ISet<Shape> shapesToAnimateSet = new HashSet<Shape>(shapesToAnimate);
+
             // Find the existing sequence that has the triggerShape
             for (int i = 1; i <= sequences.Count; i++)
             {
                 Sequence sequence = sequences[i];
-                // Iterate from the back because we are deleting
+                // Iterate from the back because of deletion
                 for (int j = sequence.Count; j >= 1; j--)
                 {
-                    Effect effect = sequence[i];
-                    // Get existing shapes and only those with entrance effect
+                    Effect effect = sequence[j];
+                    // A sequence is attached to a trigger shape. However we can only use the effect to find out
+                    // what is the trigger shape, thus we break when the first effect's trigger shape is not 
+                    // what we are looking for and delete all effects from the sequence otherwise.
                     if (effect.Timing.TriggerShape == triggerShape)
                     {
-                        existingAnimatedShapes.Add(effect.Shape);
+                        shapesToAnimateSet.Add(effect.Shape);
                         effect.Delete();
                     }
                     else
@@ -118,7 +124,7 @@ namespace PowerPointLabs.TooltipsLab
                 }
             }
 
-            return existingAnimatedShapes;
+            return new List<Shape>(shapesToAnimateSet);
         }
 
         private static List<Shape> GetShapesToAnimate(ShapeRange selectedShapes)
