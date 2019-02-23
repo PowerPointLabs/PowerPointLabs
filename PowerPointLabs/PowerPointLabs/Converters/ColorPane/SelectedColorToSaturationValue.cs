@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Data;
 
+using PowerPointLabs.ColorsLab;
+
 namespace PowerPointLabs.Converters.ColorPane
 {
     [ValueConversion(typeof(HSLColor), typeof(int))]

@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ColorPicker;
+using PowerPointLabs.ColorsLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;

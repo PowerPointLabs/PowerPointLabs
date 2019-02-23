@@ -8,7 +8,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 
 using PPExtraEventHelper;
 
-namespace PowerPointLabs.ColorPicker
+namespace PowerPointLabs.ColorsLab
 {
     /// <summary>
     /// Interaction logic for Magnifier.xaml

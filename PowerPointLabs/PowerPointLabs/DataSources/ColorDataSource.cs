@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using PowerPointLabs.ColorsLab;
+
 namespace PowerPointLabs.DataSources
 {
     class ColorDataSource : INotifyPropertyChanged

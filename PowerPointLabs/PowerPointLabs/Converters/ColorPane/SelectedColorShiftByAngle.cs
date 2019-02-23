@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Data;
 
-using PowerPointLabs.ColorPicker;
+using PowerPointLabs.ColorsLab;
 
 namespace PowerPointLabs.Converters.ColorPane
 {
@@ -16,11 +16,11 @@ namespace PowerPointLabs.Converters.ColorPane
             if (value == null)
             {
                 Color color = (HSLColor)value;
-                return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+                return ColorHelper.ColorToHexString(color);
             }
             HSLColor selectedColor = (HSLColor)value;
             Color convertedColor = ColorHelper.GetColorShiftedByAngle(selectedColor, float.Parse((string)parameter));
-            return "#" + convertedColor.R.ToString("X2") + convertedColor.G.ToString("X2") + convertedColor.B.ToString("X2");
+            return ColorHelper.ColorToHexString(convertedColor);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

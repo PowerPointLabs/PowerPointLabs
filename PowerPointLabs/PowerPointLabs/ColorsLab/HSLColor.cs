@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.ColorsLab
 {
     /// <summary>
     /// taken from: http://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
