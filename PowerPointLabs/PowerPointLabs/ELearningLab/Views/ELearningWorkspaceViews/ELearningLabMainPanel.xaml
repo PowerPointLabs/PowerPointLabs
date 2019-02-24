@@ -11,6 +11,9 @@
              views:SelfExplanationBlockView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
              views:SelfExplanationBlockView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="525">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -40,7 +43,7 @@
         </StackPanel>
         <ListView Grid.Row="1" x:Name="listView" ItemsSource="{Binding Items}"
                   BorderThickness="0" Margin="0" SelectionMode="Single">
-            <ListView.ItemContainerStyle>
+            <!--ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template">
                         <Setter.Value>
@@ -50,15 +53,18 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListView.ItemContainerStyle>
+            </-->
             <ListBox.Resources>
                 <DataTemplate DataType="{x:Type model:CustomClickItem}">
                     <StackPanel Margin="2 2 2 2">
-                        <Label Content="{Binding
+                        <!--Label Content="{Binding
                                 Path=.,
                                 Converter={converters:BlockToIndexConverter},
                                 RelativeSource={RelativeSource FindAncestor, 
                                          AncestorType={x:Type ListViewItem}}}" 
+                               FontFamily="Century Gothic" FontSize="20"/-->
+                        <Label Content="{Binding ClickNo}" ContentStringFormat="Click {0}" 
+                               Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}" 
                                FontFamily="Century Gothic" FontSize="20"/>
                         <views:CustomBlockView DataContext="{Binding}" />
                     </StackPanel>
@@ -67,11 +73,14 @@
                     <StackPanel Margin="2 2 2 2">
                         <Border BorderThickness="2" BorderBrush="#666666" CornerRadius="4">
                             <StackPanel Margin="5 5 5 5">
-                                <Label Content="{Binding
+                                <!--Label Content="{Binding
                                 Path=.,
                                 Converter={converters:BlockToIndexConverter},
                                 RelativeSource={RelativeSource FindAncestor, 
                                          AncestorType={x:Type ListViewItem}}}"
+                                       FontFamily="Century Gothic" FontSize="20"/-->
+                                <Label Content="{Binding ClickNo}" ContentStringFormat="Click {0}"  
+                                       Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}"
                                        FontFamily="Century Gothic" FontSize="20"/>
                                 <views:SelfExplanationBlockView DataContext="{Binding}"/>
                             </StackPanel>

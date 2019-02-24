@@ -122,6 +122,12 @@ namespace PowerPointLabs.ELearningLab.Views
             audioCheckBox.Checked += AudioCheckBox_CheckedChanged;
             audioCheckBox.Unchecked += AudioCheckBox_CheckedChanged;
             audioPreviewButton.IsEnabled = (bool)audioCheckBox.IsChecked;
+            audioCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
+            captionCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
+            calloutCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
+            audioCheckBox.Checked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
+            captionCheckBox.Checked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
+            calloutCheckBox.Checked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
         }
 
         private void UpButton_Click(object sender, RoutedEventArgs e)
@@ -185,6 +191,10 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 comboBox.Opacity = 0.5;
             }
+            else
+            {
+                comboBox.Opacity = 1;
+            }
         }
 
         private void AudioCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
@@ -201,6 +211,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 audioNameLabel.Visibility = Visibility.Collapsed;
                 audioPreviewButton.IsEnabled = false;
             }
+        }
+
+        private void IsVoiceCaptionCalloutCheckBox_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            RoutedEventArgs eventArgs = new RoutedEventArgs(TriggerTypeSelectionChangedEvent);
+            eventArgs.Source = sender;
+            RaiseEvent(eventArgs);
         }
 
         #endregion

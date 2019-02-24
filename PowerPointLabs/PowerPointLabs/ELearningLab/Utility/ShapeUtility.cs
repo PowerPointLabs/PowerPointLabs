@@ -129,5 +129,26 @@ namespace PowerPointLabs.ELearningLab.Utility
             shape.TextFrame.TextRange.Text = text;
             return shape;
         }
+
+        public static Shape InsertSelfExplanationTextBoxToSlide(PowerPointSlide slide, string shapeName, string text)
+        {
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+            float slideHeight = PowerPointPresentation.Current.SlideHeight;
+
+            Shape captionBox = slide.Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, 0, 0,
+                slideWidth, 100);
+            captionBox.Name = shapeName;
+            captionBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            captionBox.TextFrame.TextRange.Text = text;
+            captionBox.TextFrame.WordWrap = MsoTriState.msoTrue;
+            captionBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            captionBox.TextFrame.TextRange.Font.Size = 12;
+            captionBox.Fill.BackColor.RGB = 0xffffff;
+            captionBox.Fill.Transparency = 0.2f;
+            captionBox.TextFrame.TextRange.Font.Color.RGB = 0;
+            captionBox.Visible = MsoTriState.msoFalse;
+
+            return captionBox;
+        }
     }
 }

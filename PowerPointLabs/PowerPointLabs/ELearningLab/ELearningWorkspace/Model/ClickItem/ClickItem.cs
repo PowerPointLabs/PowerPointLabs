@@ -23,7 +23,23 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 clickNo = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ClickNo");
+            }
+        }
+
+        public bool ShouldLabelDisplay
+        {
+            get
+            {
+                if (this is CustomClickItem)
+                {
+                    return true;
+                }
+                else
+                {
+                    SelfExplanationClickItem selfExplanationClickItem = this as SelfExplanationClickItem;
+                    return !selfExplanationClickItem.IsDummyItem;
+                }
             }
         }
 
@@ -54,7 +70,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             return hashCode;
         }
 
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

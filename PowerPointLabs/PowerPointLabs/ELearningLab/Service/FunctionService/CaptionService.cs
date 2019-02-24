@@ -12,6 +12,7 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
+#pragma warning disable 618
     public class CaptionService
     {
         private static Shape templatedShape;
@@ -52,11 +53,14 @@ namespace PowerPointLabs.ELearningLab.Service
         private static Shape InsertCaptionShapeToSlide(PowerPointSlide slide, string captionText, int tagNo)
         {
             string shapeName = string.Format(ELearningLabText.CaptionShapeNameFormat, tagNo);
+            float slideHeight = PowerPointPresentation.Current.SlideHeight;
+
             if (slide.ContainShapeWithExactName(shapeName))
             {
                 Shape shape = ShapeUtility.ReplaceTextForShape(slide.GetShapeWithName(shapeName)[0], captionText);
                 shape.Visible = Microsoft.Office.Core.MsoTriState.msoTrue;
                 templatedShape = shape;
+                shape.Top = slideHeight - shape.Height;
                 return shape;
             }
             if (templatedShape != null && slide.ContainShape(templatedShape))

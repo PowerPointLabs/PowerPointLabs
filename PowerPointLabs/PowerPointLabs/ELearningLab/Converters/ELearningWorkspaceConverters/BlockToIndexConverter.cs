@@ -30,8 +30,13 @@ namespace PowerPointLabs.ELearningLab.Converters
             int index = listView.ItemContainerGenerator.IndexFromContainer(item);
             ObservableCollection<ClickItem> items = listView.ItemsSource as ObservableCollection<ClickItem>;
             ClickItem clickItem = items.ElementAt(index);
-            // TODO: Antipattern here. Try to think of a better way to get FirstClickNumber of slide
+            // TODO: anti-pattern here. Try to think of a better way to get FirstClickNumber of slide
             CustomTaskPane eLearningTaskpane = Globals.ThisAddIn.GetActivePane(typeof(ELearningLabTaskpane));
+            bool isOnClickSelfExplanationAfterCustomItem = index > 0 && 
+                clickItem is SelfExplanationClickItem && (items.ElementAt(index - 1) is CustomClickItem)
+                && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
+            bool isDummySelfExplanationItem =
+                clickItem is SelfExplanationClickItem && (clickItem as SelfExplanationClickItem).IsDummyItem;
             if (eLearningTaskpane == null)
             {
                 return null;
@@ -42,8 +47,7 @@ namespace PowerPointLabs.ELearningLab.Converters
             {
                 clickItem.ClickNo = taskpane.eLearningLabMainPanel1.FirstClickNumber;
             }
-            else if (clickItem is SelfExplanationClickItem && (items.ElementAt(index - 1) is CustomClickItem)
-                && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick)
+            else if (isOnClickSelfExplanationAfterCustomItem || isDummySelfExplanationItem)
             {
                 clickItem.ClickNo = items.ElementAt(index - 1).ClickNo;
             }
@@ -51,7 +55,8 @@ namespace PowerPointLabs.ELearningLab.Converters
             {
                 clickItem.ClickNo = items.ElementAt(index - 1).ClickNo + 1;
             }
-            return "Click " + clickItem.ClickNo;
+            string clickNoText = isDummySelfExplanationItem ? string.Empty : "Click " + clickItem.ClickNo;
+            return clickNoText;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

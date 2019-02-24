@@ -133,18 +133,22 @@
                     <Image x:Name="startImage" MinHeight="10" MaxHeight="10" MinWidth="5" MaxWidth="5" VerticalAlignment="Center"
                    Source="pack://siteoforigin:,,,/Resources/icon-right-arrow-green.png" Stretch="Fill" Margin="2 2 0 2"/>
                     <Label Content="Start: " FontSize="8" Margin="0 2 0 2" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
+                    <!--ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
                       FontSize="7" VerticalAlignment="Center" Margin="-5 0 0 0" IsEnabled="{Binding Path=.,
                                 Converter={converters:BlockToTriggerTypeEnabledConverter},
                                 RelativeSource={RelativeSource FindAncestor, 
-                                         AncestorType={x:Type ListViewItem}}}" IsEnabledChanged="TriggerTypeComboBox_IsEnabledChanged">
-                        <ComboBoxItem Content="On Click" />
+                                         AncestorType={x:Type ListViewItem}}}" IsEnabledChanged="TriggerTypeComboBox_IsEnabledChanged"-->
+                    <ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
+                      FontSize="7" VerticalAlignment="Center" Margin="-5 0 0 0" 
+                              IsEnabled="{Binding IsTriggerTypeComboBoxEnabled, UpdateSourceTrigger=PropertyChanged}"
+                              IsEnabledChanged="TriggerTypeComboBox_IsEnabledChanged">
+                    <ComboBoxItem Content="On Click" />
                         <ComboBoxItem Content="With Previous" />
                     </ComboBox>
 
-                    <CheckBox Content="Callout"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCallout}" FontSize="9" Margin="2 2 1 2"/>
-                    <CheckBox Content="Caption"  VerticalContentAlignment="Center" 
+                    <CheckBox x:Name="calloutCheckBox" Content="Callout"  VerticalContentAlignment="Center" 
+                          IsChecked="{Binding IsCallout}" FontSize="9" Margin="2 2 1 2" />
+                    <CheckBox x:Name="captionCheckBox" Content="Caption"  VerticalContentAlignment="Center" 
                           IsChecked="{Binding IsCaption}" FontSize="9" Margin="1 2 1 2"/>
                     <Grid  Margin="1 1 1 1">
                         <Grid.RowDefinitions>
@@ -186,13 +190,14 @@
                 </StackPanel>
                 <StackPanel Grid.Row="1" Margin="0 0 5 5" MaxHeight="80">
                     <TextBox x:Name="captionTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
-                             Text="{Binding CaptionText, Mode=TwoWay}" Padding="2 2 2 2"
+                             Text="{Binding CaptionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 2 2 2"
                  TextWrapping="Wrap" FontSize="10" Tag="Enter your caption / voice notes here..."
                              AcceptsReturn="True" Margin="0" MaxHeight="40" MinHeight="30"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                     <TextBox x:Name="calloutTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
-                             Text="{Binding CalloutText, Mode=TwoWay}" Tag="Enter your shorter notes for callout here..." Padding="2 2 2 2"
+                             Text="{Binding CalloutText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             Tag="Enter your shorter notes for callout here..." Padding="2 2 2 2"
                  TextWrapping="Wrap" FontSize="10" 
                          AcceptsReturn="True" Margin="0 2 0 0" MinHeight="20" MaxHeight="40" Visibility="Collapsed"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 

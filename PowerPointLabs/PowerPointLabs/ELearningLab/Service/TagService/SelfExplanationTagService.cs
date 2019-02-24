@@ -13,6 +13,16 @@ namespace PowerPointLabs.ELearningLab.Service
     public class SelfExplanationTagService
     {
         private static HashSet<int> tags = new HashSet<int>();
+
+        public static void PopulateTagNos(List<string> shapeNames)
+        {
+            foreach (string shapeName in shapeNames)
+            {
+                ExtractTagNo(shapeName);
+            }
+        }
+
+
         public static int GenerateUniqueTag()
         {
             int count = 0;

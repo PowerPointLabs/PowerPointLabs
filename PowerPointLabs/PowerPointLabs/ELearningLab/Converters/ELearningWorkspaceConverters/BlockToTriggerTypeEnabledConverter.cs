@@ -24,12 +24,12 @@ namespace PowerPointLabs.ELearningLab.Converters
             ClickItem clickItem = items.ElementAt(index);
             if (clickItem is SelfExplanationClickItem && index > 0 && (items.ElementAt(index - 1) is CustomClickItem))
             {
-                ((SelfExplanationClickItem)clickItem).isTriggerTypeComboBoxEnabled = true;
+                ((SelfExplanationClickItem)clickItem).IsTriggerTypeComboBoxEnabled = true;
                 return true;
             }
             else
             {
-                ((SelfExplanationClickItem)clickItem).isTriggerTypeComboBoxEnabled = false;
+                ((SelfExplanationClickItem)clickItem).IsTriggerTypeComboBoxEnabled = false;
                 return false;
             }
         }

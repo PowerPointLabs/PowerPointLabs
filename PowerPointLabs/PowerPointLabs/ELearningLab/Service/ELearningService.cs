@@ -64,7 +64,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void CreateAppearEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
         {
-            bool isSeparateClick = selfExplanationItem.TriggerIndex == (int)TriggerType.OnClick || !selfExplanationItem.isTriggerTypeComboBoxEnabled;
+            bool isSeparateClick = selfExplanationItem.TriggerIndex == (int)TriggerType.OnClick || !selfExplanationItem.IsTriggerTypeComboBoxEnabled;
             List<Effect> effects = new List<Effect>();
             if (selfExplanationItem.IsVoice)
             {
@@ -93,7 +93,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             else
             {
-                CaptionService.SetShapeAsHidden(slide, selfExplanationItem.CaptionText, selfExplanationItem.tagNo);
+                CaptionService.DeleteCaptionShape(slide, selfExplanationItem.tagNo);
             }
             if (isSeparateClick && effects.Count() > 0 && selfExplanationItem.ClickNo > 0)
             {

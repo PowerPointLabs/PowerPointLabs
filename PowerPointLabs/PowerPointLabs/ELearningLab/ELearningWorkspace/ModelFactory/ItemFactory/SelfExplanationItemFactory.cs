@@ -15,7 +15,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
 {
     public class SelfExplanationItemFactory : AbstractItemFactory
     {
-        public SelfExplanationItemFactory(IEnumerable<Effect> effects, PowerPointSlide slide): base(effects, slide)
+        public SelfExplanationItemFactory(IEnumerable<Effect> effects, PowerPointSlide slide) : base(effects, slide)
         { }
         protected override ClickItem CreateBlock()
         {
@@ -30,13 +30,6 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
                 string shapeName = effect.Shape.Name;
                 string functionMatch = StringUtility.ExtractFunctionFromString(shapeName);
                 selfExplanation.tagNo = SelfExplanationTagService.ExtractTagNo(shapeName);
-                string embeddedCaptionShapeName = string.Format(ELearningLabText.CaptionShapeNameFormat,
-                            selfExplanation.tagNo);
-                List<Shape> shapes = slide.GetShapeWithName(embeddedCaptionShapeName);
-                if (shapes.Count() > 0 && string.IsNullOrEmpty(selfExplanation.CaptionText))
-                {
-                    selfExplanation.CaptionText = shapes[0].TextFrame.TextRange.Text;
-                }
                 switch (functionMatch)
                 {
                     case ELearningLabText.CaptionIdentifier:
@@ -44,32 +37,20 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
                         break;
                     case ELearningLabText.CalloutIdentifier:
                         selfExplanation.IsCallout = true;
-                        selfExplanation.CalloutText = effect.Shape.TextFrame.TextRange.Text.Trim();
                         break;
                     case ELearningLabText.AudioIdentifier:
-                        if (shapes.Count() > 0)
+                        selfExplanation.IsVoice = true;
+                        selfExplanation.VoiceLabel = StringUtility.ExtractVoiceNameFromString(shapeName);
+                        if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanation.VoiceLabel)
+                            .Equals(ELearningLabText.DefaultAudioIdentifier))
                         {
-                            selfExplanation.IsVoice = true;
-                            selfExplanation.VoiceLabel = StringUtility.ExtractVoiceNameFromString(shapeName);
-                            if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanation.VoiceLabel)
-                                .Equals(ELearningLabText.DefaultAudioIdentifier))
-                            {
-                                selfExplanation.VoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat,
-                                    AudioSettingService.selectedVoice.ToString());
-                            }
+                            selfExplanation.VoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat,
+                                AudioSettingService.selectedVoice.ToString());
                         }
                         break;
                     default:
                         break;
                 }
-            }
-            if (string.IsNullOrEmpty(selfExplanation.CalloutText))
-            {
-                selfExplanation.CalloutText = selfExplanation.CaptionText;
-            }
-            if (!selfExplanation.CalloutText.Equals(selfExplanation.CaptionText))
-            {
-                selfExplanation.HasShortVersion = true;
             }
             return selfExplanation;
         }

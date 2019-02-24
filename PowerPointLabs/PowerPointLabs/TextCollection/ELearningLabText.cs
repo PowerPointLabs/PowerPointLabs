@@ -26,11 +26,18 @@ namespace PowerPointLabs.TextCollection
         public const string CaptionIdentifier = "Caption";
         public const string AudioIdentifier = "Audio";
         public const string DefaultAudioIdentifier = "Default";
+        public const string TextStorageIdentifier = "Storage";
+        public const string SelfExplanationTextIdentifier = "SelfExplanationText";
+        public const string CalloutTextIdentifier = "CalloutText"; 
+        public const string CaptionTextIdentifier = "CaptionText";
+        public const string TagNoIdentifier = "TagNo";
+        public const string SelfExplanationItemIdentifier = "Item";
+
+        public const string ELearningLabTextStorageShapeName = Identifier + Underscore + TextStorageIdentifier;
 
         public const string AudioDefaultLabelFormat = "{0}" + Underscore + DefaultAudioIdentifier;
-
         public const string AudioFileNameFormat = "Slide {0} ClickNo {1} Speech.wav";
-
+        public const string SelfExplanationItemFormat = "Item" + Underscore + "{0}";
         public const string CaptionShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + CaptionIdentifier;
         public const string CalloutShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + CalloutIdentifier;
         public const string AudioCustomShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + AudioIdentifier + Underscore + "{1}";
@@ -47,7 +54,8 @@ namespace PowerPointLabs.TextCollection
             + AudioIdentifier + Underscore + @".*";
         public const string CalloutShapeNameRegex = Identifier + Underscore + @"[1-9][0-9]*" + Underscore
             + CalloutIdentifier;
-
+        public const string PPTLShapeNameRegex = Identifier + Underscore + @"[1-9][0-9]*" +
+            Underscore + "(" + CalloutIdentifier + "|" + CaptionIdentifier + "|" + AudioIdentifier + @").*";
         public const string PromptToSyncMessage = "ELearningLab detected that you have unsynced items in your workspace.\n" +
                     "Do you want to sync them now?";
     }

@@ -35,7 +35,14 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             if (File.Exists(GetAudioSettingFilePath()))
             {
-                File.Delete(GetAudioSettingFilePath());
+                try
+                {
+                    File.Delete(GetAudioSettingFilePath());
+                }
+                catch
+                {
+                    Logger.Log("Cannot delete audio setting files because other presentations are using it.");
+                }
             }
             Dictionary<string, string> audioSetting = new Dictionary<string, string>()
             {
