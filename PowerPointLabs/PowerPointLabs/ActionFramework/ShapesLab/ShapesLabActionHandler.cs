@@ -28,6 +28,8 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
 
             CustomShapePane customShape = customShapePane.Control as CustomShapePane;
 
+            customShape.UpdateOnSelectionChange(this.GetCurrentSelection());
+
             Logger.Log(
                 "Before Visible: " +
                 string.Format("Pane Width = {0}, Pane Height = {1}, Control Width = {2}, Control Height {3}",

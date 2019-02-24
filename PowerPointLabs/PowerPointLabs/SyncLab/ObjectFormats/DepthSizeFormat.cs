@@ -64,8 +64,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync DepthSizeFormat");
                 return false;
             }
 

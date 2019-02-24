@@ -51,10 +51,10 @@ namespace PowerPointLabs.ShapesLab
             this.label1 = new System.Windows.Forms.Label();
             this.categoryBox = new System.Windows.Forms.ComboBox();
             this.flowPanelHolder = new System.Windows.Forms.Panel();
+            this.myShapeFlowLayout = new PowerPointLabs.BufferedFlowLayoutPanel();
             this.singleShapeDownloadLink = new System.Windows.Forms.LinkLabel();
             this.addShapeButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.myShapeFlowLayout = new PowerPointLabs.BufferedFlowLayoutPanel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.shapeContextMenuStrip.SuspendLayout();
             this.flowlayoutContextMenuStrip.SuspendLayout();
@@ -71,38 +71,38 @@ namespace PowerPointLabs.ShapesLab
             this.copyToToolStripMenuItem,
             this.removeShapeToolStripMenuItem});
             this.shapeContextMenuStrip.Name = "contextMenuStrip";
-            this.shapeContextMenuStrip.Size = new System.Drawing.Size(68, 114);
+            this.shapeContextMenuStrip.Size = new System.Drawing.Size(76, 114);
             this.shapeContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ThumbnailContextMenuStripOpening);
             this.shapeContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ThumbnailContextMenuStripItemClicked);
             // 
             // addToSlideToolStripMenuItem
             // 
             this.addToSlideToolStripMenuItem.Name = "addToSlideToolStripMenuItem";
-            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.addToSlideToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // editNameToolStripMenuItem
             // 
             this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
-            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // moveShapeToolStripMenuItem
             // 
             this.moveShapeToolStripMenuItem.Name = "moveShapeToolStripMenuItem";
-            this.moveShapeToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.moveShapeToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             this.moveShapeToolStripMenuItem.Click += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             this.moveShapeToolStripMenuItem.MouseEnter += new System.EventHandler(this.MoveContextMenuStripOnEvent);
             // 
             // copyToToolStripMenuItem
             // 
             this.copyToToolStripMenuItem.Name = "copyToToolStripMenuItem";
-            this.copyToToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.copyToToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             this.copyToToolStripMenuItem.Click += new System.EventHandler(this.CopyContextMenuStripOnEvent);
             this.copyToToolStripMenuItem.MouseEnter += new System.EventHandler(this.CopyContextMenuStripOnEvent);
             // 
             // removeShapeToolStripMenuItem
             // 
             this.removeShapeToolStripMenuItem.Name = "removeShapeToolStripMenuItem";
-            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.removeShapeToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // flowlayoutContextMenuStrip
             // 
@@ -116,51 +116,52 @@ namespace PowerPointLabs.ShapesLab
             this.importShapesToolStripMenuItem,
             this.settingsToolStripMenuItem});
             this.flowlayoutContextMenuStrip.Name = "flowlayoutContextMenuStrip";
-            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(68, 158);
+            this.flowlayoutContextMenuStrip.Size = new System.Drawing.Size(76, 158);
             this.flowlayoutContextMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.FlowlayoutContextMenuStripItemClicked);
             // 
             // addCategoryToolStripMenuItem
             // 
             this.addCategoryToolStripMenuItem.Name = "addCategoryToolStripMenuItem";
-            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.addCategoryToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // removeCategoryToolStripMenuItem
             // 
             this.removeCategoryToolStripMenuItem.Name = "removeCategoryToolStripMenuItem";
-            this.removeCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.removeCategoryToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // renameCategoryToolStripMenuItem
             // 
             this.renameCategoryToolStripMenuItem.Name = "renameCategoryToolStripMenuItem";
-            this.renameCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.renameCategoryToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // setAsDefaultToolStripMenuItem
             // 
             this.setAsDefaultToolStripMenuItem.Name = "setAsDefaultToolStripMenuItem";
-            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.setAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // importCategoryToolStripMenuItem
             // 
             this.importCategoryToolStripMenuItem.Name = "importCategoryToolStripMenuItem";
-            this.importCategoryToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.importCategoryToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // importShapesToolStripMenuItem
             // 
             this.importShapesToolStripMenuItem.Name = "importShapesToolStripMenuItem";
-            this.importShapesToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.importShapesToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(67, 22);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(75, 22);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(19, 84);
+            this.label1.Location = new System.Drawing.Point(38, 162);
+            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.Size = new System.Drawing.Size(111, 26);
             this.label1.TabIndex = 2;
             this.label1.Text = "Category";
             // 
@@ -170,9 +171,10 @@ namespace PowerPointLabs.ShapesLab
             | System.Windows.Forms.AnchorStyles.Right)));
             this.categoryBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.categoryBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.categoryBox.Location = new System.Drawing.Point(88, 82);
+            this.categoryBox.Location = new System.Drawing.Point(176, 158);
+            this.categoryBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.categoryBox.Name = "categoryBox";
-            this.categoryBox.Size = new System.Drawing.Size(314, 21);
+            this.categoryBox.Size = new System.Drawing.Size(624, 32);
             this.categoryBox.TabIndex = 3;
             this.categoryBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.CategoryBoxOwnerDraw);
             this.categoryBox.SelectedIndexChanged += new System.EventHandler(this.CategoryBoxSelectedIndexChanged);
@@ -182,17 +184,32 @@ namespace PowerPointLabs.ShapesLab
             this.flowPanelHolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowPanelHolder.Controls.Add(this.myShapeFlowLayout);
-            this.flowPanelHolder.Location = new System.Drawing.Point(3, 110);
+            this.flowPanelHolder.Location = new System.Drawing.Point(6, 212);
+            this.flowPanelHolder.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.flowPanelHolder.Name = "flowPanelHolder";
-            this.flowPanelHolder.Size = new System.Drawing.Size(415, 453);
+            this.flowPanelHolder.Size = new System.Drawing.Size(830, 871);
             this.flowPanelHolder.TabIndex = 4;
+            // 
+            // myShapeFlowLayout
+            // 
+            this.myShapeFlowLayout.AutoScroll = true;
+            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.myShapeFlowLayout.ContextMenuStrip = this.flowlayoutContextMenuStrip;
+            this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.myShapeFlowLayout.Location = new System.Drawing.Point(0, 0);
+            this.myShapeFlowLayout.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(240, 104);
+            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
+            this.myShapeFlowLayout.Size = new System.Drawing.Size(830, 871);
+            this.myShapeFlowLayout.TabIndex = 2;
             // 
             // singleShapeDownloadLink
             // 
             this.singleShapeDownloadLink.AutoSize = true;
-            this.singleShapeDownloadLink.Location = new System.Drawing.Point(3, 566);
+            this.singleShapeDownloadLink.Location = new System.Drawing.Point(6, 1088);
+            this.singleShapeDownloadLink.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.singleShapeDownloadLink.Name = "singleShapeDownloadLink";
-            this.singleShapeDownloadLink.Size = new System.Drawing.Size(114, 13);
+            this.singleShapeDownloadLink.Size = new System.Drawing.Size(233, 25);
             this.singleShapeDownloadLink.TabIndex = 5;
             this.singleShapeDownloadLink.TabStop = true;
             this.singleShapeDownloadLink.Text = "Find more shapes here";
@@ -206,10 +223,10 @@ namespace PowerPointLabs.ShapesLab
             this.addShapeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.addShapeButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.addShapeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addShapeButton.Location = new System.Drawing.Point(4, 7);
-            this.addShapeButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.addShapeButton.Location = new System.Drawing.Point(8, 13);
+            this.addShapeButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.addShapeButton.Name = "addShapeButton";
-            this.addShapeButton.Size = new System.Drawing.Size(44, 46);
+            this.addShapeButton.Size = new System.Drawing.Size(88, 88);
             this.addShapeButton.TabIndex = 6;
             this.addShapeButton.UseVisualStyleBackColor = false;
             this.addShapeButton.Click += new System.EventHandler(this.AddShapeButton_Click);
@@ -218,27 +235,16 @@ namespace PowerPointLabs.ShapesLab
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(13, 57);
+            this.label2.Location = new System.Drawing.Point(26, 110);
+            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.Size = new System.Drawing.Size(55, 26);
             this.label2.TabIndex = 7;
             this.label2.Text = "Add";
             // 
-            // myShapeFlowLayout
-            // 
-            this.myShapeFlowLayout.AutoScroll = true;
-            this.myShapeFlowLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.myShapeFlowLayout.ContextMenuStrip = this.flowlayoutContextMenuStrip;
-            this.myShapeFlowLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.myShapeFlowLayout.Location = new System.Drawing.Point(0, 0);
-            this.myShapeFlowLayout.MinimumSize = new System.Drawing.Size(120, 54);
-            this.myShapeFlowLayout.Name = "myShapeFlowLayout";
-            this.myShapeFlowLayout.Size = new System.Drawing.Size(415, 453);
-            this.myShapeFlowLayout.TabIndex = 2;
-            // 
             // CustomShapePane
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ContextMenuStrip = this.flowlayoutContextMenuStrip;
             this.Controls.Add(this.label2);
@@ -247,9 +253,11 @@ namespace PowerPointLabs.ShapesLab
             this.Controls.Add(this.flowPanelHolder);
             this.Controls.Add(this.categoryBox);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "CustomShapePane";
-            this.Size = new System.Drawing.Size(421, 598);
+            this.Size = new System.Drawing.Size(842, 1150);
             this.Click += new System.EventHandler(this.CustomShapePaneClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CustomShapePane_MouseMove);
             this.shapeContextMenuStrip.ResumeLayout(false);
             this.flowlayoutContextMenuStrip.ResumeLayout(false);
             this.flowPanelHolder.ResumeLayout(false);

@@ -139,6 +139,16 @@ namespace PowerPointLabs.Utils
             return CopyFolder(oldPath, newPath) && DeleteFolder(oldPath);
         }
 
+        public static string GetTemporaryPngFilePath()
+        {
+            string tempDirectory = Path.GetTempPath();
+            Directory.CreateDirectory(tempDirectory);
+
+            string randomFileName = "pptlabs_" + Path.GetRandomFileName();
+            string randomFilePath = Path.Combine(tempDirectory, randomFileName);
+            return Path.ChangeExtension(randomFilePath, "png");
+        }
+
         /// <summary>
         /// This function sets attribute of all files in a folder and its sub-folder 
         /// to normal.

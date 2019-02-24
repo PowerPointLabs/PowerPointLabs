@@ -70,5 +70,6 @@
         public const string ErrorFolderNonEmpty = "Please select an empty folder as default saving folder.";
 
         public const string AddShapeToolTip = "Adds a shape to Shapes Lab.";
+        public const string DisabledAddShapeToolTip = AddShapeToolTip + "\nStart by selecting a shape.";
     }
 }

@@ -66,12 +66,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 dest.Color.RGB = source.Color.RGB;
                 dest.Color.Brightness = source.Color.Brightness;
                 dest.Color.TintAndShade = source.Color.TintAndShade;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync GlowColorFormat");
                 return false;
             }
-            return true;
         }
     }
 }

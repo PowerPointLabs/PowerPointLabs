@@ -40,6 +40,7 @@ namespace PowerPointLabs.ShapesLab
         private bool _firstClick = true;
         private bool _clickOnSelected;
         private bool _isLeftButton;
+        private bool _toolTipShown = false;
 
         private bool _isPanelMouseDown;
         private bool _isPanelDrawingFinish;
@@ -178,7 +179,8 @@ namespace PowerPointLabs.ShapesLab
             // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
             if (!ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                MessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                MessageBox.Show(new Form() { TopMost = true },
+                    ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
                 return;
             }
 
@@ -309,6 +311,11 @@ namespace PowerPointLabs.ShapesLab
             }
 
             _firstTimeLoading = false;
+        }
+
+        public void UpdateOnSelectionChange(Selection selection)
+        {
+            SelectionChanged(selection);
         }
         #endregion
 
@@ -636,6 +643,23 @@ namespace PowerPointLabs.ShapesLab
 
             _selectedThumbnail.Clear();
         }
+
+        private void DisableAddShapesButton()
+        {
+            addShapeButton.Enabled = false;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapesDisabled;
+            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
+            addShapeButton.BackColor = Color.LightGray;
+        }
+
+        private void EnableAddShapesButton()
+        {
+            addShapeButton.Enabled = true;
+            addShapeButton.BackgroundImage = Properties.Resources.AddToCustomShapes;
+            addShapeButton.FlatAppearance.BorderColor = Color.Black;
+            addShapeButton.BackColor = SystemColors.Control;
+        }
+
 
         private LabeledThumbnail FindLabeledThumbnail(string name)
         {
@@ -1582,6 +1606,19 @@ namespace PowerPointLabs.ShapesLab
             }
         }
 
+        private void SelectionChanged(Selection selection)
+        {
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone)
+                || (selection.Type == PpSelectionType.ppSelectionSlides))
+            {
+                DisableAddShapesButton();
+            }
+            else
+            {
+                EnableAddShapesButton();
+            }
+        }
+
         private void ThumbnailContextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (Categories.Count < 2)
@@ -1676,6 +1713,41 @@ namespace PowerPointLabs.ShapesLab
             ThisAddIn addIn = ActionFrameworkExtensions.GetAddIn();
 
             AddShapeFromSelection(selection, addIn);
+        }
+
+        // A disabled button cannot respond to any events.
+        // Thus we register the event to the pane and when the mouse moves over
+        // the button, the tool tip will display.
+        private void CustomShapePane_MouseMove(object sender, MouseEventArgs e)
+        {
+            Control parent = sender as Control;
+            if (parent == null)
+            {
+                return;
+            }
+            Control ctrl = parent.GetChildAtPoint(e.Location);
+            if (ctrl != null)
+            {
+                if (ctrl.Visible && toolTip1.Tag == null)
+                {
+                    if (!_toolTipShown)
+                    {
+                        toolTip1.Show(ShapesLabText.DisabledAddShapeToolTip, ctrl, ctrl.Width / 2, ctrl.Height / 2);
+                        toolTip1.Tag = ctrl;
+                        _toolTipShown = true;
+                    }
+                }
+            }
+            else
+            {
+                Control toolTipCtrl = toolTip1.Tag as Control;
+                if (toolTipCtrl != null)
+                {
+                    toolTip1.Hide(toolTipCtrl);
+                    toolTip1.Tag = null;
+                    _toolTipShown = false;
+                }
+            }
         }
         #endregion
 

@@ -35,12 +35,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.TextEffect.FontSize = formatShape.TextEffect.FontSize;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FontSizeFormat");
                 return false;
             }
-            return true;
         }
     }
 }

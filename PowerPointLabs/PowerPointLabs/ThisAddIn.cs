@@ -26,6 +26,7 @@ using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
 using PowerPointLabs.Utils;
@@ -58,11 +59,12 @@ namespace PowerPointLabs
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
+        private const string SyncLabPptxName = "Sync Lab - Do not edit";
         private const string TempZipName = "tempZip.zip";
 
         private string _deactivatedPresFullName;
 
-        private bool _isClosing;
+        private bool _pptLabsShouldTerminate;
 
         private bool isResizePaneVisible;
 
@@ -486,6 +488,15 @@ namespace PowerPointLabs
             }
         }
 
+        private void ShutDownPictureSlidesLab()
+        {
+            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Ribbon.PictureSlidesLabWindow;
+            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen)
+            {
+                pictureSlidesLabWindow.Close();
+            }
+        }
+
         private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)
         {
             if (!_documentPaneMapper.ContainsKey(activeWindow))
@@ -739,8 +750,6 @@ namespace PowerPointLabs
 
         private void CleanUp(PowerPoint.DocumentWindow associatedWindow)
         {
-            _isClosing = true;
-
             if (_documentHashcodeMapper.ContainsKey(associatedWindow))
             {
                 _documentHashcodeMapper.Remove(associatedWindow);
@@ -795,6 +804,44 @@ namespace PowerPointLabs
                 recorder.ForceStopEvent();
             }
         }
+
+        private void ShutDownSyncLab()
+        {
+            // If sync lab open, then close it.
+            PowerPoint.Presentation syncLabPpt = GetOpenedSyncLabPresentation();
+            if (syncLabPpt != null)
+            {
+                syncLabPpt.Close();
+                Trace.TraceInformation("SyncLab terminated.");
+            }
+        }
+
+        private PowerPoint.Presentation GetOpenedSyncLabPresentation()
+        {
+            foreach (PowerPoint.Presentation presentation in Application.Presentations)
+            {
+                if (presentation.Name.Contains(SyncLabPptxName))
+                {
+                    return presentation;
+                }
+            }
+            return null;
+        }
+
+        private void ShutDownShapesLab()
+        {
+            if (ShapePresentation != null &&
+                ShapePresentation.Opened)
+            {
+                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
+                {
+                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
+                }
+
+                ShapePresentation.Close();
+                Trace.TraceInformation("ShapesLab terminated.");
+            }
+        }
         # endregion
 
         # region Powerpoint Application Event Handlers
@@ -844,33 +891,16 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            Trace.TraceInformation(pres.Name + " terminating...");
-            Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing,
-                Application.Presentations.Count));
-
+            Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) deactivated.");
             _deactivatedPresFullName = pres.FullName;
-
-            // in this case, we are closing the last client presentation,
-            // therefore we can close the shape gallery
-            if (_isClosing &&
-                Application.Presentations.Count == 2 &&
-                ShapePresentation != null &&
-                ShapePresentation.Opened)
-            {
-                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
-                {
-                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
-                }
-
-                ShapePresentation.Close();
-                Trace.TraceInformation("Shape Gallery terminated.");
-            }
         }
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
             if (pres != null)
             {
+                Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
+
                 CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
 
                 // make sure ShapeGallery's default category is consistent with current presentation
@@ -880,7 +910,8 @@ namespace PowerPointLabs
                     ShapePresentation.DefaultCategory = currentCategory;
                 }
 
-                _isClosing = false;
+                // If a window was activated in any way, PptLabs should not terminate.
+                _pptLabsShouldTerminate = false;
             }
         }
 
@@ -906,12 +937,15 @@ namespace PowerPointLabs
 
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
+                ShutDownPictureSlidesLab();
             }
 
             // in case the recorder is on event
@@ -944,6 +978,7 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
+            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
@@ -976,6 +1011,21 @@ namespace PowerPointLabs
                         : Office.MsoTriState.msoFalse;
                 }
 
+            }
+
+
+            // When there is no selection on the slide, disable the add/copy buttons on
+            // customshapepane and syncpane respectively
+            if (GetActivePane(typeof(SyncPane)) != null)
+            {
+                SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
+                syncPane.UpdateOnSelectionChange(sel);
+            }
+
+            if (GetActivePane(typeof(CustomShapePane)) != null)
+            {
+                CustomShapePane customShapePane = GetActivePane(typeof(CustomShapePane)).Control as CustomShapePane;
+                customShapePane.UpdateOnSelectionChange(sel);
             }
 
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
@@ -1035,26 +1085,35 @@ namespace PowerPointLabs
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
-            Trace.TraceInformation("Closing " + pres.Name);
+            Trace.TraceInformation("Closing " + pres.Name + "...");
 
-            if (IsApplicationVersion2010() &&
-                _deactivatedPresFullName == pres.FullName &&
-                Application.Presentations.Count == 2 &&
-                ShapePresentation != null &&
-                ShapePresentation.Opened)
+
+            // We need to check if there is only one window AND the active window's presentation 
+            // has the same name as the one we are closing because it is possible for background 
+            // presentation (those without windows) to close and trigger this event as well.
+            // We only want to shut down PPTLabs if we are closing the main presentation.
+            if (Application.Windows.Count == 1 &&
+                Application.ActiveWindow.Presentation.FullName == pres.FullName)
             {
-                ShapePresentation.Close();
+                // If this current window we are closing is the last window, then PptLabs should terminate.
+                _pptLabsShouldTerminate = true;
             }
 
-            // special case: if we are closing ShapeGallery.pptx, no other action will be done
-            if (pres.Name.Contains(ShapeGalleryPptxName))
+            // special case: if we are closing 'ShapeGallery.pptx' or 'Sync Lab - Do not edit.pptx', no other action will be done
+            if (pres.Name.Contains(ShapeGalleryPptxName) || pres.Name.Contains(SyncLabPptxName)) 
             {
                 return;
             }
 
+            if (_pptLabsShouldTerminate)
+            {
+                ShutDownSyncLab();
+                ShutDownShapesLab();
+                ShutDownPictureSlidesLab();
+            }
+
             ShutDownColorPane();
             ShutDownRecorderPane();
-            ShutDownImageSearchPane();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception
@@ -1062,18 +1121,19 @@ namespace PowerPointLabs
 
             try
             {
-                Trace.TraceInformation("Total Windows at Close Stage " + pres.Windows.Count);
+                Trace.TraceInformation("Total windows of closing presentation = " + pres.Windows.Count);
                 Trace.TraceInformation("Windows are: ");
 
                 foreach (PowerPoint.DocumentWindow window in pres.Windows)
                 {
-                    Trace.TraceInformation(window.Presentation.Name);
+                    Trace.TraceInformation("\t" + window.Caption);
                 }
 
                 associatedWindow = pres.Windows[1];
             }
             catch (Exception)
             {
+                Trace.TraceInformation("Closing presentation - " + pres.FullName + " - has no window.");
                 return;
             }
 
@@ -1112,15 +1172,6 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl(TimerLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(AgendaLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(PictureSlidesLabText.RibbonMenuId);
-        }
-
-        private void ShutDownImageSearchPane()
-        {
-            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
-            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen && Application.Presentations.Count == 2)
-            {
-                pictureSlidesLabWindow.Close();
-            }
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -1574,7 +1625,7 @@ namespace PowerPointLabs
                 // ignore exception
             }
         }
-        # endregion
+        #endregion
 
         private void SetupFunctionalTestChannels()
         {

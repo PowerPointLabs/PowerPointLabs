@@ -41,12 +41,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 ReflectionFormat destFormat = newShape.Reflection;
 
                 destFormat.Transparency = srcFormat.Transparency;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ReflectionTransparencyFormat");
                 return false;
             }
-            return true;
         }
     }
 }

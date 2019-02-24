@@ -62,28 +62,30 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                     formatShape.Fill.Transparency = oldTransparency;
                 }
                 
-                if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillPatterned)
+                switch (formatShape.Fill.Type)
                 {
-                    newShape.Fill.Patterned(formatShape.Fill.Pattern);
-                    newShape.Fill.ForeColor.RGB = formatShape.Fill.ForeColor.RGB;
-                    newShape.Fill.BackColor.RGB = formatShape.Fill.BackColor.RGB;
-                }
-                else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillBackground)
-                {
-                    newShape.Fill.Background();
-                }
-                else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillSolid)
-                {
-                    newShape.Fill.Solid();
-                    newShape.Fill.ForeColor.RGB = formatShape.Fill.ForeColor.RGB;
-                }
-                else if (formatShape.Fill.Type == Microsoft.Office.Core.MsoFillType.msoFillGradient)
-                {
-                    SyncGradient(formatShape, newShape);
+                    case Microsoft.Office.Core.MsoFillType.msoFillPatterned:
+                        newShape.Fill.Patterned(formatShape.Fill.Pattern);
+                        newShape.Fill.ForeColor.RGB = formatShape.Fill.ForeColor.RGB;
+                        newShape.Fill.BackColor.RGB = formatShape.Fill.BackColor.RGB;
+                        break;
+                    case Microsoft.Office.Core.MsoFillType.msoFillBackground:
+                        newShape.Fill.Background();
+                        break;
+                    case Microsoft.Office.Core.MsoFillType.msoFillSolid:
+                        newShape.Fill.Solid();
+                        newShape.Fill.ForeColor.RGB = formatShape.Fill.ForeColor.RGB;
+                        break;
+                    case Microsoft.Office.Core.MsoFillType.msoFillGradient:
+                        SyncGradient(formatShape, newShape);
+                        break;
+                    default:
+                        break;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FillFormat");
                 return false;
             }
             return true;

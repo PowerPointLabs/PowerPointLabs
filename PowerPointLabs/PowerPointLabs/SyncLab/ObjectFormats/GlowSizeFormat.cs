@@ -41,12 +41,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 GlowFormat source = formatShape.Glow;
 
                 dest.Radius = source.Radius;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync GlowSizeFormat");
                 return false;
             }
-            return true;
         }
     }
 }

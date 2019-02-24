@@ -84,14 +84,14 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 dest.Z = nearestZ;
                 
                 dest.ProjectText = source.ProjectText;
-
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ThreeDRotationEffectFormat");
                 return false;
             }
             
-            return true;
         }
     }
 }

@@ -40,12 +40,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 ReflectionFormat destFormat = newShape.Reflection;
 
                 destFormat.Blur = srcFormat.Blur;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ReflectionBlurFormat");
                 return false;
             }
-            return true;
         }
     }
 }

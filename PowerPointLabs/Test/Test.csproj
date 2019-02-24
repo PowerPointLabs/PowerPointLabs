@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Test</RootNamespace>
     <AssemblyName>Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EyeOpen.Imaging.Processing">
@@ -163,6 +165,7 @@
     <Compile Include="UnitTest\ResizeLab\SlightAdjustTest.cs" />
     <Compile Include="UnitTest\ResizeLab\StretchShrinkTest.cs" />
     <Compile Include="UnitTest\SyncLab\BaseSyncLabTest.cs" />
+    <Compile Include="UnitTest\SyncLab\SyncLabFormatPaneItemTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabReflectionEffectTest.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabTextLineSpacing.cs" />
     <Compile Include="UnitTest\SyncLab\SyncLabTextOrientation.cs" />

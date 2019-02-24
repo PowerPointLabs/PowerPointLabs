@@ -41,12 +41,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 GlowFormat source = formatShape.Glow;
 
                 dest.Transparency = source.Transparency;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync GlowTransparencyFormat");
                 return false;
             }
-            return true;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 
@@ -40,8 +41,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 dest.LightAngle = source.LightAngle;
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LightingAngleFormat");
                 return false;
             }
 

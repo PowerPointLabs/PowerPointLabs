@@ -43,12 +43,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             {
                 newShape.Line.ForeColor.RGB = formatShape.Line.ForeColor.RGB;
                 newShape.Line.BackColor.RGB = formatShape.Line.BackColor.RGB;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LineFillFormat");
                 return false;
             }
-            return true;
         }
     }
 }

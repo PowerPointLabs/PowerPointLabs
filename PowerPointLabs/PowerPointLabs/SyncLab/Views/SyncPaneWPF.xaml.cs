@@ -47,16 +47,13 @@ namespace PowerPointLabs.SyncLab.Views
             }
             SyncPane syncLab = syncLabPane.Control as SyncPane;
 
+            UpdateCopyButtonEnabledStatus(this.GetCurrentSelection());
+
             syncLab.HandleDestroyed += SyncPane_Closing;
         }
 
         public void SyncPane_Closing(Object sender, EventArgs e)
         {
-            if (this.GetAddIn().Application.Presentations.Count == 2)
-            {
-                shapeStorage.Close();
-            }
-
             if (Dialog != null)
             {
                 Dialog.Close();
@@ -70,6 +67,26 @@ namespace PowerPointLabs.SyncLab.Views
             {
                 return formatListBox.Items.Count;
             }
+        }
+
+        public void UpdateCopyButtonEnabledStatus(Selection selection)
+        {
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone) 
+                || (selection.Type == PpSelectionType.ppSelectionSlides))
+            {
+                copyButton.IsEnabled = false;
+                toolTipTextBox.Text = SyncLabText.DisabledToolTipText;
+            }
+            else
+            {
+                copyButton.IsEnabled = true;
+                toolTipTextBox.Text = SyncLabText.EnabledToolTipText;
+            }
+        }
+
+        public bool GetCopyButtonEnabledStatus()
+        {
+            return copyButton.IsEnabled;
         }
 
         public FormatTreeNode[] GetFormats(int index)
@@ -169,7 +186,7 @@ namespace PowerPointLabs.SyncLab.Views
         private ShapeRange GetSelectedShapesForFormatting()
         {
             Selection selection = this.GetCurrentSelection();
-            if ((selection == null) || (selection.Type != PpSelectionType.ppSelectionShapes &&
+            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
                 selection.Type != PpSelectionType.ppSelectionText) ||
                 selection.ShapeRange.Count == 0)
             {

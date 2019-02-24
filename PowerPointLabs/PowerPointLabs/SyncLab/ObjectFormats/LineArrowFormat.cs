@@ -47,8 +47,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 newShape.Line.EndArrowheadStyle = formatShape.Line.EndArrowheadStyle;
                 newShape.Line.EndArrowheadWidth = formatShape.Line.EndArrowheadWidth;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LineArrowFormat");
                 return false;
             }
             return true;
