@@ -20,7 +20,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public static IShapesLabController Instance { get { return _instance; } }
 
-        private CustomShapePane _pane;
+        private CustomShapePane_ _pane;
 
         private ShapesLabController() {}
 
@@ -31,7 +31,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
                     new RibbonControl(ShapesLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
-                    typeof(CustomShapePane)).Control as CustomShapePane;
+                    typeof(CustomShapePane_)).Control as CustomShapePane_;
             }));
         }
 

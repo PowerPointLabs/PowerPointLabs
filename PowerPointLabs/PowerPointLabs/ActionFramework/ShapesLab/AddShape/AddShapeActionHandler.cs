@@ -14,13 +14,11 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            CustomShapePane customShape = InitCustomShapePane();
-            Selection selection = this.GetCurrentSelection();
-            ThisAddIn addIn = this.GetAddIn();
+            //CustomShapePane_ customShape = InitCustomShapePane();
+            //Selection selection = this.GetCurrentSelection();
+            //ThisAddIn addIn = this.GetAddIn();
 
-            customShape.AddShapeFromSelection(selection, addIn);
-
-            SetPaneVisibility(true);
+            //customShape.AddShapeFromSelection(selection, addIn);
         }
     }
 }

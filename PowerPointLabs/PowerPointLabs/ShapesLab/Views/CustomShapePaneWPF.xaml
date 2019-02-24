@@ -28,6 +28,7 @@
             </Button.ToolTip>
         </Button>
         <Label x:Name="copyLabel" Content="Copy" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-        <ListBox x:Name="formatListBox" Margin="10,86,10,10" HorizontalContentAlignment="Stretch"/>
+        <ListBox x:Name="formatListBox" Margin="10,86,10,700" HorizontalContentAlignment="Stretch"/>
+        <WrapPanel x:Name="wrapPanel" Margin="10,186,10,10" ></WrapPanel>
     </Grid>
 </UserControl>

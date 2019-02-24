@@ -695,6 +695,12 @@
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="ShapesLab\CustomShapePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ShapesLab\CustomShapePane.Designer.cs">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShapesLab\Views\CustomShapePaneWPF.xaml.cs">
       <DependentUpon>CustomShapePaneWPF.xaml</DependentUpon>
     </Compile>
@@ -1142,11 +1148,11 @@
     <Compile Include="ShapesLab\LabeledThumbnail.Designer.cs">
       <DependentUpon>LabeledThumbnail.cs</DependentUpon>
     </Compile>
-    <Compile Include="ShapesLab\CustomShapePane.cs">
+    <Compile Include="ShapesLab\CustomShapePane_.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ShapesLab\CustomShapePane.Designer.cs">
-      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    <Compile Include="ShapesLab\CustomShapePane_.Designer.cs">
+      <DependentUpon>CustomShapePane_.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
@@ -1290,6 +1296,9 @@
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShapesLab\CustomShapePane.resx">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TimerLab\TimerPane.resx">
       <DependentUpon>TimerPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -1307,8 +1316,8 @@
       <DependentUpon>LabeledThumbnail.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ShapesLab\CustomShapePane.resx">
-      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    <EmbeddedResource Include="ShapesLab\CustomShapePane_.resx">
+      <DependentUpon>CustomShapePane_.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
