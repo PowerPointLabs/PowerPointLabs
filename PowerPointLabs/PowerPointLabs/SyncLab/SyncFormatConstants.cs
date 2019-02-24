@@ -76,7 +76,12 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Font", new FontFormat()),
                             new FormatTreeNode("Font Size", new FontSizeFormat()),
                             new FormatTreeNode("Font Color", new FontColorFormat()),
-                            new FormatTreeNode("Style", new FontStyleFormat())),
+                            new FormatTreeNode("Style", new FontStyleFormat()),
+                            new FormatTreeNode("Alignment",
+                                new FormatTreeNode("Horizontal Alignment", new TextHorizontalAlignmentFormat()),
+                                new FormatTreeNode("Vertical Alignment", new TextVerticalAlignmentFormat())),
+                            new FormatTreeNode("Line Spacing", new TextLineSpacingFormat()),
+                            new FormatTreeNode("Orientation", new TextOrientationFormat())),
                     new FormatTreeNode(
                             "Fill",
                             new FormatTreeNode("Color", new FillFormat()),
