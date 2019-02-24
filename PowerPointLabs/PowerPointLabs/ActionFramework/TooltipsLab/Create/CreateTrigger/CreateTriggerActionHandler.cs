@@ -23,37 +23,18 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show("Please select 1 shape as your callout.");
+                MessageBox.Show("Please select 1 or more shapes as your callout shape.");
                 return;
             }
 
-            foreach (PowerPoint.Shape selectedShape in this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange)
+            foreach (PowerPoint.Shape selectedShape in selection.ShapeRange)
             {
-                if (selectedShape.Name.StartsWith("TooltipsLabCallout"))
-                {
-                    MessageBoxResult result = MessageBox.Show(
-                        "The selected shape(s) is/are already associated with a trigger shape(s). Creating a new trigger(s) will invalidate the previous trigger(s). \n\nDo you want to continue?",
-                        "Existing trigger detected",
-                        MessageBoxButton.YesNo);
-                    if (result == MessageBoxResult.No)
-                    {
-                        return;
-                    }
-                }
+                // TODO: Adding a trigger to an existing shape that is already part of a trigger animation as the "callout" (whether created by user or by TooltipsLab)
+                //       will invalidate the previous trigger. Might be a good idea to see if we can detect if the selectedShape is already part of a trigger animation
+                //       as a callout, then popup a MessageBox asking if the user is sure he/she wants to continue.
 
                 PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShapeWithReferenceCallout(currentSlide, selectedShape);
-                PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, selectedShape);
-                triggerShape.Name = "TooltipsLabTrigger" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-                calloutGroup.Name = "TooltipsLabCallout" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-
-                if (selectedShape.Name.StartsWith("TooltipsLabTrigger"))
-                {
-                    calloutGroup.Name = "TooltipsLabTrigger" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-                   //currentSlide.TimeLine.InteractiveSequences.Get
-                } 
-
-                
-                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, calloutGroup);
+                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, selectedShape);
             }
 
             if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))

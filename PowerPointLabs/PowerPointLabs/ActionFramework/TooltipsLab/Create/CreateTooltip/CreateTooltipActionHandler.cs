@@ -22,8 +22,6 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
             PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
-            calloutGroup.Name = "TooltipsLabCallout" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            triggerShape.Name = "TooltipsLabTrigger" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, calloutGroup);
 
             if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))

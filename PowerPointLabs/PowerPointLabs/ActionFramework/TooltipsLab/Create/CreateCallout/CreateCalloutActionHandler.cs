@@ -24,16 +24,14 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show("Please select 1 shape as your trigger shape.");
+                MessageBox.Show("Please select 1 or more shapes as your trigger shape.");
                 return;
             }
 
-            foreach (PowerPoint.Shape selectedShape in this.GetAddIn().Application.ActiveWindow.Selection.ShapeRange)
+            foreach (PowerPoint.Shape selectedShape in selection.ShapeRange)
             {
-                PowerPoint.Shape callout= CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
+                PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
                 PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
-                selectedShape.Name = "TooltipsLabTrigger" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-                calloutGroup.Name = "TooltipsLabCallout" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
                 AssignTooltip.AddTriggerAnimation(currentSlide, selectedShape, calloutGroup);
             }
             
