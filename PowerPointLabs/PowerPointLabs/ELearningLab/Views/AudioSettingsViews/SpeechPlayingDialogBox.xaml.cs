@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Media;
 using System.Speech.Synthesis;
 using System.Windows;
 
@@ -11,6 +13,7 @@ namespace PowerPointLabs.ELearningLab.Views
     /// </summary>
     public partial class SpeechPlayingDialogBox
     {
+        // private SoundPlayer player;
         public SpeechPlayingDialogBox()
         {
             InitializeComponent();
@@ -40,6 +43,10 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+           // if (player != null)
+        //    {
+         //       player.Stop();
+         //   }
             Close();
         }
     }

@@ -58,6 +58,14 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             Tuple<Task<HttpResponseMessage>, HttpRequestMessage> tuple = SendAsyncHttpRequest(inputOptions, genderValue, cancellationToken);
             var httpTask = tuple.Item1;
             var request = tuple.Item2;
+            try
+            {
+                var result = httpTask.Result;
+            }
+            catch
+            {
+                return Task.FromResult(false);
+            }
 
             for (int i = 0; i < 3 && !httpTask.Result.IsSuccessStatusCode; i++)
             {
@@ -66,8 +74,16 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
                 tuple = SendAsyncHttpRequest(inputOptions, genderValue, cancellationToken);
                 httpTask = tuple.Item1;
                 request = tuple.Item2;
+                try
+                {
+                    var result = httpTask.Result;
+                }
+                catch 
+                {
+                    return Task.FromResult(false); 
+                }
             }
-           
+
             var saveTask = httpTask.ContinueWith(
                 async (responseMessage, token) =>
                 {
@@ -128,6 +144,11 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
 
             var httpTask = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
+            if (httpTask.IsCanceled)
+            {
+                return null;
+            }
+
             var saveTask = httpTask.ContinueWith(
                 async (responseMessage, token) =>
                 {
@@ -158,6 +179,8 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
 
             return saveTask;
         }
+
+
         private Tuple<Task<HttpResponseMessage>, HttpRequestMessage> SendAsyncHttpRequest(InputOptions inputOptions, string genderValue, CancellationToken cancellationToken)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, inputOptions.RequestUri)

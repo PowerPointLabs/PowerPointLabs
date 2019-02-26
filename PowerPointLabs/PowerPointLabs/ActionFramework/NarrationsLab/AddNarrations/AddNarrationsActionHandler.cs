@@ -37,10 +37,10 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 ComputerVoiceRuntimeService.IsRemoveAudioEnabled = true;
                 this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
             }
-            List<string[]> allAudioFiles = new List<string[]>();
+
             try
             {
-                allAudioFiles = ComputerVoiceRuntimeService.EmbedSelectedSlideNotes();
+                ComputerVoiceRuntimeService.EmbedSelectedSlideNotes();
             }
             catch
             {
@@ -63,6 +63,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
 
             // initialize selected slides' audio
+            List<string[]> allAudioFiles = ComputerVoiceRuntimeService.ExtractSlideNotes();
             recorder.InitializeAudioAndScript(this.GetCurrentPresentation().SelectedSlides.ToList(),
                                                   allAudioFiles, true);
 

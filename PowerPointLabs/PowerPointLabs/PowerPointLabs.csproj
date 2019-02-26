@@ -674,6 +674,7 @@
     <Compile Include="ELearningLab\ELearningWorkspace\Model\CustomSubItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\SelfExplanationClickItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\AnimationType.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\BackgroundWorkerType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\NoteType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\TriggerType.cs" />
     <Compile Include="ELearningLab\Service\AudioRuntimeService\AzureRuntimeService.cs" />
@@ -806,6 +807,9 @@
     <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProcessingStatusForm.xaml.cs">
+      <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
@@ -1296,10 +1300,6 @@
     <Compile Include="Views\SelectionRectangle.Designer.cs">
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProcessingStatusForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ProcessingStatusForm.Designer.cs" />
     <Compile Include="WPF\ClickSelectTextBox.cs" />
     <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
@@ -1381,7 +1381,6 @@
     <EmbeddedResource Include="Views\SelectionRectangle.resx">
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1618,6 +1617,10 @@
     <Page Include="Views\ErrorDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ProcessingStatusForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ZoomLab\Views\ZoomLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -24,9 +24,16 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             get
             {
-                string tempName = Globals.ThisAddIn.GetActiveWindowTempName();
+              //  string tempName = Globals.ThisAddIn.GetActiveWindowTempName();
                 return @"\PowerPointLabs Temp\" + tempName + @"\";
             }
+        }
+
+        private static string tempName = string.Empty;
+
+        public static void SetTempName()
+        {
+            tempName = Globals.ThisAddIn.GetActiveWindowTempName();
         }
         public static Effect CreateAppearEffectAudioAnimation(PowerPointSlide slide, string captionText, string voiceLabel,
            int clickNo, int tagNo, bool isSeperateClick)
@@ -108,6 +115,8 @@ namespace PowerPointLabs.ELearningLab.Service
             }
 
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
+
+            Microsoft.Office.Interop.PowerPoint.Shapes shapes = slide.Shapes;
 
             Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
             slide.RemoveAnimationsForShape(audioShape);

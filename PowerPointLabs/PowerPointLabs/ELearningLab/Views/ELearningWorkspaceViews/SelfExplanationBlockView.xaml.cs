@@ -154,6 +154,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void VoicePreviewButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccountStorageService.LoadUserAccount();
+            AudioService.SetTempName();
             AudioPreviewPage.GetInstance().PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings();
             AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance(AudioSettingsPage.AudioPreviewPage);

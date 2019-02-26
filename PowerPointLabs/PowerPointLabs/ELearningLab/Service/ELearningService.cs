@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -9,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Extensions;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
@@ -18,40 +20,45 @@ namespace PowerPointLabs.ELearningLab.Service
     public class ELearningService
     {
         public static bool IsELearningWorkspaceEnabled { get; set; } = false;
+        private static PowerPointSlide _slide;
+        private static List<SelfExplanationClickItem> _selfExplanationItems;
+
         public static void SyncLabItemToAnimationPane(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
         {
-            SyncAppearEffectAnimations(slide, selfExplanationItems);
-            SyncExitEffectAnimations(slide, selfExplanationItems);
+            SyncLabAnimations(slide, selfExplanationItems);
         }
         public static void DeleteShapesForUnusedItem(PowerPointSlide slide, SelfExplanationClickItem selfExplanationClickItem)
         {
             CalloutService.DeleteCalloutShape(slide, selfExplanationClickItem.tagNo);
             CaptionService.DeleteCaptionShape(slide, selfExplanationClickItem.tagNo);
         }
-        private static void SyncAppearEffectAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+
+        public static void SyncExitEffectAnimations()
         {
-         //   slide.DeleteShapeWithNameRegex(ELearningLabText.VoiceShapeNameRegex);
-            ProcessingStatusForm progressBarForm = new ProcessingStatusForm();
-            progressBarForm.Show();
+            SyncExitEffectAnimations(_slide, _selfExplanationItems);
+            DeleteUnusedCalloutShapes(_slide);
+            DeleteUnusedAudioShapes(_slide);
+        }
 
-            int totalSelfExplanationItemsCount = selfExplanationItems.Count();
-            for (int i = 0; i < totalSelfExplanationItemsCount; i++)
+        public static void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
+        {
+            SelfExplanationClickItem selfExplanationItem = _selfExplanationItems.ElementAt(i);
+            if (!selfExplanationItem.IsCaption && !selfExplanationItem.IsCallout && !selfExplanationItem.IsVoice)
             {
-                int percentage = (int)Math.Round(((double)i + 1) / totalSelfExplanationItemsCount * 100);
-                progressBarForm.UpdateProgress(percentage);
-                progressBarForm.UpdateSlideNumber(i, totalSelfExplanationItemsCount);
-
-                SelfExplanationClickItem selfExplanationItem = selfExplanationItems.ElementAt(i);
-                if (!selfExplanationItem.IsCaption && !selfExplanationItem.IsCallout && !selfExplanationItem.IsVoice)
-                {
-                    DeleteShapesForUnusedItem(slide, selfExplanationItem);
-                }
-                    CreateAppearEffectAnimation(slide, selfExplanationItem);
+                DeleteShapesForUnusedItem(_slide, selfExplanationItem);
             }
+            CreateAppearEffectAnimation(_slide, selfExplanationItem);
+        }
+        private static void SyncLabAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+        {
+            _slide = slide;
+            _selfExplanationItems = selfExplanationItems;
+            AudioService.SetTempName();
+            int totalSelfExplanationItemsCount = selfExplanationItems.Count();
 
-            DeleteUnusedCalloutShapes(slide);
-            DeleteUnusedAudioShapes(slide);
-            progressBarForm.Close();
+            ProcessingStatusForm progressBarForm = 
+                new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService);
+            progressBarForm.Show();
         }
 
         private static void SyncExitEffectAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
@@ -77,7 +84,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             if (selfExplanationItem.IsCallout)
             {
-                Effect effect = CalloutService.CreateAppearEffectCalloutAnimation(slide, selfExplanationItem.CalloutText, 
+                Effect effect = CalloutService.CreateAppearEffectCalloutAnimation(slide, selfExplanationItem.CalloutText,
                     selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
                 effects.Add(effect);
             }

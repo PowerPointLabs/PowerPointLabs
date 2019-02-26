@@ -126,9 +126,9 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid);
             RemoveLabAnimationsFromAnimationPane();
-            SyncLabItemToAnimationPane();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
-                Items.Where(x => x is SelfExplanationClickItem).Cast<SelfExplanationClickItem>().ToList(), slide);
+    Items.Where(x => x is SelfExplanationClickItem).Cast<SelfExplanationClickItem>().ToList(), slide);
+            SyncLabItemToAnimationPane();
         }
         private ObservableCollection<ClickItem> LoadItems()
         {
@@ -139,7 +139,8 @@ namespace PowerPointLabs.ELearningLab.Views
                 ELearningLabTextStorageService.LoadSelfExplanationsFromSlide(slide);
             ClickItem customClickBlock;
             SelfExplanationClickItem selfExplanationClickBlock;
-            Dictionary<string, string> selfExplanationText = selfExplanationTexts == null ? null : selfExplanationTexts.First();
+            Dictionary<string, string> selfExplanationText = (selfExplanationTexts == null || selfExplanationTexts.Count() == 0) ? 
+                null : selfExplanationTexts.First();
             SelfExplanationTagService.PopulateTagNos(slide.GetShapesWithNameRegex(ELearningLabText.PPTLShapeNameRegex)
                 .Select(x => x.Name).ToList());
             do
@@ -217,6 +218,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             UpdateClickNoAndTriggerTypeInItems();
             ScrollItemToView(labItem);
+            isSynced = false;
         }
         private void HandleDownButtonClickedEvent(object sender, RoutedEventArgs e)
         {
@@ -228,13 +230,15 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             UpdateClickNoAndTriggerTypeInItems();
             ScrollItemToView(labItem);
+            isSynced = false;
         }
         private void HandleDeleteButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
             Items.Remove(labItem);
-            ELearningService.DeleteShapesForUnusedItem(slide, labItem);
+         //   ELearningService.DeleteShapesForUnusedItem(slide, labItem);
             UpdateClickNoAndTriggerTypeInItems();
+            isSynced = false;
         }
         private void HandleTriggerTypeComboBoxSelectionChangedEvent(object sender, RoutedEventArgs e)
         {
@@ -264,6 +268,7 @@ namespace PowerPointLabs.ELearningLab.Views
             (listView.ItemsSource as ObservableCollection<ClickItem>).Add(selfExplanationClickItem);
             textBox.Text = string.Empty;
             ScrollListViewToEnd();
+            isSynced = false;
         }
         #endregion
 
@@ -297,7 +302,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void SyncLabItemToAnimationPane()
         {
-
             ELearningService.SyncLabItemToAnimationPane(slide,
                 Items.Where(
                     x => x is SelfExplanationClickItem).Cast<SelfExplanationClickItem>().ToList());
@@ -335,6 +339,12 @@ namespace PowerPointLabs.ELearningLab.Views
                 && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
             bool isDummySelfExplanationItem =
                 clickItem is SelfExplanationClickItem && (clickItem as SelfExplanationClickItem).IsDummyItem;
+            /* This commented piece of code is trying to handle the case when first self explanation item (SEI)
+             * is dummy item, but the second one is active SEI item.
+            bool isAfterDummySelfExplanationItem =
+                index > 0 && (Items.ElementAt(index - 1) is SelfExplanationClickItem)
+                && (Items.ElementAt(index - 1) as SelfExplanationClickItem).IsDummyItem;
+            */
             if (index == 0)
             {
                 clickItem.ClickNo = startClickNo;

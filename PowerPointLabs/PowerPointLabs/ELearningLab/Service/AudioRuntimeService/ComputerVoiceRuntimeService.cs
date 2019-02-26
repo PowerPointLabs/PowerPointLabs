@@ -16,6 +16,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.Models;
 using PowerPointLabs.Views;
 
@@ -85,7 +86,7 @@ namespace PowerPointLabs.ELearningLab.Service
         public static string[] EmbedCurrentSlideNotes()
         {
             PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-            
+
             if (currentSlide != null)
             {
                 return EmbedSlideNotes(currentSlide);
@@ -94,58 +95,46 @@ namespace PowerPointLabs.ELearningLab.Service
             return null;
         }
 
-        public static List<string[]> EmbedSelectedSlideNotes()
+        public static void EmbedSelectedSlideNotes()
         {
-            ProcessingStatusForm progressBarForm = new ProcessingStatusForm();
-            progressBarForm.Show();
-            List<string[]> audioList = new List<string[]>();
-
             List<PowerPointSlide> slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+         //   AudioService.SetTempName();
+
             if (AudioSettingService.selectedVoiceType == AudioGenerator.VoiceType.AzureVoice
                 && AzureAccount.GetInstance().IsEmpty())
             {
                 MessageBox.Show("Invalid user account. Please log in again.");
                 throw new Exception("Invalid user account.");
             }
+
             int numberOfSlides = slides.Count;
-            for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
-            {
-                int percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
-                progressBarForm.UpdateProgress(percentage);
-                progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
 
-                PowerPointSlide slide = slides[currentSlideIndex];
-                audioList.Add(EmbedSlideNotes(slide));
-            }
-            progressBarForm.Close();
-
-            return audioList;
-        }
-
-        public static List<string[]> EmbedAllSlideNotes()
-        {
-            ProcessingStatusForm progressBarForm = new ProcessingStatusForm();
+            ProcessingStatusForm progressBarForm =
+                new ProcessingStatusForm(numberOfSlides, BackgroundWorkerType.AudioGenerationService);
             progressBarForm.Show();
-            List<string[]> audioList = new List<string[]>();
-
-            List<PowerPointSlide> slides = PowerPointPresentation.Current.Slides;
-
-            int numberOfSlides = slides.Count;
-            for (int currentSlideIndex = 0; currentSlideIndex < numberOfSlides; currentSlideIndex++)
-            {
-                int percentage = (int)Math.Round(((double)currentSlideIndex + 1) / numberOfSlides * 100);
-                progressBarForm.UpdateProgress(percentage);
-                progressBarForm.UpdateSlideNumber(currentSlideIndex, numberOfSlides);
-
-                PowerPointSlide slide = slides[currentSlideIndex];
-                audioList.Add(EmbedSlideNotes(slide));
-            }
-            progressBarForm.Close();
-
-            return audioList;
         }
 
-        public static bool OutputSlideNotesToFiles(PowerPointSlide slide, String folderPath)
+        public static void EmbedSlideNotes(int i)
+        {
+            List<PowerPointSlide> slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+            PowerPointSlide slide = slides.ElementAt(i);
+            EmbedSlideNotes(slide);
+        }
+
+        public static List<string[]> ExtractSlideNotes()
+        {
+            List<string[]> slideNotes = new List<string[]>();
+            List<PowerPointSlide> slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
+            string folderPath = Path.GetTempPath() + AudioService.TempFolderName;
+            foreach (PowerPointSlide slide in slides)
+            {
+                string fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
+                slideNotes.Add(GetAudioFilePaths(folderPath, fileNameSearchPattern));
+            }
+            return slideNotes;
+        }
+
+        public static bool OutputSlideNotesToFiles(PowerPointSlide slide, string folderPath)
         {
             try
             {
@@ -215,7 +204,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 Shape newAudio = AudioService.InsertAudioFileOnSlide(currentSlide, selectedFile);
 
                 currentSlide.TransferAnimation(selectedShape[1], newAudio);
-                
+
                 selectedShape.Delete();
             }
         }
@@ -229,8 +218,9 @@ namespace PowerPointLabs.ELearningLab.Service
         /// <returns>An array of auto generated audios' name.</returns>
         private static string[] EmbedSlideNotes(PowerPointSlide slide)
         {
-            String folderPath = Path.GetTempPath() + AudioService.TempFolderName;
-            String fileNameSearchPattern = String.Format("Slide {0} Speech", slide.ID);
+            string folderPath = Path.GetTempPath() + AudioService.TempFolderName;
+
+            string fileNameSearchPattern = string.Format("Slide {0} Speech", slide.ID);
 
             Directory.CreateDirectory(folderPath);
 
@@ -267,13 +257,13 @@ namespace PowerPointLabs.ELearningLab.Service
 
                 for (int i = 0; i < audioFiles.Length; i++)
                 {
-                    String fileName = audioFiles[i];
+                    string fileName = audioFiles[i];
                     bool isOnClick = fileName.Contains("OnClick");
 
                     try
                     {
                         Shape audioShape = AudioService.InsertAudioFileOnSlide(slide, fileName);
-                        audioShape.Name = String.Format("PowerPointLabs Speech {0}", i);
+                        audioShape.Name = string.Format("PowerPointLabs Speech {0}", i);
                         slide.RemoveAnimationsForShape(audioShape);
 
                         if (isOnClick)
@@ -320,9 +310,9 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void ErrorParsingText()
         {
-            MessageBox.Show(TextCollection.NarrationsLabText.RecorderErrorCannotParseText, 
+            MessageBox.Show(TextCollection.NarrationsLabText.RecorderErrorCannotParseText,
                             TextCollection.NarrationsLabText.RecorderErrorCannotParseTextTitle,
-                            MessageBoxButtons.OK, 
+                            MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
         }
 

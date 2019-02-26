@@ -43,6 +43,7 @@ namespace PowerPointLabs.TextCollection
         public const string AudioCustomShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + AudioIdentifier + Underscore + "{1}";
         public const string AudioDefaultShapeNameFormat = Identifier + Underscore + "{0}" + 
             Underscore + AudioIdentifier + Underscore + "{1}" + Underscore + DefaultAudioIdentifier;
+        public const string ProgressStatusLabelFormat = "{0}% Completeness";
 
         public const string ExtractTagNoRegex = Identifier + Underscore + @"([1-9][0-9]*)" + 
             Underscore + "(" + CalloutIdentifier + "|" + CaptionIdentifier + "|" + AudioIdentifier + @").*";

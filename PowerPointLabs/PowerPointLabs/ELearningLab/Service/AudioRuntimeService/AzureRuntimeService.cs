@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Threading;
+using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
     public class AzureRuntimeService
     {
+        private static CancellationTokenSource cts = new CancellationTokenSource();
+        private static CancellationToken token = cts.Token;
         public static bool IsAzureAccountPresent()
         {
             return !AzureAccount.GetInstance().IsEmpty();
@@ -58,11 +64,23 @@ namespace PowerPointLabs.ELearningLab.Service
             return true;
         }
 
+        public static void RenewCancellationToken()
+        {
+            cts = new CancellationTokenSource();
+        }
+
+        public static void Cancel()
+        {
+            cts.Cancel();
+        }
+
         #region Audio Preview
 
         public static void SpeakString(string textToSpeak, AzureVoice voice)
         {
+            RenewCancellationToken();
             string accessToken;
+            string filePath = Path.GetTempPath() + AudioService.TempFolderName + "\\" + "PPTL_preview.wav";
             try
             {
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance();
@@ -83,9 +101,8 @@ namespace PowerPointLabs.ELearningLab.Service
 
             azureVoiceSynthesizer.OnAudioAvailable += PlayAudio;
             azureVoiceSynthesizer.OnError += OnAzureVoiceErrorHandler;
-
             // Reuse Synthesize object to minimize latency
-            azureVoiceSynthesizer.Speak(CancellationToken.None, new SynthesizeAzureVoice.InputOptions()
+            azureVoiceSynthesizer.Speak(token, new SynthesizeAzureVoice.InputOptions()
             {
                 RequestUri = new Uri(requestUri),
                 Text = textToSpeak,
@@ -95,7 +112,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 // Service can return audio in different output format.
                 OutputFormat = AudioOutputFormat.Riff24Khz16BitMonoPcm,
                 AuthorizationToken = "Bearer " + accessToken,
-            }).Wait();
+            }, filePath).Wait();
         }
 
         #endregion
@@ -103,9 +120,10 @@ namespace PowerPointLabs.ELearningLab.Service
         #region Audio Generation
         public static bool SaveStringToWaveFileWithAzureVoice(string textToSave, string filePath, AzureVoice voice)
         {
+            RenewCancellationToken();
             string accessToken;
             string textToSpeak = GetHumanSpeakNotesForText(textToSave);
-            
+
             try
             {
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance();
@@ -128,7 +146,7 @@ namespace PowerPointLabs.ELearningLab.Service
             azureVoiceSynthesizer.OnError += OnAzureVoiceErrorHandler;
 
             // Reuse Synthesize object to minimize latency
-            azureVoiceSynthesizer.Speak(CancellationToken.None, new SynthesizeAzureVoice.InputOptions()
+            azureVoiceSynthesizer.Speak(token, new SynthesizeAzureVoice.InputOptions()
             {
                 RequestUri = new Uri(requestUri),
                 Text = textToSpeak,
@@ -165,7 +183,7 @@ namespace PowerPointLabs.ELearningLab.Service
                     fs.Write(bytesInStream, 0, bytesInStream.Length);
                 }
             }
-            catch 
+            catch
             {
                 MessageBox.Show("Error generating audio files. ");
             }
@@ -194,11 +212,46 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void PlayAudio(object sender, GenericEventArgs<Stream> args)
         {
-            // For SoundPlayer to be able to play the wav file, it has to be encoded in PCM.
-            // Use output audio format AudioOutputFormat.Riff16Khz16BitMonoPcm to do that.
-            SoundPlayer player = new SoundPlayer(args.EventData);
-            player.PlaySync();
-            args.EventData.Dispose();
+            ManualResetEvent syncEvent = new ManualResetEvent(false);
+            Thread thread1 = new Thread(() =>
+            {
+                SaveAudioToWaveFile(sender, args);
+                syncEvent.Set();
+            });
+            thread1.Start();
+            Thread thread = new Thread(() =>
+            {
+                syncEvent.WaitOne();
+                SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
+                WaveOutEvent player = new WaveOutEvent();
+                player.PlaybackStopped += (s, e) =>
+                {
+                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
+                    args.EventData.Dispose();
+                };
+                speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
+                using (var reader = new WaveFileReader(args.FilePath))
+                {
+                    player.Init(reader);
+                    player.Play();
+                    speechPlayingDialog.ShowDialog();
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+
+        private static SpeechPlayingDialogBox ShowSpeechCancelDialog(WaveOutEvent player)
+        {
+            SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
+            speechPlayingDialog.Closed += (sender, e) => SpeechPlayingDialog_Closed(player);
+            speechPlayingDialog.ShowDialog();
+            return speechPlayingDialog;
+        }
+
+        private static void SpeechPlayingDialog_Closed(WaveOutEvent player)
+        {
+            player.Stop();
         }
     }
 }
