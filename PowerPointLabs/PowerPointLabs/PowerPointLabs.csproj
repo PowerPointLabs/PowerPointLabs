@@ -258,10 +258,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
