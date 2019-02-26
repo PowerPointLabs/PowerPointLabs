@@ -30,11 +30,22 @@ namespace PowerPointLabs.TooltipsLab
             return group;
         }
 
+        /// <summary>
+        /// Text alignment is default to be centralized
+        /// </summary>
         private static Shape AddTextboxToSlide(PowerPointSlide slide, float left, float top, float width, float height)
         {
             Shape textbox = slide.GetNativeSlide().Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, left, top, width, height);
+            textbox.TextFrame.TextRange.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
             textbox.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             textbox.ZOrder(MsoZOrderCmd.msoBringForward);
+
+            //Somehow without explicitly restating the variables, the textbox size will be wrong.
+            textbox.Left = left;
+            textbox.Top = top;
+            textbox.Width = width;
+            textbox.Height = height;
+
             return textbox;
         }
 
