@@ -95,7 +95,8 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="116.667"/>
                 </Grid.ColumnDefinitions>
-                <CheckBox Grid.Column="0" x:Name="previewCheckbox" Margin="20,10,0,0">Preview</CheckBox>
+                <CheckBox Grid.Column="0" x:Name="previewCheckbox" Margin="20,10,0,0" 
+                          Checked="PreviewCheckBox_Checked" Unchecked="PreviewCheckBox_Unchecked">Preview</CheckBox>
                 <Button Grid.Column="1" x:Name="okButton" Content="OK" Margin="0,10,10,10"  Width="80" IsDefault="True" Click="OkButton_Click"/>
                 <Button Grid.Column="2" x:Name="cancelButton" Content="Cancel" Margin="0,10,10,10"  Width="80" IsCancel="True" Click="CancelButton_Click"/>
             </Grid>

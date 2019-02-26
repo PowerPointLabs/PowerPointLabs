@@ -160,6 +160,16 @@ namespace PowerPointLabs.ELearningLab.Views
             MessageBox.Show("Note that we only support English language at this stage.");
         }
 
+        private void PreviewCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            AudioSettingService.IsPreviewEnabled = true;
+        }
+
+        private void PreviewCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            AudioSettingService.IsPreviewEnabled = false;
+        }
+
         #endregion
 
         #region Private Helper Functions

@@ -95,8 +95,11 @@ namespace PowerPointLabs.Views
                 default:
                     break;
             }
-            //Close();
             Dispatcher.Invoke(() => { Close(); });
+            if (AudioSettingService.IsPreviewEnabled)
+            {
+                ComputerVoiceRuntimeService.PreviewAnimations();
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
