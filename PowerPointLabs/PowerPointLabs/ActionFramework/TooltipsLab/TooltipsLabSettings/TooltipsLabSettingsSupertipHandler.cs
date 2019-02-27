@@ -9,7 +9,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return AnimationLabText.SettingsButtonSupertip;
+            return TooltipsLabText.SettingsButtonSupertip;
         }
     }
 }

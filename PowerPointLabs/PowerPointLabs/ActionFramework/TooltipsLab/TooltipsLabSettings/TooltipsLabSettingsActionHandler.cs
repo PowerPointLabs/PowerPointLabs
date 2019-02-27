@@ -1,6 +1,7 @@
-﻿using PowerPointLabs.ActionFramework.Common.Attribute;
+﻿using System.Windows.Forms;
+
+using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.AnimationLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
@@ -10,7 +11,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            AnimationLabSettings.ShowSettingsDialog();
+            // TODO: Settings for Tooltips Lab
+            MessageBox.Show("No settings for Tooltips Lab yet. Will be implemented soon!");
+            return; 
         }
     }
 }
