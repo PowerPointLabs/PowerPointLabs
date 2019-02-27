@@ -258,6 +258,7 @@
     can be found.
   -->
   <ItemGroup>
+
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxActionHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxImageHandler.cs" />
