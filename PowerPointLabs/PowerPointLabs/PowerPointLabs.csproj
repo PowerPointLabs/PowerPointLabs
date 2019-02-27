@@ -260,10 +260,6 @@
   <ItemGroup>
 
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AddTextbox\AddTextboxSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuLabelHandler.cs" />
