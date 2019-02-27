@@ -14,6 +14,24 @@ namespace PowerPointLabs.TooltipsLab
     internal static class CreateTooltip
     {
 
+        // Generate a trigger shape directly in the center bottom position of the specified callout shape.
+        public static PowerPoint.Shape GenerateTriggerShapeWithReferenceCallout(PowerPointSlide currentSlide, PowerPoint.Shape callout)
+        {
+            float height = 25;
+            float width = 25;
+            float left = ShapeUtil.GetCenterPoint(callout).X - width / 2;
+            float top = ShapeUtil.GetBottom(callout) + 10;
+
+            PowerPoint.Shape triggerShape = currentSlide.Shapes.AddShape(
+                Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, 
+                left, 
+                top, 
+                width, 
+                height);
+
+            return triggerShape;
+        }
+
         public static PowerPoint.Shape GenerateCalloutWithReferenceTriggerShape(PowerPointSlide currentSlide, PowerPoint.Shape triggerShape)
         {
             float midpointX = ShapeUtil.GetMidpointX(triggerShape);

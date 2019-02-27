@@ -7,8 +7,8 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportEnabledRibbonId(TooltipsLabText.CreateTooltipTag)]
-    class CreateTooltipEnabledHandler : EnabledHandler
+    [ExportEnabledRibbonId(TooltipsLabText.CreateMenuTag)]
+    class CreateMenuEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {

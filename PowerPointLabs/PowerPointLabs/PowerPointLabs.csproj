@@ -258,11 +258,22 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipEnabledHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipActionHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipImageHandler.cs" />
@@ -276,7 +287,6 @@
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
-    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
