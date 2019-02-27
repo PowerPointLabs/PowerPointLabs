@@ -38,26 +38,23 @@ namespace PowerPointLabs.ELearningLab.Service
             SyncExitEffectAnimations(_slide, _selfExplanationItems);
             DeleteUnusedCalloutShapes(_slide);
             DeleteUnusedAudioShapes(_slide);
+            DeleteUnusedCaptionShapes(_slide);
         }
 
         public static void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
         {
             SelfExplanationClickItem selfExplanationItem = _selfExplanationItems.ElementAt(i);
-            if (!selfExplanationItem.IsCaption && !selfExplanationItem.IsCallout && !selfExplanationItem.IsVoice)
-            {
-                DeleteShapesForUnusedItem(_slide, selfExplanationItem);
-            }
             CreateAppearEffectAnimation(_slide, selfExplanationItem);
         }
         private static void SyncLabAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
         {
             _slide = slide;
             _selfExplanationItems = selfExplanationItems;
-            AudioService.SetTempName();
+
             int totalSelfExplanationItemsCount = selfExplanationItems.Count();
 
-            ProcessingStatusForm progressBarForm = 
-                new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService);
+            ProcessingStatusForm progressBarForm =
+                 new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService);
             progressBarForm.Show();
         }
 
@@ -144,6 +141,23 @@ namespace PowerPointLabs.ELearningLab.Service
         private static void DeleteUnusedCalloutShapes(PowerPointSlide slide)
         {
             List<Shape> shapes = slide.GetShapesWithNameRegex(ELearningLabText.CalloutShapeNameRegex);
+            IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
+            foreach (Effect effect in effects)
+            {
+                if (shapes.Contains(effect.Shape))
+                {
+                    shapes.Remove(effect.Shape);
+                }
+            }
+            foreach (Shape shape in shapes)
+            {
+                shape.Delete();
+            }
+        }
+
+        private static void DeleteUnusedCaptionShapes(PowerPointSlide slide)
+        {
+            List<Shape> shapes = slide.GetShapesWithNameRegex(ELearningLabText.CaptionShapeNameRegex);
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
             foreach (Effect effect in effects)
             {

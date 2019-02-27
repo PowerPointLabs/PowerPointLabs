@@ -9,7 +9,7 @@ namespace PowerPointLabs.TextCollection
     internal static class ELearningLabText
     {
         public const string RibbonMenuId = "eLearningLabMenu";
-        public const string RibbonMenuLabel = "e-Learning";
+        public const string RibbonMenuLabel = "e-Learning lab";
         public const string RibbonMenuSupertip =
             "Use eLearning Lab to create audio, callouts, captions and tooltips all in one go!";
 
@@ -44,6 +44,7 @@ namespace PowerPointLabs.TextCollection
         public const string AudioDefaultShapeNameFormat = Identifier + Underscore + "{0}" + 
             Underscore + AudioIdentifier + Underscore + "{1}" + Underscore + DefaultAudioIdentifier;
         public const string ProgressStatusLabelFormat = "{0}% Completeness";
+        public const string TempFolderNameFormat = @"\PowerPointLabs Temp\" + "{0}" + @"\";
 
         public const string ExtractTagNoRegex = Identifier + Underscore + @"([1-9][0-9]*)" + 
             Underscore + "(" + CalloutIdentifier + "|" + CaptionIdentifier + "|" + AudioIdentifier + @").*";
@@ -55,6 +56,8 @@ namespace PowerPointLabs.TextCollection
             + AudioIdentifier + Underscore + @".*";
         public const string CalloutShapeNameRegex = Identifier + Underscore + @"[1-9][0-9]*" + Underscore
             + CalloutIdentifier;
+        public const string CaptionShapeNameRegex = Identifier + Underscore + @"[1-9][0-9]*" + Underscore 
+            + CaptionIdentifier;
         public const string PPTLShapeNameRegex = Identifier + Underscore + @"[1-9][0-9]*" +
             Underscore + "(" + CalloutIdentifier + "|" + CaptionIdentifier + "|" + AudioIdentifier + @").*";
         public const string PromptToSyncMessage = "ELearningLab detected that you have unsynced items in your workspace.\n" +

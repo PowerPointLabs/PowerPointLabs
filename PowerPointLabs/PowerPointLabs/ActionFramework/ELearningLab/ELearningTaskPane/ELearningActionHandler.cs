@@ -41,7 +41,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
             }
             else
             {
-                taskpane.eLearningLabMainPanel1.HandleTaskPaneHiddenEvent();
+                taskpane.eLearningLabMainPanel1.HandleSlideChangedEvent();
             }
         }
     }

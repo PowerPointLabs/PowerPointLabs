@@ -24,17 +24,11 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             get
             {
-              //  string tempName = Globals.ThisAddIn.GetActiveWindowTempName();
-                return @"\PowerPointLabs Temp\" + tempName + @"\";
+                return string.Format(ELearningLabText.TempFolderNameFormat, 
+                    Globals.ThisAddIn.GetTempFolderName());
             }
         }
 
-        private static string tempName = string.Empty;
-
-        public static void SetTempName()
-        {
-            tempName = Globals.ThisAddIn.GetActiveWindowTempName();
-        }
         public static Effect CreateAppearEffectAudioAnimation(PowerPointSlide slide, string captionText, string voiceLabel,
            int clickNo, int tagNo, bool isSeperateClick)
         {

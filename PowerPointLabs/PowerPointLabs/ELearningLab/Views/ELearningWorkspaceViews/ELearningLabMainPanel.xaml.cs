@@ -72,7 +72,12 @@ namespace PowerPointLabs.ELearningLab.Views
 
         public void HandleELearningPaneSlideSelectionChanged()
         {
-            slide = this.GetCurrentSlide();
+            PowerPointSlide _slide = this.GetCurrentSlide();
+            if (_slide.ID.Equals(slide.ID))
+            {
+                return;
+            }
+            slide = _slide;
             Items = LoadItems();
             listView.ItemsSource = Items;
             UpdateClickNoAndTriggerTypeInItems();
@@ -83,7 +88,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        public void HandleTaskPaneHiddenEvent()
+        public void HandleSlideChangedEvent()
         {
             if (!IsInSync())
             {
@@ -92,6 +97,7 @@ namespace PowerPointLabs.ELearningLab.Views
                        ELearningLabText.ELearningTaskPaneLabel, System.Windows.Forms.MessageBoxButtons.YesNo);
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
+                    isSynced = true;
                     SyncClickItems();
                 }
             }
@@ -337,6 +343,13 @@ namespace PowerPointLabs.ELearningLab.Views
             bool isOnClickSelfExplanationAfterCustomItem = index > 0 &&
                 clickItem is SelfExplanationClickItem && (Items.ElementAt(index - 1) is CustomClickItem)
                 && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
+            bool isFirstOnClickSelfExplanationItem = index == 0 
+                && (clickItem is SelfExplanationClickItem) 
+                && (clickItem as SelfExplanationClickItem).TriggerIndex == (int)TriggerType.OnClick;
+            bool isFirstWithPreviousSelfExplanationItem =
+                index == 0
+                && (clickItem is SelfExplanationClickItem)
+                && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
             bool isDummySelfExplanationItem =
                 clickItem is SelfExplanationClickItem && (clickItem as SelfExplanationClickItem).IsDummyItem;
             /* This commented piece of code is trying to handle the case when first self explanation item (SEI)
@@ -348,6 +361,14 @@ namespace PowerPointLabs.ELearningLab.Views
             if (index == 0)
             {
                 clickItem.ClickNo = startClickNo;
+                if (isFirstOnClickSelfExplanationItem)
+                {
+                    clickItem.ClickNo = 1;
+                }
+                if (isFirstWithPreviousSelfExplanationItem)
+                {
+                    clickItem.ClickNo = 0;
+                }
             }
             else if (isOnClickSelfExplanationAfterCustomItem || isDummySelfExplanationItem)
             {
@@ -362,7 +383,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void UpdateTriggerTypeEnabledOnSelfExplanationItem(SelfExplanationClickItem selfExplanationClickItem, int index)
         {
-            if (index > 0 && Items.ElementAt(index - 1) is CustomClickItem)
+            if ((index > 0 && Items.ElementAt(index - 1) is CustomClickItem) || index == 0)
             {
                 selfExplanationClickItem.IsTriggerTypeComboBoxEnabled = true;
             }
