@@ -361,11 +361,11 @@ namespace PowerPointLabs.ELearningLab.Views
             if (index == 0)
             {
                 clickItem.ClickNo = startClickNo;
-                if (isFirstOnClickSelfExplanationItem)
+                if (isFirstOnClickSelfExplanationItem && !isDummySelfExplanationItem)
                 {
                     clickItem.ClickNo = 1;
                 }
-                if (isFirstWithPreviousSelfExplanationItem)
+                if (isFirstWithPreviousSelfExplanationItem || isDummySelfExplanationItem)
                 {
                     clickItem.ClickNo = 0;
                 }
