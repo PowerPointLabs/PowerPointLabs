@@ -33,8 +33,13 @@ namespace PowerPointLabs.ELearningLab.Extensions
                 int idxStart = effectBefore == null ? effects.Count() : effects.IndexOf(effectBefore);
                 int idxEnd = effectAfter == null ? effects.Count() : effects.IndexOf(effectAfter);
 
-                return effects.GetRange(idxStart, idxEnd - idxStart).Where(x =>
+                IEnumerable<Effect> customEffects = effects.GetRange(idxStart, idxEnd - idxStart).Where(x =>
                 SelfExplanationTagService.ExtractTagNo(x.Shape.Name) == -1);
+                if (clickNo > 0 && customEffects.Count() > 0)
+                {
+                    customEffects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                }
+                return customEffects;
             }
             catch
             {
