@@ -629,6 +629,7 @@
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ZoomLab\ZoomLabMenu\ZoomLabMenuSupertipHandler.cs" />
