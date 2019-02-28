@@ -1,9 +1,7 @@
 ﻿using Microsoft.Office.Tools;
-
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ShapesLab;
 using PowerPointLabs.TextCollection;
 
@@ -15,9 +13,30 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.RegisterTaskPane(typeof(CustomShapePane), ShapesLabText.TaskPanelTitle);
-            CustomTaskPane customShapePane = this.GetTaskPane(typeof(CustomShapePane));
+            CustomTaskPane shapesLabPane = this.GetTaskPane(typeof(CustomShapePane));
+
+            if (shapesLabPane == null)
+            {
+                return;
+            }
+            
             // toggle pane visibility
-            customShapePane.Visible = !customShapePane.Visible;
+            shapesLabPane.Visible = !shapesLabPane.Visible;
+            InitCustomShapePaneStorage(shapesLabPane);
         }
+
+        private void InitCustomShapePaneStorage(CustomTaskPane taskPane)
+        {
+            CustomShapePane customShapePane = taskPane.Control as CustomShapePane;
+            if (customShapePane.CustomShapePaneWPF1.IsStorageSettingsGiven())
+            {
+                return;
+            }
+            ThisAddIn addIn = this.GetAddIn();
+            addIn.InitializeShapesLabConfig();
+            addIn.InitializeShapeGallery();
+            customShapePane.CustomShapePaneWPF1.SetStorageSettings(ShapesLabSettings.SaveFolderPath, addIn.ShapesLabConfig.DefaultCategory);
+        }
+
     }
 }

@@ -307,23 +307,6 @@ namespace PowerPointLabs
             RegisterTaskPane(new ColorPane(), ColorsLabText.TaskPanelTitle, activeWindow, null, null);
         }
 
-        public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(CustomShapePane_)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            //TODO
-            /*RegisterTaskPane(
-                new CustomShapePane_(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
-                ShapesLabText.TaskPanelTitle, activeWindow, null, null);
-                */
-
-        }
-
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
