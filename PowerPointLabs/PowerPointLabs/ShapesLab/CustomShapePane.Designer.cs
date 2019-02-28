@@ -28,6 +28,21 @@ namespace PowerPointLabs.ShapesLab
             base.Dispose(disposing);
         }
 
+        internal void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
+        {
+            CustomShapePaneWPF1.AddCustomShape(shapeName, shapePath, immediateEditing);
+        }
+
+        internal void RemoveCustomShape(string shapeName)
+        {
+            CustomShapePaneWPF1.RemoveCustomShape(shapeName);
+        }
+
+        internal void RenameCustomShape(string shapeOldName, string shapeNewName)
+        {
+            RenameCustomShape(shapeOldName, shapeNewName);
+        }
+
         #region Component Designer generated code
 
         /// <summary> 
@@ -65,5 +80,18 @@ namespace PowerPointLabs.ShapesLab
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         public CustomShapePaneWPF CustomShapePaneWPF1 { get; private set; }
+
+        public string CurrentCategory
+        {
+            get
+            {
+                return CustomShapePaneWPF1.CurrentCategory;
+            }
+            set
+            {
+                CustomShapePaneWPF1.CurrentCategory = value;
+            }
+        }
+
     }
 }

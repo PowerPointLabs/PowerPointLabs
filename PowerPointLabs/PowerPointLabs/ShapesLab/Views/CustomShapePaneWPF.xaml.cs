@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Core;
@@ -232,13 +231,13 @@ namespace PowerPointLabs.ShapesLab.Views
             addIn.SyncShapeAdd(shapeName, shapeFullName, CurrentCategory);
 
             // finally, add the shape into the panel and waiting for name editing
-            AddShape(shapeName, shapeFullName, true);
+            AddCustomShape(shapeName, shapeFullName, true);
         }
 
         /// <summary>
         /// Adds a shape lexicographically.
         /// </summary>
-        public void AddShape(string shapeName, string shapePath, bool immediateEditing)
+        public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
         {
             DehighlightSelected();
 
@@ -257,7 +256,7 @@ namespace PowerPointLabs.ShapesLab.Views
             //labeledThumbnail.NameEditFinish += NameEditFinishHandler;
         }
 
-        public void RemoveShape(string shapeName)
+        public void RemoveCustomShape(string shapeName)
         {
             int shapeIndex = GetShapeItemIndex(shapeName);
             shapeList.Items.RemoveAt(shapeIndex);
@@ -888,7 +887,7 @@ namespace PowerPointLabs.ShapesLab.Views
                     continue;
                 }
 
-                AddShape(shapeName, shape, false);
+                AddCustomShape(shapeName, shape, false);
             }
             //TODO
             /*

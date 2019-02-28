@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace PowerPointLabs.ShapesLab
 {
@@ -9,5 +10,6 @@ namespace PowerPointLabs.ShapesLab
         {
             InitializeComponent();
         }
+
     }
 }

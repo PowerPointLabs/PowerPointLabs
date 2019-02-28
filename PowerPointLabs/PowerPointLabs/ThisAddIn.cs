@@ -26,6 +26,7 @@ using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.ShapesLab.Views;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
@@ -94,8 +95,7 @@ namespace PowerPointLabs
         public Control GetActiveControl(Type type)
         {
             CustomTaskPane taskPane = GetActivePane(type);
-
-            return taskPane == null ? null : taskPane.Control;
+            return taskPane?.Control;
         }
 
         public CustomTaskPane GetActivePane(Type type)
@@ -114,9 +114,8 @@ namespace PowerPointLabs
 
         public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
         {
-            CustomTaskPane taskPane = GetPaneFromWindow(typeof(CustomShapePane_), window);
-
-            return taskPane == null ? null : taskPane.Control;
+            CustomTaskPane taskPane = GetPaneFromWindow(type, window);
+            return taskPane?.Control;
         }
 
         public CustomTaskPane GetPaneFromWindow(Type type, PowerPoint.DocumentWindow window)
@@ -316,7 +315,8 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                CustomShapePane_ shapePaneControl = GetControlFromWindow(typeof(CustomShapePane_), window) as CustomShapePane_;
+                CustomShapePane shapePaneControl = (GetControlFromWindow(typeof(CustomShapePane), window)
+                    as CustomShapePane);
 
                 if (shapePaneControl != null &&
                     shapePaneControl.CurrentCategory == category)
@@ -335,7 +335,8 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                CustomShapePane_ shapePaneControl = GetControlFromWindow(typeof(CustomShapePane_), window) as CustomShapePane_;
+                CustomShapePane shapePaneControl = (GetControlFromWindow(typeof(CustomShapePane), window)
+                    as CustomShapePane);
 
                 if (shapePaneControl != null &&
                     shapePaneControl.CurrentCategory == category)
@@ -354,7 +355,8 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                CustomShapePane_ shapePaneControl = GetControlFromWindow(typeof(CustomShapePane_), window) as CustomShapePane_;
+                CustomShapePane shapePaneControl = (GetControlFromWindow(typeof(CustomShapePane), window)
+                    as CustomShapePane);
 
                 if (shapePaneControl != null &&
                     shapePaneControl.CurrentCategory == category)
@@ -887,12 +889,13 @@ namespace PowerPointLabs
             {
                 Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
 
-                CustomShapePane_ customShape = GetActiveControl(typeof(CustomShapePane_)) as CustomShapePane_;
+                CustomShapePaneWPF customShapePane = (GetActiveControl(typeof(CustomShapePane)) as CustomShapePane)
+                    ?.CustomShapePaneWPF1;
 
                 // make sure ShapeGallery's default category is consistent with current presentation
-                if (customShape != null)
+                if (customShapePane != null)
                 {
-                    string currentCategory = customShape.CurrentCategory;
+                    string currentCategory = customShapePane.CurrentCategory;
                     ShapePresentation.DefaultCategory = currentCategory;
                 }
 
@@ -1004,13 +1007,13 @@ namespace PowerPointLabs
             // customshapepane and syncpane respectively
             if (GetActivePane(typeof(SyncPane)) != null)
             {
-                SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
+                SyncPane syncPane = GetActiveControl(typeof(SyncPane)) as SyncPane;
                 syncPane.UpdateOnSelectionChange(sel);
             }
 
             if (GetActivePane(typeof(CustomShapePane_)) != null)
             {
-                CustomShapePane_ customShapePane = GetActivePane(typeof(CustomShapePane_)).Control as CustomShapePane_;
+                CustomShapePane customShapePane = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
                 customShapePane.UpdateOnSelectionChange(sel);
             }
 
