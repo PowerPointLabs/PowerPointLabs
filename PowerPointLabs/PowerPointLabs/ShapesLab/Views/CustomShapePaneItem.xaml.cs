@@ -42,6 +42,8 @@ namespace PowerPointLabs.ShapesLab.Views
                 IntPtr.Zero,
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
+
+            //MouseDoubleClick += 
         }
 
         public string FormatShapeKey

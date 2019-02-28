@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="833" d:DesignWidth="300" 
-             Loaded="SyncPaneWPF_Loaded">
+             Loaded="CustomShapePaneWPF_Loaded">
     <Grid>
-        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White" IsEnabled="True">
+        <Button x:Name="addShapeButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White" IsEnabled="True">
             <Button.Style>
                 <Style TargetType="Button">
                     <Style.Triggers>
@@ -17,7 +17,7 @@
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            <Image x:Name="copyImage" Source="..\..\Resources\AddToCustomShapes.png" Stretch="Fill"/>
+            <Image x:Name="addShapeImage" Source="..\..\Resources\AddToCustomShapes.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
                     <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Copy Format</TextBlock>
@@ -28,7 +28,14 @@
             </Button.ToolTip>
         </Button>
         <Label x:Name="copyLabel" Content="Copy" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-        <ListBox x:Name="formatListBox" Margin="10,86,10,700" HorizontalContentAlignment="Stretch"/>
-        <WrapPanel x:Name="wrapPanel" Margin="10,186,10,10" ></WrapPanel>
+        <ComboBox x:Name="comboBox" Margin="10,86,10,720"></ComboBox>
+        <ListBox x:Name="formatListBox" Margin="10,106,10,680" HorizontalContentAlignment="Stretch"/>
+        <ListBox x:Name="shapeList" Margin="10,186,10,10" SelectionMode="Extended">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel x:Name="wrapPanel" Orientation="Horizontal" Loaded="WrapPanelLoaded"></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
     </Grid>
 </UserControl>

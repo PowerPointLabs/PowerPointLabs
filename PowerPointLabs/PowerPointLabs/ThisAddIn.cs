@@ -316,9 +316,12 @@ namespace PowerPointLabs
 
             PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
 
-            RegisterTaskPane(
+            //TODO
+            /*RegisterTaskPane(
                 new CustomShapePane_(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
                 ShapesLabText.TaskPanelTitle, activeWindow, null, null);
+                */
+
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)

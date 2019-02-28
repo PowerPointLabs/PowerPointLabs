@@ -12,7 +12,7 @@ namespace PowerPointLabs.ShapesLab
 
         public void UpdateOnSelectionChange(Selection sel)
         {
-            this.CustomShapePaneWPF1.UpdateCopyButtonEnabledStatus(sel);
+            this.CustomShapePaneWPF1.UpdateAddShapeButtonEnabledStatus(sel);
         }
 
         /// <summary> 
