@@ -44,10 +44,10 @@ namespace PowerPointLabs.ColorsLab
             return String.Format("R: {0:#0.##} G: {1:#0.##} B: {2:#0.##}", color.R, color.G, color.B);
         }
 
-        public string ToHEXString()
+        public string ToHexString()
         {
             Color color = (Color)this;
-            return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            return ColorHelper.ColorToHexString(color);
         }
 
         public void SetRGB(int red, int green, int blue)

@@ -15,16 +15,9 @@ namespace PowerPointLabs.ActionFramework.ColorsLab
         {
             this.RegisterTaskPane(typeof(ColorsLabPane), ColorsLabText.TaskPanelTitle);
             CustomTaskPane colorPane = this.GetTaskPane(typeof(ColorsLabPane));
-            // if currently the pane is hidden, show the pane
-            if (!colorPane.Visible)
-            {
-                // fire the pane visble change event
-                colorPane.Visible = true;
-            }
-            else
-            {
-                colorPane.Visible = false;
-            }
+
+            // if currently the pane is hidden, show the pane, vice versa.
+            colorPane.Visible = !colorPane.Visible;
         }
     }
 }

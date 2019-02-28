@@ -14,7 +14,7 @@
         public const string TaskPanelTitle = "Colors Lab";
 
         public const string MainColorBoxTooltip = "Choose the main color: " +
-                                   "\r\nYou can drag the box to favorites palatte, " +
+                                   "\r\nDrag the box to favorites palatte, " +
                                    "\r\nor click it to choose one from the Color dialog.";
         public const string FontColorButtonTooltip = "Change the font color of the selected shapes: " +
                                                  "\r\nDrag the button to pick a color.";

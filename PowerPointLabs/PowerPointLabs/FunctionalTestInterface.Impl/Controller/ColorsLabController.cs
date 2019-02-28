@@ -161,17 +161,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    rect.RaiseEvent(
-                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                        {
-                            RoutedEvent = UIElement.MouseDownEvent
-                        });
+                    LeftClickOnRectangle(rect);
 
-                    rect.RaiseEvent(
-                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                       {
-                           RoutedEvent = UIElement.MouseUpEvent
-                       });
+                    
                 }));
             }
         }
@@ -200,17 +192,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    rect.RaiseEvent(
-                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                        {
-                            RoutedEvent = UIElement.MouseDownEvent
-                        });
-
-                    rect.RaiseEvent(
-                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                       {
-                           RoutedEvent = UIElement.MouseUpEvent
-                       });
+                    LeftClickOnRectangle(rect);
                 }));
             }
         }
@@ -239,17 +221,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    rect.RaiseEvent(
-                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                        {
-                            RoutedEvent = UIElement.MouseDownEvent
-                        });
-
-                    rect.RaiseEvent(
-                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                       {
-                           RoutedEvent = UIElement.MouseUpEvent
-                       });
+                    LeftClickOnRectangle(rect);
                 }));
             }
         }
@@ -278,17 +250,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    rect.RaiseEvent(
-                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                        {
-                            RoutedEvent = UIElement.MouseDownEvent
-                        });
-
-                    rect.RaiseEvent(
-                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                       {
-                           RoutedEvent = UIElement.MouseUpEvent
-                       });
+                    LeftClickOnRectangle(rect);
                 }));
             }
         }
@@ -320,17 +282,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    rect.RaiseEvent(
-                        new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                        {
-                            RoutedEvent = UIElement.MouseDownEvent
-                        });
-
-                    rect.RaiseEvent(
-                       new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
-                       {
-                           RoutedEvent = UIElement.MouseUpEvent
-                       });
+                    LeftClickOnRectangle(rect);
                 }));
             }
         }
@@ -381,6 +333,19 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return list;
         }
 
-     
+        private void LeftClickOnRectangle(Rectangle rect)
+        {
+            rect.RaiseEvent(
+                new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.MouseDownEvent
+                });
+
+            rect.RaiseEvent(
+                new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.MouseUpEvent
+                });
+        }
     }
 }

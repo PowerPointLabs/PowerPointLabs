@@ -32,7 +32,7 @@ namespace PowerPointLabs.ColorsLab
             InitializeComponent();
 
             colorRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
-            colorHexText.Text = ((HSLColor)color).ToHEXString();
+            colorHexText.Text = ((HSLColor)color).ToHexString();
             colorRgbText.Text = ((HSLColor)color).ToRGBString();
             colorHslText.Text = ((HSLColor)color).ToString();
 
