@@ -98,7 +98,6 @@ namespace PowerPointLabs.ELearningLab.Service
         public static void EmbedSelectedSlideNotes()
         {
             List<PowerPointSlide> slides = PowerPointCurrentPresentationInfo.SelectedSlides.ToList();
-         //   AudioService.SetTempName();
 
             if (AudioSettingService.selectedVoiceType == AudioGenerator.VoiceType.AzureVoice
                 && AzureAccount.GetInstance().IsEmpty())

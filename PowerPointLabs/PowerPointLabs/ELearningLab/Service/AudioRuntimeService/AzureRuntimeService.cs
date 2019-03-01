@@ -230,11 +230,18 @@ namespace PowerPointLabs.ELearningLab.Service
                     args.EventData.Dispose();
                 };
                 speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
-                using (var reader = new WaveFileReader(args.FilePath))
+                try
                 {
-                    player.Init(reader);
-                    player.Play();
-                    speechPlayingDialog.ShowDialog();
+                    using (var reader = new WaveFileReader(args.FilePath))
+                    {
+                        player.Init(reader);
+                        player.Play();
+                        speechPlayingDialog.ShowDialog();
+                    }
+                }
+                catch
+                {
+                    Logger.Log("Audio File not Found");
                 }
             });
             thread.SetApartmentState(ApartmentState.STA);
