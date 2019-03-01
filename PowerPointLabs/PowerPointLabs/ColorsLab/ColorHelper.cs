@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace PowerPointLabs.ColorPicker
+namespace PowerPointLabs.ColorsLab
 {
     class ColorHelper
     {
@@ -11,6 +11,11 @@ namespace PowerPointLabs.ColorPicker
             int g = (0xff00 & x) >> 8;
             int b = (0xff0000 & x) >> 16;
             return (int)(0xff << 24 | r << 16 | g << 8 | b);
+        }
+
+        public static string ColorToHexString(Color color)
+        {
+            return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
         public static Color GetColorShiftedByAngle(HSLColor originalColor, float angle)
