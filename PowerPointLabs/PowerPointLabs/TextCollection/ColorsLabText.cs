@@ -14,17 +14,16 @@
         public const string TaskPanelTitle = "Colors Lab";
 
         public const string MainColorBoxTooltip = "Choose the main color: " +
-                                   "\r\nDrag the button to pick a color, " +
+                                   "\r\nDrag the box to favorites palatte, " +
                                    "\r\nor click it to choose one from the Color dialog.";
         public const string FontColorButtonTooltip = "Change the font color of the selected shapes: " +
-                                                 "\r\nDrag the button to pick a color, " +
-                                                 "\r\nor click it to choose one from the Color dialog.";
+                                                 "\r\nDrag the button to pick a color.";
         public const string LineColorButtonTooltip = "Change the line color of the selected shapes: " +
-                                                 "\r\nDrag the button to pick a color, " +
-                                                 "\r\nor click it to choose one from the Color dialog.";
+                                                 "\r\nDrag the button to pick a color.";
         public const string FillColorButtonTooltip = "Change the fill color of the selected shapes: " +
-                                                 "\r\nDrag the button to pick a color, " +
-                                                 "\r\nor click it to choose one from the Color dialog.";
+                                                 "\r\nDrag the button to pick a color.";
+        public const string EyeDropperButtonTooltip = "Choose the main color with eyedropper: " +
+                                                    "\r\nDrag the button to pick a color.";
         public const string BrightnessSliderTooltip = "Move the slider to adjust the main color’s brightness.";
         public const string SaturationSliderTooltip = "Move the slider to adjust the main color’s saturation.";
         public const string SaveFavoriteColorsButtonTooltip = "Save the favorite color palette.";

@@ -2,18 +2,19 @@
 using System.Drawing;
 using System.Windows.Data;
 
+using PowerPointLabs.ColorsLab;
+
 namespace PowerPointLabs.Converters.ColorPane
 {
-    class SelectedColorToMonochromaticSeven : IValueConverter
+    [ValueConversion(typeof(HSLColor), typeof(string))]
+    class HSLColorToHex : IValueConverter
     {
+        public static HSLColorToHex Instance = new HSLColorToHex();
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            HSLColor selectedColor = (HSLColor)value;
-            Color convertedColor = new HSLColor(selectedColor.Hue, selectedColor.Saturation, 0.20f * 240);
-            return Color.FromArgb(255,
-                convertedColor.R,
-                convertedColor.G,
-                convertedColor.B);
+            Color color = (HSLColor)value;
+            return ColorHelper.ColorToHexString(color);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -3,7 +3,7 @@ using System.Windows.Interop;
 
 using PPExtraEventHelper;
 
-namespace PowerPointLabs.ColorPicker
+namespace PowerPointLabs.ColorsLab
 {
     /// <summary>
     /// Interaction logic for MagnifierOverlay.xaml
