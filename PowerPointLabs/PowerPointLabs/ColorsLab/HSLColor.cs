@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace PowerPointLabs
+namespace PowerPointLabs.ColorsLab
 {
     /// <summary>
     /// taken from: http://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
@@ -42,6 +42,12 @@ namespace PowerPointLabs
         {
             Color color = (Color)this;
             return String.Format("R: {0:#0.##} G: {1:#0.##} B: {2:#0.##}", color.R, color.G, color.B);
+        }
+
+        public string ToHexString()
+        {
+            Color color = (Color)this;
+            return ColorHelper.ColorToHexString(color);
         }
 
         public void SetRGB(int red, int green, int blue)

@@ -644,6 +644,23 @@
     <Compile Include="AutoUpdate\Downloader.cs" />
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="ColorsLab\ColorsLabConstants.cs" />
+    <Compile Include="ColorsLab\ColorsLabPaneWPF.xaml.cs">
+      <DependentUpon>ColorsLabPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorsLab\ColorsLabPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorsLab\ColorsLabPane.Designer.cs">
+      <DependentUpon>ColorsLabPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorsLab\ColorInformationDialog.xaml.cs">
+      <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorShiftByAngle.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorShiftSaturationByFactor.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorShiftLuminosityByFactor.cs" />
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
@@ -718,10 +735,15 @@
     <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextHorizontalAlignmentFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextVerticalAlignmentFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextLineSpacingFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextOrientationFormat.cs" />
+    <Compile Include="SyncLab\Views\SyncFormatPanelItemStub.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\ArtisticEffectFormat.cs" />
@@ -757,13 +779,7 @@
     </Compile>
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
-    <Compile Include="ColorPicker\ColorInformationDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ColorPicker\ColorInformationDialog.Designer.cs">
-      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="ColorsLab\HSLColor.cs" />
     <Compile Include="Converters\CropLab\EnumToBooleanConverter.cs" />
     <Compile Include="CropLab\CropLabException.cs" />
     <Compile Include="CropLab\CropLabDummyMessageService.cs" />
@@ -780,33 +796,15 @@
     <Compile Include="CropLab\Views\CustomAspectRatioDialogBox.xaml.cs">
       <DependentUpon>CustomAspectRatioDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorPicker\Magnifier.xaml.cs">
+    <Compile Include="ColorsLab\Magnifier.xaml.cs">
       <DependentUpon>Magnifier.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+    <Compile Include="ColorsLab\MagnifierOverlay.xaml.cs">
       <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
-    <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousLower.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToBrightnessValue.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToComplementaryColor.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFive.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFour.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticOne.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSeven.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSix.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticThree.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticTwo.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToSaturationValue.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryHigher.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryLower.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTetradicOne.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTetradicThree.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
     <Compile Include="CropLab\CropLabErrorHandler.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
@@ -817,13 +815,7 @@
     </Compile>
     <Compile Include="CustomControls\MessageService.cs" />
     <Compile Include="DataSources\ColorDataSource.cs" />
-    <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="ColorPicker\ColorPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ColorPicker\ColorPane.Designer.cs">
-      <DependentUpon>ColorPane.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ColorsLab\ColorHelper.cs" />
     <Compile Include="ShortcutsLab\ConvertToPicture.cs" />
     <Compile Include="CropLab\CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
@@ -1282,13 +1274,8 @@
     <None Include="Resources\Paint-icon.png" />
     <None Include="Resources\Technical-Pen-icon.png" />
     <None Include="Resources\Type-icon.png" />
-    <EmbeddedResource Include="ColorPicker\ColorInformationDialog.resx">
-      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ColorPicker\ColorPane.resx">
-      <DependentUpon>ColorPane.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="ColorsLab\ColorsLabPane.resx">
+      <DependentUpon>ColorsLabPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NarrationsLab\Views\RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
@@ -1442,6 +1429,14 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ColorsLab\ColorsLabPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ColorsLab\ColorInformationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CropLab\Views\CropLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1450,11 +1445,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ColorPicker\Magnifier.xaml">
+    <Page Include="ColorsLab\Magnifier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ColorPicker\MagnifierOverlay.xaml">
+    <Page Include="ColorsLab\MagnifierOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2100,6 +2095,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\AddToCustomShapesDisabled.png" />
+    <None Include="Resources\EyeDropper_icon.png" />
+    <None Include="Resources\EyeDropper_icon.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
