@@ -129,7 +129,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
         public void CustomShapePaneWPF_Loaded(object sender, RoutedEventArgs e)
         {
-            Microsoft.Office.Tools.CustomTaskPane shapesLabPane = this.GetAddIn().GetActivePane(typeof(CustomShapePane_));
+            Microsoft.Office.Tools.CustomTaskPane shapesLabPane = this.GetAddIn().GetActivePane(typeof(CustomShapePane));
             CustomShapePane customShapePane = shapesLabPane?.Control as CustomShapePane;
 
             if (customShapePane == null)
@@ -159,16 +159,15 @@ namespace PowerPointLabs.ShapesLab.Views
 
         public void UpdateAddShapeButtonEnabledStatus(Selection selection)
         {
-            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone) 
-                || (selection.Type == PpSelectionType.ppSelectionSlides))
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone)
+                || (selection.Type == PpSelectionType.ppSelectionSlides)
+                || !ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                addShapeButton.IsEnabled = false;
-                toolTipTextBox.Text = SyncLabText.DisabledToolTipText;
+                DisableAddShapesButton();
             }
             else
             {
-                addShapeButton.IsEnabled = true;
-                toolTipTextBox.Text = SyncLabText.EnabledToolTipText;
+                EnableAddShapesButton();
             }
         }
 
@@ -190,8 +189,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #region API
 
-        public void AddShapeFromSelection(PowerPointSlide currentSlide, PowerPointPresentation pres,
-            Selection selection, ThisAddIn addIn)
+        public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
         {
             // first of all we check if the shape gallery has been opened correctly
             if (!addIn.ShapePresentation.Opened)
@@ -217,21 +215,23 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             // add shape into shape gallery first to reduce flicker
+            PowerPointSlide currentSlide = this.GetCurrentSlide();
+            PowerPointPresentation pres = this.GetCurrentPresentation();
             string shapeName = addIn.ShapePresentation.AddShape(pres, currentSlide, selectedShapes, selectedShapes[1].Name);
 
             // add the selection into pane and save it as .png locally
-            string shapeFullName = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
-            bool success = ConvertToPicture.ConvertAndSave(selectedShapes, shapeFullName);
+            string shapePath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
+            bool success = ConvertToPicture.ConvertAndSave(selectedShapes, shapePath);
             if (!success)
             {
                 return;
             }
 
             // sync the shape among all opening panels
-            addIn.SyncShapeAdd(shapeName, shapeFullName, CurrentCategory);
+            addIn.SyncShapeAdd(shapeName, shapePath, CurrentCategory);
 
             // finally, add the shape into the panel and waiting for name editing
-            AddCustomShape(shapeName, shapeFullName, true);
+            AddCustomShape(shapeName, shapePath, true);
         }
 
         /// <summary>
@@ -243,8 +243,8 @@ namespace PowerPointLabs.ShapesLab.Views
 
             //TODO
             //LabeledThumbnail labeledThumbnail = new LabeledThumbnail(shapePath, shapeName) { ContextMenuStrip = shapeContextMenuStrip };
-            CustomShapePaneItem shapeItem = new CustomShapePaneItem(shapeName);
-            shapeItem.Text = shapeName;
+            CustomShapePaneItem shapeItem = new CustomShapePaneItem(shapeName, shapePath);
+
             //shapeItem.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             int insertionIndex = GetShapeInsertionIndex(shapeName);
             shapeList.Items.Insert(insertionIndex, shapeItem);
@@ -654,44 +654,19 @@ namespace PowerPointLabs.ShapesLab.Views
             //shapeList.ScrollIntoView();
         }
 
-        private void RegulateSelectionRectPoint(ref Point p)
+        private void RenameShapeFile(string oldShapeName, string newShapeName)
         {
-            if (p.X < 0)
-            {
-                p.X = 0;
-            }
-            else
-                if (p.X > wrapPanel.Width)
-            {
-                p.X = wrapPanel.Width;
-            }
-
-            if (p.Y < 0)
-            {
-                p.Y = 0;
-            }
-            else
-                if (p.Y > wrapPanel.Height)
-            {
-                p.Y = wrapPanel.Height;
-            }
-        }
-
-        private void RenameThumbnail(string oldName, LabeledThumbnail labeledThumbnail)
-        {
-            if (oldName == labeledThumbnail.NameLabel)
+            int shapeIndex = GetShapeItemIndex(oldShapeName);
+            CustomShapePaneItem shapeItem = (shapeList.Items[shapeIndex] as CustomShapePaneItem);
+            if (shapeItem.Text == newShapeName)
             {
                 return;
             }
+            shapeItem.RenameShape(newShapeName);
 
-            string newPath = labeledThumbnail.ImagePath.Replace(@"\" + oldName, @"\" + labeledThumbnail.NameLabel);
+            Globals.ThisAddIn.ShapePresentation.RenameShape(oldShapeName, newShapeName);
 
-            File.Move(labeledThumbnail.ImagePath, newPath);
-            labeledThumbnail.ImagePath = newPath;
-
-            Globals.ThisAddIn.ShapePresentation.RenameShape(oldName, labeledThumbnail.NameLabel);
-
-            Globals.ThisAddIn.SyncShapeRename(oldName, labeledThumbnail.NameLabel, CurrentCategory);
+            Globals.ThisAddIn.SyncShapeRename(oldShapeName, newShapeName, CurrentCategory);
         }
 
         #endregion
@@ -911,49 +886,15 @@ namespace PowerPointLabs.ShapesLab.Views
         #endregion
 
         #region GUI Handles
-        private void AddShapeButton_Click(object sender, RoutedEventArgs e)
+
+        private void AddShapeButton_Click(object sender, EventArgs e)
         {
             Selection selection = this.GetCurrentSelection();
-            if ((selection.Type != PpSelectionType.ppSelectionShapes &&
-                selection.Type != PpSelectionType.ppSelectionText) ||
-                selection.ShapeRange.Count != 1)
-            {
-                MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
-                return;
-            }
+            ThisAddIn addIn = this.GetAddIn();
 
-            Shape shape = selection.ShapeRange[1];
-
-            if (shape.Type == MsoShapeType.msoSmartArt) 
-            {
-                MessageBox.Show(SyncLabText.ErrorSmartArtUnsupported, SyncLabText.ErrorDialogTitle);
-                return;
-            }
-            
-            if (selection.HasChildShapeRange)
-            {
-                if (selection.ChildShapeRange.Count != 1)
-                {
-                    MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
-                    return;
-                }
-                shape = selection.ChildShapeRange[1];
-            }
-
-            bool canSyncPlaceHolder =
-                shape.Type == MsoShapeType.msoPlaceholder;
-                //ShapeUtil.CanCopyMsoPlaceHolder(shape, SyncFormatUtil.GetTemplateShapes());
-
-            if (shape.Type != MsoShapeType.msoAutoShape &&
-                shape.Type != MsoShapeType.msoLine &&
-                shape.Type != MsoShapeType.msoPicture &&
-                shape.Type != MsoShapeType.msoTextBox &&
-                !canSyncPlaceHolder)
-            {
-                MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
-                return;
-            }
+            AddShapeFromSelection(selection, addIn);
         }
+
         #endregion
 
         #region Shape Saving

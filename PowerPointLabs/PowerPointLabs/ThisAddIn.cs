@@ -1011,7 +1011,7 @@ namespace PowerPointLabs
                 syncPane.UpdateOnSelectionChange(sel);
             }
 
-            if (GetActivePane(typeof(CustomShapePane_)) != null)
+            if (GetActivePane(typeof(CustomShapePane)) != null)
             {
                 CustomShapePane customShapePane = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
                 customShapePane.UpdateOnSelectionChange(sel);
