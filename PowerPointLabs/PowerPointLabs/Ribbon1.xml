@@ -579,8 +579,9 @@
           
         </group>
         
-        <group id="Visibility" label="Tab Management">
+        <group id="Visibility" label="General">
           <checkBox id="VisibleFormatShapes" enabled="true" label="Maintain Tab Focus" supertip="Stay on PowerPointLabs tab after inserting a shape" onAction="ToggleVisibility" getPressed="SetVisibility"/>
+          <checkBox id="ShouldCompressImagesCheckbox" enabled="true" label="Compress Images" supertip="Compress images during image-related functions" onAction="ToggleImageCompression"/>
         </group>
         
       </tab>

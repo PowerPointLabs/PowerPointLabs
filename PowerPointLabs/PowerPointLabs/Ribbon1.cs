@@ -12,6 +12,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.PictureSlidesLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -125,6 +126,8 @@ namespace PowerPointLabs
         private Office.IRibbonUI _ribbon;
         // Initial bool value for whether the Drawing Tools Format Tab is disabled
         private bool DisableFormatTab { get; set; }
+        // Initial bool value for whether images should be compressed
+        private bool ShouldCompressImages { get; set; }
 
         #region IRibbonExtensibility Members
 
@@ -152,11 +155,33 @@ namespace PowerPointLabs
             _ribbon.InvalidateControl("VisibleFormatShapes");
         }
 
+        // Toggles the boolean controlling whether images should be compressed.
+        public void ToggleImageCompression(Office.IRibbonControl control, bool pressed)
+        {
+            ShouldCompressImages = pressed;
+            _ribbon.InvalidateControl("ShouldCompressImagesCheckbox");
+
+            if (ShouldCompressImages)
+            {
+                GraphicsUtil.PictureExportingRatio = 96.0f / 72.0f;
+            }
+            else
+            {
+                GraphicsUtil.PictureExportingRatio = 330.0f / 72.0f;
+            }
+        }
+
+
         public void InitialiseVisibilityCheckbox()
         {
             _ribbon.InvalidateControl("VisibleFormatShapes");
         }
         
+        public void InitialiseCompressImagesCheckbox()
+        {
+            _ribbon.InvalidateControl("ShouldCompressImagesCheckbox");
+        }
+
         // Sets the default starting status of the checkbox (whether checked or not)
         public bool SetVisibility(Office.IRibbonControl control)
         {
@@ -175,6 +200,7 @@ namespace PowerPointLabs
             CheckBoxActionHandlerFactory = new CheckBoxActionHandlerFactory();
 
             DisableFormatTab = new Boolean();
+            ShouldCompressImages = new Boolean();
 
             _ribbon = ribbonUi;
         }
