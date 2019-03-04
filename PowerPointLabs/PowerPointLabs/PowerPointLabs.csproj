@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.5.0.0</ApplicationVersion>
+    <ApplicationVersion>4.5.1.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -2153,15 +2153,15 @@
     <None Include="Resources\FillSlide.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\animation-emphasis.png" />
-    <Content Include="Resources\animation-entrance.png" />
-    <Content Include="Resources\animation-exit.png" />
-    <Content Include="Resources\animation-motion-path.png" />
-    <Content Include="Resources\icon-right-arrow-green.png" />
+    <None Include="Resources\animation-emphasis.png" />
+    <None Include="Resources\animation-entrance.png" />
+    <None Include="Resources\animation-exit.png" />
+    <None Include="Resources\animation-motion-path.png" />
+    <None Include="Resources\icon-right-arrow-green.png" />
     <None Include="Resources\RightArrowGreen.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\AddToCustomShapesDisabled.png" />
+    <None Include="Resources\AddToCustomShapesDisabled.png" />
     <None Include="Resources\EyeDropper_icon.png" />
     <None Include="Resources\EyeDropper_icon.bmp" />
   </ItemGroup>
