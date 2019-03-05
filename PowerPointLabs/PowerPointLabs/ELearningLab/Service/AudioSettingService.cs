@@ -9,7 +9,7 @@ namespace PowerPointLabs.ELearningLab.Service
     internal static class AudioSettingService
     {
         public const int AudioMainSettingsPageHeight = 195;
-        public const int AudioPreviewPageHeight = 300;
+        public static double AudioPreviewPageHeight = 300;
 
         public static bool IsPreviewEnabled = false;
 

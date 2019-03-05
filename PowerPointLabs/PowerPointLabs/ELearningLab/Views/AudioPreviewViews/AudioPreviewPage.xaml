@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             Height="270" Width="350"
+             Width="350"
              Title="eLearningLab Voice Preview" Loaded="AudioPreviewPage_Loaded">
     <Page.Resources>
         <ResourceDictionary>
@@ -21,13 +21,11 @@
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Margin="20 5 20 0">Text to be spoken:</Label>
-                <TextBox x:Name="spokenText" Grid.Row="1" Margin="20 0 20 0" TextWrapping="Wrap" AcceptsReturn="True" 
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                <TextBox x:Name="spokenText" Grid.Row="1" Margin="20 0 20 0" TextWrapping="Wrap" AcceptsReturn="True"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

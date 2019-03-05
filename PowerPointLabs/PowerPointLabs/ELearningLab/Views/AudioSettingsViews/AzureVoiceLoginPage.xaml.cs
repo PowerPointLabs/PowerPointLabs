@@ -82,7 +82,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     dialog.SetDialogWindowHeight(AudioSettingService.AudioMainSettingsPageHeight);
                     break;
                 case AudioSettingsPage.AudioPreviewPage:
-                    dialog.SetDialogWindowHeight(AudioSettingService.AudioPreviewPageHeight);
+                    dialog.SetDialogWindowHeight((int)AudioSettingService.AudioPreviewPageHeight);
                     break;
             }
             dialog.SetCurrentPage(previousPage);

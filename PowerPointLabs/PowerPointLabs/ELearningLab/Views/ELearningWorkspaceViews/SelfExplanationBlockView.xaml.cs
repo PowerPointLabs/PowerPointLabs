@@ -158,7 +158,7 @@ namespace PowerPointLabs.ELearningLab.Views
             AudioPreviewPage.GetInstance().PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings();
             AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance(AudioSettingsPage.AudioPreviewPage);
-            dialog.SetDialogWindowHeight(AudioSettingService.AudioPreviewPageHeight);
+          //  dialog.SetDialogWindowHeight(AudioSettingService.AudioPreviewPageHeight);
             dialog.Title = "Audio Preview Window";
             dialog.Show();
         }

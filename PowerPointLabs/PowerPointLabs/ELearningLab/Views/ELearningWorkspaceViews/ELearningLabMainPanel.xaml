@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*"/>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="0,0,20,0">
             <Button x:Name="syncButton" HorizontalAlignment="Right" Height="35" 
@@ -94,9 +94,7 @@
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="textBox" Grid.Column="0" Margin="4 4 4 4" AcceptsReturn="True" TextWrapping="Wrap"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <TextBox x:Name="textBox" Grid.Column="0" Margin="4 4 4 4" AcceptsReturn="True" TextWrapping="Wrap">
                     <TextBox.Style>
                         <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                             <Style.Resources>
@@ -120,7 +118,7 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
-                <Button Grid.Column="1"  Margin="4 4 4 4" Content="Create" Click="CreateButton_Click"/>
+                <Button Grid.Column="1"  Margin="4 4 4 4" Content="Create" FontSize="12" Click="CreateButton_Click"/>
             </Grid>
         </Border>
     </Grid>

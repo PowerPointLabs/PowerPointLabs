@@ -6,11 +6,11 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:local="clr-namespace:PowerPointLabs.ELearningLab.Converters"
                       mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
-                      Height="195"
                       Width="350"
                       BorderThickness="1"
                       BorderBrush="#0070c0"
                       ResizeMode="NoResize"
+                      SizeToContent="WidthAndHeight"
                       WindowTransitionsEnabled="False"
                       Title="Narrations Lab Settings"
                       ShowCloseButton="False"
@@ -28,6 +28,6 @@
     </controls:MetroWindow.Resources>
     <Grid>
         <Frame NavigationUIVisibility="Hidden" x:Name="NarrationsLabSettingsMainFrame" Content="{Binding CurrentPage, 
-            Converter={local:AudioSettingsIndexToPageConverter}}"/>
+            Converter={local:AudioSettingsIndexToPageConverter}}" Margin="5 5 5 5"/>
     </Grid>
 </controls:MetroWindow>

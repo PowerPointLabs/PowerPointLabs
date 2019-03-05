@@ -75,11 +75,11 @@
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="450"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
                 <Button Grid.Row="0" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="UpButton_Click"
@@ -132,6 +132,7 @@
                 <Grid Margin="1 1 1 1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10" />
+                        <RowDefinition Height="25" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" x:Name="audioNameLabel"
@@ -185,22 +186,17 @@
                         </CheckBox>
                     </StackPanel>
                 </Grid>
-                <StackPanel Grid.Row="1" Margin="0 0 5 5" MaxHeight="80">
-        <TextBox x:Name="captionTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
+                <StackPanel Grid.Row="2" Margin="0 0 5 5">
+                    <TextBox x:Name="captionTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
                              Text="{Binding CaptionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 2 2 2"
                  TextWrapping="Wrap" FontSize="12" Tag="Enter your caption / voice notes here..."
-                             AcceptsReturn="True" Margin="0" MaxHeight="40" MinHeight="30"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <TextBox x:Name="calloutTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
+                             AcceptsReturn="True" Margin="0" MinHeight="30"/>
+                    <TextBox x:Name="calloutTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
                              Text="{Binding CalloutText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              Tag="Enter your shorter notes for callout here..." Padding="2 2 2 2"
-                 TextWrapping="Wrap" FontSize="12" 
-                         AcceptsReturn="True" Margin="0 2 0 0" MinHeight="20" MaxHeight="40" Visibility="Collapsed"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-    </StackPanel>
-    </Grid>
-    </Grid>
+                 TextWrapping="Wrap" FontSize="12" AcceptsReturn="True" Margin="0 2 0 0" MinHeight="20" Visibility="Collapsed"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </StackPanel>
 </UserControl>

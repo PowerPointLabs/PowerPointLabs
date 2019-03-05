@@ -7,9 +7,9 @@
              d:DesignHeight="150" d:DesignWidth="300">
     <StackPanel>
         <TextBlock Text="Enter your access key" Margin="30 10 30 0" FontWeight="Bold"/>
-        <TextBox x:Name="key" Padding="2" Margin="30 5 30 0"></TextBox>
+        <TextBox x:Name="key" Padding="2" Margin="30 5 30 0" Width="240"></TextBox>
         <TextBlock Text="Choose access endpoint" Margin="30 10 30 0" FontWeight="Bold"/>
-        <ComboBox x:Name="endpoint" Padding="2" Margin="30 5 30 0">
+        <ComboBox x:Name="endpoint" Padding="2" Margin="30 5 30 0" Width="240">
             <ComboBoxItem Content="West US"/>
             <ComboBoxItem Content="West US2"/>
             <ComboBoxItem Content="East US"/>
