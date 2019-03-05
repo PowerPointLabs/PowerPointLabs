@@ -23,8 +23,7 @@
         <StackPanel Grid.Row="0" Margin="0,0,20,0">
             <Button x:Name="syncButton" HorizontalAlignment="Right" Height="35" 
                 VerticalAlignment="Top" Width="35" Padding="5" Click="SyncButton_Click">
-                <Image x:Name="syncImage" Source="pack://siteoforigin:,,,/Resources/refresh-icon.png" 
-                       Stretch="Fill"/>
+                <Image x:Name="syncImage" Stretch="Fill"/>
                 <Button.ToolTip>
                     <StackPanel>
                         <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Sync Animations</TextBlock>
