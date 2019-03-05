@@ -40,7 +40,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
             this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(715, 600);
+            this.elementHost1.Size = new System.Drawing.Size(750, 600);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.eLearningLabMainPanel1;
@@ -51,7 +51,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.elementHost1);
             this.Name = "ELearningLabTaskpane";
-            this.Size = new System.Drawing.Size(715, 600);
+            this.Size = new System.Drawing.Size(750, 600);
             this.ResumeLayout(false);
 
         }
