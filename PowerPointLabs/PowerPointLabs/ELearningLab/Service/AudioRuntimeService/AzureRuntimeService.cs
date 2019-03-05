@@ -80,7 +80,8 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             RenewCancellationToken();
             string accessToken;
-            string filePath = Path.GetTempPath() + AudioService.TempFolderName + "\\" + "PPTL_preview.wav";
+            string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
+            string filePath = dirPath + "\\" + "PPTL_preview.wav";
             try
             {
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance();
@@ -91,6 +92,10 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Logger.Log("Failed authentication.");
                 return;
+            }
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
             }
             string requestUri = AzureAccount.GetInstance().GetUri();
             if (requestUri == null)
