@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Utility
 {
@@ -22,7 +23,12 @@ namespace PowerPointLabs.ELearningLab.Utility
         public static Effect AppendAnimationToSlide(PowerPointSlide slide, Shape shape, 
             MsoAnimEffect effectType, int clickNo)
         {
-            return slide.SetShapeAsClickTriggered(shape, clickNo, effectType);
+            Effect effect = slide.SetShapeAsClickTriggered(shape, clickNo, effectType);
+            if (StringUtility.ExtractFunctionFromString(shape.Name).Equals(ELearningLabText.CalloutIdentifier))
+            {
+                effect.EffectType = MsoAnimEffect.msoAnimEffectFade;
+            }
+            return effect;
         }
     }
 }
