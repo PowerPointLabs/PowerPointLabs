@@ -86,15 +86,13 @@ namespace PowerPointLabs.ShapesLab.Views
                     textBox.SelectAll();
                 }
                 textBox.Text = value;
-                textBox.ToolTip = value;
+                ToolTip = value;
             }
         }
 
         public bool Highlighted { get; set; }
 
         public string ImagePath { get; set; }
-
-        public Status State { get; private set; }
 
         #endregion
 
@@ -188,32 +186,41 @@ namespace PowerPointLabs.ShapesLab.Views
             InitializeComponent();
 
             textBox.MouseDoubleClick += (sender, e) => textBox.SelectAll();
-            textBox.IsEnabledChanged += EnableChangedHandler;
             textBox.KeyDown += EnterKeyWhileEditing;
             textBox.LostFocus += NameLabelLostFocus;
 
-            //TODO
-            // This is required for the thumbnail labels to show
-            //CustomPaintTextBox customPaintTextBox = new CustomPaintTextBox(labelTextBox);
+            textBox.IsEnabled = true;
+            SetReadOnlyTextBox();
         }
 
         private void Initialize(string shapeName, string shapePath)
         {
             Initialize();
 
-            ImagePath = shapePath;
-
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the
             // image. Therefore, we use using keyword to ensure a collection.
             //TODO
-            using (Bitmap bitmap = new Bitmap(ImagePath))
+            using (Bitmap bitmap = new Bitmap(shapePath))
             {
-                image = Utils.GraphicsUtil.CreateThumbnailImage(bitmap, 50, 50);
+                Image = Utils.GraphicsUtil.CreateThumbnailImage(bitmap, 50, 50);
             }
+            Text = shapeName;
+        }
 
-            State = Status.Idle;
-            //textBox.IsEnabled = false;
+        private void SetReadOnlyTextBox()
+        {
+            textBox.IsReadOnly = true;
+            textBox.IsReadOnlyCaretVisible = false;
+            textBox.BorderThickness = new Thickness(0, 0, 0, 0);
+            textBox.Background = Background;
+        }
+
+        private void SetEditableTextBox()
+        {
+            textBox.IsReadOnly = false;
+            textBox.BorderThickness = new Thickness(2, 2, 2, 2);
+            textBox.Background = System.Windows.Media.Brushes.White;
         }
 
         private bool IsDuplicateName(string newShapeName)
@@ -272,24 +279,6 @@ namespace PowerPointLabs.ShapesLab.Views
             }
         }
 
-        private void EnableChangedHandler(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            //TODO
-            /*
-            textBox.BackColor = Color.FromKnownColor(KnownColor.Window);
-
-            if (labelTextBox.Enabled == false)
-            {
-                labelTextBox.Text = string.Empty;
-            }
-            else
-            {
-                labelTextBox.ForeColor = Color.Black;
-                labelTextBox.Text = NameLabel;
-            }
-            */
-        }
-
         private void EnterKeyWhileEditing(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -302,15 +291,6 @@ namespace PowerPointLabs.ShapesLab.Views
         private void NameLabelLostFocus(object sender, EventArgs args)
         {
             FinishNameEdit();
-        }
-
-        private void ThumbnailPanelDoubleClick(object sender, EventArgs e)
-        {
-            if (State == Status.Editing)
-            {
-                textBox.SelectAll();
-                return;
-            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

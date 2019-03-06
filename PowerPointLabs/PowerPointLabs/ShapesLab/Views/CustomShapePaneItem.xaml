@@ -10,7 +10,7 @@
     <Grid x:Name="grid" ClipToBounds="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="col1" Width="60" MaxWidth="60"/>
-            <ColumnDefinition x:Name="col2" Width="*"/>
+            <ColumnDefinition x:Name="col2" Width="140"/>
         </Grid.ColumnDefinitions>
         <Image x:Name="imageBox" Grid.Column="0" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
         <Canvas x:Name="canvas" Grid.Column="1" >

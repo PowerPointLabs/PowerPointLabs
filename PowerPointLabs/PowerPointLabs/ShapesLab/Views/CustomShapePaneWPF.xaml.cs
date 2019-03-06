@@ -148,14 +148,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #endregion
 
-        #region GUI API
-        public int ShapeCount
-        {
-            get
-            {
-                return shapeList.Items.Count;
-            }
-        }
+        #region API
 
         public void UpdateAddShapeButtonEnabledStatus(Selection selection)
         {
@@ -185,9 +178,6 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             (shapeList.Items[index] as CustomShapePaneItem).Text = text;
         }
-        #endregion
-
-        #region API
 
         public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
         {
