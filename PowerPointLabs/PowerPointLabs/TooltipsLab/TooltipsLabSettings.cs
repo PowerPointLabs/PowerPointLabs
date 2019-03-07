@@ -1,22 +1,26 @@
-﻿
+﻿using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.TooltipsLab.Views;
+
+using MsoAutoShapeType = Microsoft.Office.Core.MsoAutoShapeType;
+
 namespace PowerPointLabs.TooltipsLab
 {
     internal static class TooltipsLabSettings
     {
-        public static float AnimationDuration = 0.5f;
+        public static MsoAutoShapeType ShapeType = MsoAutoShapeType.msoShapeRoundedRectangularCallout;
+        public static MsoAnimEffect AnimationType = MsoAnimEffect.msoAnimEffectFade;
         public static bool IsUseFrameAnimation = false;
 
         public static void ShowSettingsDialog()
         {
-            AnimationLabSettingsDialogBox dialog = new AnimationLabSettingsDialogBox(AnimationDuration, IsUseFrameAnimation);
+            TooltipsLabSettingsDialogBox dialog = new TooltipsLabSettingsDialogBox();
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 
-        private static void OnSettingsDialogConfirmed(float newDuration, bool newFrameChecked)
+        private static void OnSettingsDialogConfirmed(MsoAutoShapeType newShapeType)
         {
-            AnimationDuration = newDuration;
-            IsUseFrameAnimation = newFrameChecked;
+            ShapeType = newShapeType;
         }
     }
 }
