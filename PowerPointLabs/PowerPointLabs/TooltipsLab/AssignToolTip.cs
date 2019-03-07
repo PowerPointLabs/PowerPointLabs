@@ -45,14 +45,12 @@ namespace PowerPointLabs.TooltipsLab
         private static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> newShapesToAnimate)
         {
             TimeLine timeline = currentSlide.TimeLine;
-            // TODO: Get effect from settings
-            MsoAnimEffect fadeEffect = MsoAnimEffect.msoAnimEffectFade;
 
             // Get the shapes that are already associated with trigger shape
             List<Shape> shapesToAnimate = GetShapesInInteractiveSequenceWithAnimationsRemoved(currentSlide, triggerShape, newShapesToAnimate);
             Sequence sequence = timeline.InteractiveSequences.Add();
 
-            AddTriggerEffect(triggerShape, shapesToAnimate, fadeEffect, sequence);
+            AddTriggerEffect(triggerShape, shapesToAnimate, TooltipsLabSettings.AnimationType, sequence);
         }
 
         private static void AddTriggerEffect(Shape triggerShape, List<Shape> shapesToAnimate, MsoAnimEffect effect, Sequence sequence)

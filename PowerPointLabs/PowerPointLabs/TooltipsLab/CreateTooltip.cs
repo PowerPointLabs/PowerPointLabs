@@ -36,7 +36,7 @@ namespace PowerPointLabs.TooltipsLab
 
            
             PowerPoint.Shape callout = currentSlide.Shapes.AddShape(
-                Microsoft.Office.Core.MsoAutoShapeType.msoShapeRoundedRectangularCallout,
+                TooltipsLabSettings.ShapeType,
                 midpointX - TooltipsLabConstants.CalloutShapeDefaultWidth/2 + (float)(TooltipsLabConstants.CalloutArrowheadHorizontalAdjustment * TooltipsLabConstants.CalloutShapeDefaultWidth),
                 triggerShape.Top - (float)(TooltipsLabConstants.CalloutArrowheadVerticalAdjustment * TooltipsLabConstants.CalloutShapeDefaultHeight) - TooltipsLabConstants.TriggerShapeAndCalloutSpacing,
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
