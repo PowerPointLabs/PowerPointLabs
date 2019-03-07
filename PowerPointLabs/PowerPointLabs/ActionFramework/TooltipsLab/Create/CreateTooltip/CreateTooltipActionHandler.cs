@@ -29,9 +29,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
             AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, calloutGroup);
 
-            if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+            if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {
-                this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
+                this.GetApplication().CommandBars.ExecuteMso(TooltipsLabConstants.AnimationPaneName);
             }
         }
     }

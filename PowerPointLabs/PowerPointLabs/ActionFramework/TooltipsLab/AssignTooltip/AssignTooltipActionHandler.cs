@@ -34,9 +34,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             {
                 AssignTooltip.AddTriggerAnimation(currentSlide, selection);
                 // Open the animation custom pane if it is not opened
-                if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+                if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
                 {
-                    this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
+                    this.GetApplication().CommandBars.ExecuteMso(TooltipsLabConstants.AnimationPaneName);
                 }
             }
             catch (Exception)

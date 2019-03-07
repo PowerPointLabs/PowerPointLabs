@@ -28,7 +28,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show("Please select 1 or more shapes as your callout shape.");
+                MessageBox.Show(TooltipsLabText.ErrorNoCalloutShapeSelected);
                 return;
             }
 
@@ -38,9 +38,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
                 AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, selectedShape);
             }
 
-            if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+            if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {
-                this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
+                this.GetApplication().CommandBars.ExecuteMso(TooltipsLabConstants.AnimationPaneName);
             }
         }
     }

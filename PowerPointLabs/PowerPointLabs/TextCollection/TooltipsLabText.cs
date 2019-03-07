@@ -39,6 +39,8 @@
 
         public const string ErrorTooltipsDialogTitle = "Unable to execute action";
         public const string ErrorLessThanTwoShapesSelected = "Please select at least two shapes. The first shape will be the trigger shape.";
+        public const string ErrorNoTriggerShapeSelected = "Please select 1 or more shapes as your trigger shape.";
+        public const string ErrorNoCalloutShapeSelected = "Please select 1 or more shapes as your callout shape.";
         #endregion
     }
 }

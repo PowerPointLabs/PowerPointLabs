@@ -850,6 +850,7 @@
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
     <Compile Include="TooltipsLab\AddTextbox.cs" />
     <Compile Include="TooltipsLab\AttachTriggerAnimation.cs" />
+    <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
