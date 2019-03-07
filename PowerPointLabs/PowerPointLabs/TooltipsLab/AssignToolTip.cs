@@ -7,19 +7,23 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.TooltipsLab
 {
+    /// <summary>
+    /// Assigns tooltip to shapes, follows the convention that the first shape is the trigger shape, the rest
+    /// of the shapes will be the callouts. All callout shapes will appear on first click of the trigger shape,
+    /// and all will disappear on second click of the trigger shape.
+    /// </summary>
     internal static class AssignTooltip
     {
-        public static void AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
+        public static bool AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
             ShapeRange selectedShapes = selection.ShapeRange;
-
+            
             if (selectedShapes.Count < 2)
             {
                 MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
                     TooltipsLabText.ErrorTooltipsDialogTitle);
 
-                // TODO: New Exception for TooltipsLab
-                throw new Exception();
+                return false;
             }
 
             Shape triggerShape = selectedShapes[1];
@@ -28,6 +32,7 @@ namespace PowerPointLabs.TooltipsLab
 
             AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
 
+            return true;
         }
 
         public static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, Shape calloutShape)
@@ -44,7 +49,7 @@ namespace PowerPointLabs.TooltipsLab
             MsoAnimEffect fadeEffect = MsoAnimEffect.msoAnimEffectFade;
 
             // Get the shapes that are already associated with trigger shape
-            List<Shape> shapesToAnimate = RemoveAnimationsInInteractiveSequence(currentSlide, triggerShape, newShapesToAnimate);
+            List<Shape> shapesToAnimate = GetShapesInInteractiveSequenceWithAnimationsRemoved(currentSlide, triggerShape, newShapesToAnimate);
             Sequence sequence = timeline.InteractiveSequences.Add();
 
             AddTriggerEffect(triggerShape, shapesToAnimate, fadeEffect, sequence);
@@ -95,7 +100,7 @@ namespace PowerPointLabs.TooltipsLab
             }
         }
 
-        private static List<Shape> RemoveAnimationsInInteractiveSequence(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
+        private static List<Shape> GetShapesInInteractiveSequenceWithAnimationsRemoved(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
         {
             Sequences sequences = currentSlide.TimeLine.InteractiveSequences;
             // A set is used here so no duplicate shapes will be added
