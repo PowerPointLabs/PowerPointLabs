@@ -15,7 +15,7 @@ using PPExtraEventHelper;
 
 using Forms = System.Windows.Forms;
 
-namespace PowerPointLabs.NarrationsLab.Views
+namespace PowerPointLabs.ELearningLab.Views
 {
     /// <summary>
     /// Interaction logic for InShowRecordingControl.xaml

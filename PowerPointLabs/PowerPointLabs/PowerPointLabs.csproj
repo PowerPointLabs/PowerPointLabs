@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.4.0.0</ApplicationVersion>
+    <ApplicationVersion>4.5.1.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -258,6 +258,18 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabSettings\ELearningLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabSettings\ELearningLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabSettings\ELearningLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningLabSettings\ELearningLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningActionHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningImageHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
+    <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
@@ -671,38 +683,103 @@
     <Compile Include="AutoUpdate\Downloader.cs" />
     <Compile Include="AutoUpdate\Interface\IDownloader.cs" />
     <Compile Include="AutoUpdate\Updater.cs" />
+    <Compile Include="ColorsLab\ColorsLabConstants.cs" />
+    <Compile Include="ColorsLab\ColorsLabPaneWPF.xaml.cs">
+      <DependentUpon>ColorsLabPaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorsLab\ColorsLabPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ColorsLab\ColorsLabPane.Designer.cs">
+      <DependentUpon>ColorsLabPane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColorsLab\ColorInformationDialog.xaml.cs">
+      <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorShiftByAngle.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorShiftSaturationByFactor.cs" />
+    <Compile Include="Converters\ColorPane\SelectedColorShiftLuminosityByFactor.cs" />
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\Model\ComputerVoice.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\IVoice.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\VoiceType.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\AnimationTypeToImageSourceConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToIndexConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToTriggerTypeEnabledConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\EffectToAnimationTypeConverter.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\AbstractItemFactory.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\CustomSubItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\SelfExplanationClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\AnimationType.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\BackgroundWorkerType.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\NoteType.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\TriggerType.cs" />
+    <Compile Include="ELearningLab\Service\AudioRuntimeService\AzureRuntimeService.cs" />
+    <Compile Include="ELearningLab\Service\StorageService\AudioSettingStorageService.cs" />
+    <Compile Include="ELearningLab\Service\StorageService\ELearningLabTextStorageService.cs" />
+    <Compile Include="ELearningLab\Utility\AnimationUtility.cs" />
+    <Compile Include="ELearningLab\Utility\ShapeUtility.cs" />
+    <Compile Include="ELearningLab\Utility\StringUtility.cs" />
+    <Compile Include="ELearningLab\Extensions\PowerPointSlideExtension.cs" />
+    <Compile Include="ELearningLab\Service\TagService\SelfExplanationTagService.cs" />
+    <Compile Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml.cs">
+      <DependentUpon>AudioPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml.cs">
+      <DependentUpon>CustomBlockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabMainPanel.xaml.cs">
+      <DependentUpon>ELearningLabMainPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabTaskpane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabTaskpane.Designer.cs">
+      <DependentUpon>ELearningLabTaskpane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml.cs">
+      <DependentUpon>SelfExplanationBlockView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Service\FunctionService\CalloutService.cs" />
+    <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
+    <Compile Include="ELearningLab\Service\ELearningService.cs" />
+    <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
-    <Compile Include="NarrationsLab\Data\AudioOutputFormat.cs" />
-    <Compile Include="NarrationsLab\Data\EndpointToUriMapping.cs" />
-    <Compile Include="NarrationsLab\Data\Gender.cs" />
-    <Compile Include="NarrationsLab\Data\AzureVoice.cs" />
-    <Compile Include="NarrationsLab\Data\AzureVoiceList.cs" />
-    <Compile Include="NarrationsLab\Data\Locale.cs" />
-    <Compile Include="NarrationsLab\Data\LocaleMapping.cs" />
-    <Compile Include="NarrationsLab\Data\NarrationsLabSettingsPage.cs" />
-    <Compile Include="NarrationsLab\Data\UserAccount.cs" />
-    <Compile Include="NarrationsLab\Data\Voice.cs" />
-    <Compile Include="NarrationsLab\NarrationsLabSettings.cs" />
-    <Compile Include="NarrationsLab\Storage\NarrationsLabStorageConfig.cs" />
-    <Compile Include="NarrationsLab\ValueConverters\BaseValueConverter.cs" />
-    <Compile Include="NarrationsLab\ValueConverters\NarrationsLabSettingsPageValueConverter.cs" />
-    <Compile Include="NarrationsLab\ViewModel\Authentication.cs" />
-    <Compile Include="NarrationsLab\ViewModel\GenericEventArgs.cs" />
-    <Compile Include="NarrationsLab\ViewModel\Synthesize.cs" />
-    <Compile Include="NarrationsLab\Views\AzureVoiceLoginPage.xaml.cs">
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
+    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\AzureEndpointToUriConverter.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\Gender.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureVoice.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureVoiceList.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\Locale.cs" />
+    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\AzureLocaleToStringConverter.cs" />
+    <Compile Include="ELearningLab\AudioSettings\Model\Enums\AudioSettingsPage.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureAccount.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\Voice.cs" />
+    <Compile Include="ELearningLab\Service\AudioSettingService.cs" />
+    <Compile Include="ELearningLab\Service\StorageService\AzureAccountStorageService.cs" />
+    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\AudioSettingsIndexToPageConverter.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\AzureVoiceSpeechEngine\AzureAccountAuthentication.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\AzureVoiceSpeechEngine\GenericEventArgs.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\AzureVoiceSpeechEngine\SynthesizeAzureVoice.cs" />
+    <Compile Include="ELearningLab\Views\AudioSettingsViews\AzureVoiceLoginPage.xaml.cs">
       <DependentUpon>AzureVoiceLoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="NarrationsLab\Views\InShowRecordingControl.xaml.cs">
       <DependentUpon>InShowRecordingControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NarrationsLab\Views\NarrationsLabMainSettingsPage.xaml.cs">
-      <DependentUpon>NarrationsLabMainSettingsPage.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\AudioSettingsViews\AudioMainSettingsPage.xaml.cs">
+      <DependentUpon>AudioMainSettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NarrationsLab\Views\NarrationsLabSettingsDialogBox.xaml.cs">
-      <DependentUpon>NarrationsLabSettingsDialogBox.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\AudioSettingsViews\AudioSettingsDialogWindow.xaml.cs">
+      <DependentUpon>AudioSettingsDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="NarrationsLab\Views\RecorderTaskPane.cs">
       <SubType>UserControl</SubType>
@@ -710,7 +787,7 @@
     <Compile Include="NarrationsLab\Views\RecorderTaskPane.Designer.cs">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
     </Compile>
-    <Compile Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml.cs">
+    <Compile Include="ELearningLab\Views\AudioSettingsViews\SpeechPlayingDialogBox.xaml.cs">
       <DependentUpon>SpeechPlayingDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="PasteLab\PasteToFitSlide.cs" />
@@ -779,15 +856,12 @@
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProcessingStatusForm.xaml.cs">
+      <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
-    <Compile Include="ColorPicker\ColorInformationDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ColorPicker\ColorInformationDialog.Designer.cs">
-      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ColorPicker\HSLColor.cs" />
+    <Compile Include="ColorsLab\HSLColor.cs" />
     <Compile Include="Converters\CropLab\EnumToBooleanConverter.cs" />
     <Compile Include="CropLab\CropLabException.cs" />
     <Compile Include="CropLab\CropLabDummyMessageService.cs" />
@@ -804,33 +878,15 @@
     <Compile Include="CropLab\Views\CustomAspectRatioDialogBox.xaml.cs">
       <DependentUpon>CustomAspectRatioDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorPicker\Magnifier.xaml.cs">
+    <Compile Include="ColorsLab\Magnifier.xaml.cs">
       <DependentUpon>Magnifier.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorPicker\MagnifierOverlay.xaml.cs">
+    <Compile Include="ColorsLab\MagnifierOverlay.xaml.cs">
       <DependentUpon>MagnifierOverlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorPane\HSLColorToRGBColor.cs" />
-    <Compile Include="Converters\ColorPane\IsActiveBoolToButtonBackColorConverter.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousHigher.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToAnalogousLower.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToBrightnessValue.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToComplementaryColor.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFive.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticFour.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticOne.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSeven.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticSix.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticThree.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToMonochromaticTwo.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorToSaturationValue.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryHigher.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToSplitComplementaryLower.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTetradicOne.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTetradicThree.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTetradicTwo.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTriadicHigher.cs" />
-    <Compile Include="Converters\ColorPane\SelectedColorToTriadicLower.cs" />
     <Compile Include="CropLab\CropLabErrorHandler.cs" />
     <Compile Include="CustomBinding.cs" />
     <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
@@ -841,13 +897,7 @@
     </Compile>
     <Compile Include="CustomControls\MessageService.cs" />
     <Compile Include="DataSources\ColorDataSource.cs" />
-    <Compile Include="ColorPicker\ColorHelper.cs" />
-    <Compile Include="ColorPicker\ColorPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ColorPicker\ColorPane.Designer.cs">
-      <DependentUpon>ColorPane.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ColorsLab\ColorHelper.cs" />
     <Compile Include="ShortcutsLab\ConvertToPicture.cs" />
     <Compile Include="CropLab\CropToShape.cs" />
     <Compile Include="DataSources\ShapesLabSettingsDataSource.cs" />
@@ -1248,7 +1298,7 @@
     <Compile Include="Models\PowerPointSpotlightSlide.cs" />
     <Compile Include="Models\TaggedText.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="NarrationsLab\NotesToAudio.cs" />
+    <Compile Include="ELearningLab\Service\AudioRuntimeService\ComputerVoiceRuntimeService.cs" />
     <Compile Include="CaptionsLab\NotesToCaptions.cs" />
     <Compile Include="PostInstall.cs" />
     <Compile Include="PPExtraEventHelper\PPCopy.cs">
@@ -1258,9 +1308,9 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpeechEngine\PromptToAudio.cs" />
-    <Compile Include="SpeechEngine\SynthesisState.cs" />
-    <Compile Include="SpeechEngine\TextToSpeech.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\ComputerVoiceSpeechEngine\PromptToAudio.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\ComputerVoiceSpeechEngine\SynthesisState.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\ComputerVoiceSpeechEngine\TextToSpeech.cs" />
     <Compile Include="EffectsLab\Spotlight.cs" />
     <Compile Include="Views\SelectionRectangle.cs">
       <SubType>Form</SubType>
@@ -1268,10 +1318,6 @@
     <Compile Include="Views\SelectionRectangle.Designer.cs">
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProcessingStatusForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\ProcessingStatusForm.Designer.cs" />
     <Compile Include="WPF\ClickSelectTextBox.cs" />
     <Compile Include="WPF\ImageButton.cs" />
     <Compile Include="WPF\Observable\Model.cs" />
@@ -1306,13 +1352,12 @@
     <None Include="Resources\Paint-icon.png" />
     <None Include="Resources\Technical-Pen-icon.png" />
     <None Include="Resources\Type-icon.png" />
-    <EmbeddedResource Include="ColorPicker\ColorInformationDialog.resx">
-      <DependentUpon>ColorInformationDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="ColorsLab\ColorsLabPane.resx">
+      <DependentUpon>ColorsLabPane.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ColorPicker\ColorPane.resx">
-      <DependentUpon>ColorPane.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabTaskpane.resx">
+      <DependentUpon>ELearningLabTaskpane.cs</DependentUpon>
+      <CustomToolNamespace>PowerPointLabs.ELearningLab.Views</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="NarrationsLab\Views\RecorderTaskPane.resx">
       <DependentUpon>RecorderTaskPane.cs</DependentUpon>
@@ -1349,7 +1394,6 @@
     <EmbeddedResource Include="Views\SelectionRectangle.resx">
       <DependentUpon>SelectionRectangle.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ProcessingStatusForm.resx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1463,6 +1507,14 @@
     <None Include="Resources\AgendaVisual.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ColorsLab\ColorsLabPaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ColorsLab\ColorInformationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CropLab\Views\CropLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1471,11 +1523,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ColorPicker\Magnifier.xaml">
+    <Page Include="ColorsLab\Magnifier.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ColorPicker\MagnifierOverlay.xaml">
+    <Page Include="ColorsLab\MagnifierOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1483,7 +1535,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NarrationsLab\Views\AzureVoiceLoginPage.xaml">
+    <Page Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabMainPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ELearningLab\Views\AudioSettingsViews\AzureVoiceLoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1491,15 +1559,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NarrationsLab\Views\NarrationsLabMainSettingsPage.xaml">
+    <Page Include="ELearningLab\Views\AudioSettingsViews\AudioMainSettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NarrationsLab\Views\NarrationsLabSettingsDialogBox.xaml">
+    <Page Include="ELearningLab\Views\AudioSettingsViews\AudioSettingsDialogWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NarrationsLab\Views\SpeechPlayingDialogBox.xaml">
+    <Page Include="ELearningLab\Views\AudioSettingsViews\SpeechPlayingDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1570,6 +1638,10 @@
     <Page Include="Views\ErrorDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ProcessingStatusForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ZoomLab\Views\ZoomLabSettingsDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -2112,7 +2184,17 @@
     <None Include="Resources\FillSlide.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\AddToCustomShapesDisabled.png" />
+    <None Include="Resources\animation-emphasis.png" />
+    <None Include="Resources\animation-entrance.png" />
+    <None Include="Resources\animation-exit.png" />
+    <None Include="Resources\animation-motion-path.png" />
+    <None Include="Resources\icon-right-arrow-green.png" />
+    <None Include="Resources\RightArrowGreen.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddToCustomShapesDisabled.png" />
+    <None Include="Resources\EyeDropper_icon.png" />
+    <None Include="Resources\EyeDropper_icon.bmp" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
