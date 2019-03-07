@@ -9,7 +9,7 @@ namespace PowerPointLabs.TooltipsLab
 {
     internal static class AssignTooltip
     {
-        public static void AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
+        public static bool AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
             ShapeRange selectedShapes = selection.ShapeRange;
 
@@ -18,8 +18,7 @@ namespace PowerPointLabs.TooltipsLab
                 MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
                     TooltipsLabText.ErrorTooltipsDialogTitle);
 
-                // TODO: New Exception for TooltipsLab
-                throw new Exception();
+                return false;
             }
 
             Shape triggerShape = selectedShapes[1];
@@ -28,6 +27,7 @@ namespace PowerPointLabs.TooltipsLab
 
             AddTriggerAnimation(currentSlide, triggerShape, shapesToAnimate);
 
+            return true;
         }
 
         public static void AddTriggerAnimation(PowerPointSlide currentSlide, Shape triggerShape, Shape calloutShape)
