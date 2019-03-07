@@ -160,8 +160,7 @@ namespace PowerPointLabs.ZoomLab
         //Shape dimensions should match the slide dimensions and the shape should be within the slide
         private static PowerPoint.Shape GetBestFitShape(PowerPointSlide currentSlide, PowerPoint.Shape zoomShape)
         {
-            zoomShape.Copy();
-            PowerPoint.Shape zoomShapeCopy = currentSlide.Shapes.Paste()[1];
+            PowerPoint.Shape zoomShapeCopy = zoomShape.Duplicate()[1];
             
             zoomShapeCopy.LockAspectRatio = Office.MsoTriState.msoFalse;
 

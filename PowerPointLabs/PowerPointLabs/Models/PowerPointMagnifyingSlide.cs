@@ -101,9 +101,7 @@ namespace PowerPointLabs.Models
         //Return shape which helps to calculate the amount of zoom-in animation
         private PowerPoint.Shape GetReferenceShape(PowerPoint.Shape shapeToZoom)
         {
-            shapeToZoom.Copy();
-
-            PowerPoint.Shape referenceShape = _slide.Shapes.Paste()[1];
+            PowerPoint.Shape referenceShape = shapeToZoom.Duplicate()[1];
             referenceShape.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (referenceShape.Width > referenceShape.Height)
             {
