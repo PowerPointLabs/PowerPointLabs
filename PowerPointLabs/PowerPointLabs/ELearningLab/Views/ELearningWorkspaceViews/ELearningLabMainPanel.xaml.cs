@@ -57,6 +57,11 @@ namespace PowerPointLabs.ELearningLab.Views
                IntPtr.Zero,
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
+            createImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+               Properties.Resources.AddExplanationIcon.GetHbitmap(),
+               IntPtr.Zero,
+               Int32Rect.Empty,
+               BitmapSizeOptions.FromEmptyOptions());
             UpdateClickNoAndTriggerTypeInItems();
             isSynced = true;
             foreach (ClickItem item in Items)
@@ -242,7 +247,6 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
             Items.Remove(labItem);
-         //   ELearningService.DeleteShapesForUnusedItem(slide, labItem);
             UpdateClickNoAndTriggerTypeInItems();
             isSynced = false;
         }
@@ -263,16 +267,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            string text = textBox.Text.Trim();
-            if (string.IsNullOrEmpty(text))
-            {
-                MessageBox.Show("Text must not be empty!");
-                return;
-            }
-            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: text);
+            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
             (listView.ItemsSource as ObservableCollection<ClickItem>).Add(selfExplanationClickItem);
-            textBox.Text = string.Empty;
             ScrollListViewToEnd();
             isSynced = false;
         }
@@ -282,21 +279,6 @@ namespace PowerPointLabs.ELearningLab.Views
         private bool IsInSync()
         {
             return isSynced;
-            /*
-            try
-            {
-                List<ClickItem> items_loaded = LoadItems().ToList();
-                List<ClickItem> items_original = Items.Where(x => x is CustomClickItem ||
-                ((x is SelfExplanationClickItem) && !(x as SelfExplanationClickItem).IsDummyItem && ((x as SelfExplanationClickItem).IsCallout ||
-                (x as SelfExplanationClickItem).IsCaption || (x as SelfExplanationClickItem).IsVoice))).ToList();
-                return items_loaded.SequenceEqual(items_original);
-            }
-            catch
-            {
-                Logger.Log("exception in sync");
-                return true;
-            }
-            */
         }
 
         private void SyncCustomAnimationToTaskpane(bool uncheckAzureAudio)

@@ -10,61 +10,57 @@
              views:SelfExplanationBlockView.DownButtonClickedHandler="HandleDownButtonClickedEvent"
              views:SelfExplanationBlockView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
              views:SelfExplanationBlockView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
-             mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="525">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
-    </UserControl.Resources>
+             mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="0,0,20,0">
-            <Button x:Name="syncButton" HorizontalAlignment="Right" Height="35" 
+        <StackPanel Grid.Row="0" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <StackPanel Margin="20,0,20,0">
+                <Button x:Name="syncButton" Height="35" 
                 VerticalAlignment="Top" Width="35" Padding="5" Click="SyncButton_Click">
-                <Image x:Name="syncImage" Stretch="Fill"/>
-                <Button.ToolTip>
-                    <StackPanel>
-                        <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Sync Animations</TextBlock>
-                        <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
-                        <TextBlock>
+                    <Image x:Name="syncImage" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        <StackPanel FlowDirection="LeftToRight">
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Sync Animations</TextBlock>
+                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                            <TextBlock>
                         Click to:
                         <LineBreak/>
                         Sync custom animations to eLearningLab task panel.
                         <LineBreak/>
                         Sync elearning lab animations to PowerPoint animation pane.
-                        </TextBlock>
-                    </StackPanel>
-                </Button.ToolTip>
-            </Button>
-            <Label Content="Sync" HorizontalAlignment="Right" FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <Label Content="Sync" HorizontalAlignment="Right" FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel>
+                <Button x:Name="createButton" Height="35" 
+                VerticalAlignment="Top" Width="35" Padding="5" Click="CreateButton_Click">
+                    <Image x:Name="createImage" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        <StackPanel FlowDirection="LeftToRight">
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Sync Animations</TextBlock>
+                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                            <TextBlock>
+                        Click to:
+                        <LineBreak/>
+                        Add self explanations to eLearningLab task panel.
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <Label Content="Add" HorizontalAlignment="Right" FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
+            </StackPanel>
         </StackPanel>
         <ListView Grid.Row="1" x:Name="listView" ItemsSource="{Binding Items}"
                   BorderThickness="0" Margin="0" SelectionMode="Single">
-            <!--ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <ContentControl Content="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </-->
             <ListBox.Resources>
                 <DataTemplate DataType="{x:Type model:CustomClickItem}">
                     <StackPanel Margin="2 2 2 2">
-                        <!--Label Content="{Binding
-                                Path=.,
-                                Converter={converters:BlockToIndexConverter},
-                                RelativeSource={RelativeSource FindAncestor, 
-                                         AncestorType={x:Type ListViewItem}}}" 
-                               FontFamily="Century Gothic" FontSize="20"/-->
-                        <Label Content="{Binding ClickNo}" ContentStringFormat="Click {0}" 
-                               Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}" 
-                               FontFamily="Century Gothic" FontSize="20"/>
                         <views:CustomBlockView DataContext="{Binding}" />
                     </StackPanel>
                 </DataTemplate>
@@ -72,15 +68,6 @@
                     <StackPanel Margin="2 2 2 2">
                         <Border BorderThickness="2" BorderBrush="#666666" CornerRadius="4">
                             <StackPanel Margin="5 5 5 5">
-                                <!--Label Content="{Binding
-                                Path=.,
-                                Converter={converters:BlockToIndexConverter},
-                                RelativeSource={RelativeSource FindAncestor, 
-                                         AncestorType={x:Type ListViewItem}}}"
-                                       FontFamily="Century Gothic" FontSize="20"/-->
-                                <Label Content="{Binding ClickNo}" ContentStringFormat="Click {0}"  
-                                       Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}"
-                                       FontFamily="Century Gothic" FontSize="20"/>
                                 <views:SelfExplanationBlockView DataContext="{Binding}"/>
                             </StackPanel>
                         </Border>
@@ -88,38 +75,5 @@
                 </DataTemplate>
             </ListBox.Resources>
         </ListView>
-        <Border Grid.Row="2" VerticalAlignment="Bottom" BorderThickness="0.25" BorderBrush="Black">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="textBox" Grid.Column="0" Margin="4 4 4 4" AcceptsReturn="True" TextWrapping="Wrap">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                            <Style.Resources>
-                                <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                                    <VisualBrush.Visual>
-                                        <Label Content="Enter your notes here" Foreground="LightGray" />
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Style.Resources>
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
-                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                                </Trigger>
-                                <Trigger Property="Text" Value="{x:Null}">
-                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                                </Trigger>
-                                <Trigger Property="IsKeyboardFocused" Value="True">
-                                    <Setter Property="Background" Value="White" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-                <Button Grid.Column="1"  Margin="4 4 4 4" Content="Create" FontSize="12" Click="CreateButton_Click"/>
-            </Grid>
-        </Border>
     </Grid>
 </UserControl>

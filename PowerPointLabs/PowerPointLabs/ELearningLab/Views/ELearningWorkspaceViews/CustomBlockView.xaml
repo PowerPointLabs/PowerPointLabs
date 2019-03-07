@@ -7,14 +7,26 @@
              xmlns:data="clr-namespace:PowerPointLabs.ELearningLab.ELearningWorkspace.Model"
              xmlns:converters="clr-namespace:PowerPointLabs.ELearningLab.Converters"
              mc:Ignorable="d">
-    <StackPanel>
-        <ListView ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
+    <Control.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Control.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="420"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Width="20" Height="20" CornerRadius="10"
+                    VerticalAlignment="Top" Background="Black">
+            <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/>
+        </Border>
+        <ListView Grid.Column="1" ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type data:CustomSubItem}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="360" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
                    Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
@@ -24,5 +36,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </StackPanel>
+    </Grid>
 </UserControl>

@@ -123,6 +123,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap AddExplanationIcon {
+            get {
+                object obj = ResourceManager.GetObject("AddExplanationIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap AddNarrationContext {
             get {
                 object obj = ResourceManager.GetObject("AddNarrationContext", resourceCulture);

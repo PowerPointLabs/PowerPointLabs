@@ -67,21 +67,34 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
     </Control.Resources>
-
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="450"/>
+                <ColumnDefinition Width="420"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" HorizontalAlignment="Center" Margin="2 2 2 2"
+                <Border Grid.Row="0" Width="20" Height="20" CornerRadius="10">
+                    <Border.Background>
+                        <MultiBinding Converter="{converters:ListViewClickNoToColorConverter}">
+                            <Binding Path="IsDummyItem" />
+                            <Binding Path="IsTriggerTypeComboBoxEnabled" />
+                            <Binding Path="TriggerIndex" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}"
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/>
+                </Border>
+                <Button Grid.Row="1" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="UpButton_Click"
                         CommandParameter="{Binding .}">
                     <Image x:Name="upImage" Stretch="Fill"/>
@@ -95,7 +108,7 @@
                         </StackPanel>
                     </Button.ToolTip>
                 </Button>
-                <Button Grid.Row="1" HorizontalAlignment="Center" Margin="2 2 2 2"
+                <Button Grid.Row="2" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="DeleteButton_Click"
                         CommandParameter="{Binding .}">
                     <Image x:Name="deleteImage" Stretch="Fill"/>
@@ -109,7 +122,7 @@
                         </StackPanel>
                     </Button.ToolTip>
                 </Button>
-                <Button Grid.Row="2" HorizontalAlignment="Center" Margin="2 2 2 2"
+                <Button Grid.Row="3" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="DownButton_Click"
                         CommandParameter="{Binding .}">
                     <Image x:Name="downImage" Stretch="Fill"/>
@@ -141,7 +154,7 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Image x:Name="startImage" MinHeight="10" MaxHeight="10" MinWidth="5" MaxWidth="5" VerticalAlignment="Center"
                    Stretch="Fill" Margin="2 2 0 2"/>
-                        <Label Content="Start: " FontSize="11" Margin="0 2 0 2" VerticalAlignment="Center"/>
+                        <Label Content="Start: " FontSize="10" Margin="0 2 0 2" VerticalAlignment="Center"/>
                         <!--ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
                       FontSize="7" VerticalAlignment="Center" Margin="-5 0 0 0" IsEnabled="{Binding Path=.,
                                 Converter={converters:BlockToTriggerTypeEnabledConverter},
@@ -155,11 +168,11 @@
                             <ComboBoxItem Content="With Previous" />
                         </ComboBox>
                         <CheckBox x:Name="calloutCheckBox" Content="Callout"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCallout}" FontSize="11" Margin="2 2 1 2" />
+                          IsChecked="{Binding IsCallout}" FontSize="10" Margin="2 2 1 2" />
                         <CheckBox x:Name="captionCheckBox" Content="Caption"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCaption}" FontSize="11" Margin="1 2 1 2"/>
+                          IsChecked="{Binding IsCaption}" FontSize="10" Margin="1 2 1 2"/>
                         <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsVoice}" FontSize="11"/>
+                          IsChecked="{Binding IsVoice}" FontSize="10"/>
                         <Button Margin="3 0 0 0" x:Name="audioPreviewButton"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="VoicePreviewButton_Click">
                             <Image x:Name="audioImage" Stretch="Fill"/>
@@ -173,8 +186,8 @@
                                 </StackPanel>
                             </Button.ToolTip>
                         </Button>
-                        <CheckBox x:Name="hasShortVersionCheckBox" Content="Use Shorter Callouts"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding HasShortVersion, Mode=TwoWay}" FontSize="11" Margin="2 2 1 2"
+                        <CheckBox x:Name="hasShortVersionCheckBox" Content="Use Shorter Callout"  VerticalContentAlignment="Center" 
+                          IsChecked="{Binding HasShortVersion, Mode=TwoWay}" FontSize="10" Margin="2 2 1 2"
                               Checked="HasShortVersionCheckBox_CheckChanged" Unchecked="HasShortVersionCheckBox_CheckChanged">
                             <CheckBox.ToolTip>
                                 <TextBlock>
