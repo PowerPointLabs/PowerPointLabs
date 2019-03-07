@@ -44,7 +44,7 @@ namespace PowerPointLabs.TooltipsLab
             MsoAnimEffect fadeEffect = MsoAnimEffect.msoAnimEffectFade;
 
             // Get the shapes that are already associated with trigger shape
-            List<Shape> shapesToAnimate = RemoveAnimationsInInteractiveSequence(currentSlide, triggerShape, newShapesToAnimate);
+            List<Shape> shapesToAnimate = GetShapesInInteractiveSequenceWithAnimationsRemoved(currentSlide, triggerShape, newShapesToAnimate);
             Sequence sequence = timeline.InteractiveSequences.Add();
 
             AddTriggerEffect(triggerShape, shapesToAnimate, fadeEffect, sequence);
@@ -95,7 +95,7 @@ namespace PowerPointLabs.TooltipsLab
             }
         }
 
-        private static List<Shape> RemoveAnimationsInInteractiveSequence(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
+        private static List<Shape> GetShapesInInteractiveSequenceWithAnimationsRemoved(PowerPointSlide currentSlide, Shape triggerShape, List<Shape> shapesToAnimate)
         {
             Sequences sequences = currentSlide.TimeLine.InteractiveSequences;
             // A set is used here so no duplicate shapes will be added
