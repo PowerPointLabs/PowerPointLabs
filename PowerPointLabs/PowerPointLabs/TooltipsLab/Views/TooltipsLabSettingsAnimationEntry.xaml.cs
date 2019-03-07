@@ -47,7 +47,8 @@ namespace PowerPointLabs.TooltipsLab.Views
             set
             {
                 type = value;
-                string nameForDisplay = value.ToString().Replace("msoAnim", "");
+                string nameForDisplay = value.ToString().Replace(
+                    TooltipsLabConstants.AnimationNameHeader, "");
                 textBlock.Text = nameForDisplay;
                 ToolTip = nameForDisplay;
             }

@@ -21,7 +21,7 @@ namespace PowerPointLabs.TooltipsLab
             float top = ShapeUtil.GetBottom(callout) + TooltipsLabConstants.TriggerShapeAndCalloutSpacing;
 
             PowerPoint.Shape triggerShape = currentSlide.Shapes.AddShape(
-                Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, 
+                TooltipsLabConstants.TriggerShape, 
                 left, 
                 top, 
                 TooltipsLabConstants.TriggerShapeDefaultWidth, 
