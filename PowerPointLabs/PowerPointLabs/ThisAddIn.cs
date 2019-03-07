@@ -978,7 +978,7 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
-            Ribbon.RefreshRibbonControl("CreateTooltipButton");
+            Ribbon.RefreshRibbonControl("CreateMenu");
             Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");

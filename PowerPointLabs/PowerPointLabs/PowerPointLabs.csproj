@@ -258,11 +258,23 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipEnabledHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipActionHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipImageHandler.cs" />
@@ -276,7 +288,6 @@
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
-    <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
@@ -723,11 +734,16 @@
     <Compile Include="SyncLab\ObjectFormats\MaterialEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowColorFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowSizeFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextHorizontalAlignmentFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextVerticalAlignmentFormat.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextLineSpacingFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ThreeDRotationEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
     <Compile Include="TextCollection\TooltipsLabText.cs" />
+    <Compile Include="SyncLab\ObjectFormats\TextOrientationFormat.cs" />
+    <Compile Include="SyncLab\Views\SyncFormatPanelItemStub.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\Format.cs" />
     <Compile Include="SyncLab\ObjectFormats\ArtisticEffectFormat.cs" />
@@ -2114,7 +2130,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="55214155BE32CF10E93E0815C7758604B8DF3CF2" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
