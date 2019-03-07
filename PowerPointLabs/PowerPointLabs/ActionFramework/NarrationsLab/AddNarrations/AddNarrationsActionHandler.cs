@@ -6,10 +6,10 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab;
-using PowerPointLabs.NarrationsLab.Data;
-using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
@@ -19,7 +19,8 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            if (NotesToAudio.IsAzureVoiceSelected && UserAccount.GetInstance().IsEmpty())
+            if (AudioSettingService.selectedVoiceType == VoiceType.AzureVoice
+                && AzureAccount.GetInstance().IsEmpty())
             {
                 MessageBox.Show("Invalid user account. Please log in again.");
                 return;
@@ -33,13 +34,13 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             // If there are text in notes page for any of the selected slides 
             if (this.GetCurrentPresentation().SelectedSlides.Any(slide => slide.NotesPageText.Trim() != ""))
             {
-                NotesToAudio.IsRemoveAudioEnabled = true;
+                ComputerVoiceRuntimeService.IsRemoveAudioEnabled = true;
                 this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
             }
-            List<string[]> allAudioFiles = new List<string[]>();
+
             try
             {
-                allAudioFiles = NotesToAudio.EmbedSelectedSlideNotes();
+                ComputerVoiceRuntimeService.EmbedSelectedSlideNotes();
             }
             catch
             {
@@ -62,6 +63,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
 
             // initialize selected slides' audio
+            List<string[]> allAudioFiles = ComputerVoiceRuntimeService.ExtractSlideNotes();
             recorder.InitializeAudioAndScript(this.GetCurrentPresentation().SelectedSlides.ToList(),
                                                   allAudioFiles, true);
 
@@ -71,9 +73,9 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 recorder.UpdateLists(currentSlide.ID);
             }
 
-            if (NarrationsLabSettings.IsPreviewEnabled)
+            if (AudioSettingService.IsPreviewEnabled)
             {
-                NotesToAudio.PreviewAnimations();
+                ComputerVoiceRuntimeService.PreviewAnimations();
             }
         }
     }

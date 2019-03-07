@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using PowerPointLabs.ColorsLab;
+
 namespace PowerPointLabs.DataSources
 {
     class ColorDataSource : INotifyPropertyChanged
@@ -259,7 +261,61 @@ namespace PowerPointLabs.DataSources
                 }
             }
         }
-        
+
+        private HSLColor themeColorElevenValue;
+
+        public HSLColor ThemeColorEleven
+        {
+            get
+            {
+                return themeColorElevenValue;
+            }
+            set
+            {
+                if (value != this.themeColorElevenValue)
+                {
+                    this.themeColorElevenValue = value;
+                    OnPropertyChanged("themeColorEleven");
+                }
+            }
+        }
+
+        private HSLColor themeColorTwelveValue;
+
+        public HSLColor ThemeColorTwelve
+        {
+            get
+            {
+                return themeColorTwelveValue;
+            }
+            set
+            {
+                if (value != this.themeColorTwelveValue)
+                {
+                    this.themeColorTwelveValue = value;
+                    OnPropertyChanged("themeColorTwelve");
+                }
+            }
+        }
+
+        private HSLColor themeColorThirteenValue;
+
+        public HSLColor ThemeColorThirteen
+        {
+            get
+            {
+                return themeColorThirteenValue;
+            }
+            set
+            {
+                if (value != this.themeColorThirteenValue)
+                {
+                    this.themeColorThirteenValue = value;
+                    OnPropertyChanged("themeColorThirteen");
+                }
+            }
+        }
+
         public bool SaveThemeColorsInFile(String filePath)
         {
             try
@@ -275,6 +331,9 @@ namespace PowerPointLabs.DataSources
                 themeColors.Add(this.ThemeColorEight);
                 themeColors.Add(this.ThemeColorNine);
                 themeColors.Add(this.ThemeColorTen);
+                themeColors.Add(this.ThemeColorEleven);
+                themeColors.Add(this.ThemeColorTwelve);
+                themeColors.Add(this.ThemeColorThirteen);
 
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -307,12 +366,32 @@ namespace PowerPointLabs.DataSources
                 this.ThemeColorEight = themeColors[7];
                 this.ThemeColorNine = themeColors[8];
                 this.ThemeColorTen = themeColors[9];
+                this.ThemeColorEleven = themeColors[10];
+                this.ThemeColorTwelve = themeColors[11];
+                this.ThemeColorThirteen = themeColors[12];
             }
             catch (Exception)
             {
                 return false;
             }
             return true;
+        }
+
+        public void AddColorToFavorites(HSLColor color)
+        {
+            ThemeColorThirteen = ThemeColorTwelve;
+            ThemeColorTwelve = ThemeColorEleven;
+            ThemeColorEleven = ThemeColorTen;
+            ThemeColorTen = ThemeColorNine;
+            ThemeColorNine = ThemeColorEight;
+            ThemeColorEight = ThemeColorSeven;
+            ThemeColorSeven = ThemeColorSix;
+            ThemeColorSix = ThemeColorFive;
+            ThemeColorFive = ThemeColorFour;
+            ThemeColorFour = ThemeColorThree;
+            ThemeColorThree = ThemeColorTwo;
+            ThemeColorTwo = ThemeColorOne;
+            ThemeColorOne = color;
         }
 
         public ColorDataSource()

@@ -18,15 +18,20 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             this.StartNewUndoEntry();
 
             PowerPointSlide currentSlide = this.GetCurrentSlide();
+
+            if (currentSlide == null)
+            {
+                return;
+            }
             
             PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
             PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
             AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, calloutGroup);
 
-            if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+            if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {
-                this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
+                this.GetApplication().CommandBars.ExecuteMso(TooltipsLabConstants.AnimationPaneName);
             }
         }
     }

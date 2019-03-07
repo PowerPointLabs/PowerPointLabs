@@ -20,11 +20,16 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             PowerPointSlide currentSlide = this.GetCurrentSlide();
 
+            if (currentSlide == null)
+            {
+                return;
+            }
+
             PowerPoint.Selection selection = this.GetCurrentSelection();
 
             if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show("Please select 1 or more shapes as your trigger shape.");
+                MessageBox.Show(TooltipsLabText.ErrorNoTriggerShapeSelected);
                 return;
             }
 
@@ -35,9 +40,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
                 AssignTooltip.AddTriggerAnimation(currentSlide, selectedShape, calloutGroup);
             }
             
-            if (!this.GetApplication().CommandBars.GetPressedMso("AnimationCustom"))
+            if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {
-                this.GetApplication().CommandBars.ExecuteMso("AnimationCustom");
+                this.GetApplication().CommandBars.ExecuteMso(TooltipsLabConstants.AnimationPaneName);
             }
         }
     }
