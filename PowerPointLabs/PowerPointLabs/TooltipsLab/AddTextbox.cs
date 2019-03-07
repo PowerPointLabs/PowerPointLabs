@@ -37,12 +37,10 @@ namespace PowerPointLabs.TooltipsLab
         {
             //Create textbox with the correct size, position and text alignment
             Slide nativeSlide = slide.GetNativeSlide();
-            Shape textbox = TextBoxWithDefaultText.CreateTextBox(nativeSlide, MsoTextOrientation.msoTextOrientationHorizontal, left, top, width, height);
+            native
+            Shape textbox = nativeSlide.Shapes.AddOLEObject(Left: left, Top: top, Width: width, Height: height, ClassName: "PowerPointLabs.TooltipsLab.TextBoxWithDefaultText", Link: Microsoft.Office.Core.MsoTriState.msoTrue);
             textbox.TextFrame.TextRange.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
             textbox.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
-
-            //Set placeholder text
-            textbox.AlternativeText = "Enter text here.";
 
             textbox.ZOrder(MsoZOrderCmd.msoBringForward);
 
