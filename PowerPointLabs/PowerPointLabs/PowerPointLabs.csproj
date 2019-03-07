@@ -849,6 +849,7 @@
     <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
     <Compile Include="TooltipsLab\AddTextbox.cs" />
+    <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\AssignToolTip.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
