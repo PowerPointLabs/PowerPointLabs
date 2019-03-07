@@ -20,6 +20,11 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             Selection selection = this.GetCurrentSelection();
             PowerPointSlide currentSlide = this.GetCurrentSlide();
 
+            if (currentSlide == null)
+            {
+                return;
+            }
+
             if (!ShapeUtil.IsSelectionShape(selection))
             {
                 return;

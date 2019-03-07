@@ -18,6 +18,11 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             this.StartNewUndoEntry();
 
             PowerPointSlide currentSlide = this.GetCurrentSlide();
+
+            if (currentSlide == null)
+            {
+                return;
+            }
             
             PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
             PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
