@@ -35,9 +35,13 @@ namespace PowerPointLabs.TooltipsLab
         /// </summary>
         private static Shape AddTextboxToSlide(PowerPointSlide slide, float left, float top, float width, float height)
         {
-            Shape textbox = slide.GetNativeSlide().Shapes.AddTextbox(MsoTextOrientation.msoTextOrientationHorizontal, left, top, width, height);
+            //Create textbox with the correct size, position and text alignment
+            Slide nativeSlide = slide.GetNativeSlide();
+            native
+            Shape textbox = nativeSlide.Shapes.AddOLEObject(Left: left, Top: top, Width: width, Height: height, ClassName: "PowerPointLabs.TooltipsLab.TextBoxWithDefaultText", Link: Microsoft.Office.Core.MsoTriState.msoTrue);
             textbox.TextFrame.TextRange.ParagraphFormat.Alignment = PpParagraphAlignment.ppAlignCenter;
             textbox.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
+
             textbox.ZOrder(MsoZOrderCmd.msoBringForward);
 
             //Somehow without explicitly restating the variables, the textbox size will be wrong.
