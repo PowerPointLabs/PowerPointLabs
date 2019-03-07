@@ -7,12 +7,17 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.TooltipsLab
 {
+    /// <summary>
+    /// Assigns tooltip to shapes, follows the convention that the first shape is the trigger shape, the rest
+    /// of the shapes will be the callouts. All callout shapes will appear on first click of the trigger shape,
+    /// and all will disappear on second click of the trigger shape.
+    /// </summary>
     internal static class AssignTooltip
     {
         public static bool AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
             ShapeRange selectedShapes = selection.ShapeRange;
-
+            
             if (selectedShapes.Count < 2)
             {
                 MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
