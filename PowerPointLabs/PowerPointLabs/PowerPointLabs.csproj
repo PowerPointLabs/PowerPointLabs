@@ -758,9 +758,6 @@
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
     <Compile Include="TooltipsLab\AddTextbox.cs" />
     <Compile Include="TooltipsLab\AttachTriggerAnimation.cs" />
-    <Compile Include="TooltipsLab\TextBoxWithDefaultText.xaml.cs">
-      <DependentUpon>TextBoxWithDefaultText.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
@@ -1554,10 +1551,6 @@
     <Page Include="SyncLab\Views\SyncPaneWPF.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="TooltipsLab\TextBoxWithDefaultText.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ErrorDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
