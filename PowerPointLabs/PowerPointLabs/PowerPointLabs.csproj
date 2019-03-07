@@ -258,7 +258,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
