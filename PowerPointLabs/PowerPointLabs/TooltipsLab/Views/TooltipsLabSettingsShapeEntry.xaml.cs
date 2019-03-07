@@ -46,7 +46,7 @@ namespace PowerPointLabs.TooltipsLab.Views
             set
             {
                 type = value;
-                string nameForDisplay = value.ToString().Replace("mso", "");
+                string nameForDisplay = value.ToString().Replace("msoShape", "");
                 textBlock.Text = nameForDisplay;
                 ToolTip = nameForDisplay;
             }

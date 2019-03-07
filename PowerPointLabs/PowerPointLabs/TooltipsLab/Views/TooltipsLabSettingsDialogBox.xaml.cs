@@ -17,21 +17,18 @@ namespace PowerPointLabs.TooltipsLab.Views
     /// </summary>
     public partial class TooltipsLabSettingsDialogBox
     {
-        public delegate void DialogConfirmedDelegate(MsoAutoShapeType newShapeType);
+        public delegate void DialogConfirmedDelegate(MsoAutoShapeType newShapeType, MsoAnimEffect newAnimationType);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         private MsoAutoShapeType lastShapeType;
+        private MsoAnimEffect lastAnimationType;
 
-        public TooltipsLabSettingsDialogBox()
+        public TooltipsLabSettingsDialogBox(MsoAutoShapeType shapeType, MsoAnimEffect animType)
         {
+            lastShapeType = shapeType;
+            lastAnimationType = animType;
             InitializeComponent();
             Initialize();
-        }
-        
-        public TooltipsLabSettingsDialogBox(MsoAutoShapeType defaultShapeType)
-            : this()
-        {
-            lastShapeType = defaultShapeType;
         }
 
         private void Initialize()
@@ -44,11 +41,29 @@ namespace PowerPointLabs.TooltipsLab.Views
                 {
                     continue;
                 }
-                shapeList.Items.Add(new TooltipsLabSettingsShapeEntry((MsoAutoShapeType)shapeTypes.GetValue(i), shapeBitmaps[i]));
+                TooltipsLabSettingsShapeEntry newEntry = new TooltipsLabSettingsShapeEntry(
+                    (MsoAutoShapeType)shapeTypes.GetValue(i), shapeBitmaps[i]);
+                shapeList.Items.Add(newEntry);
+                if (newEntry.Type == lastShapeType)
+                {
+                    shapeList.SelectedItem = newEntry;
+                    shapeList.ScrollIntoView(newEntry);
+                }
             }
 
             Array animationTypes = Enum.GetValues(typeof(MsoAnimEffect));
-            //Bitmap[] animationBitmaps;
+            Bitmap dummyImage = Properties.Resources.AddSpotlightContext;
+            for (int i = 0; i < animationTypes.Length; i++)
+            {
+                TooltipsLabSettingsAnimationEntry newEntry = new TooltipsLabSettingsAnimationEntry(
+                    (MsoAnimEffect)animationTypes.GetValue(i), dummyImage);
+                animationList.Items.Add(newEntry);
+                if (newEntry.Type == lastAnimationType)
+                {
+                    animationList.SelectedItem = newEntry;
+                    animationList.ScrollIntoView(newEntry);
+                }
+            }
         }
 
         private Bitmap[] ShapeTypesToBitmaps(Array types)
@@ -79,7 +94,12 @@ namespace PowerPointLabs.TooltipsLab.Views
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             TooltipsLabSettingsShapeEntry shapeItem = shapeList.SelectedItem as TooltipsLabSettingsShapeEntry;
-            DialogConfirmedHandler(shapeItem.Type);
+            TooltipsLabSettingsAnimationEntry animationItem =
+                animationList.SelectedItem as TooltipsLabSettingsAnimationEntry;
+            if (shapeItem != null && animationItem != null)
+            {
+                DialogConfirmedHandler(shapeItem.Type, animationItem.Type);
+            }
             Close();
         }
 

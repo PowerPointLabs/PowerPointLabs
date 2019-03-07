@@ -13,12 +13,12 @@ namespace PowerPointLabs.TooltipsLab
 
         public static void ShowSettingsDialog()
         {
-            TooltipsLabSettingsDialogBox dialog = new TooltipsLabSettingsDialogBox();
+            TooltipsLabSettingsDialogBox dialog = new TooltipsLabSettingsDialogBox(ShapeType, AnimationType);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             dialog.ShowDialog();
         }
 
-        private static void OnSettingsDialogConfirmed(MsoAutoShapeType newShapeType)
+        private static void OnSettingsDialogConfirmed(MsoAutoShapeType newShapeType, MsoAnimEffect newAnimationType)
         {
             ShapeType = newShapeType;
         }
