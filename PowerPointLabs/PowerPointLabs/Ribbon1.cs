@@ -188,6 +188,12 @@ namespace PowerPointLabs
             return DisableFormatTab;
         }
 
+        // Sets the default starting status of the checkbox (whether checked or not)
+        public bool SetImageCompression(Office.IRibbonControl control)
+        {
+            return ShouldCompressImages;
+        }
+
         public void RibbonLoad(Office.IRibbonUI ribbonUi)
         {
             ActionHandlerFactory = new ActionHandlerFactory();
