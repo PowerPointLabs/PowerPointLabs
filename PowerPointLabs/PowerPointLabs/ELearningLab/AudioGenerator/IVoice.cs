@@ -8,6 +8,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
 {
     public interface IVoice
     {
-
+        string VoiceName { get; }
+        int Rank { get; set; }
     }
 }

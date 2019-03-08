@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-
+using System.Windows;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 
 namespace PowerPointLabs.ELearningLab.Views
@@ -58,6 +58,23 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             InitializeComponent();
             this.DataContext = this;
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+
+            //Calculate half of the offset to move the window
+
+            if (sizeInfo.HeightChanged)
+            {
+                Top += (sizeInfo.PreviousSize.Height - sizeInfo.NewSize.Height) / 2;
+            }
+
+            if (sizeInfo.WidthChanged)
+            {
+                Left += (sizeInfo.PreviousSize.Width - sizeInfo.NewSize.Width) / 2;
+            }
         }
     }
 }

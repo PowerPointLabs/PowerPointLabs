@@ -19,6 +19,8 @@ namespace PowerPointLabs.ELearningLab.Service
 {
     public class AzureRuntimeService
     {
+        public static bool IsAzureAccountPresentAndValid = IsAzureAccountPresent()
+            && IsValidUserAccount(showErrorMessage: false);
         private static CancellationTokenSource cts = new CancellationTokenSource();
         private static CancellationToken token = cts.Token;
         public static bool IsAzureAccountPresent()

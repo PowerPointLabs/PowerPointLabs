@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,9 +48,21 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return VoiceType.ComputerVoice;
                 }
-                else
+                else if ((bool)defaultVoiceRadioButton.IsChecked)
                 {
                     return VoiceType.DefaultVoice;
+                }
+                else
+                {
+                    IVoice voice = rankedAudioListView.SelectedItem as IVoice;
+                    if (voice is AzureVoice)
+                    {
+                        return VoiceType.AzureVoice;
+                    }
+                    else
+                    {
+                        return VoiceType.ComputerVoice;
+                    }
                 }
             }
         }
@@ -66,9 +79,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return computerVoiceComboBox.SelectedItem as ComputerVoice;
                 }
-                else
+                else if ((bool)defaultVoiceRadioButton.IsChecked)
                 {
                     return AudioSettingService.selectedVoice;
+                }
+                else
+                {
+                    return rankedAudioListView.SelectedItem as IVoice;
                 }
             }
         }
@@ -76,9 +93,13 @@ namespace PowerPointLabs.ELearningLab.Views
         private AudioPreviewPage()
         {
             InitializeComponent();
-            azureVoiceComboBox.ItemsSource = AzureVoiceList.voices;
+            azureVoiceComboBox.ItemsSource = AzureVoiceList.voices
+                .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
             azureVoiceComboBox.DisplayMemberPath = "Voice";
-            computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices;
+            computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices
+                .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
+            rankedAudioListView.DataContext = this;
+            rankedAudioListView.ItemsSource = AudioSettingService.preferredVoices;
         }
 
         public void Destroy()
@@ -118,6 +139,11 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             instance.ToggleAzureFunctionVisibility();
             defaultVoiceLabel.Content = AudioSettingService.selectedVoice.ToString();
+            defaultVoiceRadioButton.Checked += RadioButton_Checked;
+            azureVoiceRadioButton.Checked += RadioButton_Checked;
+            computerVoiceRadioButton.Checked += RadioButton_Checked;
+            ICollectionView view = CollectionViewSource.GetDefaultView(rankedAudioListView.ItemsSource);
+            view.Refresh();
         }
 
         private void AzureVoiceLogInButton_Click(object sender, RoutedEventArgs e)
@@ -135,15 +161,21 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 return;
             }
-            if (SelectedVoice is ComputerVoice)
+            IVoice voice = ((Button)sender).CommandParameter as IVoice;
+            if (voice == null)
             {
-                ComputerVoiceRuntimeService.SpeakString(textToSpeak, SelectedVoice as ComputerVoice);
+                voice = SelectedVoice;
             }
-            else if (SelectedVoice is AzureVoice)
+            if (voice is ComputerVoice)
             {
-                AzureRuntimeService.SpeakString(textToSpeak, SelectedVoice as AzureVoice);
+                ComputerVoiceRuntimeService.SpeakString(textToSpeak, voice as ComputerVoice);
+            }
+            else if (voice is AzureVoice)
+            {
+                AzureRuntimeService.SpeakString(textToSpeak, voice as AzureVoice);
             }
         }
+
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
@@ -158,12 +190,57 @@ namespace PowerPointLabs.ELearningLab.Views
             AudioSettingsDialogWindow.GetInstance().Destroy();
         }
 
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (computerVoiceRadioButton.IsChecked == true
+                && computerVoiceComboBox.Items.Count > 0)
+            {
+                previewButton.IsEnabled = true;
+                return;
+            }
+            else if (azureVoiceRadioButton.IsChecked == true
+                && azureVoiceComboBox.Items.Count > 0)
+            {
+                previewButton.IsEnabled = AzureRuntimeService.IsAzureAccountPresentAndValid;
+                return;
+            }
+            else if (azureVoiceRadioButton.IsChecked == true
+                && azureVoiceComboBox.Items.Count == 0)
+            {
+                previewButton.IsEnabled = false;
+                return;
+            }
+
+            IVoice voice;
+            if (defaultVoiceRadioButton.IsChecked == true)
+            {
+                voice = AudioSettingService.selectedVoice;
+            }
+            else
+            {
+                voice = ((RadioButton)sender).CommandParameter as IVoice;
+            }
+
+            if (voice == null)
+            {
+                previewButton.IsEnabled = false;
+            }
+            else if (voice is ComputerVoice)
+            {
+                previewButton.IsEnabled = true;
+            }
+            else
+            {
+                previewButton.IsEnabled = AzureRuntimeService.IsAzureAccountPresentAndValid;
+            }
+        }
+
         #endregion
 
         #region Private Helper Functions
         private void ToggleAzureFunctionVisibility()
         {
-            if (AzureRuntimeService.IsAzureAccountPresent() && AzureRuntimeService.IsValidUserAccount(showErrorMessage: false))
+            if (AzureRuntimeService.IsAzureAccountPresentAndValid)
             {
                 azureVoiceComboBox.Visibility = Visibility.Visible;
                 azureVoiceLoginButton.Visibility = Visibility.Collapsed;

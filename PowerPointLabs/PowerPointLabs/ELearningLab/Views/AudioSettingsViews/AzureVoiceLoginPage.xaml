@@ -24,8 +24,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Confirm" Margin="30 10 20 0" Click="ConfirmButton_Click"/>
-            <Button Grid.Column="1" Content="Cancel" Margin="20 10 30 0" Click="CancelButton_Click"/>
+            <Button Grid.Column="0" Content="Confirm" Margin="30 10 20 20" Click="ConfirmButton_Click"/>
+            <Button Grid.Column="1" Content="Cancel" Margin="20 10 30 20" Click="CancelButton_Click"/>
         </Grid>
     </StackPanel>
 </Page>

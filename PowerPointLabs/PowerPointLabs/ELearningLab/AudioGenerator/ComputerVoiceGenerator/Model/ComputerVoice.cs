@@ -9,9 +9,33 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
     public class ComputerVoice: IVoice
     {
         public string Voice { get; set; }
+        public string VoiceName
+        {
+            get
+            {
+                return Voice;
+            }
+        }
+
+
+        public int Rank
+        {
+            get
+            {
+                return rank;
+            }
+            set
+            {
+                rank = (int)value;
+            }
+        }
+
+        private int rank;
+
         public ComputerVoice(string voiceName)
         {
             Voice = voiceName;
+            rank = 0;
         }
         public override string ToString()
         {

@@ -15,6 +15,8 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static VoiceType selectedVoiceType = VoiceType.ComputerVoice;
         public static IVoice selectedVoice = ComputerVoiceRuntimeService.Voices.ElementAtOrDefault(0);
+        public static ObservableCollection<IVoice> preferredVoices
+             = new ObservableCollection<IVoice>();
 
         public static void ShowSettingsDialog()
         {

@@ -19,11 +19,34 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
                 return AzureLocaleToStringConverter.localeMapping[locale];
             }
         }
+
+        public string VoiceName
+        {
+            get
+            {
+                return Voice.ToString();
+            }
+        }
+
+        public int Rank
+        {
+            get
+            {
+                return rank;
+            }
+            set
+            {
+                rank = (int)value;
+            }
+        }
+
         private const string DEFAULTNAMESPACE = "Microsoft Server Speech Text to Speech Voice ";
         private const string LEFTBRACKET = "(";
         private const string RIGHTBRACKET = ")";
         private const string COMMA = ",";
         private const string SPACE = " ";
+
+        private int rank;
 
         public AzureVoice(Gender gender, Locale locale, AzureVoiceType voice)
         {
@@ -32,6 +55,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             this.Voice = voice;
             voiceName = DEFAULTNAMESPACE + LEFTBRACKET + 
                 AzureLocaleToStringConverter.localeMapping[locale] + COMMA + SPACE + voice + RIGHTBRACKET;
+            rank = 0;
         }
 
         public override string ToString()
