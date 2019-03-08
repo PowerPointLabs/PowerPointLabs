@@ -46,6 +46,18 @@ namespace PowerPointLabs.ELearningLab.Views
                 return slide.IsFirstAnimationTriggeredByClick() ? 1 : 0;
             }
         }
+
+        public bool IsFirstItemSelfExplanation
+        {
+            get
+            {
+                if (Items.Count > 0)
+                {
+                    return Items[0] is SelfExplanationClickItem;
+                }
+                return false;
+            }
+        }
         public ELearningLabMainPanel()
         {
             slide = this.GetCurrentSlide();

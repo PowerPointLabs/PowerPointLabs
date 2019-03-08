@@ -88,6 +88,7 @@
                             <Binding Path="IsDummyItem" />
                             <Binding Path="IsTriggerTypeComboBoxEnabled" />
                             <Binding Path="TriggerIndex" />
+                            <Binding Path="ClickNo" />
                         </MultiBinding>
                     </Border.Background>
                     <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"

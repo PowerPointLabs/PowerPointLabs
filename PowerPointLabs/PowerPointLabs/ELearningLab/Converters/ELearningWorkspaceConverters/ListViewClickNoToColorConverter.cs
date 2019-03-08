@@ -10,11 +10,14 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
+using Microsoft.Office.Tools;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 
 namespace PowerPointLabs.ELearningLab.Converters
 {
+#pragma warning disable 0618
     public class ListViewClickNoToColorConverter : MarkupExtension, IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -22,11 +25,23 @@ namespace PowerPointLabs.ELearningLab.Converters
             bool isDummyItem = (bool)values[0];
             bool isTriggerTypeEnabled = (bool)values[1];
             int triggerType = (int)values[2];
+            int clickNo = (int)values[3];
+            CustomTaskPane eLearningTaskpane = Globals.ThisAddIn.GetActivePane(typeof(ELearningLabTaskpane));
+            if (eLearningTaskpane == null)
+            {
+                return null;
+            }
+            ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             if (isDummyItem)
             {
                 return new SolidColorBrush(Colors.Gray);
             }
-            else if (isTriggerTypeEnabled && triggerType == (int)TriggerType.WithPrevious)
+            else if (isTriggerTypeEnabled && triggerType == (int)TriggerType.WithPrevious
+                && !taskpane.eLearningLabMainPanel1.IsFirstItemSelfExplanation && clickNo == 0)
+            {
+                return new SolidColorBrush(Colors.Transparent);
+            }
+            else if (isTriggerTypeEnabled && triggerType == (int)TriggerType.WithPrevious && clickNo > 0)
             {
                 return new SolidColorBrush(Colors.Transparent);
             }
