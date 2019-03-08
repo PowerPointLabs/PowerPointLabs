@@ -144,6 +144,15 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             }
         }
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return string.IsNullOrEmpty(CaptionText.Trim()) 
+                    && string.IsNullOrEmpty(CalloutText.Trim());
+            }
+        }
+
         #endregion
 
         #region Attributes

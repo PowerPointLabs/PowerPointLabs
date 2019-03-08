@@ -175,13 +175,10 @@ namespace PowerPointLabs.ELearningLab.Views
             if ((bool)((CheckBox)sender).IsChecked)
             {
                 calloutTextBox.Visibility = Visibility.Visible;
-                calloutTextBox.Text = string.Empty;
             }
             else
             {
                 calloutTextBox.Visibility = Visibility.Collapsed;
-                calloutTextBox.Text = captionTextBox.Text;
-                Logger.Log(calloutTextBox.Text);
             }
         }
 

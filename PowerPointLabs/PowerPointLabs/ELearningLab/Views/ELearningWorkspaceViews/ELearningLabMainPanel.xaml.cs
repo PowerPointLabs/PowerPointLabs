@@ -138,7 +138,8 @@ namespace PowerPointLabs.ELearningLab.Views
             SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid);
             RemoveLabAnimationsFromAnimationPane();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
-    Items.Where(x => x is SelfExplanationClickItem).Cast<SelfExplanationClickItem>().ToList(), slide);
+                Items.Where(x => x is SelfExplanationClickItem && !((SelfExplanationClickItem)x).IsEmpty)
+                .Cast<SelfExplanationClickItem>().ToList(), slide);
             SyncLabItemToAnimationPane();
         }
         private ObservableCollection<ClickItem> LoadItems()
