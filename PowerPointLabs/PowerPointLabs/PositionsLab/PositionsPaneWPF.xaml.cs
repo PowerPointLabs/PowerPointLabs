@@ -375,7 +375,7 @@ namespace PowerPointLabs.PositionsLab
                                                                        : null;
             try
             {
-                if (button.IsMouseOver)
+                if (button == null || button.IsMouseOver)
                 {
                     DisableRotationMode();
                     return;
