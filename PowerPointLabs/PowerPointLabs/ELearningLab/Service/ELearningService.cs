@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Extensions;
+using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -39,6 +40,7 @@ namespace PowerPointLabs.ELearningLab.Service
             DeleteUnusedCalloutShapes(_slide);
             DeleteUnusedAudioShapes(_slide);
             DeleteUnusedCaptionShapes(_slide);
+            DeleteExitAnimationInLastClick(_slide);
         }
 
         public static void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
@@ -118,6 +120,29 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Shape captionShape = slide.GetShapeWithName(captionShapeName)[0];
                 CaptionService.CreateExitEffectCaptionAnimation(slide, captionShape, selfExplanationItem.ClickNo);
+            }
+        }
+
+        private static void DeleteExitAnimationInLastClick(PowerPointSlide slide)
+        {
+            IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
+            for (int i = effects.Count() - 1; i > 0 && i >= effects.Count() - 2; i--)
+            {
+                Effect effect = effects.ElementAt(i);
+                bool isTriggeredByClick = effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                if (effect.Exit != Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    return;
+                }
+                string shapeName = effect.Shape.Name;
+                if (StringUtility.IsPPTLShape(shapeName) && effect.Exit == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    effect.Delete();
+                }
+                if (isTriggeredByClick)
+                {
+                    return;
+                }
             }
         }
 
