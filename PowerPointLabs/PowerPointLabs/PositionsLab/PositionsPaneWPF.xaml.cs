@@ -370,12 +370,11 @@ namespace PowerPointLabs.PositionsLab
 
         void _leftMouseDownListener_Rotation(object sender, SysMouseEventInfo e)
         {
-            try
-            {
-                ToggleButton button = ((bool)rotationButton.IsChecked) ? rotationButton :
+            ToggleButton button = ((bool)rotationButton.IsChecked) ? rotationButton :
                              ((bool)duplicateRotationButton.IsChecked) ? duplicateRotationButton
                                                                        : null;
-
+            try
+            {
                 if (button.IsMouseOver)
                 {
                     DisableRotationMode();
@@ -427,6 +426,8 @@ namespace PowerPointLabs.PositionsLab
             catch (Exception ex)
             {
                 Logger.LogException(ex, "Rotation");
+                DisableRotationMode();
+                button.IsChecked = false;
             }
         }
 
