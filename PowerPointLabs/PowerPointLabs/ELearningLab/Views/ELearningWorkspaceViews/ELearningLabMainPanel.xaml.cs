@@ -282,10 +282,41 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            (listView.ItemsSource as ObservableCollection<ClickItem>).Add(selfExplanationClickItem);
+            Items.Add(selfExplanationClickItem);
             ScrollListViewToEnd();
             isSynced = false;
+            UpdateClickNoAndTriggerTypeInItems();
         }
+
+        private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
+            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
+            selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
+            int index = Items.IndexOf(item);
+            Items.Insert(index, selfExplanationClickItem);
+            isSynced = false;
+            UpdateClickNoAndTriggerTypeInItems();
+        }
+
+        private void AddItemBelowContextMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
+            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
+            selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
+            int index = Items.IndexOf(item);
+            if (index < listView.Items.Count - 1)
+            {
+                Items.Insert(index + 1, selfExplanationClickItem);
+            }
+            else
+            {
+                Items.Add(selfExplanationClickItem);
+            }
+            isSynced = false;
+            UpdateClickNoAndTriggerTypeInItems();
+        }
+
         #endregion
 
         #region Helper Methods

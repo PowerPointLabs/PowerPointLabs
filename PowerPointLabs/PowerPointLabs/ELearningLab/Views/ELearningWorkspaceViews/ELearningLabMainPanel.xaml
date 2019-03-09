@@ -11,6 +11,16 @@
              views:SelfExplanationBlockView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
              views:SelfExplanationBlockView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ContextMenu x:Key="ItemContextMenu">
+            <MenuItem Header="Add Self Explanation Above" 
+                      Click="AddItemAboveContextMenu_Click"
+                      CommandParameter="{Binding}"/>
+            <MenuItem Header="Add Self Explanation Below" 
+                      Click="AddItemBelowContextMenu_Click"
+                      CommandParameter="{Binding}"/>
+        </ContextMenu>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -58,6 +68,11 @@
         </StackPanel>
         <ListView Grid.Row="1" x:Name="listView" ItemsSource="{Binding Items}"
                   BorderThickness="0" Margin="0" SelectionMode="Single">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}" >
+                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListBox.Resources>
                 <DataTemplate DataType="{x:Type model:CustomClickItem}">
                     <StackPanel Margin="2 2 2 2">

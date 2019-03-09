@@ -82,7 +82,7 @@
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
-                <Border Grid.Row="0" Width="20" Height="20" CornerRadius="10">
+                <Border x:Name="circle" Grid.Row="0" Width="20" Height="20" CornerRadius="10">
                     <Border.Background>
                         <MultiBinding Converter="{converters:ListViewClickNoToColorConverter}">
                             <Binding Path="IsDummyItem" />
@@ -94,6 +94,10 @@
                     <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                        Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}"
                                        FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/>
+                    <!--Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Visibility="{Binding ElementName=circle, Path=Background, 
+                        Converter={converters:CircleBackgroundToVisibilityConverter}}"
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/-->
                 </Border>
                 <Button Grid.Row="1" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="UpButton_Click"
@@ -156,11 +160,6 @@
                         <Image x:Name="startImage" MinHeight="10" MaxHeight="10" MinWidth="5" MaxWidth="5" VerticalAlignment="Center"
                    Stretch="Fill" Margin="2 2 0 2"/>
                         <Label Content="Start: " FontSize="10" Margin="0 2 0 2" VerticalAlignment="Center"/>
-                        <!--ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
-                      FontSize="7" VerticalAlignment="Center" Margin="-5 0 0 0" IsEnabled="{Binding Path=.,
-                                Converter={converters:BlockToTriggerTypeEnabledConverter},
-                                RelativeSource={RelativeSource FindAncestor, 
-                                         AncestorType={x:Type ListViewItem}}}" IsEnabledChanged="TriggerTypeComboBox_IsEnabledChanged"-->
                         <ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
                       FontSize="7" VerticalAlignment="Center" Margin="-5 0 0 0" 
                               IsEnabled="{Binding IsTriggerTypeComboBoxEnabled, UpdateSourceTrigger=PropertyChanged}"
@@ -169,11 +168,11 @@
                             <ComboBoxItem Content="With Previous" />
                         </ComboBox>
                         <CheckBox x:Name="calloutCheckBox" Content="Callout"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCallout}" FontSize="10" Margin="2 2 1 2" />
+                          IsChecked="{Binding IsCallout, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="2 2 1 2" />
                         <CheckBox x:Name="captionCheckBox" Content="Caption"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCaption}" FontSize="10" Margin="1 2 1 2"/>
+                          IsChecked="{Binding IsCaption, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="1 2 1 2"/>
                         <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsVoice}" FontSize="10"/>
+                          IsChecked="{Binding IsVoice, UpdateSourceTrigger=PropertyChanged}" FontSize="10"/>
                         <Button Margin="3 0 0 0" x:Name="audioPreviewButton"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="VoicePreviewButton_Click">
                             <Image x:Name="audioImage" Stretch="Fill"/>

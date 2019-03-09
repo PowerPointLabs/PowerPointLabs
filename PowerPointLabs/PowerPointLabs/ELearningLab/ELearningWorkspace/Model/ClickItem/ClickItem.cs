@@ -46,12 +46,11 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                     bool isFirstItemAndStartWithPrevious = !selfExplanationClickItem.IsDummyItem
                         && selfExplanationClickItem.IsTriggerTypeComboBoxEnabled
                         && selfExplanationClickItem.TriggerIndex == (int)TriggerType.WithPrevious
-                        && selfExplanationClickItem.ClickNo == 0;
+                        && selfExplanationClickItem.ClickNo == 0;                  
                     return isItemVolunteerOnClick || isItemForcedOnClick || isFirstItemAndStartWithPrevious;
                 }
             }
         }
-
         public ClickItem()
         { }
         private int clickNo;
