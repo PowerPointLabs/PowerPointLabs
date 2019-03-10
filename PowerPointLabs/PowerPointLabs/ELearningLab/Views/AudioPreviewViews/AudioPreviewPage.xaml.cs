@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -89,6 +90,9 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
             }
         }
+
+        private static Dictionary<string, string> textSpokenByPerson 
+            = new Dictionary<string, string>();
 
         private AudioPreviewPage()
         {
@@ -170,9 +174,16 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 ComputerVoiceRuntimeService.SpeakString(textToSpeak, voice as ComputerVoice);
             }
-            else if (voice is AzureVoice)
+            else if (voice is AzureVoice && !IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
             {
                 AzureRuntimeService.SpeakString(textToSpeak, voice as AzureVoice);
+            }
+            else if (voice is AzureVoice && IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
+            {
+                string dirPath = System.IO.Path.GetTempPath() + AudioService.TempFolderName;
+                string filePath = dirPath + "\\" +
+                    string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
+                AzureRuntimeService.PlaySavedAudioForPreview(filePath);
             }
         }
 
@@ -251,6 +262,25 @@ namespace PowerPointLabs.ELearningLab.Views
                 azureVoiceComboBox.Visibility = Visibility.Collapsed;
                 azureVoiceLoginButton.Visibility = Visibility.Visible;
                 azureVoiceRadioButton.IsEnabled = false;
+            }
+        }
+
+        private bool IsSameTextSpokenBySamePerson(string textToSpeak, string personName)
+        {
+            if (textSpokenByPerson.ContainsKey(personName))
+            {
+                string textSpoken = textSpokenByPerson[personName];
+                if (textSpoken.Trim().Equals(textToSpeak.Trim()))
+                {
+                    return true;
+                }
+                textSpokenByPerson[personName] = textToSpeak.Trim();
+                return false;
+            }
+            else
+            {
+                textSpokenByPerson.Add(personName, textToSpeak);
+                return false;
             }
         }
         #endregion

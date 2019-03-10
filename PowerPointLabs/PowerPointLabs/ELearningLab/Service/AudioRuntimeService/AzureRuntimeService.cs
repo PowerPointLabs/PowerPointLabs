@@ -14,6 +14,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
@@ -23,6 +24,7 @@ namespace PowerPointLabs.ELearningLab.Service
             && IsValidUserAccount(showErrorMessage: false);
         private static CancellationTokenSource cts = new CancellationTokenSource();
         private static CancellationToken token = cts.Token;
+
         public static bool IsAzureAccountPresent()
         {
             return !AzureAccount.GetInstance().IsEmpty();
@@ -83,7 +85,8 @@ namespace PowerPointLabs.ELearningLab.Service
             RenewCancellationToken();
             string accessToken;
             string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
-            string filePath = dirPath + "\\" + "PPTL_preview.wav";
+            string filePath = dirPath + "\\" + 
+                string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
             try
             {
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance();
@@ -120,6 +123,35 @@ namespace PowerPointLabs.ELearningLab.Service
                 OutputFormat = AudioOutputFormat.Riff24Khz16BitMonoPcm,
                 AuthorizationToken = "Bearer " + accessToken,
             }, filePath).Wait();
+        }
+
+        public static void PlaySavedAudioForPreview(string filePath)
+        {
+            Thread thread = new Thread(() =>
+            {
+                SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
+                WaveOutEvent player = new WaveOutEvent();
+                player.PlaybackStopped += (s, e) =>
+                {
+                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
+                };
+                speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
+                try
+                {
+                    using (var reader = new WaveFileReader(filePath))
+                    {
+                        player.Init(reader);
+                        player.Play();
+                        speechPlayingDialog.ShowDialog();
+                    }
+                }
+                catch
+                {
+                    Logger.Log("Audio File not Found");
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
         }
 
         #endregion

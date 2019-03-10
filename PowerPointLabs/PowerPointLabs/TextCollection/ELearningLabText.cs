@@ -37,6 +37,7 @@ namespace PowerPointLabs.TextCollection
 
         public const string AudioDefaultLabelFormat = "{0}" + Underscore + DefaultAudioIdentifier;
         public const string AudioFileNameFormat = "Slide {0} ClickNo {1} Speech.wav";
+        public const string AudioPreviewFileNameFormat = "PPTL_preview_{0}.wav";
         public const string SelfExplanationItemFormat = "Item" + Underscore + "{0}";
         public const string CaptionShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + CaptionIdentifier;
         public const string CalloutShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + CalloutIdentifier;
