@@ -122,6 +122,7 @@ namespace PowerPointLabs.ELearningLab.Views
             audioCheckBox.Checked += AudioCheckBox_CheckedChanged;
             audioCheckBox.Unchecked += AudioCheckBox_CheckedChanged;
             audioPreviewButton.IsEnabled = (bool)audioCheckBox.IsChecked;
+            audioImage.Opacity = (bool)audioCheckBox.IsChecked ? 1 : 0.5;
             audioCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
             captionCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
             calloutCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
@@ -203,11 +204,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 audioNameLabel.Content = string.Format(ELearningLabText.AudioDefaultLabelFormat, 
                     AudioSettingService.selectedVoice.ToString());
                 audioPreviewButton.IsEnabled = true;
+                audioImage.Opacity = 1;
             }
             else
             {
                 audioNameLabel.Visibility = Visibility.Collapsed;
                 audioPreviewButton.IsEnabled = false;
+                audioImage.Opacity = 0.5;
             }
         }
 
