@@ -284,9 +284,9 @@ namespace PowerPointLabs.ELearningLab.Views
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
             Items.Add(selfExplanationClickItem);
-            ScrollListViewToEnd();
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems();
+            ScrollListViewToEnd();
         }
 
         private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
