@@ -28,7 +28,7 @@
             </Button.ToolTip>
         </Button>
         <Label x:Name="copyLabel" Content="Add" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-        <ComboBox x:Name="comboBox" Margin="10,86,10,720"></ComboBox>
+        <ComboBox x:Name="categoryBox" Margin="10,86,10,720"></ComboBox>
         <ListBox x:Name="shapeList" Margin="10,186,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

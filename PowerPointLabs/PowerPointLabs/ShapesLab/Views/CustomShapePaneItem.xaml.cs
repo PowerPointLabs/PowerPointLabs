@@ -84,6 +84,7 @@ namespace PowerPointLabs.ShapesLab.Views
                                         : CommonText.ErrorInvalidCharacter);
 
                     textBox.SelectAll();
+                    return;
                 }
                 textBox.Text = value;
                 ToolTip = value;

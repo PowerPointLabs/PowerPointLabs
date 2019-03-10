@@ -70,6 +70,14 @@ namespace PowerPointLabs.ShapesLab.Views
             get { return ShapeRootFolderPath + @"\" + CurrentCategory; }
         }
 
+        public bool IsStorageSettingsGiven
+        {
+            get
+            {
+                return ShapeRootFolderPath != null && CurrentCategory != null;
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -102,11 +110,6 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #region init
 
-        public bool IsStorageSettingsGiven()
-        {
-            return ShapeRootFolderPath != null && CurrentCategory != null;
-        }
-
         public void SetStorageSettings(string shapeRootFolderPath, string defaultShapeCategoryName)
         {
             ShapeRootFolderPath = shapeRootFolderPath;
@@ -114,17 +117,18 @@ namespace PowerPointLabs.ShapesLab.Views
             CurrentCategory = defaultShapeCategoryName;
             Categories = new List<string>(Globals.ThisAddIn.ShapePresentation.Categories);
             _categoryBinding = new BindingSource { DataSource = Categories };
-            comboBox.DataContext = _categoryBinding;
+            categoryBox.DataContext = _categoryBinding;
 
             for (int i = 0; i < Categories.Count; i++)
             {
                 if (Categories[i] == defaultShapeCategoryName)
                 {
-                    comboBox.SelectedIndex = i;
+                    categoryBox.SelectedIndex = i;
                     break;
                 }
             }
 
+            PaneReload();
         }
 
         public void CustomShapePaneWPF_Loaded(object sender, RoutedEventArgs e)
@@ -327,11 +331,11 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 _categoryBinding.Add(newCategoryName);
 
-                comboBox.SelectedIndex = _categoryBinding.Count - 1;
+                categoryBox.SelectedIndex = _categoryBinding.Count - 1;
             };
             categoryInfoDialog.ShowDialog();
 
-            wrapPanel.Focus();
+            shapeList.Focus();
         }
 
         private void ContextMenuStripEditClicked()
@@ -417,7 +421,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 return;
             }
 
-            int categoryIndex = comboBox.SelectedIndex;
+            int categoryIndex = categoryBox.SelectedIndex;
             string categoryName = _categoryBinding[categoryIndex].ToString();
             string categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
             bool isDefaultCategory = Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory;
@@ -445,7 +449,7 @@ namespace PowerPointLabs.ShapesLab.Views
             // RemoveAt may NOT change the index, so we need to manually set the default category here
             if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
             {
-                categoryIndex = comboBox.SelectedIndex;
+                categoryIndex = categoryBox.SelectedIndex;
                 categoryName = _categoryBinding[categoryIndex].ToString();
 
                 CurrentCategory = categoryName;
@@ -525,7 +529,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 }
 
                 // rename the category in combo box
-                int categoryIndex = comboBox.SelectedIndex;
+                int categoryIndex = categoryBox.SelectedIndex;
                 _categoryBinding[categoryIndex] = newCategoryName;
 
                 // update current category reference
@@ -533,7 +537,7 @@ namespace PowerPointLabs.ShapesLab.Views
             };
             categoryInfoDialog.ShowDialog();
 
-            wrapPanel.Focus();
+            shapeList.Focus();
         }
 
         private void ContextMenuStripSetAsDefaultCategoryClicked()
@@ -654,9 +658,20 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             shapeItem.RenameShape(newShapeName);
 
+            //TODO
             Globals.ThisAddIn.ShapePresentation.RenameShape(oldShapeName, newShapeName);
-
             Globals.ThisAddIn.SyncShapeRename(oldShapeName, newShapeName, CurrentCategory);
+        }
+
+        private void PaneReload()
+        {
+            // clear all and load shapes from folder
+            shapeList.Items.Clear();
+            PrepareShapes();
+
+            // scroll the view to show the first item
+            shapeList.ScrollIntoView(shapeList.Items[0]);
+            shapeList.Focus();
         }
 
         #endregion
@@ -871,6 +886,21 @@ namespace PowerPointLabs.ShapesLab.Views
         private void WrapPanelLoaded(object sender, RoutedEventArgs e)
         {
             wrapPanel = sender as WrapPanel;
+        }
+
+        private void CategoryBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            CategoryBoxSelectedIndexChanged();
+        }
+
+        private void CategoryBoxSelectedIndexChanged()
+        {
+            int selectedIndex = categoryBox.SelectedIndex;
+            string selectedCategory = _categoryBinding[selectedIndex].ToString();
+
+            CurrentCategory = selectedCategory;
+            Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
+            PaneReload();
         }
 
         #endregion

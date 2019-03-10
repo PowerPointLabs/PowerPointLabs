@@ -28,7 +28,7 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
         private void InitCustomShapePaneStorage(CustomTaskPane taskPane)
         {
             CustomShapePane customShapePane = taskPane.Control as CustomShapePane;
-            if (customShapePane.CustomShapePaneWPF1.IsStorageSettingsGiven())
+            if (customShapePane.CustomShapePaneWPF1.IsStorageSettingsGiven)
             {
                 return;
             }
