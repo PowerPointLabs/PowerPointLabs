@@ -32,15 +32,17 @@
             <ListView ItemsSource="{Binding Voices}" x:Name="rankedAudioListView" Margin="20 0 20 0"
                       BorderThickness="0">
                 <ListView.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
+                    <Style TargetType="ListViewItem">
                         <Setter Property="Template">
                             <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
+                                <ControlTemplate TargetType="ListViewItem">
                                     <ContentPresenter/>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                         <Setter Property="Focusable" Value="False" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
@@ -54,10 +56,10 @@
                                          HorizontalAlignment="Left" 
                                          GroupName="VoiceTypeRadioButton"
                                          Click="RadioButton_Checked"
-                                         CommandParameter="{Binding}"
                                          IsChecked="{Binding IsSelected, 
-                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}">
-                                <Label Content="{Binding VoiceName}"  
+                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem}}}"
+                                         CommandParameter="{Binding}">
+                                <Label Content="{Binding VoiceName}" x:Name="rankedVoiceNameLabel" 
                                    VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
                             </RadioButton>
                             <Button Grid.Column="1" Content="Speak" 

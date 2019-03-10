@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Views
@@ -118,6 +119,16 @@ namespace PowerPointLabs.ELearningLab.Views
         public void SetAudioPreviewSettings(string textToSpeak, VoiceType selectedVoiceType, IVoice selectedVoice)
         {
             spokenText.Text = textToSpeak;
+            if (selectedVoiceType == VoiceType.DefaultVoice)
+            {
+                defaultVoiceRadioButton.IsChecked = true;
+                return;
+            }
+            if (rankedAudioListView.Items.Contains(selectedVoice))
+            {
+                rankedAudioListView.SelectedItem = selectedVoice;
+                return;
+            }
             switch (selectedVoiceType)
             {
                 case VoiceType.AzureVoice:
@@ -128,7 +139,6 @@ namespace PowerPointLabs.ELearningLab.Views
                     computerVoiceRadioButton.IsChecked = true;
                     computerVoiceComboBox.SelectedItem = selectedVoice as ComputerVoice;
                     break;
-                case VoiceType.DefaultVoice:
                 default:
                     defaultVoiceRadioButton.IsChecked = true;
                     break;
@@ -146,6 +156,8 @@ namespace PowerPointLabs.ELearningLab.Views
             defaultVoiceRadioButton.Checked += RadioButton_Checked;
             azureVoiceRadioButton.Checked += RadioButton_Checked;
             computerVoiceRadioButton.Checked += RadioButton_Checked;
+            azureVoiceRadioButton.IsEnabled = azureVoiceComboBox.Items.Count > 0;
+            computerVoiceRadioButton.IsEnabled = computerVoiceComboBox.Items.Count > 0;
             ICollectionView view = CollectionViewSource.GetDefaultView(rankedAudioListView.ItemsSource);
             view.Refresh();
         }

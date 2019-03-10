@@ -125,7 +125,7 @@
                             </Grid.ColumnDefinitions>
                             <ComboBox Grid.Column="0" Margin="0 5 5 5"
                                       VerticalAlignment="Center" Height="20" 
-                                      SelectedIndex="{Binding Rank, Mode=TwoWay}"
+                                      SelectedIndex="{Binding Rank, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectionChanged="RankingComboBox_SelectionChanged">
                                 <ComboBoxItem Content="" />
                                 <ComboBoxItem Content="1" />

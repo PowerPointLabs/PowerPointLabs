@@ -730,6 +730,7 @@
     <Compile Include="ELearningLab\Utility\StringUtility.cs" />
     <Compile Include="ELearningLab\Extensions\PowerPointSlideExtension.cs" />
     <Compile Include="ELearningLab\Service\TagService\SelfExplanationTagService.cs" />
+    <Compile Include="ELearningLab\Utility\VisualTreeUtility.cs" />
     <Compile Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml.cs">
       <DependentUpon>AudioPreviewPage.xaml</DependentUpon>
     </Compile>

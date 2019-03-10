@@ -149,6 +149,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid);
             RemoveLabAnimationsFromAnimationPane();
+            AlignFirstClickNumber();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
                 Items.Where(x => x is SelfExplanationClickItem && !((SelfExplanationClickItem)x).IsEmpty)
                 .Cast<SelfExplanationClickItem>().ToList(), slide);
@@ -337,6 +338,27 @@ namespace PowerPointLabs.ELearningLab.Views
             ELearningService.SyncLabItemToAnimationPane(slide,
                 Items.Where(
                     x => x is SelfExplanationClickItem).Cast<SelfExplanationClickItem>().ToList());
+        }
+
+        /// <summary>
+        /// This method aligns starting click number between e-learning lab and animation pane.
+        /// This is necessary when first click item on e-learning lab pane is self-explanation item.
+        /// </summary>
+        private void AlignFirstClickNumber()
+        {
+            IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
+            if (Items.Count > 0)
+            {
+                int clickNo = Items[0].ClickNo;
+                if (clickNo > 0 && effects.Count() > 0)
+                {
+                    effects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                }
+                else if (clickNo == 0 && effects.Count() > 0)
+                {
+                    effects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                }
+            }
         }
 
         private void ScrollItemToView(ClickItem item)
