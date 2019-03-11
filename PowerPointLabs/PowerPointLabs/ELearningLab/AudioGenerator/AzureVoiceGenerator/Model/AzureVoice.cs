@@ -62,5 +62,12 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
         {
             return Voice.ToString();
         }
+
+        public object Clone()
+        {
+            AzureVoice voice = new AzureVoice(voiceType, locale, Voice);
+            voice.rank = Rank;
+            return voice;
+        }
     }
 }

@@ -62,6 +62,8 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private Dictionary<int, ComboBox> rankToComboBoxMapping;
 
+        private List<IVoice> rankedAudioListCache = new List<IVoice>();
+
         private AudioMainSettingsPage()
         {
             InitializeComponent();
@@ -129,6 +131,10 @@ namespace PowerPointLabs.ELearningLab.Views
             { 
                 DefaultVoiceChangedHandler();
             }
+            if (audioListView.IsVisible && !UpdateRankedAudioPreferences())
+            {
+                return;
+            }
             AudioSettingStorageService.SaveAudioSettingPreference();
             AudioSettingsDialogWindow.GetInstance().Close();
             AudioSettingsDialogWindow.GetInstance().Destroy();
@@ -142,6 +148,11 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            if (audioListView.IsVisible)
+            {
+                List<IVoice> rankedAudioListCacheCopy = rankedAudioListCache.Select(x => (IVoice)x.Clone()).ToList();
+                AudioSettingService.preferredVoices = new ObservableCollection<IVoice>(rankedAudioListCacheCopy);
+            }
             if (AudioSettingService.selectedVoiceType == VoiceType.AzureVoice 
                 && !AzureRuntimeService.IsAzureAccountPresent())
             {
@@ -186,6 +197,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void EditRankingButton_Clicked(object sender, RoutedEventArgs e)
         {
+            rankedAudioListCache = AudioSettingService.preferredVoices.Select(x => (IVoice)x.Clone()).ToList();
             editPreferenceButton.Visibility = Visibility.Collapsed;
             audioListView.Visibility = Visibility.Visible;
             updatePreferenceButton.Visibility = Visibility.Visible;
@@ -213,22 +225,10 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void UpdateRankingButton_Clicked(object sender, RoutedEventArgs e)
         {
-            List<IVoice> voices = Voices.ToList().Where(x => x.Rank > 0).OrderBy(x => x.Rank).ToList();
-            ObservableCollection<IVoice> voicesRanked = new ObservableCollection<IVoice>();
-            for (int i = 0; i < voices.Count; i++)
+            if (!UpdateRankedAudioPreferences())
             {
-                IVoice voice = voices[i];
-                if (voice.Rank != i + 1)
-                {
-                    MessageBox.Show("Please rank in sequence.");
-                    return;
-                }
+                return;
             }
-            foreach (IVoice voice in voices)
-            {
-                voicesRanked.Add(voice);
-            }
-            AudioSettingService.preferredVoices = voicesRanked;
             preferredAudioListView.ItemsSource = null;
             preferredAudioListView.ItemsSource = AudioSettingService.preferredVoices;
 
@@ -283,6 +283,27 @@ namespace PowerPointLabs.ELearningLab.Views
                 voices.Add(voice);
             }
             return voices;
+        }
+
+        private bool UpdateRankedAudioPreferences()
+        {
+            List<IVoice> voices = Voices.ToList().Where(x => x.Rank > 0).OrderBy(x => x.Rank).ToList();
+            ObservableCollection<IVoice> voicesRanked = new ObservableCollection<IVoice>();
+            for (int i = 0; i < voices.Count; i++)
+            {
+                IVoice voice = voices[i];
+                if (voice.Rank != i + 1)
+                {
+                    MessageBox.Show("Please rank in sequence.");
+                    return false;
+                }
+            }
+            foreach (IVoice voice in voices)
+            {
+                voicesRanked.Add(voice);
+            }
+            AudioSettingService.preferredVoices = voicesRanked;
+            return true;
         }
 
         private void SetupAudioPreferenceUI()

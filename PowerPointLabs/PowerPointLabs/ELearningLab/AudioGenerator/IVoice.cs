@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PowerPointLabs.ELearningLab.AudioGenerator
 {
-    public interface IVoice
+    public interface IVoice: ICloneable
     {
         string VoiceName { get; }
         int Rank { get; set; }

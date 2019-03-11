@@ -55,5 +55,12 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
         {
             return EqualityComparer<string>.Default.GetHashCode(Voice);
         }
+
+        public object Clone()
+        {
+            ComputerVoice voice = new ComputerVoice(Voice);
+            voice.rank = Rank;
+            return voice;
+        }
     }
 }

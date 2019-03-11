@@ -156,7 +156,8 @@ namespace PowerPointLabs.ELearningLab.Views
             defaultVoiceRadioButton.Checked += RadioButton_Checked;
             azureVoiceRadioButton.Checked += RadioButton_Checked;
             computerVoiceRadioButton.Checked += RadioButton_Checked;
-            azureVoiceRadioButton.IsEnabled = azureVoiceComboBox.Items.Count > 0;
+            azureVoiceRadioButton.IsEnabled = azureVoiceComboBox.Items.Count > 0 
+                && AzureRuntimeService.IsAzureAccountPresentAndValid;
             computerVoiceRadioButton.IsEnabled = computerVoiceComboBox.Items.Count > 0;
             ICollectionView view = CollectionViewSource.GetDefaultView(rankedAudioListView.ItemsSource);
             view.Refresh();
