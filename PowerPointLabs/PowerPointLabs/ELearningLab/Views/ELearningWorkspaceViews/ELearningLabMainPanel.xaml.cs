@@ -90,9 +90,16 @@ namespace PowerPointLabs.ELearningLab.Views
         public void HandleELearningPaneSlideSelectionChanged()
         {
             PowerPointSlide _slide = this.GetCurrentSlide();
-            if (_slide.ID.Equals(slide.ID))
+            try
+            {                
+                if (_slide.ID.Equals(slide.ID))
+                {
+                    return;
+                }
+            }
+            catch (Exception e)
             {
-                return;
+                Logger.Log(e.Message);
             }
             slide = _slide;
             Items = LoadItems();
