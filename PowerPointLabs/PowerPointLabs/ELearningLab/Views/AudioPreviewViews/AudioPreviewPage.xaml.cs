@@ -167,7 +167,6 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             AzureVoiceLoginPage.GetInstance().previousPage = AudioSettingsPage.AudioPreviewPage;
             AudioSettingService.AudioPreviewPageHeight = Height;
-            AudioSettingsDialogWindow.GetInstance().SetDialogWindowHeight(AudioSettingService.AudioMainSettingsPageHeight);
             AudioSettingsDialogWindow.GetInstance().SetCurrentPage(AudioSettingsPage.AzureLoginPage);
         }
 

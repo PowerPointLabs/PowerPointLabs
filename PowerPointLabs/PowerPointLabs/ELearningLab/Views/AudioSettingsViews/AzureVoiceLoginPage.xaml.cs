@@ -69,6 +69,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 AzureRuntimeService.IsAzureAccountPresentAndValid = true;
                 SwitchViewToPreviousPage();
             }
+            else
+            {
+                MessageBox.Show("Invalid Account!");
+            }
         }
         #endregion
 
