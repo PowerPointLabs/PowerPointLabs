@@ -111,6 +111,7 @@ namespace PowerPointLabs.ColorsLab
 
         private MODE _eyedropperMode;
         private Color _previousFillColor;
+        private Color _currentEyedroppedColor;
         private Color _currentSelectedColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
@@ -150,6 +151,7 @@ namespace PowerPointLabs.ColorsLab
             SetupEyedropperTimer();
             SetDefaultColor(Color.CornflowerBlue);
             SetDefaultThemeColors();
+            LoadRecentColors();
 
             // Hook the mouse process if it has not
             PPExtraEventHelper.PPMouse.TryStartHook();
@@ -240,6 +242,25 @@ namespace PowerPointLabs.ColorsLab
         private void SetDefaultThemeColors()
         {
             LoadDefaultThemePanel();
+        }
+
+        /// <summary>
+        /// Load recent colors into the recent colors pane.
+        /// </summary>
+        private void LoadRecentColors()
+        {
+            dataSource.RecentColorOne = Color.White;
+            dataSource.RecentColorTwo = Color.White;
+            dataSource.RecentColorThree = Color.White;
+            dataSource.RecentColorFour = Color.White;
+            dataSource.RecentColorFive = Color.White;
+            dataSource.RecentColorSix = Color.White;
+            dataSource.RecentColorSeven = Color.White;
+            dataSource.RecentColorEight = Color.White;
+            dataSource.RecentColorNine = Color.White;
+            dataSource.RecentColorTen = Color.White;
+            dataSource.RecentColorEleven = Color.White;
+            dataSource.RecentColorTwelve = Color.White;
         }
 
         /// <summary>
@@ -634,11 +655,12 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 ColorMainColorRect(pickedColor);
-                _currentSelectedColor = pickedColor;
+                _currentEyedroppedColor = pickedColor;
             }
             else
             {
                 ColorSelectedShapesWithColor(pickedColor, _eyedropperMode);
+                _currentSelectedColor = pickedColor;
             }
         }
 
@@ -657,7 +679,16 @@ namespace PowerPointLabs.ColorsLab
                 selectedColorRectangle.Opacity = 1;
                 if (timer1Ticks > CLICK_THRESHOLD)
                 {
-                    dataSource.SelectedColor = _currentSelectedColor;
+                    dataSource.SelectedColor = _currentEyedroppedColor;
+                }
+            }
+
+            // Update recent colors if color has been used
+            if (_eyedropperMode == MODE.FILL || _eyedropperMode == MODE.FONT || _eyedropperMode == MODE.LINE)
+            {
+                if (timer1Ticks > CLICK_THRESHOLD)
+                {
+                    dataSource.AddColorToRecentColors(_currentSelectedColor);
                 }
             }
 

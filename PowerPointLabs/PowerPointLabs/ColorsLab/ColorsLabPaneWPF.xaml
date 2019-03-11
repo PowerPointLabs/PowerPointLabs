@@ -29,7 +29,7 @@
     <ScrollViewer x:Name="PaneScroll" >
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="200" />
+                <RowDefinition Height="250" />
                 <RowDefinition Height="180" />
                 <RowDefinition Height="180" />
                 <RowDefinition Height="*" />
@@ -44,6 +44,8 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -182,6 +184,75 @@
                     <Slider x:Name="saturationSlider" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" Margin="0,0,30,0"
                             Minimum="0" Maximum="240" Value="{Binding SelectedColor, Mode=OneWay, Converter={x:Static converter:SelectedColorToSaturationValue.Instance}}"
                             ValueChanged="SaturationSlider_ValueChanged" ToolTip="{x:Static textCollection:ColorsLabText.SaturationSliderTooltip}"/>
+                    <Grid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="5" Margin="5,0,5,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="20"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" HorizontalAlignment="Left" VerticalAlignment="Center">Recent Colors</TextBlock>
+                        <Rectangle x:Name="recentRectangleOne" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5" 
+                                   Fill="{Binding RecentColorOne, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleTwo" Grid.Row="1" Grid.Column="1" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorTwo, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleThree" Grid.Row="1" Grid.Column="2" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorThree, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleFour" Grid.Row="1" Grid.Column="3" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorFour, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleFive" Grid.Row="1" Grid.Column="4" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorFive, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleSix" Grid.Row="1" Grid.Column="5" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorSix, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleSeven" Grid.Row="1" Grid.Column="6" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorSeven, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleEight" Grid.Row="1" Grid.Column="7" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorEight, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleNine" Grid.Row="1" Grid.Column="8" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5" 
+                                   Fill="{Binding RecentColorNine, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleTen" Grid.Row="1" Grid.Column="9" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorTen, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleEleven" Grid.Row="1" Grid.Column="10" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5"
+                                   Fill="{Binding RecentColorEleven, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                        <Rectangle x:Name="recentRectangleTwelve" Grid.Row="1" Grid.Column="11" Margin="2,2,2,2" Stroke="Black" StrokeThickness="0.5" 
+                                   Fill="{Binding RecentColorTwelve, Converter={x:Static converter:HSLColorToHex.Instance}}" 
+                                   ToolTip="{x:Static textCollection:ColorsLabText.ColorRectangleTooltip}" ContextMenu="{DynamicResource ColorRectContextMenu}"
+                                   MouseMove="DraggableColorRectangle_MouseMove" MouseLeftButtonDown="ColorRectangle_MouseDown" MouseLeave="DraggableColorRectangle_MouseLeave"/>
+                    </Grid>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="MatchingColorsGroupBox" Header="Matching Colors" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">

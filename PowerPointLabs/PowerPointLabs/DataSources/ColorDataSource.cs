@@ -82,6 +82,222 @@ namespace PowerPointLabs.DataSources
             }
         }
 
+        private HSLColor recentColorOneValue;
+
+        public HSLColor RecentColorOne
+        {
+            get
+            {
+                return recentColorOneValue;
+            }
+            set
+            {
+                if (value != this.recentColorOneValue)
+                {
+                    this.recentColorOneValue = value;
+                    OnPropertyChanged("RecentColorOne");
+                }
+            }
+        }
+
+        private HSLColor recentColorTwoValue;
+
+        public HSLColor RecentColorTwo
+        {
+            get
+            {
+                return recentColorTwoValue;
+            }
+            set
+            {
+                if (value != this.recentColorTwoValue)
+                {
+                    this.recentColorTwoValue = value;
+                    OnPropertyChanged("RecentColorTwo");
+                }
+            }
+        }
+
+        private HSLColor recentColorThreeValue;
+
+        public HSLColor RecentColorThree
+        {
+            get
+            {
+                return recentColorThreeValue;
+            }
+            set
+            {
+                if (value != this.recentColorThreeValue)
+                {
+                    this.recentColorThreeValue = value;
+                    OnPropertyChanged("RecentColorThree");
+                }
+            }
+        }
+
+        private HSLColor recentColorFourValue;
+
+        public HSLColor RecentColorFour
+        {
+            get
+            {
+                return recentColorFourValue;
+            }
+            set
+            {
+                if (value != this.recentColorFourValue)
+                {
+                    this.recentColorFourValue = value;
+                    OnPropertyChanged("RecentColorFour");
+                }
+            }
+        }
+
+        private HSLColor recentColorFiveValue;
+
+        public HSLColor RecentColorFive
+        {
+            get
+            {
+                return recentColorFiveValue;
+            }
+            set
+            {
+                if (value != this.recentColorFiveValue)
+                {
+                    this.recentColorFiveValue = value;
+                    OnPropertyChanged("RecentColorFive");
+                }
+            }
+        }
+
+        private HSLColor recentColorSixValue;
+
+        public HSLColor RecentColorSix
+        {
+            get
+            {
+                return recentColorSixValue;
+            }
+            set
+            {
+                if (value != this.recentColorSixValue)
+                {
+                    this.recentColorSixValue = value;
+                    OnPropertyChanged("RecentColorSix");
+                }
+            }
+        }
+
+        private HSLColor recentColorSevenValue;
+
+        public HSLColor RecentColorSeven
+        {
+            get
+            {
+                return recentColorSevenValue;
+            }
+            set
+            {
+                if (value != this.recentColorSevenValue)
+                {
+                    this.recentColorSevenValue = value;
+                    OnPropertyChanged("RecentColorSeven");
+                }
+            }
+        }
+
+        private HSLColor recentColorEightValue;
+
+        public HSLColor RecentColorEight
+        {
+            get
+            {
+                return recentColorEightValue;
+            }
+            set
+            {
+                if (value != this.recentColorEightValue)
+                {
+                    this.recentColorEightValue = value;
+                    OnPropertyChanged("RecentColorEight");
+                }
+            }
+        }
+
+        private HSLColor recentColorNineValue;
+
+        public HSLColor RecentColorNine
+        {
+            get
+            {
+                return recentColorNineValue;
+            }
+            set
+            {
+                if (value != this.recentColorNineValue)
+                {
+                    this.recentColorNineValue = value;
+                    OnPropertyChanged("RecentColorNine");
+                }
+            }
+        }
+
+        private HSLColor recentColorTenValue;
+
+        public HSLColor RecentColorTen
+        {
+            get
+            {
+                return recentColorTenValue;
+            }
+            set
+            {
+                if (value != this.recentColorTenValue)
+                {
+                    this.recentColorTenValue = value;
+                    OnPropertyChanged("RecentColorTen");
+                }
+            }
+        }
+
+        private HSLColor recentColorElevenValue;
+
+        public HSLColor RecentColorEleven
+        {
+            get
+            {
+                return recentColorElevenValue;
+            }
+            set
+            {
+                if (value != this.recentColorElevenValue)
+                {
+                    this.recentColorElevenValue = value;
+                    OnPropertyChanged("RecentColorEleven");
+                }
+            }
+        }
+
+        private HSLColor recentColorTwelveValue;
+
+        public HSLColor RecentColorTwelve
+        {
+            get
+            {
+                return recentColorTwelveValue;
+            }
+            set
+            {
+                if (value != this.recentColorTwelveValue)
+                {
+                    this.recentColorTwelveValue = value;
+                    OnPropertyChanged("RecentColorTwelve");
+                }
+            }
+        }
+
         private HSLColor themeColorOneValue;
 
         public HSLColor ThemeColorOne
@@ -314,6 +530,25 @@ namespace PowerPointLabs.DataSources
                     OnPropertyChanged("themeColorThirteen");
                 }
             }
+        }
+
+        // TODO: To improve: make it smarter
+        //       When adding color, check if it is already in recents. If it is, remove it and put it in front.
+        //       Therefore we will not have repeated colors in recent colors -- doesn't make sense.
+        public void AddColorToRecentColors(HSLColor color)
+        {
+            RecentColorTwelve = RecentColorEleven;
+            RecentColorEleven = RecentColorTen;
+            RecentColorTen = RecentColorNine;
+            RecentColorNine = RecentColorEight;
+            RecentColorEight = RecentColorSeven;
+            RecentColorSeven = RecentColorSix;
+            RecentColorSix = RecentColorFive;
+            RecentColorFive = RecentColorFour;
+            RecentColorFour = RecentColorThree;
+            RecentColorThree = RecentColorTwo;
+            RecentColorTwo = RecentColorOne;
+            RecentColorOne = color;
         }
 
         public bool SaveThemeColorsInFile(String filePath)
