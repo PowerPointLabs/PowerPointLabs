@@ -72,17 +72,17 @@
     <StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="30" />
                 <ColumnDefinition Width="420"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
-                <Border x:Name="circle" Grid.Row="0" Width="20" Height="20" CornerRadius="10">
+                <Border x:Name="circle" Grid.Row="0" Width="30" Height="30" CornerRadius="15">
                     <Border.Background>
                         <MultiBinding Converter="{converters:ListViewClickNoToColorConverter}">
                             <Binding Path="IsDummyItem" />
@@ -93,11 +93,7 @@
                     </Border.Background>
                     <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                        Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}"
-                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/>
-                    <!--Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       Visibility="{Binding ElementName=circle, Path=Background, 
-                        Converter={converters:CircleBackgroundToVisibilityConverter}}"
-                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/-->
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="13"/>
                 </Border>
                 <Button Grid.Row="1" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="UpButton_Click"
