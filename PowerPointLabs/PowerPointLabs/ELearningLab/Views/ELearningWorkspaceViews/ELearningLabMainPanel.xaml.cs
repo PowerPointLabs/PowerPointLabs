@@ -34,10 +34,12 @@ namespace PowerPointLabs.ELearningLab.Views
     /// <summary>
     /// Interaction logic for ELearningLabMainPanel.xaml
     /// </summary>
+#pragma warning disable 618
     public partial class ELearningLabMainPanel : UserControl
     {
         public ObservableCollection<ClickItem> Items { get; set; }
         private PowerPointSlide slide;
+        private int slideId;
         private bool isSynced;
         public int FirstClickNumber
         {
@@ -61,6 +63,7 @@ namespace PowerPointLabs.ELearningLab.Views
         public ELearningLabMainPanel()
         {
             slide = this.GetCurrentSlide();
+            slideId = slide.ID;
             InitializeComponent();
             Items = LoadItems();
             listView.ItemsSource = Items;
@@ -90,18 +93,12 @@ namespace PowerPointLabs.ELearningLab.Views
         public void HandleELearningPaneSlideSelectionChanged()
         {
             PowerPointSlide _slide = this.GetCurrentSlide();
-            try
-            {                
-                if (_slide.ID.Equals(slide.ID))
-                {
-                    return;
-                }
-            }
-            catch (Exception e)
+            if (IsSlideExist(slideId) && _slide.ID.Equals(slide.ID))
             {
-                Logger.Log(e.Message);
+                return;
             }
             slide = _slide;
+            slideId = slide.ID;
             Items = LoadItems();
             listView.ItemsSource = Items;
             UpdateClickNoAndTriggerTypeInItems();
@@ -114,6 +111,10 @@ namespace PowerPointLabs.ELearningLab.Views
 
         public void HandleSlideChangedEvent()
         {
+            if (!IsSlideExist(slideId))
+            {
+                return;
+            }
             if (!IsInSync())
             {
                 System.Windows.Forms.DialogResult result = System.Windows.Forms.MessageBox.Show(
@@ -171,7 +172,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 ELearningLabTextStorageService.LoadSelfExplanationsFromSlide(slide);
             ClickItem customClickBlock;
             SelfExplanationClickItem selfExplanationClickBlock;
-            Dictionary<string, string> selfExplanationText = (selfExplanationTexts == null || selfExplanationTexts.Count() == 0) ? 
+            Dictionary<string, string> selfExplanationText = (selfExplanationTexts == null || selfExplanationTexts.Count() == 0) ?
                 null : selfExplanationTexts.First();
             SelfExplanationTagService.PopulateTagNos(slide.GetShapesWithNameRegex(ELearningLabText.PPTLShapeNameRegex)
                 .Select(x => x.Name).ToList());
@@ -209,7 +210,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     {
                         selfExplanationClickBlock.CaptionText = selfExplanationText["CaptionText"];
                         selfExplanationClickBlock.CalloutText = selfExplanationText["CalloutText"];
-                        selfExplanationClickBlock.HasShortVersion = 
+                        selfExplanationClickBlock.HasShortVersion =
                             !selfExplanationClickBlock.CaptionText.Equals(selfExplanationClickBlock.CalloutText);
                         selfExplanationTexts.RemoveAt(0);
                         selfExplanationText = selfExplanationTexts.Count() == 0 ? null : selfExplanationTexts.First();
@@ -398,8 +399,8 @@ namespace PowerPointLabs.ELearningLab.Views
             bool isOnClickSelfExplanationAfterCustomItem = index > 0 &&
                 clickItem is SelfExplanationClickItem && (Items.ElementAt(index - 1) is CustomClickItem)
                 && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
-            bool isFirstOnClickSelfExplanationItem = index == 0 
-                && (clickItem is SelfExplanationClickItem) 
+            bool isFirstOnClickSelfExplanationItem = index == 0
+                && (clickItem is SelfExplanationClickItem)
                 && (clickItem as SelfExplanationClickItem).TriggerIndex == (int)TriggerType.OnClick;
             bool isFirstWithPreviousSelfExplanationItem =
                 index == 0
@@ -585,6 +586,18 @@ namespace PowerPointLabs.ELearningLab.Views
             foreach (ClickItem item in Items)
             {
                 if (item is SelfExplanationClickItem && AudioService.IsAzureVoiceSelectedForItem(item as SelfExplanationClickItem))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool IsSlideExist(int slideId)
+        {
+            Slides slides = Globals.ThisAddIn.Application.ActivePresentation.Slides;
+            foreach (Slide slide in slides)
+            {
+                if (slideId == slide.SlideID)
                 {
                     return true;
                 }
