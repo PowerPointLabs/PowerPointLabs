@@ -37,11 +37,11 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
             ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             if (eLearningTaskpane.Visible)
             {
-                taskpane.ELearningLabMainPanel.HandleELearningPaneSlideSelectionChanged();               
+                taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();               
             }
             else
             {
-                taskpane.ELearningLabMainPanel.HandleSlideChangedEvent();
+                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
             }
         }
     }

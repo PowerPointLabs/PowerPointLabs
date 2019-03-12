@@ -38,9 +38,6 @@ namespace PowerPointLabs.ELearningLab.Views
     public partial class ELearningLabMainPanel : UserControl
     {
         public ObservableCollection<ClickItem> Items { get; set; }
-        private PowerPointSlide slide;
-        private int slideId;
-        private bool isSynced;
         public int FirstClickNumber
         {
             get
@@ -48,7 +45,6 @@ namespace PowerPointLabs.ELearningLab.Views
                 return slide.IsFirstAnimationTriggeredByClick() ? 1 : 0;
             }
         }
-
         public bool IsFirstItemSelfExplanation
         {
             get
@@ -60,13 +56,17 @@ namespace PowerPointLabs.ELearningLab.Views
                 return false;
             }
         }
+
+        private PowerPointSlide slide;
+        private int slideId;
+        private bool isSynced;
+        private BackgroundWorker worker;
+
         public ELearningLabMainPanel()
         {
             slide = this.GetCurrentSlide();
             slideId = slide.ID;
             InitializeComponent();
-            Items = LoadItems();
-            listView.ItemsSource = Items;
             syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                Properties.Resources.Refresh.GetHbitmap(),
                IntPtr.Zero,
@@ -77,12 +77,9 @@ namespace PowerPointLabs.ELearningLab.Views
                IntPtr.Zero,
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
-            UpdateClickNoAndTriggerTypeInItems();
             isSynced = true;
-            foreach (ClickItem item in Items)
-            {
-                item.PropertyChanged += ListViewItemPropertyChanged;
-            }
+            InitializeBackgroundWorker();
+            worker.RunWorkerAsync();
         }
 
         public void ListViewItemPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -90,7 +87,11 @@ namespace PowerPointLabs.ELearningLab.Views
             isSynced = false;
         }
 
-        public void HandleELearningPaneSlideSelectionChanged()
+        /// <summary>
+        /// This method is called when slide selection is changed 
+        /// and e-learning lab is open
+        /// </summary>
+        public void ReloadELearningLabOnSlideSelectionChanged()
         {
             PowerPointSlide _slide = this.GetCurrentSlide();
             // We do not re-initailize elearning lab if 
@@ -104,17 +105,23 @@ namespace PowerPointLabs.ELearningLab.Views
             // update current slide instance
             slide = _slide;
             slideId = slide.ID;
-            Items = LoadItems();
-            listView.ItemsSource = Items;
-            UpdateClickNoAndTriggerTypeInItems();
             isSynced = true;
-            foreach (ClickItem item in Items)
+            listView.ItemsSource = null;
+            if (worker.IsBusy)
             {
-                item.PropertyChanged += ListViewItemPropertyChanged;
+                worker.CancelAsync();
+            }
+            else
+            {
+                worker.RunWorkerAsync();
             }
         }
 
-        public void HandleSlideChangedEvent()
+        /// <summary>
+        /// This method is called when slide selection is changed
+        /// regardless of whether e-learning lab is open
+        /// </summary>
+        public void SyncElearningLabOnSlideSelectionChanged()
         {
             if (!DoesSlideExist(slideId))
             {
@@ -153,6 +160,48 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
             }
         }
+
+        private void InitializeBackgroundWorker()
+        {
+            worker = new BackgroundWorker();
+            worker.WorkerSupportsCancellation = true;
+            worker.DoWork += Worker_DoWorkToReloadElearningLabItems;
+            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+        }
+
+        private void Worker_DoWorkToReloadElearningLabItems(object sender, DoWorkEventArgs e)
+        {
+            Items = LoadItems(e);
+            UpdateClickNoAndTriggerTypeInItems(useWorker: true, e: e);
+            foreach (ClickItem item in Items)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                item.PropertyChanged += ListViewItemPropertyChanged;
+            }
+            return;
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // update UI
+            if (e.Cancelled)
+            {
+                worker.RunWorkerAsync();
+            }
+            else
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    listView.ItemsSource = null;
+                    listView.ItemsSource = Items;
+                });
+            }
+        }
+
         private void SyncClickItems()
         {
             bool removeAzureAudioIfAccountInvalid = false;
@@ -168,7 +217,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 .Cast<SelfExplanationClickItem>().ToList(), slide);
             SyncLabItemToAnimationPane();
         }
-        private ObservableCollection<ClickItem> LoadItems()
+        private ObservableCollection<ClickItem> LoadItems(DoWorkEventArgs e)
         {
             SelfExplanationTagService.Clear();
             int clickNo = FirstClickNumber;
@@ -183,6 +232,11 @@ namespace PowerPointLabs.ELearningLab.Views
                 .Select(x => x.Name).ToList());
             do
             {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return clickBlocks;
+                }
                 customClickBlock =
                     new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo), slide).GetBlock();
                 selfExplanationClickBlock =
@@ -232,6 +286,11 @@ namespace PowerPointLabs.ELearningLab.Views
 
             while (selfExplanationText != null)
             {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return clickBlocks;
+                }
                 SelfExplanationClickItem dummySelfExplanation =
                     new SelfExplanationClickItem(captionText: selfExplanationText["CaptionText"],
                     calloutText: selfExplanationText["CalloutText"]);
@@ -254,7 +313,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 Items.Move(index, index - 1);
             }
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             ScrollItemToView(labItem);
             isSynced = false;
         }
@@ -266,7 +325,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 Items.Move(index, index + 1);
             }
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             ScrollItemToView(labItem);
             isSynced = false;
         }
@@ -274,12 +333,12 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
             Items.Remove(labItem);
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             isSynced = false;
         }
         private void HandleTriggerTypeComboBoxSelectionChangedEvent(object sender, RoutedEventArgs e)
         {
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
         }
 
         #endregion
@@ -298,7 +357,7 @@ namespace PowerPointLabs.ELearningLab.Views
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
             Items.Add(selfExplanationClickItem);
             isSynced = false;
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             ScrollListViewToEnd();
         }
 
@@ -310,7 +369,7 @@ namespace PowerPointLabs.ELearningLab.Views
             int index = Items.IndexOf(item);
             Items.Insert(index, selfExplanationClickItem);
             isSynced = false;
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
         }
 
         private void AddItemBelowContextMenu_Click(object sender, RoutedEventArgs e)
@@ -328,7 +387,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 Items.Add(selfExplanationClickItem);
             }
             isSynced = false;
-            UpdateClickNoAndTriggerTypeInItems();
+            UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
         }
 
         #endregion
@@ -561,11 +620,16 @@ namespace PowerPointLabs.ELearningLab.Views
             return Items;
         }
 
-        private void UpdateClickNoAndTriggerTypeInItems()
+        private void UpdateClickNoAndTriggerTypeInItems(bool useWorker, DoWorkEventArgs e)
         {
             int clickNo = FirstClickNumber;
             for (int i = 0; i < Items.Count(); i++)
             {
+                if (useWorker && worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
                 ClickItem clickItem = Items.ElementAt(i);
                 UpdateClickNoOnClickItem(clickItem, clickNo, i);
                 if (clickItem is SelfExplanationClickItem)
