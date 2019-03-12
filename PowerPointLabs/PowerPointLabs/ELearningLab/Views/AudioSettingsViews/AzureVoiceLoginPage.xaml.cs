@@ -66,7 +66,12 @@ namespace PowerPointLabs.ELearningLab.Views
                 string _region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
                 AzureAccount.GetInstance().SetUserKeyAndRegion(_key, _region);
                 AzureAccountStorageService.SaveUserAccount(AzureAccount.GetInstance());
+                AzureRuntimeService.IsAzureAccountPresentAndValid = true;
                 SwitchViewToPreviousPage();
+            }
+            else
+            {
+                MessageBox.Show("Invalid Account!");
             }
         }
         #endregion
@@ -76,15 +81,6 @@ namespace PowerPointLabs.ELearningLab.Views
         private void SwitchViewToPreviousPage()
         {
             AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance();
-            switch (previousPage)
-            {
-                case AudioSettingsPage.MainSettingsPage:
-                    dialog.SetDialogWindowHeight(AudioSettingService.AudioMainSettingsPageHeight);
-                    break;
-                case AudioSettingsPage.AudioPreviewPage:
-                    dialog.SetDialogWindowHeight(AudioSettingService.AudioPreviewPageHeight);
-                    break;
-            }
             dialog.SetCurrentPage(previousPage);
         }
 

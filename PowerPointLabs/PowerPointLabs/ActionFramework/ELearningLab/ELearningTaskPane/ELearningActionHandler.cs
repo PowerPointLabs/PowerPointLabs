@@ -22,7 +22,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
             CustomTaskPane eLearningTaskpane = this.GetTaskPane(typeof(ELearningLabTaskpane));
             ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             AudioMainSettingsPage.GetInstance().DefaultVoiceChangedHandler +=
-                taskpane.eLearningLabMainPanel1.RefreshVoiceLabelOnAudioSettingChanged;
+                taskpane.ELearningLabMainPanel.RefreshVoiceLabelOnAudioSettingChanged;
             AudioMainSettingsPage.GetInstance().IsDefaultVoiceChangedHandlerAssigned = true;
             eLearningTaskpane.Visible = !eLearningTaskpane.Visible;
         }
@@ -37,11 +37,11 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
             ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             if (eLearningTaskpane.Visible)
             {
-                taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();               
+                taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();               
             }
             else
             {
-                taskpane.eLearningLabMainPanel1.HandleSlideChangedEvent();
+                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
             }
         }
     }

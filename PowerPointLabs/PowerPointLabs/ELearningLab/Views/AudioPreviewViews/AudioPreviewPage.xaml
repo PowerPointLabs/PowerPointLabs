@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+         xmlns:data="clr-namespace:PowerPointLabs.ELearningLab.AudioGenerator"
+      xmlns:converters="clr-namespace:PowerPointLabs.ELearningLab.Converters"
              mc:Ignorable="d" 
-             Height="270" Width="350"
+             Width="350"
              Title="eLearningLab Voice Preview" Loaded="AudioPreviewPage_Loaded">
     <Page.Resources>
         <ResourceDictionary>
@@ -21,20 +23,63 @@
         <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Margin="20 5 20 0">Text to be spoken:</Label>
-                <TextBox x:Name="spokenText" Grid.Row="1" Margin="20 0 20 0" TextWrapping="Wrap" AcceptsReturn="True" 
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                <TextBox x:Name="spokenText" Grid.Row="1" Margin="20 0 20 0" TextWrapping="Wrap" AcceptsReturn="True"/>
             </Grid>
+            <ListView ItemsSource="{Binding Voices}" x:Name="rankedAudioListView" Margin="20 0 20 0"
+                      BorderThickness="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ContentPresenter/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Focusable" Value="False" />
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type data:IVoice}">
+                        <Grid Margin="0 1 0 1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <RadioButton Grid.Column="0" x:Name="rankedRadioButton"
+                                         HorizontalAlignment="Left" 
+                                         GroupName="VoiceTypeRadioButton"
+                                         Click="RadioButton_Checked"
+                                         IsChecked="{Binding IsSelected, 
+                                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem}}}"
+                                         CommandParameter="{Binding}">
+                                <Label Content="{Binding VoiceName}" x:Name="rankedVoiceNameLabel" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10"/>
+                            </RadioButton>
+                            <Button Grid.Column="1" Content="Speak" 
+                                    VerticalAlignment="Center" HorizontalAlignment="Right"
+                                    CommandParameter="{Binding}" Click="SpeakButton_Click">
+                                <Button.IsEnabled>
+                                    <Binding Path="." Converter="{converters:IVoiceToSpeakEnabledConverter}"/>
+                                </Button.IsEnabled>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton x:Name="defaultVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0" Margin="20,20,0,0" FontSize="12"
+                <RadioButton x:Name="defaultVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0"
+                             Margin="20,20,0,0" FontSize="10"
                              IsChecked="True">
                     Default Voice
                 </RadioButton>
@@ -46,8 +91,9 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton x:Name="computerVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0" Margin="20,20,0,0" FontSize="12">
-                    In-Computer Voice
+                <RadioButton x:Name="computerVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0"
+                             Margin="20,20,0,0" FontSize="10">
+                    Other In-Computer Voices
                 </RadioButton>
                 <ComboBox x:Name="computerVoiceComboBox" Grid.Column="1" Height="23" Margin="0,15,20,0"
                           SelectedIndex="0">
@@ -63,12 +109,13 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton x:Name="azureVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0" Margin="20,10,21,0" FontSize="12">
-                    Azure Cloud Voice
+                <RadioButton x:Name="azureVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0" 
+                             Margin="20,10,0,0" FontSize="10">
+                  Other Azure Cloud Voices
                 </RadioButton>
-                <ComboBox x:Name="azureVoiceComboBox" Grid.Column="1" SelectedIndex="0" Padding="2" Margin="0,10,20,0" />
+                <ComboBox x:Name="azureVoiceComboBox" Grid.Column="1" SelectedIndex="0" Padding="2" Margin="0.334,10,19.999,0" />
                 <Button x:Name="azureVoiceLoginButton" Cursor="Hand" Grid.Column="1" Content="Click to Log In" 
-                        Margin="0,10,20,0" BorderThickness="0" Background="Transparent" FontWeight="Medium"
+                        Margin="0.334,10,19.999,0" BorderThickness="0" Background="Transparent" FontWeight="Medium"
                         Click="AzureVoiceLogInButton_Click">
                     <Button.Style>
                         <Style TargetType="Button">

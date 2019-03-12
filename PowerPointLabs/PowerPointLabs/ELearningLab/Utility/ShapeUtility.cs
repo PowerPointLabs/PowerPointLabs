@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,16 +31,20 @@ namespace PowerPointLabs.ELearningLab.Utility
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
            
-            Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeOvalCallout, 10, 10, 200, 10);
+            Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRoundedRectangularCallout, 10, 10, 100, 10);
             calloutBox.Name = shapeName;
-            calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextFrame.TextRange.Text = calloutText;
+            calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
             calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-            calloutBox.TextFrame.TextRange.Font.Size = 12;
-            calloutBox.Fill.BackColor.RGB = 0;
+            calloutBox.TextFrame.TextRange.Font.Size = 16;
+            calloutBox.Fill.ForeColor.RGB = 0;
             calloutBox.Fill.Transparency = 0.2f;
-            calloutBox.TextFrame.TextRange.Font.Color.RGB = 0;
+            calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
+            calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
+            calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
+            calloutBox.Left = 10;
+            calloutBox.Top = 10;
 
             return calloutBox;
         }

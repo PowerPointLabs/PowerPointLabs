@@ -34,19 +34,8 @@ namespace PowerPointLabs.ELearningLab.Service
         public static bool IsRemoveAudioEnabled { get; set; } = true;
         public static bool IsAzureVoiceSelected { get; set; } = false;
 
-        public static ObservableCollection<ComputerVoice> Voices
-        {
-            get
-            {
-                ObservableCollection<ComputerVoice> voices = new ObservableCollection<ComputerVoice>();
-                List<string> installedVoices = TextToSpeech.GetVoices().ToList();
-                foreach (string voiceName in installedVoices)
-                {
-                    voices.Add(new ComputerVoice(voiceName));
-                }
-                return voices;
-            }
-        }
+        public static ObservableCollection<ComputerVoice> Voices = GetVoices();
+
 
         #region Public Helper Functions
 
@@ -323,6 +312,17 @@ namespace PowerPointLabs.ELearningLab.Service
             TaggedText taggedText = new TaggedText(textToConvert);
             PromptBuilder builder = taggedText.ToPromptBuilder(voice.ToString());
             return builder;
+        }
+
+        private static ObservableCollection<ComputerVoice> GetVoices()
+        {
+            ObservableCollection<ComputerVoice> voices = new ObservableCollection<ComputerVoice>();
+            List<string> installedVoices = TextToSpeech.GetVoices().ToList();
+            foreach (string voiceName in installedVoices)
+            {
+                voices.Add(new ComputerVoice(voiceName));
+            }
+            return voices;
         }
         #endregion
     }

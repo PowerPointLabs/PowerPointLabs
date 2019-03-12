@@ -732,8 +732,11 @@ namespace PowerPointLabs
             ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
             if (selectedSlidesCount > 0)
             {
-                taskpane.eLearningLabMainPanel1.HandleSlideChangedEvent();
-                taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();
+                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
+                if (elearningLabPane.Visible == true)
+                {
+                    taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
+                }
             }
             else
             {
@@ -1155,9 +1158,6 @@ namespace PowerPointLabs
 
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
-
-            // save audio setting preference for elearning lab
-            AudioSettingStorageService.SaveAudioSettingPreference();
 
             // Refresh ribbon to grey out the menu / buttons if there are no windows open
             RefreshRibbonMenuButtons();

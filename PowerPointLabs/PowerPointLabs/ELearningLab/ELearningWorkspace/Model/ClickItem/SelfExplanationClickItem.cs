@@ -23,6 +23,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 isCallout = (bool)value;
                 NotifyPropertyChanged("IsCallout");
+                NotifyPropertyChanged("IsDummyItem");
             }
         }
         public bool IsCaption
@@ -35,6 +36,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 isCaption = (bool)value;
                 NotifyPropertyChanged("IsCaption");
+                NotifyPropertyChanged("IsDummyItem");
             }
         }
         public bool IsVoice
@@ -47,6 +49,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 isVoice = (bool)value;
                 NotifyPropertyChanged("IsVoice");
+                NotifyPropertyChanged("IsDummyItem");
             }
         }
 
@@ -116,6 +119,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 trigger = (TriggerType)value;
+                NotifyPropertyChanged("TriggerIndex");
             }
         }
 
@@ -137,6 +141,15 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 isTriggerTypeComboBoxEnabled = (bool)value;
                 NotifyPropertyChanged("IsTriggerTypeComboBoxEnabled");
+            }
+        }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return string.IsNullOrEmpty(CaptionText.Trim()) 
+                    && string.IsNullOrEmpty(CalloutText.Trim());
             }
         }
 
@@ -192,15 +205,6 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 
         public bool Equals(SelfExplanationClickItem other)
         {
-            /*
-            Logger.Log("IsCallout Equal " + (isCallout == other.isCallout).ToString());
-            Logger.Log("IsCaption Equal " + (isCaption == other.isCaption).ToString());
-            Logger.Log("IsVoice Equal " + (isVoice == other.isVoice).ToString());
-            Logger.Log("CalloutText Equal " + CalloutText.Equals(other.CalloutText).ToString());
-            Logger.Log("CaptionText Equal " + CaptionText.Equals(other.CaptionText).ToString());
-            Logger.Log("VoiceLabel Equal " + VoiceLabel.Equals(other.VoiceLabel).ToString());
-            Logger.Log("ClickNo Equal " + (ClickNo == other.ClickNo).ToString());
-            */
             return isCallout == other.isCallout
                 && isCaption == other.isCaption
                 && isVoice == other.isVoice

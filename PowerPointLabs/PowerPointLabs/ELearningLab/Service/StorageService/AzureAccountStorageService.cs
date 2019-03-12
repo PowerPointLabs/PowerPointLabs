@@ -70,7 +70,6 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             catch (Exception e)
             {
-                // handle exception
                 Logger.Log(e.Message);
             }
         }

@@ -37,13 +37,14 @@ namespace PowerPointLabs.TextCollection
 
         public const string AudioDefaultLabelFormat = "{0}" + Underscore + DefaultAudioIdentifier;
         public const string AudioFileNameFormat = "Slide {0} ClickNo {1} Speech.wav";
+        public const string AudioPreviewFileNameFormat = "PPTL_preview_{0}.wav";
         public const string SelfExplanationItemFormat = "Item" + Underscore + "{0}";
         public const string CaptionShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + CaptionIdentifier;
         public const string CalloutShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + CalloutIdentifier;
         public const string AudioCustomShapeNameFormat = Identifier + Underscore + "{0}" + Underscore + AudioIdentifier + Underscore + "{1}";
         public const string AudioDefaultShapeNameFormat = Identifier + Underscore + "{0}" + 
             Underscore + AudioIdentifier + Underscore + "{1}" + Underscore + DefaultAudioIdentifier;
-        public const string ProgressStatusLabelFormat = "{0}% Completeness";
+        public const string ProgressStatusLabelFormat = "Progress: {0}%";
         public const string TempFolderNameFormat = @"\PowerPointLabs Temp\" + "{0}" + @"\";
 
         public const string ExtractTagNoRegex = Identifier + Underscore + @"([1-9][0-9]*)" + 

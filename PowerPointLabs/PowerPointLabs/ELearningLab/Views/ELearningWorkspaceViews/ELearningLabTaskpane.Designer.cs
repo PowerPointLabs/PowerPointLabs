@@ -7,7 +7,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
         /// <summary> 
         /// Required designer variable.
         /// </summary> 
-        public ELearningLabMainPanel eLearningLabMainPanel1;
+        public ELearningLabMainPanel ELearningLabMainPanel;
         private System.ComponentModel.IContainer components = null;
 
         /// <summary> 
@@ -32,7 +32,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
         private void InitializeComponent()
         {
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.eLearningLabMainPanel1 = new ELearningLabMainPanel();
+            this.ELearningLabMainPanel = new ELearningLabMainPanel();
             this.SuspendLayout();
             // 
             // elementHost1
@@ -40,10 +40,10 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
             this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(715, 600);
+            this.elementHost1.Size = new System.Drawing.Size(750, 600);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this.eLearningLabMainPanel1;
+            this.elementHost1.Child = this.ELearningLabMainPanel;
             // 
             // ELearningLabTaskpane
             // 
@@ -51,7 +51,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.elementHost1);
             this.Name = "ELearningLabTaskpane";
-            this.Size = new System.Drawing.Size(715, 600);
+            this.Size = new System.Drawing.Size(750, 600);
             this.ResumeLayout(false);
 
         }
