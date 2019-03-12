@@ -732,10 +732,10 @@ namespace PowerPointLabs
             ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
             if (selectedSlidesCount > 0)
             {
-                taskpane.eLearningLabMainPanel1.HandleSlideChangedEvent();
+                taskpane.ELearningLabMainPanel.HandleSlideChangedEvent();
                 if (elearningLabPane.Visible == true)
                 {
-                    taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();
+                    taskpane.ELearningLabMainPanel.HandleELearningPaneSlideSelectionChanged();
                 }
             }
             else

@@ -710,7 +710,7 @@
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToTriggerTypeEnabledConverter.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\EffectToAnimationTypeConverter.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\IVoiceToSpeakEnabledConverter.cs" />
-    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\ListViewClickNoToColorConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\ListItemClickNumToColorConverter.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\AbstractItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />

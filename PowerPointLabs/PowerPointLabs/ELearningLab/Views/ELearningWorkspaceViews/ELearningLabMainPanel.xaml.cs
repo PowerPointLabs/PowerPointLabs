@@ -93,10 +93,15 @@ namespace PowerPointLabs.ELearningLab.Views
         public void HandleELearningPaneSlideSelectionChanged()
         {
             PowerPointSlide _slide = this.GetCurrentSlide();
-            if (IsSlideExist(slideId) && _slide.ID.Equals(slide.ID))
+            // We do not re-initailize elearning lab if 
+            // the current slide is the same as previous slide. 
+            // This can happen when user opens presentation mode on current slide
+            // and exit presentation mode subsequently.
+            if (DoesSlideExist(slideId) && _slide.ID.Equals(slide.ID))
             {
                 return;
             }
+            // update current slide instance
             slide = _slide;
             slideId = slide.ID;
             Items = LoadItems();
@@ -111,7 +116,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         public void HandleSlideChangedEvent()
         {
-            if (!IsSlideExist(slideId))
+            if (!DoesSlideExist(slideId))
             {
                 return;
             }
@@ -592,7 +597,15 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             return false;
         }
-        private bool IsSlideExist(int slideId)
+
+        /// <summary>
+        /// This method iterates through all slides and check if a slide with slideId exists
+        /// We can use slideId to check if a slide exists in slide deck because slideId is 
+        /// uniquely assigned to slide upon initialization and does not change with slide.
+        /// </summary>
+        /// <param name="slideId"></param>
+        /// <returns></returns>
+        private bool DoesSlideExist(int slideId)
         {
             Slides slides = Globals.ThisAddIn.Application.ActivePresentation.Slides;
             foreach (Slide slide in slides)

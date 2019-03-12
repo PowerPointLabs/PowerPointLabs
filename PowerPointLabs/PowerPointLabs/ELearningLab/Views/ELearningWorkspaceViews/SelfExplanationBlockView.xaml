@@ -84,7 +84,7 @@
                 </Grid.RowDefinitions>
                 <Border x:Name="circle" Grid.Row="0" Width="30" Height="30" CornerRadius="15">
                     <Border.Background>
-                        <MultiBinding Converter="{converters:ListViewClickNoToColorConverter}">
+                        <MultiBinding Converter="{converters:ListItemClickNumToColorConverter}">
                             <Binding Path="IsDummyItem" />
                             <Binding Path="IsTriggerTypeComboBoxEnabled" />
                             <Binding Path="TriggerIndex" />

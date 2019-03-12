@@ -9,7 +9,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
     public class ComputerVoice: IVoice
     {
         public string Voice { get; set; }
-        public string VoiceName
+        public override string VoiceName
         {
             get
             {
@@ -17,25 +17,10 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             }
         }
 
-
-        public int Rank
-        {
-            get
-            {
-                return rank;
-            }
-            set
-            {
-                rank = (int)value;
-            }
-        }
-
-        private int rank;
-
         public ComputerVoice(string voiceName)
         {
             Voice = voiceName;
-            rank = 0;
+            Rank = 0;
         }
         public override string ToString()
         {
@@ -56,10 +41,10 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             return EqualityComparer<string>.Default.GetHashCode(Voice);
         }
 
-        public object Clone()
+        public override object Clone()
         {
             ComputerVoice voice = new ComputerVoice(Voice);
-            voice.rank = Rank;
+            voice.Rank = Rank;
             return voice;
         }
     }

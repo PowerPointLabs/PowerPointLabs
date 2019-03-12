@@ -204,15 +204,25 @@ namespace PowerPointLabs.ELearningLab.Views
             preferredAudioListView.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// When ranking combobox selection changed, we would like to check if there exists 
+        /// duplicate ranking. For example, if item A has ranking 1, and subsequently item B's
+        /// ranking is also changed to ranking 1. Then we should remove ranking 1 for item A.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RankingComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ComboBox comboBox = sender as ComboBox;
             if (comboBox.SelectedIndex > 0)
             {
                 int rank = comboBox.SelectedIndex;
+                // check if a combobox with the same ranking already exists
                 if (rankToComboBoxMapping.ContainsKey(rank))
                 {
                     ComboBox previousComboBox = rankToComboBoxMapping[rank];
+                    // if another combobox item with the same ranking exists, we will 
+                    // remove the ranking for the previous combobox item.
                     if (!comboBox.Equals(previousComboBox))
                     {
                         previousComboBox.SelectedIndex = 0;

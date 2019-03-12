@@ -18,14 +18,24 @@ using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 namespace PowerPointLabs.ELearningLab.Converters
 {
 #pragma warning disable 0618
-    public class ListViewClickNoToColorConverter : MarkupExtension, IMultiValueConverter
+    public class ListItemClickNumToColorConverter : MarkupExtension, IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            bool isDummyItem = (bool)values[0];
-            bool isTriggerTypeEnabled = (bool)values[1];
-            int triggerType = (int)values[2];
-            int clickNo = (int)values[3];
+            bool isDummyItem, isTriggerTypeEnabled;
+            int triggerType, clickNum;
+            try
+            {
+                isDummyItem = (bool)values[0];
+                isTriggerTypeEnabled = (bool)values[1];
+                triggerType = (int)values[2];
+                clickNum = (int)values[3];
+            }
+            catch (Exception e)
+            {
+                Logger.Log("Invalid Cast Exception" + e.Message);
+                return null;
+            }
             CustomTaskPane eLearningTaskpane = Globals.ThisAddIn.GetActivePane(typeof(ELearningLabTaskpane));
             if (eLearningTaskpane == null)
             {
@@ -37,11 +47,11 @@ namespace PowerPointLabs.ELearningLab.Converters
                 return new SolidColorBrush(Colors.Gray);
             }
             else if (isTriggerTypeEnabled && triggerType == (int)TriggerType.WithPrevious
-                && !taskpane.eLearningLabMainPanel1.IsFirstItemSelfExplanation && clickNo == 0)
+                && !taskpane.ELearningLabMainPanel.IsFirstItemSelfExplanation && clickNum == 0)
             {
                 return new SolidColorBrush(Colors.Transparent);
             }
-            else if (isTriggerTypeEnabled && triggerType == (int)TriggerType.WithPrevious && clickNo > 0)
+            else if (isTriggerTypeEnabled && triggerType == (int)TriggerType.WithPrevious && clickNum > 0)
             {
                 return new SolidColorBrush(Colors.Transparent);
             }

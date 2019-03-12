@@ -6,9 +6,21 @@ using System.Threading.Tasks;
 
 namespace PowerPointLabs.ELearningLab.AudioGenerator
 {
-    public interface IVoice: ICloneable
+    public abstract class IVoice: ICloneable
     {
-        string VoiceName { get; }
-        int Rank { get; set; }
+        public abstract string VoiceName { get; }
+        public int Rank
+        {
+            get
+            {
+                return rank;
+            }
+            set
+            {
+                rank = value;
+            }
+        }
+        private int rank;
+        public abstract object Clone();
     }
 }

@@ -20,23 +20,11 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             }
         }
 
-        public string VoiceName
+        public override string VoiceName
         {
             get
             {
                 return Voice.ToString();
-            }
-        }
-
-        public int Rank
-        {
-            get
-            {
-                return rank;
-            }
-            set
-            {
-                rank = (int)value;
             }
         }
 
@@ -46,8 +34,6 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
         private const string COMMA = ",";
         private const string SPACE = " ";
 
-        private int rank;
-
         public AzureVoice(Gender gender, Locale locale, AzureVoiceType voice)
         {
             voiceType = gender;
@@ -55,7 +41,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             this.Voice = voice;
             voiceName = DEFAULTNAMESPACE + LEFTBRACKET + 
                 AzureLocaleToStringConverter.localeMapping[locale] + COMMA + SPACE + voice + RIGHTBRACKET;
-            rank = 0;
+            Rank = 0;
         }
 
         public override string ToString()
@@ -63,10 +49,10 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             return Voice.ToString();
         }
 
-        public object Clone()
+        public override object Clone()
         {
             AzureVoice voice = new AzureVoice(voiceType, locale, Voice);
-            voice.rank = Rank;
+            voice.Rank = Rank;
             return voice;
         }
     }
