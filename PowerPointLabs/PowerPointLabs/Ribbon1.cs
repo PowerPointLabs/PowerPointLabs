@@ -160,15 +160,7 @@ namespace PowerPointLabs
         {
             ShouldCompressImages = pressed;
             _ribbon.InvalidateControl("ShouldCompressImagesCheckbox");
-
-            if (ShouldCompressImages)
-            {
-                GraphicsUtil.PictureExportingRatio = 96.0f / 72.0f;
-            }
-            else
-            {
-                GraphicsUtil.PictureExportingRatio = 330.0f / 72.0f;
-            }
+            GraphicsUtil.ShouldCompressPictureExport(ShouldCompressImages);
         }
 
 

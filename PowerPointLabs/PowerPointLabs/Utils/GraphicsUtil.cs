@@ -31,6 +31,11 @@ namespace PowerPointLabs.Utils
         public static float PictureExportingRatio = 330.0f / 72.0f;
         private const float TargetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+
+        // Picture exporting ratios
+        private const float PictureExportingRatioHigh = 330.0f / 72.0f;
+        private const float PictureExportingRatioCompressed = 96.0f / 72.0f;
+
         // Heuristics for image compression obtained through testing
         private const long targetCompression = 75L;
         private const long fileSizeLimit = 40000L;
@@ -286,6 +291,15 @@ namespace PowerPointLabs.Utils
         {
             return new SolidColorBrush(MediaColorFromDrawingColor(color));
         }
+        #endregion
+
+        #region Settings
+
+        public static void ShouldCompressPictureExport(bool shouldCompress)
+        {
+            PictureExportingRatio = shouldCompress ? PictureExportingRatioCompressed : PictureExportingRatioHigh;
+        }
+
         #endregion
 
         #endregion
