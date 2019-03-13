@@ -169,7 +169,7 @@ namespace PowerPointLabs.Models
             {
                 // Revert to normal copy and pasting if unable to create file.
                 croppedShape.Cut();
-                zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPasteMetafilePicture)[1];
+                zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             }
 
             zoomSlideCroppedShapes.Name = "PPTLabsMagnifyAreaGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
