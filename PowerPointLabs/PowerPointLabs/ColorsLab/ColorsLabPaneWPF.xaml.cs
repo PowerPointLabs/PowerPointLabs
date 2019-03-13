@@ -133,6 +133,9 @@ namespace PowerPointLabs.ColorsLab
         private string _defaultThemeColorDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
             "PowerPointLabs.defaultThemeColor.thm");
+        private string _defaultRecentColorDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "PowerPointLabs.defaultRecentColor.thm");
 
         #endregion
 
@@ -151,7 +154,7 @@ namespace PowerPointLabs.ColorsLab
             SetupEyedropperTimer();
             SetDefaultColor(Color.CornflowerBlue);
             SetDefaultThemeColors();
-            LoadRecentColors();
+            SetRecentColors();
 
             // Hook the mouse process if it has not
             PPExtraEventHelper.PPMouse.TryStartHook();
@@ -247,20 +250,9 @@ namespace PowerPointLabs.ColorsLab
         /// <summary>
         /// Load recent colors into the recent colors pane.
         /// </summary>
-        private void LoadRecentColors()
+        private void SetRecentColors()
         {
-            dataSource.RecentColorOne = Color.White;
-            dataSource.RecentColorTwo = Color.White;
-            dataSource.RecentColorThree = Color.White;
-            dataSource.RecentColorFour = Color.White;
-            dataSource.RecentColorFive = Color.White;
-            dataSource.RecentColorSix = Color.White;
-            dataSource.RecentColorSeven = Color.White;
-            dataSource.RecentColorEight = Color.White;
-            dataSource.RecentColorNine = Color.White;
-            dataSource.RecentColorTen = Color.White;
-            dataSource.RecentColorEleven = Color.White;
-            dataSource.RecentColorTwelve = Color.White;
+            LoadRecentColorsPanel();
         }
 
         /// <summary>
@@ -305,6 +297,7 @@ namespace PowerPointLabs.ColorsLab
         private void ColorsLab_Closing(Object sender, EventArgs e)
         {
             SaveDefaultColorPaneThemeColors();
+            SaveColorPaneRecentColors();
         }
 
         #endregion
@@ -1288,8 +1281,62 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
+        #region Recent Colors
+
+        /// <summary>
+        /// Clear the panel to all white color.
+        /// </summary>
+        private void EmptyRecentColorsPanel()
+        {
+            try
+            {
+                if (this.GetCurrentSlide() != null)
+                {
+                    dataSource.RecentColorOne = Color.White;
+                    dataSource.RecentColorTwo = Color.White;
+                    dataSource.RecentColorThree = Color.White;
+                    dataSource.RecentColorFour = Color.White;
+                    dataSource.RecentColorFive = Color.White;
+                    dataSource.RecentColorSix = Color.White;
+                    dataSource.RecentColorSeven = Color.White;
+                    dataSource.RecentColorEight = Color.White;
+                    dataSource.RecentColorNine = Color.White;
+                    dataSource.RecentColorTen = Color.White;
+                    dataSource.RecentColorEleven = Color.White;
+                    dataSource.RecentColorTwelve = Color.White;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogBox.ShowDialog("Recent Colors Panel Reset Failed", e.Message, e);
+            }
+        }
+
+        
+        /// <summary>
+        /// Save current recent colors panel to file.
+        /// </summary>
+        private void SaveColorPaneRecentColors()
+        {
+            dataSource.SaveRecentColorsInFile(_defaultRecentColorDirectory);
+        }
+
+        /// <summary>
+        /// Load recent panel from file, or clear the panel if unsuccessful.
+        /// </summary>
+        private void LoadRecentColorsPanel()
+        {
+            bool isSuccessful = dataSource.LoadRecentColorsFromFile(_defaultRecentColorDirectory);
+            if (!isSuccessful)
+            {
+                EmptyRecentColorsPanel();
+            }
+        }
+
         #endregion
 
-       
+        #endregion
+
+
     }
 }

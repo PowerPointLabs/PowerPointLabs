@@ -551,6 +551,65 @@ namespace PowerPointLabs.DataSources
             RecentColorOne = color;
         }
 
+        public bool SaveRecentColorsInFile(string filePath)
+        {
+            try
+            {
+                List<HSLColor> recentColors = new List<HSLColor>();
+                recentColors.Add(this.RecentColorOne);
+                recentColors.Add(this.RecentColorTwo);
+                recentColors.Add(this.RecentColorThree);
+                recentColors.Add(this.RecentColorFour);
+                recentColors.Add(this.RecentColorFive);
+                recentColors.Add(this.RecentColorSix);
+                recentColors.Add(this.RecentColorSeven);
+                recentColors.Add(this.RecentColorEight);
+                recentColors.Add(this.RecentColorNine);
+                recentColors.Add(this.RecentColorTen);
+                recentColors.Add(this.RecentColorEleven);
+                recentColors.Add(this.RecentColorTwelve);
+
+                Stream fileStream = File.Create(filePath);
+                BinaryFormatter serializer = new BinaryFormatter();
+                serializer.Serialize(fileStream, recentColors);
+                fileStream.Close();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool LoadRecentColorsFromFile(string filePath)
+        {
+            try
+            {
+                Stream openFileStream = File.OpenRead(filePath);
+                BinaryFormatter deserializer = new BinaryFormatter();
+                List<HSLColor> recentColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
+                openFileStream.Close();
+
+                this.RecentColorOne = recentColors[0];
+                this.RecentColorTwo = recentColors[1];
+                this.RecentColorThree = recentColors[2];
+                this.RecentColorFour = recentColors[3];
+                this.RecentColorFive = recentColors[4];
+                this.RecentColorSix = recentColors[5];
+                this.RecentColorSeven = recentColors[6];
+                this.RecentColorEight = recentColors[7];
+                this.RecentColorNine = recentColors[8];
+                this.RecentColorTen = recentColors[9];
+                this.RecentColorEleven = recentColors[10];
+                this.RecentColorTwelve = recentColors[11];
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public bool SaveThemeColorsInFile(String filePath)
         {
             try
