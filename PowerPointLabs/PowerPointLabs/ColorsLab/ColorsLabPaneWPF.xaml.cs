@@ -95,6 +95,22 @@ namespace PowerPointLabs.ColorsLab
             dataSource.LoadThemeColorsFromFile(filePath);
         }
 
+        public List<Color> GetRecentColorsPanelAsList()
+        {
+            List<HSLColor> recentHslColors = dataSource.GetListOfRecentColors();
+            List<Color> recentColors = new List<Color>();
+            foreach (HSLColor recentHslColor in recentHslColors)
+            {
+                recentColors.Add(recentHslColor);
+            }
+            return recentColors;
+        }
+
+        public void ClearRecentColorsPanel()
+        {
+            EmptyRecentColorsPanel();
+        }
+
         #endregion
 
         #region Private variables

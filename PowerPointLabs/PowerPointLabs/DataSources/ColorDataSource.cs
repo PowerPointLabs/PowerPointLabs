@@ -624,6 +624,45 @@ namespace PowerPointLabs.DataSources
 
         #endregion
 
+        #region Helpers
+
+        public List<HSLColor> GetListOfRecentColors()
+        {
+            List<HSLColor> recentColors = new List<HSLColor>();
+            recentColors.Add(this.RecentColorOne);
+            recentColors.Add(this.RecentColorTwo);
+            recentColors.Add(this.RecentColorThree);
+            recentColors.Add(this.RecentColorFour);
+            recentColors.Add(this.RecentColorFive);
+            recentColors.Add(this.RecentColorSix);
+            recentColors.Add(this.RecentColorSeven);
+            recentColors.Add(this.RecentColorEight);
+            recentColors.Add(this.RecentColorNine);
+            recentColors.Add(this.RecentColorTen);
+            recentColors.Add(this.RecentColorEleven);
+            recentColors.Add(this.RecentColorTwelve);
+
+            return recentColors;
+        }
+
+        protected void SetRecentColorsFromList(List<HSLColor> recentColors)
+        {
+            this.RecentColorOne = recentColors[0];
+            this.RecentColorTwo = recentColors[1];
+            this.RecentColorThree = recentColors[2];
+            this.RecentColorFour = recentColors[3];
+            this.RecentColorFive = recentColors[4];
+            this.RecentColorSix = recentColors[5];
+            this.RecentColorSeven = recentColors[6];
+            this.RecentColorEight = recentColors[7];
+            this.RecentColorNine = recentColors[8];
+            this.RecentColorTen = recentColors[9];
+            this.RecentColorEleven = recentColors[10];
+            this.RecentColorTwelve = recentColors[11];
+        }
+
+        #endregion
+
         #region Constructors and PropertyChanged
 
         public ColorDataSource()
@@ -647,43 +686,5 @@ namespace PowerPointLabs.DataSources
 
         #endregion
 
-        #region Helpers
-
-        private List<HSLColor> GetListOfRecentColors()
-        {
-            List<HSLColor> recentColors = new List<HSLColor>();
-            recentColors.Add(this.RecentColorOne);
-            recentColors.Add(this.RecentColorTwo);
-            recentColors.Add(this.RecentColorThree);
-            recentColors.Add(this.RecentColorFour);
-            recentColors.Add(this.RecentColorFive);
-            recentColors.Add(this.RecentColorSix);
-            recentColors.Add(this.RecentColorSeven);
-            recentColors.Add(this.RecentColorEight);
-            recentColors.Add(this.RecentColorNine);
-            recentColors.Add(this.RecentColorTen);
-            recentColors.Add(this.RecentColorEleven);
-            recentColors.Add(this.RecentColorTwelve);
-
-            return recentColors;
-        }
-
-        private void SetRecentColorsFromList(List<HSLColor> recentColors)
-        {
-            this.RecentColorOne = recentColors[0];
-            this.RecentColorTwo = recentColors[1];
-            this.RecentColorThree = recentColors[2];
-            this.RecentColorFour = recentColors[3];
-            this.RecentColorFive = recentColors[4];
-            this.RecentColorSix = recentColors[5];
-            this.RecentColorSeven = recentColors[6];
-            this.RecentColorEight = recentColors[7];
-            this.RecentColorNine = recentColors[8];
-            this.RecentColorTen = recentColors[9];
-            this.RecentColorEleven = recentColors[10];
-            this.RecentColorTwelve = recentColors[11];
-        }
-
-        #endregion
     }
 }

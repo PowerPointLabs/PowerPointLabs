@@ -66,6 +66,22 @@ namespace Test.FunctionalTest
             Color.FromArgb(255, 255, 255)
         });
 
+        private List<Color> RecentColorsAfterFT = new List<Color>(new Color[]
+        {
+            Color.FromArgb(98, 235, 187),
+            Color.FromArgb(118, 98, 235),
+            Color.FromArgb(98, 215, 235),
+            Color.FromArgb(235, 98, 146),
+            Color.FromArgb(0, 53, 153),
+            Color.FromArgb(102, 155, 255),
+            Color.FromArgb(153, 189, 255),
+            Color.FromArgb(0, 89, 255),
+            Color.FromArgb(98, 148, 235),
+            Color.FromArgb(98, 235, 118),
+            Color.FromArgb(235, 118, 98),
+            Color.FromArgb(255, 255, 255)
+        });
+
         protected override string GetTestingSlideName()
         {
             return "ColorsLab\\ColorsLab.pptx";
@@ -80,6 +96,9 @@ namespace Test.FunctionalTest
             IColorsLabController colorsLab = PplFeatures.ColorsLab;
             colorsLab.OpenPane();
 
+            // Clear the recent colors panel before FT begins
+            colorsLab.ClearRecentColors();
+
             TestApplyFontColor(colorsLab);
             TestApplyLineColor(colorsLab);
             TestApplyFillColor(colorsLab);
@@ -91,6 +110,7 @@ namespace Test.FunctionalTest
             TestTriadicAndTetradicColors(colorsLab);
 
             TestFavoriteColors(colorsLab);
+            TestRecentColors(colorsLab);
         }
 
         private void TestApplyFontColor(IColorsLabController colorsLab)
@@ -230,8 +250,8 @@ namespace Test.FunctionalTest
             PpOperations.SelectShape(TargetShape);
             DragAndDrop(startPt, endPt);
 
-            // Apply tetradicRectFour as Line
-            colorsLab.ClickTetradicRect(4);
+            // Apply tetradicRectThree as Line
+            colorsLab.ClickTetradicRect(3);
             startPt = colorsLab.GetApplyLineButtonLocation();
             endPt = colorsLab.GetMainColorRectangleLocation();
             PpOperations.SelectShape(TargetShape);
@@ -259,6 +279,13 @@ namespace Test.FunctionalTest
             colorsLab.ClearFavoriteColors();
             currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
             AssertEqual(AllWhiteColorList, currentFavoritePanel);
+        }
+
+        private void TestRecentColors(IColorsLabController colorsLab)
+        {
+            // After all the calls in the earlier tests, recent colors panel should be populated
+            List<Color> currentRecentPanel = colorsLab.GetCurrentRecentPanel();
+            AssertEqual(RecentColorsAfterFT, currentRecentPanel);
         }
 
         # region Helper methods
@@ -289,7 +316,7 @@ namespace Test.FunctionalTest
 
         private static void AssertEqual(List<Color> exp, List<Color> actual)
         {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < exp.Count; i++)
             {
                 AssertEqual(exp[i], actual[i]);
             }

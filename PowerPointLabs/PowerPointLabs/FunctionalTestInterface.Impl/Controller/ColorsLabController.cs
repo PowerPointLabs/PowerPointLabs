@@ -320,6 +320,17 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
+        public void ClearRecentColors()
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ColorsLabPaneWPF1.ClearRecentColorsPanel();
+                }));
+            }
+        }
+
         public List<Color> GetCurrentFavoritePanel()
         {
             List<Color> list = null;
@@ -328,6 +339,19 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 UIThreadExecutor.Execute((Action)(() =>
                 {
                     list = _pane.ColorsLabPaneWPF1.GetFavoriteColorsPanelAsList();
+                }));
+            }
+            return list;
+        }
+
+        public List<Color> GetCurrentRecentPanel()
+        {
+            List<Color> list = null;
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    list = _pane.ColorsLabPaneWPF1.GetRecentColorsPanelAsList();
                 }));
             }
             return list;
