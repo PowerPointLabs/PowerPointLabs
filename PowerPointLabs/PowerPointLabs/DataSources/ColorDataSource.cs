@@ -10,59 +10,8 @@ namespace PowerPointLabs.DataSources
 {
     class ColorDataSource : INotifyPropertyChanged
     {
-        private bool isFillColorSelectedValue;
 
-        public bool IsFillColorSelected
-        {
-            get
-            {
-                return isFillColorSelectedValue;
-            }
-            set
-            {
-                if (value != this.isFillColorSelectedValue)
-                {
-                    this.isFillColorSelectedValue = value;
-                    OnPropertyChanged("isFillColorSelected");
-                }
-            }
-        }
-
-        private bool isFontColorSelectedValue;
-
-        public bool IsFontColorSelected
-        {
-            get
-            {
-                return isFontColorSelectedValue;
-            }
-            set
-            {
-                if (value != this.isFontColorSelectedValue)
-                {
-                    this.isFontColorSelectedValue = value;
-                    OnPropertyChanged("isFontColorSelected");
-                }
-            }
-        }
-
-        private bool isLineColorSelectedValue;
-
-        public bool IsLineColorSelected
-        {
-            get
-            {
-                return isLineColorSelectedValue;
-            }
-            set
-            {
-                if (value != this.isLineColorSelectedValue)
-                {
-                    this.isLineColorSelectedValue = value;
-                    OnPropertyChanged("isLineColorSelected");
-                }
-            }
-        }
+        #region Properties
 
         private HSLColor selectedColorValue;
 
@@ -532,9 +481,10 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        // TODO: To improve: make it smarter
-        //       When adding color, check if it is already in recents. If it is, remove it and put it in front.
-        //       Therefore we will not have repeated colors in recent colors -- doesn't make sense.
+        #endregion
+
+        #region API
+
         public void AddColorToRecentColors(HSLColor color)
         {
             List<HSLColor> recentColors = GetListOfRecentColors();
@@ -593,8 +543,6 @@ namespace PowerPointLabs.DataSources
             }
             return true;
         }
-
-        
 
         public bool SaveThemeColorsInFile(String filePath)
         {
@@ -674,6 +622,10 @@ namespace PowerPointLabs.DataSources
             ThemeColorOne = color;
         }
 
+        #endregion
+
+        #region Constructors and PropertyChanged
+
         public ColorDataSource()
         {
         }
@@ -692,6 +644,8 @@ namespace PowerPointLabs.DataSources
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
+
+        #endregion
 
         #region Helpers
 
