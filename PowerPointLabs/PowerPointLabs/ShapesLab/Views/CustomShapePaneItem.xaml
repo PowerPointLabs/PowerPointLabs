@@ -4,16 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="200"
+             d:DesignHeight="60" d:DesignWidth="120"
              MouseDoubleClick="OnMouseDoubleClick">
-    <Grid x:Name="grid" ClipToBounds="True">
+    <Grid x:Name="grid" ClipToBounds="True" Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="col1" Width="60" MaxWidth="60"/>
-            <ColumnDefinition x:Name="col2" Width="140"/>
+            <ColumnDefinition x:Name="col2" Width="60"/>
         </Grid.ColumnDefinitions>
         <Image x:Name="imageBox" Grid.Column="0" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
-        <Canvas x:Name="canvas" Grid.Column="1" >
-            <TextBox x:Name="textBox" Margin="0,20,0,20" Width="{Binding ActualWidth, ElementName=canvas}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <Canvas x:Name="canvas" Grid.Column="1" Background="Transparent">
+            <TextBox x:Name="textBox" Margin="0,20,0,20" Width="{Binding ActualWidth, ElementName=canvas}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False"/>
         </Canvas>
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem x:Name="editShape" Header="Edit"></MenuItem>
+                <MenuItem x:Name="deleteShape" Header="Delete"></MenuItem>
+            </ContextMenu>
+        </Grid.ContextMenu>
     </Grid>
 </UserControl>

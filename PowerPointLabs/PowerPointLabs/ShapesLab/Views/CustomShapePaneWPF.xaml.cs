@@ -41,28 +41,6 @@ namespace PowerPointLabs.ShapesLab.Views
 
         public string CurrentCategory { get; set; }
 
-        public string CurrentShapeFullName
-        {
-            get { return CurrentShapeFolderPath + @"\" + CurrentShapeNameWithoutExtension + ".png"; }
-        }
-
-        public string CurrentShapeNameWithoutExtension
-        {
-            get
-            {
-                return "";
-                //TODO
-                /*
-                if (_selectedThumbnail == null ||
-                    _selectedThumbnail.Count == 0)
-                {
-                    return null;
-                }
-
-                return _selectedThumbnail[0].NameLabel;*/
-            }
-        }
-
         public string ShapeRootFolderPath { get; private set; }
 
         public string CurrentShapeFolderPath
@@ -94,21 +72,13 @@ namespace PowerPointLabs.ShapesLab.Views
 
             InitializeContextMenu();
 
-            //TODO
-            /*
-            myShapeFlowLayout.MouseEnter += FlowLayoutMouseEnterHandler;
-            myShapeFlowLayout.MouseDown += FlowLayoutMouseDownHandler;
-            myShapeFlowLayout.MouseUp += FlowLayoutMouseUpHandler;
-            myShapeFlowLayout.MouseMove += FlowLayoutMouseMoveHandler;
-            */
-
             //singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
 
         }
 
         #endregion
 
-        #region init
+        #region Init
 
         public void SetStorageSettings(string shapeRootFolderPath, string defaultShapeCategoryName)
         {
@@ -138,7 +108,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (customShapePane == null)
             {
-                MessageBox.Show(TextCollection.SyncLabText.ErrorSyncPaneNotOpened);
+                MessageBox.Show(ShapesLabText.ErrorShapePaneNotOpened);
                 return;
             }
 
@@ -171,16 +141,6 @@ namespace PowerPointLabs.ShapesLab.Views
         public bool GetAddShapeButtonEnabledStatus()
         {
             return addShapeButton.IsEnabled;
-        }
-        
-        public string GetShapeName(int index)
-        {
-            return (shapeList.Items[index] as CustomShapePaneItem).Text;
-        }
-
-        public void SetShapeName(int index, string text)
-        {
-            (shapeList.Items[index] as CustomShapePaneItem).Text = text;
         }
 
         public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
@@ -231,37 +191,87 @@ namespace PowerPointLabs.ShapesLab.Views
         /// <summary>
         /// Adds a shape lexicographically.
         /// </summary>
-        public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)
+        public void AddCustomShape(string shapeName, string shapePath, bool isReadyForEdit)
         {
             DehighlightSelected();
 
-            //TODO
-            //LabeledThumbnail labeledThumbnail = new LabeledThumbnail(shapePath, shapeName) { ContextMenuStrip = shapeContextMenuStrip };
-            CustomShapePaneItem shapeItem = new CustomShapePaneItem(shapeName, shapePath);
+            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit);
 
             //shapeItem.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             int insertionIndex = GetShapeInsertionIndex(shapeName);
             shapeList.Items.Insert(insertionIndex, shapeItem);
             shapeList.SelectedIndex = insertionIndex;
-
-            //TODO
-            //labeledThumbnail.Click += LabeledThumbnailClick;
-            //labeledThumbnail.DoubleClick += LabeledThumbnailDoubleClick;
-            //labeledThumbnail.NameEditFinish += NameEditFinishHandler;
+            shapeList.ScrollIntoView(shapeItem);
         }
 
         public void RemoveCustomShape(string shapeName)
         {
             int shapeIndex = GetShapeItemIndex(shapeName);
+            if (shapeIndex < 0)
+            {
+                return;
+            }
             shapeList.Items.RemoveAt(shapeIndex);
+        }
+
+        public void RemoveAllSelectedShapes()
+        {
+            //store names in list first, as enumeration will fail if the selected items are modified.
+            List<string> shapeNames = new List<string>();
+            foreach (CustomShapePaneItem shape in shapeList.SelectedItems)
+            {
+                shapeNames.Add(shape.Text);
+            }
+            foreach (string shapeName in shapeNames)
+            {
+                RemoveShape(shapeName);
+            }
         }
 
         public void RenameCustomShape(string oldShapeName, string newShapeName)
         {
             int shapeIndex = GetShapeItemIndex(oldShapeName);
+            if (shapeIndex < 0)
+            {
+                return;
+            }
+            CustomShapePaneItem shape = shapeList.Items[shapeIndex] as CustomShapePaneItem;
+            shape.SyncRenameShape(newShapeName);
+            shapeList.Items.Remove(shape);
+            int insertionIndex = GetShapeInsertionIndex(newShapeName);
+            shapeList.Items.Insert(insertionIndex, shape);
+            shapeList.SelectedIndex = insertionIndex;
+            shapeList.ScrollIntoView(shape);
+        }
 
-            //TODO
-            //shapeItem?.RenameWithoutEdit(newShapeName);
+        public bool IsShapeSelected(CustomShapePaneItem shape)
+        {
+            return shapeList.SelectedItems.Contains(shape);
+        }
+
+        public void AddShapesToSlide()
+        {
+            if (shapeList.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected, ShapesLabText.ErrorDialogTitle);
+                return;
+            }
+            PowerPointSlide currentSlide = this.GetCurrentSlide();
+            if (currentSlide == null)
+            {
+                MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
+                return;
+            }
+            this.StartNewUndoEntry();
+            foreach (CustomShapePaneItem shape in shapeList.SelectedItems)
+            {
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    Globals.ThisAddIn.ShapePresentation.CopyShape(shape.Text);
+                    currentSlide.Shapes.Paste().Select();
+                    return ClipboardUtil.ClipboardRestoreSuccess;
+                }, this.GetCurrentPresentation(), currentSlide);
+            }
         }
 
         #endregion
@@ -316,8 +326,12 @@ namespace PowerPointLabs.ShapesLab.Views
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 // all selected shape will be added to the slide
-                //TODO
-                //Globals.ThisAddIn.ShapePresentation.CopyShape(_selectedThumbnail.Select(thumbnail => thumbnail.NameLabel));
+                List<string> nameList = new List<string>();
+                foreach (CustomShapePaneItem shape in shapeList.SelectedItems)
+                {
+                    nameList.Add(shape.Text);
+                }
+                this.GetAddIn().ShapePresentation.CopyShape(nameList);
                 return currentSlide.Shapes.Paste();
             }, pres, currentSlide);
         }
@@ -462,46 +476,6 @@ namespace PowerPointLabs.ShapesLab.Views
             }
         }
 
-        private void ContextMenuStripRemoveClicked()
-        {
-            /*
-            if (_selectedThumbnail == null ||
-                _selectedThumbnail.Count == 0)
-            {
-                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected);
-                return;
-            }*/
-
-            //TODO
-            //GraphicsUtil.SuspendDrawing(wrapPanel);
-
-            /*
-            while (_selectedThumbnail.Count > 0)
-            {
-                LabeledThumbnail thumbnail = _selectedThumbnail[0];
-                string removedShapename = thumbnail.NameLabel;
-
-                // remove shape from shape gallery
-                Globals.ThisAddIn.ShapePresentation.RemoveShape(CurrentShapeNameWithoutExtension);
-
-                // remove shape from disk and shape gallery
-                File.Delete(CurrentShapeFullName);
-
-                // remove shape from task pane
-                RemoveShapeItem(thumbnail, false);
-
-                // sync shape removing among all task panes
-                Globals.ThisAddIn.SyncShapeRemove(removedShapename, CurrentCategory);
-
-                // remove from selected collection
-                _selectedThumbnail.RemoveAt(0);
-            }
-            */
-
-            //TODO
-            //GraphicsUtil.ResumeDrawing(wrapPanel);
-        }
-
         private void ContextMenuStripRenameCategoryClicked()
         {
             ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
@@ -629,38 +603,10 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 if ((shapeList.Items[index] as CustomShapePaneItem).Text.CompareTo(shapeName) >= 0)
                 {
-                    shapeList.Items.RemoveAt(index);
                     return index;
                 }
             }
             return shapeList.Items.Count;
-        }
-
-        private void ShapeListClick()
-        {
-            DehighlightSelected();
-            shapeList.Focus();
-        }
-
-        private void FocusSelected()
-        {
-            //TODO
-            //shapeList.ScrollIntoView();
-        }
-
-        private void RenameShapeFile(string oldShapeName, string newShapeName)
-        {
-            int shapeIndex = GetShapeItemIndex(oldShapeName);
-            CustomShapePaneItem shapeItem = (shapeList.Items[shapeIndex] as CustomShapePaneItem);
-            if (shapeItem.Text == newShapeName)
-            {
-                return;
-            }
-            shapeItem.RenameShape(newShapeName);
-
-            //TODO
-            Globals.ThisAddIn.ShapePresentation.RenameShape(oldShapeName, newShapeName);
-            Globals.ThisAddIn.SyncShapeRename(oldShapeName, newShapeName, CurrentCategory);
         }
 
         private void PaneReload()
@@ -672,6 +618,29 @@ namespace PowerPointLabs.ShapesLab.Views
             // scroll the view to show the first item
             shapeList.ScrollIntoView(shapeList.Items[0]);
             shapeList.Focus();
+        }
+
+        private string GetShapePath(string shapeName)
+        {
+            return CurrentShapeFolderPath + @"\" + shapeName + ".png";
+        }
+
+        private void RemoveShape(string shapeName)
+        {
+            string shapePath = GetShapePath(shapeName);
+            if (!File.Exists(shapePath))
+            {
+                return;
+            }
+            // remove shape from disk and shape gallery
+            File.Delete(shapePath);
+
+            // remove shape from shape gallery
+            this.GetAddIn().ShapePresentation.RemoveShape(shapeName);
+
+            // sync shape removing among all task panes
+            this.GetAddIn().SyncShapeRemove(shapeName, CurrentCategory);
+            RemoveCustomShape(shapeName);
         }
 
         #endregion
@@ -717,7 +686,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog(TextCollection.CommonText.ErrorTitle, e.Message, e);
+                ErrorDialogBox.ShowDialog(CommonText.ErrorTitle, e.Message, e);
 
                 return false;
             }
@@ -869,12 +838,6 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 AddCustomShape(shapeName, shape, false);
             }
-            //TODO
-            /*
-            if (myShapeFlowLayout.Controls.Count == 0)
-            {
-                ShowNoShapeMessage();
-            }*/
 
             DehighlightSelected();
         }
@@ -899,7 +862,7 @@ namespace PowerPointLabs.ShapesLab.Views
             string selectedCategory = _categoryBinding[selectedIndex].ToString();
 
             CurrentCategory = selectedCategory;
-            Globals.ThisAddIn.ShapePresentation.DefaultCategory = selectedCategory;
+            this.GetAddIn().ShapePresentation.DefaultCategory = selectedCategory;
             PaneReload();
         }
 
@@ -915,18 +878,6 @@ namespace PowerPointLabs.ShapesLab.Views
             AddShapeFromSelection(selection, addIn);
         }
 
-        #endregion
-
-        #region Shape Saving
-
-        // Saves shape into another powerpoint file
-        // Returns a key to find the shape by,
-        // or null if the shape cannot be copied
-        private string CopyShape(Shape shape)
-        {
-            //return shapeStorage.CopyShape(shape, GetFormatsToApply(nodes));
-            return "";
-        }
         #endregion
 
     }

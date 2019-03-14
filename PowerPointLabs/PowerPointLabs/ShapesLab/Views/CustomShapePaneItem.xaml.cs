@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +21,10 @@ namespace PowerPointLabs.ShapesLab.Views
     {
 
         private Bitmap image;
+        private CustomShapePaneWPF parent;
+        private Status editStatus;
+        private bool hasJustExitedFromTextBox = false;
+        private string shapeName;
 
         public enum Status
         {
@@ -29,27 +34,22 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #region Constructors
 
-        public CustomShapePaneItem(string shapeName, string shapePath)
+        public CustomShapePaneItem(CustomShapePaneWPF parent, string shapeName, string shapePath, bool isReadyForEditing)
         {
-            Initialize(shapeName, shapePath);
-            /*
-            editImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabEditButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            pasteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabPasteButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()); 
-            deleteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabDeleteButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());*/
+            Initialize(isReadyForEditing);
+            this.parent = parent;
+            ImagePath = shapePath;
+            this.shapeName = shapeName;
+            textBox.Text = shapeName;
+            ToolTip = shapeName;
 
-            //MouseDoubleClick += 
+            // critical line, we need to free the reference to the image immediately after we've
+            // finished thumbnail generation, else we could not modify (rename/ delete) the
+            // image. Therefore, we use using keyword to ensure a collection.
+            using (Bitmap bitmap = new Bitmap(shapePath))
+            {
+                Image = Utils.GraphicsUtil.CreateThumbnailImage(bitmap, 50, 50);
+            }
         }
 
         #endregion
@@ -69,105 +69,62 @@ namespace PowerPointLabs.ShapesLab.Views
             }
         }
 
-        public String Text
+        public Status EditStatus
         {
             get
             {
-                return textBox.Text;
+                return editStatus;
             }
             set
             {
-                if (!Verify(value))
+                if (value == editStatus)
                 {
-                    MessageBox.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(value)
-                                        ? CommonText.ErrorNameTooLong
-                                        : CommonText.ErrorInvalidCharacter);
-
-                    textBox.SelectAll();
                     return;
                 }
-                textBox.Text = value;
-                ToolTip = value;
+                editStatus = value;
+                switch (value)
+                {
+                    case Status.Editing:
+                        StartNameEdit();
+                        break;
+                    case Status.Idle:
+                        FinishNameEdit();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
-        public bool Highlighted { get; set; }
-
         public string ImagePath { get; set; }
+
+        public string Text
+        {
+            get
+            {
+                return shapeName;
+            }
+        }
 
         #endregion
 
         #region API
 
-        public void RenameShape(string newShapeName)
+        /// <summary>
+        /// Updates UI
+        /// </summary>
+        /// <param name="newShapeName"></param>
+        public void SyncRenameShape(string newShapeName)
         {
-            string newPath = ImagePath.Replace(@"\" + Text, @"\" + newShapeName);
-            Text = newShapeName;
-            File.Move(ImagePath, newPath);
-            ImagePath = newPath;
-        }
-
-        public void StartNameEdit()
-        {
-            //TODO
-            /*
-            // add the text box
-            if (!motherPanel.Controls.Contains(labelTextBox))
-            {
-                motherPanel.Controls.Add(labelTextBox);
-            }
-
-            _nameFinishHandled = false;
-            State = Status.Editing;
-
-            Highlight();
-
-            labelTextBox.Enabled = true;
-            labelTextBox.Focus();
-            labelTextBox.SelectAll();
-
-            SetToolTip("Editing...");
-            */
-        }
-
-        public void FinishNameEdit()
-        {
-            //TODO
-            /*
-            // since messagebox will trigger LostFocus event, this method
-            // has chance to be triggered mulitple times. To avoid this,
-            // a flag will be set on the first time the function is called,
-            // and skip the function by checking if the flag has been set.
-            if (_nameFinishHandled)
-            {
-                return;
-            }
-
-            _nameFinishHandled = true;
-            NameLabel = labelTextBox.Text;
-
-            string oldName = Path.GetFileNameWithoutExtension(ImagePath);
-
-            if (_isGoodName &&
-                !IsDuplicateName(oldName))
-            {
-                State = Status.Idle;
-
-                labelTextBox.Enabled = false;
-                NameEditFinish(this, oldName);
-
-                SetToolTip(NameLabel);
-            }
-            else
-            {
-                StartNameEdit();
-            }
-            */
+            textBox.Text = newShapeName;
+            ToolTip = newShapeName;
+            shapeName = newShapeName;
         }
 
         # endregion
 
         #region Helper Functions
+
         // for names, we do not allow name involves
         // < (less than)
         // > (greater than)
@@ -182,58 +139,59 @@ namespace PowerPointLabs.ShapesLab.Views
         // Regex = [<>:"/\\|?*]
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
 
-        private void Initialize()
+        private void Initialize(bool isReadyForEdit)
         {
             InitializeComponent();
 
-            textBox.MouseDoubleClick += (sender, e) => textBox.SelectAll();
+            canvas.MouseLeftButtonDown += TextBoxContainerClick;
+            canvas.Focusable = true;
             textBox.KeyDown += EnterKeyWhileEditing;
-            textBox.LostFocus += NameLabelLostFocus;
+            textBox.LostFocus += TextBoxLostFocus;
+            editShape.Click += EditShapeClick;
+            deleteShape.Click += DeleteShapeClick;
 
-            textBox.IsEnabled = true;
-            SetReadOnlyTextBox();
-        }
-
-        private void Initialize(string shapeName, string shapePath)
-        {
-            Initialize();
-
-            // critical line, we need to free the reference to the image immediately after we've
-            // finished thumbnail generation, else we could not modify (rename/ delete) the
-            // image. Therefore, we use using keyword to ensure a collection.
-            //TODO
-            using (Bitmap bitmap = new Bitmap(shapePath))
+            if (isReadyForEdit)
             {
-                Image = Utils.GraphicsUtil.CreateThumbnailImage(bitmap, 50, 50);
+                SetEditableTextBox();
             }
-            Text = shapeName;
+            else
+            {
+                SetReadOnlyTextBox();
+            }
         }
 
         private void SetReadOnlyTextBox()
         {
+            textBox.IsEnabled = false;
             textBox.IsReadOnly = true;
-            textBox.IsReadOnlyCaretVisible = false;
+            textBox.IsHitTestVisible = false;
+            textBox.CaretIndex = 0;
             textBox.BorderThickness = new Thickness(0, 0, 0, 0);
             textBox.Background = Background;
         }
 
         private void SetEditableTextBox()
         {
+            textBox.IsEnabled = true;
             textBox.IsReadOnly = false;
+            textBox.IsHitTestVisible = true;
+            textBox.CaretIndex = 0;
             textBox.BorderThickness = new Thickness(2, 2, 2, 2);
             textBox.Background = System.Windows.Media.Brushes.White;
+            textBox.Focus();
+            textBox.SelectAll();
         }
 
         private bool IsDuplicateName(string newShapeName)
         {
             // if the name hasn't changed, we don't need to check for duplicate name
             // since the default name/ old name is confirmed unique.
-            if (newShapeName == Text)
+            if (newShapeName == shapeName)
             {
-                return false;
+                return true;
             }
 
-            string newPath = ImagePath.Replace(newShapeName, Text);
+            string newPath = ImagePath.Replace(shapeName, newShapeName);
 
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
@@ -245,13 +203,53 @@ namespace PowerPointLabs.ShapesLab.Views
             return false;
         }
 
-        private bool Verify(string name)
+        private bool IsValidName(string name)
         {
             Regex invalidChars = new Regex(InvalidCharsRegex);
 
             return !(string.IsNullOrWhiteSpace(name) ||
                      invalidChars.IsMatch(name) ||
                      Utils.ShapeUtil.IsShapeNameOverMaximumLength(name));
+        }
+
+        private void RenameShape(string newShapeName)
+        {
+            if (!IsValidName(newShapeName))
+            {
+                MessageBox.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(newShapeName)
+                                    ? CommonText.ErrorNameTooLong
+                                    : CommonText.ErrorInvalidCharacter);
+                textBox.Text = shapeName;
+                textBox.SelectAll();
+                return;
+            }
+
+            if (IsDuplicateName(newShapeName) && File.Exists(ImagePath))
+            {
+                return;
+            }
+            //Update image
+            string newPath = ImagePath.Replace(@"\" + shapeName, @"\" + newShapeName);
+            if (File.Exists(ImagePath))
+            {
+                File.Move(ImagePath, newPath);
+                this.GetAddIn().ShapePresentation.RenameShape(shapeName, newShapeName);
+            }
+            ImagePath = newPath;
+
+            this.GetAddIn().SyncShapeRename(shapeName, newShapeName, parent.CurrentCategory);
+            parent.RenameCustomShape(shapeName, newShapeName);
+        }
+
+        private void StartNameEdit()
+        {
+            SetEditableTextBox();
+        }
+
+        private void FinishNameEdit()
+        {
+            SetReadOnlyTextBox();
+            RenameShape(textBox.Text);
         }
 
         #endregion
@@ -284,32 +282,78 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             if (e.Key == Key.Return)
             {
-                FinishNameEdit();
+                UnfocusTextBox();
                 e.Handled = true;
             }
         }
 
-        private void NameLabelLostFocus(object sender, EventArgs args)
+        private void UnfocusTextBox()
         {
-            FinishNameEdit();
+            //unfocus from the textbox
+            DependencyObject scope = FocusManager.GetFocusScope(textBox);
+            FocusManager.SetFocusedElement(scope, this as IInputElement);
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private void TextBoxLostFocus(object sender, EventArgs args)
         {
-            //TODO
-            //parent.RemoveFormatItem(this);
+            hasJustExitedFromTextBox = true;
+            EditStatus = Status.Idle;
+        }
+        
+        private void EditShapeClick(object sender, RoutedEventArgs e)
+        {
+            EditStatus = Status.Editing;
         }
 
-        //TODO
+        private void DeleteShapeClick(object sender, RoutedEventArgs e)
+        {
+            parent.RemoveAllSelectedShapes();
+        }
+
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ApplyFormatToSelected();
+            e.Handled = true;
+            if (e.ClickCount < 2)
+            {
+                return;
+            }
+            UnfocusTextBox();
+            EditStatus = Status.Idle;
+            parent.AddShapesToSlide();
         }
 
-        private void ApplyFormatToSelected()
+        private void TextBoxContainerClick(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
-            this.StartNewUndoEntry();
+            if (!parent.IsShapeSelected(this))
+            {
+                return;
+            }
+            canvas.Focus();
+            new Thread(delegate ()
+            {
+                Thread.Sleep(1000);
+                Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate ()
+                {
+                    FocusTextBox();
+                }));
+            }).Start();
+
+            OnMouseDoubleClick(sender, e);
+        }
+
+        private void FocusTextBox()
+        {
+            if (hasJustExitedFromTextBox)
+            {
+                hasJustExitedFromTextBox = false;
+                return;
+            }
+            if (!canvas.IsFocused)
+            {
+                return;
+            }
+            EditStatus = Status.Editing;
+            SetEditableTextBox();
         }
 
         #endregion
