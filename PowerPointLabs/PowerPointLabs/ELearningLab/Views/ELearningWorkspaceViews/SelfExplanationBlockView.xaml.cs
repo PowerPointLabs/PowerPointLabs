@@ -102,13 +102,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 IntPtr.Zero,
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
-            startImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.RightArrowGreen.GetHbitmap(),
-               IntPtr.Zero,
-               Int32Rect.Empty,
-               BitmapSizeOptions.FromEmptyOptions());
             audioImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
               Properties.Resources.SpeakTextContext.GetHbitmap(),
+              IntPtr.Zero,
+              Int32Rect.Empty,
+              BitmapSizeOptions.FromEmptyOptions());
+            cancelCalloutImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+              Properties.Resources.CancelCalloutButton.GetHbitmap(),
               IntPtr.Zero,
               Int32Rect.Empty,
               BitmapSizeOptions.FromEmptyOptions());
@@ -162,6 +162,14 @@ namespace PowerPointLabs.ELearningLab.Views
             dialog.Show();
         }
 
+        private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            calloutTextBox.Visibility = Visibility.Collapsed;
+            hasShortVersionCheckBox.Visibility = Visibility.Visible;
+            cancelCalloutBorder.Visibility = Visibility.Collapsed;
+            hasShortVersionCheckBox.IsChecked = false;
+        }
+
         private void TriggerTypeComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             RoutedEventArgs eventArgs = new RoutedEventArgs(TriggerTypeSelectionChangedEvent);
@@ -174,10 +182,14 @@ namespace PowerPointLabs.ELearningLab.Views
             if ((bool)((CheckBox)sender).IsChecked)
             {
                 calloutTextBox.Visibility = Visibility.Visible;
+                hasShortVersionCheckBox.Visibility = Visibility.Collapsed;
+                cancelCalloutBorder.Visibility = Visibility.Visible;
             }
             else
             {
                 calloutTextBox.Visibility = Visibility.Collapsed;
+                hasShortVersionCheckBox.Visibility = Visibility.Visible;
+                cancelCalloutBorder.Visibility = Visibility.Collapsed;
             }
         }
 
