@@ -36,12 +36,13 @@ namespace PowerPointLabs.ELearningLab.Utility
             calloutBox.TextFrame.TextRange.Text = calloutText;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             calloutBox.TextFrame.TextRange.Font.Size = 16;
             calloutBox.Fill.ForeColor.RGB = 0;
             calloutBox.Fill.Transparency = 0.2f;
             calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
             calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
+            calloutBox.Line.Weight = 0.05f;
             calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
             calloutBox.Left = 10;
             calloutBox.Top = 10;
