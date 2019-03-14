@@ -62,9 +62,13 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 hasShortVersion = (bool)value;
-                if (!hasShortVersion)
+                if (hasShortVersion)
                 {
-                    calloutText = captionText;
+                    if (string.IsNullOrEmpty(calloutText.Trim()))
+                    {
+                        calloutText = captionText;
+                        NotifyPropertyChanged("CalloutText");
+                    }
                 }
             }
         }
@@ -77,8 +81,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             }
             set
             {
-                calloutText = value;
-                NotifyPropertyChanged("CalloutText");
+                    calloutText = value;
+                    NotifyPropertyChanged("CalloutText");
             }
         }
         public string CaptionText
@@ -92,7 +96,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 captionText = value;
                 if (!hasShortVersion)
                 {
-                    calloutText = value;
+                    CalloutText = value;
                 }
                 NotifyPropertyChanged("CaptionText");
             }
