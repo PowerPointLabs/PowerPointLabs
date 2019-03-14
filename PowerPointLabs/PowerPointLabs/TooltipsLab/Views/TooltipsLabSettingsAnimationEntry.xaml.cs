@@ -27,11 +27,13 @@ namespace PowerPointLabs.TooltipsLab.Views
         {
             InitializeComponent();
             Type = type;
+            //TODO - uncomment when proper images are added
+            /*
             imageBox.Source = Imaging.CreateBitmapSourceFromHBitmap(
                 image.GetHbitmap(),
                 IntPtr.Zero,
                 Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                BitmapSizeOptions.FromEmptyOptions());*/
         }
 
         #endregion
