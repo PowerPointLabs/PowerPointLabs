@@ -106,6 +106,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void InitializeDefaultAndRankedVoicesFromList(List<string> preferences)
         {
+            AudioSettingService.preferredVoices.Clear();
             for (int i = 0;  i < preferences.Count(); i++)
             {
                 string voiceName = preferences[i].Trim();
