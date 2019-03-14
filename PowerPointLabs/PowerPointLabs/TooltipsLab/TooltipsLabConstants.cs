@@ -6,7 +6,7 @@ namespace PowerPointLabs.TooltipsLab
     {
         public const MsoAutoShapeType TriggerShape = MsoAutoShapeType.msoShapeOval;
         public const string ShapeNameHeader = "msoShape";
-        public const string AnimationNameHeader = "msoAnim";
+        public const string AnimationNameHeader = "msoAnimEffect";
         public const float TriggerShapeDefaultLeft = 200;
         public const float TriggerShapeDefaultTop = 200;
         public const float TriggerShapeDefaultHeight = 25;

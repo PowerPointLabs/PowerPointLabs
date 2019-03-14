@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,7 @@ namespace PowerPointLabs.TooltipsLab.Views
         {
             InitializeComponent();
             Type = type;
+            RemoveImage();
             //TODO - uncomment when proper images are added
             /*
             imageBox.Source = Imaging.CreateBitmapSourceFromHBitmap(
@@ -49,11 +51,45 @@ namespace PowerPointLabs.TooltipsLab.Views
             set
             {
                 type = value;
-                string nameForDisplay = value.ToString().Replace(
-                    TooltipsLabConstants.AnimationNameHeader, "");
+                string nameForDisplay = RawNameToDisplayName(value.ToString());
                 textBlock.Text = nameForDisplay;
                 ToolTip = nameForDisplay;
             }
+        }
+
+        #endregion
+
+        #region Helper functions
+
+        private void RemoveImage()
+        {
+            imageBox.IsEnabled = false;
+            imageBox.Height = 0;
+
+            Height = 20;
+            textBlock.Margin = new Thickness(0, 5, 0, 5);
+        }
+
+        private string RawNameToDisplayName(string name)
+        {
+            string trimmed = name.Replace(TooltipsLabConstants.AnimationNameHeader, "");
+
+            if (string.IsNullOrWhiteSpace(trimmed))
+            {
+                return string.Empty;
+            }
+
+            StringBuilder newText = new StringBuilder(trimmed.Length * 2);
+            newText.Append(trimmed[0]);
+            for (int i = 1; i < trimmed.Length; i++)
+            {
+                if (char.IsUpper(trimmed[i]))
+                {
+                    newText.Append(' ');
+                }
+                newText.Append(trimmed[i]);
+            }
+            return newText.ToString();
         }
 
         #endregion
