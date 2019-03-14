@@ -26,15 +26,16 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
-        <Label x:Name="copyLabel" Content="Callout Shape" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <ListBox x:Name="shapeList" Margin="10,40,10,180" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Label x:Name="shapeHeading" Content="Callout Shape" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <ListBox x:Name="shapeList" Margin="10,40,10,190" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel x:Name="wrapPanel" Orientation="Horizontal"></WrapPanel>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-        <ListBox x:Name="animationList" Margin="10,190,10,40" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Label x:Name="animationHeading" Content="Callout Animation" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <ListBox x:Name="animationList" Margin="10,210,10,40" SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel x:Name="wrapPanel" Orientation="Horizontal"></WrapPanel>
