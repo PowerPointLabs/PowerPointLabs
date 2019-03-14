@@ -17,8 +17,11 @@
         </Canvas>
         <Grid.ContextMenu>
             <ContextMenu>
-                <MenuItem x:Name="editShape" Header="Edit"></MenuItem>
-                <MenuItem x:Name="deleteShape" Header="Delete"></MenuItem>
+                <MenuItem x:Name="addShape" Header="Add To Slide"></MenuItem>
+                <MenuItem x:Name="editShape" Header="Edit Name"></MenuItem>
+                <MenuItem x:Name="moveShape" Header="Move Shape To"></MenuItem>
+                <MenuItem x:Name="deleteShape" Header="Remove Shape"></MenuItem>
+                <MenuItem x:Name="copyShape" Header="Copy Shape To"></MenuItem>
             </ContextMenu>
         </Grid.ContextMenu>
     </Grid>

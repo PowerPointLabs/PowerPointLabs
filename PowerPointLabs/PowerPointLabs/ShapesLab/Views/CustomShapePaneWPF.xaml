@@ -28,16 +28,27 @@
             </Button.ToolTip>
         </Button>
         <Label x:Name="copyLabel" Content="Add" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-        <Canvas x:Name="categoryBoxHolder" Margin="10,86,10,720">
+        <Canvas x:Name="categoryBoxHolder" Margin="10,106,10,700">
             <ComboBox x:Name="categoryBox" SelectionChanged="CategoryChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}">
             </ComboBox>
         </Canvas>
-        <ListBox x:Name="shapeList" Margin="10,186,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox x:Name="shapeList" Margin="10,146,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel x:Name="wrapPanel" Orientation="Horizontal" Loaded="WrapPanelLoaded"></WrapPanel>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="addCategory" Header="Add Category"></MenuItem>
+                    <MenuItem x:Name="removeCategory" Header="Remove Category"></MenuItem>
+                    <MenuItem x:Name="renameCategory" Header="Rename Category"></MenuItem>
+                    <MenuItem x:Name="setAsDefault" Header="Set as Default Category"></MenuItem>
+                    <MenuItem x:Name="settings" Header="Shapes Lab Settings"></MenuItem>
+                    <MenuItem x:Name="importCategory" Header="Import Library"></MenuItem>
+                    <MenuItem x:Name="importShapes" Header="Import Shapes"></MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
         </ListBox>
     </Grid>
 </UserControl>

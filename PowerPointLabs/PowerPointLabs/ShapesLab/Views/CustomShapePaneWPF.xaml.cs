@@ -71,8 +71,6 @@ namespace PowerPointLabs.ShapesLab.Views
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
 
-            InitializeContextMenu();
-
             //singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
 
         }
@@ -278,39 +276,6 @@ namespace PowerPointLabs.ShapesLab.Views
         #endregion
 
         #region Context Menu
-
-        private void InitializeContextMenu()
-        {
-            //TODO
-            /*
-            addToSlideToolStripMenuItem.Text = ShapesLabText.ShapeContextStripAddToSlide;
-            editNameToolStripMenuItem.Text = ShapesLabText.ShapeContextStripEditName;
-            moveShapeToolStripMenuItem.Text = ShapesLabText.ShapeContextStripMoveShape;
-            removeShapeToolStripMenuItem.Text = ShapesLabText.ShapeContextStripRemoveShape;
-            copyToToolStripMenuItem.Text = ShapesLabText.ShapeContextStripCopyShape;
-
-            addCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripAddCategory;
-            removeCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripRemoveCategory;
-            renameCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripRenameCategory;
-            setAsDefaultToolStripMenuItem.Text = ShapesLabText.CategoryContextStripSetAsDefaultCategory;
-            settingsToolStripMenuItem.Text = ShapesLabText.CategoryContextStripCategorySettings;
-            importCategoryToolStripMenuItem.Text = ShapesLabText.CategoryContextStripImportCategory;
-            importShapesToolStripMenuItem.Text = ShapesLabText.CategoryContextStripImportShapes;
-
-            foreach (ToolStripMenuItem contextMenu in shapeContextMenuStrip.Items)
-            {
-                if (contextMenu.Text != ShapesLabText.ShapeContextStripMoveShape)
-                {
-                    contextMenu.MouseEnter += MoveContextMenuStripLeaveEvent;
-                }
-
-                if (contextMenu.Text != ShapesLabText.ShapeContextStripCopyShape)
-                {
-                    contextMenu.MouseEnter += CopyContextMenuStripLeaveEvent;
-                }
-            }
-            */
-        }
 
         private void ContextMenuStripAddClicked()
         {
