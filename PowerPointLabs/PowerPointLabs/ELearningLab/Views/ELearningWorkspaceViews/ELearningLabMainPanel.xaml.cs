@@ -123,7 +123,14 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         public void SyncElearningLabOnSlideSelectionChanged()
         {
+            // do not check for sync if previous slide is deleted
             if (!DoesSlideExist(slideId))
+            {
+                return;
+            }
+            // We do not check for sync if the current slide is the same as previous slide. 
+            PowerPointSlide _slide = this.GetCurrentSlide();
+            if (DoesSlideExist(slideId) && _slide.ID.Equals(slide.ID))
             {
                 return;
             }
