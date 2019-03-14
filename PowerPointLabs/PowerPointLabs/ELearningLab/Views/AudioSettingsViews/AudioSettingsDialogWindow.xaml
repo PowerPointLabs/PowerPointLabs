@@ -12,7 +12,7 @@
                       ResizeMode="NoResize"
                       SizeToContent="WidthAndHeight"
                       WindowTransitionsEnabled="False"
-                      Title="Narrations Lab Settings"
+                      Title="Settings"
                       ShowCloseButton="False"
                       WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>

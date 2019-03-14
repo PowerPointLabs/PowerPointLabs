@@ -243,14 +243,6 @@ namespace PowerPointLabs.ELearningLab.Views
             preferredAudioListView.ItemsSource = AudioSettingService.preferredVoices;
 
             // update UI
-            if (AudioSettingService.preferredVoices.Count > 0)
-            {
-                editPreferenceButton.Content = "click to edit voice preferences";
-            }
-            else
-            {
-                editPreferenceButton.Content = "click to add voice preferences";
-            }
             editPreferenceButton.Visibility = Visibility.Visible;
             audioListView.Visibility = Visibility.Collapsed;
             updatePreferenceButton.Visibility = Visibility.Collapsed;
@@ -318,14 +310,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void SetupAudioPreferenceUI()
         {
-            if (AudioSettingService.preferredVoices.Count > 0)
-            {
-                editPreferenceButton.Content = "click to edit voice preferences";
-            }
-            else
-            {
-                editPreferenceButton.Content = "click to add voice preferences";
-            }
             editPreferenceButton.Visibility = Visibility.Visible;
             audioListView.Visibility = Visibility.Collapsed;
             updatePreferenceButton.Visibility = Visibility.Collapsed;
