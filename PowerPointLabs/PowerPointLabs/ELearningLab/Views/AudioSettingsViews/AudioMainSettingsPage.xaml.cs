@@ -58,13 +58,12 @@ namespace PowerPointLabs.ELearningLab.Views
         
         public ObservableCollection<IVoice> Voices { get; set; }
 
-        private static AudioMainSettingsPage instance;
 
         private Dictionary<int, ComboBox> rankToComboBoxMapping;
 
         private List<IVoice> rankedAudioListCache = new List<IVoice>();
 
-        private AudioMainSettingsPage()
+        public AudioMainSettingsPage()
         {
             InitializeComponent();
             rankToComboBoxMapping = new Dictionary<int, ComboBox>();
@@ -78,15 +77,7 @@ namespace PowerPointLabs.ELearningLab.Views
             preferredAudioListView.DataContext = this;
             preferredAudioListView.ItemsSource = AudioSettingService.preferredVoices;
         }
-        public static AudioMainSettingsPage GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new AudioMainSettingsPage();
-            }
 
-            return instance;
-        }
 
         public void SetAudioMainSettings(VoiceType selectedVoiceType, IVoice selectedVoice, bool isPreviewChecked)
         {
@@ -110,10 +101,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         }
 
-        public void Destroy()
-        {
-            instance = null;
-        }
 
         #region XAML-Binded Event Handlers
 
@@ -136,14 +123,15 @@ namespace PowerPointLabs.ELearningLab.Views
                 return;
             }
             AudioSettingStorageService.SaveAudioSettingPreference();
-            AudioSettingsDialogWindow.GetInstance().Close();
-            AudioSettingsDialogWindow.GetInstance().Destroy();
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.Close();
+            SelfExplanationBlockView.dialog.NarrationsLabSettingsMainFrame.Refresh();
         }
 
         private void AzureVoiceBtn_Click(object sender, RoutedEventArgs e)
         {
-            AzureVoiceLoginPage.GetInstance().previousPage = AudioSettingsPage.MainSettingsPage;
-            AudioSettingsDialogWindow.GetInstance().SetCurrentPage(AudioSettingsPage.AzureLoginPage);
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.GoToMainPage = false;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -159,12 +147,12 @@ namespace PowerPointLabs.ELearningLab.Views
                 ComputerVoice defaultVoiceSelected = computerVoiceComboBox.SelectedItem as ComputerVoice;
                 DialogConfirmedHandler(VoiceType.ComputerVoice, defaultVoiceSelected, previewCheckbox.IsChecked.GetValueOrDefault());
             }
-            AudioSettingsDialogWindow.GetInstance().Destroy();
         }
 
         private void ChangeAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            AudioSettingsDialogWindow.GetInstance().SetCurrentPage(AudioSettingsPage.AzureLoginPage);
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.GoToMainPage = false;
         }
 
         private void LogOutButton_Click(object sender, RoutedEventArgs e)

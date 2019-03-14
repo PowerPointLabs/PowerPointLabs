@@ -84,6 +84,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         #endregion
 
+        public static AudioSettingsDialogWindow dialog = 
+            new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
+
         public SelfExplanationBlockView()
         {
             InitializeComponent();
@@ -155,11 +158,12 @@ namespace PowerPointLabs.ELearningLab.Views
         private void VoicePreviewButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccountStorageService.LoadUserAccount();
-            AudioPreviewPage.GetInstance().PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
-            ConfigureAudioPreviewSettings();
-            AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance(AudioSettingsPage.AudioPreviewPage);
+            AudioPreviewPage page = dialog.MainPage as AudioPreviewPage;
+            page.PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
+            ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
             dialog.Show();
+            dialog.Activate();
         }
 
         private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)
@@ -252,14 +256,14 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        private void ConfigureAudioPreviewSettings()
+        private void ConfigureAudioPreviewSettings(AudioPreviewPage page)
         {
             string textToSpeak = captionTextBox.Text.Trim();
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(audioNameLabel.Content.ToString());
             string defaultPostfix = StringUtility.ExtractDefaultLabelFromVoiceLabel(audioNameLabel.Content.ToString());
             VoiceType voiceType = AudioService.GetVoiceTypeFromString(voiceName, defaultPostfix);
             IVoice voice = AudioService.GetVoiceFromString(voiceName);
-            AudioPreviewPage.GetInstance().SetAudioPreviewSettings(textToSpeak, voiceType, voice);
+            page.SetAudioPreviewSettings(textToSpeak, voiceType, voice);
         }
 
         #endregion

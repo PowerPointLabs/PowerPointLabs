@@ -12,8 +12,10 @@
                       ResizeMode="NoResize"
                       SizeToContent="WidthAndHeight"
                       WindowTransitionsEnabled="False"
-                      Title="Settings"
                       ShowCloseButton="False"
+                      Title="Settings"
+                      x:Name="audioSettingsDialogWindow"
+                      ContentRendered="MetroWindow_ContentRendered"
                       WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <ResourceDictionary>
@@ -27,7 +29,14 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
-        <Frame NavigationUIVisibility="Hidden" x:Name="NarrationsLabSettingsMainFrame" Content="{Binding CurrentPage, 
-            Converter={local:AudioSettingsIndexToPageConverter}}" Margin="5 5 5 5"/>
+        <Frame NavigationUIVisibility="Hidden" x:Name="NarrationsLabSettingsMainFrame" Margin="5 5 5 5">
+            <Frame.Content>
+                <MultiBinding Converter="{local:AudioSettingsIndexToPageConverter}" UpdateSourceTrigger="PropertyChanged">
+                    <Binding Path="GoToMainPage" />
+                    <Binding Path="MainPage" />
+                    <Binding Path="SubPage" />
+                </MultiBinding>
+            </Frame.Content>
+        </Frame>
     </Grid>
 </controls:MetroWindow>

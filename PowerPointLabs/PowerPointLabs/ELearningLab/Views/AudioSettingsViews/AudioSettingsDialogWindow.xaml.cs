@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 
 namespace PowerPointLabs.ELearningLab.Views
@@ -9,62 +11,68 @@ namespace PowerPointLabs.ELearningLab.Views
     /// </summary>
     public partial class AudioSettingsDialogWindow : INotifyPropertyChanged
     {
-
-
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
-        public AudioSettingsPage CurrentPage
+
+        public bool GoToMainPage
         {
             get
             {
-                return _currentPage;
+                return goToMainPage;
             }
             set
             {
-                _currentPage = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("CurrentPage"));
+                goToMainPage = value;
+                Logger.Log(goToMainPage.ToString() + "set");
+                PropertyChanged(this, new PropertyChangedEventArgs("GoToMainPage"));
             }
         }
 
-        private static AudioSettingsDialogWindow instance;
-        private AudioSettingsPage _currentPage { get; set; } = AudioSettingsPage.MainSettingsPage;
-
-        public void SetCurrentPage(AudioSettingsPage page)
+        public Page MainPage
         {
-            CurrentPage = page;
-        }
-
-        public static AudioSettingsDialogWindow GetInstance(AudioSettingsPage page = AudioSettingsPage.MainSettingsPage)
-        {
-            if (instance == null)
-            {                
-                instance = new AudioSettingsDialogWindow();
-                instance.SetCurrentPage(page);
+            get
+            {
+                return mainPage;
             }
-            return instance;
+            set
+            {
+                mainPage = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("MainPage"));
+            }
         }
 
-        public void SetDialogWindowHeight(int height)
+        public Page SubPage
         {
-            Height = height;
+            get
+            {
+                return subPage;
+            }
+            set
+            {
+                subPage = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("SubPage"));
+            }
         }
-        public void Destroy()
-        {
-            AzureVoiceLoginPage.GetInstance().Destroy();
-            AudioMainSettingsPage.GetInstance().Destroy();
-            AudioPreviewPage.GetInstance().Destroy();
-            instance = null;
-        }
-        private AudioSettingsDialogWindow()
+
+        private Page mainPage, subPage;
+        private bool goToMainPage;
+
+        public AudioSettingsDialogWindow(AudioSettingsPage page)
         {
             InitializeComponent();
-            this.DataContext = this;
+            mainPage = CreatePageFromIndex(page);
+            mainPage.DataContext = this;
+            subPage = new AzureVoiceLoginPage();
+            subPage.DataContext = this;
+            goToMainPage = true;
+            DataContext = this;
+            audioSettingsDialogWindow.AllowsTransparency = true;
+            audioSettingsDialogWindow.Opacity = 0;
         }
-
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
 
-            //Calculate half of the offset to move the window
+            //Calculate half of the offset to move the form
 
             if (sizeInfo.HeightChanged)
             {
@@ -74,6 +82,29 @@ namespace PowerPointLabs.ELearningLab.Views
             if (sizeInfo.WidthChanged)
             {
                 Left += (sizeInfo.PreviousSize.Width - sizeInfo.NewSize.Width) / 2;
+            }
+        }
+
+        private void MetroWindow_ContentRendered(object sender, System.EventArgs e)
+        {
+            audioSettingsDialogWindow.Opacity = 1;
+        }
+
+        private Page CreatePageFromIndex(AudioSettingsPage index)
+        {
+            switch (index)
+            {
+                case AudioSettingsPage.MainSettingsPage:
+                    return new AudioMainSettingsPage();
+                case AudioSettingsPage.AzureLoginPage:
+                    AzureVoiceLoginPage loginInstance = new AzureVoiceLoginPage();
+                    loginInstance.key.Text = "";
+                    loginInstance.endpoint.SelectedIndex = -1;
+                    return loginInstance;
+                case AudioSettingsPage.AudioPreviewPage:
+                    return new AudioPreviewPage();
+                default:
+                    return null;
             }
         }
     }

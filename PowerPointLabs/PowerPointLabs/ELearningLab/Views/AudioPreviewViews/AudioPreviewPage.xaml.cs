@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
@@ -28,15 +29,6 @@ namespace PowerPointLabs.ELearningLab.Views
     {
         public delegate void DialogConfirmedDelegate(string textToSpeak, VoiceType selectedVoiceType, IVoice selectedVoice);
         public DialogConfirmedDelegate PreviewDialogConfirmedHandler { get; set; }
-        public static AudioPreviewPage GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new AudioPreviewPage();
-            }
-
-            return instance;
-        }
 
         public VoiceType SelectedVoiceType
         {
@@ -95,7 +87,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private static Dictionary<string, string> textSpokenByPerson 
             = new Dictionary<string, string>();
 
-        private AudioPreviewPage()
+        public AudioPreviewPage()
         {
             InitializeComponent();
             azureVoiceComboBox.ItemsSource = AzureVoiceList.voices
@@ -106,13 +98,6 @@ namespace PowerPointLabs.ELearningLab.Views
             rankedAudioListView.DataContext = this;
             rankedAudioListView.ItemsSource = AudioSettingService.preferredVoices;
         }
-
-        public void Destroy()
-        {
-            instance = null;
-        }
-
-        private static AudioPreviewPage instance;
 
         #region Public Functions
 
@@ -151,7 +136,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AudioPreviewPage_Loaded(object sender, RoutedEventArgs e)
         {
-            instance.ToggleAzureFunctionVisibility();
+            ToggleAzureFunctionVisibility();
             defaultVoiceLabel.Content = AudioSettingService.selectedVoice.ToString();
             defaultVoiceRadioButton.Checked += RadioButton_Checked;
             azureVoiceRadioButton.Checked += RadioButton_Checked;
@@ -165,9 +150,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AzureVoiceLogInButton_Click(object sender, RoutedEventArgs e)
         {
-            AzureVoiceLoginPage.GetInstance().previousPage = AudioSettingsPage.AudioPreviewPage;
             AudioSettingService.AudioPreviewPageHeight = Height;
-            AudioSettingsDialogWindow.GetInstance().SetCurrentPage(AudioSettingsPage.AzureLoginPage);
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.GoToMainPage = false;
         }
 
         private void SpeakButton_Click(object sender, RoutedEventArgs e)
@@ -203,14 +188,15 @@ namespace PowerPointLabs.ELearningLab.Views
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             PreviewDialogConfirmedHandler(spokenText.Text.Trim(), SelectedVoiceType, SelectedVoice);
-            AudioSettingsDialogWindow.GetInstance().Close();
-            AudioSettingsDialogWindow.GetInstance().Destroy();
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            AudioSettingsDialogWindow.GetInstance().Close();
-            AudioSettingsDialogWindow.GetInstance().Destroy();
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.Close();
+            SelfExplanationBlockView.dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
