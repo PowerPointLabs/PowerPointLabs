@@ -801,6 +801,16 @@ namespace PowerPointLabs.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ELearningLab {
+            get {
+                object obj = ResourceManager.GetObject("ELearningLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         public static byte[] EyeDropper {
@@ -1966,6 +1976,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap SwapIcon {
             get {
                 object obj = ResourceManager.GetObject("SwapIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SyncExplanationIcon {
+            get {
+                object obj = ResourceManager.GetObject("SyncExplanationIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

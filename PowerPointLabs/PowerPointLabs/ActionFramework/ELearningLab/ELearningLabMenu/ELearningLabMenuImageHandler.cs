@@ -16,7 +16,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningLabMenu
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.NarrationsLab);
+            return new Bitmap(Properties.Resources.ELearningLab);
         }
     }
 }

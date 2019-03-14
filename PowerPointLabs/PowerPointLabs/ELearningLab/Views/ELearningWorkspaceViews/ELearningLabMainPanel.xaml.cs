@@ -68,7 +68,7 @@ namespace PowerPointLabs.ELearningLab.Views
             slideId = slide.ID;
             InitializeComponent();
             syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.Refresh.GetHbitmap(),
+               Properties.Resources.SyncExplanationIcon.GetHbitmap(),
                IntPtr.Zero,
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
