@@ -53,6 +53,54 @@
                     onAction="OnAction"/>
           </menu>
 
+          <menu id="TooltipsLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
+                size="large">
+            <gallery idMso="ShapesInsertGallery"/>
+            <menu id="CreateMenu"
+                  getLabel="GetLabel"
+                  getEnabled="GetEnabled"
+                  getImage="GetImage">
+              <button id="CreateTooltipButton"
+                   tag="CreateTooltip"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   onAction="OnAction"/>
+              <button id="CreateCalloutButton"
+                   tag="CreateCallout"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   getEnabled="GetEnabled"
+                   onAction="OnAction"/>
+              <button id="CreateTriggerButton"
+                   tag="CreateTrigger"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   getEnabled="GetEnabled"
+                   onAction="OnAction"/>
+            </menu>
+            <button id="AssignTooltipButton"
+                    tag="AssignTooltip"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <menuSeparator id="TooltipsLabSettingsSeparator"/>
+            <button id="TooltipsLabSettingsButton"
+                    tag="TooltipsLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
+
           <menu id="ZoomLabMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"
@@ -94,6 +142,43 @@
         <group id="AudioGroup"
                getLabel="GetLabel"
                getImage="GetImage">
+
+          <menu id="eLearningLabMenu"
+             getLabel="GetLabel"
+             getImage="GetImage"
+             getSupertip="GetSupertip"
+             getEnabled="GetEnabled"
+             size="large">
+
+            <button id="ELearningTaskPaneButton"
+                   tag="E-Learning Workspace"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   getEnabled="GetEnabled"
+                   onAction="OnAction"/>
+            <!--To be implemented>
+            <button id="AddAudioButton"
+                   tag="AddAudio"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   onAction="OnAction"/>
+            <button id="DeleteAudioButton"
+       tag="AddAudio"
+       getLabel="GetLabel"
+       getImage="GetImage"
+       getSupertip="GetSupertip"
+       onAction="OnAction"/>
+            <End-->
+            <menuSeparator id="ELearningLabSettingsSeparator"/>
+            <button id="ELearningLabSettingsButton"
+                    tag="ELearningLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
           
           <menu id="NarrationsLabMenu"
                 getLabel="GetLabel"
@@ -128,7 +213,7 @@
                     getSupertip="GetSupertip"
                     onAction="OnAction"/>
           </menu>
-
+          
           <menu id="CaptionsLabMenu"
                 getLabel="GetLabel"
                 getImage="GetImage"

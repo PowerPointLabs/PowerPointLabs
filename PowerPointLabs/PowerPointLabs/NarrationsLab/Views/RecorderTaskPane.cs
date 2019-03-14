@@ -17,6 +17,7 @@ using NAudio.Wave;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
@@ -24,7 +25,7 @@ using PowerPointLabs.XMLMisc;
 
 using PPExtraEventHelper;
 
-namespace PowerPointLabs.NarrationsLab.Views
+namespace PowerPointLabs.ELearningLab.Views
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
     // These task panes use User Control from Container 
@@ -1371,9 +1372,9 @@ namespace PowerPointLabs.NarrationsLab.Views
                     {
                         newRec.EmbedOnSlide(currentSlide, scriptIndex);
 
-                        if (!NotesToAudio.IsRemoveAudioEnabled)
+                        if (!ComputerVoiceRuntimeService.IsRemoveAudioEnabled)
                         {
-                            NotesToAudio.IsRemoveAudioEnabled = true;
+                            ComputerVoiceRuntimeService.IsRemoveAudioEnabled = true;
                             Globals.ThisAddIn.Ribbon.RefreshRibbonControl("RemoveAudioButton");
                         }
                     }

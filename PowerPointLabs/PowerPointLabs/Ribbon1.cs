@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.PictureSlidesLab.Views;
 using PowerPointLabs.TextCollection;
 
@@ -177,9 +177,6 @@ namespace PowerPointLabs
             DisableFormatTab = new Boolean();
 
             _ribbon = ribbonUi;
-
-            SetVoicesFromInstalledOptions();
-            SetCoreVoicesToSelections();
         }
 
         public void RefreshRibbonControl(String controlId)
@@ -194,34 +191,6 @@ namespace PowerPointLabs
                 throw;
             }
         }
-
-        #region Narrations Lab initialization
-        private void SetVoicesFromInstalledOptions()
-        {
-            NarrationsLabSettings.VoiceNameList = NotesToAudio.GetVoices().ToList();
-        }
-
-        private void SetCoreVoicesToSelections()
-        {
-            string defaultVoice = GetSelectedVoiceOrNull();
-            NotesToAudio.SetDefaultVoice(defaultVoice);
-        }
-
-        private string GetSelectedVoiceOrNull()
-        {
-            string selectedVoice = null;
-            try
-            {
-                selectedVoice = NarrationsLabSettings.VoiceNameList.ToArray()[NarrationsLabSettings.VoiceSelectedIndex];
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                // No voices are installed (It should be impossible for the index to be out of range otherwise.)
-                Logger.LogException(e, "GetSelectedVoiceOrNull");
-            }
-            return selectedVoice;
-        }
-        #endregion
 
         #region Button Labels
         public string GetPowerPointLabsAddInsTabLabel(Office.IRibbonControl control)

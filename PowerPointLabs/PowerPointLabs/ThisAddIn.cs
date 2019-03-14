@@ -12,16 +12,18 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
+using System.Windows.Threading;
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
@@ -56,6 +58,8 @@ namespace PowerPointLabs
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
+        private delegate void SyncElearningItemsDelegate();
+
         private const string AppLogName = "PowerPointLabs.log";
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
@@ -64,6 +68,7 @@ namespace PowerPointLabs
         private const string TempZipName = "tempZip.zip";
 
         private string _deactivatedPresFullName;
+        private string tempFolderName;
 
         private bool _pptLabsShouldTerminate;
 
@@ -82,7 +87,7 @@ namespace PowerPointLabs
 
         #region API
 
-        public bool IsApplicationVersion2010() 
+        public bool IsApplicationVersion2010()
         {
             return Application.Version == OfficeVersion2010;
         }
@@ -96,6 +101,11 @@ namespace PowerPointLabs
         {
             CustomTaskPane taskPane = GetActivePane(type);
             return taskPane?.Control;
+        }
+
+        public string GetTempFolderName()
+        {
+            return tempFolderName;
         }
 
         public CustomTaskPane GetActivePane(Type type)
@@ -621,12 +631,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (NarrationsLab.NotesToAudio.IsRemoveAudioEnabled)
+                        if (ELearningLab.Service.ComputerVoiceRuntimeService.IsRemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = true;
+                        ELearningLab.Service.ComputerVoiceRuntimeService.IsRemoveAudioEnabled = true;
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -697,6 +707,28 @@ namespace PowerPointLabs
             if (timerPane != null)
             {
                 timerPane.Visible = isVisible;
+            }
+        }
+
+        private void UpdateELearningPane(int selectedSlidesCount)
+        {
+            CustomTaskPane elearningLabPane = GetActivePane(typeof(ELearningLabTaskpane));
+            if (elearningLabPane == null)
+            {
+                return;
+            }
+            ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
+            if (selectedSlidesCount > 0)
+            {
+                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
+                if (elearningLabPane.Visible == true)
+                {
+                    taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
+                }
+            }
+            else
+            {
+                elearningLabPane.Visible = false;
             }
         }
 
@@ -833,7 +865,7 @@ namespace PowerPointLabs
             // Here, we want the priority to be: Application action > Window action > Slide action
 
             // Priority High: Application Actions
-            ((PowerPoint.EApplication_Event) Application).NewPresentation += ThisAddInNewPresentation;
+            ((PowerPoint.EApplication_Event)Application).NewPresentation += ThisAddInNewPresentation;
             Application.AfterNewPresentation += ThisAddInAfterNewPresentation;
             Application.PresentationOpen += ThisAddInPresentationOpen;
             Application.PresentationClose += ThisAddInPresentationClose;
@@ -881,8 +913,8 @@ namespace PowerPointLabs
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
-            
+            ComputerVoiceRuntimeService.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+
             // update recorder pane
             if (sldRange.Count > 0)
             {
@@ -898,6 +930,7 @@ namespace PowerPointLabs
 
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
+                ELearningService.IsELearningWorkspaceEnabled = true;
                 PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
@@ -905,10 +938,12 @@ namespace PowerPointLabs
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
+                ELearningService.IsELearningWorkspaceEnabled = false;
                 PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
                 ShutDownPictureSlidesLab();
             }
 
+            UpdateELearningPane(sldRange.Count);
             // in case the recorder is on event
             BreakRecorderEvents();
 
@@ -939,12 +974,14 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
+            Ribbon.RefreshRibbonControl("CreateMenu");
             Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
             Ribbon.RefreshRibbonControl("RemoveAudioButton");
+            Ribbon.RefreshRibbonControl("ELearningTaskPaneButton");
         }
 
         // To handle AccessViolationException
@@ -998,6 +1035,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
+            Ribbon.RefreshRibbonControl("AssignTooltipButton");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
@@ -1029,12 +1067,12 @@ namespace PowerPointLabs
             if (pres.Application.Windows.Count > 0)
             {
                 PowerPoint.DocumentWindow activeWindow = pres.Application.ActiveWindow;
-                string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                tempFolderName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
                 // if we opened a new window, register the window with its name
                 if (!_documentHashcodeMapper.ContainsKey(activeWindow))
                 {
-                    _documentHashcodeMapper[activeWindow] = tempName;
+                    _documentHashcodeMapper[activeWindow] = tempFolderName;
                 }
 
                 // Refresh ribbon to enable the menu buttons if there are now at least one window
@@ -1042,6 +1080,8 @@ namespace PowerPointLabs
                 // Initialise the "Maintain Tab Focus" checkbox
                 Ribbon.InitialiseVisibilityCheckbox();
             }
+            // load audio setting preference for elearning lab
+            AudioSettingStorageService.LoadAudioSettingPreference();
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
@@ -1061,7 +1101,7 @@ namespace PowerPointLabs
             }
 
             // special case: if we are closing 'ShapeGallery.pptx' or 'Sync Lab - Do not edit.pptx', no other action will be done
-            if (pres.Name.Contains(ShapeGalleryPptxName) || pres.Name.Contains(SyncLabPptxName)) 
+            if (pres.Name.Contains(ShapeGalleryPptxName) || pres.Name.Contains(SyncLabPptxName))
             {
                 return;
             }
@@ -1113,7 +1153,7 @@ namespace PowerPointLabs
 
         }
 
-        private void RefreshRibbonMenuButtons() 
+        private void RefreshRibbonMenuButtons()
         {
             Ribbon.RefreshRibbonControl(AnimationLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ZoomLabText.RibbonMenuId);

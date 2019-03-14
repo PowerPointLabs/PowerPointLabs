@@ -1,0 +1,211 @@
+﻿<UserControl x:Class="PowerPointLabs.ELearningLab.Views.SelfExplanationBlockView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:PowerPointLabs.ELearningLab.Views"
+             xmlns:converters="clr-namespace:PowerPointLabs.ELearningLab.Converters"
+             Loaded="SelfExplanationBlockView_Loaded"
+             mc:Ignorable="d">
+
+    <Control.Resources>
+        <Style x:Key="EditCaptionVoiceContentButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.9" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TextBoxWithPlaceHolder" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border Background="{TemplateBinding Background}" 
+                          x:Name="Bd" BorderBrush="SlateGray" 
+                          BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                            <Grid Margin="2 2 2 2">
+                                <TextBox Text="{Binding Path=Text,
+                                                RelativeSource={RelativeSource TemplatedParent}, 
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 x:Name="textSource" AcceptsReturn="True" TextWrapping="Wrap"
+                                 Background="Transparent" BorderThickness="0" 
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 Panel.ZIndex="2" />
+                                <TextBox Text="{TemplateBinding Tag}" Background="{TemplateBinding Background}" 
+                                         AcceptsReturn="True" Panel.ZIndex="1" BorderThickness="0" TextWrapping="Wrap"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <TextBox.Style>
+                                        <Style TargetType="{x:Type TextBox}">
+                                            <Setter Property="Foreground" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Text, Source={x:Reference textSource}}" Value="">
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Control.Resources>
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="420"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="circle" Grid.Row="0" Width="30" Height="30" CornerRadius="15">
+                    <Border.Background>
+                        <MultiBinding Converter="{converters:ListItemClickNumToColorConverter}">
+                            <Binding Path="IsDummyItem" />
+                            <Binding Path="IsTriggerTypeComboBoxEnabled" />
+                            <Binding Path="TriggerIndex" />
+                            <Binding Path="ClickNo" />
+                        </MultiBinding>
+                    </Border.Background>
+                    <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       Visibility="{Binding Path=ShouldLabelDisplay, Converter={StaticResource BoolToVisibility}}"
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="13"/>
+                </Border>
+                <Button Grid.Row="1" HorizontalAlignment="Center" Margin="2 2 2 2"
+                    MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="UpButton_Click"
+                        CommandParameter="{Binding .}">
+                    <Image x:Name="upImage" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Up Button</TextBlock>
+                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                            <TextBlock>
+                        Move self-explanation item up.
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <Button Grid.Row="2" HorizontalAlignment="Center" Margin="2 2 2 2"
+                    MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="DeleteButton_Click"
+                        CommandParameter="{Binding .}">
+                    <Image x:Name="deleteImage" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Delete Button</TextBlock>
+                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                            <TextBlock>
+                        Delete self-explanation item.
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <Button Grid.Row="3" HorizontalAlignment="Center" Margin="2 2 2 2"
+                    MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="DownButton_Click"
+                        CommandParameter="{Binding .}">
+                    <Image x:Name="downImage" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Down Button</TextBlock>
+                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                            <TextBlock>
+                        Move self-explanation item down.
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="1 1 1 1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" x:Name="audioNameLabel"
+                               Content="{Binding VoiceLabel, Mode=TwoWay}" FontSize="8" Padding="0" 
+                               HorizontalAlignment="Center"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <Image x:Name="startImage" MinHeight="10" MaxHeight="10" MinWidth="5" MaxWidth="5" VerticalAlignment="Center"
+                   Stretch="Fill" Margin="2 2 0 2"/>
+                        <Label Content="Start: " FontSize="10" Margin="0 2 0 2" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="triggerTypeComboBox" SelectedIndex="{Binding TriggerIndex}" MinWidth="60" MaxWidth="80" 
+                      FontSize="7" VerticalAlignment="Center" Margin="-5 0 0 0" 
+                              IsEnabled="{Binding IsTriggerTypeComboBoxEnabled, UpdateSourceTrigger=PropertyChanged}"
+                              IsEnabledChanged="TriggerTypeComboBox_IsEnabledChanged">
+                            <ComboBoxItem Content="On Click" />
+                            <ComboBoxItem Content="With Previous" />
+                        </ComboBox>
+                        <CheckBox x:Name="calloutCheckBox" Content="Callout"  VerticalContentAlignment="Center" 
+                          IsChecked="{Binding IsCallout, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="2 2 1 2" />
+                        <CheckBox x:Name="captionCheckBox" Content="Caption"  VerticalContentAlignment="Center" 
+                          IsChecked="{Binding IsCaption, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="1 2 1 2"/>
+                        <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" 
+                          IsChecked="{Binding IsVoice, UpdateSourceTrigger=PropertyChanged}" FontSize="10"/>
+                        <Button Margin="3 0 0 0" x:Name="audioPreviewButton"
+                    MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="VoicePreviewButton_Click">
+                            <Image x:Name="audioImage" Stretch="Fill"/>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Voice Preview Button</TextBlock>
+                                    <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8" />
+                                    <TextBlock>
+                        Preview different voices and select the best voice that suits your need.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button.ToolTip>
+                        </Button>
+                        <CheckBox x:Name="hasShortVersionCheckBox" Content="Use Shorter Callout"  VerticalContentAlignment="Center" 
+                          IsChecked="{Binding HasShortVersion, Mode=TwoWay}" FontSize="10" Margin="2 2 1 2"
+                              Checked="HasShortVersionCheckBox_CheckChanged" Unchecked="HasShortVersionCheckBox_CheckChanged">
+                            <CheckBox.ToolTip>
+                                <TextBlock>
+                                Check to create a shorter version for callout text.
+                                <LineBreak/>
+                                Uncheck to use the same text as caption / voice for callout text.
+                                </TextBlock>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="2" Margin="0 0 5 5">
+                    <TextBox x:Name="captionTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
+                             Text="{Binding CaptionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 2 2 2"
+                 TextWrapping="Wrap" FontSize="12" Tag="Enter your caption / voice notes here..."
+                             AcceptsReturn="True" Margin="0" MinHeight="30"/>
+                    <TextBox x:Name="calloutTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
+                             Text="{Binding CalloutText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             Tag="Enter your shorter notes for callout here..." Padding="2 2 2 2"
+                 TextWrapping="Wrap" FontSize="12" AcceptsReturn="True" Margin="0 2 0 0" MinHeight="20" Visibility="Collapsed"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </StackPanel>
+</UserControl>
