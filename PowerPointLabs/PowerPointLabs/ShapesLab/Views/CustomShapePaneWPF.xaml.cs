@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -16,9 +17,8 @@ using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+
 using MessageBox = System.Windows.Forms.MessageBox;
-using Point = System.Windows.Point;
-using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.ShapesLab.Views
@@ -37,7 +37,7 @@ namespace PowerPointLabs.ShapesLab.Views
         private WrapPanel wrapPanel;
 
         # region Properties
-        public List<string> Categories { get; private set; }
+        public ObservableCollection<string> Categories { get; private set; }
 
         public string CurrentCategory { get; set; }
 
@@ -63,6 +63,7 @@ namespace PowerPointLabs.ShapesLab.Views
         public CustomShapePaneWPF()
         {
             InitializeComponent();
+            DataContext = this;
 
             addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     Properties.Resources.AddToCustomShapes.GetHbitmap(),
@@ -85,9 +86,9 @@ namespace PowerPointLabs.ShapesLab.Views
             ShapeRootFolderPath = shapeRootFolderPath;
 
             CurrentCategory = defaultShapeCategoryName;
-            Categories = new List<string>(Globals.ThisAddIn.ShapePresentation.Categories);
+            Categories = new ObservableCollection<string>(Globals.ThisAddIn.ShapePresentation.Categories);
             _categoryBinding = new BindingSource { DataSource = Categories };
-            categoryBox.DataContext = _categoryBinding;
+            categoryBox.ItemsSource = _categoryBinding;
 
             for (int i = 0; i < Categories.Count; i++)
             {
@@ -840,6 +841,11 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             DehighlightSelected();
+        }
+
+        private void CategoryChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
 
         #endregion

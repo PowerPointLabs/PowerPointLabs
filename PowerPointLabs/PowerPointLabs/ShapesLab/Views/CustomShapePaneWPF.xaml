@@ -28,7 +28,10 @@
             </Button.ToolTip>
         </Button>
         <Label x:Name="copyLabel" Content="Add" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-        <ComboBox x:Name="categoryBox" Margin="10,86,10,720"></ComboBox>
+        <Canvas x:Name="categoryBoxHolder" Margin="10,86,10,720">
+            <ComboBox x:Name="categoryBox" SelectionChanged="CategoryChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}">
+            </ComboBox>
+        </Canvas>
         <ListBox x:Name="shapeList" Margin="10,186,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
