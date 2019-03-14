@@ -9,7 +9,6 @@ namespace PowerPointLabs.TooltipsLab
     {
         public static MsoAutoShapeType ShapeType = MsoAutoShapeType.msoShapeRoundedRectangularCallout;
         public static MsoAnimEffect AnimationType = MsoAnimEffect.msoAnimEffectFade;
-        public static bool IsUseFrameAnimation = false;
 
         public static void ShowSettingsDialog()
         {
@@ -21,6 +20,7 @@ namespace PowerPointLabs.TooltipsLab
         private static void OnSettingsDialogConfirmed(MsoAutoShapeType newShapeType, MsoAnimEffect newAnimationType)
         {
             ShapeType = newShapeType;
+            AnimationType = newAnimationType;
         }
     }
 }
