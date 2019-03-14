@@ -29,12 +29,12 @@ namespace PowerPointLabs.Utils
         #region Constants
         private static readonly Object FileLock = new object();
         public static float PictureExportingRatio = 330.0f / 72.0f;
-        private const float TargetDpi = 96.0f;
+        private const float targetDpi = 96.0f;
         private static float dpiScale = 1.0f;
 
         // Picture exporting ratios
-        private const float PictureExportingRatioHigh = 330.0f / 72.0f;
-        private const float PictureExportingRatioCompressed = 96.0f / 72.0f;
+        private const float pictureExportingRatioHigh = 330.0f / 72.0f;
+        private const float pictureExportingRatioCompressed = 96.0f / 72.0f;
 
         // Heuristics for image compression obtained through testing
         private const long targetCompression = 75L;
@@ -45,7 +45,7 @@ namespace PowerPointLabs.Utils
         {
             using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
             {
-                dpiScale = g.DpiX / TargetDpi;
+                dpiScale = g.DpiX / targetDpi;
             }
         }
         #endregion
@@ -297,7 +297,7 @@ namespace PowerPointLabs.Utils
 
         public static void ShouldCompressPictureExport(bool shouldCompress)
         {
-            PictureExportingRatio = shouldCompress ? PictureExportingRatioCompressed : PictureExportingRatioHigh;
+            PictureExportingRatio = shouldCompress ? pictureExportingRatioCompressed : pictureExportingRatioHigh;
         }
 
         #endregion
