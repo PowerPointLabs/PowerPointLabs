@@ -362,6 +362,10 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
+            if (Items.LastOrDefault() is SelfExplanationClickItem)
+            {
+                selfExplanationClickItem.TriggerIndex = (int)TriggerType.OnClick;
+            }
             Items.Add(selfExplanationClickItem);
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
