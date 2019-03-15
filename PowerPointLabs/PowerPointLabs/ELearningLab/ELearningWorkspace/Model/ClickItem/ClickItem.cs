@@ -31,6 +31,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
         {
             get
             {
+                /*
                 if (this is CustomClickItem)
                 {
                     return true;
@@ -48,12 +49,19 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                         && selfExplanationClickItem.TriggerIndex == (int)TriggerType.WithPrevious
                         && selfExplanationClickItem.ClickNo == 0;                  
                     return isItemVolunteerOnClick || isItemForcedOnClick || isFirstItemAndStartWithPrevious;
-                }
+                }*/
+                return shouldLabelDisplay;
+            }
+            set
+            {
+                shouldLabelDisplay = value;
+                NotifyPropertyChanged("ShouldLabelDisplay");
             }
         }
         public ClickItem()
         { }
         private int clickNo;
+        private bool shouldLabelDisplay;
 
         public override bool Equals(object other)
         {

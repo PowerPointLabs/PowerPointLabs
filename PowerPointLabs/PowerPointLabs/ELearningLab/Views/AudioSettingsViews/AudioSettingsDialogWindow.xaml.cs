@@ -22,7 +22,6 @@ namespace PowerPointLabs.ELearningLab.Views
             set
             {
                 goToMainPage = value;
-                Logger.Log(goToMainPage.ToString() + "set");
                 PropertyChanged(this, new PropertyChangedEventArgs("GoToMainPage"));
             }
         }

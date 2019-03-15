@@ -495,19 +495,28 @@ namespace PowerPointLabs.ELearningLab.Views
                 if (isFirstOnClickSelfExplanationItem && !isDummySelfExplanationItem)
                 {
                     clickItem.ClickNo = 1;
+                    clickItem.ShouldLabelDisplay = true;
                 }
-                if (isFirstWithPreviousSelfExplanationItem || isDummySelfExplanationItem)
+                if (isFirstWithPreviousSelfExplanationItem)
                 {
                     clickItem.ClickNo = 0;
+                    clickItem.ShouldLabelDisplay = true;
+                }
+                if (isDummySelfExplanationItem)
+                {
+                    clickItem.ClickNo = 0;
+                    clickItem.ShouldLabelDisplay = false;
                 }
             }
             else if (isOnClickSelfExplanationAfterCustomItem || isDummySelfExplanationItem)
             {
                 clickItem.ClickNo = Items.ElementAt(index - 1).ClickNo;
+                clickItem.ShouldLabelDisplay = false;
             }
             else
             {
                 clickItem.ClickNo = Items.ElementAt(index - 1).ClickNo + 1;
+                clickItem.ShouldLabelDisplay = true;
             }
             clickItem.NotifyPropertyChanged("ShouldLabelDisplay");
         }

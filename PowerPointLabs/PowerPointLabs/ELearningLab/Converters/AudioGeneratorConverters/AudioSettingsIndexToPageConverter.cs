@@ -20,7 +20,6 @@ namespace PowerPointLabs.ELearningLab.Converters
             try
             {
                 goToMainPage = (bool)values[0];
-                Logger.Log(values[0].ToString());
                 mainPage = (Page)values[1];
                 subPage = (Page)values[2];
 

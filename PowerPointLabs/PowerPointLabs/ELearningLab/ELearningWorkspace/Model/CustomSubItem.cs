@@ -48,6 +48,13 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             this.effect = effect;
             shapeId = shape.Id.ToString();
             shapeName = shape.Name;
+            
+            string shapeText = shape.TextFrame.TextRange.Text.Trim();
+           // Try to detect place holder shape and grab text inside placeholder shape
+           // if (shape.PlaceholderFormat != null && shapeText != string.Empty)
+           // {
+           //     shapeName = shapeText;
+           // }
             type = EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(effect);
         }
 
