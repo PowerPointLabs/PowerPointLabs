@@ -121,7 +121,21 @@ namespace PowerPointLabs.ShapesLab.Views
             shapeName = newShapeName;
         }
 
-        # endregion
+        #endregion
+
+        #region Context Menu
+        
+        private void EditShapeClick(object sender, RoutedEventArgs e)
+        {
+            EditStatus = Status.Editing;
+        }
+
+        private void DeleteShapeClick(object sender, RoutedEventArgs e)
+        {
+            parent.RemoveAllSelectedShapes();
+        }
+
+        #endregion
 
         #region Helper Functions
 
@@ -147,8 +161,6 @@ namespace PowerPointLabs.ShapesLab.Views
             canvas.Focusable = true;
             textBox.KeyDown += EnterKeyWhileEditing;
             textBox.LostFocus += TextBoxLostFocus;
-            editShape.Click += EditShapeClick;
-            deleteShape.Click += DeleteShapeClick;
 
             if (isReadyForEdit)
             {
@@ -300,16 +312,6 @@ namespace PowerPointLabs.ShapesLab.Views
             EditStatus = Status.Idle;
         }
         
-        private void EditShapeClick(object sender, RoutedEventArgs e)
-        {
-            EditStatus = Status.Editing;
-        }
-
-        private void DeleteShapeClick(object sender, RoutedEventArgs e)
-        {
-            parent.RemoveAllSelectedShapes();
-        }
-
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;

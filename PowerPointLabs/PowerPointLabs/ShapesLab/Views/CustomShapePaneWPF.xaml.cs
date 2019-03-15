@@ -28,6 +28,10 @@ namespace PowerPointLabs.ShapesLab.Views
     /// </summary>
     public partial class CustomShapePaneWPF : System.Windows.Controls.UserControl
     {
+        private const string ImportLibraryFileDialogFilter =
+            "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
+        private const string ImportShapesFileDialogFilter =
+            "PowerPointLabs Shape File|*.pptlabsshape;*.pptx";
         private const string ImportFileNameNoExtension = "import";
         private const string ImportFileCopyName = ImportFileNameNoExtension + ".pptx";
 
@@ -276,33 +280,8 @@ namespace PowerPointLabs.ShapesLab.Views
         #endregion
 
         #region Context Menu
-
-        private void ContextMenuStripAddClicked()
-        {
-            this.StartNewUndoEntry();
-
-            PowerPointSlide currentSlide = this.GetCurrentSlide();
-            PowerPointPresentation pres = this.GetCurrentPresentation();
-
-            if (currentSlide == null)
-            {
-                MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
-                return;
-            }
-            ClipboardUtil.RestoreClipboardAfterAction(() =>
-            {
-                // all selected shape will be added to the slide
-                List<string> nameList = new List<string>();
-                foreach (CustomShapePaneItem shape in shapeList.SelectedItems)
-                {
-                    nameList.Add(shape.Text);
-                }
-                this.GetAddIn().ShapePresentation.CopyShape(nameList);
-                return currentSlide.Shapes.Paste();
-            }, pres, currentSlide);
-        }
-
-        private void ContextMenuStripAddCategoryClicked()
+        
+        private void ContextMenuStripAddCategoryClicked(object sender, RoutedEventArgs e)
         {
             ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
@@ -318,31 +297,8 @@ namespace PowerPointLabs.ShapesLab.Views
             shapeList.Focus();
         }
 
-        private void ContextMenuStripEditClicked()
+        private void ContextMenuStripImportCategoryClicked(object sender, RoutedEventArgs e)
         {
-            //TODO
-            /*
-            if (_selectedThumbnail == null)
-            {
-                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected);
-                return;
-            }*/
-
-            // dehighlight all thumbnails except the first one
-            /*
-            while (_selectedThumbnail.Count > 1)
-            {
-                _selectedThumbnail[1].DeHighlight();
-                _selectedThumbnail.RemoveAt(1);
-            }
-
-            _selectedThumbnail[0].StartNameEdit();*/
-        }
-
-        private void ContextMenuStripImportCategoryClicked()
-        {
-            //TODO
-            /*
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Filter = ImportLibraryFileDialogFilter,
@@ -350,7 +306,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 Title = ShapesLabText.ImportLibraryFileDialogTitle
             };
 
-            flowlayoutContextMenuStrip.Hide();
+            //flowlayoutContextMenuStrip.Hide();
 
             if (fileDialog.ShowDialog() == DialogResult.Cancel)
             {
@@ -360,13 +316,10 @@ namespace PowerPointLabs.ShapesLab.Views
             ImportShapes(fileDialog.FileName, true);
 
             MessageBox.Show(ShapesLabText.SuccessImport);
-            */
         }
 
-        private void ContextMenuStripImportShapesClicked()
+        private void ContextMenuStripImportShapesClicked(object sender, RoutedEventArgs e)
         {
-            //TODO
-            /*
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Filter = ImportShapesFileDialogFilter,
@@ -389,10 +342,9 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             MessageBox.Show(ShapesLabText.SuccessImport);
-            */
         }
 
-        private void ContextMenuStripRemoveCategoryClicked()
+        private void ContextMenuStripRemoveCategoryClicked(object sender, RoutedEventArgs e)
         {
             // remove the last category will not be entertained
             if (_categoryBinding.Count == 1)
@@ -442,7 +394,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
         }
 
-        private void ContextMenuStripRenameCategoryClicked()
+        private void ContextMenuStripRenameCategoryClicked(object sender, RoutedEventArgs e)
         {
             ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
@@ -480,7 +432,7 @@ namespace PowerPointLabs.ShapesLab.Views
             shapeList.Focus();
         }
 
-        private void ContextMenuStripSetAsDefaultCategoryClicked()
+        private void ContextMenuStripSetAsDefaultCategoryClicked(object sender, RoutedEventArgs e)
         {
             Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = CurrentCategory;
 
@@ -490,7 +442,7 @@ namespace PowerPointLabs.ShapesLab.Views
             MessageBox.Show(string.Format(ShapesLabText.SuccessSetAsDefaultCategory, CurrentCategory));
         }
 
-        private void ContextMenuStripSettingsClicked()
+        private void ContextMenuStripSettingsClicked(object sender, RoutedEventArgs e)
         {
             ShapesLabSettingsDialogBox settingsDialog = new ShapesLabSettingsDialogBox(ShapeRootFolderPath);
             settingsDialog.DialogConfirmedHandler += (string newSavePath) =>
@@ -836,10 +788,6 @@ namespace PowerPointLabs.ShapesLab.Views
             this.GetAddIn().ShapePresentation.DefaultCategory = selectedCategory;
             PaneReload();
         }
-
-        #endregion
-
-        #region GUI Handles
 
         private void AddShapeButton_Click(object sender, EventArgs e)
         {
