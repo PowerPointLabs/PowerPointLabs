@@ -31,25 +31,6 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
         {
             get
             {
-                /*
-                if (this is CustomClickItem)
-                {
-                    return true;
-                }
-                else
-                {
-                    SelfExplanationClickItem selfExplanationClickItem = this as SelfExplanationClickItem;
-                    bool isItemVolunteerOnClick = !selfExplanationClickItem.IsDummyItem
-                        && selfExplanationClickItem.IsTriggerTypeComboBoxEnabled
-                        && selfExplanationClickItem.TriggerIndex == (int)TriggerType.OnClick;
-                    bool isItemForcedOnClick = !selfExplanationClickItem.IsDummyItem
-                        && !selfExplanationClickItem.IsTriggerTypeComboBoxEnabled;
-                    bool isFirstItemAndStartWithPrevious = !selfExplanationClickItem.IsDummyItem
-                        && selfExplanationClickItem.IsTriggerTypeComboBoxEnabled
-                        && selfExplanationClickItem.TriggerIndex == (int)TriggerType.WithPrevious
-                        && selfExplanationClickItem.ClickNo == 0;                  
-                    return isItemVolunteerOnClick || isItemForcedOnClick || isFirstItemAndStartWithPrevious;
-                }*/
                 return shouldLabelDisplay;
             }
             set

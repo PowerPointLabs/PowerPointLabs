@@ -196,7 +196,6 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
             parentWindow.Close();
-            SelfExplanationBlockView.dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
         }
 
         private void RadioButton_Checked(object sender, RoutedEventArgs e)

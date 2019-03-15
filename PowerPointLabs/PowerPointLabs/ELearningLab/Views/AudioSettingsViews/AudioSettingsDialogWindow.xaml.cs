@@ -89,6 +89,11 @@ namespace PowerPointLabs.ELearningLab.Views
             audioSettingsDialogWindow.Opacity = 1;
         }
 
+        private void AudioSettingsDialogWindow_Closed(object sender, System.EventArgs e)
+        {
+            SelfExplanationBlockView.dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
+        }
+
         private Page CreatePageFromIndex(AudioSettingsPage index)
         {
             switch (index)

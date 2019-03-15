@@ -83,7 +83,8 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             if (selfExplanationItem.IsCallout)
             {
-                Effect effect = CalloutService.CreateAppearEffectCalloutAnimation(slide, selfExplanationItem.CalloutText,
+                string calloutText = selfExplanationItem.HasShortVersion ? selfExplanationItem.CalloutText : selfExplanationItem.CaptionText;
+                Effect effect = CalloutService.CreateAppearEffectCalloutAnimation(slide, calloutText,
                     selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
                 effects.Add(effect);
             }

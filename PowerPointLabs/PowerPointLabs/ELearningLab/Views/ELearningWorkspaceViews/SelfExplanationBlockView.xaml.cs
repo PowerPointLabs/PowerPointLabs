@@ -159,7 +159,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             AzureAccountStorageService.LoadUserAccount();
             AudioPreviewPage page = dialog.MainPage as AudioPreviewPage;
-            page.PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
+            page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
             dialog.Show();

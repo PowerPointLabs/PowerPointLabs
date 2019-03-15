@@ -549,7 +549,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 item.HasShortVersion = false;
             }
-            if (uncheckAzureAudio)
+            if (uncheckAzureAudio && AudioService.IsAzureVoiceSelectedForItem(item))
             {
                 item.IsVoice = false;
                 item.VoiceLabel = string.Empty;

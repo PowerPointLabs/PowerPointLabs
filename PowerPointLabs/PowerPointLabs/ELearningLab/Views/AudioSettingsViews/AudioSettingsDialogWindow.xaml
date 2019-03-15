@@ -13,6 +13,7 @@
                       SizeToContent="WidthAndHeight"
                       WindowTransitionsEnabled="False"
                       ShowCloseButton="False"
+                      Closed="AudioSettingsDialogWindow_Closed"
                       Title="Settings"
                       x:Name="audioSettingsDialogWindow"
                       ContentRendered="MetroWindow_ContentRendered"
