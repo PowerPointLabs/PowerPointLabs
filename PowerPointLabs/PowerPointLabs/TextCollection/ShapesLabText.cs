@@ -18,6 +18,7 @@
         public const string ErrorAddSelectionInvalid = "Please select one shape to add.";
 
         public const string ErrorFileNameInvalid = "Invalid shape name.";
+        public const string ErrorCategoryNameMissing = "Provided category does not exist.";
         public const string ErrorNoShapeTextFirstLine = "No shapes saved yet.";
         public const string ErrorNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
         public const string ErrorNoPanelSelected = "No shape selected.";

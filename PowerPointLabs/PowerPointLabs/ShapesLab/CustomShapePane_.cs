@@ -381,7 +381,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void ContextMenuStripAddCategoryClicked()
         {
-            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, false);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
                 Globals.ThisAddIn.ShapePresentation.AddCategory(newCategoryName);
@@ -552,7 +552,7 @@ namespace PowerPointLabs.ShapesLab
 
         private void ContextMenuStripRenameCategoryClicked()
         {
-            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, false);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
                 // if current category is the default category, change ShapeConfig

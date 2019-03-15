@@ -5,21 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="120"
+             MouseDown="ClickOutsideTextBox"
              MouseDoubleClick="OnMouseDoubleClick">
-    <Grid x:Name="grid" ClipToBounds="True" Background="Transparent">
+    <Grid x:Name="grid" ClipToBounds="True" IsHitTestVisible="True" Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition x:Name="col1" Width="60" MaxWidth="60"/>
             <ColumnDefinition x:Name="col2" Width="60"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="imageBox" Grid.Column="0" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
+        <Image x:Name="imageBox" Grid.Column="0" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+               HorizontalAlignment="Left" Width="40" Height="40" IsHitTestVisible="False"/>
         <Canvas x:Name="canvas" Grid.Column="1" Background="Transparent">
-            <TextBox x:Name="textBox" Margin="0,20,0,20" Width="{Binding ActualWidth, ElementName=canvas}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False"/>
+            <TextBox x:Name="textBox" Margin="0,20,0,20" Width="{Binding ActualWidth, ElementName=canvas}"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" IsHitTestVisible="False"/>
         </Canvas>
         <Grid.ContextMenu>
             <ContextMenu>
-                <MenuItem x:Name="addShape" Header="Add To Slide"></MenuItem>
+                <MenuItem x:Name="addShape" Header="Add To Slide" Click="AddShapeClick"></MenuItem>
                 <MenuItem x:Name="editShape" Header="Edit Name" Click="EditShapeClick"></MenuItem>
-                <MenuItem x:Name="moveShape" Header="Move Shape To"></MenuItem>
+                <MenuItem x:Name="moveShape" Header="Move Shape To" Click="MoveShapeClick"></MenuItem>
                 <MenuItem x:Name="deleteShape" Header="Remove Shape" Click="DeleteShapeClick"></MenuItem>
                 <MenuItem x:Name="copyShape" Header="Copy Shape To"></MenuItem>
             </ContextMenu>

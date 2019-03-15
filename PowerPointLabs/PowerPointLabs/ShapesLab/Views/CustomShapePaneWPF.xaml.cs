@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Core;
@@ -28,6 +29,7 @@ namespace PowerPointLabs.ShapesLab.Views
     /// </summary>
     public partial class CustomShapePaneWPF : System.Windows.Controls.UserControl
     {
+        private const string DefaultCategorySuffix = " (default)";
         private const string ImportLibraryFileDialogFilter =
             "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
         private const string ImportShapesFileDialogFilter =
@@ -88,7 +90,7 @@ namespace PowerPointLabs.ShapesLab.Views
             ShapeRootFolderPath = shapeRootFolderPath;
 
             CurrentCategory = defaultShapeCategoryName;
-            Categories = new ObservableCollection<string>(Globals.ThisAddIn.ShapePresentation.Categories);
+            Categories = new ObservableCollection<string>(this.GetAddIn().ShapePresentation.Categories);
             _categoryBinding = new BindingSource { DataSource = Categories };
             categoryBox.ItemsSource = _categoryBinding;
 
@@ -100,8 +102,6 @@ namespace PowerPointLabs.ShapesLab.Views
                     break;
                 }
             }
-
-            PaneReload();
         }
 
         public void CustomShapePaneWPF_Loaded(object sender, RoutedEventArgs e)
@@ -270,30 +270,64 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    Globals.ThisAddIn.ShapePresentation.CopyShape(shape.Text);
+                    this.GetAddIn().ShapePresentation.CopyShape(shape.Text);
                     currentSlide.Shapes.Paste().Select();
                     return ClipboardUtil.ClipboardRestoreSuccess;
                 }, this.GetCurrentPresentation(), currentSlide);
             }
         }
 
+        public void MoveShapes(string newCategoryName)
+        {
+            //Add shape names first as shapeList.Items will be modified
+            List<string> shapeNames = new List<string>();
+            foreach (CustomShapePaneItem shape in shapeList.Items)
+            {
+                shapeNames.Add(shape.Text);
+            }
+
+            foreach (string shapeName in shapeNames)
+            {
+                string oriPath = Path.Combine(CurrentShapeFolderPath, shapeName) + ".png";
+                string destPath = Path.Combine(ShapeRootFolderPath, newCategoryName, shapeName) + ".png";
+
+                // if we have an identical name in the destination category, we won't allow
+                // moving
+                if (File.Exists(destPath))
+                {
+                    MessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination,
+                                    shapeName,
+                                    newCategoryName));
+                    return;
+                }
+                PowerPointSlide currentSlide = this.GetCurrentSlide();
+                PowerPointPresentation pres = this.GetCurrentPresentation();
+
+                // move shape in ShapeGallery to correct place
+                Globals.ThisAddIn.ShapePresentation.MoveShapeToCategory(pres, currentSlide, shapeName, newCategoryName);
+                File.Move(oriPath, destPath);
+                RemoveCustomShape(shapeName);
+
+                Globals.ThisAddIn.SyncShapeRemove(shapeName, CurrentCategory);
+                Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, newCategoryName);
+            }
+        }
+
         #endregion
 
         #region Context Menu
-        
+
         private void ContextMenuStripAddCategoryClicked(object sender, RoutedEventArgs e)
         {
-            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, false);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
-                Globals.ThisAddIn.ShapePresentation.AddCategory(newCategoryName);
+                this.GetAddIn().ShapePresentation.AddCategory(newCategoryName);
 
                 _categoryBinding.Add(newCategoryName);
-
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
             };
             categoryInfoDialog.ShowDialog();
-
             shapeList.Focus();
         }
 
@@ -356,7 +390,7 @@ namespace PowerPointLabs.ShapesLab.Views
             int categoryIndex = categoryBox.SelectedIndex;
             string categoryName = _categoryBinding[categoryIndex].ToString();
             string categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
-            bool isDefaultCategory = Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory;
+            bool isDefaultCategory = this.GetAddIn().ShapesLabConfig.DefaultCategory == CurrentCategory;
 
             if (isDefaultCategory)
             {
@@ -372,41 +406,37 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             // remove current category in shape gallery
-            Globals.ThisAddIn.ShapePresentation.RemoveCategory();
+            this.GetAddIn().ShapePresentation.RemoveCategory();
             // remove category on the disk
             FileDir.DeleteFolder(categoryPath);
 
             _categoryBinding.RemoveAt(categoryIndex);
+            categoryBox.SelectedIndex = Math.Max(0, categoryIndex - 1);
 
-            // RemoveAt may NOT change the index, so we need to manually set the default category here
-            if (Globals.ThisAddIn.ShapePresentation.DefaultCategory == null)
+            if (this.GetAddIn().ShapePresentation.DefaultCategory == null)
             {
-                categoryIndex = categoryBox.SelectedIndex;
-                categoryName = _categoryBinding[categoryIndex].ToString();
-
-                CurrentCategory = categoryName;
-                Globals.ThisAddIn.ShapePresentation.DefaultCategory = categoryName;
+                this.GetAddIn().ShapePresentation.DefaultCategory = CurrentCategory;
             }
 
             if (isDefaultCategory)
             {
-                Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = (string)_categoryBinding[0];
+                this.GetAddIn().ShapesLabConfig.DefaultCategory = (string)_categoryBinding[0];
             }
         }
 
         private void ContextMenuStripRenameCategoryClicked(object sender, RoutedEventArgs e)
         {
-            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty);
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, false);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
                 // if current category is the default category, change ShapeConfig
-                if (Globals.ThisAddIn.ShapesLabConfig.DefaultCategory == CurrentCategory)
+                if (this.GetAddIn().ShapesLabConfig.DefaultCategory == CurrentCategory)
                 {
-                    Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = newCategoryName;
+                    this.GetAddIn().ShapesLabConfig.DefaultCategory = newCategoryName;
                 }
 
                 // rename the category in ShapeGallery
-                Globals.ThisAddIn.ShapePresentation.RenameCategory(newCategoryName);
+                this.GetAddIn().ShapePresentation.RenameCategory(newCategoryName);
 
                 // rename the category on the disk
                 string newPath = Path.Combine(ShapeRootFolderPath, newCategoryName);
@@ -434,7 +464,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void ContextMenuStripSetAsDefaultCategoryClicked(object sender, RoutedEventArgs e)
         {
-            Globals.ThisAddIn.ShapesLabConfig.DefaultCategory = CurrentCategory;
+            this.GetAddIn().ShapesLabConfig.DefaultCategory = CurrentCategory;
 
             //TODO
             //comboBox.Refresh();
@@ -533,6 +563,10 @@ namespace PowerPointLabs.ShapesLab.Views
             shapeList.Items.Clear();
             PrepareShapes();
 
+            if (shapeList.Items.IsEmpty)
+            {
+                return;
+            }
             // scroll the view to show the first item
             shapeList.ScrollIntoView(shapeList.Items[0]);
             shapeList.Focus();
@@ -631,7 +665,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 {
                     importShapeGallery.CopyCategory(importCategory);
 
-                    Globals.ThisAddIn.ShapePresentation.AddCategory(importCategory, false, true);
+                    this.GetAddIn().ShapePresentation.AddCategory(importCategory, false, true);
 
                     _categoryBinding.Add(importCategory);
                 }
@@ -657,7 +691,7 @@ namespace PowerPointLabs.ShapesLab.Views
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 importShapeGallery.CopyShape(shapeName);
-                shapeName = Globals.ThisAddIn.ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
+                shapeName = this.GetAddIn().ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
                 string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
 
                 GraphicsUtil.ExportShape(shapeRange, exportPath);
@@ -673,9 +707,9 @@ namespace PowerPointLabs.ShapesLab.Views
             loadingDialog.Show();
 
             // close the opening presentation
-            if (Globals.ThisAddIn.ShapePresentation.Opened)
+            if (this.GetAddIn().ShapePresentation.Opened)
             {
-                Globals.ThisAddIn.ShapePresentation.Close();
+                this.GetAddIn().ShapePresentation.Close();
             }
 
             // migration only cares about if the folder has been copied to the new location entirely.
@@ -698,9 +732,9 @@ namespace PowerPointLabs.ShapesLab.Views
             ShapeRootFolderPath = newPath;
 
             // modify shape gallery presentation's path and name, then open it
-            Globals.ThisAddIn.ShapePresentation.Path = newPath;
-            Globals.ThisAddIn.ShapePresentation.Open(withWindow: false, focus: false);
-            Globals.ThisAddIn.ShapePresentation.DefaultCategory = CurrentCategory;
+            this.GetAddIn().ShapePresentation.Path = newPath;
+            this.GetAddIn().ShapePresentation.Open(withWindow: false, focus: false);
+            this.GetAddIn().ShapePresentation.DefaultCategory = CurrentCategory;
 
             loadingDialog.Close();
 
@@ -760,11 +794,6 @@ namespace PowerPointLabs.ShapesLab.Views
             DehighlightSelected();
         }
 
-        private void CategoryChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         #endregion
 
         #region Event Handlers
@@ -776,12 +805,11 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void CategoryBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            CategoryBoxSelectedIndexChanged();
-        }
-
-        private void CategoryBoxSelectedIndexChanged()
-        {
             int selectedIndex = categoryBox.SelectedIndex;
+            if (selectedIndex == -1)
+            {
+                return;
+            }
             string selectedCategory = _categoryBinding[selectedIndex].ToString();
 
             CurrentCategory = selectedCategory;
@@ -795,6 +823,11 @@ namespace PowerPointLabs.ShapesLab.Views
             ThisAddIn addIn = this.GetAddIn();
 
             AddShapeFromSelection(selection, addIn);
+        }
+
+        private void ClickOutsideShapeList(object sender, MouseButtonEventArgs e)
+        {
+            categoryBox.Focus();
         }
 
         #endregion

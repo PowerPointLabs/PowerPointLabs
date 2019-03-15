@@ -121,13 +121,31 @@ namespace PowerPointLabs.ShapesLab.Views
             shapeName = newShapeName;
         }
 
+        public void UnfocusTextBox()
+        {
+            //unfocus from the textbox
+            grid.Focus();
+        }
+
         #endregion
 
         #region Context Menu
-        
+
+        private void AddShapeClick(object sender, RoutedEventArgs e)
+        {
+            parent.AddShapesToSlide();
+        }
+
         private void EditShapeClick(object sender, RoutedEventArgs e)
         {
             EditStatus = Status.Editing;
+        }
+
+        private void MoveShapeClick(object sender, RoutedEventArgs e)
+        {
+            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, true);
+            categoryInfoDialog.DialogConfirmedHandler += parent.MoveShapes;
+            categoryInfoDialog.ShowDialog();
         }
 
         private void DeleteShapeClick(object sender, RoutedEventArgs e)
@@ -299,13 +317,6 @@ namespace PowerPointLabs.ShapesLab.Views
             }
         }
 
-        private void UnfocusTextBox()
-        {
-            //unfocus from the textbox
-            DependencyObject scope = FocusManager.GetFocusScope(textBox);
-            FocusManager.SetFocusedElement(scope, this as IInputElement);
-        }
-
         private void TextBoxLostFocus(object sender, EventArgs args)
         {
             hasJustExitedFromTextBox = true;
@@ -315,11 +326,10 @@ namespace PowerPointLabs.ShapesLab.Views
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            if (e.ClickCount < 2)
+            if (sender == canvas && e.ClickCount < 2)
             {
                 return;
             }
-            UnfocusTextBox();
             EditStatus = Status.Idle;
             parent.AddShapesToSlide();
         }
@@ -356,6 +366,11 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             EditStatus = Status.Editing;
             SetEditableTextBox();
+        }
+
+        private void ClickOutsideTextBox(object sender, MouseButtonEventArgs e)
+        {
+            UnfocusTextBox();
         }
 
         #endregion

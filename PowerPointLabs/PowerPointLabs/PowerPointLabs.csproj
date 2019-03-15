@@ -753,6 +753,9 @@
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
+      <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -1272,9 +1275,6 @@
     <Compile Include="ShapesLab\Views\ShapesLabSettingsDialogBox.xaml.cs">
       <DependentUpon>ShapesLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
-      <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="HighlightLab\Views\HighlightLabSettingsDialogBox.xaml.cs">
       <DependentUpon>HighlightLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1641,6 +1641,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SyncLab\Views\SyncFormatPaneItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1678,10 +1682,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ShapesLab\Views\ShapesLabSettingsDialogBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
