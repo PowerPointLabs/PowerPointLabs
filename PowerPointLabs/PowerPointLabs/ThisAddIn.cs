@@ -1091,8 +1091,6 @@ namespace PowerPointLabs
                 // Initialise the "Maintain Tab Focus" checkbox
                 Ribbon.InitialiseVisibilityCheckbox();
             }
-            // load audio setting preference for elearning lab
-            AudioSettingStorageService.LoadAudioSettingPreference();
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
