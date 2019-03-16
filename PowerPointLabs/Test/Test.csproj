@@ -129,7 +129,9 @@
     <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
     <Compile Include="UnitTest\CropLab\CropOutPaddingTest.cs" />
     <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
+    <Compile Include="UnitTest\ELearningLab\Model\AzureVoiceTest.cs" />
     <Compile Include="UnitTest\ELearningLab\Model\ClickItemTest.cs" />
+    <Compile Include="UnitTest\ELearningLab\Model\ComputerVoiceTest.cs" />
     <Compile Include="UnitTest\ELearningLab\Model\SelfExplanationClickItemTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
