@@ -36,20 +36,24 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 _pane = FunctionalTestExtensions.GetTaskPane(
                     typeof(CustomShapePane)).Control as CustomShapePane;
             });
-            _pane.InitCustomShapePaneStorage();
+            _pane?.InitCustomShapePaneStorage();
         }
 
         public void SaveSelectedShapes()
         {
             UIThreadExecutor.Execute(() =>
             {
-                _pane.SaveSelectedShapes();
+                _pane?.SaveSelectedShapes();
             });
         }
 
         public System.Windows.Point GetShapeForClicking(string shapeName)
         {
             System.Windows.Point point = new System.Windows.Point(0, 0);
+            if (_pane == null)
+            {
+                return point;
+            }
             Task task = Task.Factory.StartNew(() =>
             {
                 _pane.CustomShapePaneWPF1.Dispatcher.Invoke(() =>
@@ -87,25 +91,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public List<ISlideData> FetchShapeGalleryPresentationData()
         {
-            if (_pane != null)
+            if (_pane == null)
             {
-                List<ISlideData> slideData = _pane.GetShapeGallery()
-                    .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
-                return slideData;
+                return null;
             }
-            return null;
+            List<ISlideData> slideData = _pane.GetShapeGallery()
+                .Slides.Cast<Slide>().Select(SlideData.FromSlide).ToList();
+            return slideData;
         }
 
         public void ClickAddShapeButton()
         {
-            if (_pane != null && _pane.GetAddShapeButton() != null)
+            if (_pane == null || _pane.GetAddShapeButton() == null)
             {
-                // Perform clicking of button on its own UI thread
-                UIThreadExecutor.Execute(() =>
-                {
-                    _pane.GetAddShapeButton().RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                });
+                return;
             }
+            // Perform clicking of button on its own UI thread
+            UIThreadExecutor.Execute(() =>
+            {
+                _pane.GetAddShapeButton().RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            });
 
         }
 
