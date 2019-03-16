@@ -129,6 +129,8 @@
     <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
     <Compile Include="UnitTest\CropLab\CropOutPaddingTest.cs" />
     <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
+    <Compile Include="UnitTest\ELearningLab\Model\ClickItemTest.cs" />
+    <Compile Include="UnitTest\ELearningLab\Model\SelfExplanationClickItemTest.cs" />
     <Compile Include="UnitTest\FitToSlideTest.cs" />
     <Compile Include="UnitTest\HighlightLab\RemoveHighlightTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ModelFactory\StyleOptionsFactoryTest.cs" />
@@ -214,7 +216,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UnitTest\ELearningLab\ModelFactory\" />
+    <Folder Include="UnitTest\ELearningLab\Service\" />
+    <Folder Include="UnitTest\ELearningLab\Util\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
