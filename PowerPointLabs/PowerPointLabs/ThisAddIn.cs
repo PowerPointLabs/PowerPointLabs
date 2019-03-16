@@ -304,66 +304,6 @@ namespace PowerPointLabs
                 TaskPaneVisibleValueChangedEventHandler, null);
         }
 
-        public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
-        {
-            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
-            {
-                if (window == Application.ActiveWindow)
-                {
-                    continue;
-                }
-
-                CustomShapePane shapePaneControl = (GetControlFromWindow(typeof(CustomShapePane), window)
-                    as CustomShapePane);
-
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
-                {
-                    shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
-                }
-            }
-        }
-
-        public void SyncShapeRemove(string shapeName, string category)
-        {
-            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
-            {
-                if (window == Application.ActiveWindow)
-                {
-                    continue;
-                }
-
-                CustomShapePane shapePaneControl = (GetControlFromWindow(typeof(CustomShapePane), window)
-                    as CustomShapePane);
-
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
-                {
-                    shapePaneControl.RemoveCustomShape(shapeName);
-                }
-            }
-        }
-
-        public void SyncShapeRename(string shapeOldName, string shapeNewName, string category)
-        {
-            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
-            {
-                if (window == Application.ActiveWindow)
-                {
-                    continue;
-                }
-
-                CustomShapePane shapePaneControl = (GetControlFromWindow(typeof(CustomShapePane), window)
-                    as CustomShapePane);
-
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
-                {
-                    shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
-                }
-            }
-        }
-
         public bool VerifyOnLocal(PowerPoint.Presentation pres)
         {
             Regex invalidPathRegex = new Regex("^[hH]ttps?:");

@@ -27,7 +27,22 @@ namespace PowerPointLabs.ShapesLab
 
         public void RenameCustomShape(string shapeOldName, string shapeNewName)
         {
-            RenameCustomShape(shapeOldName, shapeNewName);
+            CustomShapePaneWPF1.RenameCustomShape(shapeOldName, shapeNewName);
+        }
+
+        public void AddCategory(string newCategoryName)
+        {
+            CustomShapePaneWPF1.AddCategory(newCategoryName);
+        }
+
+        public void RemoveCategory(int removedCategoryIndex)
+        {
+            CustomShapePaneWPF1.RemoveCategory(removedCategoryIndex);
+        }
+
+        public void RenameCategory(int renameCategoryIndex, string newCategoryName)
+        {
+            CustomShapePaneWPF1.RenameCategory(renameCategoryIndex, newCategoryName);
         }
 
         /// <summary> 

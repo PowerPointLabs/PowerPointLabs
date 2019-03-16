@@ -124,7 +124,8 @@ namespace PowerPointLabs.ShapesLab.Views
         public void UnfocusTextBox()
         {
             //unfocus from the textbox
-            grid.Focus();
+            DependencyObject scope = FocusManager.GetFocusScope(textBox);
+            FocusManager.SetFocusedElement(scope, this as IInputElement);
         }
 
         #endregion
@@ -212,15 +213,13 @@ namespace PowerPointLabs.ShapesLab.Views
             textBox.SelectAll();
         }
 
+        private bool HasNameChanged(string newShapeName)
+        {
+            return newShapeName == shapeName;
+        }
+
         private bool IsDuplicateName(string newShapeName)
         {
-            // if the name hasn't changed, we don't need to check for duplicate name
-            // since the default name/ old name is confirmed unique.
-            if (newShapeName == shapeName)
-            {
-                return true;
-            }
-
             string newPath = ImagePath.Replace(shapeName, newShapeName);
 
             // if the new name has been used, the new name is not allowed
@@ -229,7 +228,6 @@ namespace PowerPointLabs.ShapesLab.Views
                 MessageBox.Show(CommonText.ErrorFileNameExist);
                 return true;
             }
-
             return false;
         }
 
@@ -244,18 +242,23 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void RenameShape(string newShapeName)
         {
+            if (HasNameChanged(newShapeName))
+            {
+                return;
+            }
             if (!IsValidName(newShapeName))
             {
                 MessageBox.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(newShapeName)
                                     ? CommonText.ErrorNameTooLong
                                     : CommonText.ErrorInvalidCharacter);
                 textBox.Text = shapeName;
-                textBox.SelectAll();
+                EditStatus = Status.Editing;
                 return;
             }
 
-            if (IsDuplicateName(newShapeName) && File.Exists(ImagePath))
+            if (IsDuplicateName(newShapeName))
             {
+                EditStatus = Status.Editing;
                 return;
             }
             //Update image
@@ -267,7 +270,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             ImagePath = newPath;
 
-            this.GetAddIn().SyncShapeRename(shapeName, newShapeName, parent.CurrentCategory);
+            ShapesLabUtils.SyncShapeRename(this.GetAddIn(), shapeName, newShapeName, parent.CurrentCategory);
             parent.RenameCustomShape(shapeName, newShapeName);
         }
 

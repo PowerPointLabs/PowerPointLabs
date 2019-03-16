@@ -185,7 +185,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             // sync the shape among all opening panels
-            addIn.SyncShapeAdd(shapeName, shapePath, CurrentCategory);
+            ShapesLabUtils.SyncShapeAdd(addIn, shapeName, shapePath, CurrentCategory);
 
             // finally, add the shape into the panel and waiting for name editing
             AddCustomShape(shapeName, shapePath, true);
@@ -308,8 +308,33 @@ namespace PowerPointLabs.ShapesLab.Views
                 File.Move(oriPath, destPath);
                 RemoveCustomShape(shapeName);
 
-                Globals.ThisAddIn.SyncShapeRemove(shapeName, CurrentCategory);
-                Globals.ThisAddIn.SyncShapeAdd(shapeName, destPath, newCategoryName);
+                ShapesLabUtils.SyncShapeRemove(this.GetAddIn(), shapeName, CurrentCategory);
+                ShapesLabUtils.SyncShapeAdd(this.GetAddIn(), shapeName, destPath, newCategoryName);
+            }
+        }
+
+        public void AddCategory(string newCategoryName)
+        {
+            this.GetAddIn().ShapePresentation.AddCategory(newCategoryName);
+            _categoryBinding.Add(newCategoryName);
+        }
+
+        public void RemoveCategory(int removedCategoryIndex)
+        {
+            int categoryIndex = categoryBox.SelectedIndex;
+            _categoryBinding.RemoveAt(categoryIndex);
+            if (categoryIndex == removedCategoryIndex)
+            {
+                categoryBox.SelectedIndex = Math.Max(0, categoryIndex - 1);
+            }
+        }
+
+        public void RenameCategory(int renameCategoryIndex, string newCategoryName)
+        {
+            _categoryBinding[renameCategoryIndex] = newCategoryName;
+            if (renameCategoryIndex == categoryBox.SelectedIndex)
+            {
+                CurrentCategory = newCategoryName;
             }
         }
 
@@ -322,9 +347,8 @@ namespace PowerPointLabs.ShapesLab.Views
             ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, false);
             categoryInfoDialog.DialogConfirmedHandler += (string newCategoryName) =>
             {
-                this.GetAddIn().ShapePresentation.AddCategory(newCategoryName);
-
-                _categoryBinding.Add(newCategoryName);
+                ShapesLabUtils.SyncAddCategory(this.GetAddIn(), newCategoryName);
+                AddCategory(newCategoryName);
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
             };
             categoryInfoDialog.ShowDialog();
@@ -410,8 +434,8 @@ namespace PowerPointLabs.ShapesLab.Views
             // remove category on the disk
             FileDir.DeleteFolder(categoryPath);
 
-            _categoryBinding.RemoveAt(categoryIndex);
-            categoryBox.SelectedIndex = Math.Max(0, categoryIndex - 1);
+            ShapesLabUtils.SyncRemoveCategory(this.GetAddIn(), categoryIndex);
+            RemoveCategory(categoryIndex);
 
             if (this.GetAddIn().ShapePresentation.DefaultCategory == null)
             {
@@ -452,10 +476,9 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 // rename the category in combo box
                 int categoryIndex = categoryBox.SelectedIndex;
-                _categoryBinding[categoryIndex] = newCategoryName;
 
-                // update current category reference
-                CurrentCategory = newCategoryName;
+                ShapesLabUtils.SyncRenameCategory(this.GetAddIn(), categoryIndex, newCategoryName);
+                RenameCategory(categoryIndex, newCategoryName);
             };
             categoryInfoDialog.ShowDialog();
 
@@ -465,10 +488,6 @@ namespace PowerPointLabs.ShapesLab.Views
         private void ContextMenuStripSetAsDefaultCategoryClicked(object sender, RoutedEventArgs e)
         {
             this.GetAddIn().ShapesLabConfig.DefaultCategory = CurrentCategory;
-
-            //TODO
-            //comboBox.Refresh();
-
             MessageBox.Show(string.Format(ShapesLabText.SuccessSetAsDefaultCategory, CurrentCategory));
         }
 
@@ -509,10 +528,6 @@ namespace PowerPointLabs.ShapesLab.Views
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
-            //TODO
-            /*
-            addShapeButton.FlatAppearance.BorderColor = Color.LightGray;
-            addShapeButton.BackColor = Color.LightGray;*/
         }
 
         private void EnableAddShapesButton()
@@ -523,10 +538,6 @@ namespace PowerPointLabs.ShapesLab.Views
                     IntPtr.Zero,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
-            //TODO
-            /*
-            addShapeButton.FlatAppearance.BorderColor = Color.Black;
-            addShapeButton.BackColor = SystemColors.Control;*/
         }
 
 
@@ -591,7 +602,7 @@ namespace PowerPointLabs.ShapesLab.Views
             this.GetAddIn().ShapePresentation.RemoveShape(shapeName);
 
             // sync shape removing among all task panes
-            this.GetAddIn().SyncShapeRemove(shapeName, CurrentCategory);
+            ShapesLabUtils.SyncShapeRemove(this.GetAddIn(), shapeName, CurrentCategory);
             RemoveCustomShape(shapeName);
         }
 
