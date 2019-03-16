@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -54,7 +53,7 @@ namespace PowerPointLabs.ShapesLab.Views
             get { return ShapeRootFolderPath + @"\" + CurrentCategory; }
         }
 
-        public bool IsStorageSettingsGiven
+        private bool IsStorageSettingsGiven
         {
             get
             {
@@ -85,18 +84,25 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #region Init
 
-        public void SetStorageSettings(string shapeRootFolderPath, string defaultShapeCategoryName)
+        public void SetStorageSettings()
         {
-            ShapeRootFolderPath = shapeRootFolderPath;
+            if (IsStorageSettingsGiven)
+            {
+                return;
+            }
+            ThisAddIn addIn = this.GetAddIn();
+            addIn.InitializeShapesLabConfig();
+            addIn.InitializeShapeGallery();
 
-            CurrentCategory = defaultShapeCategoryName;
+            ShapeRootFolderPath = ShapesLabSettings.SaveFolderPath;
+            CurrentCategory = addIn.ShapesLabConfig.DefaultCategory;
             Categories = new ObservableCollection<string>(this.GetAddIn().ShapePresentation.Categories);
             _categoryBinding = new BindingSource { DataSource = Categories };
             categoryBox.ItemsSource = _categoryBinding;
 
             for (int i = 0; i < Categories.Count; i++)
             {
-                if (Categories[i] == defaultShapeCategoryName)
+                if (Categories[i] == CurrentCategory)
                 {
                     categoryBox.SelectedIndex = i;
                     break;
@@ -336,6 +342,54 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 CurrentCategory = newCategoryName;
             }
+        }
+
+        #endregion
+
+        #region Test Interface
+
+        public CustomShapePaneItem GetShape(string shapeName)
+        {
+            int shapeIndex = GetShapeItemIndex(shapeName);
+            if (shapeIndex == -1)
+            {
+                return null;
+            }
+            return (CustomShapePaneItem) shapeList.Items[shapeIndex];
+        }
+
+        public void ImportLibrary(string pathToLibrary)
+        {
+            ImportShapes(pathToLibrary, true);
+        }
+
+        public void ImportShape(string pathToShape)
+        {
+            ImportShapes(pathToShape, false);
+        }
+
+        public Presentation GetShapeGallery()
+        {
+            return this.GetAddIn().ShapePresentation.Presentation;
+        }
+
+        public void SaveSelectedShapes()
+        {
+            ThisAddIn addIn = this.GetAddIn();
+            Selection selection = this.GetCurrentSelection();
+            AddShapeFromSelection(selection, addIn);
+        }
+
+        public System.Windows.Point GetShapeForClicking(string shapeName)
+        {
+            int shapeIndex = GetShapeItemIndex(shapeName);
+            if (shapeIndex == -1)
+            {
+                return new System.Windows.Point(0, 0);
+            }
+            CustomShapePaneItem shape = (CustomShapePaneItem)shapeList.Items[shapeIndex];
+            shape.FinishNameEdit();
+            return shape.grid.PointToScreen(new System.Windows.Point(20, 20));
         }
 
         #endregion
@@ -666,7 +720,6 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void ImportShapesFromLibrary(PowerPointShapeGalleryPresentation importShapeGallery)
         {
-            // Utilises deprecated classes as CustomShapePane does not utilise ActionFramework
             PowerPointSlide currentSlide = this.GetCurrentSlide();
             PowerPointPresentation pres = this.GetCurrentPresentation();
 

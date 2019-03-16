@@ -128,6 +128,17 @@ namespace PowerPointLabs.ShapesLab.Views
             FocusManager.SetFocusedElement(scope, this as IInputElement);
         }
 
+        public void StartNameEdit()
+        {
+            SetEditableTextBox();
+        }
+
+        public void FinishNameEdit()
+        {
+            SetReadOnlyTextBox();
+            RenameShape(textBox.Text);
+        }
+
         #endregion
 
         #region Context Menu
@@ -272,17 +283,6 @@ namespace PowerPointLabs.ShapesLab.Views
 
             ShapesLabUtils.SyncShapeRename(this.GetAddIn(), shapeName, newShapeName, parent.CurrentCategory);
             parent.RenameCustomShape(shapeName, newShapeName);
-        }
-
-        private void StartNameEdit()
-        {
-            SetEditableTextBox();
-        }
-
-        private void FinishNameEdit()
-        {
-            SetReadOnlyTextBox();
-            RenameShape(textBox.Text);
         }
 
         #endregion

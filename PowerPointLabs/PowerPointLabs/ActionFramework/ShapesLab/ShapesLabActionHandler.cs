@@ -22,21 +22,9 @@ namespace PowerPointLabs.ActionFramework.ShapesLab
             
             // toggle pane visibility
             shapesLabPane.Visible = !shapesLabPane.Visible;
-            InitCustomShapePaneStorage(shapesLabPane);
-        }
 
-        private void InitCustomShapePaneStorage(CustomTaskPane taskPane)
-        {
-            CustomShapePane customShapePane = taskPane.Control as CustomShapePane;
-            if (customShapePane.CustomShapePaneWPF1.IsStorageSettingsGiven)
-            {
-                return;
-            }
-            ThisAddIn addIn = this.GetAddIn();
-            addIn.InitializeShapesLabConfig();
-            addIn.InitializeShapeGallery();
-            customShapePane.CustomShapePaneWPF1.SetStorageSettings(ShapesLabSettings.SaveFolderPath, addIn.ShapesLabConfig.DefaultCategory);
+            CustomShapePane customShapePane = shapesLabPane.Control as CustomShapePane;
+            customShapePane.InitCustomShapePaneStorage();
         }
-
     }
 }

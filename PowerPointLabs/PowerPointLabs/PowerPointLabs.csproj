@@ -756,6 +756,7 @@
     <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
       <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShapesLab\ShapesLabUtils.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -1234,18 +1235,6 @@
     <Compile Include="PictureSlidesLab\Util\StoragePath.cs" />
     <Compile Include="PictureSlidesLab\Util\TempPath.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
-    <Compile Include="ShapesLab\LabeledThumbnail.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ShapesLab\LabeledThumbnail.Designer.cs">
-      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ShapesLab\CustomShapePane_.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ShapesLab\CustomShapePane_.Designer.cs">
-      <DependentUpon>CustomShapePane_.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
     <Compile Include="PPExtraEventHelper\PPKeyboard.cs" />
@@ -1290,7 +1279,6 @@
     <Compile Include="ShortcutsLab\Views\EditNameDialogBox.xaml.cs">
       <DependentUpon>EditNameDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
@@ -1396,14 +1384,6 @@
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
-    <EmbeddedResource Include="ShapesLab\LabeledThumbnail.resx">
-      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShapesLab\CustomShapePane_.resx">
-      <DependentUpon>CustomShapePane_.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

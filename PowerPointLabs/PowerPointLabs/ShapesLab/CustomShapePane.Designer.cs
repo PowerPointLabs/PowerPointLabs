@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Windows.Controls;
+using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ShapesLab.Views;
 
 namespace PowerPointLabs.ShapesLab
@@ -44,6 +46,50 @@ namespace PowerPointLabs.ShapesLab
         {
             CustomShapePaneWPF1.RenameCategory(renameCategoryIndex, newCategoryName);
         }
+
+        public void InitCustomShapePaneStorage()
+        {
+            CustomShapePaneWPF1.SetStorageSettings();
+        }
+
+        #region Test Interface
+
+        public CustomShapePaneItem GetShape(string shapeName)
+        {
+            return CustomShapePaneWPF1.GetShape(shapeName);
+        }
+
+        public void ImportLibrary(string pathToLibrary)
+        {
+            CustomShapePaneWPF1.ImportLibrary(pathToLibrary);
+        }
+
+        public void ImportShape(string pathToShape)
+        {
+            CustomShapePaneWPF1.ImportShape(pathToShape);
+        }
+
+        public Presentation GetShapeGallery()
+        {
+            return CustomShapePaneWPF1.GetShapeGallery();
+        }
+
+        public Button GetAddShapeButton()
+        {
+            return CustomShapePaneWPF1.addShapeButton;
+        }
+
+        public void SaveSelectedShapes()
+        {
+            CustomShapePaneWPF1.SaveSelectedShapes();
+        }
+
+        public System.Windows.Point GetShapeForClicking(string shapeName)
+        {
+            return CustomShapePaneWPF1.GetShapeForClicking(shapeName);
+        }
+
+        #endregion
 
         /// <summary> 
         /// Clean up any resources being used.

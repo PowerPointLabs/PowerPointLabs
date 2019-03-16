@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -20,45 +23,58 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public static IShapesLabController Instance { get { return _instance; } }
 
-        private CustomShapePane_ _pane;
+        private CustomShapePane _pane;
 
         private ShapesLabController() {}
 
         public void OpenPane()
         {
-            UIThreadExecutor.Execute((Action)(() =>
+            UIThreadExecutor.Execute(() =>
             {
                 FunctionalTestExtensions.GetRibbonUi().OnAction(
                     new RibbonControl(ShapesLabText.PaneTag));
                 _pane = FunctionalTestExtensions.GetTaskPane(
-                    typeof(CustomShapePane_)).Control as CustomShapePane_;
-            }));
+                    typeof(CustomShapePane)).Control as CustomShapePane;
+            });
+            _pane.InitCustomShapePaneStorage();
         }
 
         public void SaveSelectedShapes()
         {
             UIThreadExecutor.Execute(() =>
             {
-                FunctionalTestExtensions.GetRibbonUi().OnAction(
-                    new RibbonControl("AddShape"));
+                _pane.SaveSelectedShapes();
             });
         }
 
-        public IShapesLabLabeledThumbnail GetLabeledThumbnail(string labelName)
+        public System.Windows.Point GetShapeForClicking(string shapeName)
         {
-            if (_pane != null)
+            System.Windows.Point point = new System.Windows.Point(0, 0);
+            Task task = Task.Factory.StartNew(() =>
             {
-                return _pane.GetLabeledThumbnail(labelName);
-            }
-            return null;
+                _pane.CustomShapePaneWPF1.Dispatcher.Invoke(() =>
+                {
+                    point = _pane.GetShapeForClicking(shapeName);
+                });
+            });
+            task.Wait();
+            return point;
         }
 
         public void ImportLibrary(string pathToLibrary)
         {
-            if (_pane != null)
+            if (_pane == null)
             {
-                _pane.ImportLibrary(pathToLibrary);
+                return;
             }
+            Task task = Task.Factory.StartNew(() =>
+            {
+                _pane.CustomShapePaneWPF1.Dispatcher.Invoke(() =>
+                {
+                    _pane.ImportLibrary(pathToLibrary);
+                });
+            });
+            task.Wait();
         }
 
         public void ImportShape(string pathToShape)
@@ -87,7 +103,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 // Perform clicking of button on its own UI thread
                 UIThreadExecutor.Execute(() =>
                 {
-                    _pane.GetAddShapeButton().PerformClick();
+                    _pane.GetAddShapeButton().RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 });
             }
 
@@ -95,7 +111,16 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         public bool GetAddShapeButtonStatus()
         {
-            return _pane.GetAddShapeButton().Enabled;
+            bool addShapeButtonStatus = false;
+            Task task = Task.Factory.StartNew(() =>
+            {
+                _pane.GetAddShapeButton().Dispatcher.Invoke(() =>
+                {
+                    addShapeButtonStatus = _pane.GetAddShapeButton().IsEnabled;
+                });
+            });
+            task.Wait();
+            return addShapeButtonStatus;
         }
     }
 }
