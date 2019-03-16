@@ -1060,8 +1060,9 @@ namespace PowerPointLabs
 
             // Refresh ribbon to enable the menu buttons
             RefreshRibbonMenuButtons();
-            // Initialise the "Maintain Tab Focus" checkbox
+            // Initialise the "Maintain Tab Focus" and "Compress Images" checkbox
             Ribbon.InitialiseVisibilityCheckbox();
+            Ribbon.InitialiseCompressImagesCheckbox();
         }
 
         // solve new un-modified unsave problem
@@ -1088,8 +1089,9 @@ namespace PowerPointLabs
 
                 // Refresh ribbon to enable the menu buttons if there are now at least one window
                 RefreshRibbonMenuButtons();
-                // Initialise the "Maintain Tab Focus" checkbox
+                // Initialise the "Maintain Tab Focus" and "Compress Images" checkbox
                 Ribbon.InitialiseVisibilityCheckbox();
+                Ribbon.InitialiseCompressImagesCheckbox();
             }
             // load audio setting preference for elearning lab
             AudioSettingStorageService.LoadAudioSettingPreference();
