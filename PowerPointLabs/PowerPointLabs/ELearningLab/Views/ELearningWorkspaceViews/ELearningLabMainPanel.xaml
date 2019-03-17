@@ -84,7 +84,7 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type model:SelfExplanationClickItem}">
                     <StackPanel Margin="2 2 2 2">
-                        <Border BorderThickness="2" BorderBrush="#666666" CornerRadius="4">
+                        <Border BorderThickness="0.2" BorderBrush="LightGray" CornerRadius="4" Background="WhiteSmoke">
                             <StackPanel Margin="5 5 5 5">
                                 <views:SelfExplanationBlockView DataContext="{Binding}"/>
                             </StackPanel>

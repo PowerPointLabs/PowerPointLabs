@@ -157,6 +157,14 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             }
         }
 
+        public int TagNo
+        {
+            get
+            {
+                return tagNo;
+            }
+        }
+
         #endregion
 
         #region Attributes

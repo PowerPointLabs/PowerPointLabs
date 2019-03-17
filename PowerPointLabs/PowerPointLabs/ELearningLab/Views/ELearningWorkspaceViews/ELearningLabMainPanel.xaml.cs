@@ -315,7 +315,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleUpButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.IndexOf(labItem);
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             if (index > 0)
             {
                 Items.Move(index, index - 1);
@@ -327,7 +327,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleDownButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.IndexOf(labItem);
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             if (index < Items.Count() - 1 && index >= 0)
             {
                 Items.Move(index, index + 1);
@@ -339,7 +339,8 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleDeleteButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            Items.Remove(labItem);
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
+            Items.RemoveAt(index);
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             isSynced = false;
         }
@@ -377,7 +378,15 @@ namespace PowerPointLabs.ELearningLab.Views
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            int index = Items.IndexOf(item);
+            int index;
+            if (item is SelfExplanationClickItem)
+            {
+                index = Items.ToList().FindIndex(x => ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
+            }
+            else
+            {
+                index = Items.IndexOf(item);
+            }
             Items.Insert(index, selfExplanationClickItem);
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
@@ -388,7 +397,15 @@ namespace PowerPointLabs.ELearningLab.Views
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            int index = Items.IndexOf(item);
+            int index;
+            if (item is SelfExplanationClickItem)
+            {
+                index = Items.ToList().FindIndex(x => ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
+            }
+            else
+            {
+                index = Items.IndexOf(item);
+            }
             if (index < listView.Items.Count - 1)
             {
                 Items.Insert(index + 1, selfExplanationClickItem);
