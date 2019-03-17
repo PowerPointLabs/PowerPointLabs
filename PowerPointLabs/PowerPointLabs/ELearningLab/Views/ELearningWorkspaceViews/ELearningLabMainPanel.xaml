@@ -21,13 +21,32 @@
                       CommandParameter="{Binding}"/>
         </ContextMenu>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" FlowDirection="LeftToRight">
             <StackPanel Margin="20,0,20,0" Orientation="Horizontal">
+                <Button x:Name="createButton" Height="35" 
+                VerticalAlignment="Center" Width="35" Padding="5" Click="CreateButton_Click">
+                    <Image x:Name="createImage" Stretch="Fill"/>
+                    <Button.ToolTip>
+                        <StackPanel FlowDirection="LeftToRight">
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Create Self-Explanation</TextBlock>
+                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                            <TextBlock>
+                        Click to:
+                        <LineBreak/>
+                        Add self explanations to eLearningLab task panel.
+                            </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
+                </Button>
+                <Label Content="Add" VerticalAlignment="Center"
+                       FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <Button x:Name="syncButton" Height="35" 
                 VerticalAlignment="Center" Width="35" Padding="5" Click="SyncButton_Click">
                     <Image x:Name="syncImage" Stretch="Fill"/>
@@ -48,50 +67,34 @@
                 <Label Content="Sync" VerticalAlignment="Center"
                        FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="createButton" Height="35" 
-                VerticalAlignment="Center" Width="35" Padding="5" Click="CreateButton_Click">
-                    <Image x:Name="createImage" Stretch="Fill"/>
-                    <Button.ToolTip>
-                        <StackPanel FlowDirection="LeftToRight">
-                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Create Self-Explanation</TextBlock>
-                            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
-                            <TextBlock>
-                        Click to:
-                        <LineBreak/>
-                        Add self explanations to eLearningLab task panel.
-                            </TextBlock>
-                        </StackPanel>
-                    </Button.ToolTip>
-                </Button>
-                <Label Content="Add" VerticalAlignment="Center"
-                       FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
-            </StackPanel>
         </StackPanel>
-        <ListView Grid.Row="1" x:Name="listView" ItemsSource="{Binding Items}"
-                  BorderThickness="0" Margin="0" SelectionMode="Single">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}" >
-                    <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListBox.Resources>
-                <DataTemplate DataType="{x:Type model:CustomClickItem}">
-                    <StackPanel Margin="2 2 2 2">
-                        <views:CustomBlockView DataContext="{Binding}" />
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type model:SelfExplanationClickItem}">
-                    <StackPanel Margin="2 2 2 2">
-                        <Border BorderThickness="0.2" BorderBrush="LightGray" CornerRadius="4" Background="WhiteSmoke">
-                            <StackPanel Margin="5 5 5 5">
-                                <views:SelfExplanationBlockView DataContext="{Binding}"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.Resources>
-        </ListView>
+        <DockPanel Grid.Row="1">
+            <ListView x:Name="listView" ItemsSource="{Binding Items}"
+                  BorderThickness="0" Margin="0" SelectionMode="Single"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}" >
+                        <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type model:CustomClickItem}">
+                        <StackPanel Margin="2 2 2 2">
+                            <views:CustomBlockView DataContext="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type model:SelfExplanationClickItem}">
+                        <StackPanel Margin="2 2 2 2">
+                            <Border BorderThickness="0.2" BorderBrush="LightGray" CornerRadius="4" Background="WhiteSmoke">
+                                <StackPanel Margin="5 5 5 5">
+                                    <views:SelfExplanationBlockView DataContext="{Binding}"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.Resources>
+            </ListView>
+        </DockPanel>
     </Grid>
 </UserControl>

@@ -153,10 +153,10 @@
                         <ComboBoxItem Content="With Previous" />
                     </ComboBox>
                     <CheckBox x:Name="calloutCheckBox" Content="Callout"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCallout, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="2 2 1 2" />
+                          IsChecked="{Binding IsCallout, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="5 2 1 2" />
                     <CheckBox x:Name="captionCheckBox" Content="Caption"  VerticalContentAlignment="Center" 
-                          IsChecked="{Binding IsCaption, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="1 2 1 2"/>
-                    <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" 
+                          IsChecked="{Binding IsCaption, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="5 2 1 2"/>
+                    <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" Margin="5 2 1 2"
                           IsChecked="{Binding IsVoice, UpdateSourceTrigger=PropertyChanged}" FontSize="10"/>
                     <Label x:Name="audioNameLabel" Margin="3 2 1 2"
                                Content="{Binding VoiceLabel, Mode=TwoWay}" FontSize="8" Padding="0" 
@@ -179,7 +179,7 @@
                 <StackPanel Grid.Row="1" Margin="0 0 5 5">
                     <TextBox x:Name="captionTextBox" Style="{StaticResource TextBoxWithPlaceHolder}" 
                              Text="{Binding CaptionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 2 2 2"
-                 TextWrapping="Wrap" FontSize="12" Tag="Enter your caption / voice notes here..."
+                             TextWrapping="Wrap" FontSize="12" Tag="Enter your caption / voice notes here..."
                              AcceptsReturn="True" Margin="0" MinHeight="30"/>
                     <CheckBox x:Name="hasShortVersionCheckBox" Content="Use Shorter Callout"  VerticalContentAlignment="Center" 
                           IsChecked="{Binding HasShortVersion, Mode=TwoWay}" FontSize="10" Margin="2 2 1 2"

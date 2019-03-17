@@ -37,7 +37,7 @@ namespace PowerPointLabs.ELearningLab.Views
 #pragma warning disable 618
     public partial class ELearningLabMainPanel : UserControl
     {
-        public ObservableCollection<ClickItem> Items { get; set; }
+        public ObservableCollection<ClickItem> Items { get; set; } = new ObservableCollection<ClickItem>();
         public int FirstClickNumber
         {
             get
@@ -424,6 +424,7 @@ namespace PowerPointLabs.ELearningLab.Views
         #endregion
 
         #region Helper Methods
+
         private bool IsInSync()
         {
             return isSynced;
@@ -546,7 +547,6 @@ namespace PowerPointLabs.ELearningLab.Views
             if ((index > 0 && Items.ElementAt(index - 1) is CustomClickItem) || index == 0)
             {
                 selfExplanationClickItem.IsTriggerTypeComboBoxEnabled = true;
-                selfExplanationClickItem.TriggerIndex = (int)TriggerType.WithPrevious;
             }
             else
             {
@@ -725,5 +725,6 @@ namespace PowerPointLabs.ELearningLab.Views
         }
 
         #endregion
+
     }
 }
