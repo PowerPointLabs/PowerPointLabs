@@ -66,7 +66,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void SwitchViewToPreviousPage()
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.GoToMainPage = true;
+            parentWindow.ShouldGoToMainPage = true;
         }
 
         #endregion

@@ -33,7 +33,7 @@
         <Frame NavigationUIVisibility="Hidden" x:Name="NarrationsLabSettingsMainFrame" Margin="5 5 5 5">
             <Frame.Content>
                 <MultiBinding Converter="{local:AudioSettingsIndexToPageConverter}" UpdateSourceTrigger="PropertyChanged">
-                    <Binding Path="GoToMainPage" />
+                    <Binding Path="ShouldGoToMainPage" />
                     <Binding Path="MainPage" />
                     <Binding Path="SubPage" />
                 </MultiBinding>

@@ -15,15 +15,15 @@ namespace PowerPointLabs.ELearningLab.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            bool goToMainPage;
+            bool shouldGoToMainPage;
             Page mainPage, subPage;
             try
             {
-                goToMainPage = (bool)values[0];
+                shouldGoToMainPage = (bool)values[0];
                 mainPage = (Page)values[1];
                 subPage = (Page)values[2];
 
-                return goToMainPage ? mainPage : subPage;
+                return shouldGoToMainPage ? mainPage : subPage;
             }
             catch
             {

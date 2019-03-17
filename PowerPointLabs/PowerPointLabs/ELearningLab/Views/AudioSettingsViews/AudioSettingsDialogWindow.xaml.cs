@@ -13,15 +13,15 @@ namespace PowerPointLabs.ELearningLab.Views
     {
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
-        public bool GoToMainPage
+        public bool ShouldGoToMainPage
         {
             get
             {
-                return goToMainPage;
+                return shouldGoToMainPage;
             }
             set
             {
-                goToMainPage = value;
+                shouldGoToMainPage = value;
                 PropertyChanged(this, new PropertyChangedEventArgs("GoToMainPage"));
             }
         }
@@ -53,7 +53,7 @@ namespace PowerPointLabs.ELearningLab.Views
         }
 
         private Page mainPage, subPage;
-        private bool goToMainPage;
+        private bool shouldGoToMainPage;
 
         public AudioSettingsDialogWindow(AudioSettingsPage page)
         {
@@ -62,7 +62,7 @@ namespace PowerPointLabs.ELearningLab.Views
             mainPage.DataContext = this;
             subPage = new AzureVoiceLoginPage();
             subPage.DataContext = this;
-            goToMainPage = true;
+            shouldGoToMainPage = true;
             DataContext = this;
             audioSettingsDialogWindow.AllowsTransparency = true;
             audioSettingsDialogWindow.Opacity = 0;

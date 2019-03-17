@@ -152,7 +152,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             AudioSettingService.AudioPreviewPageHeight = Height;
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.GoToMainPage = false;
+            parentWindow.ShouldGoToMainPage = false;
         }
 
         private void SpeakButton_Click(object sender, RoutedEventArgs e)

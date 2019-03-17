@@ -131,7 +131,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void AzureVoiceBtn_Click(object sender, RoutedEventArgs e)
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.GoToMainPage = false;
+            parentWindow.ShouldGoToMainPage = false;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -152,7 +152,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void ChangeAccountButton_Click(object sender, RoutedEventArgs e)
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.GoToMainPage = false;
+            parentWindow.ShouldGoToMainPage = false;
         }
 
         private void LogOutButton_Click(object sender, RoutedEventArgs e)
