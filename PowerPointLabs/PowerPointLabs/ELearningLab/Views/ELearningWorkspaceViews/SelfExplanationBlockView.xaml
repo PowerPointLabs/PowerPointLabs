@@ -73,7 +73,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30" />
-                <ColumnDefinition Width="420"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
