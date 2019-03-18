@@ -314,20 +314,20 @@ namespace Test.FunctionalTest
 
 
 
-        private static void AssertEqual(List<Color> exp, List<Color> actual)
+        private static void AssertEqual(List<Color> expectedList, List<Color> actualList)
         {
-            for (int i = 0; i < exp.Count; i++)
+            for (int i = 0; i < expectedList.Count; i++)
             {
-                AssertEqual(exp[i], actual[i]);
+                AssertEqual(expectedList[i], actualList[i]);
             }
         }
 
-        private static void AssertEqual(Color exp, Color actual)
+        private static void AssertEqual(Color expectedColor, Color actualColor)
         {
             // dont assert Alpha
-            Assert.IsTrue(IsAlmostSame(exp.R, actual.R), "diff color R, exp {0}, actual {1}", exp.R, actual.R);
-            Assert.IsTrue(IsAlmostSame(exp.G, actual.G),"diff color G, exp {0}, actual {1}", exp.G, actual.G);
-            Assert.IsTrue(IsAlmostSame(exp.B, actual.B), "diff color B, exp {0}, actual {1}", exp.B, actual.B);
+            Assert.IsTrue(IsAlmostSame(expectedColor.R, actualColor.R), "diff color R, expected {0}, actual {1}", expectedColor.R, actualColor.R);
+            Assert.IsTrue(IsAlmostSame(expectedColor.G, actualColor.G),"diff color G, expected {0}, actual {1}", expectedColor.G, actualColor.G);
+            Assert.IsTrue(IsAlmostSame(expectedColor.B, actualColor.B), "diff color B, expected {0}, actual {1}", expectedColor.B, actualColor.B);
         }
 
         private static bool IsAlmostSame(byte a, byte b)
