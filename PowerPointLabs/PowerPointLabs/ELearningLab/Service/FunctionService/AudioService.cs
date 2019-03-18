@@ -179,6 +179,11 @@ namespace PowerPointLabs.ELearningLab.Service
                 ComputerVoiceRuntimeService.SaveStringToWaveFile(text, filePath, voice as ComputerVoice);
                 return true;
             }
+            else if (voice is WatsonVoice)
+            {
+                WatsonRuntimeService.SaveStringToWaveFile(text, filePath, voice as WatsonVoice);
+                return true;
+            }
             return false;
         }
 
