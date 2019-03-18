@@ -66,6 +66,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             slide = this.GetCurrentSlide();
             slideId = slide.ID;
+            Logger.Log("in initialization: " + slideId.ToString());
             InitializeComponent();
             syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                Properties.Resources.SyncExplanationIcon.GetHbitmap(),
@@ -98,12 +99,12 @@ namespace PowerPointLabs.ELearningLab.Views
             // the current slide is the same as previous slide. 
             // This can happen when user opens presentation mode on current slide
             // and exit presentation mode subsequently.
-            if (DoesSlideExist(slideId) && _slide.ID.Equals(slide.ID))
-            {
+            slide = _slide;
+            if (DoesSlideExist(slideId) && _slide.ID.Equals(slideId))
+            {               
                 return;
             }
             // update current slide instance
-            slide = _slide;
             slideId = slide.ID;
             isSynced = true;
             listView.ItemsSource = null;
@@ -130,7 +131,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             // We do not check for sync if the current slide is the same as previous slide. 
             PowerPointSlide _slide = this.GetCurrentSlide();
-            if (DoesSlideExist(slideId) && _slide.ID.Equals(slide.ID))
+            if (DoesSlideExist(slideId) && _slide != null && _slide.ID.Equals(slideId))
             {
                 return;
             }

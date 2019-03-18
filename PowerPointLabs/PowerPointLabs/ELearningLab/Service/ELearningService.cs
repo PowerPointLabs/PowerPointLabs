@@ -127,6 +127,8 @@ namespace PowerPointLabs.ELearningLab.Service
         private static void DeleteExitAnimationInLastClick(PowerPointSlide slide)
         {
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
+            List<Effect> effectsToDelete = new List<Effect>();
+
             for (int i = effects.Count() - 1; i > 0 && i >= effects.Count() - 2; i--)
             {
                 Effect effect = effects.ElementAt(i);
@@ -138,10 +140,18 @@ namespace PowerPointLabs.ELearningLab.Service
                 string shapeName = effect.Shape.Name;
                 if (StringUtility.IsPPTLShape(shapeName) && effect.Exit == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
-                    effect.Delete();
+                    effectsToDelete.Add(effect);
+                  //  effect.Delete();
                 }
                 if (isTriggeredByClick)
                 {
+                    if (effectsToDelete.Count + i == effects.Count())
+                    {
+                        foreach (Effect _effect in effectsToDelete)
+                        {
+                            _effect.Delete();
+                        }
+                    }
                     return;
                 }
             }
