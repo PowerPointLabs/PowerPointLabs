@@ -34,9 +34,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return VoiceType.ComputerVoice;
                 }
-                else
+                else if ((bool)RadioAzureVoice.IsChecked)
                 {
                     return VoiceType.AzureVoice;
+                }
+                else
+                {
+                    return VoiceType.WatsonVoice;
                 }
             }
         }
@@ -49,9 +53,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return computerVoiceComboBox.SelectedItem as ComputerVoice;
                 }
-                else
+                else if ((bool)RadioAzureVoice.IsChecked)
                 {
                     return azureVoiceComboBox.SelectedItem as AzureVoice;
+                }
+                else
+                {
+                    return watsonVoiceComboBox.SelectedItem as WatsonVoice;
                 }
             }
         }
@@ -71,6 +79,8 @@ namespace PowerPointLabs.ELearningLab.Views
             azureVoiceComboBox.DisplayMemberPath = "Voice";
             computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices;
             computerVoiceComboBox.DisplayMemberPath = "Voice";
+            watsonVoiceComboBox.ItemsSource = WatsonRuntimeService.Voices;
+            watsonVoiceComboBox.DisplayMemberPath = "Voice";
             Voices = LoadVoices();
             audioListView.DataContext = this;
             audioListView.ItemsSource = Voices;
@@ -94,6 +104,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 case VoiceType.ComputerVoice:
                     RadioDefaultVoice.IsChecked = true;
                     computerVoiceComboBox.SelectedItem = selectedVoice as ComputerVoice;
+                    break;
+                case VoiceType.WatsonVoice:
+                    RadioWatsonVoice.IsChecked = true;
+                    watsonVoiceComboBox.SelectedItem = selectedVoice as WatsonVoice;
                     break;
                 default:
                     break;
@@ -269,6 +283,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 voices.Add(voice);
             }
             foreach (IVoice voice in ComputerVoiceRuntimeService.Voices)
+            {
+                voices.Add(voice);
+            }
+            foreach (IVoice voice in WatsonRuntimeService.Voices)
             {
                 voices.Add(voice);
             }

@@ -44,7 +44,7 @@
                 </Grid.RowDefinitions>
                 <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioAzureVoice" GroupName="VoiceTypeRadioButton" 
                              Margin="20,10,20.667,0" FontSize="12">
-                    Cloud Voice
+                    Azure Cloud Voice
                 </RadioButton>
                 <Button x:Name="changeAcctBtn" Cursor="Hand" Grid.Column="0" Grid.RowSpan="1" Click="ChangeAccountButton_Click"
                         Background="Transparent" BorderThickness="0" Margin="20, 35, 20,0"
@@ -76,6 +76,65 @@
                           Width="150" Height="25" VerticalAlignment="Center"/>
                 <Button Cursor="Hand" Grid.Column="2" x:Name="azureVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,0" 
                         Grid.ColumnSpan="2" Click="AzureVoiceBtn_Click"
+                        BorderThickness="0" Background="Transparent" FontWeight="Medium"
+                        Width="150" Height="25" VerticalAlignment="Center">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioWatsonVoice" GroupName="VoiceTypeRadioButton" 
+                             Margin="20,10,20.667,0" FontSize="12">
+                    IBM Watson Voice
+                </RadioButton>
+                <Button x:Name="changeWatsonAcctBtn" Cursor="Hand" Grid.Column="0" Grid.RowSpan="1" Click="ChangeAccountButton_Click"
+                        Background="Transparent" BorderThickness="0" Margin="20, 35, 20,0"
+                        FontWeight="Light" Content="click to change user account" FontSize="7">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="logoutWatsonAcctBtn" Cursor="Hand" Grid.Column="0" Click="LogOutButton_Click" Background="Transparent" 
+                        BorderThickness="0" Margin="20,50,20.667,0"
+                        FontWeight="Light" Content="click to log out" FontSize="7" Grid.RowSpan="2">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <ComboBox x:Name="watsonVoiceComboBox" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" SelectedIndex="0"
+                          Width="150" Height="25" VerticalAlignment="Center"/>
+                <Button Cursor="Hand" Grid.Column="2" x:Name="watsonVoiceLoginBtn" 
+                        Content="Click to Log In" Margin="0.333,10,20,0" 
+                        Grid.ColumnSpan="2" Click="AzureVoiceBtn_Click"
+                        Visibility="Collapsed"
                         BorderThickness="0" Background="Transparent" FontWeight="Medium"
                         Width="150" Height="25" VerticalAlignment="Center">
                     <Button.Style>

@@ -208,7 +208,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void SaveAudioToWaveFile(object sender, GenericEventArgs<Stream> args)
         {
-            SaveStreamToFile(args.FilePath, args.EventData);
+            SaveStreamToFile(args.FilePath, args.EventData);           
             args.EventData.Dispose();
         }
 
@@ -263,9 +263,10 @@ namespace PowerPointLabs.ELearningLab.Service
                 syncEvent.WaitOne();
                 SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
                 WaveOutEvent player = new WaveOutEvent();
+              
                 player.PlaybackStopped += (s, e) =>
                 {
-                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
+                  //  speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
                     args.EventData.Dispose();
                 };
                 speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);

@@ -42,6 +42,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return VoiceType.ComputerVoice;
                 }
+                else if ((bool)watsonVoiceRadioButton.IsChecked)
+                {
+                    return VoiceType.WatsonVoice;
+                }
                 else if ((bool)defaultVoiceRadioButton.IsChecked)
                 {
                     return VoiceType.DefaultVoice;
@@ -52,6 +56,10 @@ namespace PowerPointLabs.ELearningLab.Views
                     if (voice is AzureVoice)
                     {
                         return VoiceType.AzureVoice;
+                    }
+                    else if (voice is WatsonVoice)
+                    {
+                        return VoiceType.WatsonVoice;
                     }
                     else
                     {
@@ -72,6 +80,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 else if ((bool)computerVoiceRadioButton.IsChecked)
                 {
                     return computerVoiceComboBox.SelectedItem as ComputerVoice;
+                }
+                else if ((bool)watsonVoiceRadioButton.IsChecked)
+                {
+                    return watsonVoiceComboBox.SelectedItem as WatsonVoice;
                 }
                 else if ((bool)defaultVoiceRadioButton.IsChecked)
                 {
@@ -94,6 +106,8 @@ namespace PowerPointLabs.ELearningLab.Views
                 .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
             azureVoiceComboBox.DisplayMemberPath = "Voice";
             computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices
+                .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
+            watsonVoiceComboBox.ItemsSource = WatsonRuntimeService.Voices
                 .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
             rankedAudioListView.DataContext = this;
             rankedAudioListView.ItemsSource = AudioSettingService.preferredVoices;
@@ -123,6 +137,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 case VoiceType.ComputerVoice:
                     computerVoiceRadioButton.IsChecked = true;
                     computerVoiceComboBox.SelectedItem = selectedVoice as ComputerVoice;
+                    break;
+                case VoiceType.WatsonVoice:
+                    watsonVoiceRadioButton.IsChecked = true;
+                    watsonVoiceComboBox.SelectedItem = selectedVoice as WatsonVoice;
                     break;
                 default:
                     defaultVoiceRadioButton.IsChecked = true;
@@ -176,6 +194,17 @@ namespace PowerPointLabs.ELearningLab.Views
                 AzureRuntimeService.SpeakString(textToSpeak, voice as AzureVoice);
             }
             else if (voice is AzureVoice && IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
+            {
+                string dirPath = System.IO.Path.GetTempPath() + AudioService.TempFolderName;
+                string filePath = dirPath + "\\" +
+                    string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
+                 AzureRuntimeService.PlaySavedAudioForPreview(filePath);
+            }
+            else if (voice is WatsonVoice && !IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
+            {
+                 WatsonRuntimeService.Speak(textToSpeak, voice as WatsonVoice);
+            }
+            else if (voice is WatsonVoice && IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
             {
                 string dirPath = System.IO.Path.GetTempPath() + AudioService.TempFolderName;
                 string filePath = dirPath + "\\" +
@@ -237,7 +266,12 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 previewButton.IsEnabled = true;
             }
-            else
+            else if (voice is WatsonVoice)
+            {
+                // TODO
+                previewButton.IsEnabled = true;
+            }
+            else 
             {
                 previewButton.IsEnabled = AzureRuntimeService.IsAzureAccountPresentAndValid;
             }

@@ -123,6 +123,10 @@ namespace PowerPointLabs.ELearningLab.Service
                     {
                         AudioSettingService.selectedVoiceType = VoiceType.AzureVoice;
                     }
+                    else if (voice is WatsonVoice)
+                    {
+                        AudioSettingService.selectedVoiceType = VoiceType.WatsonVoice;
+                    }
                     else
                     {
                         Logger.Log("Error: Voice retrieved has invalid type");

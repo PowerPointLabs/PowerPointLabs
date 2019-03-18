@@ -65,6 +65,10 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 return AzureVoiceList.voices.Where(x => x.Voice.ToString() == str).ElementAtOrDefault(0);
             }
+            else if (Enum.IsDefined(typeof(WatsonVoiceType), str))
+            {
+                return WatsonRuntimeService.Voices.Where(x => x.Voice.ToString() == str).ElementAtOrDefault(0);
+            }
             else
             {
                 return ComputerVoiceRuntimeService.Voices.Where(x => x.Voice.ToString() == str).ElementAtOrDefault(0);
@@ -81,6 +85,10 @@ namespace PowerPointLabs.ELearningLab.Service
             if (voice is AzureVoice)
             {
                 return VoiceType.AzureVoice;
+            }
+            else if (voice is WatsonVoice)
+            {
+                return VoiceType.WatsonVoice;
             }
             else
             {

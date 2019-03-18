@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ELearningLab.Utility
@@ -14,9 +14,9 @@ namespace PowerPointLabs.ELearningLab.Utility
             try
             {
                 byte[] bytesInStream = ReadFully(stream);
-                using (FileStream fs = File.Create(fileFullPath))
+                using (WaveFileWriter writer = new WaveFileWriter(fileFullPath, new WaveFormat(22050, 1)))
                 {
-                    fs.Write(bytesInStream, 0, bytesInStream.Length);
+                    writer.Write(bytesInStream, 0, bytesInStream.Length);
                 }
             }
             catch

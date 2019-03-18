@@ -10,6 +10,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
     {
         AzureVoice,
         ComputerVoice,
+        WatsonVoice,
         DefaultVoice
     }
 }

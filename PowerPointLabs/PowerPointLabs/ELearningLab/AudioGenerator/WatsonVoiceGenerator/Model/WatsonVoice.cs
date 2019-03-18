@@ -12,21 +12,26 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
         {
             get
             {
-                return "en-US_" + voice.ToString();
+                return Voice.ToString();
             }
         }
-        private WatsonVoiceType voice;
+        public WatsonVoiceType Voice { get; private set; }
 
         public WatsonVoice(WatsonVoiceType voice)
         {
-            this.voice = voice;
+            Voice = voice;
         }
 
         public override object Clone()
         {
-            WatsonVoice voice = new WatsonVoice(this.voice);
+            WatsonVoice voice = new WatsonVoice(Voice);
             voice.Rank = Rank;
             return voice;
+        }
+
+        public override string ToString()
+        {
+            return Voice.ToString();
         }
     }
 }
