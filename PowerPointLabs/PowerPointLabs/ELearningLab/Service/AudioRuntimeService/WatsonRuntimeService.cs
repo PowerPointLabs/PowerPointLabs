@@ -23,7 +23,9 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             Text synthesizeText = new Text { _Text = text };
             TokenOptions options = new TokenOptions();
-
+            options.IamApiKey = "yZfl6iX33cCGF86qmoyRGXFmerdFPp3kxzePe8OHcvD-";
+            options.IamUrl = "https://iam.bluemix.net/identity/token";
+            string endpoint = "https://gateway-tok.watsonplatform.net/text-to-speech/api";
             var _service = new SynthesizeWatsonVoice(options, endpoint);
             Logger.Log(voice.VoiceName);
 
