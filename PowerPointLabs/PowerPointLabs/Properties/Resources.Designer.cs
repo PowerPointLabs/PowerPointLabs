@@ -613,6 +613,46 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ConvertToTooltip {
+            get {
+                object obj = ResourceManager.GetObject("ConvertToTooltip", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CreateCallout {
+            get {
+                object obj = ResourceManager.GetObject("CreateCallout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CreateTooltip {
+            get {
+                object obj = ResourceManager.GetObject("CreateTooltip", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CreateTrigger {
+            get {
+                object obj = ResourceManager.GetObject("CreateTrigger", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap CropLab {
             get {
                 object obj = ResourceManager.GetObject("CropLab", resourceCulture);
@@ -2036,6 +2076,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap TimerLab {
             get {
                 object obj = ResourceManager.GetObject("TimerLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap TooltipsLab {
+            get {
+                object obj = ResourceManager.GetObject("TooltipsLab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
