@@ -489,17 +489,13 @@ namespace PowerPointLabs.DataSources
         {
             List<HSLColor> recentColors = GetListOfRecentColors();
 
-            int index;
-            for (index = 0; index < recentColors.Count; index++)
+            int index = recentColors.IndexOf(color);
+            if (index == -1)
             {
-                if (recentColors[index].IsEqualTo(color))
-                {
-                    index++;
-                    break;
-                }
+                index = recentColors.Count - 1;
             }
 
-            for (int i = index - 2; i >= 0; i--)
+            for (int i = index - 1; i >= 0; i--)
             {
                 recentColors[i + 1] = recentColors[i];
             }
