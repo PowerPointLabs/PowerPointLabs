@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportSupertipRibbonId(TooltipsLabText.AssignTooltipTag)]
-    class AssignTooltipSupertipHandler : SupertipHandler
+    [ExportSupertipRibbonId(TooltipsLabText.ConvertToTooltipTag)]
+    class ConvertToTooltipSupertipHandler : SupertipHandler
     {
         protected override string GetSupertip(string ribbonId)
         {
-            return TooltipsLabText.AssignTooltipButtonSupertip;
+            return TooltipsLabText.ConvertToTooltipButtonSupertip;
         }
     }
 }

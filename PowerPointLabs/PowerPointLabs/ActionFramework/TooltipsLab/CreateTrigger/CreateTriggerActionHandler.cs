@@ -35,7 +35,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             foreach (PowerPoint.Shape selectedShape in selection.ShapeRange)
             {
                 PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShapeWithReferenceCallout(currentSlide, selectedShape);
-                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, selectedShape);
+                ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, selectedShape);
             }
 
             if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))

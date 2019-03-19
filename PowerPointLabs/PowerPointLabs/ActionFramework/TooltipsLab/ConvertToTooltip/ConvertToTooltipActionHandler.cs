@@ -12,8 +12,8 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportActionRibbonId(TooltipsLabText.AssignTooltipTag)]
-    class AssignTooltipActionHandler : ActionHandler
+    [ExportActionRibbonId(TooltipsLabText.ConvertToTooltipTag)]
+    class ConvertToTooltipActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
@@ -32,7 +32,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             try
             {
-                bool success = AssignTooltip.AddTriggerAnimation(currentSlide, selection);
+                bool success = ConvertToTooltip.AddTriggerAnimation(currentSlide, selection);
                 if (success)
                 {
                     // Open the animation custom pane if it is not opened

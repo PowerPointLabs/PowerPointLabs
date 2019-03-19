@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -10,8 +11,8 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportActionRibbonId(TooltipsLabText.CreateTooltipTag)]
-    class CreateTooltipActionHandler : ActionHandler
+    [ExportActionRibbonId(TooltipsLabText.CreateCalloutTag)]
+    class CreateCalloutActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
@@ -23,12 +24,22 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             {
                 return;
             }
-            
-            PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
-            PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
-            PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
-            AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, calloutGroup);
 
+            PowerPoint.Selection selection = this.GetCurrentSelection();
+
+            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            {
+                MessageBox.Show(TooltipsLabText.ErrorNoTriggerShapeSelected);
+                return;
+            }
+
+            foreach (PowerPoint.Shape selectedShape in selection.ShapeRange)
+            {
+                PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
+                PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
+                ConvertToTooltip.AddTriggerAnimation(currentSlide, selectedShape, calloutGroup);
+            }
+            
             if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {
                 this.GetApplication().CommandBars.ExecuteMso(TooltipsLabConstants.AnimationPaneName);
