@@ -65,8 +65,11 @@ namespace PowerPointLabs.ELearningLab.Views
         public ELearningLabMainPanel()
         {
             slide = this.GetCurrentSlide();
+            if (slide == null)
+            {
+                return;
+            }
             slideId = slide.ID;
-            Logger.Log("in initialization: " + slideId.ToString());
             InitializeComponent();
             syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                Properties.Resources.SyncExplanationIcon.GetHbitmap(),
@@ -99,9 +102,14 @@ namespace PowerPointLabs.ELearningLab.Views
             // the current slide is the same as previous slide. 
             // This can happen when user opens presentation mode on current slide
             // and exit presentation mode subsequently.
+            if (_slide == null)
+            {
+                return;
+            }
+            // check if the current slide is the same as previous slide
             slide = _slide;
-            if (DoesSlideExist(slideId) && _slide.ID.Equals(slideId))
-            {               
+            if (_slide.ID.Equals(slideId))
+            {
                 return;
             }
             // update current slide instance
@@ -125,13 +133,18 @@ namespace PowerPointLabs.ELearningLab.Views
         public void SyncElearningLabOnSlideSelectionChanged()
         {
             // do not check for sync if previous slide is deleted
-            if (!DoesSlideExist(slideId))
+            try
             {
+                int id = slide.ID;
+            }
+            catch
+            {
+                isSynced = true;
                 return;
             }
             // We do not check for sync if the current slide is the same as previous slide. 
             PowerPointSlide _slide = this.GetCurrentSlide();
-            if (DoesSlideExist(slideId) && _slide != null && _slide.ID.Equals(slideId))
+            if (_slide != null && _slide.ID.Equals(slideId))
             {
                 return;
             }
@@ -179,8 +192,11 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void Worker_DoWorkToReloadElearningLabItems(object sender, DoWorkEventArgs e)
         {
+            Logger.Log("loading items");
             Items = LoadItems(e);
+            Logger.Log("updating click numbers");
             UpdateClickNoAndTriggerTypeInItems(useWorker: true, e: e);
+            Logger.Log("attaching events");
             foreach (ClickItem item in Items)
             {
                 if (worker.CancellationPending)
@@ -190,6 +206,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
                 item.PropertyChanged += ListViewItemPropertyChanged;
             }
+            Logger.Log("returning");
             return;
         }
 
@@ -238,6 +255,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 null : selfExplanationTexts.First();
             SelfExplanationTagService.PopulateTagNos(slide.GetShapesWithNameRegex(ELearningLabText.PPTLShapeNameRegex)
                 .Select(x => x.Name).ToList());
+            HashSet<int> tagNums = new HashSet<int>();
             do
             {
                 if (worker.CancellationPending)
@@ -249,6 +267,17 @@ namespace PowerPointLabs.ELearningLab.Views
                     new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo), slide).GetBlock();
                 selfExplanationClickBlock =
                     new SelfExplanationItemFactory(slide.GetPPTLEffectsForClick(clickNo), slide).GetBlock() as SelfExplanationClickItem;
+                // we ignore self explanation item if the same click has already been added.
+                // this can happen if user misplaced already generated self explanation item.
+                if (selfExplanationClickBlock != null && tagNums.Contains(selfExplanationClickBlock.tagNo))
+                {
+                    selfExplanationClickBlock = null;
+                }
+                else if (selfExplanationClickBlock != null)
+                {
+                    tagNums.Add(selfExplanationClickBlock.tagNo);
+                }
+                // load any dummy items from text storage on slide
                 while (selfExplanationText != null && selfExplanationClickBlock != null &&
                     Convert.ToInt32(selfExplanationText["TagNo"]) != selfExplanationClickBlock.tagNo)
                 {
@@ -292,6 +321,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             while (customClickBlock != null || selfExplanationClickBlock != null);
 
+            // add remaining dummy explanation items from text storage on slide
             while (selfExplanationText != null)
             {
                 if (worker.CancellationPending)
