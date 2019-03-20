@@ -2214,7 +2214,7 @@
   <ItemGroup>
     <None Include="Resources\TooltipsLab.png" />
   </ItemGroup>
-   <ItemGroup>
+  <ItemGroup>
     <None Include="Resources\SyncExplanationIcon.png" />
   </ItemGroup>
   <ItemGroup>
