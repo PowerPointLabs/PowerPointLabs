@@ -10,7 +10,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AddAudio);
+            return new Bitmap(Properties.Resources.ELearningLabIcon2);
         }
     }
 }

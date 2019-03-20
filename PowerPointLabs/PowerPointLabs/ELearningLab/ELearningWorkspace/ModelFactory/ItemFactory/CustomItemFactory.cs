@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ELearningLab.Converters;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.Models;
 
@@ -25,7 +25,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
             ObservableCollection<CustomSubItem> customItems = new ObservableCollection<CustomSubItem>();
             foreach (Effect effect in effects)
             {
-                customItems.Add(new CustomSubItem(effect.Shape, effect));
+                customItems.Add(new CustomSubItem(effect.Shape.Name, effect.Shape.Id.ToString(), 
+                    EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(effect)));
             }
             return new CustomClickItem(customItems);
         }

@@ -2202,6 +2202,18 @@
   <ItemGroup>
     <None Include="Resources\AddExplanationIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncExplanationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELearningLabIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CancelCalloutButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELearningLabIcon2.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
