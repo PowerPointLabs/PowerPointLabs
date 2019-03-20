@@ -1081,8 +1081,6 @@ namespace PowerPointLabs
                 Ribbon.InitialiseVisibilityCheckbox();
                 Ribbon.InitialiseCompressImagesCheckbox();
             }
-            // load audio setting preference for elearning lab
-            AudioSettingStorageService.LoadAudioSettingPreference();
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)

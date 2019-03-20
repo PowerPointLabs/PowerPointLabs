@@ -37,7 +37,7 @@ namespace PowerPointLabs.ELearningLab.Views
 #pragma warning disable 618
     public partial class ELearningLabMainPanel : UserControl
     {
-        public ObservableCollection<ClickItem> Items { get; set; }
+        public ObservableCollection<ClickItem> Items { get; set; } = new ObservableCollection<ClickItem>();
         public int FirstClickNumber
         {
             get
@@ -65,10 +65,14 @@ namespace PowerPointLabs.ELearningLab.Views
         public ELearningLabMainPanel()
         {
             slide = this.GetCurrentSlide();
+            if (slide == null)
+            {
+                return;
+            }
             slideId = slide.ID;
             InitializeComponent();
             syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.Refresh.GetHbitmap(),
+               Properties.Resources.SyncExplanationIcon.GetHbitmap(),
                IntPtr.Zero,
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
@@ -98,12 +102,17 @@ namespace PowerPointLabs.ELearningLab.Views
             // the current slide is the same as previous slide. 
             // This can happen when user opens presentation mode on current slide
             // and exit presentation mode subsequently.
-            if (DoesSlideExist(slideId) && _slide.ID.Equals(slide.ID))
+            if (_slide == null)
+            {
+                return;
+            }
+            // check if the current slide is the same as previous slide
+            slide = _slide;
+            if (_slide.ID.Equals(slideId))
             {
                 return;
             }
             // update current slide instance
-            slide = _slide;
             slideId = slide.ID;
             isSynced = true;
             listView.ItemsSource = null;
@@ -123,7 +132,19 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         public void SyncElearningLabOnSlideSelectionChanged()
         {
-            if (!DoesSlideExist(slideId))
+            // do not check for sync if previous slide is deleted
+            try
+            {
+                int id = slide.ID;
+            }
+            catch
+            {
+                isSynced = true;
+                return;
+            }
+            // We do not check for sync if the current slide is the same as previous slide. 
+            PowerPointSlide _slide = this.GetCurrentSlide();
+            if (_slide != null && _slide.ID.Equals(slideId))
             {
                 return;
             }
@@ -171,8 +192,11 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void Worker_DoWorkToReloadElearningLabItems(object sender, DoWorkEventArgs e)
         {
+            Logger.Log("loading items");
             Items = LoadItems(e);
+            Logger.Log("updating click numbers");
             UpdateClickNoAndTriggerTypeInItems(useWorker: true, e: e);
+            Logger.Log("attaching events");
             foreach (ClickItem item in Items)
             {
                 if (worker.CancellationPending)
@@ -182,6 +206,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
                 item.PropertyChanged += ListViewItemPropertyChanged;
             }
+            Logger.Log("returning");
             return;
         }
 
@@ -230,6 +255,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 null : selfExplanationTexts.First();
             SelfExplanationTagService.PopulateTagNos(slide.GetShapesWithNameRegex(ELearningLabText.PPTLShapeNameRegex)
                 .Select(x => x.Name).ToList());
+            HashSet<int> tagNums = new HashSet<int>();
             do
             {
                 if (worker.CancellationPending)
@@ -241,6 +267,17 @@ namespace PowerPointLabs.ELearningLab.Views
                     new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo), slide).GetBlock();
                 selfExplanationClickBlock =
                     new SelfExplanationItemFactory(slide.GetPPTLEffectsForClick(clickNo), slide).GetBlock() as SelfExplanationClickItem;
+                // we ignore self explanation item if the same click has already been added.
+                // this can happen if user misplaced already generated self explanation item.
+                if (selfExplanationClickBlock != null && tagNums.Contains(selfExplanationClickBlock.tagNo))
+                {
+                    selfExplanationClickBlock = null;
+                }
+                else if (selfExplanationClickBlock != null)
+                {
+                    tagNums.Add(selfExplanationClickBlock.tagNo);
+                }
+                // load any dummy items from text storage on slide
                 while (selfExplanationText != null && selfExplanationClickBlock != null &&
                     Convert.ToInt32(selfExplanationText["TagNo"]) != selfExplanationClickBlock.tagNo)
                 {
@@ -284,6 +321,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             while (customClickBlock != null || selfExplanationClickBlock != null);
 
+            // add remaining dummy explanation items from text storage on slide
             while (selfExplanationText != null)
             {
                 if (worker.CancellationPending)
@@ -308,7 +346,8 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleUpButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.IndexOf(labItem);
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+            && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             if (index > 0)
             {
                 Items.Move(index, index - 1);
@@ -320,7 +359,8 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleDownButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.IndexOf(labItem);
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+            && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             if (index < Items.Count() - 1 && index >= 0)
             {
                 Items.Move(index, index + 1);
@@ -332,7 +372,9 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleDeleteButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            Items.Remove(labItem);
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+            && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
+            Items.RemoveAt(index);
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             isSynced = false;
         }
@@ -366,10 +408,20 @@ namespace PowerPointLabs.ELearningLab.Views
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            int index = Items.IndexOf(item);
+            int index;
+            if (item is SelfExplanationClickItem)
+            {
+                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+                && ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
+            }
+            else
+            {
+                index = Items.IndexOf(item);
+            }
             Items.Insert(index, selfExplanationClickItem);
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
+            ScrollItemToView(selfExplanationClickItem);
         }
 
         private void AddItemBelowContextMenu_Click(object sender, RoutedEventArgs e)
@@ -377,7 +429,16 @@ namespace PowerPointLabs.ELearningLab.Views
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
             SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            int index = Items.IndexOf(item);
+            int index;
+            if (item is SelfExplanationClickItem)
+            {
+                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+                && ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
+            }
+            else
+            {
+                index = Items.IndexOf(item);
+            }
             if (index < listView.Items.Count - 1)
             {
                 Items.Insert(index + 1, selfExplanationClickItem);
@@ -388,11 +449,13 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
+            ScrollItemToView(selfExplanationClickItem);
         }
 
         #endregion
 
         #region Helper Methods
+
         private bool IsInSync()
         {
             return isSynced;
@@ -437,7 +500,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Loaded,
                 new Action(delegate
-                {
+                {                    
                     listView.ScrollIntoView(item);
                 }));
         }
@@ -484,19 +547,28 @@ namespace PowerPointLabs.ELearningLab.Views
                 if (isFirstOnClickSelfExplanationItem && !isDummySelfExplanationItem)
                 {
                     clickItem.ClickNo = 1;
+                    clickItem.ShouldLabelDisplay = true;
                 }
-                if (isFirstWithPreviousSelfExplanationItem || isDummySelfExplanationItem)
+                if (isFirstWithPreviousSelfExplanationItem)
                 {
                     clickItem.ClickNo = 0;
+                    clickItem.ShouldLabelDisplay = true;
+                }
+                if (isDummySelfExplanationItem)
+                {
+                    clickItem.ClickNo = 0;
+                    clickItem.ShouldLabelDisplay = false;
                 }
             }
             else if (isOnClickSelfExplanationAfterCustomItem || isDummySelfExplanationItem)
             {
                 clickItem.ClickNo = Items.ElementAt(index - 1).ClickNo;
+                clickItem.ShouldLabelDisplay = false;
             }
             else
             {
                 clickItem.ClickNo = Items.ElementAt(index - 1).ClickNo + 1;
+                clickItem.ShouldLabelDisplay = true;
             }
             clickItem.NotifyPropertyChanged("ShouldLabelDisplay");
         }
@@ -510,6 +582,7 @@ namespace PowerPointLabs.ELearningLab.Views
             else
             {
                 selfExplanationClickItem.IsTriggerTypeComboBoxEnabled = false;
+                selfExplanationClickItem.TriggerIndex = (int)TriggerType.OnClick;
             }
         }
 
@@ -529,7 +602,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 item.HasShortVersion = false;
             }
-            if (uncheckAzureAudio)
+            if (uncheckAzureAudio && AudioService.IsAzureVoiceSelectedForItem(item))
             {
                 item.IsVoice = false;
                 item.VoiceLabel = string.Empty;
@@ -683,5 +756,6 @@ namespace PowerPointLabs.ELearningLab.Views
         }
 
         #endregion
+
     }
 }

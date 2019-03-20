@@ -112,10 +112,18 @@ namespace PowerPointLabs.ELearningLab.Service
 
             Microsoft.Office.Interop.PowerPoint.Shapes shapes = slide.Shapes;
 
-            Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
-            slide.RemoveAnimationsForShape(audioShape);
+            try
+            {
+                Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
+                slide.RemoveAnimationsForShape(audioShape);
 
-            return audioShape;
+                return audioShape;
+            }
+            catch 
+            {
+                Logger.Log("Audio not generated because text is not in English.");
+                return null;
+            }
         }
 
         /// <summary>

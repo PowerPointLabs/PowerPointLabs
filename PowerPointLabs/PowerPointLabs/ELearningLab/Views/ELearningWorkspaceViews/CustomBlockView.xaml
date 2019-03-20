@@ -12,13 +12,13 @@
     </Control.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" Width="20" Height="20" CornerRadius="10"
+        <Border Grid.Column="0" Width="30" Height="30" CornerRadius="15"
                     VerticalAlignment="Top" Background="Black">
             <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="9"/>
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="13"/>
         </Border>
         <ListView Grid.Column="1" ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
             <ListView.ItemTemplate>
@@ -26,7 +26,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Width="360" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
                    Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 

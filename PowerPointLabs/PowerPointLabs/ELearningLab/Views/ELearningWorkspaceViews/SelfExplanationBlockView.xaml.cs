@@ -84,6 +84,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         #endregion
 
+        public static AudioSettingsDialogWindow dialog = 
+            new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
+
         public SelfExplanationBlockView()
         {
             InitializeComponent();
@@ -102,13 +105,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 IntPtr.Zero,
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
-            startImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.RightArrowGreen.GetHbitmap(),
-               IntPtr.Zero,
-               Int32Rect.Empty,
-               BitmapSizeOptions.FromEmptyOptions());
             audioImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
               Properties.Resources.SpeakTextContext.GetHbitmap(),
+              IntPtr.Zero,
+              Int32Rect.Empty,
+              BitmapSizeOptions.FromEmptyOptions());
+            cancelCalloutImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+              Properties.Resources.CancelCalloutButton.GetHbitmap(),
               IntPtr.Zero,
               Int32Rect.Empty,
               BitmapSizeOptions.FromEmptyOptions());
@@ -155,11 +158,20 @@ namespace PowerPointLabs.ELearningLab.Views
         private void VoicePreviewButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccountStorageService.LoadUserAccount();
-            AudioPreviewPage.GetInstance().PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
-            ConfigureAudioPreviewSettings();
-            AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance(AudioSettingsPage.AudioPreviewPage);
+            AudioPreviewPage page = dialog.MainPage as AudioPreviewPage;
+            page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
+            ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
             dialog.Show();
+            dialog.Activate();
+        }
+
+        private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            calloutTextBox.Visibility = Visibility.Collapsed;
+            hasShortVersionCheckBox.Visibility = Visibility.Visible;
+            cancelCalloutBorder.Visibility = Visibility.Collapsed;
+            hasShortVersionCheckBox.IsChecked = false;
         }
 
         private void TriggerTypeComboBox_SelectionChanged(object sender, RoutedEventArgs e)
@@ -174,10 +186,14 @@ namespace PowerPointLabs.ELearningLab.Views
             if ((bool)((CheckBox)sender).IsChecked)
             {
                 calloutTextBox.Visibility = Visibility.Visible;
+                hasShortVersionCheckBox.Visibility = Visibility.Collapsed;
+                cancelCalloutBorder.Visibility = Visibility.Visible;
             }
             else
             {
                 calloutTextBox.Visibility = Visibility.Collapsed;
+                hasShortVersionCheckBox.Visibility = Visibility.Visible;
+                cancelCalloutBorder.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -240,14 +256,14 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        private void ConfigureAudioPreviewSettings()
+        private void ConfigureAudioPreviewSettings(AudioPreviewPage page)
         {
             string textToSpeak = captionTextBox.Text.Trim();
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(audioNameLabel.Content.ToString());
             string defaultPostfix = StringUtility.ExtractDefaultLabelFromVoiceLabel(audioNameLabel.Content.ToString());
             VoiceType voiceType = AudioService.GetVoiceTypeFromString(voiceName, defaultPostfix);
             IVoice voice = AudioService.GetVoiceFromString(voiceName);
-            AudioPreviewPage.GetInstance().SetAudioPreviewSettings(textToSpeak, voiceType, voice);
+            page.SetAudioPreviewSettings(textToSpeak, voiceType, voice);
         }
 
         #endregion

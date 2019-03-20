@@ -10,7 +10,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
-    public class SelfExplanationClickItem: ClickItem, IEquatable<SelfExplanationClickItem>
+    public class SelfExplanationClickItem : ClickItem, IEquatable<SelfExplanationClickItem>
     {
         #region public properties
         public bool IsCallout
@@ -64,8 +64,14 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 hasShortVersion = (bool)value;
                 if (!hasShortVersion)
                 {
-                    calloutText = captionText;
+                    return;
                 }
+                if (string.IsNullOrEmpty(calloutText.Trim()))
+                {
+                    calloutText = captionText;
+                    NotifyPropertyChanged("CalloutText");
+                }
+
             }
         }
 
@@ -92,7 +98,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 captionText = value;
                 if (!hasShortVersion)
                 {
-                    calloutText = value;
+                    CalloutText = value;
                 }
                 NotifyPropertyChanged("CaptionText");
             }
@@ -148,8 +154,16 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
         {
             get
             {
-                return string.IsNullOrEmpty(CaptionText.Trim()) 
+                return string.IsNullOrEmpty(CaptionText.Trim())
                     && string.IsNullOrEmpty(CalloutText.Trim());
+            }
+        }
+
+        public int TagNo
+        {
+            get
+            {
+                return tagNo;
             }
         }
 

@@ -553,6 +553,16 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap CancelCalloutButton {
+            get {
+                object obj = ResourceManager.GetObject("CancelCalloutButton", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap CaptionsLab {
             get {
                 object obj = ResourceManager.GetObject("CaptionsLab", resourceCulture);
@@ -836,6 +846,26 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap EffectsLab {
             get {
                 object obj = ResourceManager.GetObject("EffectsLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ELearningLab {
+            get {
+                object obj = ResourceManager.GetObject("ELearningLab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap ELearningLabIcon2 {
+            get {
+                object obj = ResourceManager.GetObject("ELearningLabIcon2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2006,6 +2036,16 @@ namespace PowerPointLabs.Properties {
         public static System.Drawing.Bitmap SwapIcon {
             get {
                 object obj = ResourceManager.GetObject("SwapIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SyncExplanationIcon {
+            get {
+                object obj = ResourceManager.GetObject("SyncExplanationIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
