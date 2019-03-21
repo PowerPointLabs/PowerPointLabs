@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 
@@ -23,6 +23,8 @@ namespace PowerPointLabs.TimerLab
         Shape timeMarkerGroup = null;
         Shape sliderHead = null;
         Shape sliderBody = null;
+        Shape progressBar = null;
+        bool isProgressBar = false;
 
         public TimerLabPaneWPF()
         {
@@ -51,6 +53,15 @@ namespace PowerPointLabs.TimerLab
                 isCountdown = CountdownCheckBox.IsChecked.Value;
             }
             return isCountdown;
+        }
+
+        private bool ProgressBar()
+        {
+            if (ProgressBarCheckBox.IsChecked.HasValue)
+            {
+                isProgressBar = ProgressBarCheckBox.IsChecked.Value;
+            }
+            return isProgressBar;
         }
 
         private float TimerWidth()
@@ -97,11 +108,20 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Timer Creation
-        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft, float timerTop, bool isCountdown)
+        private void CreateBlocksTimer(int duration, float timerWidth, float timerHeight, float timerLeft,
+            float timerTop, bool isCountdown, bool isProgressBar)
         {
-            AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, TimerBodyColor());
+            if (isProgressBar)
+            {
+                AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, SliderColor());
+                AddProgressBar(duration, timerWidth, timerHeight, TimerBodyColor(), SlideWidth());
+            }
+            else
+            {
+                AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, TimerBodyColor());
+                AddSlider(duration, timerWidth, timerHeight, SliderColor(), SlideWidth());
+            }
             AddMarkers(duration, timerWidth, timerHeight, TimeMarkerColor(), LineMarkerColor(), isCountdown);
-            AddSlider(duration, timerWidth, timerHeight, SliderColor(), SlideWidth());
         }
 
         #region Body
@@ -298,8 +318,8 @@ namespace PowerPointLabs.TimerLab
             timeMarker.Name = TimerLabConstants.TimerTimeMarkerId + markerText;
             timeMarker.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.TimerTimeMarkerId);
             timeMarker.TextFrame.WordWrap = Microsoft.Office.Core.MsoTriState.msoFalse;
-            timeMarker.Fill.Transparency = TimerLabConstants.TransparencyTranparent;
-            timeMarker.Line.Transparency = TimerLabConstants.TransparencyTranparent;
+            timeMarker.Fill.Transparency = TimerLabConstants.TransparencyTransparent;
+            timeMarker.Line.Transparency = TimerLabConstants.TransparencyTransparent;
             timeMarker.TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
             timeMarker.TextFrame.TextRange.Text = markerText;
             return timeMarker;
@@ -323,6 +343,59 @@ namespace PowerPointLabs.TimerLab
         }
         #endregion
 
+        #region Progress Bar
+        private void AddProgressBar(int duration, float timerWidth, float timerHeight, int sliderColor, float slideWidth)
+        {
+            // Creation of progress bar
+            Shape visibleProgressBar = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
+                                                                       0, 0, timerWidth, timerHeight);
+            visibleProgressBar.Fill.ForeColor.RGB = sliderColor;
+            visibleProgressBar.Line.ForeColor.RGB = sliderColor; 
+            float rightOfProgressBar = visibleProgressBar.Left + visibleProgressBar.Width;
+            float topOfProgressBar = visibleProgressBar.Top;
+            // Position invisible progress bar to the right of the visible one
+            Shape invisibleProgressBar = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
+                                                                       rightOfProgressBar, topOfProgressBar, timerWidth, timerHeight);
+            invisibleProgressBar.Fill.Transparency = TimerLabConstants.TransparencyTransparent;
+            invisibleProgressBar.Line.Transparency = TimerLabConstants.TransparencyTransparent;
+            // Grouping the shapes together
+            int[] indicesOfProgressBars = new int[2];
+            Shapes shapesInSlide = this.GetCurrentSlide().Shapes;
+            for (int i = 1; i <= shapesInSlide.Count; i++)
+            {
+                if (shapesInSlide[i].Equals(visibleProgressBar))
+                {
+                    indicesOfProgressBars[0] = i;
+                    continue;
+                }
+
+                if (shapesInSlide[i].Equals(invisibleProgressBar))
+                {
+                    indicesOfProgressBars[1] = i;
+                    continue;
+                }
+            }
+            progressBar = (this.GetCurrentSlide().Shapes.Range(indicesOfProgressBars)).Group();
+            progressBar.Name = TimerLabConstants.ProgressBarId;
+            progressBar.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.ProgressBarId);
+            // Positioning Progress Bar onto the timer
+            UpdateProgressBarPosition();
+            PowerPoint.Effect sliderMotionEffect = this.GetCurrentSlide().TimeLine.MainSequence.AddEffect(
+                    progressBar,
+                    PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink,
+                    PowerPoint.MsoAnimateByLevel.msoAnimateLevelNone,
+                    PowerPoint.MsoAnimTriggerType.msoAnimTriggerOnPageClick);
+            sliderMotionEffect.Timing.Duration = duration;
+            sliderMotionEffect.Timing.SmoothStart = Microsoft.Office.Core.MsoTriState.msoFalse;
+            sliderMotionEffect.Timing.SmoothEnd = Microsoft.Office.Core.MsoTriState.msoFalse;
+            PowerPoint.AnimationBehavior shrinkBehavior = sliderMotionEffect.Behaviors[1];
+            // Shrink width to 0
+            shrinkBehavior.ScaleEffect.ByX = 0f;
+            shrinkBehavior.ScaleEffect.ByY = 100f;
+        }
+        #endregion 
+
+
         #region Slider
         private void AddSlider(int duration, float timerWidth, float timerHeight, int sliderColor, float slideWidth)
         {
@@ -334,7 +407,7 @@ namespace PowerPointLabs.TimerLab
             sliderHead.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.TimerSliderHeadId);
             sliderHead.Rotation = TimerLabConstants.Rotate180Degrees;
             sliderHead.Fill.ForeColor.RGB = sliderColor;
-            sliderHead.Line.Transparency = TimerLabConstants.TransparencyTranparent;
+            sliderHead.Line.Transparency = TimerLabConstants.TransparencyTransparent;
 
             sliderBody = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
                                                                 0, 0, 
@@ -343,7 +416,7 @@ namespace PowerPointLabs.TimerLab
             sliderBody.Name = TimerLabConstants.TimerSliderBodyId;
             sliderBody.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.TimerSliderBodyId);
             sliderBody.Fill.ForeColor.RGB = sliderColor;
-            sliderBody.Line.Transparency = TimerLabConstants.TransparencyTranparent;
+            sliderBody.Line.Transparency = TimerLabConstants.TransparencyTransparent;
 
             UpdateSliderPosition();
 
@@ -390,7 +463,14 @@ namespace PowerPointLabs.TimerLab
             {
                 ReformMissingComponents();
                 UpdateMarkerPosition();
-                UpdateSliderPosition();
+                if (isProgressBar)
+                {
+                    UpdateProgressBarPosition();
+                }
+                else
+                {
+                    UpdateSliderPosition();
+                }
 
                 WidthTextBox.Text = Math.Round(timerBody.Width).ToString();
                 HeightTextBox.Text = Math.Round(timerBody.Height).ToString();
@@ -402,6 +482,7 @@ namespace PowerPointLabs.TimerLab
                 // Properties
                 int duration = Duration();
                 bool isCountdown = Countdown();
+                bool isProgressBar = ProgressBar();
                 float timerWidth = TimerWidth();
                 float timerHeight = TimerHeight();
 
@@ -409,7 +490,7 @@ namespace PowerPointLabs.TimerLab
                 float timerLeft = DefaultTimerLeft(SlideWidth(), timerWidth);
                 float timerTop = DefaultTimerTop(SlideHeight(), timerHeight);
 
-                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop, isCountdown);
+                CreateBlocksTimer(duration, timerWidth, timerHeight, timerLeft, timerTop, isCountdown, isProgressBar);
             }
         }
         #endregion
@@ -472,8 +553,16 @@ namespace PowerPointLabs.TimerLab
                 ReformMissingComponents();
                 RecreateMarkers();
                 AdjustZOrder();
-                UpdateSliderPosition();
-                UpdateSliderAnimationDuration();
+                if (isProgressBar)
+                {
+                    UpdateProgressBarPosition();
+                    UpdateProgressBarAnimationDuration();
+                }
+                else
+                {
+                    UpdateSliderPosition();
+                    UpdateSliderAnimationDuration();
+                }
             }
         }
         #endregion
@@ -494,8 +583,46 @@ namespace PowerPointLabs.TimerLab
                 ReformMissingComponents();
                 RecreateMarkers();
                 AdjustZOrder();
-                UpdateSliderPosition();
-                UpdateSliderAnimationDuration();
+                if (isProgressBar)
+                {
+                    UpdateProgressBarPosition();
+                    UpdateProgressBarPosition();
+                }
+                else
+                {
+                    UpdateSliderPosition();
+                    UpdateSliderAnimationDuration();
+                }
+            }
+        }
+
+        private void ProgressBarCheckBox_StateChanged(object sender, RoutedEventArgs e)
+        {
+            // ProgressBarCheckBox.isChecked can return null if checkbox is in indeterminate state in a 3-state checkbox (checked, unchecked, indeterminate)
+            // In this application, the checkbox is only 2-state, but we guard against this because IsChecked returns a nullable boolean (bool?)
+            if (ProgressBarCheckBox.IsChecked == null)
+            {
+                return;
+            }
+
+            ProgressBar();
+
+            if (FindTimer())
+            {
+                ReformMissingComponents();
+                RecreateMarkers();
+                if (isProgressBar)
+                {
+                    RemoveSlider();
+                    ChangeTimerBodyColor(SliderColor());
+                }
+                else
+                {
+                    RemoveProgressBar();
+                    ChangeTimerBodyColor(TimerBodyColor());
+                    RecreateSlider();
+                }
+                AdjustZOrder();
             }
         }
 
@@ -524,8 +651,17 @@ namespace PowerPointLabs.TimerLab
                 timerBody.Left = NewPosition(timerBody.Left, increment);
                 timerBody.Width = timerBody.Width + increment;
 
+                if (isProgressBar)
+                {
+                    progressBar.Left = timerBody.Left;
+                    progressBar.Width = timerBody.Width * 2;
+                    UpdateProgressBarPositionX();
+                } 
+                else
+                {                    
+                    UpdateSliderPositionX();
+                }
                 UpdateMarkerPositionX();
-                UpdateSliderPositionX();
             }
         }
 
@@ -600,8 +736,17 @@ namespace PowerPointLabs.TimerLab
                 timerBody.Top = NewPosition(timerBody.Top, increment);
                 timerBody.Height = timerBody.Height + increment;
 
+                if (isProgressBar)
+                {
+                    progressBar.Top = timerBody.Top;
+                    progressBar.Height = timerBody.Height;
+                    UpdateProgressBarPositionX();
+                }
+                else
+                {
+                    UpdateSliderPositionY();
+                }
                 UpdateMarkerPositionY();
-                UpdateSliderPositionY();
             }
         }
 
@@ -655,13 +800,27 @@ namespace PowerPointLabs.TimerLab
         #endregion
 
         #region Timer Helper
+        private void ChangeTimerBodyColor(int timerBodyColor)
+        {
+            timerBody.Fill.ForeColor.RGB = timerBodyColor;
+            timerBody.Line.ForeColor.RGB = timerBodyColor;
+        }
+
         private void ReformMissingComponents()
         {
             bool isTimerBodyRecreated = ReformTimerBodyIfMissing();
             bool isMarkersRecreated = ReformMarkersIfMissing();
-            bool isSliderRecreated = ReformSliderIfMissing();
+            bool isTimerComponentRecreated = false;
+            if (isProgressBar)
+            {
+                isTimerComponentRecreated = ReformProgressBarIfMissing();
+            }
+            else
+            {
+                isTimerComponentRecreated = ReformSliderIfMissing();
+            }
 
-            if (isTimerBodyRecreated || isMarkersRecreated || isSliderRecreated)
+            if (isTimerBodyRecreated || isMarkersRecreated || isTimerComponentRecreated)
             {
                 AdjustZOrder();
             }
@@ -701,6 +860,16 @@ namespace PowerPointLabs.TimerLab
             return false;
         }
 
+        private bool ReformProgressBarIfMissing()
+        {
+            if (progressBar == null)
+            {
+                RecreateProgressBar();
+                return true;
+            }
+            return false;
+        }
+
         private void RecreateMarkers()
         {
             // remove current markers
@@ -723,6 +892,14 @@ namespace PowerPointLabs.TimerLab
             timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB = timeMarkerColor;
         }
 
+        private void RemoveSlider()
+        {
+            sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHeadId);
+            sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBodyId);
+            sliderHead.Delete();
+            sliderBody.Delete();
+        }
+
         private void RecreateSlider()
         {
             int sliderColor = SliderColor();
@@ -740,6 +917,18 @@ namespace PowerPointLabs.TimerLab
             }
             
             AddSlider(Duration(), timerBody.Width, timerBody.Height, sliderColor, SlideWidth());
+        }
+
+        private void RemoveProgressBar()
+        {
+            progressBar = GetShapeByName(TimerLabConstants.ProgressBarId);
+            progressBar.Delete();
+        }
+
+        private void RecreateProgressBar()
+        {
+            int progressBarColor = TimerBodyColor();
+            AddProgressBar(Duration(), timerBody.Width, timerBody.Height, progressBarColor, SlideWidth());
         }
 
         private void UpdateMarkerPosition()
@@ -801,6 +990,22 @@ namespace PowerPointLabs.TimerLab
             sliderBody.Height = timerBody.Height;
         }
 
+        private void UpdateProgressBarPosition()
+        {
+            UpdateProgressBarPositionX();
+            UpdateProgressBarPositionY();
+        }
+
+        private void UpdateProgressBarPositionX()
+        {
+            progressBar.Left = timerBody.Left;
+        }
+
+        private void UpdateProgressBarPositionY()
+        {
+            progressBar.Top = timerBody.Top;
+        }
+
         private void UpdateSliderAnimationDuration()
         {
             foreach (PowerPoint.Effect effect in this.GetCurrentSlide().TimeLine.MainSequence)
@@ -809,6 +1014,20 @@ namespace PowerPointLabs.TimerLab
                 {
                     if (effect.Shape.Tags[TimerLabConstants.ShapeId].Equals(TimerLabConstants.TimerSliderBodyId) ||
                         effect.Shape.Tags[TimerLabConstants.ShapeId].Equals(TimerLabConstants.TimerSliderHeadId))
+                    {
+                        effect.Timing.Duration = Duration();
+                    }
+                }
+            }
+        }
+
+        private void UpdateProgressBarAnimationDuration()
+        {
+            foreach (PowerPoint.Effect effect in this.GetCurrentSlide().TimeLine.MainSequence)
+            {
+                if (effect.EffectType == PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink)
+                {
+                    if (effect.Shape.Tags[TimerLabConstants.ShapeId].Equals(TimerLabConstants.ProgressBarId))
                     {
                         effect.Timing.Duration = Duration();
                     }
@@ -835,13 +1054,27 @@ namespace PowerPointLabs.TimerLab
         private void AdjustZOrder()
         {
             //Adjust z-order
-            if (lineMarkerGroup != null)
+
+            if (isProgressBar)
             {
-                lineMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                progressBar.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                timeMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                if (lineMarkerGroup != null)
+                {
+                    lineMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                }
             }
-            timeMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
-            sliderHead.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
-            sliderBody.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            else
+            {
+                if (lineMarkerGroup != null)
+                {
+                    lineMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                }
+                timeMarkerGroup.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                sliderHead.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+                sliderBody.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);
+            }
+
         }
         #endregion
 
@@ -911,8 +1144,9 @@ namespace PowerPointLabs.TimerLab
             timeMarkerGroup = GetShapeByName(TimerLabConstants.TimerTimeMarkerGroupId);
             sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHeadId);
             sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBodyId);
+            progressBar = GetShapeByName(TimerLabConstants.ProgressBarId);
 
-            if ((timerBody == null) && (lineMarkerGroup == null) &&
+            if ((timerBody == null) && (progressBar == null) && (lineMarkerGroup == null) && 
                 (timeMarkerGroup == null) && (sliderHead == null) && (sliderBody == null))
             {
                 return false;
