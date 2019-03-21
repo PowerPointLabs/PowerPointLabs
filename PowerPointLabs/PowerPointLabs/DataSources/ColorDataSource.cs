@@ -298,24 +298,6 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        private HSLColor themeColorThirteenValue;
-
-        public HSLColor ThemeColorThirteen
-        {
-            get
-            {
-                return themeColorThirteenValue;
-            }
-            set
-            {
-                if (value != this.themeColorThirteenValue)
-                {
-                    this.themeColorThirteenValue = value;
-                    OnPropertyChanged("themeColorThirteen");
-                }
-            }
-        }
-
         public bool SaveThemeColorsInFile(String filePath)
         {
             try
@@ -333,7 +315,6 @@ namespace PowerPointLabs.DataSources
                 themeColors.Add(this.ThemeColorTen);
                 themeColors.Add(this.ThemeColorEleven);
                 themeColors.Add(this.ThemeColorTwelve);
-                themeColors.Add(this.ThemeColorThirteen);
 
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -368,7 +349,6 @@ namespace PowerPointLabs.DataSources
                 this.ThemeColorTen = themeColors[9];
                 this.ThemeColorEleven = themeColors[10];
                 this.ThemeColorTwelve = themeColors[11];
-                this.ThemeColorThirteen = themeColors[12];
             }
             catch (Exception)
             {
@@ -379,7 +359,6 @@ namespace PowerPointLabs.DataSources
 
         public void AddColorToFavorites(HSLColor color)
         {
-            ThemeColorThirteen = ThemeColorTwelve;
             ThemeColorTwelve = ThemeColorEleven;
             ThemeColorEleven = ThemeColorTen;
             ThemeColorTen = ThemeColorNine;
