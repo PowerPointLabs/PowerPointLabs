@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
+using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.SpeechEngine;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
@@ -17,17 +21,78 @@ namespace PowerPointLabs.ELearningLab.Service
 {
     public class WatsonRuntimeService
     {
+        public static bool IsWatsonAccountPresentAndValid = IsWatsonAccountPresent()
+            && IsValidUserAccount(showErrorMessage: false);
         public static ObservableCollection<WatsonVoice> Voices { get; set; } = GetWatsonVoices();
 
+        public static bool IsWatsonAccountPresent()
+        {
+            return !WatsonAccount.GetInstance().IsEmpty();
+        }
+
+        public static bool IsValidUserAccount(bool showErrorMessage = true)
+        {
+            try
+            {
+                string _key = WatsonAccount.GetInstance().GetKey();
+                if (_key == null || string.IsNullOrEmpty(_key.Trim()))
+                {
+                    throw new Exception("Empty key value");
+                }
+                TokenOptions options = new TokenOptions();
+                options.IamApiKey = _key;
+                string accessToken = new TokenManager(options).GetToken();
+                if (string.IsNullOrEmpty(accessToken))
+                {
+                    throw new Exception("Invalid access key!");
+                }
+                Console.WriteLine("Token: {0}\n", accessToken);
+            }
+            catch
+            {
+                Console.WriteLine("Failed authentication.");
+                if (showErrorMessage)
+                {
+                    MessageBox.Show("Failed authentication");
+                }
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsValidUserAccount(string key, string endpoint)
+        {
+            try
+            {
+                TokenOptions options = new TokenOptions();
+                options.IamApiKey = key;
+                string accessToken = new TokenManager(options).GetToken();
+                if (string.IsNullOrEmpty(accessToken))
+                {
+                    throw new Exception("invalid account"); 
+                }
+                Console.WriteLine("Token: {0}\n", accessToken);
+            }
+            catch
+            {
+                Console.WriteLine("Failed authentication.");
+                return false;
+            }
+            return true;
+        }
         public static void SaveStringToWaveFile(string text, string filePath, WatsonVoice voice)
         {
+            if (!IsWatsonAccountPresentAndValid)
+            {
+                return;
+            }
+            string _key = WatsonAccount.GetInstance().GetKey();
+            string _endpoint = EndpointToUriConverter.watsonRegionToEndpointMapping[WatsonAccount.GetInstance().GetRegion()];
             Text synthesizeText = new Text { _Text = text };
             TokenOptions options = new TokenOptions();
-            options.IamApiKey = "yZfl6iX33cCGF86qmoyRGXFmerdFPp3kxzePe8OHcvD-";
-            options.IamUrl = "https://iam.bluemix.net/identity/token";
-            string endpoint = "https://gateway-tok.watsonplatform.net/text-to-speech/api";
+            options.IamApiKey = _key;
+            string endpoint = _endpoint;
             var _service = new SynthesizeWatsonVoice(options, endpoint);
-            Logger.Log(voice.VoiceName);
 
             var synthesizeResult = _service.Synthesize(synthesizeText, "audio/wav", voice: "en-US_" + voice.VoiceName);
             StreamUtility.SaveStreamToFile(filePath, synthesizeResult);
@@ -35,9 +100,13 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static void Speak(string text, WatsonVoice voice)
         {
-            string dirPath = System.IO.Path.GetTempPath() + AudioService.TempFolderName;
+            string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
             string filePath = dirPath + "\\" +
                 string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
             ManualResetEvent syncEvent = new ManualResetEvent(false);
             Thread thread1 = new Thread(() =>
             {

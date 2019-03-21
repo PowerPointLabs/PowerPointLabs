@@ -43,7 +43,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
         {
             if (!string.IsNullOrEmpty(endpoint))
             {
-                return AzureEndpointToUriConverter.endpointToUriMapping[endpoint];
+                return EndpointToUriConverter.azureEndpointToUriMapping[endpoint];
             }
             return null;
         }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PowerPointLabs.ELearningLab.AudioGenerator
 {
-    public static class AzureEndpointToUriConverter
+    public static class EndpointToUriConverter
     {
-        public static Dictionary<string, string> regionToEndpointMapping = new Dictionary<string, string>()
+        public static Dictionary<string, string> azureRegionToEndpointMapping = new Dictionary<string, string>()
         {
             {"West US", "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken"},
             { "South East Asia", "https://southeastasia.api.cognitive.microsoft.com/sts/v1.0/issueToken"},
@@ -19,7 +19,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             { "North Europe", "https://northeurope.api.cognitive.microsoft.com/sts/v1.0/issueToken"},
             { "West Europe", "https://westeurope.api.cognitive.microsoft.com/sts/v1.0/issueToken"}
         };
-        public static Dictionary<string, string> endpointToUriMapping = new Dictionary<string, string>()
+        public static Dictionary<string, string> azureEndpointToUriMapping = new Dictionary<string, string>()
         {
             {"West US", "https://westus.tts.speech.microsoft.com/cognitiveservices/v1"},
             { "South East Asia", "https://southeastasia.tts.speech.microsoft.com/cognitiveservices/v1"},
@@ -29,6 +29,15 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             { "East Asia", "https://eastasia.tts.speech.microsoft.com/cognitiveservices/v1"},
             { "North Europe", "https://northeurope.tts.speech.microsoft.com/cognitiveservices/v1"},
             { "West Europe", "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1"}
+        };
+        public static Dictionary<string, string> watsonRegionToEndpointMapping = new Dictionary<string, string>()
+        {
+            {"Dallas", "https://stream.watsonplatform.net/text-to-speech/api"},
+            { "Washington DC", "https://gateway-wdc.watsonplatform.net/text-to-speech/api"},
+            { "Frankfurt", "https://stream-fra.watsonplatform.net/text-to-speech/api"},
+            { "Sydney", "https://gateway-syd.watsonplatform.net/text-to-speech/api"},
+            { "Tokyo", "https://gateway-tok.watsonplatform.net/text-to-speech/api"},
+            { "London", "https://gateway-lon.watsonplatform.net/text-to-speech/api"}
         };
     }
 }

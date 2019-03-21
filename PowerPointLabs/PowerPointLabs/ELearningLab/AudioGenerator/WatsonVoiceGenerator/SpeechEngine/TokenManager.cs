@@ -43,7 +43,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Speech
                 SaveTokenInfo(tokenInfo);
                 return this.tokenInfo.AccessToken;
             }
-            else if (this.IsTokenExpired())
+            else if (IsTokenExpired())
             {
                 // 3. refresh a token
                 var tokenInfo = RefreshToken();

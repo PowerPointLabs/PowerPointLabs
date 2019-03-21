@@ -1,20 +1,19 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Service.StorageService;
 
-namespace PowerPointLabs.ELearningLab.Views
+namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
 {
     /// <summary>
-    /// Interaction logic for HumanVoiceLoginPage.xaml
+    /// Interaction logic for WatsonVoiceLoginPage.xaml
     /// </summary>
-    public partial class AzureVoiceLoginPage : Page
-    {     
-        public AzureVoiceLoginPage()
+    public partial class WatsonVoiceLoginPage : Page
+    {
+        public WatsonVoiceLoginPage()
         {
             InitializeComponent();
         }
@@ -34,7 +33,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 _key = key.Text.Trim();
                 string region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
-                _endpoint = EndpointToUriConverter.azureRegionToEndpointMapping[region];
+                _endpoint = EndpointToUriConverter.watsonRegionToEndpointMapping[region];
             }
             catch
             {
@@ -42,16 +41,17 @@ namespace PowerPointLabs.ELearningLab.Views
                 return;
             }
 
-            if (AzureRuntimeService.IsValidUserAccount(_key, _endpoint))
+            bool isValidAccount = WatsonRuntimeService.IsValidUserAccount(_key, _endpoint);
+            if (isValidAccount)
             {
                 // Delete previous user account
-                AzureAccount.GetInstance().Clear();
-                AzureAccountStorageService.DeleteUserAccount();
+                WatsonAccount.GetInstance().Clear();
+                WatsonAccountStorageService.DeleteUserAccount();
                 // Create and save new user account
                 string _region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
-                AzureAccount.GetInstance().SetUserKeyAndRegion(_key, _region);
-                AzureAccountStorageService.SaveUserAccount(AzureAccount.GetInstance());
-                AzureRuntimeService.IsAzureAccountPresentAndValid = true;
+                WatsonAccount.GetInstance().SetUserKeyAndRegion(_key, _region);
+                WatsonAccountStorageService.SaveUserAccount(WatsonAccount.GetInstance());
+                WatsonRuntimeService.IsWatsonAccountPresentAndValid = true;
                 SwitchViewToPreviousPage();
             }
             else

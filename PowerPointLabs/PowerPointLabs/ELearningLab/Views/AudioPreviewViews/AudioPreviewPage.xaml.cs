@@ -155,12 +155,16 @@ namespace PowerPointLabs.ELearningLab.Views
         private void AudioPreviewPage_Loaded(object sender, RoutedEventArgs e)
         {
             ToggleAzureFunctionVisibility();
+            ToggleWatsonFunctionVisibility();
             defaultVoiceLabel.Content = AudioSettingService.selectedVoice.ToString();
             defaultVoiceRadioButton.Checked += RadioButton_Checked;
             azureVoiceRadioButton.Checked += RadioButton_Checked;
             computerVoiceRadioButton.Checked += RadioButton_Checked;
+            watsonVoiceRadioButton.Checked += RadioButton_Checked;
             azureVoiceRadioButton.IsEnabled = azureVoiceComboBox.Items.Count > 0 
                 && AzureRuntimeService.IsAzureAccountPresentAndValid;
+            watsonVoiceRadioButton.IsEnabled = watsonVoiceComboBox.Items.Count > 0
+                && WatsonRuntimeService.IsWatsonAccountPresentAndValid;
             computerVoiceRadioButton.IsEnabled = computerVoiceComboBox.Items.Count > 0;
             ICollectionView view = CollectionViewSource.GetDefaultView(rankedAudioListView.ItemsSource);
             view.Refresh();
@@ -170,7 +174,14 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             AudioSettingService.AudioPreviewPageHeight = Height;
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.ShouldGoToMainPage = false;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToAzureLoginPage;
+        }
+
+        private void WatsonVoiceLogInButton_Click(object sender, RoutedEventArgs e)
+        {
+            AudioSettingService.AudioPreviewPageHeight = Height;
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToWatsonLoginPage;
         }
 
         private void SpeakButton_Click(object sender, RoutedEventArgs e)
@@ -247,6 +258,18 @@ namespace PowerPointLabs.ELearningLab.Views
                 previewButton.IsEnabled = false;
                 return;
             }
+            else if (watsonVoiceRadioButton.IsChecked == true
+                && watsonVoiceComboBox.Items.Count > 0)
+            {
+                previewButton.IsEnabled = WatsonRuntimeService.IsWatsonAccountPresentAndValid;
+                return;
+            }
+            else if (watsonVoiceRadioButton.IsChecked == true
+                && watsonVoiceComboBox.Items.Count == 0)
+            {
+                previewButton.IsEnabled = false;
+                return;
+            }
 
             IVoice voice;
             if (defaultVoiceRadioButton.IsChecked == true)
@@ -268,8 +291,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             else if (voice is WatsonVoice)
             {
-                // TODO
-                previewButton.IsEnabled = true;
+                previewButton.IsEnabled = WatsonRuntimeService.IsWatsonAccountPresentAndValid;
             }
             else 
             {
@@ -293,6 +315,22 @@ namespace PowerPointLabs.ELearningLab.Views
                 azureVoiceComboBox.Visibility = Visibility.Collapsed;
                 azureVoiceLoginButton.Visibility = Visibility.Visible;
                 azureVoiceRadioButton.IsEnabled = false;
+            }
+        }
+
+        private void ToggleWatsonFunctionVisibility()
+        {
+            if (WatsonRuntimeService.IsWatsonAccountPresentAndValid)
+            {
+                watsonVoiceComboBox.Visibility = Visibility.Visible;
+                watsonVoiceLoginButton.Visibility = Visibility.Collapsed;
+                watsonVoiceRadioButton.IsEnabled = true;
+            }
+            else
+            {
+                watsonVoiceComboBox.Visibility = Visibility.Collapsed;
+                watsonVoiceLoginButton.Visibility = Visibility.Visible;
+                watsonVoiceRadioButton.IsEnabled = false;
             }
         }
 

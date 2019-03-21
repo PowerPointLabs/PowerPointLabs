@@ -12,6 +12,8 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Speech
         public MediaTypeFormatterCollection Formatters { get; protected set; }
         public WatsonHttpClient(string baseUri)
         {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             BaseClient = new HttpClient();
             if (baseUri != null)
             {

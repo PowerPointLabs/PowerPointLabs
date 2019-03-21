@@ -23,8 +23,7 @@ namespace PowerPointLabs.ELearningLab.Converters
             }
             else if (voice is WatsonVoice)
             {
-                // TODO
-                return true;
+                return WatsonRuntimeService.IsWatsonAccountPresentAndValid;
             }
             else
             {

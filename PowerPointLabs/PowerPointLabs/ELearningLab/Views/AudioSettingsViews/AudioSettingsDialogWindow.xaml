@@ -33,9 +33,10 @@
         <Frame NavigationUIVisibility="Hidden" x:Name="NarrationsLabSettingsMainFrame" Margin="5 5 5 5">
             <Frame.Content>
                 <MultiBinding Converter="{local:AudioSettingsIndexToPageConverter}" UpdateSourceTrigger="PropertyChanged">
-                    <Binding Path="ShouldGoToMainPage" />
+                    <Binding Path="WindowDisplayOption" />
                     <Binding Path="MainPage" />
-                    <Binding Path="SubPage" />
+                    <Binding Path="SubAzureLoginPage" />
+                    <Binding Path="SubWatsonLoginPage" />
                 </MultiBinding>
             </Frame.Content>
         </Frame>

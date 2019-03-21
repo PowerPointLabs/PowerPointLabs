@@ -141,7 +141,7 @@
                           Margin="0.334,10,19.999,0" />
                 <Button x:Name="watsonVoiceLoginButton" Cursor="Hand" Grid.Column="1" Content="Click to Log In" 
                         Margin="0.334,10,19.999,0" BorderThickness="0" Background="Transparent" FontWeight="Medium"
-                        Visibility="Collapsed" Click="AzureVoiceLogInButton_Click">
+                        Click="WatsonVoiceLogInButton_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>

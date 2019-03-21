@@ -35,7 +35,7 @@ namespace PowerPointLabs.ELearningLab.Service
             try
             {
                 string _key = AzureAccount.GetInstance().GetKey();
-                string _endpoint = AzureEndpointToUriConverter.regionToEndpointMapping[AzureAccount.GetInstance().GetRegion()];
+                string _endpoint = EndpointToUriConverter.azureRegionToEndpointMapping[AzureAccount.GetInstance().GetRegion()];
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance(_endpoint, _key);
                 string accessToken = auth.GetAccessToken();
                 Console.WriteLine("Token: {0}\n", accessToken);

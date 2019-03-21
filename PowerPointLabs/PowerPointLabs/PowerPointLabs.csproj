@@ -733,6 +733,7 @@
     <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\IamTokenData.cs" />
     <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\Text.cs" />
     <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\TokenOptions.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\WatsonAccount.cs" />
     <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\WatsonVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\HttpFactory.cs" />
     <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\SynthesizeWatsonVoice.cs" />
@@ -761,6 +762,7 @@
     <Compile Include="ELearningLab\Service\AudioRuntimeService\WatsonRuntimeService.cs" />
     <Compile Include="ELearningLab\Service\StorageService\AudioSettingStorageService.cs" />
     <Compile Include="ELearningLab\Service\StorageService\ELearningLabTextStorageService.cs" />
+    <Compile Include="ELearningLab\Service\StorageService\WatsonAccountStorageService.cs" />
     <Compile Include="ELearningLab\Utility\AnimationUtility.cs" />
     <Compile Include="ELearningLab\Utility\ShapeUtility.cs" />
     <Compile Include="ELearningLab\Utility\StreamUtility.cs" />
@@ -770,6 +772,9 @@
     <Compile Include="ELearningLab\Utility\VisualTreeUtility.cs" />
     <Compile Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml.cs">
       <DependentUpon>AudioPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml.cs">
+      <DependentUpon>WatsonVoiceLoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml.cs">
       <DependentUpon>CustomBlockView.xaml</DependentUpon>
@@ -793,7 +798,7 @@
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
-    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\AzureEndpointToUriConverter.cs" />
+    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\EndpointToUriConverter.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\Gender.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureVoiceList.cs" />
@@ -1576,6 +1581,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
