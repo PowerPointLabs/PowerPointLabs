@@ -1035,6 +1035,8 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             Ribbon.RefreshRibbonControl("ConvertToTooltipButton");
+            Ribbon.RefreshRibbonControl("CreateCalloutButton");
+            Ribbon.RefreshRibbonControl("CreateTriggerButton");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
