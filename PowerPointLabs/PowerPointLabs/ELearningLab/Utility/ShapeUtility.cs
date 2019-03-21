@@ -30,11 +30,23 @@ namespace PowerPointLabs.ELearningLab.Utility
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-           
+
             Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRoundedRectangularCallout, 10, 10, 100, 10);
             calloutBox.Name = shapeName;
             calloutBox.TextFrame.TextRange.Text = calloutText;
+            calloutBox.Left = 10;
+            calloutBox.Top = 10;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            FormatCalloutToDefaultStyle(calloutBox);
+
+            return calloutBox;
+        }
+
+        /// <summary>
+        /// Formats shape to default style.
+        /// </summary>
+        public static void FormatCalloutToDefaultStyle(Shape calloutBox)
+        {
             calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
             calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             calloutBox.TextFrame.TextRange.Font.Size = 16;
@@ -44,10 +56,6 @@ namespace PowerPointLabs.ELearningLab.Utility
             calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
             calloutBox.Line.Weight = 0.05f;
             calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
-            calloutBox.Left = 10;
-            calloutBox.Top = 10;
-
-            return calloutBox;
         }
 
         /// <summary>
