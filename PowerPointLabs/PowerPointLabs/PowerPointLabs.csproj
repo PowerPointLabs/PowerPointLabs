@@ -291,10 +291,6 @@
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuSupertipHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
