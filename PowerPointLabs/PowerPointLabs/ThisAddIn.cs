@@ -166,7 +166,7 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null && ShapePresentation.Opened)
+            if (ShapePresentation?.Opened ?? false)
             {
                 return;
             }
@@ -330,8 +330,7 @@ namespace PowerPointLabs
 
                 CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
+                if (shapePaneControl?.CurrentCategory == category)
                 {
                     shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
                 }
@@ -349,8 +348,7 @@ namespace PowerPointLabs
 
                 CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
+                if (shapePaneControl?.CurrentCategory == category)
                 {
                     shapePaneControl.RemoveCustomShape(shapeName);
                 }
@@ -368,8 +366,7 @@ namespace PowerPointLabs
 
                 CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
+                if (shapePaneControl?.CurrentCategory == category)
                 {
                     shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
                 }
@@ -463,8 +460,7 @@ namespace PowerPointLabs
         {
             RecorderTaskPane recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
-            if (recorder != null &&
-                recorder.HasEvent())
+            if (recorder?.HasEvent() ?? false)
             {
                 recorder.ForceStopEvent();
             }
@@ -473,7 +469,7 @@ namespace PowerPointLabs
         private void ShutDownPictureSlidesLab()
         {
             PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Ribbon.PictureSlidesLabWindow;
-            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen)
+            if (pictureSlidesLabWindow?.IsOpen ?? false)
             {
                 pictureSlidesLabWindow.Close();
             }
@@ -551,7 +547,7 @@ namespace PowerPointLabs
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
 
             // trigger close form event when closing hide the pane
-            if (recorder != null && !recorderPane.Visible)
+            if (!recorder?.Visible ?? false)
             {
                 recorder.RecorderPaneClosing();
                 // remove recorder pane and force it to reload when next time open
@@ -732,8 +728,11 @@ namespace PowerPointLabs
             ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
             if (selectedSlidesCount > 0)
             {
-                taskpane.eLearningLabMainPanel1.HandleSlideChangedEvent();
-                taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();
+                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
+                if (elearningLabPane.Visible == true)
+                {
+                    taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
+                }
             }
             else
             {
@@ -799,8 +798,7 @@ namespace PowerPointLabs
         {
             RecorderTaskPane recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
-            if (recorder != null &&
-                recorder.HasEvent())
+            if (recorder?.HasEvent() ?? false)
             {
                 recorder.ForceStopEvent();
             }
@@ -831,8 +829,7 @@ namespace PowerPointLabs
 
         private void ShutDownShapesLab()
         {
-            if (ShapePresentation != null &&
-                ShapePresentation.Opened)
+            if (ShapePresentation?.Opened ?? false)
             {
                 if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
                 {
@@ -898,22 +895,23 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            if (pres != null)
+            if (pres == null)
             {
-                Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
-
-                CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
-
-                // make sure ShapeGallery's default category is consistent with current presentation
-                if (customShape != null)
-                {
-                    string currentCategory = customShape.CurrentCategory;
-                    ShapePresentation.DefaultCategory = currentCategory;
-                }
-
-                // If a window was activated in any way, PptLabs should not terminate.
-                _pptLabsShouldTerminate = false;
+                return;
             }
+            Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
+
+            CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
+
+            // make sure ShapeGallery's default category is consistent with current presentation
+            if (customShape != null)
+            {
+                string currentCategory = customShape.CurrentCategory;
+                ShapePresentation.DefaultCategory = currentCategory;
+            }
+
+            // If a window was activated in any way, PptLabs should not terminate.
+            _pptLabsShouldTerminate = false;
         }
 
         private void ThisAddInSlideSelectionChanged(PowerPoint.SlideRange sldRange)
@@ -1021,17 +1019,11 @@ namespace PowerPointLabs
 
             // When there is no selection on the slide, disable the add/copy buttons on
             // customshapepane and syncpane respectively
-            if (GetActivePane(typeof(SyncPane)) != null)
-            {
-                SyncPane syncPane = GetActivePane(typeof(SyncPane)).Control as SyncPane;
-                syncPane.UpdateOnSelectionChange(sel);
-            }
+            SyncPane syncPane = GetActivePane(typeof(SyncPane))?.Control as SyncPane;
+            syncPane?.UpdateOnSelectionChange(sel);
 
-            if (GetActivePane(typeof(CustomShapePane)) != null)
-            {
-                CustomShapePane customShapePane = GetActivePane(typeof(CustomShapePane)).Control as CustomShapePane;
-                customShapePane.UpdateOnSelectionChange(sel);
-            }
+            CustomShapePane customShapePane = GetActivePane(typeof(CustomShapePane))?.Control as CustomShapePane;
+            customShapePane?.UpdateOnSelectionChange(sel);
 
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
             Ribbon.RefreshRibbonControl("DrillDownButton");
@@ -1042,6 +1034,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
+            Ribbon.RefreshRibbonControl("ConvertToTooltipButton");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
@@ -1055,8 +1048,9 @@ namespace PowerPointLabs
 
             // Refresh ribbon to enable the menu buttons
             RefreshRibbonMenuButtons();
-            // Initialise the "Maintain Tab Focus" checkbox
+            // Initialise the "Maintain Tab Focus" and "Compress Images" checkbox
             Ribbon.InitialiseVisibilityCheckbox();
+            Ribbon.InitialiseCompressImagesCheckbox();
         }
 
         // solve new un-modified unsave problem
@@ -1083,11 +1077,10 @@ namespace PowerPointLabs
 
                 // Refresh ribbon to enable the menu buttons if there are now at least one window
                 RefreshRibbonMenuButtons();
-                // Initialise the "Maintain Tab Focus" checkbox
+                // Initialise the "Maintain Tab Focus" and "Compress Images" checkbox
                 Ribbon.InitialiseVisibilityCheckbox();
+                Ribbon.InitialiseCompressImagesCheckbox();
             }
-            // load audio setting preference for elearning lab
-            AudioSettingStorageService.LoadAudioSettingPreference();
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
@@ -1154,9 +1147,6 @@ namespace PowerPointLabs
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
 
-            // save audio setting preference for elearning lab
-            AudioSettingStorageService.SaveAudioSettingPreference();
-
             // Refresh ribbon to grey out the menu / buttons if there are no windows open
             RefreshRibbonMenuButtons();
 
@@ -1214,8 +1204,7 @@ namespace PowerPointLabs
                 string pptName = Application.ActivePresentation.Name;
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
-                    && currentSlide != null
-                    && currentSlide.SlideID != _previousSlideForCopyEvent.SlideID
+                    && currentSlide?.SlideID != _previousSlideForCopyEvent.SlideID
                     && pptName == _previousPptName)
                 {
                     PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
@@ -1568,8 +1557,7 @@ namespace PowerPointLabs
                     overlappingShapeZIndex = shape.ZOrderPosition;
                 }
             }
-            if (overlappingShape != null &&
-                overlappingShape.Visible == Office.MsoTriState.msoTrue)
+            if (overlappingShape?.Visible == Office.MsoTriState.msoTrue)
             {
                 overlappingShape.Select();
             }

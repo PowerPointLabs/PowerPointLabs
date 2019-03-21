@@ -258,7 +258,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
@@ -272,6 +271,31 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsSupertipHandler.cs" />
+    <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonLabelHandler.cs" />
@@ -680,9 +704,10 @@
     <Compile Include="ELearningLab\AudioGenerator\IVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\VoiceType.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\AnimationTypeToImageSourceConverter.cs" />
-    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToIndexConverter.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToTriggerTypeEnabledConverter.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\EffectToAnimationTypeConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\IVoiceToSpeakEnabledConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\ListItemClickNumToColorConverter.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\AbstractItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />
@@ -702,6 +727,7 @@
     <Compile Include="ELearningLab\Utility\StringUtility.cs" />
     <Compile Include="ELearningLab\Extensions\PowerPointSlideExtension.cs" />
     <Compile Include="ELearningLab\Service\TagService\SelfExplanationTagService.cs" />
+    <Compile Include="ELearningLab\Utility\VisualTreeUtility.cs" />
     <Compile Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml.cs">
       <DependentUpon>AudioPreviewPage.xaml</DependentUpon>
     </Compile>
@@ -790,6 +816,7 @@
     <Compile Include="SyncLab\ObjectFormats\GlowTransparencyFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ShadowEffectFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\SoftEdgeEffectFormat.cs" />
+    <Compile Include="TextCollection\TooltipsLabText.cs" />
     <Compile Include="SyncLab\ObjectFormats\TextOrientationFormat.cs" />
     <Compile Include="SyncLab\Views\SyncFormatPanelItemStub.cs" />
     <Compile Include="TextCollection\SaveLabText.cs" />
@@ -819,6 +846,10 @@
     <Compile Include="TextCollection\SyncLabText.cs" />
     <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="TimerLab\TimerLab.cs" />
+    <Compile Include="TooltipsLab\CreateTooltip.cs" />
+    <Compile Include="TooltipsLab\AddTextbox.cs" />
+    <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
+    <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
@@ -2165,6 +2196,36 @@
     <None Include="Resources\EyeDropper_icon.png" />
     <None Include="Resources\EyeDropper_icon.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddExplanationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ConvertToTooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTrigger.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateCallout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TooltipsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncExplanationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELearningLabIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CancelCalloutButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELearningLabIcon2.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -2180,7 +2241,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="55214155BE32CF10E93E0815C7758604B8DF3CF2" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>

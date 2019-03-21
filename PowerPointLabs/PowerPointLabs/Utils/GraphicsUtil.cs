@@ -28,9 +28,14 @@ namespace PowerPointLabs.Utils
 
         #region Constants
         private static readonly Object FileLock = new object();
-        public const float PictureExportingRatio = 96.0f / 72.0f;
-        private const float TargetDpi = 96.0f;
+        public static float PictureExportingRatio = 330.0f / 72.0f;
+        private const float targetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+
+        // Picture exporting ratios
+        private const float pictureExportingRatioHigh = 330.0f / 72.0f;
+        private const float pictureExportingRatioCompressed = 96.0f / 72.0f;
+
         // Heuristics for image compression obtained through testing
         private const long targetCompression = 75L;
         private const long fileSizeLimit = 40000L;
@@ -40,7 +45,7 @@ namespace PowerPointLabs.Utils
         {
             using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
             {
-                dpiScale = g.DpiX / TargetDpi;
+                dpiScale = g.DpiX / targetDpi;
             }
         }
         #endregion
@@ -288,6 +293,15 @@ namespace PowerPointLabs.Utils
         }
         #endregion
 
+        #region Settings
+
+        public static void ShouldCompressPictureExport(bool shouldCompress)
+        {
+            PictureExportingRatio = shouldCompress ? pictureExportingRatioCompressed : pictureExportingRatioHigh;
+        }
+
+        #endregion
+
         #endregion
 
         #region Helper Methods
@@ -309,14 +323,14 @@ namespace PowerPointLabs.Utils
 
         private static double GetDesiredExportWidth()
         {
-            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-            return PowerPointPresentation.Current.SlideWidth / 72.0 * 96.0;
+            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi or 330 dpi, depending on user option.
+            return PowerPointPresentation.Current.SlideWidth * PictureExportingRatio;
         }
 
         private static double GetDesiredExportHeight()
         {
-            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-            return PowerPointPresentation.Current.SlideHeight / 72.0 * 96.0;
+            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi or 330 dpi, depending on user option.
+            return PowerPointPresentation.Current.SlideHeight * PictureExportingRatio;
         }
 
         /// <summary>

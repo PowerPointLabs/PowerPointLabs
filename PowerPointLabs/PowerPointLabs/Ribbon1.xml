@@ -52,6 +52,48 @@
                     getSupertip="GetSupertip"
                     onAction="OnAction"/>
           </menu>
+          <menu id="TooltipsLabMenu"
+                getLabel="GetLabel"
+                getImage="GetImage"
+                getSupertip="GetSupertip"
+                getEnabled="GetEnabled"
+                size="large">
+            <gallery idMso="ShapesInsertGallery"/>
+              <button id="CreateTooltipButton"
+                   tag="CreateTooltip"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   onAction="OnAction"/>
+              <button id="CreateCalloutButton"
+                   tag="CreateCallout"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   getEnabled="GetEnabled"
+                   onAction="OnAction"/>
+              <button id="CreateTriggerButton"
+                   tag="CreateTrigger"
+                   getLabel="GetLabel"
+                   getImage="GetImage"
+                   getSupertip="GetSupertip"
+                   getEnabled="GetEnabled"
+                   onAction="OnAction"/>
+            <button id="ConvertToTooltipButton"
+                    tag="ConvertToTooltip"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    getEnabled="GetEnabled"
+                    onAction="OnAction"/>
+            <menuSeparator id="TooltipsLabSettingsSeparator"/>
+            <button id="TooltipsLabSettingsButton"
+                    tag="TooltipsLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
+          </menu>
 
           <menu id="ZoomLabMenu"
                 getLabel="GetLabel"
@@ -579,8 +621,11 @@
           
         </group>
         
-        <group id="Visibility" label="Tab Management">
+        <group id="Visibility" label="General">
           <checkBox id="VisibleFormatShapes" enabled="true" label="Maintain Tab Focus" supertip="Stay on PowerPointLabs tab after inserting a shape" onAction="ToggleVisibility" getPressed="SetVisibility"/>
+          <checkBox id="ShouldCompressImagesCheckbox" enabled="true" label="Compress Images" 
+                    supertip="Compress images during image-related functions. These functions are:&#xD;- Effects Lab functions&#xD;- Zoom Lab functions&#xD;- Crop To Shape (Crop Lab)" 
+                    onAction="ToggleImageCompression" getPressed="SetImageCompression"/>
         </group>
         
       </tab>
