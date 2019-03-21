@@ -155,9 +155,9 @@ namespace PowerPointLabs.ELearningLab.Views
                        ELearningLabText.ELearningTaskPaneLabel, System.Windows.Forms.MessageBoxButtons.YesNo);
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
-                    isSynced = true;
                     SyncClickItems();
                 }
+                isSynced = true;
             }
         }
 
