@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TooltipsLab;
+using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
@@ -16,19 +18,11 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
-
             PowerPointSlide currentSlide = this.GetCurrentSlide();
+            Selection selection = this.GetCurrentSelection();
 
-            if (currentSlide == null)
+            if (currentSlide == null || !ShapeUtil.IsSelectionShape(selection))
             {
-                return;
-            }
-
-            PowerPoint.Selection selection = this.GetCurrentSelection();
-
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                MessageBox.Show(TooltipsLabText.ErrorNoCalloutShapeSelected);
                 return;
             }
 

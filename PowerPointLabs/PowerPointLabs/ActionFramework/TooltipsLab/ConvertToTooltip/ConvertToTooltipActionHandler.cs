@@ -17,15 +17,11 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Selection selection = this.GetCurrentSelection();
+            this.StartNewUndoEntry();
             PowerPointSlide currentSlide = this.GetCurrentSlide();
+            Selection selection = this.GetCurrentSelection();
 
-            if (currentSlide == null)
-            {
-                return;
-            }
-
-            if (!ShapeUtil.IsSelectionShape(selection))
+            if (currentSlide == null || !ShapeUtil.IsSelectionShape(selection))
             {
                 return;
             }

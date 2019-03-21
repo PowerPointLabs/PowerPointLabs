@@ -7,6 +7,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TooltipsLab;
+using PowerPointLabs.Utils;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
@@ -17,19 +18,11 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
-
             PowerPointSlide currentSlide = this.GetCurrentSlide();
-
-            if (currentSlide == null)
-            {
-                return;
-            }
-
             PowerPoint.Selection selection = this.GetCurrentSelection();
 
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
+            if (currentSlide == null || !ShapeUtil.IsSelectionShape(selection))
             {
-                MessageBox.Show(TooltipsLabText.ErrorNoTriggerShapeSelected);
                 return;
             }
 
