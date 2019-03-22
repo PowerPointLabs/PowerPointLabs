@@ -378,8 +378,11 @@ namespace PowerPointLabs.TimerLab
             progressBar = (this.GetCurrentSlide().Shapes.Range(indicesOfProgressBars)).Group();
             progressBar.Name = TimerLabConstants.ProgressBarId;
             progressBar.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.ProgressBarId);
+            
             // Positioning Progress Bar onto the timer
             UpdateProgressBarPosition();
+
+            // Add effect
             PowerPoint.Effect sliderMotionEffect = this.GetCurrentSlide().TimeLine.MainSequence.AddEffect(
                     progressBar,
                     PowerPoint.MsoAnimEffect.msoAnimEffectGrowShrink,
@@ -392,6 +395,7 @@ namespace PowerPointLabs.TimerLab
             // Shrink width to 0
             shrinkBehavior.ScaleEffect.ByX = 0f;
             shrinkBehavior.ScaleEffect.ByY = 100f;
+
         }
         #endregion 
 
@@ -830,10 +834,19 @@ namespace PowerPointLabs.TimerLab
         {
             if (timerBody == null)
             {
+                int timerBodyColor;
+                if (isProgressBar)
+                {
+                    timerBodyColor = SliderColor();
+                }
+                else
+                {
+                    timerBodyColor = TimerBodyColor();
+                }
                 AddTimerBody(TimerWidth(), TimerHeight(), 
                             DefaultTimerLeft(SlideWidth(), TimerWidth()),
                             DefaultTimerTop(SlideHeight(), TimerHeight()), 
-                            TimerBodyColor());
+                            timerBodyColor);
                 return true;
             }
             timerBody.Rotation = 0;
