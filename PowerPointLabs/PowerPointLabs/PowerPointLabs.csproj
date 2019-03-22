@@ -2198,16 +2198,7 @@
     <None Include="Resources\AddExplanationIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CreateTooltip.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ConvertToTooltip.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CreateTrigger.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CreateCallout.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TooltipsLab.png" />
@@ -2223,6 +2214,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ELearningLabIcon2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateCallout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTrigger.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
