@@ -118,13 +118,13 @@ namespace PowerPointLabs.TimerLab
         {
             if (isProgressBar)
             {
-                AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, SliderColor());
+                AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, ProgressBarTimerBodyColor());
                 AddProgressBar(duration, timerWidth, timerHeight, TimerBodyColor(), SlideWidth());
             }
             else
             {
                 AddTimerBody(timerWidth, timerHeight, timerLeft, timerTop, TimerBodyColor());
-                AddSlider(duration, timerWidth, timerHeight, ProgressBarTimerBodyColor(), SlideWidth());
+                AddSlider(duration, timerWidth, timerHeight, SliderColor(), SlideWidth());
             }
 
             AddMarkers(duration, timerWidth, timerHeight, TimeMarkerColor(), LineMarkerColor(), isCountdown);
