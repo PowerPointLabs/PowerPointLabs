@@ -379,7 +379,6 @@ namespace PowerPointLabs.TimerLab
         }
         #endregion
 
-
         #region Slider
         private void AddSlider(int duration, float timerWidth, float timerHeight, int sliderColor, float slideWidth)
         {
@@ -801,29 +800,16 @@ namespace PowerPointLabs.TimerLab
             visibleProgressBar.Line.ForeColor.RGB = sliderColor;
             float rightOfProgressBar = visibleProgressBar.Left + visibleProgressBar.Width;
             float topOfProgressBar = visibleProgressBar.Top;
+            
             // Position invisible progress bar to the right of the visible one
             Shape invisibleProgressBar = this.GetCurrentSlide().Shapes.AddShape(Microsoft.Office.Core.MsoAutoShapeType.msoShapeRectangle,
                                                                        rightOfProgressBar, topOfProgressBar, timerWidth, timerHeight);
             invisibleProgressBar.Fill.Transparency = TimerLabConstants.TransparencyTransparent;
             invisibleProgressBar.Line.Transparency = TimerLabConstants.TransparencyTransparent;
+            
             // Grouping the shapes together
-            int[] indicesOfProgressBars = new int[2];
-            Shapes shapesInSlide = this.GetCurrentSlide().Shapes;
-            for (int i = 1; i <= shapesInSlide.Count; i++)
-            {
-                if (shapesInSlide[i].Equals(visibleProgressBar))
-                {
-                    indicesOfProgressBars[0] = i;
-                    continue;
-                }
-
-                if (shapesInSlide[i].Equals(invisibleProgressBar))
-                {
-                    indicesOfProgressBars[1] = i;
-                    continue;
-                }
-            }
-            progressBar = (this.GetCurrentSlide().Shapes.Range(indicesOfProgressBars)).Group();
+            string[] progressBarNames = new string[] { visibleProgressBar.Name, invisibleProgressBar.Name };
+            progressBar = this.GetCurrentSlide().Shapes.Range(progressBarNames).Group();
             progressBar.Name = TimerLabConstants.ProgressBarId;
             progressBar.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.ProgressBarId);
         }
