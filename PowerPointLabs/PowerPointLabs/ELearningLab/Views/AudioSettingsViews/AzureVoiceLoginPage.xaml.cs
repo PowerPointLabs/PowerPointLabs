@@ -13,25 +13,10 @@ namespace PowerPointLabs.ELearningLab.Views
     /// Interaction logic for HumanVoiceLoginPage.xaml
     /// </summary>
     public partial class AzureVoiceLoginPage : Page
-    {
-        public AudioSettingsPage previousPage = AudioSettingsPage.MainSettingsPage;
-        private static AzureVoiceLoginPage instance;       
-        private AzureVoiceLoginPage()
+    {     
+        public AzureVoiceLoginPage()
         {
             InitializeComponent();
-        }
-
-        public static AzureVoiceLoginPage GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new AzureVoiceLoginPage();
-            }
-            return instance;
-        }
-        public void Destroy()
-        {
-            instance = null;
         }
 
         #region XAML-Binded Event Handlers
@@ -66,7 +51,12 @@ namespace PowerPointLabs.ELearningLab.Views
                 string _region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
                 AzureAccount.GetInstance().SetUserKeyAndRegion(_key, _region);
                 AzureAccountStorageService.SaveUserAccount(AzureAccount.GetInstance());
+                AzureRuntimeService.IsAzureAccountPresentAndValid = true;
                 SwitchViewToPreviousPage();
+            }
+            else
+            {
+                MessageBox.Show("Invalid Account!");
             }
         }
         #endregion
@@ -75,17 +65,8 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void SwitchViewToPreviousPage()
         {
-            AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance();
-            switch (previousPage)
-            {
-                case AudioSettingsPage.MainSettingsPage:
-                    dialog.SetDialogWindowHeight(AudioSettingService.AudioMainSettingsPageHeight);
-                    break;
-                case AudioSettingsPage.AudioPreviewPage:
-                    dialog.SetDialogWindowHeight(AudioSettingService.AudioPreviewPageHeight);
-                    break;
-            }
-            dialog.SetCurrentPage(previousPage);
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.ShouldGoToMainPage = true;
         }
 
         #endregion

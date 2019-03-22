@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,9 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Utility;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -25,15 +29,6 @@ namespace PowerPointLabs.ELearningLab.Views
     {
         public delegate void DialogConfirmedDelegate(string textToSpeak, VoiceType selectedVoiceType, IVoice selectedVoice);
         public DialogConfirmedDelegate PreviewDialogConfirmedHandler { get; set; }
-        public static AudioPreviewPage GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new AudioPreviewPage();
-            }
-
-            return instance;
-        }
 
         public VoiceType SelectedVoiceType
         {
@@ -47,9 +42,21 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return VoiceType.ComputerVoice;
                 }
-                else
+                else if ((bool)defaultVoiceRadioButton.IsChecked)
                 {
                     return VoiceType.DefaultVoice;
+                }
+                else
+                {
+                    IVoice voice = rankedAudioListView.SelectedItem as IVoice;
+                    if (voice is AzureVoice)
+                    {
+                        return VoiceType.AzureVoice;
+                    }
+                    else
+                    {
+                        return VoiceType.ComputerVoice;
+                    }
                 }
             }
         }
@@ -66,33 +73,47 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return computerVoiceComboBox.SelectedItem as ComputerVoice;
                 }
-                else
+                else if ((bool)defaultVoiceRadioButton.IsChecked)
                 {
                     return AudioSettingService.selectedVoice;
+                }
+                else
+                {
+                    return rankedAudioListView.SelectedItem as IVoice;
                 }
             }
         }
 
-        private AudioPreviewPage()
+        private static Dictionary<string, string> textSpokenByPerson 
+            = new Dictionary<string, string>();
+
+        public AudioPreviewPage()
         {
             InitializeComponent();
-            azureVoiceComboBox.ItemsSource = AzureVoiceList.voices;
+            azureVoiceComboBox.ItemsSource = AzureVoiceList.voices
+                .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
             azureVoiceComboBox.DisplayMemberPath = "Voice";
-            computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices;
+            computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices
+                .Where(x => !AudioSettingService.preferredVoices.Any(y => y.VoiceName == x.VoiceName));
+            rankedAudioListView.DataContext = this;
+            rankedAudioListView.ItemsSource = AudioSettingService.preferredVoices;
         }
-
-        public void Destroy()
-        {
-            instance = null;
-        }
-
-        private static AudioPreviewPage instance;
 
         #region Public Functions
 
         public void SetAudioPreviewSettings(string textToSpeak, VoiceType selectedVoiceType, IVoice selectedVoice)
         {
             spokenText.Text = textToSpeak;
+            if (selectedVoiceType == VoiceType.DefaultVoice)
+            {
+                defaultVoiceRadioButton.IsChecked = true;
+                return;
+            }
+            if (rankedAudioListView.Items.Contains(selectedVoice))
+            {
+                rankedAudioListView.SelectedItem = selectedVoice;
+                return;
+            }
             switch (selectedVoiceType)
             {
                 case VoiceType.AzureVoice:
@@ -103,7 +124,6 @@ namespace PowerPointLabs.ELearningLab.Views
                     computerVoiceRadioButton.IsChecked = true;
                     computerVoiceComboBox.SelectedItem = selectedVoice as ComputerVoice;
                     break;
-                case VoiceType.DefaultVoice:
                 default:
                     defaultVoiceRadioButton.IsChecked = true;
                     break;
@@ -116,15 +136,23 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AudioPreviewPage_Loaded(object sender, RoutedEventArgs e)
         {
-            instance.ToggleAzureFunctionVisibility();
+            ToggleAzureFunctionVisibility();
             defaultVoiceLabel.Content = AudioSettingService.selectedVoice.ToString();
+            defaultVoiceRadioButton.Checked += RadioButton_Checked;
+            azureVoiceRadioButton.Checked += RadioButton_Checked;
+            computerVoiceRadioButton.Checked += RadioButton_Checked;
+            azureVoiceRadioButton.IsEnabled = azureVoiceComboBox.Items.Count > 0 
+                && AzureRuntimeService.IsAzureAccountPresentAndValid;
+            computerVoiceRadioButton.IsEnabled = computerVoiceComboBox.Items.Count > 0;
+            ICollectionView view = CollectionViewSource.GetDefaultView(rankedAudioListView.ItemsSource);
+            view.Refresh();
         }
 
         private void AzureVoiceLogInButton_Click(object sender, RoutedEventArgs e)
         {
-            AzureVoiceLoginPage.GetInstance().previousPage = AudioSettingsPage.AudioPreviewPage;
-            AudioSettingsDialogWindow.GetInstance().SetDialogWindowHeight(AudioSettingService.AudioMainSettingsPageHeight);
-            AudioSettingsDialogWindow.GetInstance().SetCurrentPage(AudioSettingsPage.AzureLoginPage);
+            AudioSettingService.AudioPreviewPageHeight = Height;
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.ShouldGoToMainPage = false;
         }
 
         private void SpeakButton_Click(object sender, RoutedEventArgs e)
@@ -134,27 +162,85 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 return;
             }
-            if (SelectedVoice is ComputerVoice)
+            IVoice voice = ((Button)sender).CommandParameter as IVoice;
+            if (voice == null)
             {
-                ComputerVoiceRuntimeService.SpeakString(textToSpeak, SelectedVoice as ComputerVoice);
+                voice = SelectedVoice;
             }
-            else if (SelectedVoice is AzureVoice)
+            if (voice is ComputerVoice)
             {
-                AzureRuntimeService.SpeakString(textToSpeak, SelectedVoice as AzureVoice);
+                ComputerVoiceRuntimeService.SpeakString(textToSpeak, voice as ComputerVoice);
+            }
+            else if (voice is AzureVoice && !IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
+            {
+                AzureRuntimeService.SpeakString(textToSpeak, voice as AzureVoice);
+            }
+            else if (voice is AzureVoice && IsSameTextSpokenBySamePerson(textToSpeak, voice.VoiceName))
+            {
+                string dirPath = System.IO.Path.GetTempPath() + AudioService.TempFolderName;
+                string filePath = dirPath + "\\" +
+                    string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
+                AzureRuntimeService.PlaySavedAudioForPreview(filePath);
             }
         }
+
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             PreviewDialogConfirmedHandler(spokenText.Text.Trim(), SelectedVoiceType, SelectedVoice);
-            AudioSettingsDialogWindow.GetInstance().Close();
-            AudioSettingsDialogWindow.GetInstance().Destroy();
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            AudioSettingsDialogWindow.GetInstance().Close();
-            AudioSettingsDialogWindow.GetInstance().Destroy();
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.Close();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (computerVoiceRadioButton.IsChecked == true
+                && computerVoiceComboBox.Items.Count > 0)
+            {
+                previewButton.IsEnabled = true;
+                return;
+            }
+            else if (azureVoiceRadioButton.IsChecked == true
+                && azureVoiceComboBox.Items.Count > 0)
+            {
+                previewButton.IsEnabled = AzureRuntimeService.IsAzureAccountPresentAndValid;
+                return;
+            }
+            else if (azureVoiceRadioButton.IsChecked == true
+                && azureVoiceComboBox.Items.Count == 0)
+            {
+                previewButton.IsEnabled = false;
+                return;
+            }
+
+            IVoice voice;
+            if (defaultVoiceRadioButton.IsChecked == true)
+            {
+                voice = AudioSettingService.selectedVoice;
+            }
+            else
+            {
+                voice = ((RadioButton)sender).CommandParameter as IVoice;
+            }
+
+            if (voice == null)
+            {
+                previewButton.IsEnabled = false;
+            }
+            else if (voice is ComputerVoice)
+            {
+                previewButton.IsEnabled = true;
+            }
+            else
+            {
+                previewButton.IsEnabled = AzureRuntimeService.IsAzureAccountPresentAndValid;
+            }
         }
 
         #endregion
@@ -162,7 +248,7 @@ namespace PowerPointLabs.ELearningLab.Views
         #region Private Helper Functions
         private void ToggleAzureFunctionVisibility()
         {
-            if (AzureRuntimeService.IsAzureAccountPresent() && AzureRuntimeService.IsValidUserAccount(showErrorMessage: false))
+            if (AzureRuntimeService.IsAzureAccountPresentAndValid)
             {
                 azureVoiceComboBox.Visibility = Visibility.Visible;
                 azureVoiceLoginButton.Visibility = Visibility.Collapsed;
@@ -173,6 +259,25 @@ namespace PowerPointLabs.ELearningLab.Views
                 azureVoiceComboBox.Visibility = Visibility.Collapsed;
                 azureVoiceLoginButton.Visibility = Visibility.Visible;
                 azureVoiceRadioButton.IsEnabled = false;
+            }
+        }
+
+        private bool IsSameTextSpokenBySamePerson(string textToSpeak, string personName)
+        {
+            if (textSpokenByPerson.ContainsKey(personName))
+            {
+                string textSpoken = textSpokenByPerson[personName];
+                if (textSpoken.Trim().Equals(textToSpeak.Trim()))
+                {
+                    return true;
+                }
+                textSpokenByPerson[personName] = textToSpeak.Trim();
+                return false;
+            }
+            else
+            {
+                textSpokenByPerson.Add(personName, textToSpeak);
+                return false;
             }
         }
         #endregion

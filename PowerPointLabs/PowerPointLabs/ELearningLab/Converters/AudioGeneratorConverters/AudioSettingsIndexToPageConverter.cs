@@ -1,36 +1,38 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 
 namespace PowerPointLabs.ELearningLab.Converters
 {
-    public class AudioSettingsIndexToPageConverter: MarkupExtension, IValueConverter
+    public class AudioSettingsIndexToPageConverter : MarkupExtension, IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            // Find the appropriate page
-            switch ((AudioSettingsPage)value)
+            bool shouldGoToMainPage;
+            Page mainPage, subPage;
+            try
             {
-                case AudioSettingsPage.MainSettingsPage:
-                    return AudioMainSettingsPage.GetInstance();
-                case AudioSettingsPage.AzureLoginPage:
-                    AzureVoiceLoginPage loginInstance = AzureVoiceLoginPage.GetInstance();
-                    loginInstance.key.Text = "";
-                    loginInstance.endpoint.SelectedIndex = -1;
-                    return loginInstance;
-                case AudioSettingsPage.AudioPreviewPage:
-                    return AudioPreviewPage.GetInstance();
-                default:
-                    Debugger.Break();
-                    return null;
+                shouldGoToMainPage = (bool)values[0];
+                mainPage = (Page)values[1];
+                subPage = (Page)values[2];
+
+                return shouldGoToMainPage ? mainPage : subPage;
+            }
+            catch
+            {
+                Logger.Log("Error converting binded value to appropriate pages");
+                return null;
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

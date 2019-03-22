@@ -402,18 +402,18 @@
                             <RowDefinition Height="20" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="20" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="12" HorizontalAlignment="Left" VerticalAlignment="Center">Favorite Colors</TextBlock>
                         <Rectangle x:Name="favoriteColorRectangleOne" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2" AllowDrop="True"
@@ -495,13 +495,6 @@
                                    DragEnter="FavoriteRect_DragEnter" DragOver="FavoriteRect_DragOver" DragLeave="FavoriteRect_DragLeave" Drop="FavoriteRect_Drop"/>
                         <Rectangle x:Name="favoriteColorRectangleTwelve" Grid.Row="1" Grid.Column="11" Margin="2,2,2,2" AllowDrop="True" 
                                    Fill="{Binding ThemeColorTwelve, Converter={x:Static converter:HSLColorToHex.Instance}}" 
-                                   Stroke="Black" StrokeThickness="0.5"
-                                   ToolTip="{x:Static textCollection:ColorsLabText.ThemeColorRectangleTooltip}"
-                                   ContextMenu="{DynamicResource ColorRectContextMenu}"
-                                   MouseLeftButtonDown="ColorRectangle_MouseDown"
-                                   DragEnter="FavoriteRect_DragEnter" DragOver="FavoriteRect_DragOver" DragLeave="FavoriteRect_DragLeave" Drop="FavoriteRect_Drop"/>
-                        <Rectangle x:Name="favoriteColorRectangleThirteen" Grid.Row="1" Grid.Column="12" Margin="2,2,2,2" AllowDrop="True" 
-                                   Fill="{Binding ThemeColorThirteen, Converter={x:Static converter:HSLColorToHex.Instance}}" 
                                    Stroke="Black" StrokeThickness="0.5"
                                    ToolTip="{x:Static textCollection:ColorsLabText.ThemeColorRectangleTooltip}"
                                    ContextMenu="{DynamicResource ColorRectContextMenu}"

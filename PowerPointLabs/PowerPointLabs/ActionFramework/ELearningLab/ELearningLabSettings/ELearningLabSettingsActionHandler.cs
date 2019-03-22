@@ -11,6 +11,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab
         protected override void ExecuteAction(string ribbonId)
         {
             AzureAccountStorageService.LoadUserAccount();
+            AudioSettingStorageService.LoadAudioSettingPreference();
             AudioSettingService.ShowSettingsDialog();
         }
     }
