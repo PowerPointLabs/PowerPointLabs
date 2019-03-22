@@ -152,8 +152,9 @@ namespace PowerPointLabs.ShapesLab.Views
             return addShapeButton.IsEnabled;
         }
 
-        public void AddShapeFromSelection(Selection selection, ThisAddIn addIn)
+        public void AddShapeFromSelection(Selection selection)
         {
+            ThisAddIn addIn = this.GetAddIn();
             // first of all we check if the shape gallery has been opened correctly
             if (!addIn.ShapePresentation.Opened)
             {
@@ -375,9 +376,8 @@ namespace PowerPointLabs.ShapesLab.Views
 
         public void SaveSelectedShapes()
         {
-            ThisAddIn addIn = this.GetAddIn();
             Selection selection = this.GetCurrentSelection();
-            AddShapeFromSelection(selection, addIn);
+            AddShapeFromSelection(selection);
         }
 
         public System.Windows.Point GetShapeForClicking(string shapeName)
@@ -884,9 +884,8 @@ namespace PowerPointLabs.ShapesLab.Views
         private void AddShapeButton_Click(object sender, EventArgs e)
         {
             Selection selection = this.GetCurrentSelection();
-            ThisAddIn addIn = this.GetAddIn();
 
-            AddShapeFromSelection(selection, addIn);
+            AddShapeFromSelection(selection);
         }
 
         private void ClickOutsideShapeList(object sender, MouseButtonEventArgs e)

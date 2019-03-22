@@ -14,7 +14,12 @@ namespace PowerPointLabs.ShapesLab
 
         public void UpdateOnSelectionChange(Selection sel)
         {
-            this.CustomShapePaneWPF1.UpdateAddShapeButtonEnabledStatus(sel);
+            CustomShapePaneWPF1.UpdateAddShapeButtonEnabledStatus(sel);
+        }
+
+        public void AddShapeFromSelection(Selection selection)
+        {
+            CustomShapePaneWPF1.AddShapeFromSelection(selection);
         }
 
         public void AddCustomShape(string shapeName, string shapePath, bool immediateEditing)

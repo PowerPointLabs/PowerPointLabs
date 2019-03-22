@@ -271,6 +271,9 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuLabelHandler.cs" />
