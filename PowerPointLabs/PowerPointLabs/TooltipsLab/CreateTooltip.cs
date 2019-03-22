@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-
+using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
@@ -43,6 +43,7 @@ namespace PowerPointLabs.TooltipsLab
                 triggerShape.Top - (float)(TooltipsLabConstants.CalloutArrowheadVerticalAdjustment * TooltipsLabConstants.CalloutShapeDefaultHeight) - TooltipsLabConstants.TriggerShapeAndCalloutSpacing,
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
                 TooltipsLabConstants.CalloutShapeDefaultHeight);
+            callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             ShapeUtility.FormatCalloutToDefaultStyle(callout);
 
             return callout;

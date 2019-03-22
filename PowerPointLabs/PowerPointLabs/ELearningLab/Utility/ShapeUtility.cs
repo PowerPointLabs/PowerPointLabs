@@ -37,6 +37,7 @@ namespace PowerPointLabs.ELearningLab.Utility
             calloutBox.Left = 10;
             calloutBox.Top = 10;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             FormatCalloutToDefaultStyle(calloutBox);
 
             return calloutBox;
@@ -48,7 +49,6 @@ namespace PowerPointLabs.ELearningLab.Utility
         public static void FormatCalloutToDefaultStyle(Shape calloutBox)
         {
             calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             calloutBox.TextFrame.TextRange.Font.Size = 16;
             calloutBox.Fill.ForeColor.RGB = 0;
             calloutBox.Fill.Transparency = 0.2f;
