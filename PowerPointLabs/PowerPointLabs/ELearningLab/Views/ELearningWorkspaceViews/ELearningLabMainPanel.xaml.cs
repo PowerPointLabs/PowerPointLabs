@@ -192,11 +192,8 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void Worker_DoWorkToReloadElearningLabItems(object sender, DoWorkEventArgs e)
         {
-            Logger.Log("loading items");
             Items = LoadItems(e);
-            Logger.Log("updating click numbers");
             UpdateClickNoAndTriggerTypeInItems(useWorker: true, e: e);
-            Logger.Log("attaching events");
             foreach (ClickItem item in Items)
             {
                 if (worker.CancellationPending)
@@ -206,7 +203,6 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
                 item.PropertyChanged += ListViewItemPropertyChanged;
             }
-            Logger.Log("returning");
             return;
         }
 
@@ -244,6 +240,7 @@ namespace PowerPointLabs.ELearningLab.Views
         }
         private ObservableCollection<ClickItem> LoadItems(DoWorkEventArgs e)
         {
+            DateTime start = DateTime.Now;
             SelfExplanationTagService.Clear();
             int clickNo = FirstClickNumber;
             ObservableCollection<ClickItem> clickBlocks = new ObservableCollection<ClickItem>();
@@ -256,17 +253,48 @@ namespace PowerPointLabs.ELearningLab.Views
             SelfExplanationTagService.PopulateTagNos(slide.GetShapesWithNameRegex(ELearningLabText.PPTLShapeNameRegex)
                 .Select(x => x.Name).ToList());
             HashSet<int> tagNums = new HashSet<int>();
+            List<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>().ToList();
+            int startIdx = 0;
+            bool hasReachedEndOfSequence = effects.Count == 0;
+            List<Effect> customEffects = new List<Effect>();
+            List<Effect> pptlEffects = new List<Effect>();
             do
             {
+                
                 if (worker.CancellationPending)
                 {
                     e.Cancel = true;
                     return clickBlocks;
                 }
+                customEffects = new List<Effect>();
+                pptlEffects = new List<Effect>();
+                for (int i = startIdx; i < effects.Count; i++)
+                {
+                    if (i == effects.Count - 1)
+                    {
+                        hasReachedEndOfSequence = true;
+                    }
+                    Effect effect = effects.ElementAt(i);
+                    if (i > startIdx && effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick)
+                    {
+                        startIdx = i;
+                        break;
+                    }
+                    bool isPPTLEffect = SelfExplanationTagService.ExtractTagNo(effect.Shape.Name) != -1;
+                    bool isAppearTypeEffect = effect.Exit != Microsoft.Office.Core.MsoTriState.msoTrue;
+                    if (isPPTLEffect && isAppearTypeEffect)
+                    {
+                        pptlEffects.Add(effect);
+                    }
+                    if (!isPPTLEffect)
+                    {
+                        customEffects.Add(effect);
+                    }
+                }
                 customClickBlock =
-                    new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo), slide).GetBlock();
+                    new CustomItemFactory(customEffects, slide).GetBlock();
                 selfExplanationClickBlock =
-                    new SelfExplanationItemFactory(slide.GetPPTLEffectsForClick(clickNo), slide).GetBlock() as SelfExplanationClickItem;
+                    new SelfExplanationItemFactory(pptlEffects, slide).GetBlock() as SelfExplanationClickItem;
                 // we ignore self explanation item if the same click has already been added.
                 // this can happen if user misplaced already generated self explanation item.
                 if (selfExplanationClickBlock != null && tagNums.Contains(selfExplanationClickBlock.tagNo))
@@ -289,7 +317,6 @@ namespace PowerPointLabs.ELearningLab.Views
                     selfExplanationTexts.RemoveAt(0);
                     selfExplanationText = selfExplanationTexts.Count() == 0 ? null : selfExplanationTexts.First();
                 }
-
                 if (customClickBlock != null)
                 {
                     customClickBlock.ClickNo = clickNo;
@@ -319,7 +346,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
                 clickNo++;
             }
-            while (customClickBlock != null || selfExplanationClickBlock != null);
+            while (startIdx < effects.Count - 1 && !hasReachedEndOfSequence);
 
             // add remaining dummy explanation items from text storage on slide
             while (selfExplanationText != null)
@@ -337,7 +364,6 @@ namespace PowerPointLabs.ELearningLab.Views
                 selfExplanationTexts.RemoveAt(0);
                 selfExplanationText = selfExplanationTexts.Count() == 0 ? null : selfExplanationTexts.First();
             }
-
             return clickBlocks;
         }
 
