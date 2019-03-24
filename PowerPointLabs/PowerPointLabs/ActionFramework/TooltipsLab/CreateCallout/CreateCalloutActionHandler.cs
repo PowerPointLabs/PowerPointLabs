@@ -29,9 +29,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             foreach (PowerPoint.Shape selectedShape in selection.ShapeRange)
             {
                 PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, selectedShape);
-                PowerPoint.Shape calloutGroup = AddTextbox.AddTextboxToCallout(currentSlide, callout);
-                ConvertToTooltip.AddTriggerAnimation(currentSlide, selectedShape, calloutGroup);
-            }
+
+                ConvertToTooltip.AddTriggerAnimation(currentSlide, selectedShape, callout);
+           }
             
             if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {
