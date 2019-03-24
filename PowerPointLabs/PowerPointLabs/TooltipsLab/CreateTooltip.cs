@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -41,6 +42,9 @@ namespace PowerPointLabs.TooltipsLab
                 triggerShape.Top - (float)(TooltipsLabConstants.CalloutArrowheadVerticalAdjustment * TooltipsLabConstants.CalloutShapeDefaultHeight) - TooltipsLabConstants.TriggerShapeAndCalloutSpacing,
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
                 TooltipsLabConstants.CalloutShapeDefaultHeight);
+
+            callout.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
+            callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
 
             return callout;
         }
