@@ -25,6 +25,7 @@ using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory;
 using PowerPointLabs.ELearningLab.Extensions;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -226,11 +227,17 @@ namespace PowerPointLabs.ELearningLab.Views
         private void SyncClickItems()
         {
             bool removeAzureAudioIfAccountInvalid = false;
+            bool removeWatsonAudioIfAccountInvalid = false;
             if (IsAzureVoiceSelected())
             {
                 removeAzureAudioIfAccountInvalid = !CheckAzureAccountValidity();
             }
-            SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid);
+            if (IsWatsonVoiceSelected())
+            {
+                removeWatsonAudioIfAccountInvalid = !CheckWatsonAccountValidity();
+            }
+            SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid, 
+                uncheckWatsonAudio: removeWatsonAudioIfAccountInvalid);
             RemoveLabAnimationsFromAnimationPane();
             AlignFirstClickNumber();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
@@ -487,11 +494,11 @@ namespace PowerPointLabs.ELearningLab.Views
             return isSynced;
         }
 
-        private void SyncCustomAnimationToTaskpane(bool uncheckAzureAudio)
+        private void SyncCustomAnimationToTaskpane(bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
             Queue<CustomClickItem> customClickItems = LoadCustomClickItems();
             ReplaceCustomItemsInItemsSource(customClickItems);
-            UpdatePropertiesInItemsSource(uncheckAzureAudio: uncheckAzureAudio);
+            UpdatePropertiesInItemsSource(uncheckAzureAudio: uncheckAzureAudio, uncheckWatsonAudio: uncheckWatsonAudio);
         }
 
         private void SyncLabItemToAnimationPane()
@@ -612,7 +619,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        private void UpdateSelfExplanationItem(SelfExplanationClickItem item, bool uncheckAzureAudio)
+        private void UpdateSelfExplanationItem(SelfExplanationClickItem item, bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
             if (string.IsNullOrEmpty(item.CaptionText.Trim()))
             {
@@ -628,7 +635,8 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 item.HasShortVersion = false;
             }
-            if (uncheckAzureAudio && AudioService.IsAzureVoiceSelectedForItem(item))
+            if ((uncheckAzureAudio && AudioService.IsAzureVoiceSelectedForItem(item))
+                || (uncheckWatsonAudio && AudioService.IsWatsonVoiceSelectedForItem(item)))
             {
                 item.IsVoice = false;
                 item.VoiceLabel = string.Empty;
@@ -704,7 +712,7 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         /// <param name="clickItems"></param>
         /// <returns></returns>
-        private ObservableCollection<ClickItem> UpdatePropertiesInItemsSource(bool uncheckAzureAudio)
+        private ObservableCollection<ClickItem> UpdatePropertiesInItemsSource(bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
             int clickNo = FirstClickNumber;
             for (int i = 0; i < Items.Count(); i++)
@@ -713,7 +721,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 UpdateClickNoOnClickItem(clickItem, clickNo, i);
                 if (clickItem is SelfExplanationClickItem)
                 {
-                    UpdateSelfExplanationItem(clickItem as SelfExplanationClickItem, uncheckAzureAudio);
+                    UpdateSelfExplanationItem(clickItem as SelfExplanationClickItem, uncheckAzureAudio, uncheckWatsonAudio);
                 }
             }
             return Items;
@@ -749,11 +757,34 @@ namespace PowerPointLabs.ELearningLab.Views
             return true;
         }
 
+        private bool CheckWatsonAccountValidity()
+        {
+            WatsonAccountStorageService.LoadUserAccount();
+            if (!WatsonRuntimeService.IsWatsonAccountPresent() || !WatsonRuntimeService.IsValidUserAccount())
+            {
+                MessageBox.Show("Watson Account Authentication Failed. \nWatson Voices Cannot Be Generated.");
+                return false;
+            }
+            return true;
+        }
+
         private bool IsAzureVoiceSelected()
         {
             foreach (ClickItem item in Items)
             {
                 if (item is SelfExplanationClickItem && AudioService.IsAzureVoiceSelectedForItem(item as SelfExplanationClickItem))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsWatsonVoiceSelected()
+        {
+            foreach (ClickItem item in Items)
+            {
+                if (item is SelfExplanationClickItem && AudioService.IsWatsonVoiceSelectedForItem(item as SelfExplanationClickItem))
                 {
                     return true;
                 }

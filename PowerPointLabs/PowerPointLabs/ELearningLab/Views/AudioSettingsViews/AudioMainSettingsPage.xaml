@@ -75,7 +75,7 @@
                             </Button.Style>
                         </Button>
                         <ComboBox x:Name="azureVoiceComboBox" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" SelectedIndex="0"
-                          Width="150" Height="25" VerticalAlignment="Center"/>
+                          Height="25" VerticalAlignment="Center"/>
                         <Button Cursor="Hand" Grid.Column="2" x:Name="azureVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,0" 
                         Grid.ColumnSpan="2" Click="AzureVoiceBtn_Click"
                         BorderThickness="0" Background="Transparent" FontWeight="Medium"
@@ -132,7 +132,7 @@
                             </Button.Style>
                         </Button>
                         <ComboBox x:Name="watsonVoiceComboBox" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" SelectedIndex="0"
-                          Width="150" Height="25" VerticalAlignment="Center"/>
+                          Height="25" VerticalAlignment="Center"/>
                         <Button Cursor="Hand" Grid.Column="2" x:Name="watsonVoiceLoginBtn" 
                         Content="Click to Log In" Margin="0.333,10,20,0" 
                         Grid.ColumnSpan="2" Click="WatsonVoiceBtn_Click"

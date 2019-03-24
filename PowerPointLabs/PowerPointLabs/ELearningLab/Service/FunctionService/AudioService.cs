@@ -103,6 +103,13 @@ namespace PowerPointLabs.ELearningLab.Service
             return voice is AzureVoice;
         }
 
+        public static bool IsWatsonVoiceSelectedForItem(SelfExplanationClickItem selfExplanationClickItem)
+        {
+            string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(selfExplanationClickItem.VoiceLabel);
+            IVoice voice = GetVoiceFromString(voiceName);
+            return voice is WatsonVoice;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -132,6 +139,13 @@ namespace PowerPointLabs.ELearningLab.Service
                 Logger.Log("Audio not generated because text is not in English.");
                 return null;
             }
+        }
+
+        public static TimeSpan ReadWavFileTimeSpan(string filepath)
+        {
+            WaveFileReader reader = new WaveFileReader(filepath);
+            TimeSpan time = reader.TotalTime;
+            return time;
         }
 
         /// <summary>
@@ -198,13 +212,6 @@ namespace PowerPointLabs.ELearningLab.Service
         private static bool IsDefaultVoiceType(string str)
         {
             return str.Equals(ELearningLabText.DefaultAudioIdentifier);
-        }
-
-        private static void ReadWavFileTimeSpan(string filepath)
-        {
-            WaveFileReader reader = new WaveFileReader(filepath);
-            TimeSpan time = reader.TotalTime;
-            Logger.Log("time is " + time.ToString());
         }
 
         private static bool IsSameCaptionText(PowerPointSlide slide, string captionText, string voiceLabel, int tagNo)

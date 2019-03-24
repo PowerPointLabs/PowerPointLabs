@@ -62,6 +62,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 if (key != null && endpoint != null)
                 {
                     AzureAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
+                    AzureRuntimeService.IsAzureAccountPresentAndValid = true;
                 }
                 else
                 {

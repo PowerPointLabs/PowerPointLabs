@@ -37,6 +37,11 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model
             return region;
         }
 
+        public string GetEndpoint()
+        {
+            return EndpointToUriConverter.watsonRegionToEndpointMapping[region];
+        }
+
         public bool IsEmpty()
         {
             return key == null || region == null;

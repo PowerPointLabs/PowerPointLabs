@@ -59,6 +59,7 @@ namespace PowerPointLabs.ELearningLab.Service.StorageService
                 if (key != null && endpoint != null)
                 {
                     WatsonAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
+                    WatsonRuntimeService.IsWatsonAccountPresentAndValid = true;
                 }
                 else
                 {

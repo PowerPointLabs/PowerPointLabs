@@ -245,6 +245,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 case VoiceType.AzureVoice:
                 case VoiceType.ComputerVoice:
+                case VoiceType.WatsonVoice:
                     audioNameLabel.Content = selectedVoice.ToString();
                     break;
                 case VoiceType.DefaultVoice:

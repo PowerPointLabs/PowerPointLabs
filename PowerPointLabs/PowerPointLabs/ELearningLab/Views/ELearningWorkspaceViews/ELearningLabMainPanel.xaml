@@ -27,7 +27,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" FlowDirection="LeftToRight">
-            <StackPanel Margin="20,0,20,0" Orientation="Horizontal">
+            <StackPanel Margin="10,0,20,0" Orientation="Horizontal">
                 <Button x:Name="createButton" Height="35" 
                 VerticalAlignment="Center" Width="35" Padding="5" Click="CreateButton_Click">
                     <Image x:Name="createImage" Stretch="Fill"/>

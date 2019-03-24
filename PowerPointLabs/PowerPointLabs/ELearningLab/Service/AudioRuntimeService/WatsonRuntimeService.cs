@@ -46,6 +46,10 @@ namespace PowerPointLabs.ELearningLab.Service
                 {
                     throw new Exception("Invalid access key!");
                 }
+                if (!IsValidEndpoint(_key, WatsonAccount.GetInstance().GetEndpoint()))
+                {
+                    throw new Exception("Invalid endpoint!");
+                }
                 Console.WriteLine("Token: {0}\n", accessToken);
             }
             catch
@@ -69,7 +73,11 @@ namespace PowerPointLabs.ELearningLab.Service
                 string accessToken = new TokenManager(options).GetToken();
                 if (string.IsNullOrEmpty(accessToken))
                 {
-                    throw new Exception("invalid account"); 
+                    throw new Exception("invalid account");
+                }
+                if (!IsValidEndpoint(key, endpoint))
+                {
+                    throw new Exception("invalid account");
                 }
                 Console.WriteLine("Token: {0}\n", accessToken);
             }
@@ -155,8 +163,37 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void SpeechPlayingDialog_Closed(WaveOutEvent player)
         {
-            Logger.Log("stoppppped.....");
             player.Stop();
+        }
+
+        private static void SaveStringToWaveFile(string text, string filePath, WatsonVoice voice, string key, string endpoint)
+        {
+            Text synthesizeText = new Text { _Text = text };
+            TokenOptions options = new TokenOptions();
+            options.IamApiKey = key;
+            var _service = new SynthesizeWatsonVoice(options, endpoint);
+
+            var synthesizeResult = _service.Synthesize(synthesizeText, "audio/wav", voice: "en-US_" + voice.VoiceName);
+            StreamUtility.SaveStreamToFile(filePath, synthesizeResult);            
+        }
+
+        private static bool IsValidEndpoint(string key, string region)
+        {
+            string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
+            string filePath = dirPath + "\\" + ELearningLabText.WatsonAudioTestFileName;
+            string textToSpeak = "This is to test watson voice.";
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            SaveStringToWaveFile(textToSpeak, filePath, new WatsonVoice(WatsonVoiceType.AllisonVoice), key, region);
+            if (!File.Exists(filePath) || AudioService.ReadWavFileTimeSpan(filePath).TotalMilliseconds < 10)
+            {
+                Logger.Log("file exists? " + File.Exists(filePath).ToString());
+                Logger.Log("Time span is " + AudioService.ReadWavFileTimeSpan(filePath).ToString());
+                return false;
+            }
+            return true;
         }
     }
 }
