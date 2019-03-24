@@ -86,7 +86,6 @@ namespace PowerPointLabs.ColorsLab
             list.Add(dataSource.ThemeColorTen);
             list.Add(dataSource.ThemeColorEleven);
             list.Add(dataSource.ThemeColorTwelve);
-            list.Add(dataSource.ThemeColorThirteen);
             return list;
         }
 
@@ -1185,7 +1184,6 @@ namespace PowerPointLabs.ColorsLab
                     dataSource.ThemeColorTen = Color.White;
                     dataSource.ThemeColorEleven = Color.White;
                     dataSource.ThemeColorTwelve = Color.White;
-                    dataSource.ThemeColorThirteen = Color.White;
                 }
             }
             catch (Exception e)
@@ -1238,9 +1236,6 @@ namespace PowerPointLabs.ColorsLab
                 break;
                 case "favoriteColorRectangleTwelve":
                 dataSource.ThemeColorTwelve = color;
-                break;
-                case "favoriteColorRectangleThirteen":
-                dataSource.ThemeColorThirteen = color;
                 break;
                 default:
                 break;
