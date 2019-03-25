@@ -73,6 +73,7 @@ namespace PowerPointLabs.ELearningLab.Service.StorageService
             }
             catch (Exception e)
             {
+                WatsonRuntimeService.IsWatsonAccountPresentAndValid = false;
                 Logger.Log(e.Message);
             }
         }

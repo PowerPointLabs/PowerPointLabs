@@ -76,6 +76,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             catch (Exception e)
             {
+                AzureRuntimeService.IsAzureAccountPresentAndValid = false;
                 Logger.Log(e.Message);
             }
         }
