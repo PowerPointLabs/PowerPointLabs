@@ -82,10 +82,18 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static void SpeakString(string textToSpeak, AzureVoice voice)
         {
+            SpeakStringAsync(textToSpeak, voice);
+            string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
+            string filePath = dirPath + "\\" +
+                string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
+            PlaySavedAudioForPreview(filePath);
+        }
+        public static void SpeakStringAsync(string textToSpeak, AzureVoice voice)
+        {
             RenewCancellationToken();
             string accessToken;
             string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
-            string filePath = dirPath + "\\" + 
+            string filePath = dirPath + "\\" +
                 string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
             try
             {
@@ -127,31 +135,34 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static void PlaySavedAudioForPreview(string filePath)
         {
-            Thread thread = new Thread(() =>
+            SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
+            WaveOutEvent player = new WaveOutEvent();
+            player.PlaybackStopped += (s, e) =>
             {
-                SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
-                WaveOutEvent player = new WaveOutEvent();
-                player.PlaybackStopped += (s, e) =>
-                {
-                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
-                };
-                speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
                 try
                 {
-                    using (var reader = new WaveFileReader(filePath))
-                    {
-                        player.Init(reader);
-                        player.Play();
-                        speechPlayingDialog.ShowDialog();
-                    }
+                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
                 }
                 catch
                 {
-                    Logger.Log("Audio File not Found");
+                    Logger.Log("Object already disposed.");
+
                 }
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            };
+            speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
+            try
+            {
+                using (var reader = new WaveFileReader(filePath))
+                {
+                    player.Init(reader);
+                    player.Play();
+                    speechPlayingDialog.ShowDialog();
+                }
+            }
+            catch
+            {
+                Logger.Log("Audio File not Found");
+            }
         }
 
         #endregion
@@ -208,7 +219,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void SaveAudioToWaveFile(object sender, GenericEventArgs<Stream> args)
         {
-            SaveStreamToFile(args.FilePath, args.EventData);           
+            SaveStreamToFile(args.FilePath, args.EventData);
             args.EventData.Dispose();
         }
 
@@ -251,41 +262,8 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void PlayAudio(object sender, GenericEventArgs<Stream> args)
         {
-            ManualResetEvent syncEvent = new ManualResetEvent(false);
-            Thread thread1 = new Thread(() =>
-            {
-                SaveAudioToWaveFile(sender, args);
-                syncEvent.Set();
-            });
-            thread1.Start();
-            Thread thread = new Thread(() =>
-            {
-                syncEvent.WaitOne();
-                SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
-                WaveOutEvent player = new WaveOutEvent();
-              
-                player.PlaybackStopped += (s, e) =>
-                {
-                  //  speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
-                    args.EventData.Dispose();
-                };
-                speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
-                try
-                {
-                    using (var reader = new WaveFileReader(args.FilePath))
-                    {
-                        player.Init(reader);
-                        player.Play();
-                        speechPlayingDialog.ShowDialog();
-                    }
-                }
-                catch
-                {
-                    Logger.Log("Audio File not Found");
-                }
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            SaveAudioToWaveFile(sender, args);
+
         }
 
         private static SpeechPlayingDialogBox ShowSpeechCancelDialog(WaveOutEvent player)

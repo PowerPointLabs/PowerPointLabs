@@ -115,40 +115,34 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Directory.CreateDirectory(dirPath);
             }
-            ManualResetEvent syncEvent = new ManualResetEvent(false);
-            Thread thread1 = new Thread(() =>
+            SaveStringToWaveFile(text, filePath, voice);
+            SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
+            WaveOutEvent player = new WaveOutEvent();
+            player.PlaybackStopped += (s, e) =>
             {
-
-                SaveStringToWaveFile(text, filePath, voice);
-                syncEvent.Set();
-            });
-            thread1.Start();
-            Thread thread = new Thread(() =>
-            {
-                syncEvent.WaitOne();
-                SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
-                WaveOutEvent player = new WaveOutEvent();
-                player.PlaybackStopped += (s, e) =>
-                {
-                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
-                };
-                speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
                 try
                 {
-                    using (var reader = new WaveFileReader(filePath))
-                    {
-                        player.Init(reader);
-                        player.Play();
-                        speechPlayingDialog.ShowDialog();
-                    }
+                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
                 }
                 catch
                 {
-                    Logger.Log("Audio File not Found");
+                    Logger.Log("Object already disposed");
                 }
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            };
+            speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
+            try
+            {
+                using (var reader = new WaveFileReader(filePath))
+                {
+                    player.Init(reader);
+                    player.Play();
+                    speechPlayingDialog.ShowDialog();
+                }
+            }
+            catch
+            {
+                Logger.Log("Audio File not Found");
+            }
         }
 
         private static ObservableCollection<WatsonVoice> GetWatsonVoices()
@@ -174,7 +168,7 @@ namespace PowerPointLabs.ELearningLab.Service
             var _service = new SynthesizeWatsonVoice(options, endpoint);
 
             var synthesizeResult = _service.Synthesize(synthesizeText, "audio/wav", voice: "en-US_" + voice.VoiceName);
-            StreamUtility.SaveStreamToFile(filePath, synthesizeResult);            
+            StreamUtility.SaveStreamToFile(filePath, synthesizeResult);
         }
 
         private static bool IsValidEndpoint(string key, string region)
