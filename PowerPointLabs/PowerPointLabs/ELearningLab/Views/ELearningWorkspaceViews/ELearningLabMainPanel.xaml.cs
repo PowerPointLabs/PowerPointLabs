@@ -230,11 +230,11 @@ namespace PowerPointLabs.ELearningLab.Views
             bool removeWatsonAudioIfAccountInvalid = false;
             if (IsAzureVoiceSelected())
             {
-                removeAzureAudioIfAccountInvalid = !CheckAzureAccountValidity();
+                removeAzureAudioIfAccountInvalid = !AzureRuntimeService.IsAzureAccountPresentAndValid;
             }
             if (IsWatsonVoiceSelected())
             {
-                removeWatsonAudioIfAccountInvalid = !CheckWatsonAccountValidity();
+                removeWatsonAudioIfAccountInvalid = !WatsonRuntimeService.IsWatsonAccountPresentAndValid;
             }
             SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid, 
                 uncheckWatsonAudio: removeWatsonAudioIfAccountInvalid);

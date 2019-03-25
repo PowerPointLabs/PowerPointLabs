@@ -22,6 +22,12 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model
             return instance;
         }
 
+        private WatsonAccount()
+        {
+            key = null;
+            region = null;
+        }
+
         public void SetUserKeyAndRegion(string key, string region)
         {
             this.key = key;

@@ -45,6 +45,10 @@ namespace PowerPointLabs.ELearningLab.Service.StorageService
 
         public static void LoadUserAccount()
         {
+            if (!WatsonAccount.GetInstance().IsEmpty())
+            {
+                return;
+            }
             Dictionary<string, string> user = new Dictionary<string, string>();
             try
             {
@@ -59,7 +63,7 @@ namespace PowerPointLabs.ELearningLab.Service.StorageService
                 if (key != null && endpoint != null)
                 {
                     WatsonAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
-                    WatsonRuntimeService.IsWatsonAccountPresentAndValid = true;
+                    WatsonRuntimeService.IsWatsonAccountPresentAndValid = WatsonRuntimeService.IsValidUserAccount();
                 }
                 else
                 {

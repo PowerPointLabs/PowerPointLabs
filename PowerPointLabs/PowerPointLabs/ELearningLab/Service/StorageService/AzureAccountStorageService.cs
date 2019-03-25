@@ -48,6 +48,10 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static void LoadUserAccount()
         {
+            if (!AzureAccount.GetInstance().IsEmpty())
+            {
+                return;
+            }
             Dictionary<string, string> user = new Dictionary<string, string>();
             try
             {
@@ -62,9 +66,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 if (key != null && endpoint != null)
                 {
                     AzureAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
-                    string uri = EndpointToUriConverter.azureRegionToEndpointMapping[endpoint];
-                    AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance(uri, key);
-                    AzureRuntimeService.IsAzureAccountPresentAndValid = true;
+                    AzureRuntimeService.IsAzureAccountPresentAndValid = AzureRuntimeService.IsValidUserAccount();
                 }
                 else
                 {

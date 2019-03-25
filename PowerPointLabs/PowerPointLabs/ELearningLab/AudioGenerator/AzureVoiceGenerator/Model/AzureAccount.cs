@@ -24,6 +24,12 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             return instance;
         }
 
+        private AzureAccount()
+        {
+            key = null;
+            endpoint = null;
+        }
+
         public void SetUserKeyAndRegion(string key, string endpoint)
         {
             this.key = key;
