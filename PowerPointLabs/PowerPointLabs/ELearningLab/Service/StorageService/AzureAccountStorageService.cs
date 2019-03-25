@@ -58,14 +58,17 @@ namespace PowerPointLabs.ELearningLab.Service
                     user.Add(el.Name.LocalName, el.Value);
                 }
                 string key = user.ContainsKey("key") ? user["key"] : null;
-                string endpoint = user.ContainsKey("endpoint") ? user["endpoint"] : null;
+                string endpoint = user.ContainsKey("endpoint") ? user["endpoint"].Trim() : null;
                 if (key != null && endpoint != null)
                 {
                     AzureAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
+                    string uri = EndpointToUriConverter.azureRegionToEndpointMapping[endpoint];
+                    AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance(uri, key);
                     AzureRuntimeService.IsAzureAccountPresentAndValid = true;
                 }
                 else
                 {
+                    AzureRuntimeService.IsAzureAccountPresentAndValid = false;
                     File.Delete(GetAccessKeyFilePath());
                 }
             }

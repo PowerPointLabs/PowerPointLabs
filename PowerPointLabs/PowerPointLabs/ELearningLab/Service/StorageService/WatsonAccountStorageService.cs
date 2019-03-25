@@ -63,6 +63,7 @@ namespace PowerPointLabs.ELearningLab.Service.StorageService
                 }
                 else
                 {
+                    WatsonRuntimeService.IsWatsonAccountPresentAndValid = false;
                     File.Delete(GetAccessKeyFilePath());
                 }
             }
