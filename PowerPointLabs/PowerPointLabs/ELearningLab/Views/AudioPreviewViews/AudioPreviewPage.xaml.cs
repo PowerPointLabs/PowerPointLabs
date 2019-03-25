@@ -161,6 +161,11 @@ namespace PowerPointLabs.ELearningLab.Views
             azureVoiceRadioButton.Checked += RadioButton_Checked;
             computerVoiceRadioButton.Checked += RadioButton_Checked;
             watsonVoiceRadioButton.Checked += RadioButton_Checked;
+            azureVoiceComboBox.IsEnabled = azureVoiceComboBox.Items.Count > 0
+                && AzureRuntimeService.IsAzureAccountPresentAndValid;
+            watsonVoiceComboBox.IsEnabled = watsonVoiceComboBox.Items.Count > 0
+                && WatsonRuntimeService.IsWatsonAccountPresentAndValid;
+            computerVoiceComboBox.IsEnabled = computerVoiceComboBox.Items.Count > 0;
             azureVoiceRadioButton.IsEnabled = azureVoiceComboBox.Items.Count > 0 
                 && AzureRuntimeService.IsAzureAccountPresentAndValid;
             watsonVoiceRadioButton.IsEnabled = watsonVoiceComboBox.Items.Count > 0

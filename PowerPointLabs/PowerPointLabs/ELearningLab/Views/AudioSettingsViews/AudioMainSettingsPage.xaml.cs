@@ -122,7 +122,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AudioMainSettingsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            RadioAzureVoice.Checked += RadioAzureVoice_Checked;
+            RadioAzureVoice.Checked += RadioAzureVoice_Checked;          
             ToggleAzureFunctionVisibility();
             ToggleWatsonFunctionVisibility();
             SetupAudioPreferenceUI();
