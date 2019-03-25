@@ -625,8 +625,12 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 item.IsVoice = false;
                 item.IsCaption = false;
+                if (!item.HasShortVersion)
+                {
+                    item.IsCallout = false;
+                }
             }
-            if (string.IsNullOrEmpty(item.CalloutText.Trim()))
+            if (item.HasShortVersion && string.IsNullOrEmpty(item.CalloutText.Trim()))
             {
                 item.IsCallout = false;
                 item.HasShortVersion = false;
