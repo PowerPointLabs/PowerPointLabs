@@ -20,194 +20,263 @@
     </Page.Resources>
     <Grid>
         <StackPanel>
-            <Label Content="Default Voice" FontSize="12" FontWeight="SemiBold" Margin="20 30 0 0"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" x:Name="RadioDefaultVoice" GroupName="VoiceTypeRadioButton" 
+            <Border Margin="10" BorderBrush="LightSlateGray" BorderThickness="1" CornerRadius="2">
+                <StackPanel>
+                    <Label Content="Default Voice" FontSize="12" FontWeight="SemiBold" Margin="20 10 0 0"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Grid.Column="0" x:Name="RadioDefaultVoice" GroupName="VoiceTypeRadioButton" 
                              Margin="20,10,0,0" FontSize="12">
-                    In-Computer Voice
-                </RadioButton>
-                <ComboBox Grid.Column="1" x:Name="computerVoiceComboBox" Height="23" Margin="0,20,20,0" SelectedIndex="0"/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="5*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioAzureVoice" GroupName="VoiceTypeRadioButton" 
+                            In-Computer Voice
+                        </RadioButton>
+                        <ComboBox Grid.Column="1" x:Name="computerVoiceComboBox" Height="23" Margin="0,20,20,0" SelectedIndex="0"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioAzureVoice" GroupName="VoiceTypeRadioButton" 
                              Margin="20,10,20.667,0" FontSize="12">
-                    Cloud Voice
-                </RadioButton>
-                <Button x:Name="changeAcctBtn" Cursor="Hand" Grid.Column="0" Grid.RowSpan="1" Click="ChangeAccountButton_Click"
+                            Azure Cloud Voice
+                        </RadioButton>
+                        <Button x:Name="changeAcctBtn" Cursor="Hand" Grid.Column="0" Grid.RowSpan="1" Click="ChangeAzureAccountButton_Click"
                         Background="Transparent" BorderThickness="0" Margin="20, 35, 20,0"
                         FontWeight="Light" Content="click to change user account" FontSize="7">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button x:Name="logoutBtn" Cursor="Hand" Grid.Column="0" Click="LogOutButton_Click" Background="Transparent" 
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button x:Name="logoutBtn" Cursor="Hand" Grid.Column="0" Click="LogOutAzureAccountButton_Click" Background="Transparent" 
                         BorderThickness="0" Margin="20,50,20.667,0"
                         FontWeight="Light" Content="click to log out" FontSize="7" Grid.RowSpan="2">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <ComboBox x:Name="azureVoiceComboBox" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" SelectedIndex="0"
-                          Width="150" Height="25" VerticalAlignment="Center"/>
-                <Button Cursor="Hand" Grid.Column="2" x:Name="azureVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,0" 
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <ComboBox x:Name="azureVoiceComboBox" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" SelectedIndex="0"
+                          Height="25" VerticalAlignment="Center"/>
+                        <Button Cursor="Hand" Grid.Column="2" x:Name="azureVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,0" 
                         Grid.ColumnSpan="2" Click="AzureVoiceBtn_Click"
                         BorderThickness="0" Background="Transparent" FontWeight="Medium"
                         Width="150" Height="25" VerticalAlignment="Center">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </Grid>
-            <Label Content="Voice Preferences" FontSize="12" FontWeight="SemiBold" Margin="20 10 0 20"/>
-            <ListView ItemsSource="{Binding Voices}" x:Name="audioListView" Margin="20 0 20 0"
-                      BorderThickness="0">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Focusable" Value="False" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type data:IVoice}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <ComboBox Grid.Column="0" Margin="0 5 5 5"
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <RadioButton Grid.Column="0" Grid.Row="0" x:Name="RadioWatsonVoice" GroupName="VoiceTypeRadioButton" 
+                             Margin="20,10,20.667,0" FontSize="12">
+                            IBM Watson Voice
+                        </RadioButton>
+                        <Button x:Name="changeWatsonAcctBtn" Cursor="Hand" Grid.Column="0" Grid.RowSpan="1" Click="ChangeWatsonAccountButton_Click"
+                        Background="Transparent" BorderThickness="0" Margin="20, 35, 20,0"
+                        FontWeight="Light" Content="click to change user account" FontSize="7">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button x:Name="logoutWatsonAcctBtn" Cursor="Hand" Grid.Column="0" Click="LogOutWatsonAccountButton_Click" Background="Transparent" 
+                        BorderThickness="0" Margin="20,50,20.667,10"
+                        FontWeight="Light" Content="click to log out" FontSize="7" Grid.RowSpan="2">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <ComboBox x:Name="watsonVoiceComboBox" Grid.Column="2" Padding="2" Margin="0.333,10,20,0" SelectedIndex="0"
+                          Height="25" VerticalAlignment="Center"/>
+                        <Button Cursor="Hand" Grid.Column="2" x:Name="watsonVoiceLoginBtn" 
+                        Content="Click to Log In" Margin="0.333,10,20,0" 
+                        Grid.ColumnSpan="2" Click="WatsonVoiceBtn_Click"
+                        BorderThickness="0" Background="Transparent" FontWeight="Medium"
+                        Width="150" Height="25" VerticalAlignment="Center">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Margin="10" BorderBrush="LightSlateGray" BorderThickness="1" CornerRadius="2">
+                <StackPanel>
+                    <Label Content="Voice Preferences" FontSize="12" FontWeight="SemiBold" Margin="20 10 0 20"/>
+                    <ListView ItemsSource="{Binding Voices}" x:Name="audioListView" Margin="20 0 20 0"
+                      BorderThickness="0" MaxHeight="120" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Focusable" Value="False" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type data:IVoice}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox Grid.Column="0" Margin="0 5 5 5"
                                       VerticalAlignment="Center" Height="20" 
                                       SelectedIndex="{Binding Rank, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectionChanged="RankingComboBox_SelectionChanged">
-                                <ComboBoxItem Content="" />
-                                <ComboBoxItem Content="1" />
-                                <ComboBoxItem Content="2" />
-                                <ComboBoxItem Content="3" />
-                                <ComboBoxItem Content="4" />
-                                <ComboBoxItem Content="5" />
-                            </ComboBox>
-                            <Label Grid.Column="1" Content="{Binding VoiceName}" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-         
-            <Button Cursor="Hand" x:Name="updatePreferenceButton"                         
+                                        <ComboBoxItem Content="" />
+                                        <ComboBoxItem Content="1" />
+                                        <ComboBoxItem Content="2" />
+                                        <ComboBoxItem Content="3" />
+                                        <ComboBoxItem Content="4" />
+                                        <ComboBoxItem Content="5" />
+                                    </ComboBox>
+                                    <Label Grid.Column="1" Content="{Binding VoiceName}" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Cursor="Hand" x:Name="updatePreferenceButton"                         
                     Content="Update" Width="50" HorizontalAlignment="Right"
-                        FontWeight="Thin" Margin="0 0 30 0" 
+                        FontWeight="Thin" Margin="0 0 30 10" 
                         VerticalAlignment="Center" Click="UpdateRankingButton_Clicked">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.ToolTip>
-                    <StackPanel FlowDirection="LeftToRight">
-                        <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Update voice preferences</TextBlock>
-                        <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
-                        <TextBlock>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.ToolTip>
+                            <StackPanel FlowDirection="LeftToRight">
+                                <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Update voice preferences</TextBlock>
+                                <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                                <TextBlock>
                         Click to:
                         <LineBreak/>
                         Update voice preferences.
-                        </TextBlock>
-                    </StackPanel>
-                </Button.ToolTip>
-            </Button>
-            <ListView ItemsSource="{Binding Voices}" x:Name="preferredAudioListView" Margin="20 0 20 0"
+                                </TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
+                    <ListView ItemsSource="{Binding Voices}" x:Name="preferredAudioListView" Margin="20 0 20 0"
                       BorderThickness="0">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="Focusable" Value="False" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type data:IVoice}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="{Binding Rank}"/>
-                            <Label Grid.Column="1" Content="{Binding VoiceName}" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Button Cursor="Hand" x:Name="editPreferenceButton" 
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Focusable" Value="False" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type data:IVoice}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="{Binding Rank}"/>
+                                    <Label Grid.Column="1" Content="{Binding VoiceName}" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Cursor="Hand" x:Name="editPreferenceButton" 
                         Content="Edit" Width="50" HorizontalAlignment="Right"
-                        FontWeight="Thin" Margin="0 0 30 0" 
+                        FontWeight="Thin" Margin="0 0 30 10" 
                     Click="EditRankingButton_Clicked">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Transparent"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.ToolTip>
-                    <StackPanel FlowDirection="LeftToRight">
-                        <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Edit Voice Preferences</TextBlock>
-                        <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
-                        <TextBlock>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.ToolTip>
+                            <StackPanel FlowDirection="LeftToRight">
+                                <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Edit Voice Preferences</TextBlock>
+                                <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                                <TextBlock>
                         Click to:
                         <LineBreak/>
                         Edit or add voice preferences.
-                        </TextBlock>
-                    </StackPanel>
-                </Button.ToolTip>
-            </Button>
-            <Label Content="Other Settings" FontSize="12" FontWeight="SemiBold" Margin="20 10 0 20"/>
-            <CheckBox Grid.Column="0" x:Name="previewCheckbox" Margin="20,0,0,0" 
+                                </TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
+                    </Button>
+                </StackPanel>
+            </Border>
+            <Border Margin="10" BorderBrush="LightSlateGray" BorderThickness="1" CornerRadius="2">
+                <StackPanel>
+                    <Label Content="Other Settings" FontSize="12" FontWeight="SemiBold" Margin="20 10 0 20"/>
+                    <CheckBox Grid.Column="0" x:Name="previewCheckbox" Margin="20,0,0,10" 
                           Checked="PreviewCheckBox_Checked" Unchecked="PreviewCheckBox_Unchecked">Preview</CheckBox>
+                </StackPanel>
+            </Border>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

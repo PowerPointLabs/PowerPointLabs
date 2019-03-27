@@ -65,6 +65,10 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 return AzureVoiceList.voices.Where(x => x.Voice.ToString() == str).ElementAtOrDefault(0);
             }
+            else if (Enum.IsDefined(typeof(WatsonVoiceType), str))
+            {
+                return WatsonRuntimeService.Voices.Where(x => x.Voice.ToString() == str).ElementAtOrDefault(0);
+            }
             else
             {
                 return ComputerVoiceRuntimeService.Voices.Where(x => x.Voice.ToString() == str).ElementAtOrDefault(0);
@@ -82,6 +86,10 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 return VoiceType.AzureVoice;
             }
+            else if (voice is WatsonVoice)
+            {
+                return VoiceType.WatsonVoice;
+            }
             else
             {
                 return VoiceType.ComputerVoice;
@@ -93,6 +101,13 @@ namespace PowerPointLabs.ELearningLab.Service
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(selfExplanationClickItem.VoiceLabel);
             IVoice voice = GetVoiceFromString(voiceName);
             return voice is AzureVoice;
+        }
+
+        public static bool IsWatsonVoiceSelectedForItem(SelfExplanationClickItem selfExplanationClickItem)
+        {
+            string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(selfExplanationClickItem.VoiceLabel);
+            IVoice voice = GetVoiceFromString(voiceName);
+            return voice is WatsonVoice;
         }
 
         /// <summary>
@@ -124,6 +139,13 @@ namespace PowerPointLabs.ELearningLab.Service
                 Logger.Log("Audio not generated because text is not in English.");
                 return null;
             }
+        }
+
+        public static TimeSpan ReadWavFileTimeSpan(string filepath)
+        {
+            WaveFileReader reader = new WaveFileReader(filepath);
+            TimeSpan time = reader.TotalTime;
+            return time;
         }
 
         /// <summary>
@@ -179,19 +201,17 @@ namespace PowerPointLabs.ELearningLab.Service
                 ComputerVoiceRuntimeService.SaveStringToWaveFile(text, filePath, voice as ComputerVoice);
                 return true;
             }
+            else if (voice is WatsonVoice)
+            {
+                WatsonRuntimeService.SaveStringToWaveFile(text, filePath, voice as WatsonVoice);
+                return true;
+            }
             return false;
         }
 
         private static bool IsDefaultVoiceType(string str)
         {
             return str.Equals(ELearningLabText.DefaultAudioIdentifier);
-        }
-
-        private static void ReadWavFileTimeSpan(string filepath)
-        {
-            WaveFileReader reader = new WaveFileReader(filepath);
-            TimeSpan time = reader.TotalTime;
-            Logger.Log("time is " + time.ToString());
         }
 
         private static bool IsSameCaptionText(PowerPointSlide slide, string captionText, string voiceLabel, int tagNo)

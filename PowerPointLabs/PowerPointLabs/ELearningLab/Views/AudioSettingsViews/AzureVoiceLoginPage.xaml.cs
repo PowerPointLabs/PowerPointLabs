@@ -34,7 +34,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 _key = key.Text.Trim();
                 string region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
-                _endpoint = AzureEndpointToUriConverter.regionToEndpointMapping[region];
+                _endpoint = EndpointToUriConverter.azureRegionToEndpointMapping[region];
             }
             catch
             {
@@ -66,7 +66,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void SwitchViewToPreviousPage()
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.ShouldGoToMainPage = true;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToMainPage;
         }
 
         #endregion

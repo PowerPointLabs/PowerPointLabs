@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
@@ -152,6 +143,10 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             RoutedEventArgs eventArgs = new RoutedEventArgs(DeleteButtonClickedEvent);
             eventArgs.Source = sender;
+
+            dialog.Close();
+            dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
+
             RaiseEvent(eventArgs);
         }
 
@@ -245,6 +240,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 case VoiceType.AzureVoice:
                 case VoiceType.ComputerVoice:
+                case VoiceType.WatsonVoice:
                     audioNameLabel.Content = selectedVoice.ToString();
                     break;
                 case VoiceType.DefaultVoice:

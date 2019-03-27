@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.Views.AudioSettingsViews;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -13,16 +14,16 @@ namespace PowerPointLabs.ELearningLab.Views
     {
         public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
-        public bool ShouldGoToMainPage
+        public AudioSettingsWindowDisplayOptions WindowDisplayOption
         {
             get
             {
-                return shouldGoToMainPage;
+                return windowDisplayOption;
             }
             set
             {
-                shouldGoToMainPage = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("GoToMainPage"));
+                windowDisplayOption = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("WindowDisplayOption"));
             }
         }
 
@@ -39,30 +40,45 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        public Page SubPage
+        public Page SubAzureLoginPage
         {
             get
             {
-                return subPage;
+                return subAzureLoginPage;
             }
             set
             {
-                subPage = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("SubPage"));
+                subAzureLoginPage = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("SubAzureLoginPage"));
             }
         }
 
-        private Page mainPage, subPage;
-        private bool shouldGoToMainPage;
+        public Page SubWatsonLoginPage
+        {
+            get
+            {
+                return subWatsonLoginPage;
+            }
+            set
+            {
+                subWatsonLoginPage = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("SubWatsonLoginPage"));
+            }
+        }
+
+        private Page mainPage, subAzureLoginPage, subWatsonLoginPage;
+        private AudioSettingsWindowDisplayOptions windowDisplayOption;
 
         public AudioSettingsDialogWindow(AudioSettingsPage page)
         {
             InitializeComponent();
             mainPage = CreatePageFromIndex(page);
             mainPage.DataContext = this;
-            subPage = new AzureVoiceLoginPage();
-            subPage.DataContext = this;
-            shouldGoToMainPage = true;
+            subAzureLoginPage = new AzureVoiceLoginPage();
+            subAzureLoginPage.DataContext = this;
+            subWatsonLoginPage = new WatsonVoiceLoginPage();
+            subWatsonLoginPage.DataContext = this;
+            windowDisplayOption = AudioSettingsWindowDisplayOptions.GoToMainPage;
             DataContext = this;
             audioSettingsDialogWindow.AllowsTransparency = true;
             audioSettingsDialogWindow.Opacity = 0;
@@ -112,4 +128,12 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
     }
+
+    public enum AudioSettingsWindowDisplayOptions
+    {
+        GoToMainPage,
+        GoToAzureLoginPage,
+        GoToWatsonLoginPage
+    }
+
 }

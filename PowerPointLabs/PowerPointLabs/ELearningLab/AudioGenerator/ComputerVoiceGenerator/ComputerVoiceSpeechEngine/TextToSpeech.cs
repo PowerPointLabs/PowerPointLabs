@@ -52,6 +52,10 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
                         AzureRuntimeService.SaveStringToWaveFileWithAzureVoice(textToSave, filePath, 
                             AudioSettingService.selectedVoice as AzureVoice);
                         break;
+                    case VoiceType.WatsonVoice:
+                        WatsonRuntimeService.SaveStringToWaveFile(textToSave, filePath,
+                            AudioSettingService.selectedVoice as WatsonVoice);
+                        break;
                     default:
                         break;
                 }

@@ -15,15 +15,26 @@ namespace PowerPointLabs.ELearningLab.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            bool shouldGoToMainPage;
-            Page mainPage, subPage;
+            AudioSettingsWindowDisplayOptions windowDisplayOption;
+            Page mainPage, subAzurePage, subWatsonPage;
             try
             {
-                shouldGoToMainPage = (bool)values[0];
+                windowDisplayOption = (AudioSettingsWindowDisplayOptions)values[0];
                 mainPage = (Page)values[1];
-                subPage = (Page)values[2];
+                subAzurePage = (Page)values[2];
+                subWatsonPage = (Page)values[3];
 
-                return shouldGoToMainPage ? mainPage : subPage;
+                switch (windowDisplayOption)
+                {
+                    case AudioSettingsWindowDisplayOptions.GoToMainPage:
+                        return mainPage;
+                    case AudioSettingsWindowDisplayOptions.GoToAzureLoginPage:
+                        return subAzurePage;
+                    case AudioSettingsWindowDisplayOptions.GoToWatsonLoginPage:
+                        return subWatsonPage;
+                    default:
+                        return null;
+                }
             }
             catch
             {

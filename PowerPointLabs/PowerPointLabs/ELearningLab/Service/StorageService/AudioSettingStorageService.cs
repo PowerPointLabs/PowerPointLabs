@@ -108,20 +108,26 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             AudioSettingService.preferredVoices.Clear();
             for (int i = 0;  i < preferences.Count(); i++)
-            {
+            {               
                 string voiceName = preferences[i].Trim();
                 IVoice voice = AudioService.GetVoiceFromString(voiceName);
                 voice.Rank = i;
                 if (i == 0)
-                {
-                    AudioSettingService.selectedVoice = voice;
+                {                    
                     if (voice is ComputerVoice)
                     {
                         AudioSettingService.selectedVoiceType = VoiceType.ComputerVoice;
+                        AudioSettingService.selectedVoice = voice;
                     }
-                    else if (voice is AzureVoice)
+                    else if (voice is AzureVoice && AzureRuntimeService.IsAzureAccountPresentAndValid)
                     {
                         AudioSettingService.selectedVoiceType = VoiceType.AzureVoice;
+                        AudioSettingService.selectedVoice = voice;
+                    }
+                    else if (voice is WatsonVoice && WatsonRuntimeService.IsWatsonAccountPresentAndValid)
+                    {
+                        AudioSettingService.selectedVoiceType = VoiceType.WatsonVoice;
+                        AudioSettingService.selectedVoice = voice;
                     }
                     else
                     {

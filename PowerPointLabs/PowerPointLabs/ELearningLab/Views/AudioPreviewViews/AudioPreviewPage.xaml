@@ -132,6 +132,31 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <RadioButton x:Name="watsonVoiceRadioButton" GroupName="VoiceTypeRadioButton" Grid.Column="0" 
+                             Margin="20,10,0,0" FontSize="10">
+                    Other IBM Watson Voices
+                </RadioButton>
+                <ComboBox x:Name="watsonVoiceComboBox" Grid.Column="1" SelectedIndex="0" Padding="2" 
+                          Margin="0.334,10,19.999,0" />
+                <Button x:Name="watsonVoiceLoginButton" Cursor="Hand" Grid.Column="1" Content="Click to Log In" 
+                        Margin="0.334,10,19.999,0" BorderThickness="0" Background="Transparent" FontWeight="Medium"
+                        Click="WatsonVoiceLogInButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" x:Name="previewButton" Content="Speak" Margin="0,10,10,10"  Width="80" 

@@ -9,7 +9,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.TextCollection;
 
 
@@ -34,9 +36,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return VoiceType.ComputerVoice;
                 }
-                else
+                else if ((bool)RadioAzureVoice.IsChecked)
                 {
                     return VoiceType.AzureVoice;
+                }
+                else
+                {
+                    return VoiceType.WatsonVoice;
                 }
             }
         }
@@ -49,9 +55,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     return computerVoiceComboBox.SelectedItem as ComputerVoice;
                 }
-                else
+                else if ((bool)RadioAzureVoice.IsChecked)
                 {
                     return azureVoiceComboBox.SelectedItem as AzureVoice;
+                }
+                else
+                {
+                    return watsonVoiceComboBox.SelectedItem as WatsonVoice;
                 }
             }
         }
@@ -71,6 +81,8 @@ namespace PowerPointLabs.ELearningLab.Views
             azureVoiceComboBox.DisplayMemberPath = "Voice";
             computerVoiceComboBox.ItemsSource = ComputerVoiceRuntimeService.Voices;
             computerVoiceComboBox.DisplayMemberPath = "Voice";
+            watsonVoiceComboBox.ItemsSource = WatsonRuntimeService.Voices;
+            watsonVoiceComboBox.DisplayMemberPath = "Voice";
             Voices = LoadVoices();
             audioListView.DataContext = this;
             audioListView.ItemsSource = Voices;
@@ -95,6 +107,10 @@ namespace PowerPointLabs.ELearningLab.Views
                     RadioDefaultVoice.IsChecked = true;
                     computerVoiceComboBox.SelectedItem = selectedVoice as ComputerVoice;
                     break;
+                case VoiceType.WatsonVoice:
+                    RadioWatsonVoice.IsChecked = true;
+                    watsonVoiceComboBox.SelectedItem = selectedVoice as WatsonVoice;
+                    break;
                 default:
                     break;
             }
@@ -106,8 +122,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AudioMainSettingsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            RadioAzureVoice.Checked += RadioAzureVoice_Checked;
+            RadioAzureVoice.Checked += RadioAzureVoice_Checked;          
             ToggleAzureFunctionVisibility();
+            ToggleWatsonFunctionVisibility();
             SetupAudioPreferenceUI();
         }
 
@@ -131,7 +148,13 @@ namespace PowerPointLabs.ELearningLab.Views
         private void AzureVoiceBtn_Click(object sender, RoutedEventArgs e)
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.ShouldGoToMainPage = false;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToAzureLoginPage;
+        }
+
+        private void WatsonVoiceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToWatsonLoginPage;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -141,21 +164,23 @@ namespace PowerPointLabs.ELearningLab.Views
                 List<IVoice> rankedAudioListCacheCopy = rankedAudioListCache.Select(x => (IVoice)x.Clone()).ToList();
                 AudioSettingService.preferredVoices = new ObservableCollection<IVoice>(rankedAudioListCacheCopy);
             }
-            if (AudioSettingService.selectedVoiceType == VoiceType.AzureVoice 
-                && !AzureRuntimeService.IsAzureAccountPresent())
+            if ((AudioSettingService.selectedVoiceType == VoiceType.AzureVoice 
+                && !AzureRuntimeService.IsAzureAccountPresent()) || 
+                (AudioSettingService.selectedVoiceType == VoiceType.WatsonVoice
+                && !WatsonRuntimeService.IsWatsonAccountPresent()))
             {
                 ComputerVoice defaultVoiceSelected = computerVoiceComboBox.SelectedItem as ComputerVoice;
                 DialogConfirmedHandler(VoiceType.ComputerVoice, defaultVoiceSelected, previewCheckbox.IsChecked.GetValueOrDefault());
             }
         }
 
-        private void ChangeAccountButton_Click(object sender, RoutedEventArgs e)
+        private void ChangeAzureAccountButton_Click(object sender, RoutedEventArgs e)
         {
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
-            parentWindow.ShouldGoToMainPage = false;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToAzureLoginPage;
         }
 
-        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        private void LogOutAzureAccountButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccount.GetInstance().Clear();
             AzureAccountStorageService.DeleteUserAccount();
@@ -166,6 +191,25 @@ namespace PowerPointLabs.ELearningLab.Views
             RadioAzureVoice.IsEnabled = false;
             RadioDefaultVoice.IsChecked = true;
             AzureRuntimeService.IsAzureAccountPresentAndValid = false;
+        }
+
+        private void ChangeWatsonAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToWatsonLoginPage;
+        }
+
+        private void LogOutWatsonAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            WatsonAccount.GetInstance().Clear();
+            WatsonAccountStorageService.DeleteUserAccount();
+            watsonVoiceComboBox.Visibility = Visibility.Collapsed;
+            watsonVoiceLoginBtn.Visibility = Visibility.Visible;
+            changeWatsonAcctBtn.Visibility = Visibility.Hidden;
+            logoutWatsonAcctBtn.Visibility = Visibility.Hidden;
+            RadioWatsonVoice.IsEnabled = false;
+            RadioDefaultVoice.IsChecked = true;
+            WatsonRuntimeService.IsWatsonAccountPresentAndValid = false;
         }
 
         private void RadioAzureVoice_Checked(object sender, RoutedEventArgs e)
@@ -243,7 +287,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void ToggleAzureFunctionVisibility()
         {
-            if (AzureRuntimeService.IsAzureAccountPresent() && AzureRuntimeService.IsValidUserAccount())
+            if (AzureRuntimeService.IsAzureAccountPresentAndValid)
             {
                 azureVoiceComboBox.Visibility = Visibility.Visible;
                 azureVoiceBtn.Visibility = Visibility.Collapsed;
@@ -261,6 +305,26 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
+        private void ToggleWatsonFunctionVisibility()
+        {
+            if (WatsonRuntimeService.IsWatsonAccountPresentAndValid)
+            {
+                watsonVoiceComboBox.Visibility = Visibility.Visible;
+                watsonVoiceLoginBtn.Visibility = Visibility.Collapsed;
+                changeWatsonAcctBtn.Visibility = Visibility.Visible;
+                logoutWatsonAcctBtn.Visibility = Visibility.Visible;
+                RadioWatsonVoice.IsEnabled = true;
+            }
+            else
+            {
+                watsonVoiceComboBox.Visibility = Visibility.Collapsed;
+                watsonVoiceLoginBtn.Visibility = Visibility.Visible;
+                changeWatsonAcctBtn.Visibility = Visibility.Hidden;
+                logoutWatsonAcctBtn.Visibility = Visibility.Hidden;
+                RadioWatsonVoice.IsEnabled = false;
+            }
+        }
+
         private ObservableCollection<IVoice> LoadVoices()
         {
             ObservableCollection<IVoice> voices = new ObservableCollection<IVoice>();
@@ -269,6 +333,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 voices.Add(voice);
             }
             foreach (IVoice voice in ComputerVoiceRuntimeService.Voices)
+            {
+                voices.Add(voice);
+            }
+            foreach (IVoice voice in WatsonRuntimeService.Voices)
             {
                 voices.Add(voice);
             }

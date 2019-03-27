@@ -24,6 +24,12 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             return instance;
         }
 
+        private AzureAccount()
+        {
+            key = null;
+            endpoint = null;
+        }
+
         public void SetUserKeyAndRegion(string key, string endpoint)
         {
             this.key = key;
@@ -43,7 +49,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
         {
             if (!string.IsNullOrEmpty(endpoint))
             {
-                return AzureEndpointToUriConverter.endpointToUriMapping[endpoint];
+                return EndpointToUriConverter.azureEndpointToUriMapping[endpoint];
             }
             return null;
         }
