@@ -48,3 +48,9 @@ This document details the common pitfalls when developing for PowerPointLabs, so
 	Step 3. Navigate to Common Properties > Startup Project.
 	
 	Step 4. Select Single startup project and choose PowerPointLabs from the drop down list.
+
+1. To group multiple `Shape` objects together when you only have the references to the objects, an easy way is to extract a `ShapeRange` object from the slide based on the names of the shapes, and then call the `Group()` method on that `ShapeRange`
+```c#
+string[] names = new string[] { shape1.Name, shape2.Name };
+Shape group = this.GetCurrentSlide().Shapes.Range(names).Group();
+```
