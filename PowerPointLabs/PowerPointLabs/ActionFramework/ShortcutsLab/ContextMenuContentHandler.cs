@@ -12,7 +12,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         ShortcutsLabText.MenuPicture, ShortcutsLabText.MenuSlide, ShortcutsLabText.MenuGroup,
         ShortcutsLabText.MenuInk, ShortcutsLabText.MenuVideo, ShortcutsLabText.MenuTextEdit,
         ShortcutsLabText.MenuChart, ShortcutsLabText.MenuTable, ShortcutsLabText.MenuTableCell,
-        ShortcutsLabText.MenuSmartArt, ShortcutsLabText.MenuEditSmartArt, ShortcutsLabText.MenuEditSmartArtText)]
+        ShortcutsLabText.MenuSmartArt, ShortcutsLabText.MenuEditSmartArt, ShortcutsLabText.MenuEditSmartArtText,
+        "MenuThumbnail")]
 
     class ContextMenuContentHandler : ContentHandler
     {
@@ -41,14 +42,21 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             List<ContextMenuGroup> contextMenuGroups = new List<ContextMenuGroup>();
             ContextMenuGroup pasteLab = new ContextMenuGroup(ShortcutsLabText.PasteMenuLabel, new List<string>());
             ContextMenuGroup shortcuts = new ContextMenuGroup(ShortcutsLabText.ShortcutsMenuLabel, new List<string>());
-            contextMenuGroups.Add(pasteLab);
 
-            // All context menus will have these buttons
+            if (ribbonId == ShortcutsLabText.MenuThumbnail)
+            {
+                contextMenuGroups.Add(shortcuts);
+                shortcuts.Items.Add(ShortcutsLabText.ExportSlideAsImageTag);
+                return contextMenuGroups;
+            }
+
+            // All context menus will have these buttons except slide thumbnail
+            contextMenuGroups.Add(pasteLab);
             pasteLab.Items.Add(PasteLabText.PasteAtCursorPositionTag);
             pasteLab.Items.Add(PasteLabText.PasteAtOriginalPositionTag);
             pasteLab.Items.Add(PasteLabText.PasteToFillSlideTag);
             pasteLab.Items.Add(PasteLabText.PasteToFitSlideTag);
-
+           
 
             // Context menus other than slide will have these buttons
             if (ribbonId != ShortcutsLabText.MenuSlide)
