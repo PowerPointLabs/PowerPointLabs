@@ -13,25 +13,10 @@ namespace PowerPointLabs.ELearningLab.Views
     /// Interaction logic for HumanVoiceLoginPage.xaml
     /// </summary>
     public partial class AzureVoiceLoginPage : Page
-    {
-        public AudioSettingsPage previousPage = AudioSettingsPage.MainSettingsPage;
-        private static AzureVoiceLoginPage instance;       
-        private AzureVoiceLoginPage()
+    {     
+        public AzureVoiceLoginPage()
         {
             InitializeComponent();
-        }
-
-        public static AzureVoiceLoginPage GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new AzureVoiceLoginPage();
-            }
-            return instance;
-        }
-        public void Destroy()
-        {
-            instance = null;
         }
 
         #region XAML-Binded Event Handlers
@@ -49,7 +34,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 _key = key.Text.Trim();
                 string region = ((ComboBoxItem)endpoint.SelectedItem).Content.ToString().Trim();
-                _endpoint = AzureEndpointToUriConverter.regionToEndpointMapping[region];
+                _endpoint = EndpointToUriConverter.azureRegionToEndpointMapping[region];
             }
             catch
             {
@@ -80,8 +65,8 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void SwitchViewToPreviousPage()
         {
-            AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance();
-            dialog.SetCurrentPage(previousPage);
+            AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
+            parentWindow.WindowDisplayOption = AudioSettingsWindowDisplayOptions.GoToMainPage;
         }
 
         #endregion

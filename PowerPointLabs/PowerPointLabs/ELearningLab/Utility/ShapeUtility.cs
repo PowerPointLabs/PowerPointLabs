@@ -36,12 +36,13 @@ namespace PowerPointLabs.ELearningLab.Utility
             calloutBox.TextFrame.TextRange.Text = calloutText;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             calloutBox.TextFrame.TextRange.Font.Size = 16;
             calloutBox.Fill.ForeColor.RGB = 0;
             calloutBox.Fill.Transparency = 0.2f;
             calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
             calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
+            calloutBox.Line.Weight = 0.05f;
             calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
             calloutBox.Left = 10;
             calloutBox.Top = 10;
@@ -100,6 +101,7 @@ namespace PowerPointLabs.ELearningLab.Utility
             {
                 copiedShape.Left = 10;
                 copiedShape.Top = 10;
+                copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             }
             else if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)
             {
@@ -108,12 +110,12 @@ namespace PowerPointLabs.ELearningLab.Utility
                 copiedShape.Width = slideWidth;
                 copiedShape.Height = 100;
                 copiedShape.Top = slideHeight - copiedShape.Height;
+                copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             }
 
             copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             copiedShape.TextFrame.TextRange.Text = text;
-            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;
-            copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;         
             // remove associated animation with copiedShape because we only want the shape to be copied.
             slide.RemoveAnimationsForShape(copiedShape);
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)

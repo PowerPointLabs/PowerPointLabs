@@ -1,36 +1,49 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 
 namespace PowerPointLabs.ELearningLab.Converters
 {
-    public class AudioSettingsIndexToPageConverter: MarkupExtension, IValueConverter
+    public class AudioSettingsIndexToPageConverter : MarkupExtension, IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            // Find the appropriate page
-            switch ((AudioSettingsPage)value)
+            AudioSettingsWindowDisplayOptions windowDisplayOption;
+            Page mainPage, subAzurePage, subWatsonPage;
+            try
             {
-                case AudioSettingsPage.MainSettingsPage:
-                    return AudioMainSettingsPage.GetInstance();
-                case AudioSettingsPage.AzureLoginPage:
-                    AzureVoiceLoginPage loginInstance = AzureVoiceLoginPage.GetInstance();
-                    loginInstance.key.Text = "";
-                    loginInstance.endpoint.SelectedIndex = -1;
-                    return loginInstance;
-                case AudioSettingsPage.AudioPreviewPage:
-                    return AudioPreviewPage.GetInstance();
-                default:
-                    Debugger.Break();
-                    return null;
+                windowDisplayOption = (AudioSettingsWindowDisplayOptions)values[0];
+                mainPage = (Page)values[1];
+                subAzurePage = (Page)values[2];
+                subWatsonPage = (Page)values[3];
+
+                switch (windowDisplayOption)
+                {
+                    case AudioSettingsWindowDisplayOptions.GoToMainPage:
+                        return mainPage;
+                    case AudioSettingsWindowDisplayOptions.GoToAzureLoginPage:
+                        return subAzurePage;
+                    case AudioSettingsWindowDisplayOptions.GoToWatsonLoginPage:
+                        return subWatsonPage;
+                    default:
+                        return null;
+                }
+            }
+            catch
+            {
+                Logger.Log("Error converting binded value to appropriate pages");
+                return null;
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

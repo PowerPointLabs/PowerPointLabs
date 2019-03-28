@@ -36,19 +36,15 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             }
         }
 
-        private Shape shape;
-        private Effect effect;
         private string shapeId;
         private string shapeName;
         private AnimationType type;
 
-        public CustomSubItem(Shape shape, Effect effect)
+        public CustomSubItem(string shapeName, string shapeId, AnimationType type)
         {
-            this.shape = shape;
-            this.effect = effect;
-            shapeId = shape.Id.ToString();
-            shapeName = shape.Name;
-            type = EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(effect);
+            this.shapeId = shapeId;
+            this.shapeName = shapeName;
+            this.type = type;
         }
 
         public override bool Equals(object other)
@@ -67,15 +63,16 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 
         public bool Equals(CustomSubItem other)
         {
-            return shape.Equals(other.shape) && effect.Equals(other.effect);
+            return shapeName.Equals(other.shapeName) && shapeId.Equals(other.shapeId)
+                && type.Equals(other.type);
         }
 
         public override int GetHashCode()
         {
             var hashCode = -1136360337;
             hashCode = hashCode * -1521134295 + Type.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<Shape>.Default.GetHashCode(shape);
-            hashCode = hashCode * -1521134295 + EqualityComparer<Effect>.Default.GetHashCode(effect);
+            hashCode = hashCode * -1521134295 + shapeName.GetHashCode();
+            hashCode = hashCode * -1521134295 + shapeId.GetHashCode();
             return hashCode;
         }
     }

@@ -21,6 +21,10 @@ namespace PowerPointLabs.ELearningLab.Converters
             {
                 return true;
             }
+            else if (voice is WatsonVoice)
+            {
+                return WatsonRuntimeService.IsWatsonAccountPresentAndValid;
+            }
             else
             {
                 return AzureRuntimeService.IsAzureAccountPresentAndValid;

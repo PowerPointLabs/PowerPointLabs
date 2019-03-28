@@ -1,6 +1,7 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ELearningLab
@@ -11,6 +12,8 @@ namespace PowerPointLabs.ActionFramework.ELearningLab
         protected override void ExecuteAction(string ribbonId)
         {
             AzureAccountStorageService.LoadUserAccount();
+            WatsonAccountStorageService.LoadUserAccount();
+            AudioSettingStorageService.LoadAudioSettingPreference();
             AudioSettingService.ShowSettingsDialog();
         }
     }
