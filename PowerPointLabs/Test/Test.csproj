@@ -106,6 +106,7 @@
     <Compile Include="FunctionalTest\AutoNarrationTest.cs" />
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
+    <Compile Include="FunctionalTest\ELearningLabTest.cs" />
     <Compile Include="FunctionalTest\SaveLabTest.cs" />
     <Compile Include="FunctionalTest\FillSlideTest.cs" />
     <Compile Include="FunctionalTest\PasteLabTest.cs" />
@@ -129,6 +130,8 @@
     <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
     <Compile Include="UnitTest\CropLab\CropOutPaddingTest.cs" />
     <Compile Include="UnitTest\CropLab\CropToAspectRatioTest.cs" />
+    <Compile Include="UnitTest\ELearningLab\ModelFactory\CustomItemFactoryTest.cs" />
+    <Compile Include="UnitTest\ELearningLab\ModelFactory\SelfExplanationItemFactoryTest.cs" />
     <Compile Include="UnitTest\ELearningLab\Model\AzureVoiceTest.cs" />
     <Compile Include="UnitTest\ELearningLab\Model\ClickItemTest.cs" />
     <Compile Include="UnitTest\ELearningLab\Model\ComputerVoiceTest.cs" />
@@ -220,7 +223,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UnitTest\ELearningLab\ModelFactory\" />
     <Folder Include="UnitTest\ELearningLab\Service\" />
     <Folder Include="UnitTest\ELearningLab\Util\" />
   </ItemGroup>

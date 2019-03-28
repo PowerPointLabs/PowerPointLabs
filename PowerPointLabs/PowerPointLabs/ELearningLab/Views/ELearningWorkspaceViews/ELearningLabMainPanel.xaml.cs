@@ -21,6 +21,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ELearningLab.Converters;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory;
 using PowerPointLabs.ELearningLab.Extensions;
@@ -263,8 +264,8 @@ namespace PowerPointLabs.ELearningLab.Views
             List<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>().ToList();
             int startIdx = 0;
             bool hasReachedEndOfSequence = effects.Count == 0;
-            List<Effect> customEffects = new List<Effect>();
-            List<Effect> pptlEffects = new List<Effect>();
+            List<CustomEffect> customEffects = new List<CustomEffect>();
+            List<ELLEffect> pptlEffects = new List<ELLEffect>();
             do
             {
                 
@@ -273,8 +274,8 @@ namespace PowerPointLabs.ELearningLab.Views
                     e.Cancel = true;
                     return clickBlocks;
                 }
-                customEffects = new List<Effect>();
-                pptlEffects = new List<Effect>();
+                customEffects = new List<CustomEffect>();
+                pptlEffects = new List<ELLEffect>();
                 for (int i = startIdx; i < effects.Count; i++)
                 {
                     if (i == effects.Count - 1)
@@ -291,17 +292,18 @@ namespace PowerPointLabs.ELearningLab.Views
                     bool isAppearTypeEffect = effect.Exit != Microsoft.Office.Core.MsoTriState.msoTrue;
                     if (isPPTLEffect && isAppearTypeEffect)
                     {
-                        pptlEffects.Add(effect);
+                        pptlEffects.Add(new ELLEffect(effect.Shape.Name));
                     }
                     if (!isPPTLEffect)
                     {
-                        customEffects.Add(effect);
+                        customEffects.Add(new CustomEffect(effect.Shape.Name, effect.Shape.Id.ToString(),
+                            EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(effect)));
                     }
                 }
                 customClickBlock =
-                    new CustomItemFactory(customEffects, slide).GetBlock();
+                    new CustomItemFactory(customEffects).GetBlock();
                 selfExplanationClickBlock =
-                    new SelfExplanationItemFactory(pptlEffects, slide).GetBlock() as SelfExplanationClickItem;
+                    new SelfExplanationItemFactory(pptlEffects).GetBlock() as SelfExplanationClickItem;
                 // we ignore self explanation item if the same click has already been added.
                 // this can happen if user misplaced already generated self explanation item.
                 if (selfExplanationClickBlock != null && tagNums.Contains(selfExplanationClickBlock.tagNo))
@@ -659,7 +661,7 @@ namespace PowerPointLabs.ELearningLab.Views
             do
             {
                 customClickBlock =
-                    new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo), slide).GetBlock();
+                    new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo)).GetBlock();
 
                 if (customClickBlock != null)
                 {

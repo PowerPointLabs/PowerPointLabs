@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Speech.Synthesis;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Threading;
 using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;

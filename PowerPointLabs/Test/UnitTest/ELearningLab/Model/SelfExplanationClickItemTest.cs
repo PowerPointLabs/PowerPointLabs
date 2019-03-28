@@ -218,11 +218,6 @@ namespace Test.UnitTest.ELearningLab.Model
             item.CalloutText = "callout text";
             item.CaptionText = string.Empty;
             Assert.IsFalse(item.IsEmpty);
-
-            item.CaptionText = string.Empty;
-            item.CalloutText = "callout text";
-            item.HasShortVersion = false;
-            Assert.IsTrue(item.IsEmpty);
         }
 
     }
