@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -30,6 +20,8 @@ using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Views;
+using Application = System.Windows.Application;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -239,12 +231,15 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid, 
                 uncheckWatsonAudio: removeWatsonAudioIfAccountInvalid);
-            RemoveLabAnimationsFromAnimationPane();
+            List<SelfExplanationClickItem> items = Items.Where(x => x is SelfExplanationClickItem)
+                .Cast<SelfExplanationClickItem>().ToList();
+            ELearningService eLearningService = new ELearningService(slide, items);
+            RemoveLabAnimationsFromAnimationPane(eLearningService);
             AlignFirstClickNumber();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
                 Items.Where(x => x is SelfExplanationClickItem && !((SelfExplanationClickItem)x).IsEmpty)
                 .Cast<SelfExplanationClickItem>().ToList(), slide);
-            SyncLabItemToAnimationPane();
+            SyncLabItemToAnimationPane(eLearningService);
         }
         private ObservableCollection<ClickItem> LoadItems(DoWorkEventArgs e)
         {
@@ -436,6 +431,8 @@ namespace PowerPointLabs.ELearningLab.Views
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             ScrollListViewToEnd();
+          //  ListViewItem item = (ListViewItem)listView.ItemContainerGenerator.ContainerFromIndex(Items.Count - 1);
+          //  Button downButton = VisualTreeUtility.GetChildControlWithName(item, "downButton") as Button;
         }
 
         private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
@@ -503,11 +500,12 @@ namespace PowerPointLabs.ELearningLab.Views
             UpdatePropertiesInItemsSource(uncheckAzureAudio: uncheckAzureAudio, uncheckWatsonAudio: uncheckWatsonAudio);
         }
 
-        private void SyncLabItemToAnimationPane()
+        private void SyncLabItemToAnimationPane(ELearningService service)
         {
-            ELearningService.SyncLabItemToAnimationPane(slide,
-                Items.Where(
-                    x => x is SelfExplanationClickItem).Cast<SelfExplanationClickItem>().ToList());
+            int totalSelfExplanationItemsCount = service.GetExplanationItemsCount();
+            ProcessingStatusForm progressBarForm = 
+                new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService, service);
+            progressBarForm.ShowDialog();
         }
 
         /// <summary>
@@ -551,9 +549,9 @@ namespace PowerPointLabs.ELearningLab.Views
             }));
         }
 
-        private void RemoveLabAnimationsFromAnimationPane()
+        private void RemoveLabAnimationsFromAnimationPane(ELearningService service)
         {
-            slide.RemoveAnimationsForShapeWithPrefix(ELearningLabText.Identifier);
+            service.RemoveLabAnimationsFromAnimationPane();
         }
 
         private void UpdateClickNoOnClickItem(ClickItem clickItem, int startClickNo, int index)

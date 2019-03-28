@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -11,30 +8,30 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Extensions;
 using PowerPointLabs.ELearningLab.Utility;
-using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
-using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
     public class ELearningService
     {
         public static bool IsELearningWorkspaceEnabled { get; set; } = false;
-        private static PowerPointSlide _slide;
-        private static List<SelfExplanationClickItem> _selfExplanationItems;
+        private PowerPointSlide _slide;
+        private List<SelfExplanationClickItem> _selfExplanationItems;
 
-        public static void SyncLabItemToAnimationPane(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+        public ELearningService() { }
+        public ELearningService(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
         {
-            SyncLabAnimations(slide, selfExplanationItems);
+            _slide = slide;
+            _selfExplanationItems = selfExplanationItems;
         }
-        public static void DeleteShapesForUnusedItem(PowerPointSlide slide, SelfExplanationClickItem selfExplanationClickItem)
+        public void DeleteShapesForUnusedItem(PowerPointSlide slide, SelfExplanationClickItem selfExplanationClickItem)
         {
             CalloutService.DeleteCalloutShape(slide, selfExplanationClickItem.tagNo);
             CaptionService.DeleteCaptionShape(slide, selfExplanationClickItem.tagNo);
         }
 
-        public static void SyncExitEffectAnimations()
+        public void SyncExitEffectAnimations()
         {
             SyncExitEffectAnimations(_slide, _selfExplanationItems);
             DeleteUnusedCalloutShapes(_slide);
@@ -43,24 +40,22 @@ namespace PowerPointLabs.ELearningLab.Service
             DeleteExitAnimationInLastClick(_slide);
         }
 
-        public static void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
+        public void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
         {
             SelfExplanationClickItem selfExplanationItem = _selfExplanationItems.ElementAt(i);
             CreateAppearEffectAnimation(_slide, selfExplanationItem);
         }
-        private static void SyncLabAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+        public void RemoveLabAnimationsFromAnimationPane()
         {
-            _slide = slide;
-            _selfExplanationItems = selfExplanationItems;
-
-            int totalSelfExplanationItemsCount = selfExplanationItems.Count();
-
-            ProcessingStatusForm progressBarForm =
-                 new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService);
-            progressBarForm.Show();
+            _slide.RemoveAnimationsForShapeWithPrefix(ELearningLabText.Identifier);
         }
 
-        private static void SyncExitEffectAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+        public int GetExplanationItemsCount()
+        {
+            return _selfExplanationItems.Count;
+        }
+
+        private void SyncExitEffectAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
         {
             foreach (SelfExplanationClickItem selfExplanationItem in selfExplanationItems)
             {
@@ -68,7 +63,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private static void CreateAppearEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
+        private void CreateAppearEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
         {
             bool isSeparateClick = selfExplanationItem.TriggerIndex == (int)TriggerType.OnClick || !selfExplanationItem.IsTriggerTypeComboBoxEnabled;
             List<Effect> effects = new List<Effect>();
@@ -108,7 +103,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private static void CreateExitEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
+        private void CreateExitEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
         {
             string calloutShapeName = string.Format(ELearningLabText.CalloutShapeNameFormat, selfExplanationItem.tagNo);
             string captionShapeName = string.Format(ELearningLabText.CaptionShapeNameFormat, selfExplanationItem.tagNo);
@@ -124,7 +119,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private static void DeleteExitAnimationInLastClick(PowerPointSlide slide)
+        private void DeleteExitAnimationInLastClick(PowerPointSlide slide)
         {
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
             List<Effect> effectsToDelete = new List<Effect>();
@@ -157,7 +152,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private static void DeleteUnusedAudioShapes(PowerPointSlide slide)
+        private void DeleteUnusedAudioShapes(PowerPointSlide slide)
         {
             List<Shape> shapes = slide.GetShapesWithNameRegex(ELearningLabText.VoiceShapeNameRegex);
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
@@ -174,7 +169,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private static void DeleteUnusedCalloutShapes(PowerPointSlide slide)
+        private void DeleteUnusedCalloutShapes(PowerPointSlide slide)
         {
             List<Shape> shapes = slide.GetShapesWithNameRegex(ELearningLabText.CalloutShapeNameRegex);
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
@@ -191,7 +186,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private static void DeleteUnusedCaptionShapes(PowerPointSlide slide)
+        private void DeleteUnusedCaptionShapes(PowerPointSlide slide)
         {
             List<Shape> shapes = slide.GetShapesWithNameRegex(ELearningLabText.CaptionShapeNameRegex);
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
