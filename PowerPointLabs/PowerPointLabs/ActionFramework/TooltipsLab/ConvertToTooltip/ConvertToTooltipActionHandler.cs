@@ -12,27 +12,23 @@ using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportActionRibbonId(TooltipsLabText.AssignTooltipTag)]
-    class AssignTooltipActionHandler : ActionHandler
+    [ExportActionRibbonId(TooltipsLabText.ConvertToTooltipTag)]
+    class ConvertToTooltipActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            Selection selection = this.GetCurrentSelection();
+            this.StartNewUndoEntry();
             PowerPointSlide currentSlide = this.GetCurrentSlide();
+            Selection selection = this.GetCurrentSelection();
 
-            if (currentSlide == null)
-            {
-                return;
-            }
-
-            if (!ShapeUtil.IsSelectionShape(selection))
+            if (currentSlide == null || !ShapeUtil.IsSelectionShape(selection))
             {
                 return;
             }
 
             try
             {
-                bool success = AssignTooltip.AddTriggerAnimation(currentSlide, selection);
+                bool success = ConvertToTooltip.AddTriggerAnimation(currentSlide, selection);
                 if (success)
                 {
                     // Open the animation custom pane if it is not opened

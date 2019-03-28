@@ -6,12 +6,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportImageRibbonId(TooltipsLabText.SettingsTag)]
-    class TooltipsLabSettingsImageHandler : ImageHandler
+    [ExportImageRibbonId(TooltipsLabText.CreateCalloutTag)]
+    class CreateCalloutImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AgendaSettings);
+            return new Bitmap(Properties.Resources.CreateCallout);
         }
     }
 }

@@ -8,8 +8,8 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportEnabledRibbonId(TooltipsLabText.AssignTooltipTag)]
-    class AssignTooltipEnabledHandler : EnabledHandler
+    [ExportEnabledRibbonId(TooltipsLabText.ConvertToTooltipTag)]
+    class ConvertToTooltipEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {

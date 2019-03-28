@@ -1,19 +1,20 @@
-﻿
+﻿using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportEnabledRibbonId(TooltipsLabText.CreateMenuTag)]
-    class CreateMenuEnabledHandler : EnabledHandler
+    [ExportEnabledRibbonId(TooltipsLabText.CreateTriggerTag)]
+    class CreateTriggerEnabledHandler : EnabledHandler
     {
         protected override bool GetEnabled(string ribbonId)
         {
-            PowerPointSlide currentSlide = this.GetCurrentSlide();
-            return currentSlide != null;
+            Selection currentSelection = this.GetCurrentSelection();
+            return ShapeUtil.IsSelectionShape(currentSelection);      
         }
     }
 }

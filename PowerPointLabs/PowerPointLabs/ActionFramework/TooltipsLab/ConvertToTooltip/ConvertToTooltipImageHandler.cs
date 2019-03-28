@@ -6,12 +6,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportImageRibbonId(TooltipsLabText.CreateMenuTag)]
-    class CreateMenuImageHandler : ImageHandler
+    [ExportImageRibbonId(TooltipsLabText.ConvertToTooltipTag)]
+    class ConvertToTooltipImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AddAnimation);
+            return new Bitmap(Properties.Resources.ConvertToTooltip);
         }
     }
 }

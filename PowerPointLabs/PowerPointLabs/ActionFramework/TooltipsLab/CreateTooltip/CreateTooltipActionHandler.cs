@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
@@ -10,8 +10,8 @@ using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.TooltipsLab
 {
-    [ExportActionRibbonId(TooltipsLabText.CreateTriggerTag)]
-    class CreateTriggerActionHandler : ActionHandler
+    [ExportActionRibbonId(TooltipsLabText.CreateTooltipTag)]
+    class CreateTooltipActionHandler : ActionHandler
     {
         protected override void ExecuteAction(string ribbonId)
         {
@@ -23,20 +23,10 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             {
                 return;
             }
-
-            PowerPoint.Selection selection = this.GetCurrentSelection();
-
-            if (selection.Type != PowerPoint.PpSelectionType.ppSelectionShapes)
-            {
-                MessageBox.Show(TooltipsLabText.ErrorNoCalloutShapeSelected);
-                return;
-            }
-
-            foreach (PowerPoint.Shape selectedShape in selection.ShapeRange)
-            {
-                PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShapeWithReferenceCallout(currentSlide, selectedShape);
-                AssignTooltip.AddTriggerAnimation(currentSlide, triggerShape, selectedShape);
-            }
+            
+            PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
+            PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
+            ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
 
             if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
             {

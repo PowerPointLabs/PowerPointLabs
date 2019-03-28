@@ -12,7 +12,7 @@ namespace PowerPointLabs.TooltipsLab
     /// of the shapes will be the callouts. All callout shapes will appear on first click of the trigger shape,
     /// and all will disappear on second click of the trigger shape.
     /// </summary>
-    internal static class AssignTooltip
+    internal static class ConvertToTooltip
     {
         public static bool AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
         {
