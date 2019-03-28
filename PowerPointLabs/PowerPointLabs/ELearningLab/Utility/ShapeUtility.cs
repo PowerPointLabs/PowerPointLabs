@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Utility
@@ -38,24 +39,9 @@ namespace PowerPointLabs.ELearningLab.Utility
             calloutBox.Top = 10;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
-            FormatCalloutToDefaultStyle(calloutBox);
+            ShapeUtil.FormatCalloutToDefaultStyle(calloutBox);
 
             return calloutBox;
-        }
-
-        /// <summary>
-        /// Formats shape to default style.
-        /// </summary>
-        public static void FormatCalloutToDefaultStyle(Shape calloutBox)
-        {
-            calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            calloutBox.TextFrame.TextRange.Font.Size = 16;
-            calloutBox.Fill.ForeColor.RGB = 0;
-            calloutBox.Fill.Transparency = 0.2f;
-            calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
-            calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
-            calloutBox.Line.Weight = 0.05f;
-            calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
         }
 
         /// <summary>

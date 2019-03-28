@@ -4,9 +4,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
-using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -46,7 +44,7 @@ namespace PowerPointLabs.TooltipsLab
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
                 TooltipsLabConstants.CalloutShapeDefaultHeight);
             callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-            ShapeUtility.FormatCalloutToDefaultStyle(callout);
+            ShapeUtil.FormatCalloutToDefaultStyle(callout);
 
             callout.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;

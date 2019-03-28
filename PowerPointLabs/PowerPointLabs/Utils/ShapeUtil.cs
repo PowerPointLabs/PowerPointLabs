@@ -1054,8 +1054,24 @@ namespace PowerPointLabs.Utils
         {
             return placeHolder.HasTextFrame == MsoTriState.msoTrue;
         }
-        #endregion
         
+        /// <summary>
+        /// Formats shape to default style.
+        /// </summary>
+        public static void FormatCalloutToDefaultStyle(Shape calloutBox)
+        {
+            calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
+            calloutBox.TextFrame.TextRange.Font.Size = 16;
+            calloutBox.Fill.ForeColor.RGB = 0;
+            calloutBox.Fill.Transparency = 0.2f;
+            calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
+            calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
+            calloutBox.Line.Weight = 0.05f;
+            calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
+        }
+
+        #endregion
+
         #region SyncShape Format utils
 
         /// <summary>
