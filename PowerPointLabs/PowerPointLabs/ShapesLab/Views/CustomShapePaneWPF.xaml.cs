@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -8,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-
+using System.Windows.Navigation;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -76,8 +77,7 @@ namespace PowerPointLabs.ShapesLab.Views
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromEmptyOptions());
 
-            //singleShapeDownloadLink.LinkClicked += (s, e) => Process.Start(CommonText.SingleShapeDownloadUrl);
-
+            singleShapeDownloadLink.NavigateUri = new Uri(CommonText.SingleShapeDownloadUrl);
         }
 
         #endregion
@@ -194,8 +194,8 @@ namespace PowerPointLabs.ShapesLab.Views
             // sync the shape among all opening panels
             ShapesLabUtils.SyncShapeAdd(addIn, shapeName, shapePath, CurrentCategory);
 
-            // finally, add the shape into the panel and waiting for name editing
-            AddCustomShape(shapeName, shapePath, true);
+            // finally, add the shape into the panel
+            AddCustomShape(shapeName, shapePath, false);
         }
 
         /// <summary>
@@ -891,6 +891,12 @@ namespace PowerPointLabs.ShapesLab.Views
         private void ClickOutsideShapeList(object sender, MouseButtonEventArgs e)
         {
             categoryBox.Focus();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
         #endregion

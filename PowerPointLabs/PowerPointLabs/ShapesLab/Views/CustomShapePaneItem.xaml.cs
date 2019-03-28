@@ -186,8 +186,7 @@ namespace PowerPointLabs.ShapesLab.Views
         private void Initialize(bool isReadyForEdit)
         {
             InitializeComponent();
-
-            canvas.MouseLeftButtonDown += TextBoxContainerClick;
+            
             canvas.Focusable = true;
             textBox.KeyDown += EnterKeyWhileEditing;
             textBox.LostFocus += TextBoxLostFocus;
@@ -335,25 +334,6 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             EditStatus = Status.Idle;
             parent.AddShapesToSlide();
-        }
-
-        private void TextBoxContainerClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!parent.IsShapeSelected(this))
-            {
-                return;
-            }
-            canvas.Focus();
-            new Thread(delegate ()
-            {
-                Thread.Sleep(1000);
-                Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate ()
-                {
-                    FocusTextBox();
-                }));
-            }).Start();
-
-            OnMouseDoubleClick(sender, e);
         }
 
         private void FocusTextBox()

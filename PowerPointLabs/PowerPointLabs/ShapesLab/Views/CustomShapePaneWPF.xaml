@@ -29,6 +29,11 @@
             </Button.ToolTip>
         </Button>
         <Label x:Name="copyLabel" Content="Add" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="200">
+            <Hyperlink x:Name="singleShapeDownloadLink" RequestNavigate="Hyperlink_RequestNavigate">
+                Download More Shapes
+            </Hyperlink>
+        </TextBlock>
         <Canvas x:Name="categoryBoxHolder" Margin="10,106,10,700">
             <ComboBox x:Name="categoryBox" SelectionChanged="CategoryBoxSelectedIndexChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}">
             </ComboBox>
