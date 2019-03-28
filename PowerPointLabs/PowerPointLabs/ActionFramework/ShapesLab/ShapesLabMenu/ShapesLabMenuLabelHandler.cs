@@ -2,14 +2,14 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.ShapesLab
+namespace PowerPointLabs.ActionFramework.ShapesLab.ShapesLabMenu
 {
-    [ExportLabelRibbonId(ShapesLabText.PaneTag)]
-    class ShapesLabLabelHandler : LabelHandler
+    [ExportLabelRibbonId(ShapesLabText.RibbonMenuId)]
+    class ShapesLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return ShapesLabText.ShapesLabButtonLabel;
+            return ShapesLabText.RibbonMenuLabel;
         }
     }
 }

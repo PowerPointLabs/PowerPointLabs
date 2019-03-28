@@ -292,6 +292,9 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeActionHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeShapeLabelHandler.cs" />
@@ -2259,6 +2262,7 @@
   <ItemGroup>
     <None Include="Resources\ELearningLabIcon2.png" />
   </ItemGroup>
+  <ItemGroup />
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
