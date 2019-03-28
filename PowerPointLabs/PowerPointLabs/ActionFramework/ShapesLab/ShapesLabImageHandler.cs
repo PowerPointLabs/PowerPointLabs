@@ -6,8 +6,8 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportImageRibbonId(ShapesLabText.PaneTag)]
-    class ShapesLabImageHandler : ImageHandler
+    [ExportImageRibbonId(ShapesLabText.RibbonMenuId)]
+    class ShapesLabMenuImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

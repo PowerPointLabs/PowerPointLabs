@@ -4,12 +4,12 @@ using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShapesLab
 {
-    [ExportLabelRibbonId(ShapesLabText.PaneTag)]
-    class ShapesLabLabelHandler : LabelHandler
+    [ExportLabelRibbonId(ShapesLabText.RibbonMenuId)]
+    class ShapesLabMenuLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {
-            return ShapesLabText.ShapesLabButtonLabel;
+            return ShapesLabText.RibbonMenuLabel;
         }
     }
 }
