@@ -43,26 +43,24 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             ContextMenuGroup pasteLab = new ContextMenuGroup(ShortcutsLabText.PasteMenuLabel, new List<string>());
             ContextMenuGroup shortcuts = new ContextMenuGroup(ShortcutsLabText.ShortcutsMenuLabel, new List<string>());
 
-            if (ribbonId == ShortcutsLabText.MenuThumbnail)
-            {
-                contextMenuGroups.Add(shortcuts);
-                shortcuts.Items.Add(ShortcutsLabText.ExportSlideAsImageTag);
-                return contextMenuGroups;
-            }
+            // All context menus will have these Shortcuts
+            contextMenuGroups.Add(shortcuts);
+            shortcuts.Items.Add(ShortcutsLabText.ExportSlideAsImageTag);
 
-            // All context menus will have these buttons except slide thumbnail
-            contextMenuGroups.Add(pasteLab);
-            pasteLab.Items.Add(PasteLabText.PasteAtCursorPositionTag);
-            pasteLab.Items.Add(PasteLabText.PasteAtOriginalPositionTag);
-            pasteLab.Items.Add(PasteLabText.PasteToFillSlideTag);
-            pasteLab.Items.Add(PasteLabText.PasteToFitSlideTag);
+            // All context menus will other than slide thumbnails have these PasteLab buttons
+            if (ribbonId != ShortcutsLabText.MenuThumbnail)
+            {
+                contextMenuGroups.Add(pasteLab);
+                pasteLab.Items.Add(PasteLabText.PasteAtCursorPositionTag);
+                pasteLab.Items.Add(PasteLabText.PasteAtOriginalPositionTag);
+                pasteLab.Items.Add(PasteLabText.PasteToFillSlideTag);
+                pasteLab.Items.Add(PasteLabText.PasteToFitSlideTag);
+            }
            
 
-            // Context menus other than slide will have these buttons
-            if (ribbonId != ShortcutsLabText.MenuSlide)
+            // Context menus other than slide and slide thumbnail will have these buttons
+            if (ribbonId != ShortcutsLabText.MenuSlide && ribbonId != ShortcutsLabText.MenuThumbnail)
             {
-                // We only add shortcuts group if context menu is not for slide
-                contextMenuGroups.Add(shortcuts);
 
                 if (!ribbonId.Contains(ShortcutsLabText.MenuEditSmartArtBase) &&
                     ribbonId != ShortcutsLabText.MenuTextEdit &&

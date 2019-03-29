@@ -24,7 +24,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             }
             else
             {
-                selectedSlide = (Slide)this.GetCurrentSlide();
+                selectedSlide = this.GetCurrentSlide().GetNativeSlide();
             }
 
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
