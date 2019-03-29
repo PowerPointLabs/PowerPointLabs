@@ -51,7 +51,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (VerifyName(name) && VerifyCategory(name))
             {
-                DialogConfirmedHandler(name);
+                DialogConfirmedHandler(name.Trim());
                 Close();
             }
         }

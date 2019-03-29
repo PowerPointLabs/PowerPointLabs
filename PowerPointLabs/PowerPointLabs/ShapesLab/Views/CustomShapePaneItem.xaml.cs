@@ -136,7 +136,7 @@ namespace PowerPointLabs.ShapesLab.Views
         public void FinishNameEdit()
         {
             SetReadOnlyTextBox();
-            RenameShape(textBox.Text);
+            RenameShape(textBox.Text.Trim());
         }
 
         #endregion
