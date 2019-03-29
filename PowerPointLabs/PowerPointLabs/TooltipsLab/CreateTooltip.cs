@@ -27,7 +27,7 @@ namespace PowerPointLabs.TooltipsLab
                 top, 
                 TooltipsLabConstants.TriggerShapeDefaultWidth, 
                 TooltipsLabConstants.TriggerShapeDefaultHeight);
-            FormatTriggerShapeToDefaultStyle(triggerShape);
+            ShapeUtil.FormatTriggerShapeToDefaultStyle(triggerShape);
 
             return triggerShape;
         }
@@ -60,17 +60,8 @@ namespace PowerPointLabs.TooltipsLab
                 TooltipsLabConstants.TriggerShapeDefaultTop, 
                 TooltipsLabConstants.TriggerShapeDefaultWidth, 
                 TooltipsLabConstants.TriggerShapeDefaultHeight);
-            FormatTriggerShapeToDefaultStyle(triggerShape);
+            ShapeUtil.FormatTriggerShapeToDefaultStyle(triggerShape);
             return triggerShape;
-        }
-
-        private static void FormatTriggerShapeToDefaultStyle(PowerPoint.Shape triggerShape)
-        {
-            triggerShape.TextFrame.TextRange.Font.Size = 16;
-            triggerShape.Fill.ForeColor.RGB = ColorTranslator.ToOle(Color.LightGray);
-            triggerShape.Line.Transparency = 1.0f;
-            triggerShape.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
-            triggerShape.TextFrame.TextRange.Text = "?";
         }
 
     }
