@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
-using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -27,6 +27,7 @@ namespace PowerPointLabs.TooltipsLab
                 top, 
                 TooltipsLabConstants.TriggerShapeDefaultWidth, 
                 TooltipsLabConstants.TriggerShapeDefaultHeight);
+            ShapeUtil.FormatTriggerShapeToDefaultStyle(triggerShape);
 
             return triggerShape;
         }
@@ -35,13 +36,15 @@ namespace PowerPointLabs.TooltipsLab
         {
             float midpointX = ShapeUtil.GetMidpointX(triggerShape);
 
-           
+
             PowerPoint.Shape callout = currentSlide.Shapes.AddShape(
                 Microsoft.Office.Core.MsoAutoShapeType.msoShapeRoundedRectangularCallout,
                 midpointX - TooltipsLabConstants.CalloutShapeDefaultWidth/2 + (float)(TooltipsLabConstants.CalloutArrowheadHorizontalAdjustment * TooltipsLabConstants.CalloutShapeDefaultWidth),
                 triggerShape.Top - (float)(TooltipsLabConstants.CalloutArrowheadVerticalAdjustment * TooltipsLabConstants.CalloutShapeDefaultHeight) - TooltipsLabConstants.TriggerShapeAndCalloutSpacing,
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
                 TooltipsLabConstants.CalloutShapeDefaultHeight);
+            callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            ShapeUtil.FormatCalloutToDefaultStyle(callout);
 
             callout.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
             callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
@@ -57,9 +60,9 @@ namespace PowerPointLabs.TooltipsLab
                 TooltipsLabConstants.TriggerShapeDefaultTop, 
                 TooltipsLabConstants.TriggerShapeDefaultWidth, 
                 TooltipsLabConstants.TriggerShapeDefaultHeight);
+            ShapeUtil.FormatTriggerShapeToDefaultStyle(triggerShape);
             return triggerShape;
         }
-
 
     }
 }
