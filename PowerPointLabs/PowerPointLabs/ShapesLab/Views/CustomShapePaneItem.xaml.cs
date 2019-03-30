@@ -35,7 +35,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #region Constructors
 
-        public CustomShapePaneItem(CustomShapePaneWPF parent, string shapeName, string shapePath, bool isReadyForEditing, System.Windows.Forms.BindingSource categoryBinding)
+        public CustomShapePaneItem(CustomShapePaneWPF parent, string shapeName, string shapePath, bool isReadyForEditing)
         {
             Initialize(isReadyForEditing);
             this.parent = parent;
@@ -50,7 +50,6 @@ namespace PowerPointLabs.ShapesLab.Views
                 menuItems.Add(new CustomMenuItem(name, MoveShapeClick));
             }
             moveShape.ItemsSource = menuItems;
-            //moveShape.ItemsSource = categoryBinding;
 
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the

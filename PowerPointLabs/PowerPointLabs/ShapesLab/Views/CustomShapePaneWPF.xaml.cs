@@ -29,7 +29,6 @@ namespace PowerPointLabs.ShapesLab.Views
     /// </summary>
     public partial class CustomShapePaneWPF : System.Windows.Controls.UserControl
     {
-        private const string DefaultCategorySuffix = " (default)";
         private const string ImportLibraryFileDialogFilter =
             "PowerPointLabs Shapes File|*.pptlabsshapes;*.pptx";
         private const string ImportShapesFileDialogFilter =
@@ -97,8 +96,14 @@ namespace PowerPointLabs.ShapesLab.Views
             ShapeRootFolderPath = ShapesLabSettings.SaveFolderPath;
             CurrentCategory = addIn.ShapesLabConfig.DefaultCategory;
             Categories = new ObservableCollection<string>(this.GetAddIn().ShapePresentation.Categories);
-            _categoryBinding = new BindingSource { DataSource = Categories };
-            categoryBox.ItemsSource = _categoryBinding;
+            ObservableCollection<CustomComboBoxItem> categoryBoxItems = new ObservableCollection<CustomComboBoxItem>();
+            string defaultCategory = this.GetAddIn().ShapePresentation.DefaultCategory;
+            foreach (string category in Categories)
+            {
+                categoryBoxItems.Add(new CustomComboBoxItem(category, defaultCategory));
+            }
+            _categoryBinding = new BindingSource { DataSource = categoryBoxItems };
+            categoryBox.ItemsSource = categoryBoxItems;
 
             for (int i = 0; i < Categories.Count; i++)
             {
@@ -205,7 +210,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             DehighlightSelected();
 
-            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit, _categoryBinding);
+            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit);
 
             //shapeItem.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             int insertionIndex = GetShapeInsertionIndex(shapeName);
@@ -323,7 +328,7 @@ namespace PowerPointLabs.ShapesLab.Views
         public void AddCategory(string newCategoryName)
         {
             this.GetAddIn().ShapePresentation.AddCategory(newCategoryName);
-            _categoryBinding.Add(newCategoryName);
+            _categoryBinding.Add(new CustomComboBoxItem(newCategoryName, null));
         }
 
         public void RemoveCategory(int removedCategoryIndex)
@@ -339,7 +344,14 @@ namespace PowerPointLabs.ShapesLab.Views
         public void RenameCategory(int renameCategoryIndex, string newCategoryName)
         {
             bool isCurrentCategoryRenamed = renameCategoryIndex == categoryBox.SelectedIndex;
-            _categoryBinding[renameCategoryIndex] = newCategoryName;
+            CustomComboBoxItem item = _categoryBinding[renameCategoryIndex] as CustomComboBoxItem;
+            if (item == null)
+            {
+                return;
+            }
+            item.actualName = newCategoryName;
+            _categoryBinding.RemoveAt(renameCategoryIndex);
+            _categoryBinding.Insert(renameCategoryIndex, item);
             if (isCurrentCategoryRenamed)
             {
                 CurrentCategory = newCategoryName;
@@ -468,7 +480,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             int categoryIndex = categoryBox.SelectedIndex;
-            string categoryName = _categoryBinding[categoryIndex].ToString();
+            string categoryName = (_categoryBinding[categoryIndex] as CustomComboBoxItem)?.actualName;
             string categoryPath = Path.Combine(ShapeRootFolderPath, categoryName);
             bool isDefaultCategory = this.GetAddIn().ShapesLabConfig.DefaultCategory == CurrentCategory;
 
@@ -500,7 +512,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (isDefaultCategory)
             {
-                this.GetAddIn().ShapesLabConfig.DefaultCategory = (string)_categoryBinding[0];
+                this.GetAddIn().ShapesLabConfig.DefaultCategory = (_categoryBinding[0] as CustomComboBoxItem)?.actualName;
             }
         }
 
@@ -545,6 +557,21 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             this.GetAddIn().ShapesLabConfig.DefaultCategory = CurrentCategory;
             MessageBox.Show(string.Format(ShapesLabText.SuccessSetAsDefaultCategory, CurrentCategory));
+            for (int index = 0; index < _categoryBinding.Count; index++)
+            {
+                CustomComboBoxItem category = _categoryBinding[index] as CustomComboBoxItem;
+                if (category == null || (!category.isDefaultCategory && category.actualName != CurrentCategory))
+                {
+                    continue;
+                }
+                category.SetNewDefaultCategory(CurrentCategory);
+                _categoryBinding.RemoveAt(index);
+                _categoryBinding.Insert(index, category);
+                if (category.actualName == CurrentCategory)
+                {
+                    categoryBox.SelectedIndex = index;
+                }
+            }
         }
 
         private void ContextMenuStripSettingsClicked(object sender, RoutedEventArgs e)
@@ -733,7 +760,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
                     this.GetAddIn().ShapePresentation.AddCategory(importCategory, false, true);
 
-                    _categoryBinding.Add(importCategory);
+                    _categoryBinding.Add(new CustomComboBoxItem(importCategory, null));
                 }
                 return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, currentSlide);
@@ -876,7 +903,7 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 return;
             }
-            string selectedCategory = _categoryBinding[selectedIndex].ToString();
+            string selectedCategory = (_categoryBinding[selectedIndex] as CustomComboBoxItem)?.actualName;
 
             CurrentCategory = selectedCategory;
             this.GetAddIn().ShapePresentation.DefaultCategory = selectedCategory;
@@ -902,6 +929,5 @@ namespace PowerPointLabs.ShapesLab.Views
         }
 
         #endregion
-
     }
 }
