@@ -75,9 +75,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         #endregion
 
-        public static AudioSettingsDialogWindow dialog = 
-            new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
-
         public SelfExplanationBlockView()
         {
             InitializeComponent();
@@ -143,22 +140,18 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             RoutedEventArgs eventArgs = new RoutedEventArgs(DeleteButtonClickedEvent);
             eventArgs.Source = sender;
-
-            dialog.Close();
-            dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
-
             RaiseEvent(eventArgs);
         }
 
         private void VoicePreviewButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccountStorageService.LoadUserAccount();
+            AudioSettingsDialogWindow dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
             AudioPreviewPage page = dialog.MainPage as AudioPreviewPage;
             page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
-            dialog.Show();
-            dialog.Activate();
+            dialog.ShowDialog();
         }
 
         private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)

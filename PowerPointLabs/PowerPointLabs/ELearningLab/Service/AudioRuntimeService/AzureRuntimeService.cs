@@ -13,8 +13,7 @@ namespace PowerPointLabs.ELearningLab.Service
 {
     public class AzureRuntimeService
     {
-        public static bool IsAzureAccountPresentAndValid = IsAzureAccountPresent()
-            && IsValidUserAccount(showErrorMessage: false);
+        public static bool IsAzureAccountPresentAndValid = false;
         private static CancellationTokenSource cts = new CancellationTokenSource();
         private static CancellationToken token = cts.Token;
 
@@ -23,7 +22,7 @@ namespace PowerPointLabs.ELearningLab.Service
             return !AzureAccount.GetInstance().IsEmpty();
         }
 
-        public static bool IsValidUserAccount(bool showErrorMessage = true)
+        public static bool IsValidUserAccount(bool showErrorMessage = true, string errorMessage = "Failed Azure authentication.")
         {
             try
             {
@@ -35,10 +34,10 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             catch
             {
-                Console.WriteLine("Failed authentication.");
+                Console.WriteLine(errorMessage);
                 if (showErrorMessage)
                 {
-                    MessageBox.Show("Failed authentication");
+                    MessageBox.Show(errorMessage);
                 }
                 return false;
             }

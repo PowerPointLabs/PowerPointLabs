@@ -419,11 +419,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         #region XMAL-Binded Event Handler
 
-        private void ELearningLabMainView_Loaded(object sender, RoutedEventArgs e)
-        {
-            RemoveSpinnerOnLoadingFinished();
-        }
-
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
             SyncClickItems();
@@ -755,28 +750,6 @@ namespace PowerPointLabs.ELearningLab.Views
                     UpdateTriggerTypeEnabledOnSelfExplanationItem(clickItem as SelfExplanationClickItem, i);
                 }
             }
-        }
-
-        private bool CheckAzureAccountValidity()
-        {
-            AzureAccountStorageService.LoadUserAccount();
-            if (!AzureRuntimeService.IsAzureAccountPresent() || !AzureRuntimeService.IsValidUserAccount())
-            {
-                MessageBox.Show("Azure Account Authentication Failed. \nAzure Voices Cannot Be Generated.");
-                return false;
-            }
-            return true;
-        }
-
-        private bool CheckWatsonAccountValidity()
-        {
-            WatsonAccountStorageService.LoadUserAccount();
-            if (!WatsonRuntimeService.IsWatsonAccountPresent() || !WatsonRuntimeService.IsValidUserAccount())
-            {
-                MessageBox.Show("Watson Account Authentication Failed. \nWatson Voices Cannot Be Generated.");
-                return false;
-            }
-            return true;
         }
 
         private bool IsAzureVoiceSelected()

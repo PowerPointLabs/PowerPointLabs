@@ -10,7 +10,6 @@
              views:SelfExplanationBlockView.DownButtonClickedHandler="HandleDownButtonClickedEvent"
              views:SelfExplanationBlockView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
              views:SelfExplanationBlockView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
-             Loaded="ELearningLabMainView_Loaded"
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="600">
     <UserControl.Resources>
         <ContextMenu x:Key="ItemContextMenu">
