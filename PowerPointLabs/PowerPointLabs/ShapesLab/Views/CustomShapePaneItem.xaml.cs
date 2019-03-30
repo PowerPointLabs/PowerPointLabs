@@ -41,7 +41,6 @@ namespace PowerPointLabs.ShapesLab.Views
             ImagePath = shapePath;
             this.shapeName = shapeName;
             textBox.Text = shapeName;
-            ToolTip = shapeName;
 
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the
@@ -117,7 +116,6 @@ namespace PowerPointLabs.ShapesLab.Views
         public void SyncRenameShape(string newShapeName)
         {
             textBox.Text = newShapeName;
-            ToolTip = newShapeName;
             shapeName = newShapeName;
         }
 
