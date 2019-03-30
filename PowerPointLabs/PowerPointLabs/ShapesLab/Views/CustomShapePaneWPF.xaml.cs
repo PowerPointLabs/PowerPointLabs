@@ -338,10 +338,12 @@ namespace PowerPointLabs.ShapesLab.Views
 
         public void RenameCategory(int renameCategoryIndex, string newCategoryName)
         {
+            bool isCurrentCategoryRenamed = renameCategoryIndex == categoryBox.SelectedIndex;
             _categoryBinding[renameCategoryIndex] = newCategoryName;
-            if (renameCategoryIndex == categoryBox.SelectedIndex)
+            if (isCurrentCategoryRenamed)
             {
                 CurrentCategory = newCategoryName;
+                categoryBox.SelectedIndex = renameCategoryIndex;
             }
         }
 
