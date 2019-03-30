@@ -28,7 +28,6 @@ using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
-using PowerPointLabs.ShapesLab.Views;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
@@ -100,7 +99,8 @@ namespace PowerPointLabs
         public Control GetActiveControl(Type type)
         {
             CustomTaskPane taskPane = GetActivePane(type);
-            return taskPane?.Control;
+
+            return taskPane == null ? null : taskPane.Control;
         }
 
         public string GetTempFolderName()
@@ -124,8 +124,9 @@ namespace PowerPointLabs
 
         public Control GetControlFromWindow(Type type, PowerPoint.DocumentWindow window)
         {
-            CustomTaskPane taskPane = GetPaneFromWindow(type, window);
-            return taskPane?.Control;
+            CustomTaskPane taskPane = GetPaneFromWindow(typeof(CustomShapePane), window);
+
+            return taskPane == null ? null : taskPane.Control;
         }
 
         public CustomTaskPane GetPaneFromWindow(Type type, PowerPoint.DocumentWindow window)
@@ -302,6 +303,60 @@ namespace PowerPointLabs
 
             RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
                 TaskPaneVisibleValueChangedEventHandler, null);
+        }
+
+        public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
+        {
+            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+            {
+                if (window == Application.ActiveWindow)
+                {
+                    continue;
+                }
+
+                CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
+
+                if (shapePaneControl?.CurrentCategory == category)
+                {
+                    shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
+                }
+            }
+        }
+
+        public void SyncShapeRemove(string shapeName, string category)
+        {
+            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+            {
+                if (window == Application.ActiveWindow)
+                {
+                    continue;
+                }
+
+                CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
+
+                if (shapePaneControl?.CurrentCategory == category)
+                {
+                    shapePaneControl.RemoveCustomShape(shapeName);
+                }
+            }
+        }
+
+        public void SyncShapeRename(string shapeOldName, string shapeNewName, string category)
+        {
+            foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
+            {
+                if (window == Application.ActiveWindow)
+                {
+                    continue;
+                }
+
+                CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
+
+                if (shapePaneControl?.CurrentCategory == category)
+                {
+                    shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
+                }
+            }
         }
 
         public bool VerifyOnLocal(PowerPoint.Presentation pres)
@@ -911,7 +966,6 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
-            Ribbon.RefreshRibbonControl("CreateMenu");
             Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
             Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
@@ -966,7 +1020,9 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
-            Ribbon.RefreshRibbonControl("AssignTooltipButton");
+            Ribbon.RefreshRibbonControl("ConvertToTooltipButton");
+            Ribbon.RefreshRibbonControl("CreateCalloutButton");
+            Ribbon.RefreshRibbonControl("CreateTriggerButton");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
@@ -1013,8 +1069,6 @@ namespace PowerPointLabs
                 Ribbon.InitialiseVisibilityCheckbox();
                 Ribbon.InitialiseCompressImagesCheckbox();
             }
-            // load audio setting preference for elearning lab
-            AudioSettingStorageService.LoadAudioSettingPreference();
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
