@@ -187,5 +187,18 @@ namespace Test.Util
         {
             return IsSame(a, b, 0.5);
         }
+
+        public static bool IsAnimationsRemoved(Slide slide, string animPrefix)
+        {
+            Sequence slideSeq = slide.TimeLine.MainSequence;
+            foreach (Effect effect in slideSeq)
+            {
+                if (effect.Shape.Name.Contains(animPrefix))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

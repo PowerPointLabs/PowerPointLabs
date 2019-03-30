@@ -113,7 +113,7 @@ namespace PowerPointLabs.ELearningLab.Service
             azureVoiceSynthesizer.OnAudioAvailable += PlayAudio;
             azureVoiceSynthesizer.OnError += OnAzureVoiceErrorHandler;
             // Reuse Synthesize object to minimize latency
-            azureVoiceSynthesizer.Speak(token, new SynthesizeAzureVoice.InputOptions()
+            azureVoiceSynthesizer.Speak(token, new InputOptions()
             {
                 RequestUri = new Uri(requestUri),
                 Text = textToSpeak,
@@ -189,7 +189,7 @@ namespace PowerPointLabs.ELearningLab.Service
             azureVoiceSynthesizer.OnError += OnAzureVoiceErrorHandler;
 
             // Reuse Synthesize object to minimize latency
-            azureVoiceSynthesizer.Speak(token, new SynthesizeAzureVoice.InputOptions()
+            azureVoiceSynthesizer.Speak(token, new InputOptions()
             {
                 RequestUri = new Uri(requestUri),
                 Text = textToSpeak,

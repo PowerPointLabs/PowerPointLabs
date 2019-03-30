@@ -45,6 +45,7 @@ namespace PowerPointLabs.ELearningLab.Service
             SelfExplanationClickItem selfExplanationItem = _selfExplanationItems.ElementAt(i);
             CreateAppearEffectAnimation(_slide, selfExplanationItem);
         }
+
         public void RemoveLabAnimationsFromAnimationPane()
         {
             _slide.RemoveAnimationsForShapeWithPrefix(ELearningLabText.Identifier);

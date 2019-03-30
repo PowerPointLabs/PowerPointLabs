@@ -724,6 +724,7 @@
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\InputOptions.cs" />
     <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\Model\ComputerVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\IVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\VoiceType.cs" />
@@ -798,6 +799,9 @@
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="ELearningLab\Views\SplashView.xaml.cs">
+      <DependentUpon>SplashView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
@@ -1606,6 +1610,10 @@
     <Page Include="ELearningLab\Views\AudioSettingsViews\AzureVoiceLoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ELearningLab\Views\SplashView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NarrationsLab\Views\InShowRecordingControl.xaml">
       <Generator>MSBuild:Compile</Generator>

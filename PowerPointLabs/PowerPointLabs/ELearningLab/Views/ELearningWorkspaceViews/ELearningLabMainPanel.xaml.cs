@@ -21,7 +21,6 @@ using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
-using Application = System.Windows.Application;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
