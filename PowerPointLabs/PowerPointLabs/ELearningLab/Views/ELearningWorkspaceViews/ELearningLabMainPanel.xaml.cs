@@ -75,6 +75,7 @@ namespace PowerPointLabs.ELearningLab.Views
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
             isSynced = true;
+            SetupSpinnerOnLoadingBegins();
             InitializeBackgroundWorker();
             worker.RunWorkerAsync();
         }
@@ -109,6 +110,7 @@ namespace PowerPointLabs.ELearningLab.Views
             slideId = slide.ID;
             isSynced = true;
             listView.ItemsSource = null;
+            SetupSpinnerOnLoadingBegins();
             if (worker.IsBusy)
             {
                 worker.CancelAsync();
@@ -212,6 +214,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     listView.ItemsSource = null;
                     listView.ItemsSource = Items;
+                    RemoveSpinnerOnLoadingFinished();
                 });
             }
         }
@@ -415,6 +418,11 @@ namespace PowerPointLabs.ELearningLab.Views
         #endregion
 
         #region XMAL-Binded Event Handler
+
+        private void ELearningLabMainView_Loaded(object sender, RoutedEventArgs e)
+        {
+            RemoveSpinnerOnLoadingFinished();
+        }
 
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
@@ -815,7 +823,32 @@ namespace PowerPointLabs.ELearningLab.Views
             return false;
         }
 
-        #endregion
+        private void SetupSpinnerOnLoadingBegins()
+        {
+            createButton.IsEnabled = false;
+            syncButton.IsEnabled = false;
+            eLLPane.Visibility = Visibility.Collapsed;
+            loadingPane.Visibility = Visibility.Visible;
+            eLLEmptyPane.Visibility = Visibility.Collapsed;
+        }
 
+        private void RemoveSpinnerOnLoadingFinished()
+        {
+            createButton.IsEnabled = true;
+            syncButton.IsEnabled = true;
+            loadingPane.Visibility = Visibility.Collapsed;
+            if (Items.Count == 0)
+            {
+                eLLPane.Visibility = Visibility.Collapsed;
+                eLLEmptyPane.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                eLLPane.Visibility = Visibility.Visible;
+                eLLEmptyPane.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        #endregion
     }
 }

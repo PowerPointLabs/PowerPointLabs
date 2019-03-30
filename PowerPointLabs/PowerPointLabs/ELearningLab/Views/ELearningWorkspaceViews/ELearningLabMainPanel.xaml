@@ -10,6 +10,7 @@
              views:SelfExplanationBlockView.DownButtonClickedHandler="HandleDownButtonClickedEvent"
              views:SelfExplanationBlockView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
              views:SelfExplanationBlockView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
+             Loaded="ELearningLabMainView_Loaded"
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="600">
     <UserControl.Resources>
         <ContextMenu x:Key="ItemContextMenu">
@@ -68,7 +69,7 @@
                        FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
             </StackPanel>
         </StackPanel>
-        <DockPanel Grid.Row="1">
+        <DockPanel Grid.Row="1" x:Name="eLLPane">
             <ListView x:Name="listView" ItemsSource="{Binding Items}"
                   BorderThickness="0" Margin="0" SelectionMode="Single"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -95,6 +96,17 @@
                     </DataTemplate>
                 </ListBox.Resources>
             </ListView>
+        </DockPanel>
+        <DockPanel Grid.Row="1" x:Name="eLLEmptyPane" Background="White">
+            <Label Content="No Items Found" FontWeight="Bold" FontSize="20"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </DockPanel>
+        <DockPanel Grid.Row="1" x:Name="loadingPane">
+            <Label Content="Now Loading..." FontSize="20" 
+                   FontWeight="Bold" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"
+                   Padding="10,10,10,10"/>
         </DockPanel>
     </Grid>
 </UserControl>
