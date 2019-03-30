@@ -205,7 +205,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             DehighlightSelected();
 
-            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit);
+            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit, _categoryBinding);
 
             //shapeItem.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             int insertionIndex = GetShapeInsertionIndex(shapeName);

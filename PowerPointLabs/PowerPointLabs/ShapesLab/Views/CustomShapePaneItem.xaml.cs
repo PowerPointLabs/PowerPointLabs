@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -34,13 +35,22 @@ namespace PowerPointLabs.ShapesLab.Views
 
         #region Constructors
 
-        public CustomShapePaneItem(CustomShapePaneWPF parent, string shapeName, string shapePath, bool isReadyForEditing)
+        public CustomShapePaneItem(CustomShapePaneWPF parent, string shapeName, string shapePath, bool isReadyForEditing, System.Windows.Forms.BindingSource categoryBinding)
         {
             Initialize(isReadyForEditing);
             this.parent = parent;
             ImagePath = shapePath;
             this.shapeName = shapeName;
             textBox.Text = shapeName;
+
+            moveShape.Items.Clear();
+            ObservableCollection<CustomMenuItem> menuItems = new ObservableCollection<CustomMenuItem>();
+            foreach (string name in parent.Categories)
+            {
+                menuItems.Add(new CustomMenuItem(name, MoveShapeClick));
+            }
+            moveShape.ItemsSource = menuItems;
+            //moveShape.ItemsSource = categoryBinding;
 
             // critical line, we need to free the reference to the image immediately after we've
             // finished thumbnail generation, else we could not modify (rename/ delete) the
@@ -153,9 +163,12 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void MoveShapeClick(object sender, RoutedEventArgs e)
         {
-            ShapesLabCategoryInfoDialogBox categoryInfoDialog = new ShapesLabCategoryInfoDialogBox(string.Empty, true);
-            categoryInfoDialog.DialogConfirmedHandler += parent.MoveShapes;
-            categoryInfoDialog.ShowDialog();
+            CustomMenuItem item = sender as CustomMenuItem;
+            if (item == null)
+            {
+                return;
+            }
+            parent.MoveShapes(item.actualName);
         }
 
         private void DeleteShapeClick(object sender, RoutedEventArgs e)

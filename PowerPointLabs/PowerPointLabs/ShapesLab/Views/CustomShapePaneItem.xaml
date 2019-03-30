@@ -22,7 +22,9 @@
             <ContextMenu>
                 <MenuItem x:Name="addShape" Header="Add To Slide" Click="AddShapeClick"></MenuItem>
                 <MenuItem x:Name="editShape" Header="Edit Name" Click="EditShapeClick"></MenuItem>
-                <MenuItem x:Name="moveShape" Header="Move Shape To" Click="MoveShapeClick"></MenuItem>
+                <MenuItem x:Name="moveShape2" Header="Move Shape To" Click="MoveShapeClick"></MenuItem>
+                <MenuItem x:Name="moveShape" Header="Move Shape To">
+                </MenuItem>
                 <MenuItem x:Name="deleteShape" Header="Remove Shape" Click="DeleteShapeClick"></MenuItem>
             </ContextMenu>
         </Grid.ContextMenu>
