@@ -50,9 +50,9 @@
                     <MenuItem x:Name="removeCategory" Header="Remove Category" Click="ContextMenuStripRemoveCategoryClicked"></MenuItem>
                     <MenuItem x:Name="renameCategory" Header="Rename Category" Click="ContextMenuStripRenameCategoryClicked"></MenuItem>
                     <MenuItem x:Name="setAsDefault" Header="Set as Default Category" Click="ContextMenuStripSetAsDefaultCategoryClicked"></MenuItem>
-                    <MenuItem x:Name="settings" Header="Shapes Lab Settings" Click="ContextMenuStripSettingsClicked"></MenuItem>
                     <MenuItem x:Name="importCategory" Header="Import Library" Click="ContextMenuStripImportCategoryClicked"></MenuItem>
                     <MenuItem x:Name="importShapes" Header="Import Shapes" Click="ContextMenuStripImportShapesClicked"></MenuItem>
+                    <MenuItem x:Name="settings" Header="Shapes Lab Settings" Click="ContextMenuStripSettingsClicked"></MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
         </ListBox>
