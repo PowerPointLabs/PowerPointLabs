@@ -231,13 +231,15 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 removeWatsonAudioIfAccountInvalid = !WatsonRuntimeService.IsWatsonAccountPresentAndValid;
             }
-            SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid, 
+            // also align eLL first item click No to be the same as first click No on animation pane
+            SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid,
                 uncheckWatsonAudio: removeWatsonAudioIfAccountInvalid);
             List<SelfExplanationClickItem> items = Items.Where(x => x is SelfExplanationClickItem)
                 .Cast<SelfExplanationClickItem>().ToList();
             ELearningService eLearningService = new ELearningService(slide, items);
             RemoveLabAnimationsFromAnimationPane(eLearningService);
-            AlignFirstClickNumber();
+            // align first click No on animation pane to be the same as eLL first click No
+            AlignFirstClickNumberForCustomItem();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
                 Items.Where(x => x is SelfExplanationClickItem && !((SelfExplanationClickItem)x).IsEmpty)
                 .Cast<SelfExplanationClickItem>().ToList(), slide);
@@ -265,7 +267,7 @@ namespace PowerPointLabs.ELearningLab.Views
             List<ELLEffect> pptlEffects = new List<ELLEffect>();
             do
             {
-                
+
                 if (worker.CancellationPending)
                 {
                     e.Cancel = true;
@@ -378,7 +380,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleUpButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
             && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             if (index > 0)
             {
@@ -391,7 +393,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleDownButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
             && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             if (index < Items.Count() - 1 && index >= 0)
             {
@@ -404,7 +406,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void HandleDeleteButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
             && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
             Items.RemoveAt(index);
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
@@ -433,8 +435,8 @@ namespace PowerPointLabs.ELearningLab.Views
             isSynced = false;
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             ScrollListViewToEnd();
-          //  ListViewItem item = (ListViewItem)listView.ItemContainerGenerator.ContainerFromIndex(Items.Count - 1);
-          //  Button downButton = VisualTreeUtility.GetChildControlWithName(item, "downButton") as Button;
+            //  ListViewItem item = (ListViewItem)listView.ItemContainerGenerator.ContainerFromIndex(Items.Count - 1);
+            //  Button downButton = VisualTreeUtility.GetChildControlWithName(item, "downButton") as Button;
         }
 
         private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
@@ -445,7 +447,7 @@ namespace PowerPointLabs.ELearningLab.Views
             int index;
             if (item is SelfExplanationClickItem)
             {
-                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
                 && ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
             }
             else
@@ -466,7 +468,7 @@ namespace PowerPointLabs.ELearningLab.Views
             int index;
             if (item is SelfExplanationClickItem)
             {
-                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem 
+                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
                 && ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
             }
             else
@@ -505,7 +507,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private void SyncLabItemToAnimationPane(ELearningService service)
         {
             int totalSelfExplanationItemsCount = service.GetExplanationItemsCount();
-            ProcessingStatusForm progressBarForm = 
+            ProcessingStatusForm progressBarForm =
                 new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService, service);
             progressBarForm.ShowDialog();
         }
@@ -514,28 +516,38 @@ namespace PowerPointLabs.ELearningLab.Views
         /// This method aligns starting click number between e-learning lab and animation pane.
         /// This is necessary when first click item on e-learning lab pane is self-explanation item.
         /// </summary>
-        private void AlignFirstClickNumber()
+        private void AlignFirstClickNumberForCustomItem()
         {
+            // effects contain only custom effects now
             IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
-            if (Items.Count > 0)
+            int clickNo = GetClickNoOfFirstCustomItem();
+            if (clickNo > 0 && effects.Count() > 0)
             {
-                int clickNo = Items[0].ClickNo;
-                if (clickNo > 0 && effects.Count() > 0)
+                effects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+            }
+            else if (clickNo == 0 && effects.Count() > 0)
+            {
+                effects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+            }
+        }
+
+        private int GetClickNoOfFirstCustomItem()
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Items[i] is CustomClickItem)
                 {
-                    effects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
-                }
-                else if (clickNo == 0 && effects.Count() > 0)
-                {
-                    effects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerWithPrevious;
+                    return Items[i].ClickNo;
                 }
             }
+            return -1;
         }
 
         private void ScrollItemToView(ClickItem item)
         {
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Loaded,
                 new Action(delegate
-                {                    
+                {
                     listView.ScrollIntoView(item);
                 }));
         }
