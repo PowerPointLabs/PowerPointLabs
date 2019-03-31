@@ -34,7 +34,7 @@ namespace PowerPointLabs.TooltipsLab.Views
         private void Initialize()
         {
             Array shapeTypes = Enum.GetValues(typeof(MsoAutoShapeType));
-            Bitmap[] shapeBitmaps = ShapeTypesToBitmaps(shapeTypes);
+            Bitmap[] shapeBitmaps = ShapeTypesToBitmaps(shapeTypes, "Callout");
             for (int i = 0; i < shapeTypes.Length; i++)
             {
                 if (shapeBitmaps[i] == null)
@@ -66,12 +66,16 @@ namespace PowerPointLabs.TooltipsLab.Views
             }
         }
 
-        private Bitmap[] ShapeTypesToBitmaps(Array types)
+        private Bitmap[] ShapeTypesToBitmaps(Array types, string shapeType)
         {
             Shapes shapes = SyncFormatUtil.GetTemplateShapes();
             Bitmap[] bitmaps = new Bitmap[types.Length];
             for (int i = 0; i < types.Length; i++)
             {
+                if (!((MsoAutoShapeType)types.GetValue(i)).ToString().Contains(shapeType))
+                {
+                    continue;
+                }
                 try
                 {
                     Shape shape = shapes.AddShape(
