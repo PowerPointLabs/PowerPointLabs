@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Extensions;
+using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -39,6 +40,7 @@ namespace PowerPointLabs.ELearningLab.Service
             DeleteUnusedCalloutShapes(_slide);
             DeleteUnusedAudioShapes(_slide);
             DeleteUnusedCaptionShapes(_slide);
+            DeleteExitAnimationInLastClick(_slide);
         }
 
         public static void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
@@ -81,7 +83,8 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             if (selfExplanationItem.IsCallout)
             {
-                Effect effect = CalloutService.CreateAppearEffectCalloutAnimation(slide, selfExplanationItem.CalloutText,
+                string calloutText = selfExplanationItem.HasShortVersion ? selfExplanationItem.CalloutText : selfExplanationItem.CaptionText;
+                Effect effect = CalloutService.CreateAppearEffectCalloutAnimation(slide, calloutText,
                     selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
                 effects.Add(effect);
             }
@@ -118,6 +121,39 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Shape captionShape = slide.GetShapeWithName(captionShapeName)[0];
                 CaptionService.CreateExitEffectCaptionAnimation(slide, captionShape, selfExplanationItem.ClickNo);
+            }
+        }
+
+        private static void DeleteExitAnimationInLastClick(PowerPointSlide slide)
+        {
+            IEnumerable<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>();
+            List<Effect> effectsToDelete = new List<Effect>();
+
+            for (int i = effects.Count() - 1; i > 0 && i >= effects.Count() - 2; i--)
+            {
+                Effect effect = effects.ElementAt(i);
+                bool isTriggeredByClick = effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                if (effect.Exit != Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    return;
+                }
+                string shapeName = effect.Shape.Name;
+                if (StringUtility.IsPPTLShape(shapeName) && effect.Exit == Microsoft.Office.Core.MsoTriState.msoTrue)
+                {
+                    effectsToDelete.Add(effect);
+                  //  effect.Delete();
+                }
+                if (isTriggeredByClick)
+                {
+                    if (effectsToDelete.Count + i == effects.Count())
+                    {
+                        foreach (Effect _effect in effectsToDelete)
+                        {
+                            _effect.Delete();
+                        }
+                    }
+                    return;
+                }
             }
         }
 

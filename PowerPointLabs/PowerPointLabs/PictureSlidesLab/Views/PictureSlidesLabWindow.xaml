@@ -48,12 +48,12 @@
                 <converter:StyleVariationWidthConverter x:Key="StyleVariationWidthConverter"></converter:StyleVariationWidthConverter>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Name="Column0" Width="*" MinWidth="300"></ColumnDefinition>
+                <ColumnDefinition Name="Column1" Width="auto"></ColumnDefinition>
+                <ColumnDefinition Name="Column2" Width="*" MinWidth="400"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <GridSplitter Name="Splitter" DragDelta="Splitter_OnDragDelta" Grid.Column="1" ResizeDirection="Columns" Width="3" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-            <Grid Visibility="Collapsed" Width="560" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0">
+            <Grid Visibility="Collapsed" Width="560" Margin="10,0,0,0" Name="StylesPreviewGrid" Grid.Column="0" MinWidth="300">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5" />
                     <RowDefinition Height="35" />
@@ -158,7 +158,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <Grid Visibility="Collapsed" Name="StyleVariationsFlyout" Width="{Binding Path=ActualWidth, ElementName=StylesPreviewListBox, Converter={StaticResource StyleVariationWidthConverter}}" Background="#252525" Grid.Column="0">
+            <Grid Visibility="Collapsed" Name="StyleVariationsFlyout" Width="{Binding Path=ActualWidth, ElementName=StylesPreviewListBox, Converter={StaticResource StyleVariationWidthConverter}}" MinWidth="400" Background="#252525" Grid.Column="0">
                 <Grid.Resources>
                     <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>

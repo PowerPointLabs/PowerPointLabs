@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Utility
@@ -29,17 +31,15 @@ namespace PowerPointLabs.ELearningLab.Utility
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-           
-            Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeOvalCallout, 10, 10, 200, 10);
+
+            Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRoundedRectangularCallout, 10, 10, 100, 10);
             calloutBox.Name = shapeName;
-            calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextFrame.TextRange.Text = calloutText;
-            calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
-            calloutBox.TextFrame.TextRange.Font.Size = 12;
-            calloutBox.Fill.BackColor.RGB = 0;
-            calloutBox.Fill.Transparency = 0.2f;
-            calloutBox.TextFrame.TextRange.Font.Color.RGB = 0;
+            calloutBox.Left = 10;
+            calloutBox.Top = 10;
+            calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
+            ShapeUtil.FormatCalloutToDefaultStyle(calloutBox);
 
             return calloutBox;
         }
@@ -95,6 +95,7 @@ namespace PowerPointLabs.ELearningLab.Utility
             {
                 copiedShape.Left = 10;
                 copiedShape.Top = 10;
+                copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
             }
             else if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)
             {
@@ -103,12 +104,12 @@ namespace PowerPointLabs.ELearningLab.Utility
                 copiedShape.Width = slideWidth;
                 copiedShape.Height = 100;
                 copiedShape.Top = slideHeight - copiedShape.Height;
+                copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             }
 
             copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             copiedShape.TextFrame.TextRange.Text = text;
-            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;
-            copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
+            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;         
             // remove associated animation with copiedShape because we only want the shape to be copied.
             slide.RemoveAnimationsForShape(copiedShape);
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)

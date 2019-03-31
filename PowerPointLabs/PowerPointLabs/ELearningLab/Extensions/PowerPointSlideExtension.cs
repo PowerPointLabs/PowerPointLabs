@@ -23,6 +23,7 @@ namespace PowerPointLabs.ELearningLab.Extensions
 
         public static IEnumerable<Effect> GetCustomEffectsForClick(this PowerPointSlide slide, int clickNo)
         {
+            DateTime start = DateTime.Now;
             List<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>().ToList();
             Sequence sequence = slide.TimeLine.MainSequence;
             try
@@ -49,6 +50,7 @@ namespace PowerPointLabs.ELearningLab.Extensions
         }
         public static IEnumerable<Effect> GetPPTLEffectsForClick(this PowerPointSlide slide, int clickNo)
         {
+            DateTime start = DateTime.Now;
             List<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>().ToList();
             Sequence sequence = slide.TimeLine.MainSequence;
             try
@@ -58,7 +60,6 @@ namespace PowerPointLabs.ELearningLab.Extensions
                 // from idxStart inclusive, idxEnd exclusive
                 int idxStart = effectBefore == null ? effects.Count() : effects.IndexOf(effectBefore);
                 int idxEnd = effectAfter == null ? effects.Count() : effects.IndexOf(effectAfter);
-
                 return effects.GetRange(idxStart, idxEnd - idxStart).Where(x =>
                 SelfExplanationTagService.ExtractTagNo(x.Shape.Name) != -1 && 
                 x.Exit != Microsoft.Office.Core.MsoTriState.msoTrue);

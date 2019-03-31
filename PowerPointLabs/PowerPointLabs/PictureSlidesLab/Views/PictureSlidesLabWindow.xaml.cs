@@ -532,7 +532,21 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="e"></param>
         private void Splitter_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
-            StylesPreviewGrid.Width = StylesPreviewGrid.ActualWidth + e.HorizontalChange;
+            double newWidth = StylesPreviewGrid.ActualWidth + e.HorizontalChange;
+            // Prevent StylesPreviewGrid from becoming too small
+            if (newWidth < StylesPreviewGrid.MinWidth)
+            {
+                StylesPreviewGrid.Width = StylesPreviewGrid.MinWidth;
+            }
+            // Prevent StylesPreviewGrid from overflowing grid column 0
+            else if (newWidth > Column0.Width.Value)
+            {
+                StylesPreviewGrid.Width = Column0.Width.Value;
+            }
+            else
+            {
+                StylesPreviewGrid.Width = newWidth;
+            }
         }
 
         /// <summary>

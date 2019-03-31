@@ -11,6 +11,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         protected override void ExecuteAction(string ribbonId)
         {
             AzureAccountStorageService.LoadUserAccount();
+            AudioSettingStorageService.LoadAudioSettingPreference();
             AudioSettingService.ShowSettingsDialog();
         }
     }

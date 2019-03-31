@@ -31,21 +31,18 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
         {
             get
             {
-                if (this is CustomClickItem)
-                {
-                    return true;
-                }
-                else
-                {
-                    SelfExplanationClickItem selfExplanationClickItem = this as SelfExplanationClickItem;
-                    return !selfExplanationClickItem.IsDummyItem;
-                }
+                return shouldLabelDisplay;
+            }
+            set
+            {
+                shouldLabelDisplay = value;
+                NotifyPropertyChanged("ShouldLabelDisplay");
             }
         }
-
         public ClickItem()
         { }
         private int clickNo;
+        private bool shouldLabelDisplay;
 
         public override bool Equals(object other)
         {

@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.5.1.0</ApplicationVersion>
+    <ApplicationVersion>4.8.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -203,6 +203,9 @@
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -222,6 +225,15 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
@@ -271,33 +283,28 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTrigger\CreateTriggerSupertipHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateCallout\CreateCalloutSupertipHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\Create\CreateTooltip\CreateTooltipSupertipHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipEnabledHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\AssignTooltip\AssignTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\CreateTooltip\CreateTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipEnabledHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuSupertipHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsActionHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsImageHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsLabelHandler.cs" />
-    <Compile Include="ActionFramework\TooltipsLab\TooltipsLabSettings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\AnimationLab\AnimationLabSettings\AnimationLabSettingsActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonActionHandler.cs" />
     <Compile Include="ActionFramework\SaveLab\SaveLabButton\SaveLabButtonImageHandler.cs" />
@@ -706,10 +713,24 @@
     <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\Model\ComputerVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\IVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\VoiceType.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\BaseModel.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\Constants.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\Enums\WatsonVoiceType.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\IamTokenData.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\Text.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\TokenOptions.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\WatsonAccount.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\Model\WatsonVoice.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\HttpFactory.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\SynthesizeWatsonVoice.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\TokenManager.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\WatsonHttpClient.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\WatsonVoiceGenerator\SpeechEngine\WatsonRequest.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\AnimationTypeToImageSourceConverter.cs" />
-    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToIndexConverter.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\BlockToTriggerTypeEnabledConverter.cs" />
     <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\EffectToAnimationTypeConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\IVoiceToSpeakEnabledConverter.cs" />
+    <Compile Include="ELearningLab\Converters\ELearningWorkspaceConverters\ListItemClickNumToColorConverter.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\AbstractItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />
@@ -721,16 +742,25 @@
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\BackgroundWorkerType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\NoteType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\TriggerType.cs" />
+    <Compile Include="ELearningLab\Extensions\DateTimeExtensions.cs" />
+    <Compile Include="ELearningLab\Extensions\UriExtensions.cs" />
     <Compile Include="ELearningLab\Service\AudioRuntimeService\AzureRuntimeService.cs" />
+    <Compile Include="ELearningLab\Service\AudioRuntimeService\WatsonRuntimeService.cs" />
     <Compile Include="ELearningLab\Service\StorageService\AudioSettingStorageService.cs" />
     <Compile Include="ELearningLab\Service\StorageService\ELearningLabTextStorageService.cs" />
+    <Compile Include="ELearningLab\Service\StorageService\WatsonAccountStorageService.cs" />
     <Compile Include="ELearningLab\Utility\AnimationUtility.cs" />
     <Compile Include="ELearningLab\Utility\ShapeUtility.cs" />
+    <Compile Include="ELearningLab\Utility\StreamUtility.cs" />
     <Compile Include="ELearningLab\Utility\StringUtility.cs" />
     <Compile Include="ELearningLab\Extensions\PowerPointSlideExtension.cs" />
     <Compile Include="ELearningLab\Service\TagService\SelfExplanationTagService.cs" />
+    <Compile Include="ELearningLab\Utility\VisualTreeUtility.cs" />
     <Compile Include="ELearningLab\Views\AudioPreviewViews\AudioPreviewPage.xaml.cs">
       <DependentUpon>AudioPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml.cs">
+      <DependentUpon>WatsonVoiceLoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml.cs">
       <DependentUpon>CustomBlockView.xaml</DependentUpon>
@@ -754,7 +784,7 @@
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
-    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\AzureEndpointToUriConverter.cs" />
+    <Compile Include="ELearningLab\Converters\AudioGeneratorConverters\EndpointToUriConverter.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\Gender.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\AzureVoiceList.cs" />
@@ -848,7 +878,6 @@
     <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
-    <Compile Include="TooltipsLab\AddTextbox.cs" />
     <Compile Include="TooltipsLab\TooltipsLabSettings.cs" />
     <Compile Include="TooltipsLab\Views\TooltipsLabSettingsDialogBox.xaml.cs">
       <DependentUpon>TooltipsLabSettingsDialogBox.xaml</DependentUpon>
@@ -860,7 +889,7 @@
       <DependentUpon>TooltipsLabSettingsShapeEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
-    <Compile Include="TooltipsLab\AssignToolTip.cs" />
+    <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
@@ -1550,6 +1579,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2218,6 +2251,36 @@
     <None Include="Resources\AddToCustomShapesDisabled.png" />
     <None Include="Resources\EyeDropper_icon.png" />
     <None Include="Resources\EyeDropper_icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AddExplanationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TooltipsLab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SyncExplanationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELearningLabIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CancelCalloutButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ELearningLabIcon2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateCallout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateTrigger.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ConvertToTooltip.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

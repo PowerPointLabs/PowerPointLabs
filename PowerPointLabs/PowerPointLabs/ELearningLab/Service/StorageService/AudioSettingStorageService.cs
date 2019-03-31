@@ -44,11 +44,10 @@ namespace PowerPointLabs.ELearningLab.Service
                     Logger.Log("Cannot delete audio setting files because other presentations are using it.");
                 }
             }
-            Dictionary<string, string> audioSetting = new Dictionary<string, string>()
-            {
-                { "voiceName", AudioSettingService.selectedVoice.ToString() }
-            };
-            XElement root = new XElement("audioSetting", from kv in audioSetting select new XElement(kv.Key, kv.Value));
+            List<string> audios = ConvertAudioPreferencesToList();
+            XElement root = new XElement("audioSetting", 
+                audios.Select( x =>
+                new XElement("audio", new XAttribute("name", x))));
             using (FileStream file = File.Open(GetAudioSettingFilePath(), FileMode.OpenOrCreate))
             {
                 root.Save(file);
@@ -57,7 +56,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static void LoadAudioSettingPreference()
         {
-            Dictionary<string, string> audioSetting = new Dictionary<string, string>();
+            List<string> audioPreference = new List<string>();
             try
             {
                 using (FileStream file = File.Open(GetAudioSettingFilePath(), FileMode.Open))
@@ -65,30 +64,14 @@ namespace PowerPointLabs.ELearningLab.Service
                     XElement root = XElement.Load(file);
                     foreach (XElement el in root.Elements())
                     {
-                        audioSetting.Add(el.Name.LocalName, el.Value);
+                        audioPreference.Add(el.Attribute("name").Value);
                     }
-                    string voiceName = audioSetting.ContainsKey("voiceName") ? audioSetting["voiceName"] : null;
-                    if (voiceName != null)
-                    {
-                        IVoice voice = AudioService.GetVoiceFromString(voiceName.Trim());
-                        AudioSettingService.selectedVoice = voice;
-                        if (voice is ComputerVoice)
-                        {
-                            AudioSettingService.selectedVoiceType = VoiceType.ComputerVoice;
-                        }
-                        else if (voice is AzureVoice)
-                        {
-                            AudioSettingService.selectedVoiceType = VoiceType.AzureVoice;
-                        }
-                        else
-                        {
-                            Logger.Log("Error: Voice retrieved has invalid type");
-                        }
-                    }
-                    else
+                    if (audioPreference.Count == 0)
                     {
                         File.Delete(GetAudioSettingFilePath());
+                        return;
                     }
+                    InitializeDefaultAndRankedVoicesFromList(audioPreference);
                 }
             }
             catch (Exception e)
@@ -110,6 +93,51 @@ namespace PowerPointLabs.ELearningLab.Service
             catch (Exception e)
             {
                 Logger.Log(e.Message);
+            }
+        }
+
+        private static List<string> ConvertAudioPreferencesToList()
+        {
+            IVoice defaultVoice = AudioSettingService.selectedVoice;
+            List<string> voices = AudioSettingService.preferredVoices.ToList().Select(x => x.VoiceName).ToList();
+            voices.Insert(0, defaultVoice.ToString());
+            return voices;
+        }
+
+        private static void InitializeDefaultAndRankedVoicesFromList(List<string> preferences)
+        {
+            AudioSettingService.preferredVoices.Clear();
+            for (int i = 0;  i < preferences.Count(); i++)
+            {               
+                string voiceName = preferences[i].Trim();
+                IVoice voice = AudioService.GetVoiceFromString(voiceName);
+                voice.Rank = i;
+                if (i == 0)
+                {                    
+                    if (voice is ComputerVoice)
+                    {
+                        AudioSettingService.selectedVoiceType = VoiceType.ComputerVoice;
+                        AudioSettingService.selectedVoice = voice;
+                    }
+                    else if (voice is AzureVoice && AzureRuntimeService.IsAzureAccountPresentAndValid)
+                    {
+                        AudioSettingService.selectedVoiceType = VoiceType.AzureVoice;
+                        AudioSettingService.selectedVoice = voice;
+                    }
+                    else if (voice is WatsonVoice && WatsonRuntimeService.IsWatsonAccountPresentAndValid)
+                    {
+                        AudioSettingService.selectedVoiceType = VoiceType.WatsonVoice;
+                        AudioSettingService.selectedVoice = voice;
+                    }
+                    else
+                    {
+                        Logger.Log("Error: Voice retrieved has invalid type");
+                    }
+                }
+                else
+                {
+                    AudioSettingService.preferredVoices.Add(voice);
+                }
             }
         }
     }

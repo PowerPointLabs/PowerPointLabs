@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
@@ -84,6 +75,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         #endregion
 
+        public static AudioSettingsDialogWindow dialog = 
+            new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
+
         public SelfExplanationBlockView()
         {
             InitializeComponent();
@@ -102,13 +96,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 IntPtr.Zero,
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
-            startImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.RightArrowGreen.GetHbitmap(),
-               IntPtr.Zero,
-               Int32Rect.Empty,
-               BitmapSizeOptions.FromEmptyOptions());
             audioImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
               Properties.Resources.SpeakTextContext.GetHbitmap(),
+              IntPtr.Zero,
+              Int32Rect.Empty,
+              BitmapSizeOptions.FromEmptyOptions());
+            cancelCalloutImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+              Properties.Resources.CancelCalloutButton.GetHbitmap(),
               IntPtr.Zero,
               Int32Rect.Empty,
               BitmapSizeOptions.FromEmptyOptions());
@@ -122,6 +116,7 @@ namespace PowerPointLabs.ELearningLab.Views
             audioCheckBox.Checked += AudioCheckBox_CheckedChanged;
             audioCheckBox.Unchecked += AudioCheckBox_CheckedChanged;
             audioPreviewButton.IsEnabled = (bool)audioCheckBox.IsChecked;
+            audioImage.Opacity = (bool)audioCheckBox.IsChecked ? 1 : 0.5;
             audioCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
             captionCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
             calloutCheckBox.Unchecked += IsVoiceCaptionCalloutCheckBox_CheckChanged;
@@ -148,19 +143,30 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             RoutedEventArgs eventArgs = new RoutedEventArgs(DeleteButtonClickedEvent);
             eventArgs.Source = sender;
+
+            dialog.Close();
+            dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
+
             RaiseEvent(eventArgs);
         }
 
         private void VoicePreviewButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccountStorageService.LoadUserAccount();
-          //  AudioService.SetTempName();
-            AudioPreviewPage.GetInstance().PreviewDialogConfirmedHandler += OnSettingsDialogConfirmed;
-            ConfigureAudioPreviewSettings();
-            AudioSettingsDialogWindow dialog = AudioSettingsDialogWindow.GetInstance(AudioSettingsPage.AudioPreviewPage);
-            dialog.SetDialogWindowHeight(AudioSettingService.AudioPreviewPageHeight);
+            AudioPreviewPage page = dialog.MainPage as AudioPreviewPage;
+            page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
+            ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
             dialog.Show();
+            dialog.Activate();
+        }
+
+        private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            calloutTextBox.Visibility = Visibility.Collapsed;
+            hasShortVersionCheckBox.Visibility = Visibility.Visible;
+            cancelCalloutBorder.Visibility = Visibility.Collapsed;
+            hasShortVersionCheckBox.IsChecked = false;
         }
 
         private void TriggerTypeComboBox_SelectionChanged(object sender, RoutedEventArgs e)
@@ -175,13 +181,14 @@ namespace PowerPointLabs.ELearningLab.Views
             if ((bool)((CheckBox)sender).IsChecked)
             {
                 calloutTextBox.Visibility = Visibility.Visible;
-                calloutTextBox.Text = string.Empty;
+                hasShortVersionCheckBox.Visibility = Visibility.Collapsed;
+                cancelCalloutBorder.Visibility = Visibility.Visible;
             }
             else
             {
                 calloutTextBox.Visibility = Visibility.Collapsed;
-                calloutTextBox.Text = captionTextBox.Text;
-                Logger.Log(calloutTextBox.Text);
+                hasShortVersionCheckBox.Visibility = Visibility.Visible;
+                cancelCalloutBorder.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -206,11 +213,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 audioNameLabel.Content = string.Format(ELearningLabText.AudioDefaultLabelFormat, 
                     AudioSettingService.selectedVoice.ToString());
                 audioPreviewButton.IsEnabled = true;
+                audioImage.Opacity = 1;
             }
             else
             {
                 audioNameLabel.Visibility = Visibility.Collapsed;
                 audioPreviewButton.IsEnabled = false;
+                audioImage.Opacity = 0.5;
             }
         }
 
@@ -231,6 +240,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 case VoiceType.AzureVoice:
                 case VoiceType.ComputerVoice:
+                case VoiceType.WatsonVoice:
                     audioNameLabel.Content = selectedVoice.ToString();
                     break;
                 case VoiceType.DefaultVoice:
@@ -242,14 +252,14 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        private void ConfigureAudioPreviewSettings()
+        private void ConfigureAudioPreviewSettings(AudioPreviewPage page)
         {
             string textToSpeak = captionTextBox.Text.Trim();
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(audioNameLabel.Content.ToString());
             string defaultPostfix = StringUtility.ExtractDefaultLabelFromVoiceLabel(audioNameLabel.Content.ToString());
             VoiceType voiceType = AudioService.GetVoiceTypeFromString(voiceName, defaultPostfix);
             IVoice voice = AudioService.GetVoiceFromString(voiceName);
-            AudioPreviewPage.GetInstance().SetAudioPreviewSettings(textToSpeak, voiceType, voice);
+            page.SetAudioPreviewSettings(textToSpeak, voiceType, voice);
         }
 
         #endregion

@@ -7,6 +7,8 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
 
@@ -17,13 +19,12 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
     {
         protected override void ExecuteAction(string ribbonId)
         {
+            AzureAccountStorageService.LoadUserAccount();
+            WatsonAccountStorageService.LoadUserAccount();
+            AudioSettingStorageService.LoadAudioSettingPreference();
             this.RegisterTaskPane(typeof(ELearningLabTaskpane), ELearningLabText.ELearningTaskPaneLabel,
                 ELearningTaskPaneVisibleValueChangedEventHandler);
             CustomTaskPane eLearningTaskpane = this.GetTaskPane(typeof(ELearningLabTaskpane));
-            ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
-            AudioMainSettingsPage.GetInstance().DefaultVoiceChangedHandler +=
-                taskpane.eLearningLabMainPanel1.RefreshVoiceLabelOnAudioSettingChanged;
-            AudioMainSettingsPage.GetInstance().IsDefaultVoiceChangedHandlerAssigned = true;
             eLearningTaskpane.Visible = !eLearningTaskpane.Visible;
         }
 
@@ -37,11 +38,11 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
             ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             if (eLearningTaskpane.Visible)
             {
-                taskpane.eLearningLabMainPanel1.HandleELearningPaneSlideSelectionChanged();               
+                taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();               
             }
             else
             {
-                taskpane.eLearningLabMainPanel1.HandleSlideChangedEvent();
+                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
             }
         }
     }

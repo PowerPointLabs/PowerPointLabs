@@ -14,13 +14,17 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
     public class AzureRuntimeService
     {
+        public static bool IsAzureAccountPresentAndValid = IsAzureAccountPresent()
+            && IsValidUserAccount(showErrorMessage: false);
         private static CancellationTokenSource cts = new CancellationTokenSource();
         private static CancellationToken token = cts.Token;
+
         public static bool IsAzureAccountPresent()
         {
             return !AzureAccount.GetInstance().IsEmpty();
@@ -31,7 +35,7 @@ namespace PowerPointLabs.ELearningLab.Service
             try
             {
                 string _key = AzureAccount.GetInstance().GetKey();
-                string _endpoint = AzureEndpointToUriConverter.regionToEndpointMapping[AzureAccount.GetInstance().GetRegion()];
+                string _endpoint = EndpointToUriConverter.azureRegionToEndpointMapping[AzureAccount.GetInstance().GetRegion()];
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance(_endpoint, _key);
                 string accessToken = auth.GetAccessToken();
                 Console.WriteLine("Token: {0}\n", accessToken);
@@ -78,9 +82,19 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public static void SpeakString(string textToSpeak, AzureVoice voice)
         {
+            SpeakStringAsync(textToSpeak, voice);
+            string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
+            string filePath = dirPath + "\\" +
+                string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
+            PlaySavedAudioForPreview(filePath);
+        }
+        public static void SpeakStringAsync(string textToSpeak, AzureVoice voice)
+        {
             RenewCancellationToken();
             string accessToken;
-            string filePath = Path.GetTempPath() + AudioService.TempFolderName + "\\" + "PPTL_preview.wav";
+            string dirPath = Path.GetTempPath() + AudioService.TempFolderName;
+            string filePath = dirPath + "\\" +
+                string.Format(ELearningLabText.AudioPreviewFileNameFormat, voice.VoiceName);
             try
             {
                 AzureAccountAuthentication auth = AzureAccountAuthentication.GetInstance();
@@ -91,6 +105,10 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Logger.Log("Failed authentication.");
                 return;
+            }
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
             }
             string requestUri = AzureAccount.GetInstance().GetUri();
             if (requestUri == null)
@@ -113,6 +131,38 @@ namespace PowerPointLabs.ELearningLab.Service
                 OutputFormat = AudioOutputFormat.Riff24Khz16BitMonoPcm,
                 AuthorizationToken = "Bearer " + accessToken,
             }, filePath).Wait();
+        }
+
+        public static void PlaySavedAudioForPreview(string filePath)
+        {
+            SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
+            WaveOutEvent player = new WaveOutEvent();
+            player.PlaybackStopped += (s, e) =>
+            {
+                try
+                {
+                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
+                }
+                catch
+                {
+                    Logger.Log("Object already disposed.");
+
+                }
+            };
+            speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
+            try
+            {
+                using (var reader = new WaveFileReader(filePath))
+                {
+                    player.Init(reader);
+                    player.Play();
+                    speechPlayingDialog.ShowDialog();
+                }
+            }
+            catch
+            {
+                Logger.Log("Audio File not Found");
+            }
         }
 
         #endregion
@@ -212,40 +262,8 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void PlayAudio(object sender, GenericEventArgs<Stream> args)
         {
-            ManualResetEvent syncEvent = new ManualResetEvent(false);
-            Thread thread1 = new Thread(() =>
-            {
-                SaveAudioToWaveFile(sender, args);
-                syncEvent.Set();
-            });
-            thread1.Start();
-            Thread thread = new Thread(() =>
-            {
-                syncEvent.WaitOne();
-                SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
-                WaveOutEvent player = new WaveOutEvent();
-                player.PlaybackStopped += (s, e) =>
-                {
-                    speechPlayingDialog.Dispatcher.Invoke(() => { speechPlayingDialog.Close(); });
-                    args.EventData.Dispose();
-                };
-                speechPlayingDialog.Closed += (s, e) => SpeechPlayingDialog_Closed(player);
-                try
-                {
-                    using (var reader = new WaveFileReader(args.FilePath))
-                    {
-                        player.Init(reader);
-                        player.Play();
-                        speechPlayingDialog.ShowDialog();
-                    }
-                }
-                catch
-                {
-                    Logger.Log("Audio File not Found");
-                }
-            });
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
+            SaveAudioToWaveFile(sender, args);
+
         }
 
         private static SpeechPlayingDialogBox ShowSpeechCancelDialog(WaveOutEvent player)

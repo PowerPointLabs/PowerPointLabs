@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AnimationLab);
+            return new Bitmap(Properties.Resources.TooltipsLab);
         }
     }
 }
