@@ -78,6 +78,26 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
+                <ListView.Style>
+                    <Style TargetType="{x:Type ListView}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Items.Count, RelativeSource={RelativeSource Self}}"  Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <DockPanel Background="White">
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       FontWeight="Bold" FontSize="20">
+                                                No items to display
+                                                </TextBlock>
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
                 <ListBox.Resources>
                     <DataTemplate DataType="{x:Type model:CustomClickItem}">
                         <StackPanel Margin="2 2 2 2">
@@ -95,10 +115,6 @@
                     </DataTemplate>
                 </ListBox.Resources>
             </ListView>
-        </DockPanel>
-        <DockPanel Grid.Row="1" x:Name="eLLEmptyPane" Background="White">
-            <Label Content="No Items Found" FontWeight="Bold" FontSize="20"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </DockPanel>
         <DockPanel Grid.Row="1" x:Name="loadingPane">
             <Label Content="Now Loading..." FontSize="20" 

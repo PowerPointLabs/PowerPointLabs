@@ -814,7 +814,6 @@ namespace PowerPointLabs.ELearningLab.Views
             syncButton.IsEnabled = false;
             eLLPane.Visibility = Visibility.Collapsed;
             loadingPane.Visibility = Visibility.Visible;
-            eLLEmptyPane.Visibility = Visibility.Collapsed;
         }
 
         private void RemoveSpinnerOnLoadingFinished()
@@ -822,16 +821,7 @@ namespace PowerPointLabs.ELearningLab.Views
             createButton.IsEnabled = true;
             syncButton.IsEnabled = true;
             loadingPane.Visibility = Visibility.Collapsed;
-            if (Items.Count == 0)
-            {
-                eLLPane.Visibility = Visibility.Collapsed;
-                eLLEmptyPane.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                eLLPane.Visibility = Visibility.Visible;
-                eLLEmptyPane.Visibility = Visibility.Collapsed;
-            }
+            eLLPane.Visibility = Visibility.Visible;
         }
 
         #endregion
