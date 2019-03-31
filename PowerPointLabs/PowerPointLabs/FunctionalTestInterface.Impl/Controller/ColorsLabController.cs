@@ -326,7 +326,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    _pane.ColorsLabPaneWPF1.ClearRecentColorsPanel();
+                    _pane.ColorsLabPaneWPF1.EmptyRecentColorsPanel();
                 }));
             }
         }

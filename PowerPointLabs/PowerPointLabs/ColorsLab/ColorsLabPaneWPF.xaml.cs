@@ -105,9 +105,33 @@ namespace PowerPointLabs.ColorsLab
             return recentColors;
         }
 
-        public void ClearRecentColorsPanel()
+        /// <summary>
+        /// Clear the panel to all white color.
+        /// </summary>
+        public void EmptyRecentColorsPanel()
         {
-            EmptyRecentColorsPanel();
+            try
+            {
+                if (this.GetCurrentSlide() != null)
+                {
+                    dataSource.RecentColorOne = Color.White;
+                    dataSource.RecentColorTwo = Color.White;
+                    dataSource.RecentColorThree = Color.White;
+                    dataSource.RecentColorFour = Color.White;
+                    dataSource.RecentColorFive = Color.White;
+                    dataSource.RecentColorSix = Color.White;
+                    dataSource.RecentColorSeven = Color.White;
+                    dataSource.RecentColorEight = Color.White;
+                    dataSource.RecentColorNine = Color.White;
+                    dataSource.RecentColorTen = Color.White;
+                    dataSource.RecentColorEleven = Color.White;
+                    dataSource.RecentColorTwelve = Color.White;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogBox.ShowDialog("Recent Colors Panel Reset Failed", e.Message, e);
+            }
         }
 
         #endregion
@@ -1293,36 +1317,6 @@ namespace PowerPointLabs.ColorsLab
         #endregion
 
         #region Recent Colors
-
-        /// <summary>
-        /// Clear the panel to all white color.
-        /// </summary>
-        private void EmptyRecentColorsPanel()
-        {
-            try
-            {
-                if (this.GetCurrentSlide() != null)
-                {
-                    dataSource.RecentColorOne = Color.White;
-                    dataSource.RecentColorTwo = Color.White;
-                    dataSource.RecentColorThree = Color.White;
-                    dataSource.RecentColorFour = Color.White;
-                    dataSource.RecentColorFive = Color.White;
-                    dataSource.RecentColorSix = Color.White;
-                    dataSource.RecentColorSeven = Color.White;
-                    dataSource.RecentColorEight = Color.White;
-                    dataSource.RecentColorNine = Color.White;
-                    dataSource.RecentColorTen = Color.White;
-                    dataSource.RecentColorEleven = Color.White;
-                    dataSource.RecentColorTwelve = Color.White;
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorDialogBox.ShowDialog("Recent Colors Panel Reset Failed", e.Message, e);
-            }
-        }
-
         
         /// <summary>
         /// Save current recent colors panel to file.
