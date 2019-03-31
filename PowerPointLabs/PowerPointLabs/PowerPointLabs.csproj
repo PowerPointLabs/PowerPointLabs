@@ -302,6 +302,10 @@
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuSupertipHandler.cs" />
