@@ -13,12 +13,12 @@ namespace Test.UnitTest.ELearningLab.Model
     [TestClass]
     public class SelfExplanationClickItemTest
     {
-        private SelfExplanationClickItem item;
+        private ExplanationItem item;
 
         [TestInitialize]
         public void Init()
         {
-            item = new SelfExplanationClickItem(captionText: "test");
+            item = new ExplanationItem(captionText: "test");
         }
 
         [TestMethod]

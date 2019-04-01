@@ -25,7 +25,7 @@ namespace Test.UnitTest.ELearningLab.ModelFactory
             };
 
             AbstractItemFactory _factory = new SelfExplanationItemFactory(_effects);
-            SelfExplanationClickItem item = _factory.GetBlock() as SelfExplanationClickItem;
+            ExplanationItem item = _factory.GetBlock() as ExplanationItem;
 
             Assert.IsTrue(item.IsCallout);
             Assert.IsTrue(item.IsCaption);
@@ -45,7 +45,7 @@ namespace Test.UnitTest.ELearningLab.ModelFactory
             };
 
             AbstractItemFactory _factory = new SelfExplanationItemFactory(_effects);
-            SelfExplanationClickItem item = _factory.GetBlock() as SelfExplanationClickItem;
+            ExplanationItem item = _factory.GetBlock() as ExplanationItem;
 
             Assert.IsFalse(item.IsCallout);
             Assert.IsTrue(item.IsCaption);

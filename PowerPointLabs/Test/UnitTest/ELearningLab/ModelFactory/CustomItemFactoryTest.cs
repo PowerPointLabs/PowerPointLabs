@@ -28,7 +28,7 @@ namespace Test.UnitTest.ELearningLab.ModelFactory
         [TestCategory("UT")]
         public void TestGetCustomItemBlock()
         {
-            CustomClickItem item = _factory.GetBlock() as CustomClickItem;
+            CustomItem item = _factory.GetBlock() as CustomItem;
             IEnumerable<CustomSubItem> customSubItems = item.CustomItems;
 
             Assert.AreEqual(customSubItems.Count(), _effects.Count);

@@ -18,7 +18,7 @@ namespace PowerPointLabs.ELearningLab.Service
 {
     public class ELearningLabTextStorageService
     {
-        public static void StoreSelfExplanationTextToSlide(List<SelfExplanationClickItem> selfExplanationClickItems, 
+        public static void StoreSelfExplanationTextToSlide(List<ExplanationItem> selfExplanationClickItems, 
             PowerPointSlide slide)
         {
             string shapeName = ELearningLabText.ELearningLabTextStorageShapeName;
@@ -71,11 +71,11 @@ namespace PowerPointLabs.ELearningLab.Service
             return tagNoToSelfExplanationTextDic;
         }
 
-        private static List<Dictionary<string, string>> ConvertListToDictionary(List<SelfExplanationClickItem> selfExplanationClickItems)
+        private static List<Dictionary<string, string>> ConvertListToDictionary(List<ExplanationItem> selfExplanationClickItems)
         {
             List<Dictionary<string, string>> keyValuePairs = 
                 new List<Dictionary<string, string>>();
-            foreach (SelfExplanationClickItem item in selfExplanationClickItems)
+            foreach (ExplanationItem item in selfExplanationClickItems)
             {
                 Dictionary<string, string> value = new Dictionary<string, string>();
                 value.Add(ELearningLabText.CaptionTextIdentifier, item.CaptionText);

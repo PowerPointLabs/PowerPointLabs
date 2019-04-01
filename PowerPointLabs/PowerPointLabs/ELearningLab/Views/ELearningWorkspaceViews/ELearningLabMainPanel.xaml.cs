@@ -44,7 +44,7 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 if (Items.Count > 0)
                 {
-                    return Items[0] is SelfExplanationClickItem;
+                    return Items[0] is ExplanationItem;
                 }
                 return false;
             }
@@ -163,9 +163,9 @@ namespace PowerPointLabs.ELearningLab.Views
                 ObservableCollection<ClickItem> clickItems = listView.ItemsSource as ObservableCollection<ClickItem>;
                 foreach (ClickItem item in clickItems)
                 {
-                    if (item is SelfExplanationClickItem)
+                    if (item is ExplanationItem)
                     {
-                        SelfExplanationClickItem selfExplanationClickItem = item as SelfExplanationClickItem;
+                        ExplanationItem selfExplanationClickItem = item as ExplanationItem;
                         if (StringUtility.ExtractDefaultLabelFromVoiceLabel(selfExplanationClickItem.VoiceLabel)
                             .Equals(ELearningLabText.DefaultAudioIdentifier))
                         {
@@ -234,15 +234,15 @@ namespace PowerPointLabs.ELearningLab.Views
             // also align eLL first item click No to be the same as first click No on animation pane
             SyncCustomAnimationToTaskpane(uncheckAzureAudio: removeAzureAudioIfAccountInvalid,
                 uncheckWatsonAudio: removeWatsonAudioIfAccountInvalid);
-            List<SelfExplanationClickItem> items = Items.Where(x => x is SelfExplanationClickItem)
-                .Cast<SelfExplanationClickItem>().ToList();
+            List<ExplanationItem> items = Items.Where(x => x is ExplanationItem)
+                .Cast<ExplanationItem>().ToList();
             ELearningService eLearningService = new ELearningService(slide, items);
             RemoveLabAnimationsFromAnimationPane(eLearningService);
             // align first click No on animation pane to be the same as eLL first click No
             AlignFirstClickNumberForCustomItem();
             ELearningLabTextStorageService.StoreSelfExplanationTextToSlide(
-                Items.Where(x => x is SelfExplanationClickItem && !((SelfExplanationClickItem)x).IsEmpty)
-                .Cast<SelfExplanationClickItem>().ToList(), slide);
+                Items.Where(x => x is ExplanationItem && !((ExplanationItem)x).IsEmpty)
+                .Cast<ExplanationItem>().ToList(), slide);
             SyncLabItemToAnimationPane(eLearningService);
         }
         private ObservableCollection<ClickItem> LoadItems(DoWorkEventArgs e)
@@ -254,7 +254,7 @@ namespace PowerPointLabs.ELearningLab.Views
             List<Dictionary<string, string>> selfExplanationTexts =
                 ELearningLabTextStorageService.LoadSelfExplanationsFromSlide(slide);
             ClickItem customClickBlock;
-            SelfExplanationClickItem selfExplanationClickBlock;
+            ExplanationItem selfExplanationClickBlock;
             Dictionary<string, string> selfExplanationText = (selfExplanationTexts == null || selfExplanationTexts.Count() == 0) ?
                 null : selfExplanationTexts.First();
             SelfExplanationTagService.PopulateTagNos(slide.GetShapesWithNameRegex(ELearningLabText.PPTLShapeNameRegex)
@@ -301,7 +301,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 customClickBlock =
                     new CustomItemFactory(customEffects).GetBlock();
                 selfExplanationClickBlock =
-                    new SelfExplanationItemFactory(pptlEffects).GetBlock() as SelfExplanationClickItem;
+                    new SelfExplanationItemFactory(pptlEffects).GetBlock() as ExplanationItem;
                 // we ignore self explanation item if the same click has already been added.
                 // this can happen if user misplaced already generated self explanation item.
                 if (selfExplanationClickBlock != null && tagNums.Contains(selfExplanationClickBlock.tagNo))
@@ -316,8 +316,8 @@ namespace PowerPointLabs.ELearningLab.Views
                 while (selfExplanationText != null && selfExplanationClickBlock != null &&
                     Convert.ToInt32(selfExplanationText["TagNo"]) != selfExplanationClickBlock.tagNo)
                 {
-                    SelfExplanationClickItem dummySelfExplanation =
-                        new SelfExplanationClickItem(captionText: selfExplanationText["CaptionText"],
+                    ExplanationItem dummySelfExplanation =
+                        new ExplanationItem(captionText: selfExplanationText["CaptionText"],
                         calloutText: selfExplanationText["CalloutText"]);
                     dummySelfExplanation.tagNo = SelfExplanationTagService.GenerateUniqueTag();
                     clickBlocks.Add(dummySelfExplanation);
@@ -332,13 +332,13 @@ namespace PowerPointLabs.ELearningLab.Views
                 if (selfExplanationClickBlock != null)
                 {
                     selfExplanationClickBlock.ClickNo = clickNo;
-                    if (customClickBlock == null && selfExplanationClickBlock is SelfExplanationClickItem && clickNo > 0) // is independent block
+                    if (customClickBlock == null && selfExplanationClickBlock is ExplanationItem && clickNo > 0) // is independent block
                     {
-                        (selfExplanationClickBlock as SelfExplanationClickItem).TriggerIndex = (int)TriggerType.OnClick;
+                        (selfExplanationClickBlock as ExplanationItem).TriggerIndex = (int)TriggerType.OnClick;
                     }
-                    else if (clickNo == 0 && customClickBlock != null && selfExplanationClickBlock is SelfExplanationClickItem)
+                    else if (clickNo == 0 && customClickBlock != null && selfExplanationClickBlock is ExplanationItem)
                     {
-                        (selfExplanationClickBlock as SelfExplanationClickItem).TriggerIndex = (int)TriggerType.OnClick;
+                        (selfExplanationClickBlock as ExplanationItem).TriggerIndex = (int)TriggerType.OnClick;
                     }
                     try
                     {
@@ -367,8 +367,8 @@ namespace PowerPointLabs.ELearningLab.Views
                     e.Cancel = true;
                     return clickBlocks;
                 }
-                SelfExplanationClickItem dummySelfExplanation =
-                    new SelfExplanationClickItem(captionText: selfExplanationText["CaptionText"],
+                ExplanationItem dummySelfExplanation =
+                    new ExplanationItem(captionText: selfExplanationText["CaptionText"],
                     calloutText: selfExplanationText["CalloutText"]);
                 dummySelfExplanation.tagNo = SelfExplanationTagService.GenerateUniqueTag();
                 clickBlocks.Add(dummySelfExplanation);
@@ -382,9 +382,9 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void HandleUpButtonClickedEvent(object sender, RoutedEventArgs e)
         {
-            SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
-            && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
+            ExplanationItem labItem = ((Button)e.OriginalSource).CommandParameter as ExplanationItem;
+            int index = Items.ToList().FindIndex(x => x is ExplanationItem
+            && ((ExplanationItem)x).TagNo == labItem.TagNo);
             if (index > 0)
             {
                 Items.Move(index, index - 1);
@@ -395,9 +395,9 @@ namespace PowerPointLabs.ELearningLab.Views
         }
         private void HandleDownButtonClickedEvent(object sender, RoutedEventArgs e)
         {
-            SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
-            && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
+            ExplanationItem labItem = ((Button)e.OriginalSource).CommandParameter as ExplanationItem;
+            int index = Items.ToList().FindIndex(x => x is ExplanationItem
+            && ((ExplanationItem)x).TagNo == labItem.TagNo);
             if (index < Items.Count() - 1 && index >= 0)
             {
                 Items.Move(index, index + 1);
@@ -408,9 +408,9 @@ namespace PowerPointLabs.ELearningLab.Views
         }
         private void HandleDeleteButtonClickedEvent(object sender, RoutedEventArgs e)
         {
-            SelfExplanationClickItem labItem = ((Button)e.OriginalSource).CommandParameter as SelfExplanationClickItem;
-            int index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
-            && ((SelfExplanationClickItem)x).TagNo == labItem.TagNo);
+            ExplanationItem labItem = ((Button)e.OriginalSource).CommandParameter as ExplanationItem;
+            int index = Items.ToList().FindIndex(x => x is ExplanationItem
+            && ((ExplanationItem)x).TagNo == labItem.TagNo);
             Items.RemoveAt(index);
             UpdateClickNoAndTriggerTypeInItems(useWorker: false, e: null);
             isSynced = false;
@@ -432,7 +432,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
+            ExplanationItem selfExplanationClickItem = new ExplanationItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
             Items.Add(selfExplanationClickItem);
             isSynced = false;
@@ -445,13 +445,13 @@ namespace PowerPointLabs.ELearningLab.Views
         private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
         {
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
-            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
+            ExplanationItem selfExplanationClickItem = new ExplanationItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
             int index;
-            if (item is SelfExplanationClickItem)
+            if (item is ExplanationItem)
             {
-                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
-                && ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
+                index = Items.ToList().FindIndex(x => x is ExplanationItem
+                && ((ExplanationItem)x).TagNo == ((ExplanationItem)item).TagNo);
             }
             else
             {
@@ -466,13 +466,13 @@ namespace PowerPointLabs.ELearningLab.Views
         private void AddItemBelowContextMenu_Click(object sender, RoutedEventArgs e)
         {
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
-            SelfExplanationClickItem selfExplanationClickItem = new SelfExplanationClickItem(captionText: string.Empty);
+            ExplanationItem selfExplanationClickItem = new ExplanationItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
             int index;
-            if (item is SelfExplanationClickItem)
+            if (item is ExplanationItem)
             {
-                index = Items.ToList().FindIndex(x => x is SelfExplanationClickItem
-                && ((SelfExplanationClickItem)x).TagNo == ((SelfExplanationClickItem)item).TagNo);
+                index = Items.ToList().FindIndex(x => x is ExplanationItem
+                && ((ExplanationItem)x).TagNo == ((ExplanationItem)item).TagNo);
             }
             else
             {
@@ -502,7 +502,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void SyncCustomAnimationToTaskpane(bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
-            Queue<CustomClickItem> customClickItems = LoadCustomClickItems();
+            Queue<CustomItem> customClickItems = LoadCustomClickItems();
             ReplaceCustomItemsInItemsSource(customClickItems);
             UpdatePropertiesInItemsSource(uncheckAzureAudio: uncheckAzureAudio, uncheckWatsonAudio: uncheckWatsonAudio);
         }
@@ -538,7 +538,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             for (int i = 0; i < Items.Count; i++)
             {
-                if (Items[i] is CustomClickItem)
+                if (Items[i] is CustomItem)
                 {
                     return Items[i].ClickNo;
                 }
@@ -574,22 +574,22 @@ namespace PowerPointLabs.ELearningLab.Views
         private void UpdateClickNoOnClickItem(ClickItem clickItem, int startClickNo, int index)
         {
             bool isOnClickSelfExplanationAfterCustomItem = index > 0 &&
-                clickItem is SelfExplanationClickItem && (Items.ElementAt(index - 1) is CustomClickItem)
-                && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
+                clickItem is ExplanationItem && (Items.ElementAt(index - 1) is CustomItem)
+                && (clickItem as ExplanationItem).TriggerIndex != (int)TriggerType.OnClick;
             bool isFirstOnClickSelfExplanationItem = index == 0
-                && (clickItem is SelfExplanationClickItem)
-                && (clickItem as SelfExplanationClickItem).TriggerIndex == (int)TriggerType.OnClick;
+                && (clickItem is ExplanationItem)
+                && (clickItem as ExplanationItem).TriggerIndex == (int)TriggerType.OnClick;
             bool isFirstWithPreviousSelfExplanationItem =
                 index == 0
-                && (clickItem is SelfExplanationClickItem)
-                && (clickItem as SelfExplanationClickItem).TriggerIndex != (int)TriggerType.OnClick;
+                && (clickItem is ExplanationItem)
+                && (clickItem as ExplanationItem).TriggerIndex != (int)TriggerType.OnClick;
             bool isDummySelfExplanationItem =
-                clickItem is SelfExplanationClickItem && (clickItem as SelfExplanationClickItem).IsDummyItem;
+                clickItem is ExplanationItem && (clickItem as ExplanationItem).IsDummyItem;
             /* This commented piece of code is trying to handle the case when first self explanation item (SEI)
              * is dummy item, but the second one is active SEI item.
             bool isAfterDummySelfExplanationItem =
-                index > 0 && (Items.ElementAt(index - 1) is SelfExplanationClickItem)
-                && (Items.ElementAt(index - 1) as SelfExplanationClickItem).IsDummyItem;
+                index > 0 && (Items.ElementAt(index - 1) is ExplanationItem)
+                && (Items.ElementAt(index - 1) as ExplanationItem).IsDummyItem;
             */
             if (index == 0)
             {
@@ -623,9 +623,9 @@ namespace PowerPointLabs.ELearningLab.Views
             clickItem.NotifyPropertyChanged("ShouldLabelDisplay");
         }
 
-        private void UpdateTriggerOnSelfExplanationItem(SelfExplanationClickItem selfExplanationClickItem, int index)
+        private void UpdateTriggerOnSelfExplanationItem(ExplanationItem selfExplanationClickItem, int index)
         {
-            if ((index > 0 && Items.ElementAt(index - 1) is CustomClickItem) || index == 0)
+            if ((index > 0 && Items.ElementAt(index - 1) is CustomItem) || index == 0)
             {
                 selfExplanationClickItem.IsTriggerTypeComboBoxEnabled = true;
             }
@@ -636,7 +636,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
         }
 
-        private void UpdateSelfExplanationItem(SelfExplanationClickItem item, bool uncheckAzureAudio, bool uncheckWatsonAudio)
+        private void UpdateSelfExplanationItem(ExplanationItem item, bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
             if (string.IsNullOrEmpty(item.CaptionText.Trim()))
             {
@@ -668,10 +668,10 @@ namespace PowerPointLabs.ELearningLab.Views
         /// Load custom animations from animation pane separated by click
         /// </summary>
         /// <returns>Queue of CustomClickItem</returns>
-        private Queue<CustomClickItem> LoadCustomClickItems()
+        private Queue<CustomItem> LoadCustomClickItems()
         {
             int clickNo = FirstClickNumber;
-            Queue<CustomClickItem> customClickItems = new Queue<CustomClickItem>();
+            Queue<CustomItem> customClickItems = new Queue<CustomItem>();
             ClickItem customClickBlock;
             do
             {
@@ -681,7 +681,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 if (customClickBlock != null)
                 {
                     customClickBlock.ClickNo = clickNo;
-                    customClickItems.Enqueue((CustomClickItem)customClickBlock);
+                    customClickItems.Enqueue((CustomItem)customClickBlock);
                 }
 
                 clickNo++;
@@ -698,16 +698,16 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         /// <param name="customClickItems"></param>
         /// <returns></returns>
-        private ObservableCollection<ClickItem> ReplaceCustomItemsInItemsSource(Queue<CustomClickItem> customClickItems)
+        private ObservableCollection<ClickItem> ReplaceCustomItemsInItemsSource(Queue<CustomItem> customClickItems)
         {
             for (int i = 0; i < Items.Count(); i++)
             {
                 ClickItem clickItem = Items.ElementAt(i);
-                if (clickItem is CustomClickItem)
+                if (clickItem is CustomItem)
                 {
                     if (customClickItems.Count() > 0)
                     {
-                        CustomClickItem customClickItem = customClickItems.Dequeue();
+                        CustomItem customClickItem = customClickItems.Dequeue();
                         Items.RemoveAt(i);
                         Items.Insert(i, customClickItem);
                     }
@@ -720,7 +720,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             while (customClickItems.Count() > 0)
             {
-                CustomClickItem customClickItem = customClickItems.Dequeue();
+                CustomItem customClickItem = customClickItems.Dequeue();
                 Items.Add(customClickItem);
             }
             return Items;
@@ -740,9 +740,9 @@ namespace PowerPointLabs.ELearningLab.Views
             {
                 ClickItem clickItem = Items.ElementAt(i);
                 UpdateClickNoOnClickItem(clickItem, clickNo, i);
-                if (clickItem is SelfExplanationClickItem)
+                if (clickItem is ExplanationItem)
                 {
-                    UpdateSelfExplanationItem(clickItem as SelfExplanationClickItem, uncheckAzureAudio, uncheckWatsonAudio);
+                    UpdateSelfExplanationItem(clickItem as ExplanationItem, uncheckAzureAudio, uncheckWatsonAudio);
                 }
             }
             return Items;
@@ -760,9 +760,9 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
                 ClickItem clickItem = Items.ElementAt(i);
                 UpdateClickNoOnClickItem(clickItem, clickNo, i);
-                if (clickItem is SelfExplanationClickItem)
+                if (clickItem is ExplanationItem)
                 {
-                    UpdateTriggerOnSelfExplanationItem(clickItem as SelfExplanationClickItem, i);
+                    UpdateTriggerOnSelfExplanationItem(clickItem as ExplanationItem, i);
                 }
             }
         }
@@ -771,7 +771,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             foreach (ClickItem item in Items)
             {
-                if (item is SelfExplanationClickItem && AudioService.IsAzureVoiceSelectedForItem(item as SelfExplanationClickItem))
+                if (item is ExplanationItem && AudioService.IsAzureVoiceSelectedForItem(item as ExplanationItem))
                 {
                     return true;
                 }
@@ -783,7 +783,7 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             foreach (ClickItem item in Items)
             {
-                if (item is SelfExplanationClickItem && AudioService.IsWatsonVoiceSelectedForItem(item as SelfExplanationClickItem))
+                if (item is ExplanationItem && AudioService.IsWatsonVoiceSelectedForItem(item as ExplanationItem))
                 {
                     return true;
                 }

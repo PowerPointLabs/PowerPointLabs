@@ -17,15 +17,15 @@ namespace PowerPointLabs.ELearningLab.Service
     {
         public static bool IsELearningWorkspaceEnabled { get; set; } = false;
         private PowerPointSlide _slide;
-        private List<SelfExplanationClickItem> _selfExplanationItems;
+        private List<ExplanationItem> _selfExplanationItems;
 
         public ELearningService() { }
-        public ELearningService(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+        public ELearningService(PowerPointSlide slide, List<ExplanationItem> selfExplanationItems)
         {
             _slide = slide;
             _selfExplanationItems = selfExplanationItems;
         }
-        public void DeleteShapesForUnusedItem(PowerPointSlide slide, SelfExplanationClickItem selfExplanationClickItem)
+        public void DeleteShapesForUnusedItem(PowerPointSlide slide, ExplanationItem selfExplanationClickItem)
         {
             CalloutService.DeleteCalloutShape(slide, selfExplanationClickItem.tagNo);
             CaptionService.DeleteCaptionShape(slide, selfExplanationClickItem.tagNo);
@@ -42,7 +42,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         public void SyncAppearEffectAnimationsForSelfExplanationItem(int i)
         {
-            SelfExplanationClickItem selfExplanationItem = _selfExplanationItems.ElementAt(i);
+            ExplanationItem selfExplanationItem = _selfExplanationItems.ElementAt(i);
             CreateAppearEffectAnimation(_slide, selfExplanationItem);
         }
 
@@ -56,15 +56,15 @@ namespace PowerPointLabs.ELearningLab.Service
             return _selfExplanationItems.Count;
         }
 
-        private void SyncExitEffectAnimations(PowerPointSlide slide, List<SelfExplanationClickItem> selfExplanationItems)
+        private void SyncExitEffectAnimations(PowerPointSlide slide, List<ExplanationItem> selfExplanationItems)
         {
-            foreach (SelfExplanationClickItem selfExplanationItem in selfExplanationItems)
+            foreach (ExplanationItem selfExplanationItem in selfExplanationItems)
             {
                 CreateExitEffectAnimation(slide, selfExplanationItem);
             }
         }
 
-        private void CreateAppearEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
+        private void CreateAppearEffectAnimation(PowerPointSlide slide, ExplanationItem selfExplanationItem)
         {
             bool isSeparateClick = selfExplanationItem.TriggerIndex == (int)TriggerType.OnClick || !selfExplanationItem.IsTriggerTypeComboBoxEnabled;
             List<Effect> effects = new List<Effect>();
@@ -104,7 +104,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        private void CreateExitEffectAnimation(PowerPointSlide slide, SelfExplanationClickItem selfExplanationItem)
+        private void CreateExitEffectAnimation(PowerPointSlide slide, ExplanationItem selfExplanationItem)
         {
             string calloutShapeName = string.Format(ELearningLabText.CalloutShapeNameFormat, selfExplanationItem.tagNo);
             string captionShapeName = string.Format(ELearningLabText.CaptionShapeNameFormat, selfExplanationItem.tagNo);

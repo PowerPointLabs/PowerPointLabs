@@ -24,7 +24,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
                 return null;
             }
 
-            SelfExplanationClickItem selfExplanation = new SelfExplanationClickItem(captionText: string.Empty);
+            ExplanationItem selfExplanation = new ExplanationItem(captionText: string.Empty);
             foreach (ELLEffect effect in effects)
             {
                 string shapeName = effect.shapeName;

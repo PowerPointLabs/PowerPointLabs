@@ -43,20 +43,20 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                 UIThreadExecutor.Execute((Action)(() =>
                 {
                     _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    SelfExplanationClickItem item1 = _pane.ELearningLabMainPanel.listView.Items
-                        .OfType<ClickItem>().Last() as SelfExplanationClickItem;
+                    ExplanationItem item1 = _pane.ELearningLabMainPanel.listView.Items
+                        .OfType<ClickItem>().Last() as ExplanationItem;
                     item1.CaptionText = "Test self explanation item 1";
                     item1.IsCaption = true;
                     _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    SelfExplanationClickItem item2 = _pane.ELearningLabMainPanel.listView.Items
-                    .OfType<ClickItem>().Last() as SelfExplanationClickItem;
+                    ExplanationItem item2 = _pane.ELearningLabMainPanel.listView.Items
+                    .OfType<ClickItem>().Last() as ExplanationItem;
                     item2.CaptionText = "Test self explanation item 2";
                     item2.CalloutText = "This is a shorter callout for self explanation item 2";
                     item2.IsCaption = true;
                     item2.IsCallout = true;
                     _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    SelfExplanationClickItem item3 = _pane.ELearningLabMainPanel.listView.Items
-                    .OfType<ClickItem>().Last() as SelfExplanationClickItem;
+                    ExplanationItem item3 = _pane.ELearningLabMainPanel.listView.Items
+                    .OfType<ClickItem>().Last() as ExplanationItem;
                     item3.CaptionText = "Test self explanation item 3";
                     item3.IsCaption = true;
                     item3.IsCallout = true;

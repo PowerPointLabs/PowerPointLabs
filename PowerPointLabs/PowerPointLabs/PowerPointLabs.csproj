@@ -736,9 +736,9 @@
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ClickItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\SelfExplanationClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
@@ -766,8 +766,8 @@
     <Compile Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml.cs">
       <DependentUpon>WatsonVoiceLoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml.cs">
-      <DependentUpon>CustomBlockView.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomItemView.xaml.cs">
+      <DependentUpon>CustomItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabMainPanel.xaml.cs">
       <DependentUpon>ELearningLabMainPanel.xaml</DependentUpon>
@@ -778,8 +778,8 @@
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabTaskpane.Designer.cs">
       <DependentUpon>ELearningLabTaskpane.cs</DependentUpon>
     </Compile>
-    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml.cs">
-      <DependentUpon>SelfExplanationBlockView.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ExplanationItemView.xaml.cs">
+      <DependentUpon>ExplanationItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Service\FunctionService\CalloutService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
@@ -1578,7 +1578,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml">
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1586,7 +1586,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml">
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\ExplanationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -27,7 +27,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
             {
                 customItems.Add(new CustomSubItem(effect.shapeName, effect.shapeId, effect.type));
             }
-            return new CustomClickItem(customItems);
+            return new CustomItem(customItems);
         }
     }
 }
