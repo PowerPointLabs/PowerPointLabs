@@ -267,7 +267,6 @@ namespace PowerPointLabs.ELearningLab.Views
             List<ELLEffect> pptlEffects = new List<ELLEffect>();
             do
             {
-
                 if (worker.CancellationPending)
                 {
                     e.Cancel = true;
@@ -277,15 +276,15 @@ namespace PowerPointLabs.ELearningLab.Views
                 pptlEffects = new List<ELLEffect>();
                 for (int i = startIdx; i < effects.Count; i++)
                 {
-                    if (i == effects.Count - 1)
-                    {
-                        hasReachedEndOfSequence = true;
-                    }
                     Effect effect = effects.ElementAt(i);
                     if (i > startIdx && effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick)
                     {
                         startIdx = i;
                         break;
+                    }
+                    if (i == effects.Count - 1)
+                    {
+                        hasReachedEndOfSequence = true;
                     }
                     bool isPPTLEffect = SelfExplanationTagService.ExtractTagNo(effect.Shape.Name) != -1;
                     bool isAppearTypeEffect = effect.Exit != Microsoft.Office.Core.MsoTriState.msoTrue;
@@ -333,7 +332,11 @@ namespace PowerPointLabs.ELearningLab.Views
                 if (selfExplanationClickBlock != null)
                 {
                     selfExplanationClickBlock.ClickNo = clickNo;
-                    if (customClickBlock == null && selfExplanationClickBlock is SelfExplanationClickItem) // is independent block
+                    if (customClickBlock == null && selfExplanationClickBlock is SelfExplanationClickItem && clickNo > 0) // is independent block
+                    {
+                        (selfExplanationClickBlock as SelfExplanationClickItem).TriggerIndex = (int)TriggerType.OnClick;
+                    }
+                    else if (clickNo == 0 && customClickBlock != null && selfExplanationClickBlock is SelfExplanationClickItem)
                     {
                         (selfExplanationClickBlock as SelfExplanationClickItem).TriggerIndex = (int)TriggerType.OnClick;
                     }
@@ -354,7 +357,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 }
                 clickNo++;
             }
-            while (startIdx < effects.Count - 1 && !hasReachedEndOfSequence);
+            while (startIdx <= effects.Count - 1 && !hasReachedEndOfSequence);
 
             // add remaining dummy explanation items from text storage on slide
             while (selfExplanationText != null)
@@ -620,7 +623,7 @@ namespace PowerPointLabs.ELearningLab.Views
             clickItem.NotifyPropertyChanged("ShouldLabelDisplay");
         }
 
-        private void UpdateTriggerTypeEnabledOnSelfExplanationItem(SelfExplanationClickItem selfExplanationClickItem, int index)
+        private void UpdateTriggerOnSelfExplanationItem(SelfExplanationClickItem selfExplanationClickItem, int index)
         {
             if ((index > 0 && Items.ElementAt(index - 1) is CustomClickItem) || index == 0)
             {
@@ -759,7 +762,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 UpdateClickNoOnClickItem(clickItem, clickNo, i);
                 if (clickItem is SelfExplanationClickItem)
                 {
-                    UpdateTriggerTypeEnabledOnSelfExplanationItem(clickItem as SelfExplanationClickItem, i);
+                    UpdateTriggerOnSelfExplanationItem(clickItem as SelfExplanationClickItem, i);
                 }
             }
         }
