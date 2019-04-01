@@ -293,7 +293,6 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageActionHandler.cs" />
-    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageEnabledHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\Create\CreateMenu\CreateMenuEnabledHandler.cs" />
