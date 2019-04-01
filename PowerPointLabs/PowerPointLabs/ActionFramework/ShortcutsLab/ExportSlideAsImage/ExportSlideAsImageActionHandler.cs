@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Collections.Generic;
+
+using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
@@ -16,32 +18,40 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         {
             this.StartNewUndoEntry();
 
-            Slide selectedSlide;
+
+            // Get list of selected slides
+            // Open save file dialog
+            // try save
+                // if only one, then save directly
+                // if more than one, then save inside a folder with the specified name
+
+            List<Slide> selectedSlides = new List<Slide>();
+
+           
 
             if (this.GetCurrentSelection().Type == PpSelectionType.ppSelectionSlides)
             {
-                selectedSlide = this.GetCurrentSelection().SlideRange[1];
+                foreach (Slide slide in this.GetCurrentSelection().SlideRange)
+                {
+                    selectedSlides.Add(slide);
+                }
             }
             else
             {
-                selectedSlide = this.GetCurrentSlide().GetNativeSlide();
+                selectedSlides.Add(this.GetCurrentSlide().GetNativeSlide());
             }
 
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog.Title = "Export Slide As Image";
             saveFileDialog.DefaultExt = "png";
             saveFileDialog.Filter = "Images|*.png;*.bmp;*.jpg";
-            saveFileDialog.Title = "Export Slide As Image";
 
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                GraphicsUtil.ExportSlide(selectedSlide, saveFileDialog.FileName);
+                GraphicsUtil.ExportSlides(selectedSlides, saveFileDialog.FileName);
             }
-
-           
-
-
 
         }
     }

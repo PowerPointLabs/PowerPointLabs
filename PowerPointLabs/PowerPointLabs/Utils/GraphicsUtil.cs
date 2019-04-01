@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -191,6 +192,46 @@ namespace PowerPointLabs.Utils
         #endregion
 
         #region Slide
+        public static void ExportSlides(List<Slide> slides, string exportPath, float magnifyRatio = 1.0f)
+        {
+            if (slides.Count <= 0)
+            {
+                return;
+            } 
+            else if (slides.Count == 1)
+            {
+                ExportSlide(slides[0], exportPath, magnifyRatio);
+                return;
+            }
+
+            if (!Directory.Exists(exportPath))
+            {
+                // Remove the default ".png" extension from folder name
+                string folderName = exportPath.Substring(0, exportPath.Length - 4);
+
+                try
+                {
+                    Directory.CreateDirectory(folderName);
+
+                    foreach (Slide slide in slides)
+                    {
+                        string fileName = folderName + "\\" + slide.Name + ".png";
+                        ExportSlide(slide, fileName, magnifyRatio);
+                    }
+                }
+                catch (Exception)
+                {
+                    // Failed to create directory, we save the images all to the specified directory
+                    foreach (Slide slide in slides)
+                    {
+                        string fileName = folderName + "_" + slide.Name + ".png";
+                        ExportSlide(slide, fileName, magnifyRatio);
+                    }
+                }
+
+            }
+        }
+
         public static void ExportSlide(Slide slide, string exportPath, float magnifyRatio = 1.0f)
         {
             slide.Export(exportPath,
