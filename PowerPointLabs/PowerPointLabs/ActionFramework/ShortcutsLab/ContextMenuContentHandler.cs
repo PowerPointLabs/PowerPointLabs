@@ -13,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         ShortcutsLabText.MenuInk, ShortcutsLabText.MenuVideo, ShortcutsLabText.MenuTextEdit,
         ShortcutsLabText.MenuChart, ShortcutsLabText.MenuTable, ShortcutsLabText.MenuTableCell,
         ShortcutsLabText.MenuSmartArt, ShortcutsLabText.MenuEditSmartArt, ShortcutsLabText.MenuEditSmartArtText,
-        "MenuThumbnail")]
+        ShortcutsLabText.MenuThumbnail)]
 
     class ContextMenuContentHandler : ContentHandler
     {

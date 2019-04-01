@@ -213,6 +213,10 @@ namespace PowerPointLabs.Utils
                 {
                     Directory.CreateDirectory(folderName);
 
+                    // Alert the user that the slides will be saved in a folder
+                    string messageBoxText = "The selected slides will be saved in the folder " + folderName + ".";
+                    MessageBox.Show(messageBoxText);
+
                     foreach (Slide slide in slides)
                     {
                         string fileName = folderName + "\\" + slide.Name + ".png";
@@ -221,7 +225,8 @@ namespace PowerPointLabs.Utils
                 }
                 catch (Exception)
                 {
-                    // Failed to create directory, we save the images all to the specified directory
+
+                    // Failed to create directory, we save the images all to the specified path
                     foreach (Slide slide in slides)
                     {
                         string fileName = folderName + "_" + slide.Name + ".png";

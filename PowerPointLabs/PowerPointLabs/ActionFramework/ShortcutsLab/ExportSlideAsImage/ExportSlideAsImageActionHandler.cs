@@ -4,8 +4,6 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.Models;
-using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -18,16 +16,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         {
             this.StartNewUndoEntry();
 
-
-            // Get list of selected slides
-            // Open save file dialog
-            // try save
-                // if only one, then save directly
-                // if more than one, then save inside a folder with the specified name
-
             List<Slide> selectedSlides = new List<Slide>();
-
-           
 
             if (this.GetCurrentSelection().Type == PpSelectionType.ppSelectionSlides)
             {
@@ -50,6 +39,8 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
+
+
                 GraphicsUtil.ExportSlides(selectedSlides, saveFileDialog.FileName);
             }
 
