@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Utility
@@ -30,22 +31,15 @@ namespace PowerPointLabs.ELearningLab.Utility
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-           
+
             Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRoundedRectangularCallout, 10, 10, 100, 10);
             calloutBox.Name = shapeName;
             calloutBox.TextFrame.TextRange.Text = calloutText;
-            calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
-            calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
-            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
-            calloutBox.TextFrame.TextRange.Font.Size = 16;
-            calloutBox.Fill.ForeColor.RGB = 0;
-            calloutBox.Fill.Transparency = 0.2f;
-            calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
-            calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
-            calloutBox.Line.Weight = 0.05f;
-            calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
             calloutBox.Left = 10;
             calloutBox.Top = 10;
+            calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+            calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
+            ShapeUtil.FormatCalloutToDefaultStyle(calloutBox);
 
             return calloutBox;
         }
