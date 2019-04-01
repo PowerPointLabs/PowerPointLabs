@@ -18,7 +18,7 @@ using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
-
+using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -39,6 +39,7 @@ namespace PowerPointLabs.ShapesLab.Views
         private readonly Comparers.AtomicNumberStringCompare _stringComparer = new Comparers.AtomicNumberStringCompare();
 
         private BindingSource _categoryBinding;
+        private ObservableCollection<MenuItem> _contextMenuCategoryBinding;
         private WrapPanel wrapPanel;
 
         # region Properties
@@ -96,23 +97,8 @@ namespace PowerPointLabs.ShapesLab.Views
             ShapeRootFolderPath = ShapesLabSettings.SaveFolderPath;
             CurrentCategory = addIn.ShapesLabConfig.DefaultCategory;
             Categories = new ObservableCollection<string>(this.GetAddIn().ShapePresentation.Categories);
-            ObservableCollection<CustomComboBoxItem> categoryBoxItems = new ObservableCollection<CustomComboBoxItem>();
-            string defaultCategory = this.GetAddIn().ShapePresentation.DefaultCategory;
-            foreach (string category in Categories)
-            {
-                categoryBoxItems.Add(new CustomComboBoxItem(category, defaultCategory));
-            }
-            _categoryBinding = new BindingSource { DataSource = categoryBoxItems };
-            categoryBox.ItemsSource = categoryBoxItems;
-
-            for (int i = 0; i < Categories.Count; i++)
-            {
-                if (Categories[i] == CurrentCategory)
-                {
-                    categoryBox.SelectedIndex = i;
-                    break;
-                }
-            }
+            SetupMoveShapeContextMenu();
+            SetupCategoryBoxItems();
         }
 
         public void CustomShapePaneWPF_Loaded(object sender, RoutedEventArgs e)
@@ -210,9 +196,8 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             DehighlightSelected();
 
-            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit);
+            CustomShapePaneItem shapeItem = new CustomShapePaneItem(this, shapeName, shapePath, isReadyForEdit, _contextMenuCategoryBinding);
 
-            //shapeItem.Image = new System.Drawing.Bitmap(GraphicsUtil.ShapeToBitmap(shape));
             int insertionIndex = GetShapeInsertionIndex(shapeName);
             shapeList.Items.Insert(insertionIndex, shapeItem);
             shapeList.SelectedIndex = insertionIndex;
@@ -293,7 +278,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             //Add shape names first as shapeList.Items will be modified
             List<string> shapeNames = new List<string>();
-            foreach (CustomShapePaneItem shape in shapeList.Items)
+            foreach (CustomShapePaneItem shape in shapeList.SelectedItems)
             {
                 shapeNames.Add(shape.Text);
             }
@@ -329,12 +314,14 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             this.GetAddIn().ShapePresentation.AddCategory(newCategoryName);
             _categoryBinding.Add(new CustomComboBoxItem(newCategoryName, null));
+            _contextMenuCategoryBinding.Add(new CustomMenuItem(newCategoryName, MoveShapeClick));
         }
 
         public void RemoveCategory(int removedCategoryIndex)
         {
             int categoryIndex = categoryBox.SelectedIndex;
             _categoryBinding.RemoveAt(categoryIndex);
+            _contextMenuCategoryBinding.RemoveAt(categoryIndex);
             if (categoryIndex == removedCategoryIndex)
             {
                 categoryBox.SelectedIndex = Math.Max(0, categoryIndex - 1);
@@ -352,6 +339,8 @@ namespace PowerPointLabs.ShapesLab.Views
             item.actualName = newCategoryName;
             _categoryBinding.RemoveAt(renameCategoryIndex);
             _categoryBinding.Insert(renameCategoryIndex, item);
+            _contextMenuCategoryBinding.RemoveAt(renameCategoryIndex);
+            _contextMenuCategoryBinding.Insert(renameCategoryIndex, new CustomMenuItem(newCategoryName, MoveShapeClick));
             if (isCurrentCategoryRenamed)
             {
                 CurrentCategory = newCategoryName;
@@ -513,6 +502,7 @@ namespace PowerPointLabs.ShapesLab.Views
             if (isDefaultCategory)
             {
                 this.GetAddIn().ShapesLabConfig.DefaultCategory = (_categoryBinding[0] as CustomComboBoxItem)?.actualName;
+                //TODO
             }
         }
 
@@ -597,6 +587,36 @@ namespace PowerPointLabs.ShapesLab.Views
         #endregion
 
         #region Helper Functions
+
+        private void SetupCategoryBoxItems()
+        {
+            ObservableCollection<CustomComboBoxItem> categoryBoxItems = new ObservableCollection<CustomComboBoxItem>();
+            string defaultCategory = this.GetAddIn().ShapePresentation.DefaultCategory;
+            foreach (string category in Categories)
+            {
+                categoryBoxItems.Add(new CustomComboBoxItem(category, defaultCategory));
+            }
+            _categoryBinding = new BindingSource { DataSource = categoryBoxItems };
+            categoryBox.ItemsSource = _categoryBinding;
+
+            for (int i = 0; i < Categories.Count; i++)
+            {
+                if (Categories[i] == CurrentCategory)
+                {
+                    categoryBox.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        private void SetupMoveShapeContextMenu()
+        {
+            _contextMenuCategoryBinding = new ObservableCollection<MenuItem>();
+            foreach (string category in Categories)
+            {
+                _contextMenuCategoryBinding.Add(new CustomMenuItem(category, MoveShapeClick));
+            }
+        }
 
         private void DehighlightSelected()
         {
@@ -761,6 +781,7 @@ namespace PowerPointLabs.ShapesLab.Views
                     this.GetAddIn().ShapePresentation.AddCategory(importCategory, false, true);
 
                     _categoryBinding.Add(new CustomComboBoxItem(importCategory, null));
+                    _contextMenuCategoryBinding.Add(new CustomMenuItem(importCategory, MoveShapeClick));
                 }
                 return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, currentSlide);
@@ -926,6 +947,16 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
+        }
+
+        private void MoveShapeClick(object sender, RoutedEventArgs e)
+        {
+            CustomMenuItem item = sender as CustomMenuItem;
+            if (item == null)
+            {
+                return;
+            }
+            MoveShapes(item.actualName);
         }
 
         #endregion
