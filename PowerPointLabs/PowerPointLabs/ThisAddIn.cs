@@ -920,7 +920,7 @@ namespace PowerPointLabs
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             ComputerVoiceRuntimeService.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
-
+            Logger.Log("IsRemoveAudioEnabled = " + ComputerVoiceRuntimeService.IsRemoveAudioEnabled.ToString());
             // update recorder pane
             if (sldRange.Count > 0)
             {
@@ -985,7 +985,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
-            Ribbon.RefreshRibbonControl("RemoveAudioButton");
+            Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
             Ribbon.RefreshRibbonControl("ELearningTaskPaneButton");
         }
 
