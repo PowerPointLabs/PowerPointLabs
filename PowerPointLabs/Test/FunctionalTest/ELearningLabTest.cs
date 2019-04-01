@@ -52,7 +52,7 @@ namespace Test.FunctionalTest
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestSyncExplanationItemSlideNo);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedSyncExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
         }
 
         private void TestReorderExplanationItems(IELearningLabController eLearningLab)
@@ -61,7 +61,7 @@ namespace Test.FunctionalTest
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestReorderExplanationItemSlideNo);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedReorderExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
         }
 
         private void TestDeleteExplanationItems(IELearningLabController eLearningLab)
@@ -70,7 +70,7 @@ namespace Test.FunctionalTest
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestDeleteExplanationItemSlideNo);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedDeleteExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
         }
     }
 }
