@@ -772,4 +772,43 @@
   <data name="CreateTrigger" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CreateTrigger.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Animation_Appear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Appear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Bounce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Bounce.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Fade" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Fade.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Float_In" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Float In.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Fly_In" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Fly In.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Grow___Turn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Grow &amp; Turn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Random_Bars" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Random Bars.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Shape" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Shape.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Split" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Split.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Swivel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Swivel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Wheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Wheel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Wipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Wipe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Animation_Zoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Animation Zoom.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

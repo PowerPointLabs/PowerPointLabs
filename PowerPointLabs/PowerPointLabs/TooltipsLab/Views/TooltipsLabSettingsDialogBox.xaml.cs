@@ -34,7 +34,7 @@ namespace PowerPointLabs.TooltipsLab.Views
         private void Initialize()
         {
             Array shapeTypes = Enum.GetValues(typeof(MsoAutoShapeType));
-            Bitmap[] shapeBitmaps = ShapeTypesToBitmaps(shapeTypes, "Callout");
+            Bitmap[] shapeBitmaps = ShapeTypesToBitmaps(shapeTypes, TooltipsLabConstants.CalloutNameSubstring);
             for (int i = 0; i < shapeTypes.Length; i++)
             {
                 if (shapeBitmaps[i] == null)
@@ -51,12 +51,11 @@ namespace PowerPointLabs.TooltipsLab.Views
                 }
             }
 
-            Array animationTypes = Enum.GetValues(typeof(MsoAnimEffect));
-            Bitmap dummyImage = Properties.Resources.AddSpotlightContext;
-            for (int i = 0; i < animationTypes.Length; i++)
+            for (int i = 0; i < TooltipsLabConstants.AnimationEffects.Length; i++)
             {
                 TooltipsLabSettingsAnimationEntry newEntry = new TooltipsLabSettingsAnimationEntry(
-                    (MsoAnimEffect)animationTypes.GetValue(i), dummyImage);
+                    TooltipsLabConstants.AnimationEffects[i],
+                    TooltipsLabConstants.AnimationImages[i]);
                 animationList.Items.Add(newEntry);
                 if (newEntry.Type == lastAnimationType)
                 {

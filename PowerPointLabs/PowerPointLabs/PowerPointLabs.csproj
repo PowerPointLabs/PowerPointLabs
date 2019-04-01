@@ -2286,6 +2286,45 @@
   <ItemGroup>
     <None Include="Resources\ConvertToTooltip.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Appear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Bounce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Fade.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Float In.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Fly In.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Grow &amp; Turn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Random Bars.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Shape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Split.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Swivel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Wipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Zoom.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

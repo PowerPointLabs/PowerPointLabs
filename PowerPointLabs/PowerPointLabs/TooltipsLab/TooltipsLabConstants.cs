@@ -1,4 +1,7 @@
+using System.Drawing;
+
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.TooltipsLab
 {
@@ -7,6 +10,41 @@ namespace PowerPointLabs.TooltipsLab
         public const MsoAutoShapeType TriggerShape = MsoAutoShapeType.msoShapeOval;
         public const string ShapeNameHeader = "msoShape";
         public const string AnimationNameHeader = "msoAnimEffect";
+        public const string CalloutNameSubstring = "Callout";
+
+        public static readonly MsoAnimEffect[] AnimationEffects = new MsoAnimEffect[]
+        {
+            MsoAnimEffect.msoAnimEffectAppear,
+            MsoAnimEffect.msoAnimEffectBounce,
+            MsoAnimEffect.msoAnimEffectFade,
+            MsoAnimEffect.msoAnimEffectFloat,
+            MsoAnimEffect.msoAnimEffectFly,
+            MsoAnimEffect.msoAnimEffectGrowAndTurn,
+            MsoAnimEffect.msoAnimEffectRandomBars,
+            MsoAnimEffect.msoAnimEffectPlus,
+            MsoAnimEffect.msoAnimEffectSplit,
+            MsoAnimEffect.msoAnimEffectSwivel,
+            MsoAnimEffect.msoAnimEffectWheel,
+            MsoAnimEffect.msoAnimEffectWipe,
+            MsoAnimEffect.msoAnimEffectZoom
+        };
+        public static readonly Bitmap[] AnimationImages = new Bitmap[]
+        {
+            Properties.Resources.Animation_Appear,
+            Properties.Resources.Animation_Bounce,
+            Properties.Resources.Animation_Fade,
+            Properties.Resources.Animation_Float_In,
+            Properties.Resources.Animation_Fly_In,
+            Properties.Resources.Animation_Grow___Turn,
+            Properties.Resources.Animation_Random_Bars,
+            Properties.Resources.Animation_Shape,
+            Properties.Resources.Animation_Split,
+            Properties.Resources.Animation_Swivel,
+            Properties.Resources.Animation_Wheel,
+            Properties.Resources.Animation_Wipe,
+            Properties.Resources.Animation_Zoom
+        };
+
         public const float TriggerShapeDefaultLeft = 200;
         public const float TriggerShapeDefaultTop = 200;
         public const float TriggerShapeDefaultHeight = 25;
