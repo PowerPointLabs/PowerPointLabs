@@ -501,8 +501,12 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (isDefaultCategory)
             {
-                this.GetAddIn().ShapesLabConfig.DefaultCategory = (_categoryBinding[0] as CustomComboBoxItem)?.actualName;
-                //TODO
+                CustomComboBoxItem item = _categoryBinding[0] as CustomComboBoxItem;
+                this.GetAddIn().ShapesLabConfig.DefaultCategory = item?.actualName;
+                item?.SetNewDefaultCategory(this.GetAddIn().ShapesLabConfig.DefaultCategory);
+                _categoryBinding.RemoveAt(0);
+                _categoryBinding.Insert(0, item);
+                categoryBox.SelectedIndex = 0;
             }
         }
 
