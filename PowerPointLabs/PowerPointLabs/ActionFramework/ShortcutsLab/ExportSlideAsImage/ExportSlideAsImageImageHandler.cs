@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.FillSlide);
+            return new Bitmap(Properties.Resources.ExportSlideAsPicture);
         }
     }
 }

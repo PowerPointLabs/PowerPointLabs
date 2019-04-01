@@ -2263,6 +2263,12 @@
   <ItemGroup>
     <None Include="Resources\ELearningLabIcon2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportSlideAsImage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportSlideAsPicture.png" />
+  </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
