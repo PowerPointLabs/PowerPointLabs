@@ -47,11 +47,11 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            string name = nameInput.Text;
+            string name = nameInput.Text.Trim();
 
             if (VerifyName(name) && VerifyCategory(name))
             {
-                DialogConfirmedHandler(name.Trim());
+                DialogConfirmedHandler(name);
                 Close();
             }
         }
