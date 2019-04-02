@@ -142,7 +142,6 @@ namespace PowerPointLabs.ELearningLab.Views
             AudioSettingStorageService.SaveAudioSettingPreference();
             AudioSettingsDialogWindow parentWindow = Window.GetWindow(this) as AudioSettingsDialogWindow;
             parentWindow.Close();
-            SelfExplanationBlockView.dialog.NarrationsLabSettingsMainFrame.Refresh();
         }
 
         private void AzureVoiceBtn_Click(object sender, RoutedEventArgs e)

@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Media;
-using System.Speech.Synthesis;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Threading;
 using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
@@ -20,8 +13,7 @@ namespace PowerPointLabs.ELearningLab.Service
 {
     public class AzureRuntimeService
     {
-        public static bool IsAzureAccountPresentAndValid = IsAzureAccountPresent()
-            && IsValidUserAccount(showErrorMessage: false);
+        public static bool IsAzureAccountPresentAndValid = false;
         private static CancellationTokenSource cts = new CancellationTokenSource();
         private static CancellationToken token = cts.Token;
 
@@ -30,7 +22,7 @@ namespace PowerPointLabs.ELearningLab.Service
             return !AzureAccount.GetInstance().IsEmpty();
         }
 
-        public static bool IsValidUserAccount(bool showErrorMessage = true)
+        public static bool IsValidUserAccount(bool showErrorMessage = true, string errorMessage = "Failed Azure authentication.")
         {
             try
             {
@@ -42,10 +34,10 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             catch
             {
-                Console.WriteLine("Failed authentication.");
+                Console.WriteLine(errorMessage);
                 if (showErrorMessage)
                 {
-                    MessageBox.Show("Failed authentication");
+                    MessageBox.Show(errorMessage);
                 }
                 return false;
             }
@@ -120,7 +112,7 @@ namespace PowerPointLabs.ELearningLab.Service
             azureVoiceSynthesizer.OnAudioAvailable += PlayAudio;
             azureVoiceSynthesizer.OnError += OnAzureVoiceErrorHandler;
             // Reuse Synthesize object to minimize latency
-            azureVoiceSynthesizer.Speak(token, new SynthesizeAzureVoice.InputOptions()
+            azureVoiceSynthesizer.Speak(token, new InputOptions()
             {
                 RequestUri = new Uri(requestUri),
                 Text = textToSpeak,
@@ -196,7 +188,7 @@ namespace PowerPointLabs.ELearningLab.Service
             azureVoiceSynthesizer.OnError += OnAzureVoiceErrorHandler;
 
             // Reuse Synthesize object to minimize latency
-            azureVoiceSynthesizer.Speak(token, new SynthesizeAzureVoice.InputOptions()
+            azureVoiceSynthesizer.Speak(token, new InputOptions()
             {
                 RequestUri = new Uri(requestUri),
                 Text = textToSpeak,

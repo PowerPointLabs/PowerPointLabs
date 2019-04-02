@@ -3,6 +3,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ActionFramework.ELearningLab
 {
@@ -11,9 +12,12 @@ namespace PowerPointLabs.ActionFramework.ELearningLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
+            LoadingDialogBox splashView = new LoadingDialogBox();
+            splashView.Show();
             AzureAccountStorageService.LoadUserAccount();
             WatsonAccountStorageService.LoadUserAccount();
             AudioSettingStorageService.LoadAudioSettingPreference();
+            splashView.Close();
             AudioSettingService.ShowSettingsDialog();
         }
     }

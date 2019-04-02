@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.Http;
+using System.IO;
 
 using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.SpeechEngine;
 
@@ -20,18 +20,16 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
             }
 
             this.endpoint = endpoint;
-            client = new WatsonHttpClient();
-            client.BaseClient = new HttpClient();
-            client.BaseClient.BaseAddress = new Uri(endpoint);
+            client = new WatsonHttpClient(endpoint);
             tokenManager = new TokenManager(options);
         }
-        public System.IO.MemoryStream Synthesize(Text text, string accept = null, string voice = null)
+        public MemoryStream Synthesize(Text text, string accept = null, string voice = null)
         {
             if (text == null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
-            System.IO.MemoryStream result = null;
+            MemoryStream result = null;
 
             try
             {
@@ -49,7 +47,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
                 }
                 restRequest.WithBody<Text>(text);
                 restRequest.WithHeader("X-IBMCloud-SDK-Analytics", "service_name=text_to_speech;service_version=v1;operation_id=Synthesize");
-                result = new System.IO.MemoryStream(restRequest.AsByteArray().Result);
+                result = new MemoryStream(restRequest.AsByteArray().Result);
             }
             catch (AggregateException ae)
             {

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ELearningLab.Converters;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
 
@@ -21,7 +23,7 @@ namespace PowerPointLabs.ELearningLab.Extensions
                 effects.ElementAt(0).Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick;
         }
 
-        public static IEnumerable<Effect> GetCustomEffectsForClick(this PowerPointSlide slide, int clickNo)
+        public static IEnumerable<CustomEffect> GetCustomEffectsForClick(this PowerPointSlide slide, int clickNo)
         {
             DateTime start = DateTime.Now;
             List<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>().ToList();
@@ -36,16 +38,18 @@ namespace PowerPointLabs.ELearningLab.Extensions
 
                 IEnumerable<Effect> customEffects = effects.GetRange(idxStart, idxEnd - idxStart).Where(x =>
                 SelfExplanationTagService.ExtractTagNo(x.Shape.Name) == -1);
+                IEnumerable<CustomEffect> _customEffects = customEffects.Select(x => new CustomEffect(x.Shape.Name, x.Shape.Id.ToString(),
+                EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(x)));
                 if (clickNo > 0 && customEffects.Count() > 0)
                 {
                     customEffects.ElementAt(0).Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
                 }
-                return customEffects;
+                return _customEffects;
             }
             catch
             {
                 // most likely caused by idxStart out of bound
-                return new List<Effect>();
+                return new List<CustomEffect>();
             }
         }
         public static IEnumerable<Effect> GetPPTLEffectsForClick(this PowerPointSlide slide, int clickNo)

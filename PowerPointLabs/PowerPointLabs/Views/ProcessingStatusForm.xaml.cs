@@ -18,13 +18,15 @@ namespace PowerPointLabs.Views
         private int totalValue;
         private BackgroundWorker worker;
         private BackgroundWorkerType workerType;
-        public ProcessingStatusForm(int totalValue, BackgroundWorkerType workerType)
+        private ELearningService service;
+        public ProcessingStatusForm(int totalValue, BackgroundWorkerType workerType, ELearningService service = null)
         {
             InitializeComponent();
             Dispatcher.Invoke(() => { progressBar.Value = 0; });
             label.Content = string.Format(ELearningLabText.ProgressStatusLabelFormat, 0);
             this.totalValue = totalValue;
             this.workerType = workerType;
+            this.service = service;
             worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
@@ -54,7 +56,7 @@ namespace PowerPointLabs.Views
                     return;
                 }
                 int percentage = (int)Math.Round(((double)i + 1) / totalValue * 100);
-                ELearningService.SyncAppearEffectAnimationsForSelfExplanationItem(i);
+                service.SyncAppearEffectAnimationsForSelfExplanationItem(i);
                 (sender as BackgroundWorker).ReportProgress(percentage);
             }
         }
@@ -76,11 +78,11 @@ namespace PowerPointLabs.Views
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Dispatcher.Invoke( () =>
-            {
-                progressBar.Value = e.ProgressPercentage;
-                label.Content = string.Format(ELearningLabText.ProgressStatusLabelFormat, e.ProgressPercentage);
-            });
+            Dispatcher.Invoke(() =>
+           {
+               progressBar.Value = e.ProgressPercentage;
+               label.Content = string.Format(ELearningLabText.ProgressStatusLabelFormat, e.ProgressPercentage);
+           });
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -88,7 +90,7 @@ namespace PowerPointLabs.Views
             switch (workerType)
             {
                 case BackgroundWorkerType.ELearningLabService:
-                    ELearningService.SyncExitEffectAnimations();
+                    service.SyncExitEffectAnimations();
                     break;
                 case BackgroundWorkerType.AudioGenerationService:
                     break;
@@ -100,6 +102,7 @@ namespace PowerPointLabs.Views
             {
                 ComputerVoiceRuntimeService.PreviewAnimations();
             }
+
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

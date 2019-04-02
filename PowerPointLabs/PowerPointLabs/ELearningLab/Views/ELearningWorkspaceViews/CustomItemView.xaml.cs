@@ -18,9 +18,9 @@ namespace PowerPointLabs.ELearningLab.Views
     /// <summary>
     /// Interaction logic for CustomAnimationBlockView.xaml
     /// </summary>
-    public partial class CustomBlockView : UserControl
+    public partial class CustomItemView : UserControl
     {
-        public CustomBlockView()
+        public CustomItemView()
         {
             InitializeComponent();
         }

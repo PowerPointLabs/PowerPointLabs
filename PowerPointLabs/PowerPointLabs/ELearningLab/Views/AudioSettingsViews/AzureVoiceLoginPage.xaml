@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             Loaded="Page_Loaded"
              d:DesignHeight="150" d:DesignWidth="300">
     <StackPanel>
         <TextBlock Text="Enter your access key" Margin="30 10 30 0" FontWeight="Bold"/>

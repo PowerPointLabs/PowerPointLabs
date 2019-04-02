@@ -13,13 +13,11 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
 {
     public abstract class AbstractItemFactory
     {
-        public IEnumerable<Effect> effects;
-        public PowerPointSlide slide;
+        public IEnumerable<AbstractEffect> effects;
 
-        public AbstractItemFactory(IEnumerable<Effect> effects, PowerPointSlide slide)
+        public AbstractItemFactory(IEnumerable<AbstractEffect> effects)
         {
             this.effects = effects;
-            this.slide = slide;
         }
         public ClickItem GetBlock()
         {

@@ -63,7 +63,9 @@ namespace PowerPointLabs.ELearningLab.Service.StorageService
                 if (key != null && endpoint != null)
                 {
                     WatsonAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
-                    WatsonRuntimeService.IsWatsonAccountPresentAndValid = WatsonRuntimeService.IsValidUserAccount();
+                    WatsonRuntimeService.IsWatsonAccountPresentAndValid = 
+                        WatsonRuntimeService.IsValidUserAccount(errorMessage: "Invalid Watson Account." +
+                        "\nIs your Watson account expired?\nAre you connected to Wifi?");
                 }
                 else
                 {

@@ -710,6 +710,7 @@
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\InputOptions.cs" />
     <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\Model\ComputerVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\IVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\VoiceType.cs" />
@@ -735,9 +736,12 @@
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ClickItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomClickItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\CustomSubItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\SelfExplanationClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\AnimationType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\BackgroundWorkerType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\NoteType.cs" />
@@ -762,8 +766,8 @@
     <Compile Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml.cs">
       <DependentUpon>WatsonVoiceLoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml.cs">
-      <DependentUpon>CustomBlockView.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomItemView.xaml.cs">
+      <DependentUpon>CustomItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabMainPanel.xaml.cs">
       <DependentUpon>ELearningLabMainPanel.xaml</DependentUpon>
@@ -774,13 +778,14 @@
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabTaskpane.Designer.cs">
       <DependentUpon>ELearningLabTaskpane.cs</DependentUpon>
     </Compile>
-    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml.cs">
-      <DependentUpon>SelfExplanationBlockView.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ExplanationItemView.xaml.cs">
+      <DependentUpon>ExplanationItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Service\FunctionService\CalloutService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -1573,7 +1578,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml">
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1581,7 +1586,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml">
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\ExplanationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2275,7 +2280,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <ProjectProperties HostName="PowerPoint" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="PowerPoint" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\PowerPoint\InstallRoot\Path#powerpnt.exe" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="PowerPoint" GeneratedCodeNamespace="PowerPointLabs" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="55214155BE32CF10E93E0815C7758604B8DF3CF2" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>

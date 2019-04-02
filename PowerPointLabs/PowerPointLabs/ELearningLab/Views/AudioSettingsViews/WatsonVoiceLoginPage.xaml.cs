@@ -19,6 +19,12 @@ namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
         }
 
         #region XAML-Binded Event Handlers
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            key.Text = string.Empty;
+            endpoint.SelectedIndex = -1;
+        }
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             SwitchViewToPreviousPage();
@@ -41,7 +47,8 @@ namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
                 return;
             }
 
-            bool isValidAccount = WatsonRuntimeService.IsValidUserAccount(_key, _endpoint);
+            bool isValidAccount = WatsonRuntimeService.IsValidUserAccount(_key, _endpoint,
+                "Invalid Watson Account.\nIs your Watson account expired?\nAre you connected to Wifi?");
             if (isValidAccount)
             {
                 // Delete previous user account
@@ -56,9 +63,10 @@ namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
             }
             else
             {
-                MessageBox.Show("Invalid Account!");
+                MessageBox.Show("Invalid Watson Account.\nIs your Watson account expired?\nAre you connected to Wifi?");
             }
         }
+
         #endregion
 
         #region Private Helper Functions
