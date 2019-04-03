@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorsLab;
@@ -667,7 +668,10 @@ namespace PowerPointLabs.ColorsLab
 
             if (timer1Ticks < CLICK_THRESHOLD)
             {
-                MessageBox.Show("To use this button, click and drag to desired color.", ColorsLabText.ErrorDialogTitle);
+                Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
+                {
+                    MessageBox.Show("To use this button, click and drag to desired color.", ColorsLabText.ErrorDialogTitle);
+                }));
             }
         }
 
