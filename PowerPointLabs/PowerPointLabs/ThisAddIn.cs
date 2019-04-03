@@ -920,7 +920,7 @@ namespace PowerPointLabs
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
             ComputerVoiceRuntimeService.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
-            
+
             // update recorder pane
             if (sldRange.Count > 0)
             {
