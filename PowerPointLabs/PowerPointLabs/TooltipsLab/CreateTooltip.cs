@@ -43,7 +43,6 @@ namespace PowerPointLabs.TooltipsLab
                 triggerShape.Top - (float)(TooltipsLabConstants.CalloutArrowheadVerticalAdjustment * TooltipsLabConstants.CalloutShapeDefaultHeight) - TooltipsLabConstants.TriggerShapeAndCalloutSpacing,
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
                 TooltipsLabConstants.CalloutShapeDefaultHeight);
-            callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             ShapeUtil.FormatCalloutToDefaultStyle(callout);
 
             callout.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
