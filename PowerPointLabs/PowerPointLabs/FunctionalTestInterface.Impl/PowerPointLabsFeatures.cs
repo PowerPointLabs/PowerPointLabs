@@ -39,6 +39,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             get { return TimerLabController.Instance; }
         }
 
+        public IELearningLabController ELearningLab
+        {
+            get { return ELearningLabController.Instance; }
+        }
+
         private Ribbon1 Ribbon
         {
             get { return FunctionalTestExtensions.GetRibbonUi(); }

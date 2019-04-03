@@ -96,14 +96,14 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
-        public static bool IsAzureVoiceSelectedForItem(SelfExplanationClickItem selfExplanationClickItem)
+        public static bool IsAzureVoiceSelectedForItem(ExplanationItem selfExplanationClickItem)
         {
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(selfExplanationClickItem.VoiceLabel);
             IVoice voice = GetVoiceFromString(voiceName);
             return voice is AzureVoice;
         }
 
-        public static bool IsWatsonVoiceSelectedForItem(SelfExplanationClickItem selfExplanationClickItem)
+        public static bool IsWatsonVoiceSelectedForItem(ExplanationItem selfExplanationClickItem)
         {
             string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(selfExplanationClickItem.VoiceLabel);
             IVoice voice = GetVoiceFromString(voiceName);
