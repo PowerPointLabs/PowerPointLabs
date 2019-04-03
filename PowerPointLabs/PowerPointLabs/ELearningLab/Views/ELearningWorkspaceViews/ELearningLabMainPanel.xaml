@@ -6,17 +6,17 @@
              xmlns:views="clr-namespace:PowerPointLabs.ELearningLab.Views"
              xmlns:model="clr-namespace:PowerPointLabs.ELearningLab.ELearningWorkspace.Model"
              xmlns:converters="clr-namespace:PowerPointLabs.ELearningLab.Converters"
-             views:SelfExplanationBlockView.UpButtonClickedHandler="HandleUpButtonClickedEvent"
-             views:SelfExplanationBlockView.DownButtonClickedHandler="HandleDownButtonClickedEvent"
-             views:SelfExplanationBlockView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
-             views:SelfExplanationBlockView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
+             views:ExplanationItemView.UpButtonClickedHandler="HandleUpButtonClickedEvent"
+             views:ExplanationItemView.DownButtonClickedHandler="HandleDownButtonClickedEvent"
+             views:ExplanationItemView.DeleteButtonClickedHandler="HandleDeleteButtonClickedEvent"
+             views:ExplanationItemView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="600">
     <UserControl.Resources>
         <ContextMenu x:Key="ItemContextMenu">
-            <MenuItem Header="Add Self Explanation Above" 
+            <MenuItem Header="Add Explanation Above" 
                       Click="AddItemAboveContextMenu_Click"
                       CommandParameter="{Binding}"/>
-            <MenuItem Header="Add Self Explanation Below" 
+            <MenuItem Header="Add Explanation Below" 
                       Click="AddItemBelowContextMenu_Click"
                       CommandParameter="{Binding}"/>
         </ContextMenu>
@@ -68,7 +68,7 @@
                        FontSize="12" Margin="0 -6" FontWeight="SemiBold"/>
             </StackPanel>
         </StackPanel>
-        <DockPanel Grid.Row="1">
+        <DockPanel Grid.Row="1" x:Name="eLLPane">
             <ListView x:Name="listView" ItemsSource="{Binding Items}"
                   BorderThickness="0" Margin="0" SelectionMode="Single"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -78,23 +78,50 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
+                <ListView.Style>
+                    <Style TargetType="{x:Type ListView}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Items.Count, RelativeSource={RelativeSource Self}}"  Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <DockPanel Background="White">
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       FontWeight="Bold" FontSize="20">
+                                                No items to display
+                                                </TextBlock>
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
                 <ListBox.Resources>
-                    <DataTemplate DataType="{x:Type model:CustomClickItem}">
+                    <DataTemplate DataType="{x:Type model:CustomItem}">
                         <StackPanel Margin="2 2 2 2">
-                            <views:CustomBlockView DataContext="{Binding}" />
+                            <views:CustomItemView DataContext="{Binding}" />
                         </StackPanel>
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type model:SelfExplanationClickItem}">
+                    <DataTemplate DataType="{x:Type model:ExplanationItem}">
                         <StackPanel Margin="2 2 2 2">
                             <Border BorderThickness="0.2" BorderBrush="LightGray" CornerRadius="4" Background="WhiteSmoke">
                                 <StackPanel Margin="5 5 5 5">
-                                    <views:SelfExplanationBlockView DataContext="{Binding}"/>
+                                    <views:ExplanationItemView DataContext="{Binding}"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.Resources>
             </ListView>
+        </DockPanel>
+        <DockPanel Grid.Row="1" x:Name="loadingPane">
+            <Label Content="Now Loading..." FontSize="20" 
+                   FontWeight="Bold" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"
+                   Padding="10,10,10,10"/>
         </DockPanel>
     </Grid>
 </UserControl>

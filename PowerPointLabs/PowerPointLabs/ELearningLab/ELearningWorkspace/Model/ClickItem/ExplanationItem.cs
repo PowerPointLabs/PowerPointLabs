@@ -10,7 +10,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
-    public class SelfExplanationClickItem : ClickItem, IEquatable<SelfExplanationClickItem>
+    public class ExplanationItem : ClickItem, IEquatable<ExplanationItem>
     {
         #region public properties
         public bool IsCallout
@@ -187,7 +187,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 
         #endregion
 
-        public SelfExplanationClickItem(string captionText, string calloutText = "", string voiceLabel = "", bool isCallout = false,
+        public ExplanationItem(string captionText, string calloutText = "", string voiceLabel = "", bool isCallout = false,
             bool isCaption = false, bool isVoice = false, TriggerType trigger = TriggerType.WithPrevious,
             bool isTriggerTypeComboBoxEnabled = true, int tagNo = -1)
         {
@@ -214,10 +214,10 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 return true;
             }
-            return Equals(other as SelfExplanationClickItem);
+            return Equals(other as ExplanationItem);
         }
 
-        public bool Equals(SelfExplanationClickItem other)
+        public bool Equals(ExplanationItem other)
         {
             return isCallout == other.isCallout
                 && isCaption == other.isCaption

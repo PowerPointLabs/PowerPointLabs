@@ -22,14 +22,14 @@ namespace PowerPointLabs.ELearningLab.Converters
             ObservableCollection<ClickItem> items = listView.ItemsSource as ObservableCollection<ClickItem>;
             int index = listView.ItemContainerGenerator.IndexFromContainer(item);
             ClickItem clickItem = items.ElementAt(index);
-            if (clickItem is SelfExplanationClickItem && index > 0 && (items.ElementAt(index - 1) is CustomClickItem))
+            if (clickItem is ExplanationItem && index > 0 && (items.ElementAt(index - 1) is CustomItem))
             {
-                ((SelfExplanationClickItem)clickItem).IsTriggerTypeComboBoxEnabled = true;
+                ((ExplanationItem)clickItem).IsTriggerTypeComboBoxEnabled = true;
                 return true;
             }
             else
             {
-                ((SelfExplanationClickItem)clickItem).IsTriggerTypeComboBoxEnabled = false;
+                ((ExplanationItem)clickItem).IsTriggerTypeComboBoxEnabled = false;
                 return false;
             }
         }

@@ -15,7 +15,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
 {
     public class SelfExplanationItemFactory : AbstractItemFactory
     {
-        public SelfExplanationItemFactory(IEnumerable<Effect> effects, PowerPointSlide slide) : base(effects, slide)
+        public SelfExplanationItemFactory(IEnumerable<ELLEffect> effects) : base(effects)
         { }
         protected override ClickItem CreateBlock()
         {
@@ -24,10 +24,10 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
                 return null;
             }
 
-            SelfExplanationClickItem selfExplanation = new SelfExplanationClickItem(captionText: string.Empty);
-            foreach (Effect effect in effects)
+            ExplanationItem selfExplanation = new ExplanationItem(captionText: string.Empty);
+            foreach (ELLEffect effect in effects)
             {
-                string shapeName = effect.Shape.Name;
+                string shapeName = effect.shapeName;
                 string functionMatch = StringUtility.ExtractFunctionFromString(shapeName);
                 selfExplanation.tagNo = SelfExplanationTagService.ExtractTagNo(shapeName);
                 switch (functionMatch)

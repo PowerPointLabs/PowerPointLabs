@@ -9,8 +9,8 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Service.StorageService;
-using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
 {
@@ -19,9 +19,12 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
     {
         protected override void ExecuteAction(string ribbonId)
         {
+            LoadingDialogBox splashView = new LoadingDialogBox();
+            splashView.Show();
             AzureAccountStorageService.LoadUserAccount();
             WatsonAccountStorageService.LoadUserAccount();
             AudioSettingStorageService.LoadAudioSettingPreference();
+            splashView.Close();
             this.RegisterTaskPane(typeof(ELearningLabTaskpane), ELearningLabText.ELearningTaskPaneLabel,
                 ELearningTaskPaneVisibleValueChangedEventHandler);
             CustomTaskPane eLearningTaskpane = this.GetTaskPane(typeof(ELearningLabTaskpane));
