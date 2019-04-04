@@ -45,7 +45,7 @@
         public const string ErrorImportAppendCategory = "Your computer does not support this feature.";
         public const string ErrorImportSingleCategory =
             "{0} contains multiple categories. Try \"Import Category\" instead.";
-        public const string ErrorShapePaneNotOpened = "Error: SyncPane not opened.";
+        public const string ErrorShapePaneNotOpened = "Error: Shapes Lab Pane not opened.";
         public const string SuccessImport = "Successfully imported.";
 
         public const string ImportShapeFileDialogTitle = "Import Shapes";
