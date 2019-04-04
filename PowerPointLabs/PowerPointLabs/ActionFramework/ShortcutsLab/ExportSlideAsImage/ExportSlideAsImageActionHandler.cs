@@ -38,7 +38,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
-            {
+            {           
                 GraphicsUtil.ExportSlides(selectedSlides, saveFileDialog.FileName);
             }
 

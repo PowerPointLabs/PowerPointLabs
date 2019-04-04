@@ -214,7 +214,7 @@ namespace PowerPointLabs.Utils
                     Directory.CreateDirectory(folderName);
 
                     // Alert the user that the slides will be saved in a folder
-                    string messageBoxText = "The selected slides will be saved in the folder " + folderName + ".";
+                    string messageBoxText = "Each slide in your presentation has been saved as a separate file in the folder " + folderName + ".";
                     MessageBox.Show(messageBoxText);
 
                     foreach (Slide slide in slides)
