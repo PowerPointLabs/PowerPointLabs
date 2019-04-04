@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              d:DesignHeight="70" d:DesignWidth="50">
     <Grid x:Name="grid" ClipToBounds="True">
-        <Image x:Name="imageBox" Margin="5,5,25,5" HorizontalAlignment="Left" Width="40" Height="40"/>
+        <Image x:Name="imageBox" Margin="0,0,20,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50"/>
         <TextBlock x:Name="textBlock" Margin="0,55,0,5" HorizontalAlignment="Left" Width="50" Height="10" TextTrimming="CharacterEllipsis" FontSize="8"/>
     </Grid>
 </UserControl>

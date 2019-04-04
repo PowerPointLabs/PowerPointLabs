@@ -32,7 +32,7 @@ namespace PowerPointLabs.TooltipsLab.Views
                 image.GetHbitmap(),
                 IntPtr.Zero,
                 Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                BitmapSizeOptions.FromWidthAndHeight(50, 50));
         }
 
         #endregion
