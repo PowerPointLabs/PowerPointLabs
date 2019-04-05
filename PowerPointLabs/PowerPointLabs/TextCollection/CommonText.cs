@@ -9,6 +9,7 @@
 
         public const string ErrorNameTooLong = "The name's length cannot be more than 255 characters.";
         public const string ErrorInvalidCharacter = "The name cannot be empty, or contain the following characters:'<', '>', ':', '\"', '/', '\\', '|', '?', or '*'.";
+        public const string ErrorReservedFilename = "The name cannot be a Windows reserved file name. This means it cannot be the following: CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, or LPT9.";
         public const string ErrorFileNameExist = "A file already exists with that name.";   
         # endregion
 
