@@ -25,12 +25,10 @@ namespace PowerPointLabs.ShapesLab.Views
         // | (vertical bar or pipe)
         // ? (question mark)
         // * (asterisk)
+        // Windows reserved file names.
 
-        // Regex = [<>:"/\\|?*]
-        private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
-
-        //This string array contains the reserved words for files
-        private static readonly List<string> ReservedNameList = new List<string>(){ "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
+        // Regex = ^.*\bCON|PRN|AUX|NUL|COM1|COM2|COM3|COM4|COM5|COM6|COM7|COM8|COM9|LPT1|LPT2|LPT3|LPT4|LPT5|LPT6|LPT7|LPT8|LPT9\b.*$|[<>:"/\\|?*]
+        private const string InvalidCharsRegex = "^.*\bCON|PRN|AUX|NUL|COM1|COM2|COM3|COM4|COM5|COM6|COM7|COM8|COM9|LPT1|LPT2|LPT3|LPT4|LPT5|LPT6|LPT7|LPT8|LPT9\b.*$|[<>:\"/\\\\|?*]";
 
         public ShapesLabCategoryInfoDialogBox()
         {
@@ -72,12 +70,6 @@ namespace PowerPointLabs.ShapesLab.Views
             if (string.IsNullOrWhiteSpace(name) || invalidChars.IsMatch(name))
             {
                 MessageBox.Show(CommonText.ErrorInvalidCharacter);
-                return false;
-            }
-
-            if (ReservedNameList.Contains(name))
-            {
-                MessageBox.Show(CommonText.ErrorReservedFilename);
                 return false;
             }
 
