@@ -16,7 +16,7 @@ namespace PowerPointLabs.TextCollection
         public const string ELearningTaskPaneTag = "E-Learning Workspace";
         public const string ELearningTaskPaneSuperTip =
             "This is the work space for creating e-learning slides.";
-        public const string ELearningTaskPaneLabel = "eLearningLab";
+        public const string ELearningTaskPaneLabel = "e-Learning Lab";
 
         public const string ELearningLabSettingsTag = "ELearningLabSettings";
 
