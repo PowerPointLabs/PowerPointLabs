@@ -31,6 +31,9 @@ namespace PowerPointLabs.TextCollection
         public const string CalloutTextIdentifier = "CalloutText"; 
         public const string CaptionTextIdentifier = "CaptionText";
         public const string TagNoIdentifier = "TagNo";
+        public const string ClickNumIdentifier = "ClickNum";
+        public const string VoiceLabel = "VoiceLabel";
+        public const string TriggerOnClick = "TriggerOnClick";
         public const string SelfExplanationItemIdentifier = "Item";
 
         public const string ELearningLabTextStorageShapeName = Identifier + Underscore + TextStorageIdentifier;
