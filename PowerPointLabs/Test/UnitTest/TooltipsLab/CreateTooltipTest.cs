@@ -23,6 +23,7 @@ namespace Test.UnitTest.TooltipsLab
             TestCreateTooltip_NoneSelected();
             TestCreateTooltip_ShapeSelected();
             TestCreateTooltip_ExistingTooltip();
+            TestCreateTooltip_MultipleTooltips();
         }
 
         private const int CreateTooltipNoneSelectedTestSlideNo = 4;
@@ -31,6 +32,8 @@ namespace Test.UnitTest.TooltipsLab
         private const int CreateTooltipShapeSelectedExpectedSlideNo = 8;
         private const int CreateTooltipExistingTooltipTestSlideNo = 10;
         private const int CreateTooltipExistingTooltipExpectedSlideNo = 11;
+        private const int CreateTooltipMultipleTooltipsTestSlideNo = 13;
+        private const int CreateTooltipMultipleTooltipsExpectedSlideNo = 14;
         private const string CreateTooltipShapeToSelectName = "SelectMe";
 
         private void TestCreateTooltip_NoneSelected()
@@ -52,14 +55,28 @@ namespace Test.UnitTest.TooltipsLab
             CreateTooltipAndCompare(CreateTooltipExistingTooltipTestSlideNo, CreateTooltipExistingTooltipExpectedSlideNo);
         }
 
+        private void TestCreateTooltip_MultipleTooltips()
+        {
+            PpOperations.SelectSlide(CreateTooltipMultipleTooltipsTestSlideNo);
+            for (int i = 0; i < 5; i++)
+            {
+                CreateTooltipOnSlide(CreateTooltipMultipleTooltipsTestSlideNo);
+            }
+            AssertIsSame(CreateTooltipMultipleTooltipsTestSlideNo, CreateTooltipMultipleTooltipsExpectedSlideNo);
+        }
 
         private void CreateTooltipAndCompare(int testSlideNo, int expectedSlideNo)
+        {
+            CreateTooltipOnSlide(testSlideNo);
+            AssertIsSame(testSlideNo, expectedSlideNo);
+        }
+
+        private void CreateTooltipOnSlide(int slideNo)
         {
             PowerPointSlide currentSlide = PowerPointSlide.FromSlideFactory(PpOperations.GetCurrentSlide());
             Shape triggerShape = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateTriggerShape(currentSlide);
             Shape callout = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
-            AssertIsSame(testSlideNo, expectedSlideNo);
         }
 
         private void AssertIsSame(int actualSlideIndex, int expectedSlideIndex)
