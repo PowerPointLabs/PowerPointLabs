@@ -28,7 +28,7 @@ namespace PowerPointLabs.ShapesLab.Views
         // Windows reserved file names.
 
         // Regex = ^.*(?i)\bCON|PRN|AUX|NUL|COM1|COM2|COM3|COM4|COM5|COM6|COM7|COM8|COM9|LPT1|LPT2|LPT3|LPT4|LPT5|LPT6|LPT7|LPT8|LPT9\b.*$|[<>:"/\\|?*]
-        private const string InvalidCharsRegex = "^.*(?i)\bCON|PRN|AUX|NUL|COM1|COM2|COM3|COM4|COM5|COM6|COM7|COM8|COM9|LPT1|LPT2|LPT3|LPT4|LPT5|LPT6|LPT7|LPT8|LPT9\b.*$|[<>:\"/\\\\|?*]";
+        private const string InvalidCharsRegex = "^.*(?i)(CON|PRN|AUX|NUL|COM1|COM2|COM3|COM4|COM5|COM6|COM7|COM8|COM9|LPT1|LPT2|LPT3|LPT4|LPT5|LPT6|LPT7|LPT8|LPT9)(?-i).*$|[<>:\"/\\\\|?*]";
 
         public ShapesLabCategoryInfoDialogBox()
         {
