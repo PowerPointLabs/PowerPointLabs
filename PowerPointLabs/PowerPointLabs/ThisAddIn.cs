@@ -726,18 +726,18 @@ namespace PowerPointLabs
                 return;
             }
             ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
-            if (selectedSlidesCount > 0)
-            {
+         //   if (selectedSlidesCount > 0)
+          //  {
                 taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
                 if (elearningLabPane.Visible == true)
                 {
                     taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
                 }
-            }
-            else
-            {
-                elearningLabPane.Visible = false;
-            }
+          //  }
+         //   else
+         //   {
+         //       elearningLabPane.Visible = false;
+         //   }
         }
 
         private string GetPresentationTempFolder(string presName)
