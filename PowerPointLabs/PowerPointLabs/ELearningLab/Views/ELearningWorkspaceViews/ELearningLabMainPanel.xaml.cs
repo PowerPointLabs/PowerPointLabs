@@ -825,6 +825,8 @@ namespace PowerPointLabs.ELearningLab.Views
             eLLPane.Visibility = Visibility.Collapsed;
             loadingPane.Visibility = Visibility.Visible;
             loadingLabel.Content = content;
+            createImage.Opacity = 0.5;
+            syncImage.Opacity = 0.5;
         }
 
         private void RemoveSpinnerOnLoadingFinished()
@@ -833,6 +835,8 @@ namespace PowerPointLabs.ELearningLab.Views
             syncButton.IsEnabled = true;
             loadingPane.Visibility = Visibility.Collapsed;
             eLLPane.Visibility = Visibility.Visible;
+            createImage.Opacity = 1;
+            syncImage.Opacity = 1;
         }
 
         #endregion
