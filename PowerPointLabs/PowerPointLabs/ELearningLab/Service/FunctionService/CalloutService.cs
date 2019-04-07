@@ -54,7 +54,16 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             if (templatedShape != null)
             {
-                return ShapeUtility.InsertTemplatedShapeToSlide(slide, templatedShape, shapeName, calloutText);
+                Shape copiedShape;
+                try
+                {
+                    copiedShape = ShapeUtility.InsertTemplatedShapeToSlide(slide, templatedShape, shapeName, calloutText);
+                    return copiedShape;
+                }
+                catch
+                {
+                    return ShapeUtility.InsertDefaultCalloutBoxToSlide(slide, shapeName, calloutText);
+                }
             }
             return ShapeUtility.InsertDefaultCalloutBoxToSlide(slide, shapeName, calloutText);
         }

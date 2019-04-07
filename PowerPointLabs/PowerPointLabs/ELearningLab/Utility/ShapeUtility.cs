@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -88,7 +89,14 @@ namespace PowerPointLabs.ELearningLab.Utility
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
 
             // templatedShape and its associated animations are duplicated
-            templatedShape.Copy();
+            try
+            {
+                templatedShape.Copy();               
+            }
+            catch
+            {
+                throw new Exception("Error copying shape.");
+            }
             Shape copiedShape = slide.Shapes.Paste()[1];
             copiedShape.Name = shapeName;
             // copy shape to the default callout / caption position
