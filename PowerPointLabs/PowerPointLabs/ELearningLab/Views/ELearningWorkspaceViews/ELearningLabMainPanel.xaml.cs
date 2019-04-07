@@ -405,8 +405,6 @@ namespace PowerPointLabs.ELearningLab.Views
             isSynced = false;
             UpdateClickNumAndTriggerInItems(useWorker: false, e: null);
             ScrollListViewToEnd();
-            //  ListViewItem item = (ListViewItem)listView.ItemContainerGenerator.ContainerFromIndex(Items.Count - 1);
-            //  Button downButton = VisualTreeUtility.GetChildControlWithName(item, "downButton") as Button;
         }
 
         private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
@@ -638,24 +636,47 @@ namespace PowerPointLabs.ELearningLab.Views
         private Queue<CustomItem> LoadCustomClickItems()
         {
             int clickNo = FirstClickNumber;
-            Queue<CustomItem> customClickItems = new Queue<CustomItem>();
-            ClickItem customClickBlock;
+            Queue<CustomItem> customItems = new Queue<CustomItem>();
+            List<Effect> effects = slide.TimeLine.MainSequence.Cast<Effect>().ToList();
+            int startIdx = 0;
+            bool hasReachedEndOfSequence = effects.Count == 0;
             do
             {
-                customClickBlock =
-                    new CustomItemFactory(slide.GetCustomEffectsForClick(clickNo)).GetBlock();
-
+                List<CustomEffect> customEffects = new List<CustomEffect>();
+                for (int i = startIdx; i < effects.Count; i++)
+                {
+                    Effect effect = effects.ElementAt(i);
+                    if (i > startIdx && effect.Timing.TriggerType == MsoAnimTriggerType.msoAnimTriggerOnPageClick)
+                    {
+                        startIdx = i;
+                        break;
+                    }
+                    if (i == effects.Count - 1)
+                    {
+                        hasReachedEndOfSequence = true;
+                    }
+                    bool isCustomEffect = SelfExplanationTagService.ExtractTagNo(effect.Shape.Name) == -1;
+                    if (isCustomEffect)
+                    {
+                        if (customEffects.Count == 0 && clickNo > 0)
+                        {
+                            effect.Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                        }
+                        customEffects.Add(new CustomEffect(effect.Shape.Name, effect.Shape.Id.ToString(),
+                            EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(effect)));
+                    }
+                }
+                CustomItem customClickBlock =
+                    new CustomItemFactory(customEffects).GetBlock() as CustomItem;
                 if (customClickBlock != null)
                 {
                     customClickBlock.ClickNo = clickNo;
-                    customClickItems.Enqueue((CustomItem)customClickBlock);
+                    customItems.Enqueue(customClickBlock);
                 }
-
                 clickNo++;
             }
-            while (slide.TimeLine.MainSequence.FindFirstAnimationForClick(clickNo) != null);
-
-            return customClickItems;
+            while (startIdx <= effects.Count - 1 && !hasReachedEndOfSequence);
+            return customItems;
         }
 
         /// <summary>
