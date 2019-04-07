@@ -52,7 +52,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 templatedShape = shape;
                 return shape;
             }
-            if (templatedShape != null && slide.ContainShape(templatedShape))
+            if (templatedShape != null)
             {
                 return ShapeUtility.InsertTemplatedShapeToSlide(slide, templatedShape, shapeName, calloutText);
             }

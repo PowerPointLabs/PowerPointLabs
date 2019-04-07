@@ -88,7 +88,8 @@ namespace PowerPointLabs.ELearningLab.Utility
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
 
             // templatedShape and its associated animations are duplicated
-            Shape copiedShape = templatedShape.Duplicate()[1];
+            templatedShape.Copy();
+            Shape copiedShape = slide.Shapes.Paste()[1];
             copiedShape.Name = shapeName;
             // copy shape to the default callout / caption position
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CalloutIdentifier)

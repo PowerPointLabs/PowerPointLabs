@@ -63,7 +63,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 shape.Top = slideHeight - shape.Height;
                 return shape;
             }
-            if (templatedShape != null && slide.ContainShape(templatedShape))
+            if (templatedShape != null)
             {
                 return ShapeUtility.InsertTemplatedShapeToSlide(slide, templatedShape, shapeName, captionText);
             }
