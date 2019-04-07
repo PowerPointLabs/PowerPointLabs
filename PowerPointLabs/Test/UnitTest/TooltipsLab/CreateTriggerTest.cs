@@ -25,6 +25,7 @@ namespace Test.UnitTest.TooltipsLab
             TestCreateTrigger_CalloutShape();
             TestCreateTrigger_MultipleNormalShapes();
             TestCreateTrigger_MultipleAllTypeShapes();
+            TestCreateTrigger_MultipleTypeMoreShapes();
         }
 
         private const int CreateTriggerNormalShapeTestSlideNo = 4;
@@ -37,6 +38,8 @@ namespace Test.UnitTest.TooltipsLab
         private const int CreateTriggerMultipleNormalShapesExpectedSlideNo = 14;
         private const int CreateTriggerMultipleAllTypeShapesTestSlideNo = 16;
         private const int CreateTriggerMultipleAllTypeShapesExpectedSlideNo = 17;
+        private const int CreateTriggerMultipleTypeMoreShapesTestSlideNo = 19;
+        private const int CreateTriggerMultipleTypeMoreShapesExpectedSlideNo = 20;
         private const string NormalShapeName = "normalShape";
         private const string TriggerShapeName = "existingTriggerShape";
         private const string CalloutShapeName = "existingCalloutShape";
@@ -77,6 +80,12 @@ namespace Test.UnitTest.TooltipsLab
             CreateMultipleTriggerAndCompare(selectedShapeRange, CreateTriggerMultipleAllTypeShapesTestSlideNo, CreateTriggerMultipleAllTypeShapesExpectedSlideNo);
         }
 
+        private void TestCreateTrigger_MultipleTypeMoreShapes()
+        {
+            PpOperations.SelectSlide(CreateTriggerMultipleTypeMoreShapesTestSlideNo);
+            ShapeRange selectedShapeRange = PpOperations.SelectShapesByPrefix(MultipleShapePrefix);
+            CreateMultipleTriggerAndCompare(selectedShapeRange, CreateTriggerMultipleTypeMoreShapesTestSlideNo, CreateTriggerMultipleTypeMoreShapesExpectedSlideNo);
+        }
 
         private void CreateTriggerAndCompare(Shape selectedShape, int testSlideNo, int expectedSlideNo)
         {
