@@ -68,6 +68,18 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
+        public void SetProgressBarCheckBoxState(bool isChecked)
+        {
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute(() =>
+                {
+                    _pane.TimerPaneWPF.ProgressBarCheckBox.IsChecked = isChecked;
+                    _pane.TimerPaneWPF.ProgressBarCheckBox.Focus();
+                });
+            }
+        }
+
         public void SetHeightTextBoxValue(int value)
         {
             if (_pane != null)

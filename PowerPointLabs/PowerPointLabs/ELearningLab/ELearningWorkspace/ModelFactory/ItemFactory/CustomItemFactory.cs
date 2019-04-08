@@ -14,7 +14,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
 {
     public class CustomItemFactory : AbstractItemFactory
     {
-        public CustomItemFactory(IEnumerable<Effect> effects, PowerPointSlide slide):base(effects, slide)
+        public CustomItemFactory(IEnumerable<CustomEffect> effects):base(effects)
         { }
         protected override ClickItem CreateBlock()
         {
@@ -23,12 +23,11 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory
                 return null;
             }
             ObservableCollection<CustomSubItem> customItems = new ObservableCollection<CustomSubItem>();
-            foreach (Effect effect in effects)
+            foreach (CustomEffect effect in effects)
             {
-                customItems.Add(new CustomSubItem(effect.Shape.Name, effect.Shape.Id.ToString(), 
-                    EffectToAnimationTypeConverter.GetAnimationTypeOfEffect(effect)));
+                customItems.Add(new CustomSubItem(effect.shapeName, effect.shapeId, effect.type));
             }
-            return new CustomClickItem(customItems);
+            return new CustomItem(customItems);
         }
     }
 }

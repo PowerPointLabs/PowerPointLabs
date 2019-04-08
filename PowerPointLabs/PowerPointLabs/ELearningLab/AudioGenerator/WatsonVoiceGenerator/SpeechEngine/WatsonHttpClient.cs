@@ -34,7 +34,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Speech
         {
             if (!string.IsNullOrEmpty(apiToken))
             {
-                this.BaseClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
+                BaseClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiToken);
             }
 
             return this;
@@ -46,9 +46,9 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Speech
         }
         public virtual Request SendAsync(HttpMethod method, string resource)
         {
-            Uri uri = new Uri(this.BaseClient.BaseAddress, resource);
+            Uri uri = new Uri(BaseClient.BaseAddress, resource);
             HttpRequestMessage message = HttpFactory.GetRequestMessage(method, uri, Formatters);
-            return this.SendAsync(message);
+            return SendAsync(message);
         }
         public virtual Request SendAsync(HttpRequestMessage message)
         {

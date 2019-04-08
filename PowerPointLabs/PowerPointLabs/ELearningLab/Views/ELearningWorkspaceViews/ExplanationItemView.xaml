@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PowerPointLabs.ELearningLab.Views.SelfExplanationBlockView"
+﻿<UserControl x:Class="PowerPointLabs.ELearningLab.Views.ExplanationItemView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -109,7 +109,7 @@
                         </StackPanel>
                     </Button.ToolTip>
                 </Button>
-                <Button Grid.Row="2" HorizontalAlignment="Center" Margin="2 2 2 2"
+                <Button x:Name="deleteButton" Grid.Row="2" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="DeleteButton_Click"
                         CommandParameter="{Binding .}">
                     <Image x:Name="deleteImage" Stretch="Fill"/>
@@ -123,7 +123,7 @@
                         </StackPanel>
                     </Button.ToolTip>
                 </Button>
-                <Button Grid.Row="3" HorizontalAlignment="Center" Margin="2 2 2 2"
+                <Button x:Name="downButton" Grid.Row="3" HorizontalAlignment="Center" Margin="2 2 2 2"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="DownButton_Click"
                         CommandParameter="{Binding .}">
                     <Image x:Name="downImage" Stretch="Fill"/>

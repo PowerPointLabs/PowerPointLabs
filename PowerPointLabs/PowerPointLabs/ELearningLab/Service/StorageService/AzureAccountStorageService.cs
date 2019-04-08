@@ -66,7 +66,9 @@ namespace PowerPointLabs.ELearningLab.Service
                 if (key != null && endpoint != null)
                 {
                     AzureAccount.GetInstance().SetUserKeyAndRegion(key, endpoint);
-                    AzureRuntimeService.IsAzureAccountPresentAndValid = AzureRuntimeService.IsValidUserAccount();
+                    AzureRuntimeService.IsAzureAccountPresentAndValid = 
+                        AzureRuntimeService.IsValidUserAccount(errorMessage: "Invalid Azure Account." +
+                        "\nIs your Azure account expired?\nAre you connected to Wifi?");
                 }
                 else
                 {
