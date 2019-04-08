@@ -11,6 +11,24 @@ namespace Test.UnitTest.TooltipsLab
     [TestClass]
     public class CreateTriggerTest : BaseUnitTest
     {
+        private const int CreateTriggerNormalShapeTestSlideNo = 4;
+        private const int CreateTriggerNormalShapeExpectedSlideNo = 5;
+        private const int CreateTriggerTriggerShapeTestSlideNo = 7;
+        private const int CreateTriggerTriggerShapeExpectedSlideNo = 8;
+        private const int CreateTriggerCalloutShapeTestSlideNo = 10;
+        private const int CreateTriggerCalloutShapeExpectedSlideNo = 11;
+        private const int CreateTriggerMultipleNormalShapesTestSlideNo = 13;
+        private const int CreateTriggerMultipleNormalShapesExpectedSlideNo = 14;
+        private const int CreateTriggerMultipleAllTypeShapesTestSlideNo = 16;
+        private const int CreateTriggerMultipleAllTypeShapesExpectedSlideNo = 17;
+        private const int CreateTriggerMultipleTypeMoreShapesTestSlideNo = 19;
+        private const int CreateTriggerMultipleTypeMoreShapesExpectedSlideNo = 20;
+
+        private const string NormalShapeName = "normalShape";
+        private const string TriggerShapeName = "existingTriggerShape";
+        private const string CalloutShapeName = "existingCalloutShape";
+        private const string MultipleShapePrefix = "select";
+
         protected override string GetTestingSlideName()
         {
             return "TooltipsLab\\CreateTrigger.pptx";
@@ -27,23 +45,6 @@ namespace Test.UnitTest.TooltipsLab
             TestCreateTrigger_MultipleAllTypeShapes();
             TestCreateTrigger_MultipleTypeMoreShapes();
         }
-
-        private const int CreateTriggerNormalShapeTestSlideNo = 4;
-        private const int CreateTriggerNormalShapeExpectedSlideNo = 5;
-        private const int CreateTriggerTriggerShapeTestSlideNo = 7;
-        private const int CreateTriggerTriggerShapeExpectedSlideNo = 8;
-        private const int CreateTriggerCalloutShapeTestSlideNo = 10;
-        private const int CreateTriggerCalloutShapeExpectedSlideNo = 11;
-        private const int CreateTriggerMultipleNormalShapesTestSlideNo = 13;
-        private const int CreateTriggerMultipleNormalShapesExpectedSlideNo = 14;
-        private const int CreateTriggerMultipleAllTypeShapesTestSlideNo = 16;
-        private const int CreateTriggerMultipleAllTypeShapesExpectedSlideNo = 17;
-        private const int CreateTriggerMultipleTypeMoreShapesTestSlideNo = 19;
-        private const int CreateTriggerMultipleTypeMoreShapesExpectedSlideNo = 20;
-        private const string NormalShapeName = "normalShape";
-        private const string TriggerShapeName = "existingTriggerShape";
-        private const string CalloutShapeName = "existingCalloutShape";
-        private const string MultipleShapePrefix = "select";
 
         private void TestCreateTrigger_NormalShape()
         {

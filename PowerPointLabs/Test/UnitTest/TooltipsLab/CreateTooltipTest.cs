@@ -11,6 +11,17 @@ namespace Test.UnitTest.TooltipsLab
     [TestClass]
     public class CreateTooltipTest : BaseUnitTest
     {
+        private const int CreateTooltipNoneSelectedTestSlideNo = 4;
+        private const int CreateTooltipNoneSelectedExpectedSlideNo = 5;
+        private const int CreateTooltipShapeSelectedTestSlideNo = 7;
+        private const int CreateTooltipShapeSelectedExpectedSlideNo = 8;
+        private const int CreateTooltipExistingTooltipTestSlideNo = 10;
+        private const int CreateTooltipExistingTooltipExpectedSlideNo = 11;
+        private const int CreateTooltipMultipleTooltipsTestSlideNo = 13;
+        private const int CreateTooltipMultipleTooltipsExpectedSlideNo = 14;
+
+        private const string CreateTooltipShapeToSelectName = "SelectMe";
+
         protected override string GetTestingSlideName()
         {
             return "TooltipsLab\\CreateTooltip.pptx";
@@ -25,16 +36,6 @@ namespace Test.UnitTest.TooltipsLab
             TestCreateTooltip_ExistingTooltip();
             TestCreateTooltip_MultipleTooltips();
         }
-
-        private const int CreateTooltipNoneSelectedTestSlideNo = 4;
-        private const int CreateTooltipNoneSelectedExpectedSlideNo = 5;
-        private const int CreateTooltipShapeSelectedTestSlideNo = 7;
-        private const int CreateTooltipShapeSelectedExpectedSlideNo = 8;
-        private const int CreateTooltipExistingTooltipTestSlideNo = 10;
-        private const int CreateTooltipExistingTooltipExpectedSlideNo = 11;
-        private const int CreateTooltipMultipleTooltipsTestSlideNo = 13;
-        private const int CreateTooltipMultipleTooltipsExpectedSlideNo = 14;
-        private const string CreateTooltipShapeToSelectName = "SelectMe";
 
         private void TestCreateTooltip_NoneSelected()
         {

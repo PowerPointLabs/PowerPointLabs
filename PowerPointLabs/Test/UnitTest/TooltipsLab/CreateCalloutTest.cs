@@ -11,6 +11,24 @@ namespace Test.UnitTest.TooltipsLab
     [TestClass]
     public class CreateCalloutTest : BaseUnitTest
     {
+        private const int CreateCalloutNormalShapeTestSlideNo = 4;
+        private const int CreateCalloutNormalShapeExpectedSlideNo = 5;
+        private const int CreateCalloutTriggerShapeTestSlideNo = 7;
+        private const int CreateCalloutTriggerShapeExpectedSlideNo = 8;
+        private const int CreateCalloutCalloutShapeTestSlideNo = 10;
+        private const int CreateCalloutCalloutShapeExpectedSlideNo = 11;
+        private const int CreateCalloutMultipleNormalShapesTestSlideNo = 13;
+        private const int CreateCalloutMultipleNormalShapesExpectedSlideNo = 14;
+        private const int CreateCalloutMultipleAllTypeShapesTestSlideNo = 16;
+        private const int CreateCalloutMultipleAllTypeShapesExpectedSlideNo = 17;
+        private const int CreateCalloutMultipleTypeMoreShapesTestSlideNo = 19;
+        private const int CreateCalloutMultipleTypeMoreShapesExpectedSlideNo = 20;
+
+        private const string NormalShapeName = "normalShape";
+        private const string TriggerShapeName = "existingTriggerShape";
+        private const string CalloutShapeName = "existingCalloutShape";
+        private const string MultipleShapePrefix = "select";
+
         protected override string GetTestingSlideName()
         {
             return "TooltipsLab\\CreateCallout.pptx";
@@ -27,23 +45,6 @@ namespace Test.UnitTest.TooltipsLab
             TestCreateCallout_MultipleAllTypeShapes();
             TestCreateCallout_MultipleTypeMoreShapes();
         }
-
-        private const int CreateCalloutNormalShapeTestSlideNo = 4;
-        private const int CreateCalloutNormalShapeExpectedSlideNo = 5;
-        private const int CreateCalloutTriggerShapeTestSlideNo = 7;
-        private const int CreateCalloutTriggerShapeExpectedSlideNo = 8;
-        private const int CreateCalloutCalloutShapeTestSlideNo = 10;
-        private const int CreateCalloutCalloutShapeExpectedSlideNo = 11;
-        private const int CreateCalloutMultipleNormalShapesTestSlideNo = 13;
-        private const int CreateCalloutMultipleNormalShapesExpectedSlideNo = 14;
-        private const int CreateCalloutMultipleAllTypeShapesTestSlideNo = 16;
-        private const int CreateCalloutMultipleAllTypeShapesExpectedSlideNo = 17;
-        private const int CreateCalloutMultipleTypeMoreShapesTestSlideNo = 19;
-        private const int CreateCalloutMultipleTypeMoreShapesExpectedSlideNo = 20;
-        private const string NormalShapeName = "normalShape";
-        private const string TriggerShapeName = "existingTriggerShape";
-        private const string CalloutShapeName = "existingCalloutShape";
-        private const string MultipleShapePrefix = "select";
 
         private void TestCreateCallout_NormalShape()
         {
