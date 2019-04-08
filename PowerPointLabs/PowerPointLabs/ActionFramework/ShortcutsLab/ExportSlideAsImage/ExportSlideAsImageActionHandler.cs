@@ -4,6 +4,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -31,9 +32,9 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             }
 
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            saveFileDialog.Title = "Export Slide As Image";
-            saveFileDialog.DefaultExt = "png";
-            saveFileDialog.Filter = "Images|*.png;*.bmp;*.jpg";
+            saveFileDialog.Title = ShortcutsLabConstants.ExportSlideSaveFileDialogTitle;
+            saveFileDialog.DefaultExt = ShortcutsLabConstants.ExportSlideSaveFileDialogExtension;
+            saveFileDialog.Filter = ShortcutsLabConstants.ExportSlideSaveFileDialogFilter;
 
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
