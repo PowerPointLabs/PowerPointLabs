@@ -7,6 +7,7 @@ namespace PowerPointLabs.TooltipsLab
 {
     static class TooltipsLabConstants
     {
+        public static readonly Size DisplayImageSize = new Size(30, 30);
         public const MsoAutoShapeType TriggerShape = MsoAutoShapeType.msoShapeOval;
         public const string ShapeNameHeader = "msoShape";
         public const string AnimationNameHeader = "msoAnimEffect";

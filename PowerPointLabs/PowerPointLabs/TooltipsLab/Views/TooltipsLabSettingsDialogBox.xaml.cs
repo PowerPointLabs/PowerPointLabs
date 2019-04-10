@@ -5,7 +5,6 @@ using System.Windows;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.SyncLab;
-using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
@@ -79,8 +78,8 @@ namespace PowerPointLabs.TooltipsLab.Views
                 {
                     Shape shape = shapes.AddShape(
                         (MsoAutoShapeType)types.GetValue(i), 0, 0,
-                        SyncFormatConstants.DisplayImageSize.Width,
-                        SyncFormatConstants.DisplayImageSize.Height);
+                        TooltipsLabConstants.DisplayImageSize.Width,
+                        TooltipsLabConstants.DisplayImageSize.Height);
                     bitmaps[i] = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
                     shape.Delete();
                 }
