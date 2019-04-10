@@ -17,7 +17,7 @@ namespace PowerPointLabs.ELearningLab.Views
     /// <summary>
     /// Interaction logic for SelfExplanationBlockView.xaml
     /// </summary>
-    public partial class SelfExplanationBlockView : UserControl
+    public partial class ExplanationItemView : UserControl
     {
         #region Custom Events
 
@@ -25,25 +25,25 @@ namespace PowerPointLabs.ELearningLab.Views
             "UpButtonClickedHandler",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(SelfExplanationBlockView));
+            typeof(ExplanationItemView));
 
         public static readonly RoutedEvent DownButtonClickedEvent = EventManager.RegisterRoutedEvent(
             "DownButtonClickedHandler",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(SelfExplanationBlockView));
+            typeof(ExplanationItemView));
 
         public static readonly RoutedEvent DeleteButtonClickedEvent = EventManager.RegisterRoutedEvent(
            "DeleteButtonClickedHandler",
            RoutingStrategy.Bubble,
            typeof(RoutedEventHandler),
-           typeof(SelfExplanationBlockView));
+           typeof(ExplanationItemView));
 
         public static readonly RoutedEvent TriggerTypeSelectionChangedEvent = EventManager.RegisterRoutedEvent(
             "TriggerTypeSelectionChangedHandler",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(SelfExplanationBlockView));
+            typeof(ExplanationItemView));
 
         #endregion
 
@@ -75,10 +75,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
         #endregion
 
-        public static AudioSettingsDialogWindow dialog = 
-            new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
-
-        public SelfExplanationBlockView()
+        public ExplanationItemView()
         {
             InitializeComponent();
             upImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
@@ -143,22 +140,18 @@ namespace PowerPointLabs.ELearningLab.Views
         {
             RoutedEventArgs eventArgs = new RoutedEventArgs(DeleteButtonClickedEvent);
             eventArgs.Source = sender;
-
-            dialog.Close();
-            dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
-
             RaiseEvent(eventArgs);
         }
 
         private void VoicePreviewButton_Click(object sender, RoutedEventArgs e)
         {
             AzureAccountStorageService.LoadUserAccount();
+            AudioSettingsDialogWindow dialog = new AudioSettingsDialogWindow(AudioSettingsPage.AudioPreviewPage);
             AudioPreviewPage page = dialog.MainPage as AudioPreviewPage;
             page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
-            dialog.Show();
-            dialog.Activate();
+            dialog.ShowDialog();
         }
 
         private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)

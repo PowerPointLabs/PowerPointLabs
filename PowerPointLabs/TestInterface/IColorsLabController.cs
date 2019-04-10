@@ -28,7 +28,10 @@ namespace TestInterface
         void ResetFavoriteColors();
         void ClearFavoriteColors();
 
+        void ClearRecentColors();
+
         List<Color> GetCurrentFavoritePanel();
+        List<Color> GetCurrentRecentPanel();
 
     }
 }

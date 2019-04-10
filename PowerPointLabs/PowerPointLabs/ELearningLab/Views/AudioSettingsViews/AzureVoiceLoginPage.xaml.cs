@@ -20,6 +20,12 @@ namespace PowerPointLabs.ELearningLab.Views
         }
 
         #region XAML-Binded Event Handlers
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            key.Text = string.Empty;
+            endpoint.SelectedIndex = -1;
+        }
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             SwitchViewToPreviousPage();
@@ -56,7 +62,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             else
             {
-                MessageBox.Show("Invalid Account!");
+                MessageBox.Show("Invalid Azure Account.\nIs your account expired?\nAre you connected to WiFi?");
             }
         }
         #endregion

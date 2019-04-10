@@ -63,5 +63,6 @@ namespace TestInterface
         IPositionsLabController PositionsLab { get; }
         ISyncLabController SyncLab { get; }
         ITimerLabController TimerLab { get; }
+        IELearningLabController ELearningLab { get; }
     }
 }

@@ -10,11 +10,11 @@ using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
-    public class CustomClickItem: ClickItem, IEquatable<CustomClickItem>
+    public class CustomItem: ClickItem, IEquatable<CustomItem>
     {
         public ObservableCollection<CustomSubItem> CustomItems { get; set; }
 
-        public CustomClickItem(ObservableCollection<CustomSubItem> customSubItems)
+        public CustomItem(ObservableCollection<CustomSubItem> customSubItems)
         {
             CustomItems = customSubItems;
         }
@@ -29,9 +29,9 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 return true;
             }
-            return Equals(other as CustomClickItem);
+            return Equals(other as CustomItem);
         }
-        public bool Equals(CustomClickItem other)
+        public bool Equals(CustomItem other)
         {
             return ClickNo == other.ClickNo && CustomItems.SequenceEqual(other.CustomItems);
         }

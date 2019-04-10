@@ -21,8 +21,7 @@ namespace PowerPointLabs.ELearningLab.Service
 {
     public class WatsonRuntimeService
     {
-        public static bool IsWatsonAccountPresentAndValid = IsWatsonAccountPresent()
-            && IsValidUserAccount(showErrorMessage: false);
+        public static bool IsWatsonAccountPresentAndValid = false;
         public static ObservableCollection<WatsonVoice> Voices { get; set; } = GetWatsonVoices();
 
         public static bool IsWatsonAccountPresent()
@@ -30,7 +29,7 @@ namespace PowerPointLabs.ELearningLab.Service
             return !WatsonAccount.GetInstance().IsEmpty();
         }
 
-        public static bool IsValidUserAccount(bool showErrorMessage = true)
+        public static bool IsValidUserAccount(bool showErrorMessage = true, string errorMessage = "Failed Azure authentication.")
         {
             try
             {
@@ -54,17 +53,17 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             catch
             {
-                Console.WriteLine("Failed authentication.");
+                Console.WriteLine(errorMessage);
                 if (showErrorMessage)
                 {
-                    MessageBox.Show("Failed authentication");
+                    MessageBox.Show(errorMessage);
                 }
                 return false;
             }
             return true;
         }
 
-        public static bool IsValidUserAccount(string key, string endpoint)
+        public static bool IsValidUserAccount(string key, string endpoint, string errorMessage = "Failed Azure authentication.")
         {
             try
             {
@@ -73,11 +72,11 @@ namespace PowerPointLabs.ELearningLab.Service
                 string accessToken = new TokenManager(options).GetToken();
                 if (string.IsNullOrEmpty(accessToken))
                 {
-                    throw new Exception("invalid account");
+                    throw new Exception(errorMessage);
                 }
                 if (!IsValidEndpoint(key, endpoint))
                 {
-                    throw new Exception("invalid account");
+                    throw new Exception(errorMessage);
                 }
                 Console.WriteLine("Token: {0}\n", accessToken);
             }

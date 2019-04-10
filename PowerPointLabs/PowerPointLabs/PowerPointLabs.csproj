@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>4.8.0.0</ApplicationVersion>
+    <ApplicationVersion>4.9.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -283,6 +283,9 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerActionHandler.cs" />
@@ -714,6 +717,7 @@
     <Compile Include="EffectsLab\EffectsLabSettings.cs" />
     <Compile Include="EffectsLab\EffectsLabUtil.cs" />
     <Compile Include="EffectsLab\EffectsLabRecolor.cs" />
+    <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\InputOptions.cs" />
     <Compile Include="ELearningLab\AudioGenerator\ComputerVoiceGenerator\Model\ComputerVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\IVoice.cs" />
     <Compile Include="ELearningLab\AudioGenerator\VoiceType.cs" />
@@ -739,9 +743,12 @@
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\CustomItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\ModelFactory\ItemFactory\SelfExplanationItemFactory.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ClickItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomClickItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\CustomSubItem.cs" />
-    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\SelfExplanationClickItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\AnimationType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\BackgroundWorkerType.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Enums\NoteType.cs" />
@@ -766,8 +773,8 @@
     <Compile Include="ELearningLab\Views\AudioSettingsViews\WatsonVoiceLoginPage.xaml.cs">
       <DependentUpon>WatsonVoiceLoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml.cs">
-      <DependentUpon>CustomBlockView.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\CustomItemView.xaml.cs">
+      <DependentUpon>CustomItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabMainPanel.xaml.cs">
       <DependentUpon>ELearningLabMainPanel.xaml</DependentUpon>
@@ -778,13 +785,15 @@
     <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ELearningLabTaskpane.Designer.cs">
       <DependentUpon>ELearningLabTaskpane.cs</DependentUpon>
     </Compile>
-    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml.cs">
-      <DependentUpon>SelfExplanationBlockView.xaml</DependentUpon>
+    <Compile Include="ELearningLab\Views\ELearningWorkspaceViews\ExplanationItemView.xaml.cs">
+      <DependentUpon>ExplanationItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ELearningLab\Service\FunctionService\CalloutService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -1587,7 +1596,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomBlockView.xaml">
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\CustomItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1595,7 +1604,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\SelfExplanationBlockView.xaml">
+    <Page Include="ELearningLab\Views\ELearningWorkspaceViews\ExplanationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2275,6 +2284,10 @@
     <None Include="Resources\ELearningLabIcon2.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ExportSlideAsImage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportSlideAsPicture.png" />
     <None Include="Resources\CreateTooltip.png" />
   </ItemGroup>
   <ItemGroup>
