@@ -20,14 +20,14 @@ namespace PowerPointLabs.TooltipsLab.Views
     /// </summary>
     public partial class TooltipsLabSettingsAnimationEntry : UserControl
     {
-        private MsoAnimEffect type;
+        private MsoAnimEffect selectedEffectType;
 
         #region Constructors
 
-        public TooltipsLabSettingsAnimationEntry(MsoAnimEffect type, Bitmap image)
+        public TooltipsLabSettingsAnimationEntry(MsoAnimEffect defaultEffectType, Bitmap image)
         {
             InitializeComponent();
-            Type = type;
+            Type = defaultEffectType;
             imageBox.Source = Imaging.CreateBitmapSourceFromHBitmap(
                 image.GetHbitmap(),
                 IntPtr.Zero,
@@ -43,11 +43,11 @@ namespace PowerPointLabs.TooltipsLab.Views
         {
             get
             {
-                return type;
+                return selectedEffectType;
             }
             set
             {
-                type = value;
+                selectedEffectType = value;
                 string nameForDisplay = RawNameToDisplayName(value.ToString());
                 textBlock.Text = nameForDisplay;
                 ToolTip = nameForDisplay;
