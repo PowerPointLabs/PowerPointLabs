@@ -971,7 +971,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
-            Ribbon.RefreshRibbonControl("RemoveAudioButton");
+            Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
             Ribbon.RefreshRibbonControl("ELearningTaskPaneButton");
         }
 
