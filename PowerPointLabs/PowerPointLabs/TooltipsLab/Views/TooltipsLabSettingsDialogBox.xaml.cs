@@ -20,13 +20,13 @@ namespace PowerPointLabs.TooltipsLab.Views
         public delegate void DialogConfirmedDelegate(MsoAutoShapeType newShapeType, MsoAnimEffect newAnimationType);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
-        private MsoAutoShapeType lastShapeType;
-        private MsoAnimEffect lastAnimationType;
+        private MsoAutoShapeType lastSelectedShapeType;
+        private MsoAnimEffect lastSelectedAnimType;
 
-        public TooltipsLabSettingsDialogBox(MsoAutoShapeType shapeType, MsoAnimEffect animType)
+        public TooltipsLabSettingsDialogBox(MsoAutoShapeType selectedShapeType, MsoAnimEffect selectedAnimType)
         {
-            lastShapeType = shapeType;
-            lastAnimationType = animType;
+            lastSelectedShapeType = selectedShapeType;
+            lastSelectedAnimType = selectedAnimType;
             InitializeComponent();
             Initialize();
         }
@@ -44,7 +44,7 @@ namespace PowerPointLabs.TooltipsLab.Views
                 TooltipsLabSettingsShapeEntry newEntry = new TooltipsLabSettingsShapeEntry(
                     (MsoAutoShapeType)shapeTypes.GetValue(i), shapeBitmaps[i]);
                 shapeList.Items.Add(newEntry);
-                if (newEntry.Type == lastShapeType)
+                if (newEntry.Type == lastSelectedShapeType)
                 {
                     shapeList.SelectedItem = newEntry;
                     shapeList.ScrollIntoView(newEntry);
@@ -57,7 +57,7 @@ namespace PowerPointLabs.TooltipsLab.Views
                     TooltipsLabConstants.AnimationEffects[i],
                     TooltipsLabConstants.AnimationImages[i]);
                 animationList.Items.Add(newEntry);
-                if (newEntry.Type == lastAnimationType)
+                if (newEntry.Type == lastSelectedAnimType)
                 {
                     animationList.SelectedItem = newEntry;
                     animationList.ScrollIntoView(newEntry);
