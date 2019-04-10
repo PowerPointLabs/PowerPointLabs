@@ -80,6 +80,7 @@ namespace PowerPointLabs.TooltipsLab.Views
                         (MsoAutoShapeType)types.GetValue(i), 0, 0,
                         TooltipsLabConstants.DisplayImageSize.Width,
                         TooltipsLabConstants.DisplayImageSize.Height);
+                    ShapeUtil.FormatCalloutToDefaultStyle(shape);
                     bitmaps[i] = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
                     shape.Delete();
                 }
