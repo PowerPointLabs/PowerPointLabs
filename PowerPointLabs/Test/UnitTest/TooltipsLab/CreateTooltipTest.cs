@@ -21,6 +21,7 @@ namespace Test.UnitTest.TooltipsLab
         private const int CreateTooltipMultipleTooltipsExpectedSlideNo = 14;
 
         private const string CreateTooltipShapeToSelectName = "SelectMe";
+        private const int NumberOfTooltips = 5;
 
         protected override string GetTestingSlideName()
         {
@@ -59,7 +60,7 @@ namespace Test.UnitTest.TooltipsLab
         private void TestCreateTooltip_MultipleTooltips()
         {
             PpOperations.SelectSlide(CreateTooltipMultipleTooltipsTestSlideNo);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < NumberOfTooltips; i++)
             {
                 CreateTooltipOnSlide(CreateTooltipMultipleTooltipsTestSlideNo);
             }
