@@ -38,6 +38,22 @@ namespace PowerPointLabs.ColorsLab
             return String.Format("H: {0:#0.##} S: {1:#0.##} L: {2:#0.##}", Hue, Saturation, Luminosity);
         }
 
+        public override bool Equals(object obj)
+        {
+            HSLColor color = obj as HSLColor;
+            if (color == null)
+            {
+                return false;
+            }
+
+            return this.Hue == color.Hue && this.Saturation == color.Saturation && this.Luminosity == color.Luminosity;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetHashCode();
+        }
+
         public string ToRGBString()
         {
             Color color = (Color)this;

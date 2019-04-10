@@ -705,6 +705,10 @@
 	    <menuSeparator id="separatorFrame" />
 	    <dynamicMenu id="MenuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
+    <contextMenu idMso="ContextMenuThumbnail">
+      <menuSeparator id="separatorThumbnail" />
+      <dynamicMenu id="MenuThumbnail" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
     <!--
     <contextMenu idMso="ContextMenuNotesEditText">
       <menu id="MenuNotesEditText" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage">

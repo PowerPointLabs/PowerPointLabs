@@ -18,7 +18,7 @@
         public const string CreateMenuLabel = "Create";
         public const string CreateTooltipButtonLabel = "Create Tooltip";
         public const string CreateCalloutButtonLabel = "Create Callout For Shape";
-        public const string CreateTriggerButtonLabel = "Create Trigger For Callout";
+        public const string CreateTriggerButtonLabel = "Create Trigger For Shape";
         public const string ConvertToTooltipButtonLabel = "Convert Shapes to Tooltip";
         public const string SettingsButtonLabel = "Settings";
 
@@ -29,7 +29,7 @@
             "Create a callout with a specified trigger shape. \n\n" +
             "To perform this action, select your desired trigger shape. A callout will be generated for you.";
         public const string CreateTriggerButtonSupertip =
-            "Create a trigger shape with a specified callout. \n\n" +
+            "Create a trigger shape with a specified callout shape. \n\n" +
             "To perform this action, select your desired callout. A trigger shape will be generated for you.";
         public const string ConvertToTooltipButtonSupertip =
             "Attach a trigger animation to a group of shapes. \n\n" +
