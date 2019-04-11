@@ -12,8 +12,53 @@ namespace PowerPointLabs.DataSources
 {
     class ColorDataSource : INotifyPropertyChanged
     {
-        private const int numRecentColors = 12;
-        private const int numFavoriteColors = 12;
+        public IList<HSLColor> RecentColors
+        {
+            get
+            {
+                return recentColors;
+            }
+        }
+
+        public IList<HSLColor> FavoriteColors
+        {
+            get
+            {
+                return favoriteColors;
+            }
+        }
+
+        private readonly string[] recentColorFieldNames =
+        {
+            "RecentColorOne",
+            "RecentColorTwo",
+            "RecentColorThree",
+            "RecentColorFour",
+            "RecentColorFive",
+            "RecentColorSix",
+            "RecentColorSeven",
+            "RecentColorEight",
+            "RecentColorNine",
+            "RecentColorTen",
+            "RecentColorEleven",
+            "RecentColorTwelve"
+        };
+
+        private readonly string[] favoriteColorFieldNames =
+        {
+            "themeColorOne",
+            "themeColorTwo",
+            "themeColorThree",
+            "themeColorFour",
+            "themeColorFive",
+            "themeColorSix",
+            "themeColorSeven",
+            "themeColorEight",
+            "themeColorNine",
+            "themeColorTen",
+            "themeColorEleven",
+            "themeColorTwelve"
+        };
 
         private ObservableCollection<HSLColor> recentColors;
         private ObservableCollection<HSLColor> favoriteColors;
@@ -83,7 +128,7 @@ namespace PowerPointLabs.DataSources
         public void ClearRecentColors()
         {
             recentColors.Clear();
-            for (int i = 0; i < numRecentColors; i++)
+            for (int i = 0; i < recentColorFieldNames.Length; i++)
             {
                 recentColors.Add(Color.White);
             }
@@ -92,7 +137,7 @@ namespace PowerPointLabs.DataSources
         public void ClearFavoriteColors()
         {
             favoriteColors.Clear();
-            for (int i = 0; i < numFavoriteColors; i++)
+            for (int i = 0; i < favoriteColorFieldNames.Length; i++)
             {
                 favoriteColors.Add(Color.White);
             }
@@ -134,8 +179,6 @@ namespace PowerPointLabs.DataSources
         {
             try
             {
-                ObservableCollection<HSLColor> recentColors = GetListOfRecentColors();
-
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(fileStream, recentColors);
@@ -155,10 +198,13 @@ namespace PowerPointLabs.DataSources
                 Stream openFileStream = File.OpenRead(filePath);
                 BinaryFormatter deserializer = new BinaryFormatter();
                 List<HSLColor> newRecentColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
-                ObservableCollection<HSLColor> observableRecentColors = new ObservableCollection<HSLColor>(newRecentColors);
                 openFileStream.Close();
 
-                recentColors = observableRecentColors;
+                ClearRecentColors();
+                foreach (HSLColor recentColor in newRecentColors)
+                {
+                    AddColorToRecentColors(recentColor);
+                }
             }
             catch (Exception)
             {
@@ -192,7 +238,10 @@ namespace PowerPointLabs.DataSources
                 List<HSLColor> newFavoriteColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
                 openFileStream.Close();
 
-                this.favoriteColors = new ObservableCollection<HSLColor>(newFavoriteColors);
+                foreach (HSLColor favoriteColor in newFavoriteColors)
+                {
+                    AddColorToFavorites(favoriteColor);
+                }
             }
             catch (Exception)
             {
@@ -205,53 +254,52 @@ namespace PowerPointLabs.DataSources
 
         #region EventHandlers
 
-        public delegate void ColorChange(object sender, int colorIndex);
-
-        public event ColorChange RecentColorChanged;
-        public event ColorChange FavoriteColorChanged;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         // This method is called by the Set accessor of each property. 
         // The CallerMemberName attribute that is applied to the optional propertyName 
         // parameter causes the property name of the caller to be substituted as an argument. 
         // Create the OnPropertyChanged method to raise the event 
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         protected void RecentColors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            List<HSLColor> newValues = e.NewItems as List<HSLColor> ?? new List<HSLColor>();
-            switch (newValues.Count)
+            System.Collections.IList newValues = e.NewItems;
+            switch (newValues?.Count ?? 0)
             {
                 case 0:
                     break;
                 case 1:
-                    RecentColorChanged?.Invoke(newValues[0], e.NewStartingIndex);
+                    string name = recentColorFieldNames[e.NewStartingIndex];
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
                     break;
                 default:
-                    for (int i = 0; i < recentColors.Count; i++)
+                    foreach (string fieldName in recentColorFieldNames)
                     {
-                        RecentColorChanged?.Invoke(recentColors[i], i);
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(fieldName));
                     }
                     break;
             }
         }
-        // This method is called by the Set accessor of each property. 
-        // The CallerMemberName attribute that is applied to the optional propertyName 
-        // parameter causes the property name of the caller to be substituted as an argument. 
-        // Create the OnPropertyChanged method to raise the event 
+
         protected void FavoriteColors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            List<HSLColor> newValues = e.NewItems as List<HSLColor> ?? new List<HSLColor>();
-            switch (newValues.Count)
+            System.Collections.IList newValues = e.NewItems;
+            switch (newValues?.Count ?? 0)
             {
                 case 0:
                     break;
                 case 1:
-                    FavoriteColorChanged?.Invoke(newValues[0], e.NewStartingIndex);
+                    string name = favoriteColorFieldNames[e.NewStartingIndex];
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
                     break;
                 default:
-                    for (int i = 0; i < favoriteColors.Count; i++)
+                    foreach (string fieldName in favoriteColorFieldNames)
                     {
-                        FavoriteColorChanged?.Invoke(favoriteColors[i], i);
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(fieldName));
                     }
                     break;
             }

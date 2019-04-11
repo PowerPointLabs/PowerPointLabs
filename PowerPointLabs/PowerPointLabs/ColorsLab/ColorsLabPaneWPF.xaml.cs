@@ -132,9 +132,6 @@ namespace PowerPointLabs.ColorsLab
             NONE
         };
 
-        private List<Rectangle> recentColorRects;
-        private List<Rectangle> favoriteColorRects;
-
         private MODE _eyedropperMode;
         private Color _previousFillColor;
         private Color _currentEyedroppedColor;
@@ -172,38 +169,6 @@ namespace PowerPointLabs.ColorsLab
         {
             // Set data context to data source for XAML to reference.
             DataContext = dataSource;
-            recentColorRects = new List<Rectangle>()
-            {
-                recentRectangleOne,
-                recentRectangleTwo,
-                recentRectangleThree,
-                recentRectangleFour,
-                recentRectangleFive,
-                recentRectangleSix,
-                recentRectangleSeven,
-                recentRectangleEight,
-                recentRectangleNine,
-                recentRectangleTen,
-                recentRectangleEleven,
-                recentRectangleTwelve
-            };
-            favoriteColorRects = new List<Rectangle>()
-            {
-                favoriteColorRectangleOne,
-                favoriteColorRectangleTwo,
-                favoriteColorRectangleThree,
-                favoriteColorRectangleFour,
-                favoriteColorRectangleFive,
-                favoriteColorRectangleSix,
-                favoriteColorRectangleSeven,
-                favoriteColorRectangleEight,
-                favoriteColorRectangleNine,
-                favoriteColorRectangleTen,
-                favoriteColorRectangleEleven,
-                favoriteColorRectangleTwelve
-            };
-            dataSource.RecentColorChanged += RecentColorChanged;
-            dataSource.FavoriteColorChanged += FavoriteColorChanged;
 
             // Do not remove. Default generated code.
             InitializeComponent();
@@ -325,31 +290,7 @@ namespace PowerPointLabs.ColorsLab
         #endregion
 
         #region Event Handlers
-
-        private void RecentColorChanged(object sender, int colorIndex)
-        {
-            HSLColor hslColor = sender as HSLColor;
-            if (hslColor == null)
-            {
-                return;
-            }
-            SolidColorBrush brush = new SolidColorBrush();
-            brush.Color = (System.Windows.Media.Color) ColorConverter.ConvertFromString(((Color) hslColor).ToString());
-            recentColorRects[colorIndex].Fill = brush;
-        }
-
-        private void FavoriteColorChanged(object sender, int colorIndex)
-        {
-            HSLColor hslColor = sender as HSLColor;
-            if (hslColor == null)
-            {
-                return;
-            }
-            SolidColorBrush brush = new SolidColorBrush();
-            brush.Color = (System.Windows.Media.Color)ColorConverter.ConvertFromString(((Color)hslColor).ToString());
-            favoriteColorRects[colorIndex].Fill = brush;
-        }
-
+        
         #region ColorsLabPane Handlers
 
         /// <summary>
