@@ -75,7 +75,7 @@ namespace PowerPointLabs.ColorsLab
 
         public IList<Color> GetFavoriteColorsPanelAsList()
         {
-            IList<HSLColor> favoriteHslColors = dataSource.GetListOfRecentColors();
+            IList<HSLColor> favoriteHslColors = dataSource.GetListOfFavoriteColors();
             IList<Color> favoriteColors = new List<Color>();
             foreach (HSLColor favoriteHslColor in favoriteHslColors)
             {

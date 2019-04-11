@@ -45,13 +45,11 @@ namespace Test.FunctionalTest
             Color.FromArgb(255, 255, 255),
             Color.FromArgb(255, 255, 255),
             Color.FromArgb(255, 255, 255),
-            Color.FromArgb(255, 255, 255),
             Color.FromArgb(255, 255, 255)
         });
 
         private List<Color> AllWhiteColorList = new List<Color>(new Color[]
         {
-            Color.FromArgb(255, 255, 255),
             Color.FromArgb(255, 255, 255),
             Color.FromArgb(255, 255, 255),
             Color.FromArgb(255, 255, 255),

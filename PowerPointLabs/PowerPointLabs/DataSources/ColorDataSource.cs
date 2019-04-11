@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-
+using System.Windows;
 using PowerPointLabs.ColorsLab;
 
 namespace PowerPointLabs.DataSources
@@ -200,10 +200,10 @@ namespace PowerPointLabs.DataSources
                 List<HSLColor> newRecentColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
                 openFileStream.Close();
 
-                ClearRecentColors();
+                recentColors.Clear();
                 foreach (HSLColor recentColor in newRecentColors)
                 {
-                    AddColorToRecentColors(recentColor);
+                    recentColors.Add(recentColor);
                 }
             }
             catch (Exception)
@@ -238,9 +238,10 @@ namespace PowerPointLabs.DataSources
                 List<HSLColor> newFavoriteColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
                 openFileStream.Close();
 
+                favoriteColors.Clear();
                 foreach (HSLColor favoriteColor in newFavoriteColors)
                 {
-                    AddColorToFavorites(favoriteColor);
+                    favoriteColors.Add(favoriteColor);
                 }
             }
             catch (Exception)
@@ -259,12 +260,7 @@ namespace PowerPointLabs.DataSources
         // This method is called by the Set accessor of each property. 
         // The CallerMemberName attribute that is applied to the optional propertyName 
         // parameter causes the property name of the caller to be substituted as an argument. 
-        // Create the OnPropertyChanged method to raise the event 
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
+        // Create the OnPropertyChanged method to raise the event
         protected void RecentColors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             System.Collections.IList newValues = e.NewItems;
