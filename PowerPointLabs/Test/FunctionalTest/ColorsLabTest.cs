@@ -266,7 +266,7 @@ namespace Test.FunctionalTest
         {
             // Clear the favorite colors panel
             colorsLab.ClearFavoriteColors();
-            List<Color> currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
+            IList<Color> currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
             AssertEqual(AllWhiteColorList, currentFavoritePanel);
 
             // Load the test case
@@ -284,7 +284,7 @@ namespace Test.FunctionalTest
         private void TestRecentColors(IColorsLabController colorsLab)
         {
             // After all the calls in the earlier tests, recent colors panel should be populated
-            List<Color> currentRecentPanel = colorsLab.GetCurrentRecentPanel();
+            IList<Color> currentRecentPanel = colorsLab.GetCurrentRecentPanel();
             AssertEqual(RecentColorsAfterFT, currentRecentPanel);
         }
 
@@ -314,7 +314,7 @@ namespace Test.FunctionalTest
 
 
 
-        private static void AssertEqual(List<Color> expectedList, List<Color> actualList)
+        private static void AssertEqual(IList<Color> expectedList, IList<Color> actualList)
         {
             for (int i = 0; i < expectedList.Count; i++)
             {

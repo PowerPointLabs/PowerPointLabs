@@ -6,25 +6,26 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ColorsLab;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
+
 using Color = System.Drawing.Color;
+using Path = System.IO.Path;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ColorsLab
 {
-    
+
     /// <summary>
     /// Interaction logic for TimerLabPaneWPF.xaml
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
-
         #region Functional Test API
 
         public Point GetApplyTextButtonLocationAsPoint()
@@ -72,33 +73,26 @@ namespace PowerPointLabs.ColorsLab
                 topLeftOfButton.Y + eyeDropperButton.ActualHeight / 2);
         }
 
-        public List<Color> GetFavoriteColorsPanelAsList()
+        public IList<Color> GetFavoriteColorsPanelAsList()
         {
-            List<Color> list = new List<Color>();
-            list.Add(dataSource.ThemeColorOne);
-            list.Add(dataSource.ThemeColorTwo);
-            list.Add(dataSource.ThemeColorThree);
-            list.Add(dataSource.ThemeColorFour);
-            list.Add(dataSource.ThemeColorFive);
-            list.Add(dataSource.ThemeColorSix);
-            list.Add(dataSource.ThemeColorSeven);
-            list.Add(dataSource.ThemeColorEight);
-            list.Add(dataSource.ThemeColorNine);
-            list.Add(dataSource.ThemeColorTen);
-            list.Add(dataSource.ThemeColorEleven);
-            list.Add(dataSource.ThemeColorTwelve);
-            return list;
+            IList<HSLColor> favoriteHslColors = dataSource.GetListOfRecentColors();
+            IList<Color> favoriteColors = new List<Color>();
+            foreach (HSLColor favoriteHslColor in favoriteHslColors)
+            {
+                favoriteColors.Add(favoriteHslColor);
+            }
+            return favoriteColors;
         }
 
         public void LoadFavoriteColorsFromPath(string filePath)
         {
-            dataSource.LoadThemeColorsFromFile(filePath);
+            dataSource.LoadFavoriteColorsFromFile(filePath);
         }
 
-        public List<Color> GetRecentColorsPanelAsList()
+        public IList<Color> GetRecentColorsPanelAsList()
         {
-            List<HSLColor> recentHslColors = dataSource.GetListOfRecentColors();
-            List<Color> recentColors = new List<Color>();
+            IList<HSLColor> recentHslColors = dataSource.GetListOfRecentColors();
+            IList<Color> recentColors = new List<Color>();
             foreach (HSLColor recentHslColor in recentHslColors)
             {
                 recentColors.Add(recentHslColor);
@@ -115,18 +109,7 @@ namespace PowerPointLabs.ColorsLab
             {
                 if (this.GetCurrentSlide() != null)
                 {
-                    dataSource.RecentColorOne = Color.White;
-                    dataSource.RecentColorTwo = Color.White;
-                    dataSource.RecentColorThree = Color.White;
-                    dataSource.RecentColorFour = Color.White;
-                    dataSource.RecentColorFive = Color.White;
-                    dataSource.RecentColorSix = Color.White;
-                    dataSource.RecentColorSeven = Color.White;
-                    dataSource.RecentColorEight = Color.White;
-                    dataSource.RecentColorNine = Color.White;
-                    dataSource.RecentColorTen = Color.White;
-                    dataSource.RecentColorEleven = Color.White;
-                    dataSource.RecentColorTwelve = Color.White;
+                    dataSource.ClearRecentColors();
                 }
             }
             catch (Exception e)
@@ -149,6 +132,9 @@ namespace PowerPointLabs.ColorsLab
             NONE
         };
 
+        private List<Rectangle> recentColorRects;
+        private List<Rectangle> favoriteColorRects;
+
         private MODE _eyedropperMode;
         private Color _previousFillColor;
         private Color _currentEyedroppedColor;
@@ -161,6 +147,7 @@ namespace PowerPointLabs.ColorsLab
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
 
+
         // Eyedropper-related
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
@@ -170,7 +157,7 @@ namespace PowerPointLabs.ColorsLab
         private int timer1Ticks;
 
         // Saving color themes
-        private string _defaultThemeColorDirectory = Path.Combine(
+        private string _defaultThemeColorDirectory = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
             "PowerPointLabs.defaultThemeColor.thm");
         private string _defaultRecentColorDirectory = Path.Combine(
@@ -185,6 +172,38 @@ namespace PowerPointLabs.ColorsLab
         {
             // Set data context to data source for XAML to reference.
             DataContext = dataSource;
+            recentColorRects = new List<Rectangle>()
+            {
+                recentRectangleOne,
+                recentRectangleTwo,
+                recentRectangleThree,
+                recentRectangleFour,
+                recentRectangleFive,
+                recentRectangleSix,
+                recentRectangleSeven,
+                recentRectangleEight,
+                recentRectangleNine,
+                recentRectangleTen,
+                recentRectangleEleven,
+                recentRectangleTwelve
+            };
+            favoriteColorRects = new List<Rectangle>()
+            {
+                favoriteColorRectangleOne,
+                favoriteColorRectangleTwo,
+                favoriteColorRectangleThree,
+                favoriteColorRectangleFour,
+                favoriteColorRectangleFive,
+                favoriteColorRectangleSix,
+                favoriteColorRectangleSeven,
+                favoriteColorRectangleEight,
+                favoriteColorRectangleNine,
+                favoriteColorRectangleTen,
+                favoriteColorRectangleEleven,
+                favoriteColorRectangleTwelve
+            };
+            dataSource.RecentColorChanged += RecentColorChanged;
+            dataSource.FavoriteColorChanged += FavoriteColorChanged;
 
             // Do not remove. Default generated code.
             InitializeComponent();
@@ -306,6 +325,30 @@ namespace PowerPointLabs.ColorsLab
         #endregion
 
         #region Event Handlers
+
+        private void RecentColorChanged(object sender, int colorIndex)
+        {
+            HSLColor hslColor = sender as HSLColor;
+            if (hslColor == null)
+            {
+                return;
+            }
+            SolidColorBrush brush = new SolidColorBrush();
+            brush.Color = (System.Windows.Media.Color) ColorConverter.ConvertFromString(((Color) hslColor).ToString());
+            recentColorRects[colorIndex].Fill = brush;
+        }
+
+        private void FavoriteColorChanged(object sender, int colorIndex)
+        {
+            HSLColor hslColor = sender as HSLColor;
+            if (hslColor == null)
+            {
+                return;
+            }
+            SolidColorBrush brush = new SolidColorBrush();
+            brush.Color = (System.Windows.Media.Color)ColorConverter.ConvertFromString(((Color)hslColor).ToString());
+            favoriteColorRects[colorIndex].Fill = brush;
+        }
 
         #region ColorsLabPane Handlers
 
@@ -573,8 +616,8 @@ namespace PowerPointLabs.ColorsLab
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
-
-                        SetThemeColorRectangle(rect.Name, color);
+                        
+                        SetThemeColorRectangle(Grid.GetColumn(rect), color);
                     }
                 }
             }
@@ -623,7 +666,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
-                SetThemeColorRectangle(rect.Name, _previousFillColor);
+                SetThemeColorRectangle(Grid.GetColumn(rect), _previousFillColor);
             }
         }
 
@@ -655,7 +698,7 @@ namespace PowerPointLabs.ColorsLab
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
 
-                        SetThemeColorRectangle(rect.Name, color);
+                        SetThemeColorRectangle(Grid.GetColumn(rect), color);
                     }
                 }
             }
@@ -766,7 +809,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
-                dataSource.SaveThemeColorsInFile(saveFileDialog.FileName))
+                dataSource.SaveFavoriteColorsInFile(saveFileDialog.FileName))
             {
                 SaveDefaultColorPaneThemeColors();
             }
@@ -787,7 +830,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
-                dataSource.LoadThemeColorsFromFile(openFileDialog.FileName))
+                dataSource.LoadFavoriteColorsFromFile(openFileDialog.FileName))
             {
                 SaveDefaultColorPaneThemeColors();
             }
@@ -1209,7 +1252,7 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void LoadDefaultThemePanel()
         {
-            bool isSuccessful = dataSource.LoadThemeColorsFromFile(_defaultThemeColorDirectory);
+            bool isSuccessful = dataSource.LoadFavoriteColorsFromFile(_defaultThemeColorDirectory);
             if (!isSuccessful)
             {
                 EmptyThemePanel();
@@ -1240,18 +1283,7 @@ namespace PowerPointLabs.ColorsLab
             {
                 if (this.GetCurrentSlide() != null)
                 {
-                    dataSource.ThemeColorOne = Color.White;
-                    dataSource.ThemeColorTwo = Color.White;
-                    dataSource.ThemeColorThree = Color.White;
-                    dataSource.ThemeColorFour = Color.White;
-                    dataSource.ThemeColorFive = Color.White;
-                    dataSource.ThemeColorSix = Color.White;
-                    dataSource.ThemeColorSeven = Color.White;
-                    dataSource.ThemeColorEight = Color.White;
-                    dataSource.ThemeColorNine = Color.White;
-                    dataSource.ThemeColorTen = Color.White;
-                    dataSource.ThemeColorEleven = Color.White;
-                    dataSource.ThemeColorTwelve = Color.White;
+                    dataSource.ClearFavoriteColors();
                 }
             }
             catch (Exception e)
@@ -1265,49 +1297,9 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         /// <param name="name"></param>
         /// <param name="color"></param>
-        private void SetThemeColorRectangle(string name, Color color)
+        private void SetThemeColorRectangle(int column, Color color)
         {
-            switch (name)
-            {
-                case "favoriteColorRectangleOne":
-                dataSource.ThemeColorOne = color;
-                break;
-                case "favoriteColorRectangleTwo":
-                dataSource.ThemeColorTwo = color;
-                break;
-                case "favoriteColorRectangleThree":
-                dataSource.ThemeColorThree = color;
-                break;
-                case "favoriteColorRectangleFour":
-                dataSource.ThemeColorFour = color;
-                break;
-                case "favoriteColorRectangleFive":
-                dataSource.ThemeColorFive = color;
-                break;
-                case "favoriteColorRectangleSix":
-                dataSource.ThemeColorSix = color;
-                break;
-                case "favoriteColorRectangleSeven":
-                dataSource.ThemeColorSeven = color;
-                break;
-                case "favoriteColorRectangleEight":
-                dataSource.ThemeColorEight = color;
-                break;
-                case "favoriteColorRectangleNine":
-                dataSource.ThemeColorNine = color;
-                break;
-                case "favoriteColorRectangleTen":
-                dataSource.ThemeColorTen = color;
-                break;
-                case "favoriteColorRectangleEleven":
-                dataSource.ThemeColorEleven = color;
-                break;
-                case "favoriteColorRectangleTwelve":
-                dataSource.ThemeColorTwelve = color;
-                break;
-                default:
-                break;
-            }
+            dataSource.SetFavoriteColor(column, color);
         }
 
         /// <summary>
@@ -1315,7 +1307,7 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void SaveDefaultColorPaneThemeColors()
         {
-            dataSource.SaveThemeColorsInFile(_defaultThemeColorDirectory);
+            dataSource.SaveFavoriteColorsInFile(_defaultThemeColorDirectory);
         }
 
         #endregion
