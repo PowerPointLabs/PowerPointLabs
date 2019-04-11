@@ -158,10 +158,32 @@
                           IsChecked="{Binding IsCaption, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="5 2 1 2"/>
                     <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" Margin="5 2 1 2"
                           IsChecked="{Binding IsVoice, UpdateSourceTrigger=PropertyChanged}" FontSize="10"/>
-                    <Label x:Name="audioNameLabel" Margin="3 2 1 2"
-                               Content="{Binding VoiceLabel, Mode=TwoWay}" FontSize="8" Padding="0" 
-                               VerticalAlignment="Center" FontStyle="Italic"/>
-                   
+                    <TextBlock x:Name="audioNameLabel" Margin="3 2 1 2"
+                               Text="{Binding VoiceLabel, Mode=TwoWay}" FontSize="8" Padding="0" 
+                               VerticalAlignment="Center" FontStyle="Italic">
+                         <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsVoiceLabelInvalid}" Value="True">
+                                        <Setter Property="TextDecorations">
+                                            <Setter.Value>
+                                                <TextDecorationCollection>
+                                                    <TextDecoration>
+                                                        <TextDecoration.Pen>
+                                                            <Pen Brush="Red" />
+                                                        </TextDecoration.Pen>
+                                                        <TextDecoration.Location>
+                                                            Strikethrough
+                                                        </TextDecoration.Location>
+                                                    </TextDecoration>
+                                                </TextDecorationCollection>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
                 <Button Grid.Row="0" x:Name="audioPreviewButton" Margin="2 0 2 0" HorizontalAlignment="Right"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="VoicePreviewButton_Click">

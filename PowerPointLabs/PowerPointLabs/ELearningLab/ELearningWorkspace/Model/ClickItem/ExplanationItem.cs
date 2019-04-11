@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ELearningLab.Service;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
@@ -113,6 +114,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 voiceLabel = value;
                 NotifyPropertyChanged("VoiceLabel");
+                NotifyPropertyChanged("IsTriggerTypeComboBoxEnabled");
+                NotifyPropertyChanged("IsVoiceLabelInvalid");
             }
         }
 
@@ -146,7 +149,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 isTriggerTypeComboBoxEnabled = (bool)value;
-                NotifyPropertyChanged("IsTriggerTypeComboBoxEnabled");
+                NotifyPropertyChanged("IsVoiceLabelInvalid");
             }
         }
 
@@ -164,6 +167,15 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             get
             {
                 return tagNo;
+            }
+        }
+
+        public bool IsVoiceLabelInvalid
+        {
+            get
+            {
+                bool result = !AudioService.CheckIfVoiceExists(voiceLabel);
+                return result;
             }
         }
 

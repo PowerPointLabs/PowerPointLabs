@@ -70,8 +70,19 @@ namespace PowerPointLabs.ELearningLab.Service
             List<Effect> effects = new List<Effect>();
             if (selfExplanationItem.IsVoice)
             {
-                Effect effect = AudioService.CreateAppearEffectAudioAnimation(slide, selfExplanationItem.CaptionText, selfExplanationItem.VoiceLabel,
-                    selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
+                Effect effect;
+                if (selfExplanationItem.IsVoiceLabelInvalid)
+                {
+                    string defaultVoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat, AudioSettingService.selectedVoice.VoiceName);
+                    effect = AudioService.CreateAppearEffectAudioAnimation(slide, selfExplanationItem.CaptionText, defaultVoiceLabel,
+                     selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
+                    selfExplanationItem.VoiceLabel = defaultVoiceLabel;
+                }
+                else
+                {
+                    effect = AudioService.CreateAppearEffectAudioAnimation(slide, selfExplanationItem.CaptionText, selfExplanationItem.VoiceLabel,
+                      selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
+                }
                 if (effect != null)
                 {
                     effects.Add(effect);
