@@ -171,7 +171,7 @@ namespace Test.Util
 
         public Selection GetCurrentSelection()
         {
-            throw new NotImplementedException();
+            return App.ActiveWindow.Selection;
         }
 
         public ShapeRange SelectShape(string shapeName)
