@@ -86,6 +86,13 @@
                     getSupertip="GetSupertip"
                     getEnabled="GetEnabled"
                     onAction="OnAction"/>
+            <menuSeparator id="TooltipsLabSettingsSeparator"/>
+            <button id="TooltipsLabSettingsButton"
+                    tag="TooltipsLabSettings"
+                    getLabel="GetLabel"
+                    getImage="GetImage"
+                    getSupertip="GetSupertip"
+                    onAction="OnAction"/>
           </menu>
 
           <menu id="ZoomLabMenu"
@@ -704,6 +711,10 @@
     <contextMenu idMso="ContextMenuFrame">
 	    <menuSeparator id="separatorFrame" />
 	    <dynamicMenu id="MenuFrame" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
+    </contextMenu>
+    <contextMenu idMso="ContextMenuThumbnail">
+      <menuSeparator id="separatorThumbnail" />
+      <dynamicMenu id="MenuThumbnail" getLabel="GetPowerPointLabsMenuLabel" getImage="GetContextMenuImage" getContent="GetContent"/>
     </contextMenu>
     <!--
     <contextMenu idMso="ContextMenuNotesEditText">

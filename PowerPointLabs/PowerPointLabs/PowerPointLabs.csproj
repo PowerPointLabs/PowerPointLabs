@@ -283,6 +283,9 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerActionHandler.cs" />
@@ -302,6 +305,10 @@
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuSupertipHandler.cs" />
@@ -785,6 +792,7 @@
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
@@ -883,6 +891,16 @@
     <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
+    <Compile Include="TooltipsLab\TooltipsLabSettings.cs" />
+    <Compile Include="TooltipsLab\Views\TooltipsLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>TooltipsLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TooltipsLab\Views\TooltipsLabSettingsAnimationEntry.xaml.cs">
+      <DependentUpon>TooltipsLabSettingsAnimationEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TooltipsLab\Views\TooltipsLabSettingsShapeEntry.xaml.cs">
+      <DependentUpon>TooltipsLabSettingsShapeEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
@@ -1674,6 +1692,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TooltipsLab\Views\TooltipsLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TooltipsLab\Views\TooltipsLabSettingsAnimationEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TooltipsLab\Views\TooltipsLabSettingsShapeEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ErrorDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2254,6 +2284,10 @@
     <None Include="Resources\ELearningLabIcon2.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ExportSlideAsImage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportSlideAsPicture.png" />
     <None Include="Resources\CreateTooltip.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2264,6 +2298,45 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ConvertToTooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Appear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Bounce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Fade.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Float In.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Fly In.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Grow &amp; Turn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Random Bars.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Shape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Split.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Swivel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Wipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Zoom.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>

@@ -66,6 +66,22 @@ namespace Test.FunctionalTest
             Color.FromArgb(255, 255, 255)
         });
 
+        private List<Color> RecentColorsAfterFT = new List<Color>(new Color[]
+        {
+            Color.FromArgb(98, 235, 187),
+            Color.FromArgb(118, 98, 235),
+            Color.FromArgb(98, 215, 235),
+            Color.FromArgb(235, 98, 146),
+            Color.FromArgb(0, 53, 153),
+            Color.FromArgb(102, 155, 255),
+            Color.FromArgb(153, 189, 255),
+            Color.FromArgb(0, 89, 255),
+            Color.FromArgb(98, 148, 235),
+            Color.FromArgb(98, 235, 118),
+            Color.FromArgb(235, 118, 98),
+            Color.FromArgb(255, 255, 255)
+        });
+
         protected override string GetTestingSlideName()
         {
             return "ColorsLab\\ColorsLab.pptx";
@@ -80,6 +96,9 @@ namespace Test.FunctionalTest
             IColorsLabController colorsLab = PplFeatures.ColorsLab;
             colorsLab.OpenPane();
 
+            // Clear the recent colors panel before FT begins
+            colorsLab.ClearRecentColors();
+
             TestApplyFontColor(colorsLab);
             TestApplyLineColor(colorsLab);
             TestApplyFillColor(colorsLab);
@@ -91,6 +110,7 @@ namespace Test.FunctionalTest
             TestTriadicAndTetradicColors(colorsLab);
 
             TestFavoriteColors(colorsLab);
+            TestRecentColors(colorsLab);
         }
 
         private void TestApplyFontColor(IColorsLabController colorsLab)
@@ -230,8 +250,8 @@ namespace Test.FunctionalTest
             PpOperations.SelectShape(TargetShape);
             DragAndDrop(startPt, endPt);
 
-            // Apply tetradicRectFour as Line
-            colorsLab.ClickTetradicRect(4);
+            // Apply tetradicRectThree as Line
+            colorsLab.ClickTetradicRect(3);
             startPt = colorsLab.GetApplyLineButtonLocation();
             endPt = colorsLab.GetMainColorRectangleLocation();
             PpOperations.SelectShape(TargetShape);
@@ -261,6 +281,13 @@ namespace Test.FunctionalTest
             AssertEqual(AllWhiteColorList, currentFavoritePanel);
         }
 
+        private void TestRecentColors(IColorsLabController colorsLab)
+        {
+            // After all the calls in the earlier tests, recent colors panel should be populated
+            List<Color> currentRecentPanel = colorsLab.GetCurrentRecentPanel();
+            AssertEqual(RecentColorsAfterFT, currentRecentPanel);
+        }
+
         # region Helper methods
         // mouse drag & drop from Control to Shape to apply color
         private void ApplyColor(System.Windows.Controls.Control from, Shape to)
@@ -287,20 +314,20 @@ namespace Test.FunctionalTest
 
 
 
-        private static void AssertEqual(List<Color> exp, List<Color> actual)
+        private static void AssertEqual(List<Color> expectedList, List<Color> actualList)
         {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < expectedList.Count; i++)
             {
-                AssertEqual(exp[i], actual[i]);
+                AssertEqual(expectedList[i], actualList[i]);
             }
         }
 
-        private static void AssertEqual(Color exp, Color actual)
+        private static void AssertEqual(Color expectedColor, Color actualColor)
         {
             // dont assert Alpha
-            Assert.IsTrue(IsAlmostSame(exp.R, actual.R), "diff color R, exp {0}, actual {1}", exp.R, actual.R);
-            Assert.IsTrue(IsAlmostSame(exp.G, actual.G),"diff color G, exp {0}, actual {1}", exp.G, actual.G);
-            Assert.IsTrue(IsAlmostSame(exp.B, actual.B), "diff color B, exp {0}, actual {1}", exp.B, actual.B);
+            Assert.IsTrue(IsAlmostSame(expectedColor.R, actualColor.R), "diff color R, expected {0}, actual {1}", expectedColor.R, actualColor.R);
+            Assert.IsTrue(IsAlmostSame(expectedColor.G, actualColor.G),"diff color G, expected {0}, actual {1}", expectedColor.G, actualColor.G);
+            Assert.IsTrue(IsAlmostSame(expectedColor.B, actualColor.B), "diff color B, expected {0}, actual {1}", expectedColor.B, actualColor.B);
         }
 
         private static bool IsAlmostSame(byte a, byte b)

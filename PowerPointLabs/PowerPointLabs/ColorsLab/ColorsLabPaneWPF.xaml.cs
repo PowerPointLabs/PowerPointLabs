@@ -95,6 +95,46 @@ namespace PowerPointLabs.ColorsLab
             dataSource.LoadThemeColorsFromFile(filePath);
         }
 
+        public List<Color> GetRecentColorsPanelAsList()
+        {
+            List<HSLColor> recentHslColors = dataSource.GetListOfRecentColors();
+            List<Color> recentColors = new List<Color>();
+            foreach (HSLColor recentHslColor in recentHslColors)
+            {
+                recentColors.Add(recentHslColor);
+            }
+            return recentColors;
+        }
+
+        /// <summary>
+        /// Clear the panel to all white color.
+        /// </summary>
+        public void EmptyRecentColorsPanel()
+        {
+            try
+            {
+                if (this.GetCurrentSlide() != null)
+                {
+                    dataSource.RecentColorOne = Color.White;
+                    dataSource.RecentColorTwo = Color.White;
+                    dataSource.RecentColorThree = Color.White;
+                    dataSource.RecentColorFour = Color.White;
+                    dataSource.RecentColorFive = Color.White;
+                    dataSource.RecentColorSix = Color.White;
+                    dataSource.RecentColorSeven = Color.White;
+                    dataSource.RecentColorEight = Color.White;
+                    dataSource.RecentColorNine = Color.White;
+                    dataSource.RecentColorTen = Color.White;
+                    dataSource.RecentColorEleven = Color.White;
+                    dataSource.RecentColorTwelve = Color.White;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorDialogBox.ShowDialog("Recent Colors Panel Reset Failed", e.Message, e);
+            }
+        }
+
         #endregion
 
         #region Private variables
@@ -111,6 +151,7 @@ namespace PowerPointLabs.ColorsLab
 
         private MODE _eyedropperMode;
         private Color _previousFillColor;
+        private Color _currentEyedroppedColor;
         private Color _currentSelectedColor;
         private PowerPoint.ShapeRange _selectedShapes;
         private PowerPoint.TextRange _selectedText;
@@ -132,6 +173,9 @@ namespace PowerPointLabs.ColorsLab
         private string _defaultThemeColorDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
             "PowerPointLabs.defaultThemeColor.thm");
+        private string _defaultRecentColorDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            "PowerPointLabs.defaultRecentColor.thm");
 
         #endregion
 
@@ -150,6 +194,7 @@ namespace PowerPointLabs.ColorsLab
             SetupEyedropperTimer();
             SetDefaultColor(Color.CornflowerBlue);
             SetDefaultThemeColors();
+            SetRecentColors();
 
             // Hook the mouse process if it has not
             PPExtraEventHelper.PPMouse.TryStartHook();
@@ -243,6 +288,14 @@ namespace PowerPointLabs.ColorsLab
         }
 
         /// <summary>
+        /// Load recent colors into the recent colors pane.
+        /// </summary>
+        private void SetRecentColors()
+        {
+            LoadRecentColorsPanel();
+        }
+
+        /// <summary>
         /// Setup the timer tick handler.
         /// </summary>
         private void SetupEyedropperTimer()
@@ -284,6 +337,7 @@ namespace PowerPointLabs.ColorsLab
         private void ColorsLab_Closing(Object sender, EventArgs e)
         {
             SaveDefaultColorPaneThemeColors();
+            SaveColorPaneRecentColors();
         }
 
         #endregion
@@ -634,11 +688,12 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 ColorMainColorRect(pickedColor);
-                _currentSelectedColor = pickedColor;
+                _currentEyedroppedColor = pickedColor;
             }
             else
             {
                 ColorSelectedShapesWithColor(pickedColor, _eyedropperMode);
+                _currentSelectedColor = pickedColor;
             }
         }
 
@@ -657,7 +712,16 @@ namespace PowerPointLabs.ColorsLab
                 selectedColorRectangle.Opacity = 1;
                 if (timer1Ticks > CLICK_THRESHOLD)
                 {
-                    dataSource.SelectedColor = _currentSelectedColor;
+                    dataSource.SelectedColor = _currentEyedroppedColor;
+                }
+            }
+
+            // Update recent colors if color has been used
+            if (_eyedropperMode == MODE.FILL || _eyedropperMode == MODE.FONT || _eyedropperMode == MODE.LINE)
+            {
+                if (timer1Ticks > CLICK_THRESHOLD)
+                {
+                    dataSource.AddColorToRecentColors(_currentSelectedColor);
                 }
             }
 
@@ -1256,8 +1320,32 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
+        #region Recent Colors
+        
+        /// <summary>
+        /// Save current recent colors panel to file.
+        /// </summary>
+        private void SaveColorPaneRecentColors()
+        {
+            dataSource.SaveRecentColorsInFile(_defaultRecentColorDirectory);
+        }
+
+        /// <summary>
+        /// Load recent panel from file, or clear the panel if unsuccessful.
+        /// </summary>
+        private void LoadRecentColorsPanel()
+        {
+            bool isSuccessful = dataSource.LoadRecentColorsFromFile(_defaultRecentColorDirectory);
+            if (!isSuccessful)
+            {
+                EmptyRecentColorsPanel();
+            }
+        }
+
         #endregion
 
-       
+        #endregion
+
+
     }
 }

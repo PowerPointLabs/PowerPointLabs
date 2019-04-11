@@ -22,7 +22,7 @@ namespace PowerPointLabs.TooltipsLab
             float top = ShapeUtil.GetBottom(callout) + TooltipsLabConstants.TriggerShapeAndCalloutSpacing;
 
             PowerPoint.Shape triggerShape = currentSlide.Shapes.AddShape(
-                Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, 
+                TooltipsLabConstants.TriggerShape, 
                 left, 
                 top, 
                 TooltipsLabConstants.TriggerShapeDefaultWidth, 
@@ -38,12 +38,11 @@ namespace PowerPointLabs.TooltipsLab
 
 
             PowerPoint.Shape callout = currentSlide.Shapes.AddShape(
-                Microsoft.Office.Core.MsoAutoShapeType.msoShapeRoundedRectangularCallout,
+                TooltipsLabSettings.ShapeType,
                 midpointX - TooltipsLabConstants.CalloutShapeDefaultWidth/2 + (float)(TooltipsLabConstants.CalloutArrowheadHorizontalAdjustment * TooltipsLabConstants.CalloutShapeDefaultWidth),
                 triggerShape.Top - (float)(TooltipsLabConstants.CalloutArrowheadVerticalAdjustment * TooltipsLabConstants.CalloutShapeDefaultHeight) - TooltipsLabConstants.TriggerShapeAndCalloutSpacing,
                 TooltipsLabConstants.CalloutShapeDefaultWidth,
                 TooltipsLabConstants.CalloutShapeDefaultHeight);
-            callout.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             ShapeUtil.FormatCalloutToDefaultStyle(callout);
 
             callout.TextFrame2.AutoSize = MsoAutoSize.msoAutoSizeTextToFitShape;
