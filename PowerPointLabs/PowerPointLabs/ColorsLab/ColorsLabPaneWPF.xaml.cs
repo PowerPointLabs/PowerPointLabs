@@ -557,7 +557,7 @@ namespace PowerPointLabs.ColorsLab
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
-                        
+
                         SetThemeColorRectangle(Grid.GetColumn(rect), color);
                     }
                 }
@@ -1278,6 +1278,5 @@ namespace PowerPointLabs.ColorsLab
 
         #endregion
 
-        #endregion
     }
 }
