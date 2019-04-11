@@ -792,7 +792,7 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ClearColorButton_Click(object sender, EventArgs e)
+        private void ClearColorButton_Click(object sender, RoutedEventArgs e)
         {
             EmptyThemePanel();
         }
@@ -1275,10 +1275,9 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
-        #endregion
 
         #endregion
 
-
+        #endregion
     }
 }
