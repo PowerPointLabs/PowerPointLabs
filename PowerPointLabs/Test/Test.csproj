@@ -196,6 +196,9 @@
     <Compile Include="UnitTest\TagMatchers\StartSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\StartVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\TaggedTextTest.cs" />
+    <Compile Include="UnitTest\TooltipsLab\CreateTriggerTest.cs" />
+    <Compile Include="UnitTest\TooltipsLab\CreateCalloutTest.cs" />
+    <Compile Include="UnitTest\TooltipsLab\CreateTooltipTest.cs" />
     <Compile Include="UnitTest\Utils\TempPathTest.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
