@@ -4,10 +4,10 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.ShapesLab
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportImageRibbonId(ShortcutsLabText.AddCustomShapeTag)]
-    class AddShapeImageHandler : ImageHandler
+    class AddCustomShapeImageHandler : ImageHandler
     {
         protected override Bitmap GetImage(string ribbonId)
         {

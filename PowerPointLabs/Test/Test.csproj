@@ -218,10 +218,6 @@
       <Project>{573cc738-5349-4a0d-bc53-9325fa9c0e6f}</Project>
       <Name>TestInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PowerPointLabs\PowerPointLabs.csproj">
-      <Project>{e0696df3-9906-4e0e-906e-f9d47f41ef80}</Project>
-      <Name>PowerPointLabs</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

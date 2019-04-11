@@ -1,13 +1,10 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Test.Util;
 using PowerPointLabs.TextCollection;
-using System;
 
 using TestInterface;
+using System.Windows;
 
 namespace Test.FunctionalTest
 {
@@ -138,27 +135,25 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(shapesSlideNum);
             ExpectAddShapeButtonDisabled(shapesLab);
             PpOperations.SelectShapesByPrefix("Placeholder");
-            ExpectAddShapeButtonEnabled(shapesLab);
+            ExpectAddShapeButtonDisabled(shapesLab);
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                             ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
                             shapesLab.ClickAddShapeButton);
         }
 
-        private void AddShapesToSlideFromShapesLab(IShapesLabController shapesLab, string shapeThumbnail, string expectedShapePrefix)
+        private void AddShapesToSlideFromShapesLab(IShapesLabController shapesLab, string shapeName, string expectedShapePrefix)
         {
-            IShapesLabLabeledThumbnail thumbnail = shapesLab.GetLabeledThumbnail(shapeThumbnail);
-            thumbnail.FinishNameEdit();
+            Point point = shapesLab.GetShapeForClicking(shapeName);
             // Add shapes from Shapes Lab to slide by double clicking
-            DoubleClick(thumbnail as Control);
+            DoubleClick(point);
             Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix(expectedShapePrefix);
             Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab.");
         }
 
-        private void DoubleClick(Control target)
+        private void DoubleClick(Point point)
         {
-            Point pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
-            MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
+            MouseUtil.SendMouseDoubleClick((int) point.X, (int) point.Y);
         }
 
         private void IsClipboardRestoredAfterSaveShape(IShapesLabController shapesLab, int actualSlideNum, int testSlideNum, int expSlideNum)
