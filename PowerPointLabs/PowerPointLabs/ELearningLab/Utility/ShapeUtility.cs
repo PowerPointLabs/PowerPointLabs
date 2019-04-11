@@ -87,17 +87,29 @@ namespace PowerPointLabs.ELearningLab.Utility
         {
             float slideWidth = PowerPointPresentation.Current.SlideWidth;
             float slideHeight = PowerPointPresentation.Current.SlideHeight;
-
+            PowerPointPresentation pres = ActionFrameworkExtensions.GetCurrentPresentation();
+            Shape copiedShape;
             // templatedShape and its associated animations are duplicated
-            try
+            if (templatedShape == null)
             {
-                templatedShape.Copy();               
+                throw new Exception("Templated shape is null");
+            }
+            try
+            {               
+                copiedShape = ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    templatedShape.Copy();
+                    return slide.Shapes.Paste()[1];
+                }, pres, slide);
             }
             catch
             {
-                throw new Exception("Error copying shape.");
+                throw new Exception("Error copy and paste shape.");
             }
-            Shape copiedShape = slide.Shapes.Paste()[1];
+            if (copiedShape == null)
+            {
+                throw new Exception("Copied shape is null");
+            }
             copiedShape.Name = shapeName;
             // copy shape to the default callout / caption position
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CalloutIdentifier)
