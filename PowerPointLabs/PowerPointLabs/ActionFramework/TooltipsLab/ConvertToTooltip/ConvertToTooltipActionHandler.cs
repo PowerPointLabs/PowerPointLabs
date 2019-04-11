@@ -28,7 +28,8 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
 
             try
             {
-                bool success = ConvertToTooltip.AddTriggerAnimation(currentSlide, selection);
+                ShapeRange selectedShapes = selection.ShapeRange;
+                bool success = ConvertToTooltip.AddTriggerAnimation(currentSlide, selectedShapes);
                 if (success)
                 {
                     // Open the animation custom pane if it is not opened
