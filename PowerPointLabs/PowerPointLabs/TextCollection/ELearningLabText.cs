@@ -9,7 +9,7 @@ namespace PowerPointLabs.TextCollection
     internal static class ELearningLabText
     {
         public const string RibbonMenuId = "eLearningLabMenu";
-        public const string RibbonMenuLabel = "E-Learning";
+        public const string RibbonMenuLabel = "e-Learning";
         public const string RibbonMenuSupertip =
             "Use eLearning Lab to create audio, callouts, captions and tooltips all in one go!";
 
