@@ -16,7 +16,7 @@ namespace PowerPointLabs.ELearningLab.Service
     {
         private static Shape templatedShape;
 
-        public static Effect CreateAppearEffectCalloutAnimation(PowerPointSlide slide, string calloutText, 
+        public static Effect CreateAppearEffectCalloutAnimation(PowerPointSlide slide, string calloutText,
             int clickNo, int tagNo, bool isSeperateClick)
         {
             Shape shape = InsertCalloutShapeToSlide(slide, calloutText, tagNo);
@@ -52,11 +52,14 @@ namespace PowerPointLabs.ELearningLab.Service
                 templatedShape = shape;
                 return shape;
             }
-            if (templatedShape != null && slide.ContainShape(templatedShape))
+            try
             {
                 return ShapeUtility.InsertTemplatedShapeToSlide(slide, templatedShape, shapeName, calloutText);
             }
-            return ShapeUtility.InsertDefaultCalloutBoxToSlide(slide, shapeName, calloutText);
+            catch
+            {
+                return ShapeUtility.InsertDefaultCalloutBoxToSlide(slide, shapeName, calloutText);
+            }
         }
     }
 }
