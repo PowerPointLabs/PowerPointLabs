@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows;
 using PowerPointLabs.ColorsLab;
 
 namespace PowerPointLabs.DataSources
