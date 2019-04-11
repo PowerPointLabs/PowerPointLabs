@@ -11,10 +11,12 @@ namespace Test.UnitTest.TooltipsLab
     [TestClass]
     public class ConvertToTooltipTest : BaseUnitTest
     {
-        private const int ConvertShapesToTooltipTwoShapesTestSlideNo = 4;
-        private const int ConvertShapesToTooltipTwoShapesExpectedSlideNo = 5;
-        private const int ConvertShapesToTooltipThreeShapesTestSlideNo = 7;
-        private const int ConvertShapesToTooltipThreeShapesExpectedSlideNo = 8;
+        private const int ConvertShapesToTooltipOneShapeTestSlideNo = 4;
+        private const int ConvertShapesToTooltipOneShapeExpectedSlideNo = 5;
+        private const int ConvertShapesToTooltipTwoShapesTestSlideNo = 7;
+        private const int ConvertShapesToTooltipTwoShapesExpectedSlideNo = 8;
+        private const int ConvertShapesToTooltipThreeShapesTestSlideNo = 10;
+        private const int ConvertShapesToTooltipThreeShapesExpectedSlideNo = 11;
 
         private const string TriggerShapeName = "Trigger";
         private const string CalloutShapeName = "Callout";
@@ -33,26 +35,33 @@ namespace Test.UnitTest.TooltipsLab
             TestConvertShapesToTooltip_ThreeShapes();
         }
 
+        private void TestConvertShapesToTooltip_OneShape()
+        {
+            Slide slide = PpOperations.SelectSlide(ConvertShapesToTooltipOneShapeTestSlideNo);
+            string[] shapeNames = { TriggerShapeName };
+            ConvertShapesToTooltipAndCompare(shapeNames, ConvertShapesToTooltipOneShapeTestSlideNo, ConvertShapesToTooltipOneShapeExpectedSlideNo, false);
+        }
+
         private void TestConvertShapesToTooltip_TwoShapes()
         {
             Slide slide = PpOperations.SelectSlide(ConvertShapesToTooltipTwoShapesTestSlideNo);
             string[] shapeNames = { TriggerShapeName, CalloutShapeName };
-            ConvertShapesToTooltipAndCompare(shapeNames, ConvertShapesToTooltipTwoShapesTestSlideNo, ConvertShapesToTooltipTwoShapesExpectedSlideNo);
+            ConvertShapesToTooltipAndCompare(shapeNames, ConvertShapesToTooltipTwoShapesTestSlideNo, ConvertShapesToTooltipTwoShapesExpectedSlideNo, true);
         }
 
         private void TestConvertShapesToTooltip_ThreeShapes()
         {
             PpOperations.SelectSlide(ConvertShapesToTooltipTwoShapesTestSlideNo);
             string[] shapeNames = { TriggerShapeName, CalloutShapeName, Callout2ShapeName };
-            ConvertShapesToTooltipAndCompare(shapeNames, ConvertShapesToTooltipTwoShapesTestSlideNo, ConvertShapesToTooltipTwoShapesExpectedSlideNo);
+            ConvertShapesToTooltipAndCompare(shapeNames, ConvertShapesToTooltipTwoShapesTestSlideNo, ConvertShapesToTooltipTwoShapesExpectedSlideNo, true);
         }
 
-        private void ConvertShapesToTooltipAndCompare(string[] shapeNames, int testSlideNo, int expectedSlideNo)
+        private void ConvertShapesToTooltipAndCompare(string[] shapeNames, int testSlideNo, int expectedSlideNo, bool isSuccessful)
         {
             PowerPointSlide currentSlide = PowerPointSlide.FromSlideFactory(PpOperations.GetCurrentSlide());
             PpOperations.SelectShapes(shapeNames);
             Selection selection = PpOperations.GetCurrentSelection();
-            ConvertToTooltip.AddTriggerAnimation(currentSlide, selection);
+            Assert.Equals(ConvertToTooltip.AddTriggerAnimation(currentSlide, selection), isSuccessful);
             AssertIsSame(testSlideNo, expectedSlideNo);
         }
 
