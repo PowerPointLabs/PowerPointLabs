@@ -36,6 +36,9 @@ namespace PowerPointLabs.TextCollection
         public const string TriggerOnClick = "TriggerOnClick";
         public const string SelfExplanationItemIdentifier = "Item";
 
+        public const string NoSlideSelectedMessage = "No slide is selected";
+        public const string OnLoadingMessage = "Now Loading...";
+
         public const string ELearningLabTextStorageShapeName = Identifier + Underscore + TextStorageIdentifier;
 
         public const string AudioDefaultLabelFormat = "{0}" + Underscore + DefaultAudioIdentifier;

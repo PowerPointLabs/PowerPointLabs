@@ -73,10 +73,10 @@ namespace PowerPointLabs.ELearningLab.Views
             slide = this.GetCurrentSlide();
             if (slide == null)
             {
-                SetupSpinnerOnLoadingBegins(content: "No slide is selected");
+                SetupSpinnerOnLoadingBegin(content: ELearningLabText.NoSlideSelectedMessage);
                 return;
             }
-            SetupSpinnerOnLoadingBegins(content: "Now Loading...");
+            SetupSpinnerOnLoadingBegin(content: ELearningLabText.OnLoadingMessage);
             slideId = slide.ID;
             worker.RunWorkerAsync();
         }
@@ -96,7 +96,7 @@ namespace PowerPointLabs.ELearningLab.Views
             if (slide == null)
             {
                 slideId = -1;
-                SetupSpinnerOnLoadingBegins("No slide is selected");
+                SetupSpinnerOnLoadingBegin(ELearningLabText.NoSlideSelectedMessage);
                 return;
             }
             // We do not re-initailize elearning lab if 
@@ -112,7 +112,7 @@ namespace PowerPointLabs.ELearningLab.Views
             slideId = slide.ID;
             isSynced = true;
             listView.ItemsSource = null;
-            SetupSpinnerOnLoadingBegins("Now Loading...");
+            SetupSpinnerOnLoadingBegin(ELearningLabText.OnLoadingMessage);
             if (worker.IsBusy)
             {
                 worker.CancelAsync();
@@ -806,7 +806,7 @@ namespace PowerPointLabs.ELearningLab.Views
             return false;
         }
 
-        private void SetupSpinnerOnLoadingBegins(string content)
+        private void SetupSpinnerOnLoadingBegin(string content)
         {
             createButton.IsEnabled = false;
             syncButton.IsEnabled = false;
