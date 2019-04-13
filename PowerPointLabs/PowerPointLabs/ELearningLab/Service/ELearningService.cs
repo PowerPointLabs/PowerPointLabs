@@ -75,13 +75,13 @@ namespace PowerPointLabs.ELearningLab.Service
                 {
                     string defaultVoiceLabel = string.Format(ELearningLabText.AudioDefaultLabelFormat, AudioSettingService.selectedVoice.VoiceName);
                     effect = AudioService.CreateAppearEffectAudioAnimation(slide, selfExplanationItem.CaptionText, defaultVoiceLabel,
-                     selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
+                        selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
                     selfExplanationItem.VoiceLabel = defaultVoiceLabel;
                 }
                 else
                 {
-                    effect = AudioService.CreateAppearEffectAudioAnimation(slide, selfExplanationItem.CaptionText, selfExplanationItem.VoiceLabel,
-                      selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
+                    effect = AudioService.CreateAppearEffectAudioAnimation(slide, selfExplanationItem.CaptionText, selfExplanationItem.VoiceLabel, 
+                        selfExplanationItem.ClickNo, selfExplanationItem.tagNo, isSeparateClick);
                 }
                 if (effect != null)
                 {
@@ -148,7 +148,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 if (StringUtility.IsPPTLShape(shapeName) && effect.Exit == Microsoft.Office.Core.MsoTriState.msoTrue)
                 {
                     effectsToDelete.Add(effect);
-                  //  effect.Delete();
+                    //  effect.Delete();
                 }
                 if (isTriggeredByClick)
                 {

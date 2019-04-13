@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
@@ -23,8 +24,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 isCallout = (bool)value;
-                NotifyPropertyChanged("IsCallout");
-                NotifyPropertyChanged("IsDummyItem");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsCallout);
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsDummyItem);
             }
         }
         public bool IsCaption
@@ -36,8 +37,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 isCaption = (bool)value;
-                NotifyPropertyChanged("IsCaption");
-                NotifyPropertyChanged("IsDummyItem");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsCaption);
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsDummyItem);
             }
         }
         public bool IsVoice
@@ -49,8 +50,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 isVoice = (bool)value;
-                NotifyPropertyChanged("IsVoice");
-                NotifyPropertyChanged("IsDummyItem");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsVoice);
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsDummyItem);
             }
         }
 
@@ -70,7 +71,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 if (string.IsNullOrEmpty(calloutText.Trim()))
                 {
                     calloutText = captionText;
-                    NotifyPropertyChanged("CalloutText");
+                    NotifyPropertyChanged(ELearningLabText.ExplanationItem_CalloutText);
                 }
 
             }
@@ -85,7 +86,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 calloutText = value;
-                NotifyPropertyChanged("CalloutText");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_CalloutText);
             }
         }
         public string CaptionText
@@ -101,7 +102,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 {
                     CalloutText = value;
                 }
-                NotifyPropertyChanged("CaptionText");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_CaptionText);
             }
         }
         public string VoiceLabel
@@ -113,9 +114,9 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 voiceLabel = value;
-                NotifyPropertyChanged("VoiceLabel");
-                NotifyPropertyChanged("IsTriggerTypeComboBoxEnabled");
-                NotifyPropertyChanged("IsVoiceLabelInvalid");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_VoiceLabel);
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsTriggerTypeComboBoxEnabled);
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsVoiceLabelInvalid);
             }
         }
 
@@ -128,7 +129,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 trigger = (TriggerType)value;
-                NotifyPropertyChanged("TriggerIndex");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_TriggerIndex);
             }
         }
 
@@ -149,7 +150,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 isTriggerTypeComboBoxEnabled = (bool)value;
-                NotifyPropertyChanged("IsVoiceLabelInvalid");
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsVoiceLabelInvalid);
             }
         }
 
