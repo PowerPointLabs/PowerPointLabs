@@ -20,6 +20,7 @@
         public const string MenuEditSmartArt = MenuEditSmartArtBase + "SmartArt";
         public const string MenuEditSmartArtText = MenuEditSmartArtBase + "Text";
         public const string MenuNotes = "MenuNotes";
+        public const string MenuThumbnail = "MenuThumbnail";
 
         public const string MenuSeparator = "MenuSeparator";
 
@@ -30,6 +31,7 @@
         public const string AddIntoGroupTag = "AddIntoGroup";
         public const string SpeakSelectedTag = "SpeakSelected";
         public const string FillSlideTag = "FillSlide";
+        public const string ExportSlideAsImageTag = "ExportSlideAsImage";
         #endregion
 
         #region GUI Text
@@ -44,6 +46,7 @@
         public const string HideSelectedShapeLabel = "Hide Shape";
         public const string ContextSpeakSelectedTextLabel = "Speak Selected Text";
         public const string FillSlideLabel = "Fill Slide";
+        public const string ExportSlideAsImageLabel = "Export Slide As Image";
 
         public const string ErrorTypeNotSupported = "Convert to Picture only supports Shapes and Charts.";
         public const string ErrorWindowTitle = "Convert to Picture: Unsupported Object";

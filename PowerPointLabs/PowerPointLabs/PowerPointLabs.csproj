@@ -282,6 +282,15 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\AddCustomShape\AddCustomShapeShapeLabelHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageActionHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageImageHandler.cs" />
+    <Compile Include="ActionFramework\ShortcutsLab\ExportSlideAsImage\ExportSlideAsImageLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateCallout\CreateCalloutEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerEnabledHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\CreateTrigger\CreateTriggerActionHandler.cs" />
@@ -301,6 +310,10 @@
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\ConvertToTooltip\ConvertToTooltipSupertipHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingImageHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsActionHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsLabelHandler.cs" />
+    <Compile Include="ActionFramework\TooltipsLab\Settings\TooltipsLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\TooltipsLab\TooltipsLabMenu\TooltipsLabMenuSupertipHandler.cs" />
@@ -380,9 +393,6 @@
     <Compile Include="ActionFramework\ShapesLab\ShapesLabActionHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabSupertipHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeActionHandler.cs" />
     <Compile Include="ActionFramework\AgendaLab\AgendaLabMenu\AgendaLabMenuImageHandler.cs" />
@@ -430,7 +440,6 @@
     <Compile Include="ActionFramework\CropLab\CropToShape\CropToShapeActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropToAspectRatio\CropToAspectRatioActionHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropOutPadding\CropOutPaddingActionHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteAtCursorPosition\PasteAtCursorPositionActionHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteAtOriginalPosition\PasteAtOriginalPositionActionHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\AddIntoGroup\AddIntoGroupActionHandler.cs" />
@@ -533,7 +542,6 @@
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\EditName\EditNameImageHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ConvertToPicture\ConvertToPictureImageHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeImageHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropLabMenu\CropLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropLabSettings\CropLabSettingsImageHandler.cs" />
     <Compile Include="ActionFramework\CropLab\CropOutPadding\CropOutPaddingImageHandler.cs" />
@@ -580,7 +588,6 @@
     <Compile Include="ActionFramework\ShortcutsLab\HideShape\HideShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\EditName\EditNameLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\ConvertToPicture\ConvertToPictureShapeLabelHandler.cs" />
-    <Compile Include="ActionFramework\ShapesLab\AddShape\AddShapeLabelHandler.cs" />
     <Compile Include="ActionFramework\ShortcutsLab\AddIntoGroup\AddIntoGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteIntoGroup\PasteIntoGroupLabelHandler.cs" />
     <Compile Include="ActionFramework\PasteLab\PasteAtCursorPosition\PasteAtCursorPositionLabelHandler.cs" />
@@ -784,6 +791,13 @@
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="ShapesLab\Views\CustomComboBoxItem.cs" />
+    <Compile Include="ShapesLab\Views\CustomMenuItem.cs" />
+    <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
+      <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShapesLab\ShapesLabUtils.cs" />
+    <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
@@ -833,6 +847,18 @@
       <DependentUpon>SaveLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShapesLab\ShapesLabSettings.cs" />
+    <Compile Include="ShapesLab\CustomShapePane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ShapesLab\CustomShapePane.Designer.cs">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShapesLab\Views\CustomShapePaneWPF.xaml.cs">
+      <DependentUpon>CustomShapePaneWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShapesLab\Views\CustomShapePaneItem.xaml.cs">
+      <DependentUpon>CustomShapePaneItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SyncLab\ObjectFormats\BevelBottomFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\BevelTopFormat.cs" />
     <Compile Include="SyncLab\ObjectFormats\ContourColorFormat.cs" />
@@ -882,6 +908,16 @@
     <Compile Include="TextCollection\CropLabText.cs" />
     <Compile Include="TimerLab\TimerLab.cs" />
     <Compile Include="TooltipsLab\CreateTooltip.cs" />
+    <Compile Include="TooltipsLab\TooltipsLabSettings.cs" />
+    <Compile Include="TooltipsLab\Views\TooltipsLabSettingsDialogBox.xaml.cs">
+      <DependentUpon>TooltipsLabSettingsDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TooltipsLab\Views\TooltipsLabSettingsAnimationEntry.xaml.cs">
+      <DependentUpon>TooltipsLabSettingsAnimationEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TooltipsLab\Views\TooltipsLabSettingsShapeEntry.xaml.cs">
+      <DependentUpon>TooltipsLabSettingsShapeEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
@@ -1250,18 +1286,6 @@
     <Compile Include="PictureSlidesLab\Util\StoragePath.cs" />
     <Compile Include="PictureSlidesLab\Util\TempPath.cs" />
     <Compile Include="Models\PowerPointBgEffectSlide.cs" />
-    <Compile Include="ShapesLab\LabeledThumbnail.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ShapesLab\LabeledThumbnail.Designer.cs">
-      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ShapesLab\CustomShapePane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ShapesLab\CustomShapePane.Designer.cs">
-      <DependentUpon>CustomShapePane.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\PowerPointPresentation.cs" />
     <Compile Include="Models\PowerPointShapeGalleryPresentation.cs" />
     <Compile Include="PPExtraEventHelper\PPKeyboard.cs" />
@@ -1291,9 +1315,6 @@
     <Compile Include="ShapesLab\Views\ShapesLabSettingsDialogBox.xaml.cs">
       <DependentUpon>ShapesLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
-      <DependentUpon>ShapesLabCategoryInfoDialogBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="HighlightLab\Views\HighlightLabSettingsDialogBox.xaml.cs">
       <DependentUpon>HighlightLabSettingsDialogBox.xaml</DependentUpon>
     </Compile>
@@ -1309,7 +1330,6 @@
     <Compile Include="ShortcutsLab\Views\EditNameDialogBox.xaml.cs">
       <DependentUpon>EditNameDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CustomPaintTextBox.cs" />
     <Compile Include="FitToSlide.cs" />
     <Compile Include="HighlightLab\HighlightTextFragments.cs" />
     <Compile Include="Models\PowerPointAutoAnimateSlide.cs" />
@@ -1399,6 +1419,9 @@
     <EmbeddedResource Include="PositionsLab\PositionsPane.resx">
       <DependentUpon>PositionsPane.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShapesLab\CustomShapePane.resx">
+      <DependentUpon>CustomShapePane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TimerLab\TimerPane.resx">
       <DependentUpon>TimerPane.cs</DependentUpon>
     </EmbeddedResource>
@@ -1412,14 +1435,6 @@
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Play.png" />
     <None Include="Resources\Pause.png" />
-    <EmbeddedResource Include="ShapesLab\LabeledThumbnail.resx">
-      <DependentUpon>LabeledThumbnail.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ShapesLab\CustomShapePane.resx">
-      <DependentUpon>CustomShapePane.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -1653,6 +1668,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ShapesLab\Views\CustomShapePaneWPF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ShapesLab\Views\CustomShapePaneItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SyncLab\Views\SyncFormatPaneItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1673,6 +1700,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TooltipsLab\Views\TooltipsLabSettingsDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TooltipsLab\Views\TooltipsLabSettingsAnimationEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TooltipsLab\Views\TooltipsLabSettingsShapeEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ErrorDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1690,10 +1729,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ShapesLab\Views\ShapesLabSettingsDialogBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -2253,6 +2288,10 @@
     <None Include="Resources\ELearningLabIcon2.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\ExportSlideAsImage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExportSlideAsPicture.png" />
     <None Include="Resources\CreateTooltip.png" />
   </ItemGroup>
   <ItemGroup>
@@ -2263,6 +2302,45 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ConvertToTooltip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Appear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Bounce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Fade.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Float In.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Fly In.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Grow &amp; Turn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Random Bars.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Shape.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Split.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Swivel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Wheel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Wipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Animation Zoom.png" />
   </ItemGroup>
   <!-- Include the build rules for a C# project. -->
   <PropertyGroup>
