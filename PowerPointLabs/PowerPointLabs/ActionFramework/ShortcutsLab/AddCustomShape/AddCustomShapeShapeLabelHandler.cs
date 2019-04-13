@@ -2,10 +2,10 @@
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 
-namespace PowerPointLabs.ActionFramework.ShapesLab
+namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
     [ExportLabelRibbonId(ShortcutsLabText.AddCustomShapeTag)]
-    class AddShapeLabelHandler : LabelHandler
+    class AddCustomShapeShapeLabelHandler : LabelHandler
     {
         protected override string GetLabel(string ribbonId)
         {

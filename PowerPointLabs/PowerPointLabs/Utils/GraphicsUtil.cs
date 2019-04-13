@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -191,6 +192,50 @@ namespace PowerPointLabs.Utils
         #endregion
 
         #region Slide
+        public static void ExportSlides(List<Slide> slides, string exportPath, float magnifyRatio = 1.0f)
+        {
+            if (slides.Count <= 0)
+            {
+                return;
+            } 
+            else if (slides.Count == 1)
+            {
+                ExportSlide(slides[0], exportPath, magnifyRatio);
+                return;
+            }
+
+            // Get folder name from exportPath
+            string folderName = GetDefaultFolderNameForExport(exportPath);
+
+            try
+            {
+                Directory.CreateDirectory(folderName);
+
+                foreach (Slide slide in slides)
+                {
+                    string fileName = folderName + "\\" + slide.Name + ".png";
+                    ExportSlide(slide, fileName, magnifyRatio);
+                }
+
+                // Alert the user that the slides have been saved in a folder
+                string messageBoxText = "The selected slides have been saved as a separate file in the folder " + folderName + ".";
+                MessageBox.Show(messageBoxText);
+            }
+            catch (Exception)
+            {
+                // Failed to create directory, we save the images all to the specified path
+                foreach (Slide slide in slides)
+                {
+                    string fileName = folderName + "_" + slide.Name + ".png";
+                    ExportSlide(slide, fileName, magnifyRatio);
+                }
+
+                // Alert the user that the slides have been saved as a separate file in the specified folder.
+                string messageBoxText = "The selected slides have been saved as a separate file in the specified folder.";
+                MessageBox.Show(messageBoxText);
+            }
+        }
+
         public static void ExportSlide(Slide slide, string exportPath, float magnifyRatio = 1.0f)
         {
             slide.Export(exportPath,
@@ -331,6 +376,25 @@ namespace PowerPointLabs.Utils
         {
             // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi or 330 dpi, depending on user option.
             return PowerPointPresentation.Current.SlideHeight * PictureExportingRatio;
+        }
+
+        private static string GetDefaultFolderNameForExport(string exportPath)
+        {
+            string folderName = exportPath.Substring(0, exportPath.Length - 4);
+
+            int suffix = 1;
+            int idx = exportPath.LastIndexOf('\\');
+            string folderPath = exportPath.Substring(0, idx + 1);
+
+            while (Directory.Exists(folderName))
+            {
+                // Change to default folder name with suffix
+                string suffixString = suffix.ToString();
+                folderName = folderPath + "PPTLabs_ExportedSlides_" + suffixString;
+                suffix++;
+            }
+
+            return folderName;
         }
 
         /// <summary>

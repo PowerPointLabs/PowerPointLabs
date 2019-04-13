@@ -27,13 +27,14 @@ namespace PowerPointLabs.ShapesLab.Views
 
         // Regex = [<>:"/\\|?*]
         private const string InvalidCharsRegex = "[<>:\"/\\\\|?*]";
+        private bool shouldUseExistingCategory;
 
         public ShapesLabCategoryInfoDialogBox()
         {
             InitializeComponent();
         }
 
-        public ShapesLabCategoryInfoDialogBox(string categoryName)
+        public ShapesLabCategoryInfoDialogBox(string categoryName, bool shouldUseExistingCategory)
             : this()
         {
             if (!string.IsNullOrEmpty(categoryName))
@@ -41,11 +42,12 @@ namespace PowerPointLabs.ShapesLab.Views
                 nameInput.Text = categoryName;
                 nameInput.SelectAll();
             }
+            this.shouldUseExistingCategory = shouldUseExistingCategory;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            string name = nameInput.Text;
+            string name = nameInput.Text.Trim();
 
             if (VerifyName(name) && VerifyCategory(name))
             {
@@ -76,9 +78,14 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private bool VerifyCategory(string name)
         {
-            if (this.GetAddIn().ShapePresentation.HasCategory(name))
+            if (!shouldUseExistingCategory && this.GetAddIn().ShapePresentation.HasCategory(name))
             {
                 MessageBox.Show(ShapesLabText.ErrorDuplicateCategoryName);
+                return false;
+            }
+            else if (shouldUseExistingCategory && !this.GetAddIn().ShapePresentation.HasCategory(name))
+            {
+                MessageBox.Show(ShapesLabText.ErrorCategoryNameMissing);
                 return false;
             }
 
