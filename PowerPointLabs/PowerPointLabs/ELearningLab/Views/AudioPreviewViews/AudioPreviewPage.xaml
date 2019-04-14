@@ -29,8 +29,44 @@
                 <Label Grid.Row="0" Margin="20 5 20 0">Text to be spoken:</Label>
                 <TextBox x:Name="spokenText" Grid.Row="1" Margin="20 0 20 0" TextWrapping="Wrap" AcceptsReturn="True"/>
             </Grid>
-            <ListView ItemsSource="{Binding Voices}" x:Name="rankedAudioListView" Margin="20 0 20 0"
+            <Label Margin="20 5 20 0">Preferred Voices:</Label>
+            <ListView x:Name="rankedAudioListView" Margin="20 0 20 0"
                       BorderThickness="0">
+                <ListView.Style>
+                    <Style TargetType="{x:Type ListView}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=rankedAudioListView, Path=ItemsSource.Count}"  Value="0">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border BorderThickness="1,1,1,1">
+                                                <Border.BorderBrush>
+                                                    <DrawingBrush Viewport="0,0,8,8" ViewportUnits="Absolute" TileMode="Tile">
+                                                        <DrawingBrush.Drawing>
+                                                            <DrawingGroup>
+                                                                <GeometryDrawing Brush="DarkGray">
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <GeometryGroup>
+                                                                            <RectangleGeometry Rect="0,0,50,50" />
+                                                                            <RectangleGeometry Rect="50,50,50,50" />
+                                                                        </GeometryGroup>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                            </DrawingGroup>
+                                                        </DrawingBrush.Drawing>
+                                                    </DrawingBrush>
+                                                </Border.BorderBrush>
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="DarkGray">
+                                                Empty
+                                                </TextBlock>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Template">

@@ -158,10 +158,32 @@
                           IsChecked="{Binding IsCaption, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Margin="5 2 1 2"/>
                     <CheckBox Content="Voice" x:Name="audioCheckBox" VerticalContentAlignment="Center" Margin="5 2 1 2"
                           IsChecked="{Binding IsVoice, UpdateSourceTrigger=PropertyChanged}" FontSize="10"/>
-                    <Label x:Name="audioNameLabel" Margin="3 2 1 2"
-                               Content="{Binding VoiceLabel, Mode=TwoWay}" FontSize="8" Padding="0" 
-                               VerticalAlignment="Center" FontStyle="Italic"/>
-                   
+                    <TextBlock x:Name="audioNameLabel" Margin="3 2 1 2"
+                               Text="{Binding VoiceLabel, Mode=TwoWay}" FontSize="8" Padding="0" 
+                               VerticalAlignment="Center" FontStyle="Italic">
+                         <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=IsVoiceLabelInvalid}" Value="True">
+                                        <Setter Property="TextDecorations">
+                                            <Setter.Value>
+                                                <TextDecorationCollection>
+                                                    <TextDecoration>
+                                                        <TextDecoration.Pen>
+                                                            <Pen Brush="Red" />
+                                                        </TextDecoration.Pen>
+                                                        <TextDecoration.Location>
+                                                            Strikethrough
+                                                        </TextDecoration.Location>
+                                                    </TextDecoration>
+                                                </TextDecorationCollection>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
                 <Button Grid.Row="0" x:Name="audioPreviewButton" Margin="2 0 2 0" HorizontalAlignment="Right"
                     MinWidth="15" MaxWidth="15" MinHeight="15" MaxHeight="15" Click="VoicePreviewButton_Click">
@@ -181,7 +203,7 @@
                              Text="{Binding CaptionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 2 2 2"
                              TextWrapping="Wrap" FontSize="12" Tag="Enter your caption / voice notes here..."
                              AcceptsReturn="True" Margin="0" MinHeight="30"/>
-                    <CheckBox x:Name="hasShortVersionCheckBox" Content="Use Shorter Callout"  VerticalContentAlignment="Center" 
+                    <CheckBox x:Name="hasShortVersionCheckBox" Content="use a different text for the callout"  VerticalContentAlignment="Center" 
                           IsChecked="{Binding HasShortVersion, Mode=TwoWay}" FontSize="10" Margin="2 2 1 2"
                               Checked="HasShortVersionCheckBox_CheckChanged">
                         <CheckBox.ToolTip>

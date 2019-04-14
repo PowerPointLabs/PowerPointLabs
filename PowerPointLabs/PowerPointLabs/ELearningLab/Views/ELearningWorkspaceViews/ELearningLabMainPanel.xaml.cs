@@ -275,7 +275,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 if (worker.CancellationPending)
                 {
                     e.Cancel = true;
-                    return customItems;
+                    return clickItems;
                 }
                 customEffects = new List<CustomEffect>();
                 for (int i = startIdx; i < effects.Count; i++)
@@ -310,6 +310,11 @@ namespace PowerPointLabs.ELearningLab.Views
 
             while (explanationItems != null && explanationItems.Count > 0 && customItems.Count > 0)
             {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return clickItems;
+                }
                 Dictionary<string, string> expItemDic = explanationItems.First();
                 ExplanationItem expItem = new ExplanationItem(expItemDic[ELearningLabText.CaptionTextIdentifier],
                         expItemDic[ELearningLabText.CalloutTextIdentifier], expItemDic[ELearningLabText.VoiceLabel],
@@ -335,6 +340,11 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             while (explanationItems != null && explanationItems.Count > 0)
             {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return clickItems;
+                }
                 Dictionary<string, string> expItemDic = explanationItems.First();
                 ExplanationItem expItem = new ExplanationItem(expItemDic[ELearningLabText.CaptionTextIdentifier],
                         expItemDic[ELearningLabText.CalloutTextIdentifier], expItemDic[ELearningLabText.VoiceLabel],
@@ -345,6 +355,11 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             while (customItems.Count > 0)
             {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return clickItems;
+                }
                 CustomItem customItem = customItems.ElementAt(0) as CustomItem;
                 customItems.RemoveAt(0);
                 clickItems.Add(customItem);
