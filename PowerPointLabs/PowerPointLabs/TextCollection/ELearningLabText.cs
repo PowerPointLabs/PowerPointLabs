@@ -36,6 +36,18 @@ namespace PowerPointLabs.TextCollection
         public const string TriggerOnClick = "TriggerOnClick";
         public const string SelfExplanationItemIdentifier = "Item";
 
+        public const string ExplanationItem_IsCallout = "IsCallout";
+        public const string ExplanationItem_IsCaption = "IsCaption";
+        public const string ExplanationItem_IsVoice = "IsVoice";
+        public const string ExplanationItem_HasShortVersion = "HasShortVersion";
+        public const string ExplanationItem_CalloutText = "CalloutText";
+        public const string ExplanationItem_CaptionText = "CaptionText";
+        public const string ExplanationItem_VoiceLabel = "VoiceLabel";
+        public const string ExplanationItem_TriggerIndex = "TriggerIndex";
+        public const string ExplanationItem_IsDummyItem = "IsDummyItem";
+        public const string ExplanationItem_IsTriggerTypeComboBoxEnabled = "IsTriggerTypeComboBoxEnabled";
+        public const string ExplanationItem_IsVoiceLabelInvalid = "IsVoiceLabelInvalid";
+
         public const string ELearningLabTextStorageShapeName = Identifier + Underscore + TextStorageIdentifier;
 
         public const string AudioDefaultLabelFormat = "{0}" + Underscore + DefaultAudioIdentifier;
