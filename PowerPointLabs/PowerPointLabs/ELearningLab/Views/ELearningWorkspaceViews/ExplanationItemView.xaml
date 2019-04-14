@@ -203,7 +203,7 @@
                              Text="{Binding CaptionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="2 2 2 2"
                              TextWrapping="Wrap" FontSize="12" Tag="Enter your caption / voice notes here..."
                              AcceptsReturn="True" Margin="0" MinHeight="30"/>
-                    <CheckBox x:Name="hasShortVersionCheckBox" Content="Use Shorter Callout"  VerticalContentAlignment="Center" 
+                    <CheckBox x:Name="hasShortVersionCheckBox" Content="use a different text for the callout"  VerticalContentAlignment="Center" 
                           IsChecked="{Binding HasShortVersion, Mode=TwoWay}" FontSize="10" Margin="2 2 1 2"
                               Checked="HasShortVersionCheckBox_CheckChanged">
                         <CheckBox.ToolTip>
