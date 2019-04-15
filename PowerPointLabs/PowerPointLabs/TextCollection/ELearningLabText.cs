@@ -9,14 +9,14 @@ namespace PowerPointLabs.TextCollection
     internal static class ELearningLabText
     {
         public const string RibbonMenuId = "eLearningLabMenu";
-        public const string RibbonMenuLabel = "E-Learning";
+        public const string RibbonMenuLabel = "e-Learning";
         public const string RibbonMenuSupertip =
             "Use eLearning Lab to create audio, callouts, captions and tooltips all in one go!";
 
         public const string ELearningTaskPaneTag = "E-Learning Workspace";
         public const string ELearningTaskPaneSuperTip =
             "This is the work space for creating e-learning slides.";
-        public const string ELearningTaskPaneLabel = "eLearningLab";
+        public const string ELearningTaskPaneLabel = "e-Learning Lab";
 
         public const string ELearningLabSettingsTag = "ELearningLabSettings";
 
@@ -31,7 +31,22 @@ namespace PowerPointLabs.TextCollection
         public const string CalloutTextIdentifier = "CalloutText"; 
         public const string CaptionTextIdentifier = "CaptionText";
         public const string TagNoIdentifier = "TagNo";
+        public const string ClickNumIdentifier = "ClickNum";
+        public const string VoiceLabel = "VoiceLabel";
+        public const string TriggerOnClick = "TriggerOnClick";
         public const string SelfExplanationItemIdentifier = "Item";
+
+        public const string ExplanationItem_IsCallout = "IsCallout";
+        public const string ExplanationItem_IsCaption = "IsCaption";
+        public const string ExplanationItem_IsVoice = "IsVoice";
+        public const string ExplanationItem_HasShortVersion = "HasShortVersion";
+        public const string ExplanationItem_CalloutText = "CalloutText";
+        public const string ExplanationItem_CaptionText = "CaptionText";
+        public const string ExplanationItem_VoiceLabel = "VoiceLabel";
+        public const string ExplanationItem_TriggerIndex = "TriggerIndex";
+        public const string ExplanationItem_IsDummyItem = "IsDummyItem";
+        public const string ExplanationItem_IsTriggerTypeComboBoxEnabled = "IsTriggerTypeComboBoxEnabled";
+        public const string ExplanationItem_IsVoiceLabelInvalid = "IsVoiceLabelInvalid";
 
         public const string ELearningLabTextStorageShapeName = Identifier + Underscore + TextStorageIdentifier;
 

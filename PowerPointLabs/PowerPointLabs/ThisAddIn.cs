@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -303,20 +303,6 @@ namespace PowerPointLabs
 
             RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
                 TaskPaneVisibleValueChangedEventHandler, null);
-        }
-
-        public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(CustomShapePane)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(
-                new CustomShapePane(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
-                ShapesLabText.TaskPanelTitle, activeWindow, null, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
@@ -985,7 +971,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
-            Ribbon.RefreshRibbonControl("RemoveAudioButton");
+            Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
             Ribbon.RefreshRibbonControl("ELearningTaskPaneButton");
         }
 

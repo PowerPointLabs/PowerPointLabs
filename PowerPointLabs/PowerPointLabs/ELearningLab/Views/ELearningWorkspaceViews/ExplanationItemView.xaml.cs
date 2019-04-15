@@ -203,7 +203,7 @@ namespace PowerPointLabs.ELearningLab.Views
             if ((bool)((CheckBox)sender).IsChecked)
             {
                 audioNameLabel.Visibility = Visibility.Visible;
-                audioNameLabel.Content = string.Format(ELearningLabText.AudioDefaultLabelFormat, 
+                audioNameLabel.Text = string.Format(ELearningLabText.AudioDefaultLabelFormat, 
                     AudioSettingService.selectedVoice.ToString());
                 audioPreviewButton.IsEnabled = true;
                 audioImage.Opacity = 1;
@@ -234,10 +234,10 @@ namespace PowerPointLabs.ELearningLab.Views
                 case VoiceType.AzureVoice:
                 case VoiceType.ComputerVoice:
                 case VoiceType.WatsonVoice:
-                    audioNameLabel.Content = selectedVoice.ToString();
+                    audioNameLabel.Text = selectedVoice.ToString();
                     break;
                 case VoiceType.DefaultVoice:
-                    audioNameLabel.Content = string.Format(ELearningLabText.AudioDefaultLabelFormat, 
+                    audioNameLabel.Text = string.Format(ELearningLabText.AudioDefaultLabelFormat, 
                         AudioSettingService.selectedVoice.ToString());
                     break;
                 default:
@@ -248,8 +248,13 @@ namespace PowerPointLabs.ELearningLab.Views
         private void ConfigureAudioPreviewSettings(AudioPreviewPage page)
         {
             string textToSpeak = captionTextBox.Text.Trim();
-            string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(audioNameLabel.Content.ToString());
-            string defaultPostfix = StringUtility.ExtractDefaultLabelFromVoiceLabel(audioNameLabel.Content.ToString());
+            string voiceName = StringUtility.ExtractVoiceNameFromVoiceLabel(audioNameLabel.Text.ToString());
+            if (!AudioService.CheckIfVoiceExists(voiceName))
+            {
+                page.SetAudioPreviewSettings(textToSpeak, VoiceType.DefaultVoice, AudioSettingService.selectedVoice);
+                return;
+            }
+            string defaultPostfix = StringUtility.ExtractDefaultLabelFromVoiceLabel(audioNameLabel.Text.ToString());
             VoiceType voiceType = AudioService.GetVoiceTypeFromString(voiceName, defaultPostfix);
             IVoice voice = AudioService.GetVoiceFromString(voiceName);
             page.SetAudioPreviewSettings(textToSpeak, voiceType, voice);
