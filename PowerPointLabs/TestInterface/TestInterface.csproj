@@ -43,7 +43,6 @@
     <Compile Include="IPowerPointLabsFT.cs" />
     <Compile Include="IPowerPointOperations.cs" />
     <Compile Include="IShapesLabController.cs" />
-    <Compile Include="IShapesLabLabeledThumbnail.cs" />
     <Compile Include="ISlideData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

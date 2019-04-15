@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="PowerPointLabs.ShapesLab.Views.CustomShapePaneWPF"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="833" d:DesignWidth="300"
+             MouseDown="ClickOutsideShapeList"
+             Loaded="CustomShapePaneWPF_Loaded">
+    <Grid x:Name="grid" IsHitTestVisible="True" Background="Transparent">
+        <Button x:Name="addShapeButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="AddShapeButton_Click" Background="White" IsEnabled="True">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Image x:Name="addShapeImage" Source="..\..\Resources\AddToCustomShapes.png" Stretch="Fill"/>
+            <Button.ToolTip>
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Copy Format</TextBlock>
+                    <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Margin="0,8"/>
+                    <TextBlock x:Name="toolTipTextBox">
+                    </TextBlock>
+                </StackPanel>
+            </Button.ToolTip>
+        </Button>
+        <Label x:Name="copyLabel" Content="Add" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="200">
+            <Hyperlink x:Name="singleShapeDownloadLink" RequestNavigate="Hyperlink_RequestNavigate">
+                Download More Shapes
+            </Hyperlink>
+        </TextBlock>
+        <Canvas x:Name="categoryBoxHolder" Margin="10,106,10,700">
+            <ComboBox x:Name="categoryBox" SelectionChanged="CategoryBoxSelectedIndexChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}">
+            </ComboBox>
+        </Canvas>
+        <ListBox x:Name="shapeList" Margin="10,146,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel x:Name="wrapPanel" Orientation="Horizontal" Loaded="WrapPanelLoaded"></WrapPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="addCategory" Header="Add Category" Click="ContextMenuStripAddCategoryClicked"></MenuItem>
+                    <MenuItem x:Name="removeCategory" Header="Remove Category" Click="ContextMenuStripRemoveCategoryClicked"></MenuItem>
+                    <MenuItem x:Name="renameCategory" Header="Rename Category" Click="ContextMenuStripRenameCategoryClicked"></MenuItem>
+                    <MenuItem x:Name="setAsDefault" Header="Set as Default Category" Click="ContextMenuStripSetAsDefaultCategoryClicked"></MenuItem>
+                    <MenuItem x:Name="importCategory" Header="Import Library" Click="ContextMenuStripImportCategoryClicked"></MenuItem>
+                    <MenuItem x:Name="importShapes" Header="Import Shapes" Click="ContextMenuStripImportShapesClicked"></MenuItem>
+                    <MenuItem x:Name="settings" Header="Shapes Lab Settings" Click="ContextMenuStripSettingsClicked"></MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+    </Grid>
+</UserControl>

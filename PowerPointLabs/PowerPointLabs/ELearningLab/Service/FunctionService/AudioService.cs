@@ -75,6 +75,11 @@ namespace PowerPointLabs.ELearningLab.Service
             }
         }
 
+        public static bool CheckIfVoiceExists(string str)
+        {
+            return GetVoiceFromString(StringUtility.ExtractVoiceNameFromVoiceLabel(str)) != null;
+        }
+
         public static VoiceType GetVoiceTypeFromString(string voiceName, string defaultPostfix)
         {
             if (IsDefaultVoiceType(defaultPostfix))
