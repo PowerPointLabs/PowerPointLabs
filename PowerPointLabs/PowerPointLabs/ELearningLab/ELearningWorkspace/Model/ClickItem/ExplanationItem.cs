@@ -151,6 +151,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             {
                 isTriggerTypeComboBoxEnabled = (bool)value;
                 NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsVoiceLabelInvalid);
+                NotifyPropertyChanged(ELearningLabText.ExplanationItem_IsTriggerTypeComboBoxEnabled);
             }
         }
 
