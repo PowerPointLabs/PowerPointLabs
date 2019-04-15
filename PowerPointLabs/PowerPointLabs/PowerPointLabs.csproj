@@ -278,7 +278,6 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningLabSettings\ELearningLabSettingsLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabSettings\ELearningLabSettingsSupertipHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningActionHandler.cs" />
-    <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningEnabledHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />

@@ -57,12 +57,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         public ELearningLabMainPanel()
         {
-            slide = this.GetCurrentSlide();
-            if (slide == null)
-            {
-                return;
-            }
-            slideId = slide.ID;
             InitializeComponent();
             syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                Properties.Resources.SyncExplanationIcon.GetHbitmap(),
@@ -74,9 +68,16 @@ namespace PowerPointLabs.ELearningLab.Views
                IntPtr.Zero,
                Int32Rect.Empty,
                BitmapSizeOptions.FromEmptyOptions());
-            isSynced = true;
-            SetupSpinnerOnLoadingBegins();
+            isSynced = true;          
             InitializeBackgroundWorker();
+            slide = this.GetCurrentSlide();
+            if (slide == null)
+            {
+                SetupSpinnerOnLoadingBegin(content: ELearningLabText.NoSlideSelectedMessage);
+                return;
+            }
+            SetupSpinnerOnLoadingBegin(content: ELearningLabText.OnLoadingMessage);
+            slideId = slide.ID;
             worker.RunWorkerAsync();
         }
 
@@ -91,18 +92,19 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         public void ReloadELearningLabOnSlideSelectionChanged()
         {
-            PowerPointSlide _slide = this.GetCurrentSlide();
+            slide = this.GetCurrentSlide();
+            if (slide == null)
+            {
+                slideId = -1;
+                SetupSpinnerOnLoadingBegin(ELearningLabText.NoSlideSelectedMessage);
+                return;
+            }
             // We do not re-initailize elearning lab if 
             // the current slide is the same as previous slide. 
             // This can happen when user opens presentation mode on current slide
             // and exit presentation mode subsequently.
-            if (_slide == null)
-            {
-                return;
-            }
             // check if the current slide is the same as previous slide
-            slide = _slide;
-            if (_slide.ID.Equals(slideId))
+            if (slide != null && slide.ID.Equals(slideId))
             {
                 return;
             }
@@ -110,7 +112,7 @@ namespace PowerPointLabs.ELearningLab.Views
             slideId = slide.ID;
             isSynced = true;
             listView.ItemsSource = null;
-            SetupSpinnerOnLoadingBegins();
+            SetupSpinnerOnLoadingBegin(ELearningLabText.OnLoadingMessage);
             if (worker.IsBusy)
             {
                 worker.CancelAsync();
@@ -127,6 +129,11 @@ namespace PowerPointLabs.ELearningLab.Views
         /// </summary>
         public void SyncElearningLabOnSlideSelectionChanged()
         {
+            if (slide == null)
+            {
+                isSynced = true;
+                return;
+            }
             // do not check for sync if previous slide is deleted
             try
             {
@@ -814,12 +821,15 @@ namespace PowerPointLabs.ELearningLab.Views
             return false;
         }
 
-        private void SetupSpinnerOnLoadingBegins()
+        private void SetupSpinnerOnLoadingBegin(string content)
         {
             createButton.IsEnabled = false;
             syncButton.IsEnabled = false;
             eLLPane.Visibility = Visibility.Collapsed;
             loadingPane.Visibility = Visibility.Visible;
+            loadingLabel.Content = content;
+            createImage.Opacity = 0.5;
+            syncImage.Opacity = 0.5;
         }
 
         private void RemoveSpinnerOnLoadingFinished()
@@ -828,6 +838,8 @@ namespace PowerPointLabs.ELearningLab.Views
             syncButton.IsEnabled = true;
             loadingPane.Visibility = Visibility.Collapsed;
             eLLPane.Visibility = Visibility.Visible;
+            createImage.Opacity = 1;
+            syncImage.Opacity = 1;
         }
 
         #endregion

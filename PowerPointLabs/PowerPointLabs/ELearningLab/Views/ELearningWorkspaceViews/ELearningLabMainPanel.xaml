@@ -117,7 +117,7 @@
             </ListView>
         </DockPanel>
         <DockPanel Grid.Row="1" x:Name="loadingPane">
-            <Label Content="Now Loading..." FontSize="20" 
+            <Label x:Name="loadingLabel" FontSize="20" 
                    FontWeight="Bold" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"

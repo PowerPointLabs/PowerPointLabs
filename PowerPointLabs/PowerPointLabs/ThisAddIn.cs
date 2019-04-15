@@ -712,17 +712,10 @@ namespace PowerPointLabs
                 return;
             }
             ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
-            if (selectedSlidesCount > 0)
+            taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
+            if (elearningLabPane.Visible == true)
             {
-                taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
-                if (elearningLabPane.Visible == true)
-                {
-                    taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
-                }
-            }
-            else
-            {
-                elearningLabPane.Visible = false;
+                taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
             }
         }
 
@@ -922,7 +915,6 @@ namespace PowerPointLabs
 
                 UpdateRecorderPane(sldRange.Count, slideID);
                 TimerLab.TimerLab.IsTimerEnabled = true;
-                ELearningService.IsELearningWorkspaceEnabled = true;
                 PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
@@ -930,7 +922,6 @@ namespace PowerPointLabs
                 UpdateRecorderPane(sldRange.Count, -1);
                 TimerLab.TimerLab.IsTimerEnabled = false;
                 UpdateTimerPane(false);
-                ELearningService.IsELearningWorkspaceEnabled = false;
                 PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
                 ShutDownPictureSlidesLab();
             }

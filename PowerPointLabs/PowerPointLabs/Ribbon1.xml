@@ -149,22 +149,7 @@
                    getLabel="GetLabel"
                    getImage="GetImage"
                    getSupertip="GetSupertip"
-                   getEnabled="GetEnabled"
                    onAction="OnAction"/>
-            <!--To be implemented>
-            <button id="AddAudioButton"
-                   tag="AddAudio"
-                   getLabel="GetLabel"
-                   getImage="GetImage"
-                   getSupertip="GetSupertip"
-                   onAction="OnAction"/>
-            <button id="DeleteAudioButton"
-       tag="AddAudio"
-       getLabel="GetLabel"
-       getImage="GetImage"
-       getSupertip="GetSupertip"
-       onAction="OnAction"/>
-            <End-->
             <menuSeparator id="ELearningLabSettingsSeparator"/>
             <button id="ELearningLabSettingsButton"
                     tag="ELearningLabSettings"
