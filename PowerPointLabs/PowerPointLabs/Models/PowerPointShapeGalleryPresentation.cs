@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -562,13 +563,27 @@ namespace PowerPointLabs.Models
             bool shapeLost = false;
             bool pngLost = false;
             int untitledCategoryCnt = 0;
+            List<int> inaccessibleCategoryIndices = new List<int>();
+            List<PowerPointSlide> slides = Slides;
 
-            foreach (PowerPointSlide category in Slides)
+            for (int i = 0; i < Slides.Count; i++)
             {
+                PowerPointSlide category = Slides[i];
                 Shape categoryNameBox = ConsistencyCheckCategoryNameBox(category, ref untitledCategoryCnt);
 
                 // check if we have a corresponding category directory in the Path
-                string shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                string shapeFolderPath;
+                try
+                {
+                    shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                }
+                catch (Exception)
+                {
+                    // Unable to get shape folder path. Store the problematic category and continue
+                    // Actual slide index starts from 1.
+                    inaccessibleCategoryIndices.Add(i + 1);
+                    continue;
+                }
                 string finalCategoryName = new DirectoryInfo(shapeFolderPath).Name;
 
                 List<string> pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
@@ -586,8 +601,12 @@ namespace PowerPointLabs.Models
 
                 Categories.Add(finalCategoryName);
             }
+            foreach (int inaccessibleCategoryIndex in inaccessibleCategoryIndices)
+            {
+                RemoveSlide(inaccessibleCategoryIndex);
+            }
 
-            bool categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
+            bool categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide() || inaccessibleCategoryIndices.Count > 0;
 
             Save();
 
