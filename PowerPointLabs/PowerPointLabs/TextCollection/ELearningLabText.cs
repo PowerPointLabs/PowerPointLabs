@@ -51,7 +51,6 @@ namespace PowerPointLabs.TextCollection
         public const string ExplanationItem_IsTriggerTypeComboBoxEnabled = "IsTriggerTypeComboBoxEnabled";
         public const string ExplanationItem_IsVoiceLabelInvalid = "IsVoiceLabelInvalid";
 
-
         public const string ELearningLabTextStorageShapeName = Identifier + Underscore + TextStorageIdentifier;
 
         public const string AudioDefaultLabelFormat = "{0}" + Underscore + DefaultAudioIdentifier;
