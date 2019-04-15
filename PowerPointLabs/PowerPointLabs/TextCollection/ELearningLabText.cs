@@ -37,8 +37,7 @@ namespace PowerPointLabs.TextCollection
         public const string SelfExplanationItemIdentifier = "Item";
 
         public const string NoSlideSelectedMessage = "No slide is selected";
-        public const string OnLoadingMessage = "Now Loading...";
-        public const string OnlyEnglishLanguageSupportedMessage = "Note that we only support English language at this stage.";
+        public const string OnLoadingMessage = "Now Loading...";        
 
         public const string ExplanationItem_IsCallout = "IsCallout";
         public const string ExplanationItem_IsCaption = "IsCaption";

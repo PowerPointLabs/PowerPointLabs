@@ -73,7 +73,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private List<IVoice> rankedAudioListCache = new List<IVoice>();
 
-        private static bool hasEnglishSupportMessageShowed = false;
         public AudioMainSettingsPage()
         {
             InitializeComponent();
@@ -123,8 +122,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AudioMainSettingsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            RadioAzureVoice.Checked += RadioVoice_Checked;
-            RadioWatsonVoice.Checked += RadioVoice_Checked;
             ToggleAzureFunctionVisibility();
             ToggleWatsonFunctionVisibility();
             SetupAudioPreferenceUI();
@@ -211,15 +208,6 @@ namespace PowerPointLabs.ELearningLab.Views
             RadioWatsonVoice.IsEnabled = false;
             RadioDefaultVoice.IsChecked = true;
             WatsonRuntimeService.IsWatsonAccountPresentAndValid = false;
-        }
-
-        private void RadioVoice_Checked(object sender, RoutedEventArgs e)
-        {
-            if (!hasEnglishSupportMessageShowed)
-            {
-                hasEnglishSupportMessageShowed = true;
-                MessageBox.Show(ELearningLabText.OnlyEnglishLanguageSupportedMessage);
-            }
         }
 
         private void PreviewCheckBox_Checked(object sender, RoutedEventArgs e)
