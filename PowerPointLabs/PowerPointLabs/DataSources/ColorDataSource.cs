@@ -180,7 +180,10 @@ namespace PowerPointLabs.DataSources
             {
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
-                serializer.Serialize(fileStream, recentColors);
+                HSLColor[] colors = new HSLColor[recentColors.Count];
+                recentColors.CopyTo(colors, 0);
+                List<HSLColor> colorList = new List<HSLColor>(colors);
+                serializer.Serialize(fileStream, colorList);
                 fileStream.Close();
             }
             catch (Exception)
@@ -218,7 +221,10 @@ namespace PowerPointLabs.DataSources
             {
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
-                serializer.Serialize(fileStream, favoriteColors);
+                HSLColor[] colors = new HSLColor[favoriteColors.Count];
+                favoriteColors.CopyTo(colors, 0);
+                List<HSLColor> colorList = new List<HSLColor>(colors);
+                serializer.Serialize(fileStream, colorList);
                 fileStream.Close();
             }
             catch (Exception)
