@@ -1,7 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 using ThreeDFormat = Microsoft.Office.Interop.PowerPoint.ThreeDFormat;
@@ -72,8 +76,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LightingEffectFormat");
                 return false;
             }
 

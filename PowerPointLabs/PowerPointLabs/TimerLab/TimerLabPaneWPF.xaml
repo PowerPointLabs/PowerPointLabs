@@ -31,6 +31,8 @@
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="10" />
                         <RowDefinition Height="1*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="10" />
                         <RowDefinition Height="1*" />
@@ -61,33 +63,39 @@
                                             StringFormat="N2" ValueDecremented="DurationTextBox_ValueDecremented" 
                                             ValueIncremented="DurationTextBox_ValueIncremented"
                                             LostFocus="DurationTextBox_LostFocus"/>
-                    <Image Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                    <TextBlock Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center">Countdown</TextBlock>
+                    <CheckBox x:Name="CountdownCheckBox" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Checked="CountdownCheckBox_StateChanged" Unchecked="CountdownCheckBox_StateChanged"/>
+                    <TextBlock Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center">Progress Bar</TextBlock>
+                    <CheckBox x:Name="ProgressBarCheckBox" Grid.Row="3" Grid.Column="9" Grid.ColumnSpan="2"  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Checked="ProgressBarCheckBox_StateChanged" Unchecked="ProgressBarCheckBox_StateChanged"/>
+                    <Image Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                            Width="23" Height="15" Source="../Resources/TimerLab/MinWidth.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    <Image Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                    <Image Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                            Width="23" Height="15" Source="../Resources/TimerLab/HalfWidth.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    <Image Grid.Row="3" Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" 
+                    <Image Grid.Row="5" Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" 
                            Width="23" Height="15" Source="../Resources/TimerLab/MaxWidth.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">Width</TextBlock>
-                    <Slider x:Name="WidthSlider" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="7" VerticalAlignment="Center" 
+                    <TextBlock Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">Width</TextBlock>
+                    <Slider x:Name="WidthSlider" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="7" VerticalAlignment="Center" 
                             TickPlacement="BottomRight" TickFrequency="100" Loaded="WidthSlider_Loaded" ValueChanged="WidthSlider_ValueChanged"/>
-                    <TextBox x:Name="WidthTextBox" Grid.Row="4" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
+                    <TextBox x:Name="WidthTextBox" Grid.Row="6" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
                              LostFocus="WidthTextBox_LostFocus" Loaded="WidthTextBox_Loaded" PreviewTextInput="WidthTextBox_PreviewTextInput"
                              DataObject.Pasting="WidthTextBox_TextBoxPasting"/>
 
-                    <Image Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                    <Image Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                            Width="15" Height="23" Source="../Resources/TimerLab/MinHeight.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    <Image Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                    <Image Grid.Row="8" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                            Width="15" Height="23" Source="../Resources/TimerLab/HalfHeight.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    <Image Grid.Row="6" Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" 
+                    <Image Grid.Row="8" Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2" 
                            Width="15" Height="23" Source="../Resources/TimerLab/MaxHeight.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    <TextBlock Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5">Height</TextBlock>
-                    <Slider x:Name="HeightSlider" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="7" VerticalAlignment="Center" 
+                    <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5">Height</TextBlock>
+                    <Slider x:Name="HeightSlider" Grid.Row="9" Grid.Column="3" Grid.ColumnSpan="7" VerticalAlignment="Center" 
                             TickPlacement="BottomRight" TickFrequency="100" Loaded="HeightSlider_Loaded" ValueChanged="HeightSlider_ValueChanged"/>
-                    <TextBox x:Name="HeightTextBox" Grid.Row="7" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
+                    <TextBox x:Name="HeightTextBox" Grid.Row="9" Grid.Column="11" VerticalAlignment="Center" MaxLength="3"
                              LostFocus="HeightTextBox_LostFocus" Loaded="HeightTextBox_Loaded" PreviewTextInput="HeightTextBox_PreviewTextInput"
                              DataObject.Pasting="HeightTextBox_TextBoxPasting"/>
 
-                    <Button x:Name="createButton" Grid.Row="9" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Center" Click="CreateButton_Click">Create</Button>
+                    <Button x:Name="createButton" Grid.Row="11" Grid.Column="9" Grid.ColumnSpan="3" VerticalAlignment="Center" Click="CreateButton_Click">Create</Button>
                 </Grid>
             </GroupBox>
         </Grid>

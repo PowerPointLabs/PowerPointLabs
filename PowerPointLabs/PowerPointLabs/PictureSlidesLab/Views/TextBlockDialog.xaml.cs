@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+
 using PowerPointLabs.WPF.Observable;
 
 namespace PowerPointLabs.PictureSlidesLab.Views

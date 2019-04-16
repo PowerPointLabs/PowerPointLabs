@@ -1,10 +1,7 @@
-﻿using System.Drawing;
-using System.IO;
-
+﻿
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
-using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PasteLab

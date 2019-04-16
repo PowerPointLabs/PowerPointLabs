@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.Models;
 
 namespace Test.UnitTest.TagMatchers

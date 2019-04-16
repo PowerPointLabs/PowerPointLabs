@@ -18,6 +18,7 @@
         public const string ErrorAddSelectionInvalid = "Please select one shape to add.";
 
         public const string ErrorFileNameInvalid = "Invalid shape name.";
+        public const string ErrorCategoryNameMissing = "Provided category does not exist.";
         public const string ErrorNoShapeTextFirstLine = "No shapes saved yet.";
         public const string ErrorNoShapeTextSecondLine = "Right-click any object on a slide to save it in this panel.";
         public const string ErrorNoPanelSelected = "No shape selected.";
@@ -44,6 +45,7 @@
         public const string ErrorImportAppendCategory = "Your computer does not support this feature.";
         public const string ErrorImportSingleCategory =
             "{0} contains multiple categories. Try \"Import Category\" instead.";
+        public const string ErrorShapePaneNotOpened = "Error: Shapes Lab Pane not opened.";
         public const string SuccessImport = "Successfully imported.";
 
         public const string ImportShapeFileDialogTitle = "Import Shapes";
@@ -70,5 +72,6 @@
         public const string ErrorFolderNonEmpty = "Please select an empty folder as default saving folder.";
 
         public const string AddShapeToolTip = "Adds a shape to Shapes Lab.";
+        public const string DisabledAddShapeToolTip = AddShapeToolTip + "\nStart by selecting a shape.";
     }
 }

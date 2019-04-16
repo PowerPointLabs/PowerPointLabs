@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+
 using MahApps.Metro.Controls.Dialogs;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.PictureSlidesLab.Views

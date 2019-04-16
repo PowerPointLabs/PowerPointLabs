@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -28,19 +29,24 @@ namespace PowerPointLabs.Utils
 
         #region Constants
         private static readonly Object FileLock = new object();
-        public const float PictureExportingRatio = 96.0f / 72.0f;
-        private const float TargetDpi = 96.0f;
+        public static float PictureExportingRatio = 330.0f / 72.0f;
+        private const float targetDpi = 96.0f;
         private static float dpiScale = 1.0f;
+
+        // Picture exporting ratios
+        private const float pictureExportingRatioHigh = 330.0f / 72.0f;
+        private const float pictureExportingRatioCompressed = 96.0f / 72.0f;
+
         // Heuristics for image compression obtained through testing
-        private const long targetCompression = 95L;
-        private const long fileSizeLimit = 75000L;
+        private const long targetCompression = 75L;
+        private const long fileSizeLimit = 40000L;
 
         // Static initializer to retrieve dpi scale once
         static GraphicsUtil()
         {
             using (Graphics g = Graphics.FromHwnd(IntPtr.Zero))
             {
-                dpiScale = g.DpiX / TargetDpi;
+                dpiScale = g.DpiX / targetDpi;
             }
         }
         #endregion
@@ -186,6 +192,50 @@ namespace PowerPointLabs.Utils
         #endregion
 
         #region Slide
+        public static void ExportSlides(List<Slide> slides, string exportPath, float magnifyRatio = 1.0f)
+        {
+            if (slides.Count <= 0)
+            {
+                return;
+            } 
+            else if (slides.Count == 1)
+            {
+                ExportSlide(slides[0], exportPath, magnifyRatio);
+                return;
+            }
+
+            // Get folder name from exportPath
+            string folderName = GetDefaultFolderNameForExport(exportPath);
+
+            try
+            {
+                Directory.CreateDirectory(folderName);
+
+                foreach (Slide slide in slides)
+                {
+                    string fileName = folderName + "\\" + slide.Name + ".png";
+                    ExportSlide(slide, fileName, magnifyRatio);
+                }
+
+                // Alert the user that the slides have been saved in a folder
+                string messageBoxText = "The selected slides have been saved as a separate file in the folder " + folderName + ".";
+                MessageBox.Show(messageBoxText);
+            }
+            catch (Exception)
+            {
+                // Failed to create directory, we save the images all to the specified path
+                foreach (Slide slide in slides)
+                {
+                    string fileName = folderName + "_" + slide.Name + ".png";
+                    ExportSlide(slide, fileName, magnifyRatio);
+                }
+
+                // Alert the user that the slides have been saved as a separate file in the specified folder.
+                string messageBoxText = "The selected slides have been saved as a separate file in the specified folder.";
+                MessageBox.Show(messageBoxText);
+            }
+        }
+
         public static void ExportSlide(Slide slide, string exportPath, float magnifyRatio = 1.0f)
         {
             slide.Export(exportPath,
@@ -288,6 +338,15 @@ namespace PowerPointLabs.Utils
         }
         #endregion
 
+        #region Settings
+
+        public static void ShouldCompressPictureExport(bool shouldCompress)
+        {
+            PictureExportingRatio = shouldCompress ? pictureExportingRatioCompressed : pictureExportingRatioHigh;
+        }
+
+        #endregion
+
         #endregion
 
         #region Helper Methods
@@ -309,14 +368,33 @@ namespace PowerPointLabs.Utils
 
         private static double GetDesiredExportWidth()
         {
-            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-            return PowerPointPresentation.Current.SlideWidth / 72.0 * 96.0;
+            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi or 330 dpi, depending on user option.
+            return PowerPointPresentation.Current.SlideWidth * PictureExportingRatio;
         }
 
         private static double GetDesiredExportHeight()
         {
-            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi.
-            return PowerPointPresentation.Current.SlideHeight / 72.0 * 96.0;
+            // Powerpoint displays at 72 dpi, while the picture stores in 96 dpi or 330 dpi, depending on user option.
+            return PowerPointPresentation.Current.SlideHeight * PictureExportingRatio;
+        }
+
+        private static string GetDefaultFolderNameForExport(string exportPath)
+        {
+            string folderName = exportPath.Substring(0, exportPath.Length - 4);
+
+            int suffix = 1;
+            int idx = exportPath.LastIndexOf('\\');
+            string folderPath = exportPath.Substring(0, idx + 1);
+
+            while (Directory.Exists(folderName))
+            {
+                // Change to default folder name with suffix
+                string suffixString = suffix.ToString();
+                folderName = folderPath + "PPTLabs_ExportedSlides_" + suffixString;
+                suffix++;
+            }
+
+            return folderName;
         }
 
         /// <summary>

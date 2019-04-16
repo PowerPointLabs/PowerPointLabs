@@ -4,63 +4,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using PowerPointLabs.ColorsLab;
+
 namespace PowerPointLabs.DataSources
 {
     class ColorDataSource : INotifyPropertyChanged
     {
-        private bool isFillColorSelectedValue;
 
-        public bool IsFillColorSelected
-        {
-            get
-            {
-                return isFillColorSelectedValue;
-            }
-            set
-            {
-                if (value != this.isFillColorSelectedValue)
-                {
-                    this.isFillColorSelectedValue = value;
-                    OnPropertyChanged("isFillColorSelected");
-                }
-            }
-        }
-
-        private bool isFontColorSelectedValue;
-
-        public bool IsFontColorSelected
-        {
-            get
-            {
-                return isFontColorSelectedValue;
-            }
-            set
-            {
-                if (value != this.isFontColorSelectedValue)
-                {
-                    this.isFontColorSelectedValue = value;
-                    OnPropertyChanged("isFontColorSelected");
-                }
-            }
-        }
-
-        private bool isLineColorSelectedValue;
-
-        public bool IsLineColorSelected
-        {
-            get
-            {
-                return isLineColorSelectedValue;
-            }
-            set
-            {
-                if (value != this.isLineColorSelectedValue)
-                {
-                    this.isLineColorSelectedValue = value;
-                    OnPropertyChanged("isLineColorSelected");
-                }
-            }
-        }
+        #region Properties
 
         private HSLColor selectedColorValue;
 
@@ -76,6 +27,222 @@ namespace PowerPointLabs.DataSources
                 {
                     this.selectedColorValue = value;
                     OnPropertyChanged("selectedColor");
+                }
+            }
+        }
+
+        private HSLColor recentColorOneValue;
+
+        public HSLColor RecentColorOne
+        {
+            get
+            {
+                return recentColorOneValue;
+            }
+            set
+            {
+                if (value != this.recentColorOneValue)
+                {
+                    this.recentColorOneValue = value;
+                    OnPropertyChanged("RecentColorOne");
+                }
+            }
+        }
+
+        private HSLColor recentColorTwoValue;
+
+        public HSLColor RecentColorTwo
+        {
+            get
+            {
+                return recentColorTwoValue;
+            }
+            set
+            {
+                if (value != this.recentColorTwoValue)
+                {
+                    this.recentColorTwoValue = value;
+                    OnPropertyChanged("RecentColorTwo");
+                }
+            }
+        }
+
+        private HSLColor recentColorThreeValue;
+
+        public HSLColor RecentColorThree
+        {
+            get
+            {
+                return recentColorThreeValue;
+            }
+            set
+            {
+                if (value != this.recentColorThreeValue)
+                {
+                    this.recentColorThreeValue = value;
+                    OnPropertyChanged("RecentColorThree");
+                }
+            }
+        }
+
+        private HSLColor recentColorFourValue;
+
+        public HSLColor RecentColorFour
+        {
+            get
+            {
+                return recentColorFourValue;
+            }
+            set
+            {
+                if (value != this.recentColorFourValue)
+                {
+                    this.recentColorFourValue = value;
+                    OnPropertyChanged("RecentColorFour");
+                }
+            }
+        }
+
+        private HSLColor recentColorFiveValue;
+
+        public HSLColor RecentColorFive
+        {
+            get
+            {
+                return recentColorFiveValue;
+            }
+            set
+            {
+                if (value != this.recentColorFiveValue)
+                {
+                    this.recentColorFiveValue = value;
+                    OnPropertyChanged("RecentColorFive");
+                }
+            }
+        }
+
+        private HSLColor recentColorSixValue;
+
+        public HSLColor RecentColorSix
+        {
+            get
+            {
+                return recentColorSixValue;
+            }
+            set
+            {
+                if (value != this.recentColorSixValue)
+                {
+                    this.recentColorSixValue = value;
+                    OnPropertyChanged("RecentColorSix");
+                }
+            }
+        }
+
+        private HSLColor recentColorSevenValue;
+
+        public HSLColor RecentColorSeven
+        {
+            get
+            {
+                return recentColorSevenValue;
+            }
+            set
+            {
+                if (value != this.recentColorSevenValue)
+                {
+                    this.recentColorSevenValue = value;
+                    OnPropertyChanged("RecentColorSeven");
+                }
+            }
+        }
+
+        private HSLColor recentColorEightValue;
+
+        public HSLColor RecentColorEight
+        {
+            get
+            {
+                return recentColorEightValue;
+            }
+            set
+            {
+                if (value != this.recentColorEightValue)
+                {
+                    this.recentColorEightValue = value;
+                    OnPropertyChanged("RecentColorEight");
+                }
+            }
+        }
+
+        private HSLColor recentColorNineValue;
+
+        public HSLColor RecentColorNine
+        {
+            get
+            {
+                return recentColorNineValue;
+            }
+            set
+            {
+                if (value != this.recentColorNineValue)
+                {
+                    this.recentColorNineValue = value;
+                    OnPropertyChanged("RecentColorNine");
+                }
+            }
+        }
+
+        private HSLColor recentColorTenValue;
+
+        public HSLColor RecentColorTen
+        {
+            get
+            {
+                return recentColorTenValue;
+            }
+            set
+            {
+                if (value != this.recentColorTenValue)
+                {
+                    this.recentColorTenValue = value;
+                    OnPropertyChanged("RecentColorTen");
+                }
+            }
+        }
+
+        private HSLColor recentColorElevenValue;
+
+        public HSLColor RecentColorEleven
+        {
+            get
+            {
+                return recentColorElevenValue;
+            }
+            set
+            {
+                if (value != this.recentColorElevenValue)
+                {
+                    this.recentColorElevenValue = value;
+                    OnPropertyChanged("RecentColorEleven");
+                }
+            }
+        }
+
+        private HSLColor recentColorTwelveValue;
+
+        public HSLColor RecentColorTwelve
+        {
+            get
+            {
+                return recentColorTwelveValue;
+            }
+            set
+            {
+                if (value != this.recentColorTwelveValue)
+                {
+                    this.recentColorTwelveValue = value;
+                    OnPropertyChanged("RecentColorTwelve");
                 }
             }
         }
@@ -259,7 +426,120 @@ namespace PowerPointLabs.DataSources
                 }
             }
         }
-        
+
+        private HSLColor themeColorElevenValue;
+
+        public HSLColor ThemeColorEleven
+        {
+            get
+            {
+                return themeColorElevenValue;
+            }
+            set
+            {
+                if (value != this.themeColorElevenValue)
+                {
+                    this.themeColorElevenValue = value;
+                    OnPropertyChanged("themeColorEleven");
+                }
+            }
+        }
+
+        private HSLColor themeColorTwelveValue;
+
+        public HSLColor ThemeColorTwelve
+        {
+            get
+            {
+                return themeColorTwelveValue;
+            }
+            set
+            {
+                if (value != this.themeColorTwelveValue)
+                {
+                    this.themeColorTwelveValue = value;
+                    OnPropertyChanged("themeColorTwelve");
+                }
+            }
+        }
+
+        private HSLColor themeColorThirteenValue;
+
+        public HSLColor ThemeColorThirteen
+        {
+            get
+            {
+                return themeColorThirteenValue;
+            }
+            set
+            {
+                if (value != this.themeColorThirteenValue)
+                {
+                    this.themeColorThirteenValue = value;
+                    OnPropertyChanged("themeColorThirteen");
+                }
+            }
+        }
+
+        #endregion
+
+        #region API
+
+        public void AddColorToRecentColors(HSLColor color)
+        {
+            List<HSLColor> recentColors = GetListOfRecentColors();
+
+            int index = recentColors.IndexOf(color);
+            if (index == -1)
+            {
+                index = recentColors.Count - 1;
+            }
+
+            for (int i = index - 1; i >= 0; i--)
+            {
+                recentColors[i + 1] = recentColors[i];
+            }
+            recentColors[0] = color;
+
+            SetRecentColorsFromList(recentColors);
+        }
+
+        public bool SaveRecentColorsInFile(string filePath)
+        {
+            try
+            {
+                List<HSLColor> recentColors = GetListOfRecentColors();
+
+                Stream fileStream = File.Create(filePath);
+                BinaryFormatter serializer = new BinaryFormatter();
+                serializer.Serialize(fileStream, recentColors);
+                fileStream.Close();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool LoadRecentColorsFromFile(string filePath)
+        {
+            try
+            {
+                Stream openFileStream = File.OpenRead(filePath);
+                BinaryFormatter deserializer = new BinaryFormatter();
+                List<HSLColor> recentColors = (List<HSLColor>)deserializer.Deserialize(openFileStream);
+                openFileStream.Close();
+
+                SetRecentColorsFromList(recentColors);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public bool SaveThemeColorsInFile(String filePath)
         {
             try
@@ -275,6 +555,8 @@ namespace PowerPointLabs.DataSources
                 themeColors.Add(this.ThemeColorEight);
                 themeColors.Add(this.ThemeColorNine);
                 themeColors.Add(this.ThemeColorTen);
+                themeColors.Add(this.ThemeColorEleven);
+                themeColors.Add(this.ThemeColorTwelve);
 
                 Stream fileStream = File.Create(filePath);
                 BinaryFormatter serializer = new BinaryFormatter();
@@ -307,6 +589,8 @@ namespace PowerPointLabs.DataSources
                 this.ThemeColorEight = themeColors[7];
                 this.ThemeColorNine = themeColors[8];
                 this.ThemeColorTen = themeColors[9];
+                this.ThemeColorEleven = themeColors[10];
+                this.ThemeColorTwelve = themeColors[11];
             }
             catch (Exception)
             {
@@ -314,6 +598,65 @@ namespace PowerPointLabs.DataSources
             }
             return true;
         }
+
+        public void AddColorToFavorites(HSLColor color)
+        {
+            ThemeColorTwelve = ThemeColorEleven;
+            ThemeColorEleven = ThemeColorTen;
+            ThemeColorTen = ThemeColorNine;
+            ThemeColorNine = ThemeColorEight;
+            ThemeColorEight = ThemeColorSeven;
+            ThemeColorSeven = ThemeColorSix;
+            ThemeColorSix = ThemeColorFive;
+            ThemeColorFive = ThemeColorFour;
+            ThemeColorFour = ThemeColorThree;
+            ThemeColorThree = ThemeColorTwo;
+            ThemeColorTwo = ThemeColorOne;
+            ThemeColorOne = color;
+        }
+
+        #endregion
+
+        #region Helpers
+
+        public List<HSLColor> GetListOfRecentColors()
+        {
+            List<HSLColor> recentColors = new List<HSLColor>();
+            recentColors.Add(this.RecentColorOne);
+            recentColors.Add(this.RecentColorTwo);
+            recentColors.Add(this.RecentColorThree);
+            recentColors.Add(this.RecentColorFour);
+            recentColors.Add(this.RecentColorFive);
+            recentColors.Add(this.RecentColorSix);
+            recentColors.Add(this.RecentColorSeven);
+            recentColors.Add(this.RecentColorEight);
+            recentColors.Add(this.RecentColorNine);
+            recentColors.Add(this.RecentColorTen);
+            recentColors.Add(this.RecentColorEleven);
+            recentColors.Add(this.RecentColorTwelve);
+
+            return recentColors;
+        }
+
+        protected void SetRecentColorsFromList(List<HSLColor> recentColors)
+        {
+            this.RecentColorOne = recentColors[0];
+            this.RecentColorTwo = recentColors[1];
+            this.RecentColorThree = recentColors[2];
+            this.RecentColorFour = recentColors[3];
+            this.RecentColorFive = recentColors[4];
+            this.RecentColorSix = recentColors[5];
+            this.RecentColorSeven = recentColors[6];
+            this.RecentColorEight = recentColors[7];
+            this.RecentColorNine = recentColors[8];
+            this.RecentColorTen = recentColors[9];
+            this.RecentColorEleven = recentColors[10];
+            this.RecentColorTwelve = recentColors[11];
+        }
+
+        #endregion
+
+        #region Constructors and PropertyChanged
 
         public ColorDataSource()
         {
@@ -333,5 +676,8 @@ namespace PowerPointLabs.DataSources
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
+
+        #endregion
+
     }
 }

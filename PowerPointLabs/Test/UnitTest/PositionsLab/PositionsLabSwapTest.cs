@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PowerPointLabs.PositionsLab;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Utils;
 
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using SlideUtil = Test.Util.SlideUtil;
 
 namespace Test.UnitTest.PositionsLab

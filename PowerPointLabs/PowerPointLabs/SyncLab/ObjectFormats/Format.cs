@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats

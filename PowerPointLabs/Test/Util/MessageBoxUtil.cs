@@ -1,16 +1,27 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Util
 {
     class MessageBoxUtil
     {
-        public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action messageBoxTrigger, 
+        private const String MessageBoxIdentifier = "#32770";
+
+        public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action messageBoxTrigger,
             string buttonNameToClick = null, int retryCount = 5, int waitTime = 1000)
         {
             Task expect = ExpectMessageBoxWillPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
+            messageBoxTrigger.Invoke();
+            VerifyExpectation(expect, retryCount, waitTime);
+        }
+
+        public static void ExpectMessageBoxWillNotPopUp(string title, string expContent, Action messageBoxTrigger,
+            string buttonNameToClick = null, int retryCount = 5, int waitTime = 1000)
+        {
+            Task expect = ExpectMessageBoxWillNotPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
             messageBoxTrigger.Invoke();
             VerifyExpectation(expect, retryCount, waitTime);
         }
@@ -28,7 +39,7 @@ namespace Test.Util
                 IntPtr msgBoxHandle = IntPtr.Zero;
                 while (msgBoxHandle == IntPtr.Zero && retryCount > 0)
                 {
-                    msgBoxHandle = NativeUtil.FindWindow("#32770", title);
+                    msgBoxHandle = NativeUtil.FindWindow(MessageBoxIdentifier, title);
                     if (msgBoxHandle == IntPtr.Zero)
                     {
                         ThreadUtil.WaitFor(waitTime);
@@ -59,6 +70,39 @@ namespace Test.Util
                 {
                     Assert.IsTrue(isGetTextSuccessful > 0, "Failed to get text in the label of messagebox.");
                     Assert.AreEqual(expContent, actualContentBuilder.ToString(), true, "Different MessageBox content.");
+                }
+            });
+            taskToVerify.Start();
+            return taskToVerify;
+        }
+
+        // This method must be called before PplFeatures,
+        // otherwise, PplFeatures will block the test.
+        private static Task ExpectMessageBoxWillNotPopUp(string title, string expContent,
+            string buttonNameToClick, int retryCount, int waitTime)
+        {
+            // MessageBox in pptlabs will block the whole thread,
+            // so multi-thread is needed here.
+            Task taskToVerify = new Task(() =>
+            {
+                // try to find messagebox window
+                IntPtr msgBoxHandle = IntPtr.Zero;
+                while (msgBoxHandle == IntPtr.Zero && retryCount > 0)
+                {
+                    msgBoxHandle = NativeUtil.FindWindow(MessageBoxIdentifier, title);
+                    if (msgBoxHandle == IntPtr.Zero)
+                    {
+                        ThreadUtil.WaitFor(waitTime);
+                        retryCount--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (msgBoxHandle != IntPtr.Zero)
+                {
+                    Assert.Fail("Message Box should not be open.");
                 }
             });
             taskToVerify.Start();

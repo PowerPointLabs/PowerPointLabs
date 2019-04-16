@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -80,6 +79,15 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
             
         }
-
+    
+        public bool GetCopyButtonEnabledStatus()
+        {
+            bool result = false;
+            UIThreadExecutor.Execute(() =>
+            {
+                result = _pane.SyncPaneWPF1.GetCopyButtonEnabledStatus();
+            });
+            return result;
+        }
     }
 }

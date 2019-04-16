@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Windows;
 using PowerPointLabs.AnimationLab;
 using PowerPointLabs.CropLab;
+using PowerPointLabs.Utils;
 using PowerPointLabs.ZoomLab;
 
 using Office = Microsoft.Office.Core;
@@ -101,9 +102,7 @@ namespace PowerPointLabs.Models
         //Return shape which helps to calculate the amount of zoom-in animation
         private PowerPoint.Shape GetReferenceShape(PowerPoint.Shape shapeToZoom)
         {
-            shapeToZoom.Copy();
-
-            PowerPoint.Shape referenceShape = _slide.Shapes.Paste()[1];
+            PowerPoint.Shape referenceShape = shapeToZoom.Duplicate()[1];
             referenceShape.LockAspectRatio = Office.MsoTriState.msoTrue;
             if (referenceShape.Width > referenceShape.Height)
             {
@@ -146,9 +145,33 @@ namespace PowerPointLabs.Models
             cropShape.Select();
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape croppedShape = CropToShape.Crop(zoomSlideCopy, sel, magnifyRatio: magnifyRatio);
-            croppedShape.Cut();
+            try
+            {
+                string tempFilePath = FileDir.GetTemporaryPngFilePath();
+                Utils.GraphicsUtil.ExportShape(croppedShape, tempFilePath);
+                zoomSlideCroppedShapes = _slide.Shapes.AddPicture2(tempFilePath,
+                    Office.MsoTriState.msoFalse,
+                    Office.MsoTriState.msoTrue,
+                    0,
+                    0);
+                croppedShape.Delete();
+                try
+                {
+                    FileDir.DeleteFile(tempFilePath);
+                }
+                catch (Exception)
+                {
+                    // If the file cannot be deleted, we continue without deletion.
+                }
 
-            zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            }
+            catch (Exception)
+            {
+                // Revert to normal copy and pasting if unable to create file.
+                croppedShape.Cut();
+                zoomSlideCroppedShapes = _slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            }
+
             zoomSlideCroppedShapes.Name = "PPTLabsMagnifyAreaGroup" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             Utils.ShapeUtil.FitShapeToSlide(ref zoomSlideCroppedShapes);
             zoomSlideCopy.Delete();

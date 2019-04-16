@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="PowerPointLabs.ELearningLab.Views.CustomItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:PowerPointLabs.ELearningLab.Views"
+             xmlns:data="clr-namespace:PowerPointLabs.ELearningLab.ELearningWorkspace.Model"
+             xmlns:converters="clr-namespace:PowerPointLabs.ELearningLab.Converters"
+             mc:Ignorable="d">
+    <Control.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Control.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Width="30" Height="30" CornerRadius="15"
+                    VerticalAlignment="Top" Background="Black">
+            <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                       FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="13"/>
+        </Border>
+        <ListView Grid.Column="1" ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type data:CustomSubItem}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
+                   Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
+                               Stretch="Uniform" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{Binding ShapeName}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

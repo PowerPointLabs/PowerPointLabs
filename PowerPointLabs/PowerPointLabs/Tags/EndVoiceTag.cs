@@ -1,5 +1,7 @@
 ﻿using System.Speech.Synthesis;
-using PowerPointLabs.SpeechEngine;
+
+using PowerPointLabs.ELearningLab.AudioGenerator;
+using PowerPointLabs.ELearningLab.Service;
 
 namespace PowerPointLabs.Tags
 {
@@ -15,7 +17,7 @@ namespace PowerPointLabs.Tags
         public override bool Apply(PromptBuilder builder)
         {
             builder.EndVoice();
-            builder.StartVoice(TextToSpeech.DefaultVoiceName);
+            builder.StartVoice(AudioSettingService.selectedVoice.ToString());
             return true;
         }
 
