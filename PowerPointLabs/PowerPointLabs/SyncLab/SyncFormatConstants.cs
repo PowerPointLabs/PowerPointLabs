@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.SyncLab.Views;
+
 using Font = System.Drawing.Font;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -26,6 +29,8 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
         public static readonly int ColorBlack = 0;
         public static readonly int DisplayLineWeight = 5;
+
+        public static readonly string FormatNameSeparator = ">";
 
         public static FormatTreeNode[] FormatCategories => CreateFormatCategories();
 
@@ -71,7 +76,12 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                             new FormatTreeNode("Font", new FontFormat()),
                             new FormatTreeNode("Font Size", new FontSizeFormat()),
                             new FormatTreeNode("Font Color", new FontColorFormat()),
-                            new FormatTreeNode("Style", new FontStyleFormat())),
+                            new FormatTreeNode("Style", new FontStyleFormat()),
+                            new FormatTreeNode("Alignment",
+                                new FormatTreeNode("Horizontal Alignment", new TextHorizontalAlignmentFormat()),
+                                new FormatTreeNode("Vertical Alignment", new TextVerticalAlignmentFormat())),
+                            new FormatTreeNode("Line Spacing", new TextLineSpacingFormat()),
+                            new FormatTreeNode("Orientation", new TextOrientationFormat())),
                     new FormatTreeNode(
                             "Fill",
                             new FormatTreeNode("Color", new FillFormat()),

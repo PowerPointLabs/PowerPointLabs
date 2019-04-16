@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Windows;
 
 namespace TestInterface
 {
@@ -7,10 +7,11 @@ namespace TestInterface
     {
         void OpenPane();
         void SaveSelectedShapes();
-        IShapesLabLabeledThumbnail GetLabeledThumbnail(string labelName);
+        Point GetShapeForClicking(string shapeName);
         void ImportLibrary(string pathToLibrary);
         void ImportShape(string pathToShape);
         List<ISlideData> FetchShapeGalleryPresentationData();
         void ClickAddShapeButton();
+        bool GetAddShapeButtonStatus();
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -40,12 +41,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 GlowFormat source = formatShape.Glow;
 
                 dest.Transparency = source.Transparency;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync GlowTransparencyFormat");
                 return false;
             }
-            return true;
         }
     }
 }

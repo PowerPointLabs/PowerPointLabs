@@ -3,9 +3,9 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab;
-using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
@@ -18,7 +18,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             //TODO: This needs to improved to stop using global variables (Change RemoveAudioEnabledHandler too)
             this.StartNewUndoEntry();
 
-            NotesToAudio.RemoveAudioFromSelectedSlides();
+            ComputerVoiceRuntimeService.RemoveAudioFromSelectedSlides();
 
             CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
 
@@ -37,7 +37,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 }
             }
 
-            NotesToAudio.IsRemoveAudioEnabled = false;
+            ComputerVoiceRuntimeService.IsRemoveAudioEnabled = false;
             this.GetRibbonUi().RefreshRibbonControl("RemoveNarrationsButton");
         }
     }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using ImageProcessor;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.PictureSlidesLab.Util;
+
 using Test.Util;
 
 namespace Test.UnitTest.PictureSlidesLab.Util

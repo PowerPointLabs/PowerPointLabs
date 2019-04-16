@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Drawing;
-using System.Text.RegularExpressions;
-using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ThreeDFormat = Microsoft.Office.Interop.PowerPoint.ThreeDFormat;
 
@@ -43,8 +41,9 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 dest.LightAngle = source.LightAngle;
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LightingAngleFormat");
                 return false;
             }
 

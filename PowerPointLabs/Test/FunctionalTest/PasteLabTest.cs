@@ -1,8 +1,10 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace Test.FunctionalTest

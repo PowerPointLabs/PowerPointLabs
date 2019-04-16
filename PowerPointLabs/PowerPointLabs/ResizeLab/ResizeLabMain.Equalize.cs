@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab

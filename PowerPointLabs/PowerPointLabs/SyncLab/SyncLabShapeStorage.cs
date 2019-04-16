@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+
 using FillFormat = PowerPointLabs.SyncLab.ObjectFormats.FillFormat;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;

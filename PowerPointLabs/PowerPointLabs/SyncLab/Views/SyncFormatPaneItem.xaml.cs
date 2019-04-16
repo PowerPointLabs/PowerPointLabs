@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.SyncLab.Views
@@ -25,6 +27,8 @@ namespace PowerPointLabs.SyncLab.Views
         private string shapeKey = null;
         private SyncLabShapeStorage shapeStorage;
         private FormatTreeNode[] formats = null;
+
+        #region Constructors
 
         public SyncFormatPaneItem(SyncPaneWPF parent, string shapeKey,
                     SyncLabShapeStorage shapeStorage, FormatTreeNode[] formats)
@@ -49,7 +53,13 @@ namespace PowerPointLabs.SyncLab.Views
                 IntPtr.Zero,
                 Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions());
+
+            UpdateToolTipBody();
         }
+
+        #endregion
+
+        #region Getters and Setters
 
         public string FormatShapeKey
         {
@@ -98,8 +108,7 @@ namespace PowerPointLabs.SyncLab.Views
             if (image == null)
             {
                 imageBox.Visibility = Visibility.Hidden;
-                label.Margin = new Thickness(30, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
+                col1.Width = new GridLength(0);
                 return;
             }
             else
@@ -111,22 +120,67 @@ namespace PowerPointLabs.SyncLab.Views
                                         BitmapSizeOptions.FromEmptyOptions());
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
-                label.Margin = new Thickness(65, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
+                col1.Width = new GridLength(60);
             }
         }
 
-        public String Text
+        public string Text
         {
             get
             {
-                return label.Content.ToString();
+                return textBlock.Text;
             }
             set
             {
-                label.Content = value;
+                textBlock.Text = value;
+                toolTipName.Text = value;
             }
         }
+
+        #endregion
+
+        #region Helper Functions
+
+        private void UpdateToolTipBody()
+        {
+            StringBuilder toolTipBodyText = new StringBuilder();
+            foreach (FormatTreeNode format in formats)
+            {
+                toolTipBodyText.Append(GetNamesOfCheckedNodes(format.Name, format));
+            }
+            toolTipBody.Text = toolTipBodyText.ToString().Trim("\n".ToCharArray());
+        }
+
+        private string GetNamesOfCheckedNodes(string rootName, FormatTreeNode node)
+        {
+            if (node.IsChecked ?? false)
+            {
+                return (node.Name.Equals(rootName) ? "" : rootName +
+                    SyncFormatConstants.FormatNameSeparator) + node.Name + "\n";
+            }
+            StringBuilder result = new StringBuilder();
+            foreach (FormatTreeNode child in node.ChildrenNodes ?? new FormatTreeNode[] { })
+            {
+                result.Append(GetNamesOfCheckedNodes(rootName, child));
+            }
+            return result.ToString();
+        }
+
+        private void ApplyFormatToSelected()
+        {
+            Shape formatShape = shapeStorage.GetShape(shapeKey);
+            if (formatShape == null)
+            {
+                MessageBox.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
+                parent.ClearInvalidFormats();
+            }
+            this.StartNewUndoEntry();
+            parent.ApplyFormats(formats, formatShape);
+        }
+
+        #endregion
+
+        #region Event Handlers
 
         private void PasteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -146,6 +200,7 @@ namespace PowerPointLabs.SyncLab.Views
             this.formats = parent.Dialog.Formats;
             this.Text = parent.Dialog.ObjectName;
             parent.Dialog = null;
+            UpdateToolTipBody();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -158,16 +213,7 @@ namespace PowerPointLabs.SyncLab.Views
             ApplyFormatToSelected();
         }
 
-        private void ApplyFormatToSelected()
-        {
-            Shape formatShape = shapeStorage.GetShape(shapeKey);
-            if (formatShape == null)
-            {
-                MessageBox.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
-                parent.ClearInvalidFormats();
-            }
-            this.StartNewUndoEntry();
-            parent.ApplyFormats(formats, formatShape);
-        }
+        #endregion
+
     }
 }

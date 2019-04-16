@@ -2,11 +2,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting;
-using TestInterface;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Base;
 using Test.Util;
+
+using TestInterface;
 
 namespace Test.FunctionalTest
 {

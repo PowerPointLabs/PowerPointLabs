@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
+
 using MahApps.Metro.Controls.Dialogs;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Thread.Interface;
 
