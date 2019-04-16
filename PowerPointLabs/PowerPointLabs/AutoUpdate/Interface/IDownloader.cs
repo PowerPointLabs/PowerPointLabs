@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PowerPointLabs.AutoUpdate.Interface
+﻿namespace PowerPointLabs.AutoUpdate.Interface
 {
     public interface IDownloader
     {

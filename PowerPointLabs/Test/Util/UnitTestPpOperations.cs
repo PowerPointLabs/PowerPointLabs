@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TestInterface;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Utils;
+
+using TestInterface;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 

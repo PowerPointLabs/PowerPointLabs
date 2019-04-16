@@ -49,8 +49,8 @@ namespace PowerPointLabs.CropLab
                 Shape shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
                 float left = shape.Left;
                 float top = shape.Top;
-                shape.Cut();
-                shapeRange = currentSlide.Shapes.Paste();
+                shapeRange = shape.Duplicate();
+                shape.Delete();
                 shapeRange.Left = left;
                 shapeRange.Top = top;
                 if (hasManyShapes)
@@ -93,8 +93,7 @@ namespace PowerPointLabs.CropLab
                 return shape;
             }
 
-            shape.Copy();
-            Shape shapeToReturn = currentSlide.Shapes.Paste()[1];
+            Shape shapeToReturn = shape.Duplicate()[1];
             shape.Delete();
             return shapeToReturn;
         }

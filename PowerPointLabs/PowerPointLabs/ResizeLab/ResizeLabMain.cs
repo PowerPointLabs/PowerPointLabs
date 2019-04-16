@@ -1,6 +1,5 @@
-﻿using System;
-using System.Runtime.Remoting.Channels;
-using PowerPointLabs.Utils;
+﻿using PowerPointLabs.Utils;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab

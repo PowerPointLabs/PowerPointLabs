@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Windows.Data;
 
+using PowerPointLabs.ColorsLab;
+
 namespace PowerPointLabs.Converters.ColorPane
 {
     class HSLColorToRGBColor : IValueConverter

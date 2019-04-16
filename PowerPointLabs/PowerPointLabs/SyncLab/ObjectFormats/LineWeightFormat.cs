@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -34,12 +35,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.Line.Weight = formatShape.Line.Weight;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LineWeightFormat");
                 return false;
             }
-            return true;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats

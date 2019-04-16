@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using Graphics = PowerPointLabs.Utils.GraphicsUtil;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -39,12 +41,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 ReflectionFormat destFormat = newShape.Reflection;
 
                 destFormat.Transparency = srcFormat.Transparency;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync ReflectionTransparencyFormat");
                 return false;
             }
-            return true;
         }
     }
 }

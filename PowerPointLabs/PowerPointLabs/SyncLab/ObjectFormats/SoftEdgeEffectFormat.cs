@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Speech.Recognition.SrgsGrammar;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
-using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -43,12 +43,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
 
                 // skip setting type, SoftEdgeFormat.Type is not reliable
                 dest.Radius = source.Radius;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync SoftEdgeEffectFormat");
                 return false;
             }
-            return true;
         }
     }
 }

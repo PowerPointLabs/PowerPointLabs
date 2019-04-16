@@ -1,11 +1,10 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Text;
 
 using Microsoft.Office.Core;
-using NAudio.Wave;
+
 using PowerPointLabs.Models;
+
 using PPExtraEventHelper;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;

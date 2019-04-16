@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ViewModel.SliderPropHandler.Interface;
 

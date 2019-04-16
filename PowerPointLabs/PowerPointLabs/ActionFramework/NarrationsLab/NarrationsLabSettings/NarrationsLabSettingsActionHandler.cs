@@ -1,6 +1,6 @@
 ﻿using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
@@ -10,7 +10,9 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            NarrationsLabSettings.ShowSettingsDialog();
+            AzureAccountStorageService.LoadUserAccount();
+            AudioSettingStorageService.LoadAudioSettingPreference();
+            AudioSettingService.ShowSettingsDialog();
         }
     }
 }

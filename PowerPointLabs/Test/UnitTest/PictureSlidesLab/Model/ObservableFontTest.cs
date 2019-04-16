@@ -1,6 +1,7 @@
-﻿using System;
-using System.Windows.Media;
+﻿using System.Windows.Media;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 
 namespace Test.UnitTest.PictureSlidesLab.Model

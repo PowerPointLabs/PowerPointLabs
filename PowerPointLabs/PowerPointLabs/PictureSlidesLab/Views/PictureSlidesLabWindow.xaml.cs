@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -78,6 +79,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         private const double StandardWindowWidth = 1200.0;
         private const double StandardWindowHeight = 700.0;
         private const double StandardPrewienGridWidth = 560.0;
+        private const float StandardDpi = 96f;
 
         # endregion
 
@@ -122,8 +124,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         private void InitSizePosition()
         {
             System.Drawing.Size mSize = SystemInformation.WorkingArea.Size;
-            double systemHeight = mSize.Height * 1.0;
-            double systemWidth = mSize.Width * 1.0;
+            //Devices might have scale factors > 100%
+            float scaleFactor = GetScalingFactor();
+            double systemHeight = mSize.Height / scaleFactor;
+            double systemWidth = mSize.Width / scaleFactor;
             double windowWidth = systemWidth / StandardSystemWidth;
             double windowHeight = systemHeight / StandardSystemHeight;
 
@@ -133,6 +137,12 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             this.Window.Left = (systemWidth - this.Window.Width) / 2;
             this.Window.Top = (systemHeight - this.Window.Height) / 2;
             this.Window.WindowStartupLocation = WindowStartupLocation.Manual;
+        }
+        
+        private float GetScalingFactor()
+        {
+            Graphics graphics = Graphics.FromHwnd(IntPtr.Zero);
+            return graphics.DpiX / StandardDpi;
         }
 
         private void InitUiExceptionHandling()
@@ -522,7 +532,21 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         /// <param name="e"></param>
         private void Splitter_OnDragDelta(object sender, DragDeltaEventArgs e)
         {
-            StylesPreviewGrid.Width = StylesPreviewGrid.ActualWidth + e.HorizontalChange;
+            double newWidth = StylesPreviewGrid.ActualWidth + e.HorizontalChange;
+            // Prevent StylesPreviewGrid from becoming too small
+            if (newWidth < StylesPreviewGrid.MinWidth)
+            {
+                StylesPreviewGrid.Width = StylesPreviewGrid.MinWidth;
+            }
+            // Prevent StylesPreviewGrid from overflowing grid column 0
+            else if (newWidth > Column0.Width.Value)
+            {
+                StylesPreviewGrid.Width = Column0.Width.Value;
+            }
+            else
+            {
+                StylesPreviewGrid.Width = newWidth;
+            }
         }
 
         /// <summary>

@@ -1,8 +1,10 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using TestInterface;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
+using PowerPointLabs.TextCollection;
+
+using TestInterface;
+using System.Windows;
 
 namespace Test.FunctionalTest
 {
@@ -15,14 +17,15 @@ namespace Test.FunctionalTest
         private const int AddShapesShapesSlide = 6;
         private const int AddShapesTestSlide = 7;
         private const int AddShapesExpSlide = 8;
+        private const int AddShapesPlaceholderSlide = 9;
 
         //Check clipboard restored
-        private const int SaveShapesClipboardRestoredActualSlide = 10;
-        private const int SaveShapesClipboardRestoredTestSlide = 11;
-        private const int SaveShapesClipboardRestoredExpSlide = 12;
-        private const int AddShapesClipboardRestoredActualSlide = 13;
-        private const int AddShapesClipboardRestoredTestSlide = 14;
-        private const int AddShapesClipboardRestoredExpSlide = 15;
+        private const int SaveShapesClipboardRestoredActualSlide = 11;
+        private const int SaveShapesClipboardRestoredTestSlide = 12;
+        private const int SaveShapesClipboardRestoredExpSlide = 13;
+        private const int AddShapesClipboardRestoredActualSlide = 14;
+        private const int AddShapesClipboardRestoredTestSlide = 15;
+        private const int AddShapesClipboardRestoredExpSlide = 16;
 
 
         protected override string GetTestingSlideName()
@@ -51,8 +54,9 @@ namespace Test.FunctionalTest
             TestSaveShapesToShapesLab(shapesLab, SaveShapesShapesSlide, SaveShapesTestSlide, SaveShapesExpSlide);
             TestImportLibraryAndShape(shapesLab);
             TestSaveShapesToShapesLabWithAddShapesButton(shapesLab, AddShapesShapesSlide, AddShapesTestSlide, AddShapesExpSlide);
+            TestSavePlaceholderToShapesLabWithAddShapesButton(shapesLab, AddShapesPlaceholderSlide);
             IsClipboardRestoredAfterSaveShape(shapesLab, SaveShapesClipboardRestoredActualSlide, SaveShapesClipboardRestoredTestSlide, SaveShapesClipboardRestoredExpSlide);
-            IsClipboardRestoredAfterAddShape(shapesLab, AddShapesClipboardRestoredActualSlide, AddShapesClipboardRestoredTestSlide, 
+            IsClipboardRestoredAfterAddShape(shapesLab, AddShapesClipboardRestoredActualSlide, AddShapesClipboardRestoredTestSlide,
                 AddShapesClipboardRestoredExpSlide);
         }
 
@@ -84,6 +88,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMe");
+            ExpectAddShapeButtonEnabled(shapesLab);
             // save shapes
             shapesLab.SaveSelectedShapes();
 
@@ -105,8 +110,11 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(shapesSlideNum);
             PpOperations.SelectShapesByPrefix("selectMeNow");
+            ExpectAddShapeButtonEnabled(shapesLab);
 
-            shapesLab.ClickAddShapeButton();
+            MessageBoxUtil.ExpectMessageBoxWillNotPopUp(
+                            ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
+                            shapesLab.ClickAddShapeButton);
 
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(testSlideNum);
             AddShapesToSlideFromShapesLab(shapesLab, "selectMeNow1", "Group selectMeNow1");
@@ -122,20 +130,54 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }
 
-        private void AddShapesToSlideFromShapesLab(IShapesLabController shapesLab, string shapeThumbnail, string expectedShapePrefix) 
+        private void TestSavePlaceholderToShapesLabWithAddShapesButton(IShapesLabController shapesLab, int shapesSlideNum)
         {
-            IShapesLabLabeledThumbnail thumbnail = shapesLab.GetLabeledThumbnail(shapeThumbnail);
-            thumbnail.FinishNameEdit();
+            PpOperations.SelectSlide(shapesSlideNum);
+            ExpectAddShapeButtonDisabled(shapesLab);
+            PpOperations.SelectShapesByPrefix("Placeholder");
+            ExpectAddShapeButtonDisabled(shapesLab);
+
+            MessageBoxUtil.ExpectMessageBoxWillPopUp(
+                            ShapesLabText.ErrorDialogTitle, ShapesLabText.ErrorAddSelectionInvalid,
+                            shapesLab.ClickAddShapeButton);
+        }
+
+        private void AddShapesToSlideFromShapesLab(IShapesLabController shapesLab, string shapeName, string expectedShapePrefix)
+        {
+            Point point = shapesLab.GetShapeForClicking(shapeName);
             // Add shapes from Shapes Lab to slide by double clicking
-            DoubleClick(thumbnail as Control);
+            DoubleClick(point);
             Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = PpOperations.SelectShapesByPrefix(expectedShapePrefix);
             Assert.IsTrue(shapes.Count > 0, "Failed to add shapes from Shapes Lab.");
         }
 
-        private void DoubleClick(Control target)
+        private void DoubleClick(Point point)
         {
-            Point pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
-            MouseUtil.SendMouseDoubleClick(pt.X, pt.Y);
+            MouseUtil.SendMouseDoubleClick((int) point.X, (int) point.Y);
+        }
+
+        private void IsClipboardRestoredAfterSaveShape(IShapesLabController shapesLab, int actualSlideNum, int testSlideNum, int expSlideNum)
+        {
+            CheckIfClipboardIsRestored(() => SaveShapesToShapesLab(shapesLab, actualSlideNum, testSlideNum),
+                actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
+        }
+
+        private void IsClipboardRestoredAfterAddShape(IShapesLabController shapesLab, int actualSlideNum, int testSlideNum, int expSlideNum)
+        {
+            CheckIfClipboardIsRestored(() => SaveShapesToShapesLabWithAddShapesButton(shapesLab, actualSlideNum, testSlideNum),
+                actualSlideNum, "copyMe", expSlideNum, "Expected", "compareMe");
+        }
+
+        private void ExpectAddShapeButtonEnabled(IShapesLabController shapesLab)
+        {
+            ThreadUtil.WaitFor(1000);
+            Assert.IsTrue(shapesLab.GetAddShapeButtonStatus());
+        }
+
+        private void ExpectAddShapeButtonDisabled(IShapesLabController shapesLab)
+        {
+            ThreadUtil.WaitFor(1000);
+            Assert.IsFalse(shapesLab.GetAddShapeButtonStatus());
         }
 
         private void IsClipboardRestoredAfterSaveShape(IShapesLabController shapesLab, int actualSlideNum, int testSlideNum, int expSlideNum)
