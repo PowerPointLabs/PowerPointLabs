@@ -23,6 +23,7 @@
             <Border Margin="10" BorderBrush="LightSlateGray" BorderThickness="1" CornerRadius="2">
                 <StackPanel>
                     <Label Content="Default Voice" FontSize="12" FontWeight="SemiBold" Margin="20 10 0 0"/>
+                    <Label Content="Note that only English voice is supported for Azure and IBM voices" FontSize="9" Margin="20 -10 0 0"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

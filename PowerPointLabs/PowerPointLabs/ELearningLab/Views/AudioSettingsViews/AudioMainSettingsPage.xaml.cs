@@ -122,7 +122,6 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void AudioMainSettingsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            RadioAzureVoice.Checked += RadioAzureVoice_Checked;          
             ToggleAzureFunctionVisibility();
             ToggleWatsonFunctionVisibility();
             SetupAudioPreferenceUI();
@@ -209,11 +208,6 @@ namespace PowerPointLabs.ELearningLab.Views
             RadioWatsonVoice.IsEnabled = false;
             RadioDefaultVoice.IsChecked = true;
             WatsonRuntimeService.IsWatsonAccountPresentAndValid = false;
-        }
-
-        private void RadioAzureVoice_Checked(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Note that we only support English language at this stage.");
         }
 
         private void PreviewCheckBox_Checked(object sender, RoutedEventArgs e)
