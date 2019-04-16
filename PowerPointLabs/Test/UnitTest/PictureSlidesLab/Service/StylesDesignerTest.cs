@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.ModelFactory;
 using PowerPointLabs.PictureSlidesLab.Service;
 using PowerPointLabs.PictureSlidesLab.Util;
+
 using Test.Util;
 
 namespace Test.UnitTest.PictureSlidesLab.Service

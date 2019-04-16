@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.Utils;
 

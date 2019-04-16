@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
@@ -35,12 +36,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.TextEffect.FontName = formatShape.TextEffect.FontName;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FontFormat");
                 return false;
             }
-            return true;
         }
     }
 }

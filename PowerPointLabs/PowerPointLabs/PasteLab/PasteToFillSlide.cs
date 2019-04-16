@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
-
+﻿
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;

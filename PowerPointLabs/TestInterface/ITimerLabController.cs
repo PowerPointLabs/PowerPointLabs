@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace TestInterface
+﻿namespace TestInterface
 {
     public interface ITimerLabController
     {
@@ -10,6 +7,8 @@ namespace TestInterface
         void ClickCreateButton();
 
         void SetDurationTextBoxValue(double value);
+        void SetCountdownCheckBoxState(bool isChecked);
+        void SetProgressBarCheckBoxState(bool isChecked);
         void SetHeightTextBoxValue(int value);
         void SetWidthTextBoxValue(int value);
         void SetHeightSliderValue(int value);

@@ -8,8 +8,9 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.NarrationsLab;
+using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -412,6 +413,14 @@ namespace PowerPointLabs.Models
             return slidePicture;
         }
 
+        /// <summary>
+        /// Create animation effect for shape at `clickNumber`
+        /// </summary>
+        /// <param name="shape">The shape to be animated</param>
+        /// <param name="clickNumber">Min value is -1, this occurs when we want to set 
+        /// a selfExplanationClickItem at ClickNo = -1 as an independent animation block</param>
+        /// <param name="effect"></param>
+        /// <returns></returns>
         public Effect SetShapeAsClickTriggered(Shape shape, int clickNumber, MsoAnimEffect effect)
         {
             Effect addedEffect;
@@ -419,17 +428,31 @@ namespace PowerPointLabs.Models
             Sequence mainSequence = _slide.TimeLine.MainSequence;
             Effect nextClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber + 1);
             Effect previousClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber);
-
-            bool hasClicksAfter = nextClickEffect != null;
+            Effect nextNextClickEffect = mainSequence.FindFirstAnimationForClick(clickNumber + 2);
+            // In the case when clickNumber = -1, 
+            // we need to check effects for clickNumer + 1 and clickNumer + 2 to conclude whether there is 
+            // animations after it.
+            bool hasClicksAfter = nextClickEffect != null || nextNextClickEffect != null;
             bool hasClickBefore = previousClickEffect != null;
 
             if (hasClicksAfter)
             {
-                addedEffect = InsertAnimationBeforeExisting(shape, nextClickEffect, effect);
+                Effect nextEffect = nextClickEffect != null ? nextClickEffect : nextNextClickEffect;
+                addedEffect = InsertAnimationBeforeExisting(shape, nextEffect, effect);
+                // to handle case when there is custom animation previously at ClickNo = 0
+                if (!StringUtility.IsPPTLShape(nextEffect.Shape.Name))
+                {
+                    nextEffect.Timing.TriggerType = MsoAnimTriggerType.msoAnimTriggerOnPageClick;
+                }
             }
             else if (hasClickBefore)
             {
                 addedEffect = AddShapeAsLastAutoplaying(shape, effect);
+            }
+            else if (clickNumber <= 0)
+            {
+                addedEffect = mainSequence.AddEffect(shape, effect,
+                    trigger: MsoAnimTriggerType.msoAnimTriggerWithPrevious);
             }
             else
             {
@@ -1141,8 +1164,8 @@ namespace PowerPointLabs.Models
         {
             foreach (Shape shape in this.Shapes)
             {
-                if (shape.Name.Contains(NotesToAudio.SpeechShapePrefix) || 
-                    shape.Name.Contains(NotesToAudio.SpeechShapePrefixOld))
+                if (shape.Name.Contains(ComputerVoiceRuntimeService.SpeechShapePrefix) || 
+                    shape.Name.Contains(ComputerVoiceRuntimeService.SpeechShapePrefixOld))
                 {
                     return true;
                 }

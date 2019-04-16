@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.ResizeLab;
 
 namespace Test.UnitTest.ResizeLab

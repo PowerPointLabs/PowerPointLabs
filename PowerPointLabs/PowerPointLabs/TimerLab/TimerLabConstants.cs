@@ -6,6 +6,8 @@ namespace PowerPointLabs.TimerLab
         public const double DefaultDisplayDuration = 1.00;
         public const int DefaultDenomination = 10;
 
+        public const bool DefaultCountdownSetting = false;
+
         public const int SizeStringLimit = 3;
 
         public const float DefaultTimerWidth = 600;
@@ -25,7 +27,7 @@ namespace PowerPointLabs.TimerLab
         public const float DefaultSliderBodyWidth = 4;
         public const float DefaultSliderHeadSize = 20;
 
-        public const int TransparencyTranparent = 1;
+        public const int TransparencyTransparent = 1;
         public const int Rotate180Degrees = 180;
         public const float ColorChangeDuration = 0.001f;
 
@@ -37,6 +39,7 @@ namespace PowerPointLabs.TimerLab
         public const double FractionalIncrementOffset = 0.99;
         public const double FractionalIncrementUpperBound = 0.59;
 
+        public const string ProgressBarId = "ProgressBar";
         public const string ShapeId = "TimerLabShapeId";
         public const string TimerBodyId = "TimerBody";
         public const string TimerLineMarkerId = "TimerLineMarker";

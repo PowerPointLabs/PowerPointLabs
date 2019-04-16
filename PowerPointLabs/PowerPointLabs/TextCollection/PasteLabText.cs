@@ -45,5 +45,6 @@
         public const string ErrorDialogTitle = "Unable to execute action";
         public const string ErrorEmptyClipboard = "Error: Clipboard is empty.";
         public const string ErrorPaste = "Error: Unable to paste content in clipboard. Try pasting it normally in PowerPoint and then copying the item again.";
+        public const string ErrorNoSelection = "Select at least one slide to apply paste actions.";
     }
 }

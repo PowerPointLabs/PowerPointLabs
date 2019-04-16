@@ -6,6 +6,7 @@ using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.ZoomLab;
+
 using TestInterface;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl
@@ -36,6 +37,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public ITimerLabController TimerLab
         {
             get { return TimerLabController.Instance; }
+        }
+
+        public IELearningLabController ELearningLab
+        {
+            get { return ELearningLabController.Instance; }
         }
 
         private Ribbon1 Ribbon

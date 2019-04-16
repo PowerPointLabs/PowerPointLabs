@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 
 namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Factory

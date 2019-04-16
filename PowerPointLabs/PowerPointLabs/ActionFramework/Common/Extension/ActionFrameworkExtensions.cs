@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
+
 using PowerPointLabs.Models;
+
 using Application = Microsoft.Office.Interop.PowerPoint.Application;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension

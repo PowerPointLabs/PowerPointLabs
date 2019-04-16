@@ -5,7 +5,6 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 using PowerPointLabs.TextCollection;
-using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using Forms = System.Windows.Forms;

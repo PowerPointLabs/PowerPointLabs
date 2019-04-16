@@ -89,7 +89,9 @@ implementing features, refactoring code, porting to a different language),
 otherwise you risk spending a lot of time working on something that the
 project's developers might not want to merge into the project.
 
-Please adhere to the coding conventions used throughout a project and pass the CI checks (at least not increase the number of errors).
+**Please ensure** that all pull-requests are tested on PowerPoint 2010/2013/2016 before submitting for approval. Your changes are expected to work on all of these versions.
+
+**Please adhere** to the coding conventions used throughout a project and pass the CI checks (at least not increase the number of errors).
 
 Follow this process if you'd like your work considered for inclusion in the
 project:

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ResizeLab

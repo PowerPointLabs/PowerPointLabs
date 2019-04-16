@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -12,21 +12,25 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
+using System.Windows.Threading;
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
+using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
-using PowerPointLabs.NarrationsLab.Views;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.TimerLab;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
@@ -53,15 +57,19 @@ namespace PowerPointLabs
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
+        private delegate void SyncElearningItemsDelegate();
+
         private const string AppLogName = "PowerPointLabs.log";
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
+        private const string SyncLabPptxName = "Sync Lab - Do not edit";
         private const string TempZipName = "tempZip.zip";
 
         private string _deactivatedPresFullName;
+        private string tempFolderName;
 
-        private bool _isClosing;
+        private bool _pptLabsShouldTerminate;
 
         private bool isResizePaneVisible;
 
@@ -78,7 +86,7 @@ namespace PowerPointLabs
 
         #region API
 
-        public bool IsApplicationVersion2010() 
+        public bool IsApplicationVersion2010()
         {
             return Application.Version == OfficeVersion2010;
         }
@@ -93,6 +101,11 @@ namespace PowerPointLabs
             CustomTaskPane taskPane = GetActivePane(type);
 
             return taskPane == null ? null : taskPane.Control;
+        }
+
+        public string GetTempFolderName()
+        {
+            return tempFolderName;
         }
 
         public CustomTaskPane GetActivePane(Type type)
@@ -153,7 +166,7 @@ namespace PowerPointLabs
         public void InitializeShapeGallery()
         {
             // achieves singleton ShapePresentation
-            if (ShapePresentation != null && ShapePresentation.Opened)
+            if (ShapePresentation?.Opened ?? false)
             {
                 return;
             }
@@ -292,32 +305,6 @@ namespace PowerPointLabs
                 TaskPaneVisibleValueChangedEventHandler, null);
         }
 
-        public void RegisterColorPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(ColorPane)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new ColorPane(), ColorsLabText.TaskPanelTitle, activeWindow, null, null);
-        }
-
-        public void RegisterShapesLabPane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(CustomShapePane)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(
-                new CustomShapePane(ShapesLabSettings.SaveFolderPath, ShapesLabConfig.DefaultCategory),
-                ShapesLabText.TaskPanelTitle, activeWindow, null, null);
-        }
-
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
@@ -329,8 +316,7 @@ namespace PowerPointLabs
 
                 CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
+                if (shapePaneControl?.CurrentCategory == category)
                 {
                     shapePaneControl.AddCustomShape(shapeName, shapeFullName, false);
                 }
@@ -348,8 +334,7 @@ namespace PowerPointLabs
 
                 CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
+                if (shapePaneControl?.CurrentCategory == category)
                 {
                     shapePaneControl.RemoveCustomShape(shapeName);
                 }
@@ -367,8 +352,7 @@ namespace PowerPointLabs
 
                 CustomShapePane shapePaneControl = GetControlFromWindow(typeof(CustomShapePane), window) as CustomShapePane;
 
-                if (shapePaneControl != null &&
-                    shapePaneControl.CurrentCategory == category)
+                if (shapePaneControl?.CurrentCategory == category)
                 {
                     shapePaneControl.RenameCustomShape(shapeOldName, shapeNewName);
                 }
@@ -462,26 +446,18 @@ namespace PowerPointLabs
         {
             RecorderTaskPane recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
-            if (recorder != null &&
-                recorder.HasEvent())
+            if (recorder?.HasEvent() ?? false)
             {
                 recorder.ForceStopEvent();
             }
         }
 
-        private void ShutDownColorPane()
+        private void ShutDownPictureSlidesLab()
         {
-            CustomTaskPane colorPane = GetActivePane(typeof(ColorPane));
-
-            if (colorPane == null)
+            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Ribbon.PictureSlidesLabWindow;
+            if (pictureSlidesLabWindow?.IsOpen ?? false)
             {
-                return;
-            }
-
-            ColorPane colorLabs = colorPane.Control as ColorPane;
-            if (colorLabs != null)
-            {
-                colorLabs.SaveDefaultColorPaneThemeColors();
+                pictureSlidesLabWindow.Close();
             }
         }
 
@@ -557,7 +533,7 @@ namespace PowerPointLabs
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
 
             // trigger close form event when closing hide the pane
-            if (recorder != null && !recorderPane.Visible)
+            if (!recorder?.Visible ?? false)
             {
                 recorder.RecorderPaneClosing();
                 // remove recorder pane and force it to reload when next time open
@@ -649,12 +625,12 @@ namespace PowerPointLabs
                     {
                         audio.Item1.EmbedOnSlide(slides[i], audio.Item2);
 
-                        if (NarrationsLab.NotesToAudio.IsRemoveAudioEnabled)
+                        if (ELearningLab.Service.ComputerVoiceRuntimeService.IsRemoveAudioEnabled)
                         {
                             continue;
                         }
 
-                        NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = true;
+                        ELearningLab.Service.ComputerVoiceRuntimeService.IsRemoveAudioEnabled = true;
                         Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
                     }
                 }
@@ -719,6 +695,30 @@ namespace PowerPointLabs
             }
         }
 
+        private void UpdateTimerPane(bool isVisible)
+        {
+            CustomTaskPane timerPane = GetActivePane(typeof(TimerPane));
+            if (timerPane != null)
+            {
+                timerPane.Visible = isVisible;
+            }
+        }
+
+        private void UpdateELearningPane(int selectedSlidesCount)
+        {
+            CustomTaskPane elearningLabPane = GetActivePane(typeof(ELearningLabTaskpane));
+            if (elearningLabPane == null)
+            {
+                return;
+            }
+            ELearningLabTaskpane taskpane = elearningLabPane.Control as ELearningLabTaskpane;
+            taskpane.ELearningLabMainPanel.SyncElearningLabOnSlideSelectionChanged();
+            if (elearningLabPane.Visible == true)
+            {
+                taskpane.ELearningLabMainPanel.ReloadELearningLabOnSlideSelectionChanged();
+            }
+        }
+
         private string GetPresentationTempFolder(string presName)
         {
             string tempName = presName.GetHashCode().ToString(CultureInfo.InvariantCulture);
@@ -729,8 +729,6 @@ namespace PowerPointLabs
 
         private void CleanUp(PowerPoint.DocumentWindow associatedWindow)
         {
-            _isClosing = true;
-
             if (_documentHashcodeMapper.ContainsKey(associatedWindow))
             {
                 _documentHashcodeMapper.Remove(associatedWindow);
@@ -779,10 +777,46 @@ namespace PowerPointLabs
         {
             RecorderTaskPane recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
 
-            if (recorder != null &&
-                recorder.HasEvent())
+            if (recorder?.HasEvent() ?? false)
             {
                 recorder.ForceStopEvent();
+            }
+        }
+
+        private void ShutDownSyncLab()
+        {
+            // If sync lab open, then close it.
+            PowerPoint.Presentation syncLabPpt = GetOpenedSyncLabPresentation();
+            if (syncLabPpt != null)
+            {
+                syncLabPpt.Close();
+                Trace.TraceInformation("SyncLab terminated.");
+            }
+        }
+
+        private PowerPoint.Presentation GetOpenedSyncLabPresentation()
+        {
+            foreach (PowerPoint.Presentation presentation in Application.Presentations)
+            {
+                if (presentation.Name.Contains(SyncLabPptxName))
+                {
+                    return presentation;
+                }
+            }
+            return null;
+        }
+
+        private void ShutDownShapesLab()
+        {
+            if (ShapePresentation?.Opened ?? false)
+            {
+                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
+                {
+                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
+                }
+
+                ShapePresentation.Close();
+                Trace.TraceInformation("ShapesLab terminated.");
             }
         }
         # endregion
@@ -816,7 +850,7 @@ namespace PowerPointLabs
             // Here, we want the priority to be: Application action > Window action > Slide action
 
             // Priority High: Application Actions
-            ((PowerPoint.EApplication_Event) Application).NewPresentation += ThisAddInNewPresentation;
+            ((PowerPoint.EApplication_Event)Application).NewPresentation += ThisAddInNewPresentation;
             Application.AfterNewPresentation += ThisAddInAfterNewPresentation;
             Application.PresentationOpen += ThisAddInPresentationOpen;
             Application.PresentationClose += ThisAddInPresentationClose;
@@ -834,44 +868,29 @@ namespace PowerPointLabs
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            Trace.TraceInformation(pres.Name + " terminating...");
-            Trace.TraceInformation(string.Format("Is Closing = {0}, Count = {1}", _isClosing,
-                Application.Presentations.Count));
-
+            Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) deactivated.");
             _deactivatedPresFullName = pres.FullName;
-
-            // in this case, we are closing the last client presentation,
-            // therefore we can close the shape gallery
-            if (_isClosing &&
-                Application.Presentations.Count == 2 &&
-                ShapePresentation != null &&
-                ShapePresentation.Opened)
-            {
-                if (string.IsNullOrEmpty(ShapesLabConfig.DefaultCategory))
-                {
-                    ShapesLabConfig.DefaultCategory = ShapePresentation.Categories[0];
-                }
-
-                ShapePresentation.Close();
-                Trace.TraceInformation("Shape Gallery terminated.");
-            }
         }
 
         private void ThisAddInApplicationOnWindowActivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
         {
-            if (pres != null)
+            if (pres == null)
             {
-                CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
-
-                // make sure ShapeGallery's default category is consistent with current presentation
-                if (customShape != null)
-                {
-                    string currentCategory = customShape.CurrentCategory;
-                    ShapePresentation.DefaultCategory = currentCategory;
-                }
-
-                _isClosing = false;
+                return;
             }
+            Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
+
+            CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
+
+            // make sure ShapeGallery's default category is consistent with current presentation
+            if (customShape != null)
+            {
+                string currentCategory = customShape.CurrentCategory;
+                ShapePresentation.DefaultCategory = currentCategory;
+            }
+
+            // If a window was activated in any way, PptLabs should not terminate.
+            _pptLabsShouldTerminate = false;
         }
 
         private void ThisAddInSlideSelectionChanged(PowerPoint.SlideRange sldRange)
@@ -879,7 +898,7 @@ namespace PowerPointLabs
             // TODO: doing range sweep to check these var may affect performance, consider initializing these
             // TODO: variables only at program starts
             NotesToCaptions.IsRemoveCaptionsEnabled = SlidesInRangeHaveCaptions(sldRange);
-            NarrationsLab.NotesToAudio.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
+            ComputerVoiceRuntimeService.IsRemoveAudioEnabled = SlidesInRangeHaveAudio(sldRange);
 
             // update recorder pane
             if (sldRange.Count > 0)
@@ -895,12 +914,19 @@ namespace PowerPointLabs
                 }
 
                 UpdateRecorderPane(sldRange.Count, slideID);
+                TimerLab.TimerLab.IsTimerEnabled = true;
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = true;
             }
             else
             {
                 UpdateRecorderPane(sldRange.Count, -1);
+                TimerLab.TimerLab.IsTimerEnabled = false;
+                UpdateTimerPane(false);
+                PictureSlidesLab.PictureSlidesLab.IsPictureSlidesEnabled = false;
+                ShutDownPictureSlidesLab();
             }
 
+            UpdateELearningPane(sldRange.Count);
             // in case the recorder is on event
             BreakRecorderEvents();
 
@@ -931,11 +957,13 @@ namespace PowerPointLabs
                     prev = presentation.Slides[slideIndex - 1];
                 }
             }
-            
+            Ribbon.RefreshRibbonControl("PictureSlidesLabButton");
+            Ribbon.RefreshRibbonControl("TimerLabButton");
             Ribbon.RefreshRibbonControl("HighlightPointsButton");
             Ribbon.RefreshRibbonControl("HighlightBackgroundButton");
             Ribbon.RefreshRibbonControl("RemoveCaptionsButton");
-            Ribbon.RefreshRibbonControl("RemoveAudioButton");
+            Ribbon.RefreshRibbonControl("RemoveNarrationsButton");
+            Ribbon.RefreshRibbonControl("ELearningTaskPaneButton");
         }
 
         // To handle AccessViolationException
@@ -965,6 +993,15 @@ namespace PowerPointLabs
 
             }
 
+
+            // When there is no selection on the slide, disable the add/copy buttons on
+            // customshapepane and syncpane respectively
+            SyncPane syncPane = GetActivePane(typeof(SyncPane))?.Control as SyncPane;
+            syncPane?.UpdateOnSelectionChange(sel);
+
+            CustomShapePane customShapePane = GetActivePane(typeof(CustomShapePane))?.Control as CustomShapePane;
+            customShapePane?.UpdateOnSelectionChange(sel);
+
             Ribbon.RefreshRibbonControl("AnimateInSlideButton");
             Ribbon.RefreshRibbonControl("DrillDownButton");
             Ribbon.RefreshRibbonControl("StepBackButton");
@@ -974,6 +1011,9 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ZoomToAreaButton");
             Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
             Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
+            Ribbon.RefreshRibbonControl("ConvertToTooltipButton");
+            Ribbon.RefreshRibbonControl("CreateCalloutButton");
+            Ribbon.RefreshRibbonControl("CreateTriggerButton");
             // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
@@ -987,8 +1027,9 @@ namespace PowerPointLabs
 
             // Refresh ribbon to enable the menu buttons
             RefreshRibbonMenuButtons();
-            // Initialise the "Maintain Tab Focus" checkbox
+            // Initialise the "Maintain Tab Focus" and "Compress Images" checkbox
             Ribbon.InitialiseVisibilityCheckbox();
+            Ribbon.InitialiseCompressImagesCheckbox();
         }
 
         // solve new un-modified unsave problem
@@ -1005,43 +1046,52 @@ namespace PowerPointLabs
             if (pres.Application.Windows.Count > 0)
             {
                 PowerPoint.DocumentWindow activeWindow = pres.Application.ActiveWindow;
-                string tempName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                tempFolderName = pres.Name.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
                 // if we opened a new window, register the window with its name
                 if (!_documentHashcodeMapper.ContainsKey(activeWindow))
                 {
-                    _documentHashcodeMapper[activeWindow] = tempName;
+                    _documentHashcodeMapper[activeWindow] = tempFolderName;
                 }
 
                 // Refresh ribbon to enable the menu buttons if there are now at least one window
                 RefreshRibbonMenuButtons();
-                // Initialise the "Maintain Tab Focus" checkbox
+                // Initialise the "Maintain Tab Focus" and "Compress Images" checkbox
                 Ribbon.InitialiseVisibilityCheckbox();
+                Ribbon.InitialiseCompressImagesCheckbox();
             }
         }
 
         private void ThisAddInPresentationClose(PowerPoint.Presentation pres)
         {
-            Trace.TraceInformation("Closing " + pres.Name);
+            Trace.TraceInformation("Closing " + pres.Name + "...");
 
-            if (IsApplicationVersion2010() &&
-                _deactivatedPresFullName == pres.FullName &&
-                Application.Presentations.Count == 2 &&
-                ShapePresentation != null &&
-                ShapePresentation.Opened)
+
+            // We need to check if there is only one window AND the active window's presentation 
+            // has the same name as the one we are closing because it is possible for background 
+            // presentation (those without windows) to close and trigger this event as well.
+            // We only want to shut down PPTLabs if we are closing the main presentation.
+            if (Application.Windows.Count == 1 &&
+                Application.ActiveWindow.Presentation.FullName == pres.FullName)
             {
-                ShapePresentation.Close();
+                // If this current window we are closing is the last window, then PptLabs should terminate.
+                _pptLabsShouldTerminate = true;
             }
 
-            // special case: if we are closing ShapeGallery.pptx, no other action will be done
-            if (pres.Name.Contains(ShapeGalleryPptxName))
+            // special case: if we are closing 'ShapeGallery.pptx' or 'Sync Lab - Do not edit.pptx', no other action will be done
+            if (pres.Name.Contains(ShapeGalleryPptxName) || pres.Name.Contains(SyncLabPptxName))
             {
                 return;
             }
 
-            ShutDownColorPane();
+            if (_pptLabsShouldTerminate)
+            {
+                ShutDownSyncLab();
+                ShutDownShapesLab();
+                ShutDownPictureSlidesLab();
+            }
+
             ShutDownRecorderPane();
-            ShutDownImageSearchPane();
 
             // find the document that holds the presentation with pres.Name
             // special case will be embedded slide. in this case pres.Windows return exception
@@ -1049,18 +1099,19 @@ namespace PowerPointLabs
 
             try
             {
-                Trace.TraceInformation("Total Windows at Close Stage " + pres.Windows.Count);
+                Trace.TraceInformation("Total windows of closing presentation = " + pres.Windows.Count);
                 Trace.TraceInformation("Windows are: ");
 
                 foreach (PowerPoint.DocumentWindow window in pres.Windows)
                 {
-                    Trace.TraceInformation(window.Presentation.Name);
+                    Trace.TraceInformation("\t" + window.Caption);
                 }
 
                 associatedWindow = pres.Windows[1];
             }
             catch (Exception)
             {
+                Trace.TraceInformation("Closing presentation - " + pres.FullName + " - has no window.");
                 return;
             }
 
@@ -1080,7 +1131,7 @@ namespace PowerPointLabs
 
         }
 
-        private void RefreshRibbonMenuButtons() 
+        private void RefreshRibbonMenuButtons()
         {
             Ribbon.RefreshRibbonControl(AnimationLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(ZoomLabText.RibbonMenuId);
@@ -1099,15 +1150,6 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl(TimerLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(AgendaLabText.RibbonMenuId);
             Ribbon.RefreshRibbonControl(PictureSlidesLabText.RibbonMenuId);
-        }
-
-        private void ShutDownImageSearchPane()
-        {
-            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Globals.ThisAddIn.Ribbon.PictureSlidesLabWindow;
-            if (pictureSlidesLabWindow != null && pictureSlidesLabWindow.IsOpen && Application.Presentations.Count == 2)
-            {
-                pictureSlidesLabWindow.Close();
-            }
         }
 
         private void ThisAddInShutdown(object sender, EventArgs e)
@@ -1141,8 +1183,7 @@ namespace PowerPointLabs
                 string pptName = Application.ActivePresentation.Name;
 
                 if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes
-                    && currentSlide != null
-                    && currentSlide.SlideID != _previousSlideForCopyEvent.SlideID
+                    && currentSlide?.SlideID != _previousSlideForCopyEvent.SlideID
                     && pptName == _previousPptName)
                 {
                     PowerPoint.ShapeRange pastedShapes = selection.ShapeRange;
@@ -1495,8 +1536,7 @@ namespace PowerPointLabs
                     overlappingShapeZIndex = shape.ZOrderPosition;
                 }
             }
-            if (overlappingShape != null &&
-                overlappingShape.Visible == Office.MsoTriState.msoTrue)
+            if (overlappingShape?.Visible == Office.MsoTriState.msoTrue)
             {
                 overlappingShape.Select();
             }
@@ -1561,7 +1601,7 @@ namespace PowerPointLabs
                 // ignore exception
             }
         }
-        # endregion
+        #endregion
 
         private void SetupFunctionalTestChannels()
         {

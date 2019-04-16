@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
 
 namespace PowerPointLabs.Utils

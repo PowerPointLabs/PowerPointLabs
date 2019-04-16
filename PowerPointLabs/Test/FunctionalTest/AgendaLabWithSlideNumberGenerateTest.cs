@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
-using System.Diagnostics;
 
 namespace Test.FunctionalTest
 {

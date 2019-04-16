@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 using PowerPointLabs.PictureSlidesLab.Model;
 
 namespace PowerPointLabs.PictureSlidesLab.ModelFactory.VariantWorker.Interface

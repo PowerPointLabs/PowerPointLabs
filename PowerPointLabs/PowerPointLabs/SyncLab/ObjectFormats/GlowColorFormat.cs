@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
@@ -63,12 +66,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 dest.Color.RGB = source.Color.RGB;
                 dest.Color.Brightness = source.Color.Brightness;
                 dest.Color.TintAndShade = source.Color.TintAndShade;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync GlowColorFormat");
                 return false;
             }
-            return true;
         }
     }
 }

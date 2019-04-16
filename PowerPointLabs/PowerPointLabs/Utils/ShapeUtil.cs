@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
@@ -21,6 +22,9 @@ namespace PowerPointLabs.Utils
 #pragma warning disable 0618
         #region Constants
 
+        private const float DefaultCalloutFillTransparency = 0.2f;
+        private const int DefaultFontSize = 16;
+        private const float DefaultLineWeight = 0.05f;
         private const int MaxShapeNameLength = 255;
 
         #endregion
@@ -160,7 +164,17 @@ namespace PowerPointLabs.Utils
                 return false;
             }
 
-            foreach (Shape shape in selection.ShapeRange)
+            return IsShapeRangeShapeOrText(selection.ShapeRange);
+        }
+
+        public static bool IsShapeRangeShapeOrText(ShapeRange selectedShapes)
+        {
+            if ((selectedShapes == null))
+            {
+                return false;
+            }
+
+            foreach (Shape shape in selectedShapes)
             {
                 if (shape.Type == MsoShapeType.msoPlaceholder)
                 {
@@ -1043,8 +1057,37 @@ namespace PowerPointLabs.Utils
         {
             return placeHolder.HasTextFrame == MsoTriState.msoTrue;
         }
-        #endregion
         
+        /// <summary>
+        /// Formats shape to default style.
+        /// </summary>
+        public static void FormatCalloutToDefaultStyle(Shape calloutBox)
+        {
+            calloutBox.TextFrame.WordWrap = MsoTriState.msoTrue;
+            calloutBox.TextFrame.TextRange.Font.Size = DefaultFontSize;
+            calloutBox.Fill.ForeColor.RGB = 0;
+            calloutBox.Fill.Transparency = DefaultCalloutFillTransparency;
+            calloutBox.Shadow.Type = MsoShadowType.msoShadow25;
+            calloutBox.Line.ForeColor.RGB = ColorTranslator.ToOle(Color.Yellow);
+            calloutBox.Line.Weight = DefaultLineWeight;
+            calloutBox.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
+        }
+
+        /// <summary>
+        /// Formats trigger to default style.
+        /// </summary>
+        /// <param name="triggerShape"></param>
+        public static void FormatTriggerShapeToDefaultStyle(Shape triggerShape)
+        {
+            triggerShape.TextFrame.TextRange.Font.Size = DefaultFontSize;
+            triggerShape.Fill.ForeColor.RGB = ColorTranslator.ToOle(Color.LightGray);
+            triggerShape.Line.Transparency = 1.0f;
+            triggerShape.TextFrame.TextRange.Font.Color.RGB = ColorTranslator.ToOle(Color.White);
+            triggerShape.TextFrame.TextRange.Text = "?";
+        }
+
+        #endregion
+
         #region SyncShape Format utils
 
         /// <summary>

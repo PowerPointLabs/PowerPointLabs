@@ -2,9 +2,8 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
 
-using Graphics = PowerPointLabs.Utils.GraphicsUtil;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.SyncLab.ObjectFormats
 {
@@ -36,12 +35,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.Line.Transparency = formatShape.Line.Transparency;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LineTransparencyFormat");
                 return false;
             }
-            return true;
         }
     }
 }

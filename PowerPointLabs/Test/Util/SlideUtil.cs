@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
-using Microsoft.Office.Interop.PowerPoint;
+
 using EyeOpen.Imaging.Processing;
+
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Util
@@ -184,6 +186,19 @@ namespace Test.Util
         public static bool IsRoughlySame(float a, float b)
         {
             return IsSame(a, b, 0.5);
+        }
+
+        public static bool IsAnimationsRemoved(Slide slide, string animPrefix)
+        {
+            Sequence slideSeq = slide.TimeLine.MainSequence;
+            foreach (Effect effect in slideSeq)
+            {
+                if (effect.Shape.Name.Contains(animPrefix))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

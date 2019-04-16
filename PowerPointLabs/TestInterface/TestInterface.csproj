@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IELearningLabController.cs" />
     <Compile Include="ITimerLabController.cs" />
     <Compile Include="IHighlightLabController.cs" />
     <Compile Include="ISyncLabController.cs" />
@@ -42,7 +43,6 @@
     <Compile Include="IPowerPointLabsFT.cs" />
     <Compile Include="IPowerPointOperations.cs" />
     <Compile Include="IShapesLabController.cs" />
-    <Compile Include="IShapesLabLabeledThumbnail.cs" />
     <Compile Include="ISlideData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,9 +55,11 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

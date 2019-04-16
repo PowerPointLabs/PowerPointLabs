@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PowerPointLabs.Views;
 
 namespace PowerPointLabs.Utils
 {
@@ -139,6 +137,16 @@ namespace PowerPointLabs.Utils
         public static bool MoveFolder(string oldPath, string newPath)
         {
             return CopyFolder(oldPath, newPath) && DeleteFolder(oldPath);
+        }
+
+        public static string GetTemporaryPngFilePath()
+        {
+            string tempDirectory = Path.GetTempPath();
+            Directory.CreateDirectory(tempDirectory);
+
+            string randomFileName = "pptlabs_" + Path.GetRandomFileName();
+            string randomFilePath = Path.Combine(tempDirectory, randomFileName);
+            return Path.ChangeExtension(randomFilePath, "png");
         }
 
         /// <summary>
