@@ -32,9 +32,6 @@ namespace PowerPointLabs.Utils
         public static float PictureExportingRatio = 330.0f / 72.0f;
         private const float targetDpi = 96.0f;
         private static float dpiScale = 1.0f;
-        // Heuristics for image compression obtained through testing
-        private const long targetCompression = 95L;
-        private const long fileSizeLimit = 75000L;
 
         // Picture exporting ratios
         private const float pictureExportingRatioHigh = 330.0f / 72.0f;
