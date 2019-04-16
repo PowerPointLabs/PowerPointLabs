@@ -14,6 +14,7 @@ This section will go through: the basic prerequisites needed to develop for Powe
 1. [Fork](http://help.github.com/fork-a-repo/) and clone the source codes from this repo
 1. Turn off *Office Version Upgrading*: Open the solution `PowerPointLabs\PowerPointLabs.sln` >> open Tools (menu) >> Options >> Office Tools >> Project Migration >> uncheck ‘Always upgrade to installed version of Office’
 1. Set up *External Office Program*: Open ‘PowerPointLabs’ Properties >> Debug >> select ‘Start external program’ and choose `POWERPNT.exe` in the Office folder. Ensure that both **Debug** and **Release** configurations have set up this
+1. Delete the .vs folder in ./PowerPointLabs/PowerPointLabs for Visual Studio to recreate the configuration files.
 1. Run the solution by pressing F5 and then PowerPointLabs tab will appear in the PowerPoint ribbon. If you have installed PowerPointLabs add-in, you may have to uninstall it first and rebuild the solution
 1. If failed to build PowerPointLabs solution, try to install `VSTO for PowerPoint` from [this link](http://powerpointlabs.info/vsto-redirect.html)
 

@@ -4,7 +4,7 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.NarrationsLab.Views;
+using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab

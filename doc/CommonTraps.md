@@ -34,3 +34,23 @@ This document details the common pitfalls when developing for PowerPointLabs, so
 1. Event triggering order of `WindowDeactivated` and `PresentationClose` is different between PowerPoint 2010 and 2013. In 2010, `PresentationClose` will be triggered before `WindowDeactivated`, but this order is reversed in 2013
 
 1. Accessing the `ActivePresentation.Saved` property on a new, unsaved presentation, always results in the `ActivePresentation.Saved` property returning `msoFalse`, regardless of whether the new presentation contains any valid changes to be saved.
+
+1. Visual Studio may show the error "Output Type of Class Library cannot be started directly", shown below. This is caused by errors in Visual Studio's project configuration.
+
+	![Alt text](../doc/images/CommonTraps/output-type-class-library.png)
+
+	The default fix is to delete the .vs folder in ./PowerPointLabs/PowerPointLabs for Visual Studio to recreate the configuration files. Alternatively, you can do the following:
+
+	Step 1. Right click Solution 'PowerPointLabs' (3 projects) in the solution explorer.
+	
+	Step 2. Click Properties.
+	
+	Step 3. Navigate to Common Properties > Startup Project.
+	
+	Step 4. Select Single startup project and choose PowerPointLabs from the drop down list.
+
+1. When grouping multiple `Shape` objects together, it is not straightforward to do so with only references to the `Shape` objects. An easy way is to extract a `ShapeRange` object from the slide based on the names of the `Shapes`, and then calling the `Group()` method on that `ShapeRange`.
+```c#
+string[] names = new string[] { shape1.Name, shape2.Name };
+Shape group = this.GetCurrentSlide().Shapes.Range(names).Group();
+```

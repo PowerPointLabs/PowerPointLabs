@@ -1,0 +1,22 @@
+﻿<Window x:Class="PowerPointLabs.ColorsLab.MagnifierOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             Name="MagnifierMainWindow"
+             AllowsTransparency="True"
+             ShowInTaskbar="False"
+             Topmost="True"
+             WindowStartupLocation="Manual"
+             WindowStyle="None"
+             Width="200" 
+             Height="200" 
+             Loaded="MagnifierOverlay_Loaded" 
+             Deactivated="MagnifierOverlay_Deactivated">
+    <Window.Background>
+        <SolidColorBrush Color="White" Opacity="0"/>
+    </Window.Background>
+    <Grid>
+        <Ellipse Stroke="Black" StrokeThickness="3"/>
+    </Grid>
+</Window>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -10,6 +11,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -45,16 +47,13 @@ namespace PowerPointLabs.SyncLab.Views
             }
             SyncPane syncLab = syncLabPane.Control as SyncPane;
 
+            UpdateCopyButtonEnabledStatus(this.GetCurrentSelection());
+
             syncLab.HandleDestroyed += SyncPane_Closing;
         }
 
         public void SyncPane_Closing(Object sender, EventArgs e)
         {
-            if (this.GetAddIn().Application.Presentations.Count == 2)
-            {
-                shapeStorage.Close();
-            }
-
             if (Dialog != null)
             {
                 Dialog.Close();
@@ -68,6 +67,26 @@ namespace PowerPointLabs.SyncLab.Views
             {
                 return formatListBox.Items.Count;
             }
+        }
+
+        public void UpdateCopyButtonEnabledStatus(Selection selection)
+        {
+            if ((selection == null) || (selection.Type == PpSelectionType.ppSelectionNone) 
+                || (selection.Type == PpSelectionType.ppSelectionSlides))
+            {
+                copyButton.IsEnabled = false;
+                toolTipTextBox.Text = SyncLabText.DisabledToolTipText;
+            }
+            else
+            {
+                copyButton.IsEnabled = true;
+                toolTipTextBox.Text = SyncLabText.EnabledToolTipText;
+            }
+        }
+
+        public bool GetCopyButtonEnabledStatus()
+        {
+            return copyButton.IsEnabled;
         }
 
         public FormatTreeNode[] GetFormats(int index)

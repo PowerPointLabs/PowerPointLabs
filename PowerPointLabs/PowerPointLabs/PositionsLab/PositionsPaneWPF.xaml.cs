@@ -370,13 +370,12 @@ namespace PowerPointLabs.PositionsLab
 
         void _leftMouseDownListener_Rotation(object sender, SysMouseEventInfo e)
         {
-            try
-            {
-                ToggleButton button = ((bool)rotationButton.IsChecked) ? rotationButton :
+            ToggleButton button = ((bool)rotationButton.IsChecked) ? rotationButton :
                              ((bool)duplicateRotationButton.IsChecked) ? duplicateRotationButton
                                                                        : null;
-
-                if (button.IsMouseOver)
+            try
+            {
+                if (button == null || button.IsMouseOver)
                 {
                     DisableRotationMode();
                     return;
@@ -427,6 +426,8 @@ namespace PowerPointLabs.PositionsLab
             catch (Exception ex)
             {
                 Logger.LogException(ex, "Rotation");
+                DisableRotationMode();
+                button.IsChecked = false;
             }
         }
 
@@ -1062,7 +1063,8 @@ namespace PowerPointLabs.PositionsLab
                     this.StartNewUndoEntry();
                 }
 
-                simulatedShapes = DuplicateShapes(selectedShapes);
+                // selectedShapes.Duplicate() may return a list with reversed sequence  
+                simulatedShapes = DuplicateShapes(selectedShapes); 
 
                 if (PositionsLabSettings.AlignReference == PositionsLabSettings.AlignReferenceObject.PowerpointDefaults)
                 {
@@ -1733,7 +1735,10 @@ namespace PowerPointLabs.PositionsLab
             {
                 Shape shape = range[i + 1];
                 Shape duplicated = shape.Duplicate()[1];
-                duplicated.Name = shape.Name + "_Copy";
+
+                // Add a number at end of name in case the name of shapes are same
+                duplicated.Name = shape.Name + "_Copy_" + i.ToString();
+
                 duplicated.Left = shape.Left;
                 duplicated.Top = shape.Top;
                 duplicatedShapeNames[i] = duplicated.Name;

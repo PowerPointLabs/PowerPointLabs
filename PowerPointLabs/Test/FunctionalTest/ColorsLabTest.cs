@@ -1,17 +1,87 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using TestInterface;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Test.Util;
-using Point = System.Drawing.Point;
+
+using TestInterface;
+
+using Point = System.Windows.Point;
+using Button = System.Windows.Controls.Button;
+using System.Threading;
 
 namespace Test.FunctionalTest
 {
     [TestClass]
     public class ColorsLabTest : BaseFunctionalTest
     {
+        private const int OriginalSlideNo = 3;
+        private const int FontColorChangeSlideNo = 4;
+        private const int OutlineColorChangeSlideNo = 5;
+        private const int FillColorChangeSlideNo = 6;
+        private const int BrightnessAndSaturationChangeSlideNo = 7;
+        private const int MonochromeColorChangeSlideNo = 8;
+        private const int AnalogousAndComplementaryChangeSlideNo = 9;
+        private const int TriadicAndTetradicChangeSlideNo = 10;
+
+        private const string TargetShape = "selectMe";
+        private const string FontColorShape = "fontColor";
+        private const string LineColorShape = "lineColor";
+        private const string FillColorShape = "fillColor";
+
+        private List<Color> DefaultTestColors = new List<Color>(new Color[] {
+            Color.FromArgb(255, 0, 0),
+            Color.FromArgb(0, 255, 0),
+            Color.FromArgb(0, 0, 255),
+            Color.FromArgb(255, 255, 0),
+            Color.FromArgb(255, 0, 255),
+            Color.FromArgb(0, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(0, 0, 0),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255)
+        });
+
+        private List<Color> AllWhiteColorList = new List<Color>(new Color[]
+        {
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(255, 255, 255)
+        });
+
+        private List<Color> RecentColorsAfterFT = new List<Color>(new Color[]
+        {
+            Color.FromArgb(98, 235, 187),
+            Color.FromArgb(118, 98, 235),
+            Color.FromArgb(98, 215, 235),
+            Color.FromArgb(235, 98, 146),
+            Color.FromArgb(0, 53, 153),
+            Color.FromArgb(102, 155, 255),
+            Color.FromArgb(153, 189, 255),
+            Color.FromArgb(0, 89, 255),
+            Color.FromArgb(98, 148, 235),
+            Color.FromArgb(98, 235, 118),
+            Color.FromArgb(235, 118, 98),
+            Color.FromArgb(255, 255, 255)
+        });
+
         protected override string GetTestingSlideName()
         {
             return "ColorsLab\\ColorsLab.pptx";
@@ -26,103 +96,201 @@ namespace Test.FunctionalTest
             IColorsLabController colorsLab = PplFeatures.ColorsLab;
             colorsLab.OpenPane();
 
-            TestApplyingColors(colorsLab);
-            TestRecommendedColors(colorsLab);
+            // Clear the recent colors panel before FT begins
+            colorsLab.ClearRecentColors();
+
+            TestApplyFontColor(colorsLab);
+            TestApplyLineColor(colorsLab);
+            TestApplyFillColor(colorsLab);
+
+            TestBrightnessAndSaturationSlider(colorsLab);
+
+            TestMonochromeMatchingColors(colorsLab);
+            TestAnalogousAndComplementaryColors(colorsLab);
+            TestTriadicAndTetradicColors(colorsLab);
+
             TestFavoriteColors(colorsLab);
-            TestColorInfoDialog(colorsLab);
+            TestRecentColors(colorsLab);
         }
 
-        private void TestColorInfoDialog(IColorsLabController colorsLab)
+        private void TestApplyFontColor(IColorsLabController colorsLab)
         {
-            IColorsLabMoreInfoDialog infoDialog = null;
-            try
-            {
-                infoDialog = colorsLab.ShowMoreColorInfo(colorsLab.GetMonoPanel1().BackColor);
-                // rgb text is like "RGB: 163, 192, 242"
-                string[] rgbColor = infoDialog.GetRgbText().Substring(5).Split(',');
-                int r = Int32.Parse(rgbColor[0].Trim());
-                int g = Int32.Parse(rgbColor[1].Trim());
-                int b = Int32.Parse(rgbColor[2].Trim());
-                // rgb values can have errors within threshold 2
-                Assert.IsTrue(Math.Abs(r - 163) <= 2);
-                Assert.IsTrue(Math.Abs(g - 192) <= 2);
-                Assert.IsTrue(Math.Abs(b - 242) <= 2);
-            }
-            finally
-            {
-                if (infoDialog != null) infoDialog.TearDown();
-            }
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            Shape shape = PpOperations.SelectShape(FontColorShape)[1];
+            Point startPt = colorsLab.GetApplyTextButtonLocation();
+            Point endPt = GetShapeCenterPoint(shape);
+
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(FontColorChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
+
+        private void TestApplyLineColor(IColorsLabController colorsLab)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            Shape shape = PpOperations.SelectShape(LineColorShape)[1];
+            Point startPt = colorsLab.GetApplyLineButtonLocation();
+            Point endPt = GetShapeCenterPoint(shape);
+
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(OutlineColorChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private void TestApplyFillColor(IColorsLabController colorsLab)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            Shape shape = PpOperations.SelectShape(FillColorShape)[1];
+            Point startPt = colorsLab.GetApplyFillButtonLocation();
+            Point endPt = GetShapeCenterPoint(shape);
+
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(FillColorChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private void TestBrightnessAndSaturationSlider(IColorsLabController colorsLab)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            colorsLab.SlideBrightnessSlider(120);
+            colorsLab.SlideSaturationSlider(240);
+
+            Point startPt = colorsLab.GetApplyLineButtonLocation();
+            Point endPt = colorsLab.GetMainColorRectangleLocation();
+
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(BrightnessAndSaturationChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private void TestMonochromeMatchingColors(IColorsLabController colorsLab)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            // Apply monochromeRectOne as Line
+            colorsLab.ClickMonochromeRect(1);
+            Point startPt = colorsLab.GetApplyLineButtonLocation();
+            Point endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            // Apply monochromeRectTwo as Text
+            colorsLab.ClickMonochromeRect(2);
+            startPt = colorsLab.GetApplyTextButtonLocation();
+            endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            // Apply monochromeRectSix as Fill
+            colorsLab.ClickMonochromeRect(6);
+            startPt = colorsLab.GetApplyFillButtonLocation();
+            endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(MonochromeColorChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+
+        private void TestAnalogousAndComplementaryColors(IColorsLabController colorsLab)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            // Eyedrop the font color shape
+            Shape shape = PpOperations.SelectShape(FontColorShape)[1];
+            Point startPt = colorsLab.GetEyeDropperButtonLocation();
+            Point endPt = GetShapeCenterPoint(shape);
+            DragAndDrop(startPt, endPt);
+
+            // Apply analagousRectOne as Text
+            colorsLab.ClickAnalogousRect(1);
+            startPt = colorsLab.GetApplyTextButtonLocation();
+            endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            // Apply complementaryRectThree as Line
+            colorsLab.ClickComplementaryRect(3);
+            startPt = colorsLab.GetApplyLineButtonLocation();
+            endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(AnalogousAndComplementaryChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private void TestTriadicAndTetradicColors(IColorsLabController colorsLab)
+        {
+            Slide actualSlide = PpOperations.SelectSlide(OriginalSlideNo);
+
+            // Eyedrop the outline color shape
+            Shape shape = PpOperations.SelectShape(LineColorShape)[1];
+            Point startPt = colorsLab.GetEyeDropperButtonLocation();
+            Point endPt = GetShapeCenterPoint(shape);
+            DragAndDrop(startPt, endPt);
+
+            // Apply triadicRectThree as Fill
+            colorsLab.ClickTriadicRect(3);
+            startPt = colorsLab.GetApplyFillButtonLocation();
+            endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            // Apply tetradicRectThree as Line
+            colorsLab.ClickTetradicRect(3);
+            startPt = colorsLab.GetApplyLineButtonLocation();
+            endPt = colorsLab.GetMainColorRectangleLocation();
+            PpOperations.SelectShape(TargetShape);
+            DragAndDrop(startPt, endPt);
+
+            Slide expSlide = PpOperations.SelectSlide(TriadicAndTetradicChangeSlideNo);
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
 
         private void TestFavoriteColors(IColorsLabController colorsLab)
         {
-            Panel favPanel1 = colorsLab.GetFavColorPanel1();
-            Color originalFavColor = favPanel1.BackColor;
+            // Clear the favorite colors panel
+            colorsLab.ClearFavoriteColors();
+            List<Color> currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
+            AssertEqual(AllWhiteColorList, currentFavoritePanel);
 
-            try
-            {
-                // empty fav colors
-                colorsLab.GetEmptyFavColorsButton().PerformClick();
-                Color colorAftReset = favPanel1.BackColor;
-                AssertEqual(Color.White, colorAftReset);
+            // Load the test case
+            colorsLab.LoadFavoriteColors(
+                PathUtil.GetDocTestPresentationPath("ColorsLab\\FavoriteColorsTest.thm"));
+            currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
+            AssertEqual(DefaultTestColors, currentFavoritePanel);
 
-                // set mono panel1's color as fav color
-                Panel monoPanel1 = colorsLab.GetMonoPanel1();
-                ApplyColor(monoPanel1, favPanel1);
-                AssertEqual(monoPanel1.BackColor, favPanel1.BackColor);
-            }
-            finally
-            {
-                // reset fav colors from last time saved
-                colorsLab.GetResetFavColorsButton().PerformClick();
-                AssertEqual(originalFavColor, favPanel1.BackColor);
-            }
+            // Clear panel
+            colorsLab.ClearFavoriteColors();
+            currentFavoritePanel = colorsLab.GetCurrentFavoritePanel();
+            AssertEqual(AllWhiteColorList, currentFavoritePanel);
         }
 
-        private void TestRecommendedColors(IColorsLabController colorsLab)
+        private void TestRecentColors(IColorsLabController colorsLab)
         {
-            Slide actualSlide = PpOperations.SelectSlide(3);
-            PpOperations.SelectShape("selectMe");
-
-            // mono panel7's color will become main color now
-            Click(colorsLab.GetMonoPanel7());
-            ApplyColor(colorsLab.GetFillColorButton(), colorsLab.GetDropletPanel());
-
-            Slide expSlide = PpOperations.SelectSlide(5);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
-        }
-
-        private void TestApplyingColors(IColorsLabController colorsLab)
-        {
-            Slide actualSlide = PpOperations.SelectSlide(3);
-
-            Shape fontColorShape = PpOperations.SelectShape("fontColor")[1];
-            Shape lineColorShape = PpOperations.SelectShape("lineColor")[1];
-            Shape fillColorShape = PpOperations.SelectShape("fillColor")[1];
-            PpOperations.SelectShape("selectMe");
-
-            Panel dropletPanel = colorsLab.GetDropletPanel();
-
-            // get main color from fontColorShape
-            // then apply main color to font color of target shape
-            ApplyColor(dropletPanel, fontColorShape);
-            ApplyColor(colorsLab.GetFontColorButton(), dropletPanel);
-
-            // directly apply font color by fontColorShape's fill color
-            ApplyColor(colorsLab.GetLineColorButton(), lineColorShape);
-
-            // get main color from fillColorShape
-            // then apply main color to fill color of target shape
-            ApplyColor(dropletPanel, fillColorShape);
-            ApplyColor(colorsLab.GetFillColorButton(), dropletPanel);
-
-            Slide expSlide = PpOperations.SelectSlide(4);
-            SlideUtil.IsSameLooking(expSlide, actualSlide);
+            // After all the calls in the earlier tests, recent colors panel should be populated
+            List<Color> currentRecentPanel = colorsLab.GetCurrentRecentPanel();
+            AssertEqual(RecentColorsAfterFT, currentRecentPanel);
         }
 
         # region Helper methods
         // mouse drag & drop from Control to Shape to apply color
-        private void ApplyColor(Control from, Shape to)
+        private void ApplyColor(System.Windows.Controls.Control from, Shape to)
         {
             Point startPt = from.PointToScreen(new Point(from.Width/2, from.Height/2));
             Point endPt = new Point(
@@ -131,32 +299,35 @@ namespace Test.FunctionalTest
             DragAndDrop(startPt, endPt);
         }
 
-        // mouse drag & drop from control to another control to apply color
-        private void ApplyColor(Control from, Control to)
+        private Point GetShapeCenterPoint(Shape shape)
         {
-            Point startPt = from.PointToScreen(new Point(from.Width / 2, from.Height / 2));
-            Point endPt = to.PointToScreen(new Point(to.Width / 2, to.Height / 2));
-            DragAndDrop(startPt, endPt);
+            return new Point(
+                PpOperations.PointsToScreenPixelsX(shape.Left + shape.Width / 2),
+                PpOperations.PointsToScreenPixelsY(shape.Top + shape.Height / 2));
         }
 
         private void DragAndDrop(Point startPt, Point endPt)
         {
-            MouseUtil.SendMouseDown(startPt.X, startPt.Y);
-            MouseUtil.SendMouseUp(endPt.X, endPt.Y);
+            MouseUtil.SendMouseDown((int)startPt.X, (int)startPt.Y);
+            MouseUtil.SendMouseUp((int)endPt.X, (int)endPt.Y);
         }
 
-        private void Click(Control target)
+
+
+        private static void AssertEqual(List<Color> expectedList, List<Color> actualList)
         {
-            Point pt = target.PointToScreen(new Point(target.Width / 2, target.Height / 2));
-            MouseUtil.SendMouseLeftClick(pt.X, pt.Y);
+            for (int i = 0; i < expectedList.Count; i++)
+            {
+                AssertEqual(expectedList[i], actualList[i]);
+            }
         }
 
-        private static void AssertEqual(Color exp, Color actual)
+        private static void AssertEqual(Color expectedColor, Color actualColor)
         {
             // dont assert Alpha
-            Assert.IsTrue(IsAlmostSame(exp.R, actual.R), "diff color R, exp {0}, actual {1}", exp.R, actual.R);
-            Assert.IsTrue(IsAlmostSame(exp.G, actual.G),"diff color G, exp {0}, actual {1}", exp.G, actual.G);
-            Assert.IsTrue(IsAlmostSame(exp.B, actual.B), "diff color B, exp {0}, actual {1}", exp.B, actual.B);
+            Assert.IsTrue(IsAlmostSame(expectedColor.R, actualColor.R), "diff color R, expected {0}, actual {1}", expectedColor.R, actualColor.R);
+            Assert.IsTrue(IsAlmostSame(expectedColor.G, actualColor.G),"diff color G, expected {0}, actual {1}", expectedColor.G, actualColor.G);
+            Assert.IsTrue(IsAlmostSame(expectedColor.B, actualColor.B), "diff color B, expected {0}, actual {1}", expectedColor.B, actualColor.B);
         }
 
         private static bool IsAlmostSame(byte a, byte b)

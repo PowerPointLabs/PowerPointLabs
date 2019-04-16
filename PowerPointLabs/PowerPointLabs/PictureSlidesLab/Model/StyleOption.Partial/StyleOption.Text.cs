@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 
 namespace PowerPointLabs.PictureSlidesLab.Model

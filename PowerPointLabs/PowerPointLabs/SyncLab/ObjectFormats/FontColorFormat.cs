@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Drawing;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
@@ -47,12 +50,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             {
                 int guessedColor = ShapeUtil.GuessTextColor(formatShape);
                 newShape.TextFrame.TextRange.Font.Color.RGB = guessedColor;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync FontColorFormat");
                 return false;
             }
-            return true;
         }
     }
 }

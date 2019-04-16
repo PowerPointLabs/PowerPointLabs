@@ -1,5 +1,7 @@
 ﻿using System.IO;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.Utils;
 
 namespace Test.UnitTest.Utils

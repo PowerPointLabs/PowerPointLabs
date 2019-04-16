@@ -9,16 +9,16 @@
       <Value Profile="(Default)">offline</Value>
     </Setting>
     <Setting Name="ReleaseAddr" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download-78563/</Value>
+      <Value Profile="(Default)">https://www.comp.nus.edu.sg/~pptlabs/download-78563/</Value>
     </Setting>
     <Setting Name="DevAddr" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://www.comp.nus.edu.sg/~pptlabs/download/dev/</Value>
+      <Value Profile="(Default)">https://www.comp.nus.edu.sg/~pptlabs/download/dev/</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">4.3.0.1</Value>
+      <Value Profile="(Default)">5.0.0.0</Value>
     </Setting>
     <Setting Name="ReleaseDate" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">18 April 2018</Value>
+      <Value Profile="(Default)">16 April 2019</Value>
     </Setting>
   </Settings>
 </SettingsFile>

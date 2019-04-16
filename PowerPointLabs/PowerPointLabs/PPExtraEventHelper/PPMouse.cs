@@ -2,10 +2,8 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
-using PowerPointLabs;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PPExtraEventHelper

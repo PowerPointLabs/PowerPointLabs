@@ -2,6 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -41,12 +42,13 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             try
             {
                 newShape.Line.Style = formatShape.Line.Style;
+                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, "Sync LineCompoundTypeFormat");
                 return false;
             }
-            return true;
         }
     }
 }

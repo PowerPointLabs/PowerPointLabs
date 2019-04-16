@@ -1,4 +1,5 @@
 ﻿using System;
+
 using PowerPointLabs.Utils.Exceptions;
 
 namespace PowerPointLabs.Utils

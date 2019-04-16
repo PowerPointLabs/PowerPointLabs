@@ -1,8 +1,11 @@
 ﻿using System;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.PictureSlidesLab.Util;
+
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.PictureSlidesLab.Service

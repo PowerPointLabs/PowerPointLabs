@@ -10,7 +10,6 @@ using PowerPointLabs.CropLab;
 using PowerPointLabs.TextCollection;
 
 using Office = Microsoft.Office.Core;
-using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {

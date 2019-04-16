@@ -15,6 +15,12 @@
         public const string StorageFileName = "Sync Lab - Do not edit";
         public const string DefaultFormatName = "Format";
 
+        public const string EnabledToolTipText =
+            "Opens a dialog box that will allow you to copy formats\n" +
+            "from the shape that is currently selected.";
+        public const string DisabledToolTipText =
+            EnabledToolTipText + "\nStart by selecting a shape.";
+            
         public const string ErrorDialogTitle = "Unable to execute action";
         public const string ErrorCopy = "Error: Unable to copy selected item.";
         public const string ErrorSmartArtUnsupported = "Error: SmartArt is currently not supported by SyncLab.";

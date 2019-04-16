@@ -1,6 +1,4 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
-
-namespace TestInterface
+﻿namespace TestInterface
 {
     public interface ISyncLabController
     {
@@ -13,5 +11,7 @@ namespace TestInterface
         void DialogSelectItem(int categoryIndex, int itemIndex);
 
         void DialogClickOk();
+
+        bool GetCopyButtonEnabledStatus();
     }
 }

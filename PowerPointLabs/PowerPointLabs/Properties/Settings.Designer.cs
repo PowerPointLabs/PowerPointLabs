@@ -12,7 +12,7 @@ namespace PowerPointLabs.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -43,7 +43,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download-78563/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.comp.nus.edu.sg/~pptlabs/download-78563/")]
         public string ReleaseAddr {
             get {
                 return ((string)(this["ReleaseAddr"]));
@@ -52,7 +52,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://www.comp.nus.edu.sg/~pptlabs/download/dev/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.comp.nus.edu.sg/~pptlabs/download/dev/")]
         public string DevAddr {
             get {
                 return ((string)(this["DevAddr"]));
@@ -61,7 +61,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4.3.0.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5.0.0.0")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -70,7 +70,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("18 April 2018")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16 April 2019")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));

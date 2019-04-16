@@ -1,30 +1,37 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Drawing;
+
+using Point = System.Windows.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace TestInterface
 {
     public interface IColorsLabController
     {
         void OpenPane();
+        Point GetApplyTextButtonLocation();
+        Point GetApplyLineButtonLocation();
+        Point GetApplyFillButtonLocation();
+        Point GetMainColorRectangleLocation();
+        Point GetEyeDropperButtonLocation();
 
-        Panel GetDropletPanel();
+        void SlideBrightnessSlider(int value);
+        void SlideSaturationSlider(int value);
 
-        Panel GetFontColorButton();
+        void ClickMonochromeRect(int index);
+        void ClickAnalogousRect(int index);
+        void ClickComplementaryRect(int index);
+        void ClickTriadicRect(int index);
+        void ClickTetradicRect(int index);
 
-        Panel GetLineColorButton();
+        void LoadFavoriteColors(string filePath);
+        void ResetFavoriteColors();
+        void ClearFavoriteColors();
 
-        Panel GetFillColorButton();
+        void ClearRecentColors();
 
-        Panel GetMonoPanel1();
+        List<Color> GetCurrentFavoritePanel();
+        List<Color> GetCurrentRecentPanel();
 
-        Panel GetMonoPanel7();
-
-        Panel GetFavColorPanel1();
-
-        Button GetResetFavColorsButton();
-
-        Button GetEmptyFavColorsButton();
-
-        IColorsLabMoreInfoDialog ShowMoreColorInfo(Color color);
     }
 }

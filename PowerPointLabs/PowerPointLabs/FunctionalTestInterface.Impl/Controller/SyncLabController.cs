@@ -80,6 +80,15 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
             
         }
-
+    
+        public bool GetCopyButtonEnabledStatus()
+        {
+            bool result = false;
+            UIThreadExecutor.Execute(() =>
+            {
+                result = _pane.SyncPaneWPF1.GetCopyButtonEnabledStatus();
+            });
+            return result;
+        }
     }
 }
