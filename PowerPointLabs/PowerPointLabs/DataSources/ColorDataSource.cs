@@ -45,18 +45,18 @@ namespace PowerPointLabs.DataSources
 
         private readonly string[] favoriteColorFieldNames =
         {
-            "themeColorOne",
-            "themeColorTwo",
-            "themeColorThree",
-            "themeColorFour",
-            "themeColorFive",
-            "themeColorSix",
-            "themeColorSeven",
-            "themeColorEight",
-            "themeColorNine",
-            "themeColorTen",
-            "themeColorEleven",
-            "themeColorTwelve"
+            "favoriteColorOne",
+            "favoriteColorTwo",
+            "favoriteColorThree",
+            "favoriteColorFour",
+            "favoriteColorFive",
+            "favoriteColorSix",
+            "favoriteColorSeven",
+            "favoriteColorEight",
+            "favoriteColorNine",
+            "favoriteColorTen",
+            "favoriteColorEleven",
+            "favoriteColorTwelve"
         };
 
         private ObservableCollection<HSLColor> recentColors;

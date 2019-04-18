@@ -152,10 +152,10 @@ namespace PowerPointLabs.ColorsLab
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
-        // Saving color themes
-        private string _defaultThemeColorDirectory = System.IO.Path.Combine(
+        // Saving color favorites
+        private string _defaultFavoriteColorDirectory = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
-            "PowerPointLabs.defaultThemeColor.thm");
+            "PowerPointLabs.defaultFavoriteColor.thm");
         private string _defaultRecentColorDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "PowerPointLabs.defaultRecentColor.thm");
@@ -176,7 +176,7 @@ namespace PowerPointLabs.ColorsLab
             SetupImageSources();
             SetupEyedropperTimer();
             SetDefaultColor(Color.CornflowerBlue);
-            SetDefaultThemeColors();
+            SetDefaultFavoriteColors();
             SetRecentColors();
 
             // Hook the mouse process if it has not
@@ -263,11 +263,11 @@ namespace PowerPointLabs.ColorsLab
         }
 
         /// <summary>
-        /// Set default theme colors for favourite colors panel.
+        /// Set default favorite colors for favourite colors panel.
         /// </summary>
-        private void SetDefaultThemeColors()
+        private void SetDefaultFavoriteColors()
         {
-            LoadDefaultThemePanel();
+            LoadDefaultFavoritePanel();
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void ColorsLab_Closing(Object sender, EventArgs e)
         {
-            SaveDefaultColorPaneThemeColors();
+            SaveDefaultColorPaneFavoriteColors();
             SaveColorPaneRecentColors();
         }
 
@@ -557,7 +557,7 @@ namespace PowerPointLabs.ColorsLab
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
 
-                        SetThemeColorRectangle(Grid.GetColumn(rect), color);
+                        SetFavoriteColorRectangle(Grid.GetColumn(rect), color);
                     }
                 }
             }
@@ -606,7 +606,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
-                SetThemeColorRectangle(Grid.GetColumn(rect), _previousFillColor);
+                SetFavoriteColorRectangle(Grid.GetColumn(rect), _previousFillColor);
             }
         }
 
@@ -638,7 +638,7 @@ namespace PowerPointLabs.ColorsLab
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
 
-                        SetThemeColorRectangle(Grid.GetColumn(rect), color);
+                        SetFavoriteColorRectangle(Grid.GetColumn(rect), color);
                     }
                 }
             }
@@ -735,7 +735,7 @@ namespace PowerPointLabs.ColorsLab
         #region Favourite Colors Button Handlers
 
         /// <summary>
-        /// Saves the current theme panel as a custom theme file.
+        /// Saves the current favorite panel as a custom favorite file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -743,20 +743,20 @@ namespace PowerPointLabs.ColorsLab
         {
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             saveFileDialog.DefaultExt = "thm";
-            saveFileDialog.Filter = "PPTLabsThemes|*.thm";
-            saveFileDialog.Title = "Save Theme";
+            saveFileDialog.Filter = "PPTLabsFavorites|*.thm";
+            saveFileDialog.Title = "Save Favorite";
             
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
                 dataSource.SaveFavoriteColorsInFile(saveFileDialog.FileName))
             {
-                SaveDefaultColorPaneThemeColors();
+                SaveDefaultColorPaneFavoriteColors();
             }
         }
 
         /// <summary>
-        /// Loads a theme panel from an existing theme file.
+        /// Loads a favorite panel from an existing favorite file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -764,36 +764,36 @@ namespace PowerPointLabs.ColorsLab
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
             openFileDialog.DefaultExt = "thm";
-            openFileDialog.Filter = "PPTLabsTheme|*.thm";
-            openFileDialog.Title = "Load Theme";
+            openFileDialog.Filter = "PPTLabsFavorite|*.thm";
+            openFileDialog.Title = "Load Favorite";
 
             System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
                 dataSource.LoadFavoriteColorsFromFile(openFileDialog.FileName))
             {
-                SaveDefaultColorPaneThemeColors();
+                SaveDefaultColorPaneFavoriteColors();
             }
         }
 
         /// <summary>
-        /// Reset to the last loaded theme panel.
+        /// Reset to the last loaded favorite panel.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ReloadColorButton_Click(object sender, EventArgs e)
         {
-            ResetThemePanel();
+            ResetFavoritePanel();
         }
 
         /// <summary>
-        /// Clears the current theme panel, i.e. set all favourite colors to white.
+        /// Clears the current favorite panel, i.e. set all favourite colors to white.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ClearColorButton_Click(object sender, RoutedEventArgs e)
         {
-            EmptyThemePanel();
+            EmptyFavoritePanel();
         }
 
         #endregion
@@ -1190,34 +1190,34 @@ namespace PowerPointLabs.ColorsLab
         /// <summary>
         /// Load default panel from default file, or clear the panel if unsuccessful.
         /// </summary>
-        private void LoadDefaultThemePanel()
+        private void LoadDefaultFavoritePanel()
         {
-            bool isSuccessful = dataSource.LoadFavoriteColorsFromFile(_defaultThemeColorDirectory);
+            bool isSuccessful = dataSource.LoadFavoriteColorsFromFile(_defaultFavoriteColorDirectory);
             if (!isSuccessful)
             {
-                EmptyThemePanel();
+                EmptyFavoritePanel();
             }
         }
 
         /// <summary>
-        /// Reset panel to the last loaded theme panel.
+        /// Reset panel to the last loaded favorite panel.
         /// </summary>
-        private void ResetThemePanel()
+        private void ResetFavoritePanel()
         {
             try
             {
-                LoadDefaultThemePanel();
+                LoadDefaultFavoritePanel();
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Favorite Panel Reset Failed", e.Message, e);
             }
         }
 
         /// <summary>
         /// Clear the panel to all white color.
         /// </summary>
-        private void EmptyThemePanel()
+        private void EmptyFavoritePanel()
         {
             try
             {
@@ -1228,7 +1228,7 @@ namespace PowerPointLabs.ColorsLab
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Favorite Panel Reset Failed", e.Message, e);
             }
         }
 
@@ -1237,17 +1237,17 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         /// <param name="name"></param>
         /// <param name="color"></param>
-        private void SetThemeColorRectangle(int column, Color color)
+        private void SetFavoriteColorRectangle(int column, Color color)
         {
             dataSource.SetFavoriteColor(column, color);
         }
 
         /// <summary>
-        /// Save current panel as default theme color.
+        /// Save current panel as default favorite color.
         /// </summary>
-        private void SaveDefaultColorPaneThemeColors()
+        private void SaveDefaultColorPaneFavoriteColors()
         {
-            dataSource.SaveFavoriteColorsInFile(_defaultThemeColorDirectory);
+            dataSource.SaveFavoriteColorsInFile(_defaultFavoriteColorDirectory);
         }
 
         #endregion
