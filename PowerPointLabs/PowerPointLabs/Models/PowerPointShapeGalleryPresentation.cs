@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -369,7 +370,7 @@ namespace PowerPointLabs.Models
                 if (Slides.All(category => category.Name.ToLower() != categoryName.ToLower()))
                 {
                     categoryLost = true;
-                    break;
+                    AddCategory(categoryName, false, true);
                 }
             }
 
@@ -562,13 +563,26 @@ namespace PowerPointLabs.Models
             bool shapeLost = false;
             bool pngLost = false;
             int untitledCategoryCnt = 0;
+            List<PowerPointSlide> slides = Slides;
 
-            foreach (PowerPointSlide category in Slides)
+            for (int i = Slides.Count - 1; i >= 0; i--)
             {
+                PowerPointSlide category = Slides[i];
                 Shape categoryNameBox = ConsistencyCheckCategoryNameBox(category, ref untitledCategoryCnt);
 
                 // check if we have a corresponding category directory in the Path
-                string shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                string shapeFolderPath;
+                try
+                {
+                    shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                }
+                catch (Exception)
+                {
+                    // Unable to get shape folder path. Store the problematic category and continue
+                    // Actual slide index starts from 1, but is accounted for in PowerPointPresentation.removeSlide(int).
+                    RemoveSlide(i);
+                    continue;
+                }
                 string finalCategoryName = new DirectoryInfo(shapeFolderPath).Name;
 
                 List<string> pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
