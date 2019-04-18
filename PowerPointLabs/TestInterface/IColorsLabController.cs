@@ -30,8 +30,8 @@ namespace TestInterface
 
         void ClearRecentColors();
 
-        List<Color> GetCurrentFavoritePanel();
-        List<Color> GetCurrentRecentPanel();
+        IList<Color> GetCurrentFavoritePanel();
+        IList<Color> GetCurrentRecentPanel();
 
     }
 }

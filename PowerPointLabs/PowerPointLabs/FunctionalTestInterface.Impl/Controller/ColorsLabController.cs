@@ -331,9 +331,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
-        public List<Color> GetCurrentFavoritePanel()
+        public IList<Color> GetCurrentFavoritePanel()
         {
-            List<Color> list = null;
+            IList<Color> list = null;
             if (_pane != null)
             {
                 UIThreadExecutor.Execute((Action)(() =>
@@ -344,9 +344,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return list;
         }
 
-        public List<Color> GetCurrentRecentPanel()
+        public IList<Color> GetCurrentRecentPanel()
         {
-            List<Color> list = null;
+            IList<Color> list = null;
             if (_pane != null)
             {
                 UIThreadExecutor.Execute((Action)(() =>
