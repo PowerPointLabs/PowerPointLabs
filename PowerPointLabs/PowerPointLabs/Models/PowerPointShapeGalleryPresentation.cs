@@ -563,10 +563,9 @@ namespace PowerPointLabs.Models
             bool shapeLost = false;
             bool pngLost = false;
             int untitledCategoryCnt = 0;
-            List<int> inaccessibleCategoryIndices = new List<int>();
             List<PowerPointSlide> slides = Slides;
 
-            for (int i = 0; i < Slides.Count; i++)
+            for (int i = Slides.Count - 1; i >= 0; i--)
             {
                 PowerPointSlide category = Slides[i];
                 Shape categoryNameBox = ConsistencyCheckCategoryNameBox(category, ref untitledCategoryCnt);
@@ -580,8 +579,8 @@ namespace PowerPointLabs.Models
                 catch (Exception)
                 {
                     // Unable to get shape folder path. Store the problematic category and continue
-                    // Actual slide index starts from 1.
-                    inaccessibleCategoryIndices.Add(i + 1);
+                    // Actual slide index starts from 1, but is accounted for in PowerPointPresentation.removeSlide(int).
+                    RemoveSlide(i);
                     continue;
                 }
                 string finalCategoryName = new DirectoryInfo(shapeFolderPath).Name;
@@ -601,12 +600,8 @@ namespace PowerPointLabs.Models
 
                 Categories.Add(finalCategoryName);
             }
-            foreach (int inaccessibleCategoryIndex in inaccessibleCategoryIndices)
-            {
-                RemoveSlide(inaccessibleCategoryIndex);
-            }
 
-            bool categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide() || inaccessibleCategoryIndices.Count > 0;
+            bool categoryInShapeGalleryLost = ConsistencyCheckCategoryLocalToSlide();
 
             Save();
 
