@@ -370,7 +370,7 @@ namespace PowerPointLabs.Models
                 if (Slides.All(category => category.Name.ToLower() != categoryName.ToLower()))
                 {
                     categoryLost = true;
-                    break;
+                    AddCategory(categoryName, false, true);
                 }
             }
 
