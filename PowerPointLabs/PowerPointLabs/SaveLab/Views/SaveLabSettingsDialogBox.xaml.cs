@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using Forms = System.Windows.Forms;
@@ -27,11 +25,7 @@ namespace PowerPointLabs.SaveLab.Views
         public SaveLabSettingsDialogBox(string savePath)
             : this()
         {
-            savePathBrowserIconImage.Source = Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Load_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            savePathBrowserIconImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Load_icon);
             
             savePathInput.IsReadOnly = true;
             savePathInput.Text = savePath;

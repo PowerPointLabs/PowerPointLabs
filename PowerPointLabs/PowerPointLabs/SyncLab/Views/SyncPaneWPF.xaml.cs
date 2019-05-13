@@ -30,11 +30,7 @@ namespace PowerPointLabs.SyncLab.Views
             InitializeComponent();
             shapeStorage = SyncLabShapeStorage.Instance;
 
-            copyImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.SyncLabCopyButton.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            copyImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncLabCopyButton);
         }
 
         public void SyncPaneWPF_Loaded(object sender, RoutedEventArgs e)

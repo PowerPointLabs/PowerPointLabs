@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Media.Imaging;
 
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ELearningLab.Converters
 {
@@ -25,30 +26,14 @@ namespace PowerPointLabs.ELearningLab.Converters
             switch ((AnimationType)value)
             {
                 case AnimationType.Emphasis:
-                    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.AnimationEmphasis.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationEmphasis);
                 case AnimationType.Entrance:
-                    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.AnimationEntrance.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationEntrance);
                 case AnimationType.Exit:
-                    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.AnimationExit.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationExit);
                 case AnimationType.MotionPath:
                 default:
-                    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.AnimationMotionPath.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationMotionPath);
             }
         }
 

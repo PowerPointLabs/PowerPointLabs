@@ -71,11 +71,7 @@ namespace PowerPointLabs.ShapesLab.Views
             InitializeComponent();
             DataContext = this;
 
-            addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.AddToCustomShapes.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            addShapeImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddToCustomShapes);
 
             singleShapeDownloadLink.NavigateUri = new Uri(CommonText.SingleShapeDownloadUrl);
         }
@@ -630,21 +626,13 @@ namespace PowerPointLabs.ShapesLab.Views
         private void DisableAddShapesButton()
         {
             addShapeButton.IsEnabled = false;
-            addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.AddToCustomShapesDisabled.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            addShapeImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddToCustomShapesDisabled);
         }
 
         private void EnableAddShapesButton()
         {
             addShapeButton.IsEnabled = true;
-            addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.AddToCustomShapes.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            addShapeImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddToCustomShapes);
         }
 
 

@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace PowerPointLabs.Utils
 {
     public static class CommonUtil
     {
+        #region text
         /// <summary>
         /// Used for the method UniqueDigitString().
         /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
@@ -129,6 +133,7 @@ namespace PowerPointLabs.Utils
         {
             return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
         }
+        #endregion // text
 
         #region Math
 
@@ -196,6 +201,21 @@ namespace PowerPointLabs.Utils
             }
             return x.ToString();
         }
-        # endregion
+        #endregion
+
+        /// <summary>
+        /// Used to create a <seealso cref="BitmapSource"/> using an <seealso cref="Bitmap"/>,
+        /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
+        /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
+        /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
+        /// </summary>
+        public static BitmapSource CreateBitmapSource(Bitmap image)
+        {
+            return Imaging.CreateBitmapSourceFromHBitmap(
+                image.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+        }
     }
 }
