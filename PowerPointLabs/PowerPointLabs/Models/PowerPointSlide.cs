@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
+
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.TextCollection;

@@ -2,7 +2,6 @@
 using System.Drawing;
 
 using Point = System.Windows.Point;
-using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace TestInterface
 {

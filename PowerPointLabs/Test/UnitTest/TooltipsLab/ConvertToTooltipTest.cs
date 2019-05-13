@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs.TooltipsLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.TextCollection;
+using PowerPointLabs.TooltipsLab;
 
 using Test.Util;
-using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.TextCollection;
 
 namespace Test.UnitTest.TooltipsLab
 {

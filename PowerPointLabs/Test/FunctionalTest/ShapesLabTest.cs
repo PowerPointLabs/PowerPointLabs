@@ -1,10 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Windows;
 
-using Test.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.TextCollection;
 
+using Test.Util;
+
 using TestInterface;
-using System.Windows;
 
 namespace Test.FunctionalTest
 {

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+
 using Microsoft.Office.Core;
-using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.TooltipsLab.Views
 {

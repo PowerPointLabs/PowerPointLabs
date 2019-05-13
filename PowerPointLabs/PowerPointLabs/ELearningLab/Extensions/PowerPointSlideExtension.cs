@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
+
 using PowerPointLabs.ELearningLab.Converters;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;

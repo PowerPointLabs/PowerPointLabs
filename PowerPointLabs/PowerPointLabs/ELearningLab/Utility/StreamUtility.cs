@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
+
 using NAudio.Wave;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.ELearningLab.Utility

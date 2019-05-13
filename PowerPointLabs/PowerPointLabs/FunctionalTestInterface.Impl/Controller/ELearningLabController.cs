@@ -3,11 +3,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Utility;
-using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
 
 using TestInterface;

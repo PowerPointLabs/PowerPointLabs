@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -18,6 +19,7 @@ using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
