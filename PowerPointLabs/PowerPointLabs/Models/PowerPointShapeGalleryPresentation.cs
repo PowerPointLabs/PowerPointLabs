@@ -702,26 +702,33 @@ namespace PowerPointLabs.Models
                 name = CommonUtil.NextAvailableName(nameList, name);
             }
 
-            ShapeRange pastedShapeRange = categorySlide.Shapes.Paste();
-
-            if (pastedShapeRange.Count > 1)
+            try
             {
-                for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
+                ShapeRange pastedShapeRange = categorySlide.Shapes.Paste();
+
+                if (pastedShapeRange.Count > 1)
                 {
-                    Shape shape = pastedShapeRange[nameCount];
+                    for (int nameCount = 1; nameCount <= pastedShapeRange.Count; nameCount++)
+                    {
+                        Shape shape = pastedShapeRange[nameCount];
 
-                    shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+                        shape.Name = string.Format(GroupSelectionNameFormat, name, nameCount);
+                    }
                 }
+                else
+                {
+                    pastedShapeRange[1].Name = name;
+                }
+
+                Save();
+                ActionProtection();
+                return name;
             }
-            else
+            catch (Exception e)
             {
-                pastedShapeRange[1].Name = name;
+                ActionFramework.Common.Log.Logger.LogException(e, "AddShape");
+                return null;
             }
-
-            Save();
-            ActionProtection();
-
-            return name;
         }
         # endregion
     }

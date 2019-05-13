@@ -173,6 +173,10 @@ namespace PowerPointLabs.ShapesLab.Views
             PowerPointSlide currentSlide = this.GetCurrentSlide();
             PowerPointPresentation pres = this.GetCurrentPresentation();
             string shapeName = addIn.ShapePresentation.AddShape(pres, currentSlide, selectedShapes, selectedShapes[1].Name);
+            if (shapeName == null)
+            {
+                return;
+            }
 
             // add the selection into pane and save it as .png locally
             string shapePath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
@@ -810,6 +814,10 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 importShapeGallery.CopyShape(shapeName);
                 shapeName = this.GetAddIn().ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
+                if (shapeName == null)
+                {
+                    return ClipboardUtil.ClipboardError;
+                }
                 string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
 
                 GraphicsUtil.ExportShape(shapeRange, exportPath);

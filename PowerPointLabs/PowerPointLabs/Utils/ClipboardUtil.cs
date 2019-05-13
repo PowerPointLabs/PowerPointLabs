@@ -11,6 +11,7 @@ namespace PowerPointLabs.Utils
 #pragma warning disable 0618
     internal static class ClipboardUtil
     {
+        public const int ClipboardError = 0;
         public const int ClipboardRestoreSuccess = 1;
 
         #region API
@@ -67,8 +68,12 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static TResult RestoreClipboardAfterAction<TResult>(System.Func<TResult> action, PowerPointPresentation pres, PowerPointSlide origSlide)
         {
-            TResult result;
-            if (!IsClipboardEmpty())
+            if (IsClipboardEmpty())
+            {
+                // Clipboard is empty, we can just run the action function
+                return action();
+            }
+            else
             {
                 // Save clipboard onto a temp slide
                 PowerPointSlide tempClipboardSlide = null;
@@ -109,20 +114,15 @@ namespace PowerPointLabs.Utils
                     tempClipboardShapes = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
                 }
 
-                result = action();
+                TResult result = action();
 
                 RestoreClipboard(tempClipboardShapes, tempPastedSlide);
                 if (tempClipboardSlide != null)
                 {
                     tempClipboardSlide.Delete();
                 }
+                return result;
             }
-            else
-            {
-                // Clipboard is empty, we can just run the action function
-                result = action();
-            }
-            return result;
         }
 
         private static bool CheckIfPastingFailed(SlideRange slide, ShapeRange shapes)
