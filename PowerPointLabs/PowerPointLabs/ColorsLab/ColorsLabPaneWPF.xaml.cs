@@ -148,7 +148,7 @@ namespace PowerPointLabs.ColorsLab
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Forms.Timer eyeDropperTimer = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer(); //new System.Windows.Forms.Timer(new System.ComponentModel.Container());
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
@@ -656,11 +656,12 @@ namespace PowerPointLabs.ColorsLab
         private void Timer1_Tick(object sender, EventArgs e)
         {
             timer1Ticks++;
-
+            
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
+            System.Windows.Point mp = PointToScreen(Mouse.GetPosition(this));
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
 
-            Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
+            Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, (int)mousePos.X, (int)mousePos.Y));
 
             // If button has not been held long enough to register as a drag, then don't pick a color.
             if (timer1Ticks < CLICK_THRESHOLD)
@@ -693,7 +694,7 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 selectedColorRectangle.Opacity = 1;
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.SelectedColor = _currentEyedroppedColor;
                 }
@@ -702,7 +703,7 @@ namespace PowerPointLabs.ColorsLab
             // Update recent colors if color has been used
             if (_eyedropperMode == MODE.FILL || _eyedropperMode == MODE.FONT || _eyedropperMode == MODE.LINE)
             {
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.AddColorToRecentColors(_currentSelectedColor);
                 }
