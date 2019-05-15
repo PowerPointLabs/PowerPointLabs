@@ -47,11 +47,21 @@ namespace PowerPointLabs
 #pragma warning disable 0618
         public readonly string OfficeVersion2013 = "15.0";
         public readonly string OfficeVersion2010 = "14.0";
+        public readonly string themeRegistryKey = "UI Theme";
+
+        public string ThemeRegistryPath
+        {
+            get
+            {
+                return String.Format(@"SOFTWARE\\Microsoft\\Office\\{0}\\Common", Application.Version);
+            }
+        }
 
         public static string AppDataFolder =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs");
 
         public Ribbon1 Ribbon;
+        private RegistryWatcher<int> themeWatcher;
 
         internal ShapesLabConfigSaveFile ShapesLabConfig;
 
@@ -864,6 +874,17 @@ namespace PowerPointLabs
 
             // Priority Low: Slide Actions
             Application.SlideSelectionChanged += ThisAddInSlideSelectionChanged;
+
+            // theme watcher
+            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, themeRegistryKey);
+            themeWatcher.ValueChanged += ThemeChangedHandler;
+            themeWatcher.Fire();
+            themeWatcher.Start();
+        }
+
+        private void ThemeChangedHandler(object sender, int e)
+        {
+            throw new NotImplementedException();
         }
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -1158,6 +1179,7 @@ namespace PowerPointLabs
             PPKeyboard.StopHook();
             PPCopy.StopHook();
             PositionsPaneWpf.ClearAllEventHandlers();
+            themeWatcher.Stop();
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
