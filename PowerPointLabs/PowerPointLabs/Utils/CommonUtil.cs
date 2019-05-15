@@ -204,10 +204,10 @@ namespace PowerPointLabs.Utils
         #endregion
 
         /// <summary>
-        /// Used to create a <seealso cref="BitmapSource"/> using an <seealso cref="Bitmap"/>,
+        /// Used to create a <seealso cref="BitmapSource"/> using a <seealso cref="Bitmap"/>,
         /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
-        /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
         /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
+        /// As such, the palette pointer is IntPtr.Zero.
         /// </summary>
         public static BitmapSource CreateBitmapSource(Bitmap image)
         {
