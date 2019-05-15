@@ -12,6 +12,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Office.Tools;
 
@@ -62,6 +63,20 @@ namespace PowerPointLabs
 
         public Ribbon1 Ribbon;
         private RegistryWatcher<int> themeWatcher;
+        event EventHandler<ColorTheme> _ColorThemeChanged;
+        public event EventHandler<ColorTheme> ColorThemeChanged
+        {
+            add
+            {
+                value(this, colorTheme);
+                _ColorThemeChanged += value;
+            }
+            remove
+            {
+                _ColorThemeChanged -= value;
+            }
+        }
+        public ColorTheme colorTheme;
 
         internal ShapesLabConfigSaveFile ShapesLabConfig;
 
@@ -882,9 +897,42 @@ namespace PowerPointLabs
             themeWatcher.Start();
         }
 
-        private void ThemeChangedHandler(object sender, int e)
+        private void ThemeChangedHandler(object sender, int newValue)
         {
-            throw new NotImplementedException();
+            UpdateColorTheme(newValue);
+            _ColorThemeChanged(this, colorTheme);
+        }
+
+        private void UpdateColorTheme(int newValue)
+        {
+            switch (newValue)
+            {
+                case ColorTheme.COLORFUL:
+                case ColorTheme.WHITE: // the same as colorful
+                    colorTheme.title = Color.FromRgb(181, 71, 42);
+                    colorTheme.background = Color.FromRgb(230, 230, 230);
+                    colorTheme.foreground = Color.FromRgb(37, 37, 37);
+                    colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
+                    colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    break;
+                case ColorTheme.DARK_GREY:
+                    colorTheme.title = Color.FromRgb(181, 71, 42);
+                    colorTheme.background = Color.FromRgb(102, 102, 102);
+                    colorTheme.foreground = Color.FromRgb(238, 238, 238);
+                    colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
+                    colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    break;
+                case ColorTheme.BLACK:
+                    colorTheme.title = Color.FromRgb(239, 239, 239);
+                    colorTheme.background = Color.FromRgb(37, 37, 37);
+                    colorTheme.foreground = Color.FromRgb(238, 238, 238);
+                    colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
+                    colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    break;
+                default:
+                    Logger.Log("Unknown UI Theme!");
+                    break;
+            }
         }
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)

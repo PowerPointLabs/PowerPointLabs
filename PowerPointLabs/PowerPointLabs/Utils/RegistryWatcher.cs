@@ -52,7 +52,6 @@ namespace PowerPointLabs.Utils
                      "SELECT * FROM RegistryValueChangeEvent WHERE " +
                      "Hive = 'HKEY_USERS'" +
                 String.Format(@"AND KeyPath = '{0}\\{1}' AND ValueName='{2}'", currentUser.User.Value, path, key));
-
             watcher = new ManagementEventWatcher(query);
             watcher.EventArrived += (object sender, EventArrivedEventArgs e) => { Notify(); };
         }
@@ -75,8 +74,10 @@ namespace PowerPointLabs.Utils
             try
             {
                 T key = GetKey();
-                ValueChanged?.Invoke(this, key);
-                MessageBox.Show(key.ToString());
+                if (ValueChanged != null)
+                {
+                    ValueChanged(this, key);
+                }
             }
             catch (Exception)
             {

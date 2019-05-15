@@ -921,7 +921,9 @@
     </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
+    <Compile Include="Utils\Extension.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
+    <Compile Include="Utils\ColorTheme.cs" />
     <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
