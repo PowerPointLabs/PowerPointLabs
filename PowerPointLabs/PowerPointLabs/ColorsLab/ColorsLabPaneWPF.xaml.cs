@@ -658,10 +658,9 @@ namespace PowerPointLabs.ColorsLab
             timer1Ticks++;
             
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
-            System.Windows.Point mp = PointToScreen(Mouse.GetPosition(this));
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
 
-            Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, (int)mousePos.X, (int)mousePos.Y));
+            Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
 
             // If button has not been held long enough to register as a drag, then don't pick a color.
             if (timer1Ticks < CLICK_THRESHOLD)
