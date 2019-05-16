@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ELearningLab.Extensions;
 using PowerPointLabs.ELearningLab.Utility;
