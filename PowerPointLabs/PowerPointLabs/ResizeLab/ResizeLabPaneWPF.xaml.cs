@@ -36,7 +36,6 @@ namespace PowerPointLabs.ResizeLab
         public ResizeLabPaneWPF()
         {
             InitializeComponent();
-            // PaneScroll.Background = System.Windows.Media.Brushes.White;
             InitialiseLogicInstance();
             // Initialise settings
             InitialiseAnchorButton();

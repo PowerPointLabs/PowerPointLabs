@@ -5,7 +5,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.Models;
-
+using PowerPointLabs.Utils;
 using Application = Microsoft.Office.Interop.PowerPoint.Application;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
@@ -96,7 +96,8 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                     return taskPane;
                 }
 
-                UserControl taskPaneControl = (UserControl) Activator.CreateInstance(taskPaneType);
+                object control = Activator.CreateInstance(taskPaneType);
+                UserControl taskPaneControl = (UserControl)control;
                 if (taskPaneControl == null)
                 {
                     throw new InvalidCastException("Failed to convert " + taskPaneType + " to UserControl.");
@@ -105,6 +106,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                 DocumentWindow activeWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
                 return Globals.ThisAddIn.RegisterTaskPane(taskPaneControl, taskPaneTitle, activeWindow,
+                    (control is IWPFContainer) ? ((IWPFContainer)control).WpfControl : null,
                     visibleChangeEventHandler, dockPositionChangeEventHandler);
             }
             catch (Exception e)

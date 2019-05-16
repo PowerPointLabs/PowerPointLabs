@@ -12,10 +12,18 @@ namespace PowerPointLabs.Extensions
 {
     public static class Extension
     {
+
         public static void UpdateColors(this Control element, object sender, ColorTheme e)
         {
+            // SolidColorBrush needs to be created on the same thread which the Control is created on.
+            if (!element.Dispatcher.CheckAccess())
+            {
+                element.Dispatcher.Invoke(() => element.UpdateColors(sender, e));
+                return;
+            }
             element.Background = new SolidColorBrush(e.background);
             element.Foreground = new SolidColorBrush(e.foreground);
+
             foreach (Button button in element.GetElementType<Button>())
             {
                 button.Background = new SolidColorBrush(e.background);
@@ -25,6 +33,24 @@ namespace PowerPointLabs.Extensions
             {
                 checkbox.Foreground = new SolidColorBrush(e.foreground);
             }
+            foreach (RadioButton radioButton in element.GetElementType<RadioButton>())
+            {
+                radioButton.Foreground = new SolidColorBrush(e.foreground);
+            }
+            foreach (TextBlock textBlock in element.GetElementType<TextBlock>())
+            {
+                textBlock.Foreground = new SolidColorBrush(e.foreground);
+            }
+            foreach (ListBox listView in element.GetElementType<ListBox>())
+            {
+                listView.Background = new SolidColorBrush(e.background);
+                listView.Foreground = new SolidColorBrush(e.foreground);
+            }
+            foreach (Label label in element.GetElementType<Label>())
+            {
+                label.Foreground = new SolidColorBrush(e.foreground);
+            }
+            // ListView support required
         }
 
         /// <summary>

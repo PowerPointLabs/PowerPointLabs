@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using Microsoft.Office.Core;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.DataSources;
+using PowerPointLabs.Extensions;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
 
@@ -811,7 +812,9 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
             ColorInformationDialog dialog = new ColorInformationDialog(selectedColor);
-            dialog.Show();
+            Globals.ThisAddIn.ColorThemeChanged += dialog.UpdateColors;
+            dialog.ShowDialog();
+            Globals.ThisAddIn.ColorThemeChanged -= dialog.UpdateColors;
         }
 
         private void Set_Main_Color_Click(object sender, RoutedEventArgs e)

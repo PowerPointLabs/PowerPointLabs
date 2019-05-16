@@ -22,6 +22,7 @@ using PowerPointLabs.CaptionsLab;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Views;
+using PowerPointLabs.Extensions;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
@@ -62,7 +63,10 @@ namespace PowerPointLabs
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs");
 
         public Ribbon1 Ribbon;
+
+        // For adaptive color theme changing, from winform to wpf
         private RegistryWatcher<int> themeWatcher;
+        private Dictionary<CustomTaskPane, System.Windows.Controls.Control> wpfMapping = new Dictionary<CustomTaskPane, System.Windows.Controls.Control>();
         event EventHandler<ColorTheme> _ColorThemeChanged;
         public event EventHandler<ColorTheme> ColorThemeChanged
         {
@@ -316,7 +320,7 @@ namespace PowerPointLabs
             PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
 
             RegisterTaskPane(new ResizeLabPane(), ResizeLabText.TaskPaneTitle, activeWindow,
-                ResizeTaskPaneVisibleValueChangedEventHandler, null);
+                null, ResizeTaskPaneVisibleValueChangedEventHandler, null);
         }
 
         public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)
@@ -327,7 +331,7 @@ namespace PowerPointLabs
             }
 
             RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
-                TaskPaneVisibleValueChangedEventHandler, null);
+                null, TaskPaneVisibleValueChangedEventHandler, null);
         }
 
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
@@ -401,10 +405,12 @@ namespace PowerPointLabs
         #region Helper Functions
 
         public CustomTaskPane RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
+    System.Windows.Controls.Control wpfControl = null,
     EventHandler visibleChangeEventHandler = null,
     EventHandler dockPositionChangeEventHandler = null)
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox();
+            loadingDialog.UpdateColors(this, colorTheme);
             loadingDialog.Show();
 
             // note down the control's width
@@ -412,7 +418,7 @@ namespace PowerPointLabs
 
             // register the user control to the CustomTaskPanes collection and set it as
             // current active task pane;
-            CustomTaskPane taskPane = CustomTaskPanes.Add(control, title, wnd);
+            CustomTaskPane taskPane = AddTaskPane(control, wpfControl, title, wnd);
 
             // task pane UI setup
             taskPane.Visible = false;
@@ -496,7 +502,7 @@ namespace PowerPointLabs
             List<CustomTaskPane> activePanes = _documentPaneMapper[activeWindow];
             foreach (CustomTaskPane pane in activePanes)
             {
-                CustomTaskPanes.Remove(pane);
+                RemoveTaskPane(pane);
             }
 
             _documentPaneMapper.Remove(activeWindow);
@@ -518,9 +524,31 @@ namespace PowerPointLabs
                     continue;
                 }
 
-                CustomTaskPanes.Remove(pane);
+                RemoveTaskPane(pane);
                 activePanes.RemoveAt(i);
             }
+        }
+
+        private CustomTaskPane AddTaskPane(UserControl control, System.Windows.Controls.Control wpfControl, string title, PowerPoint.DocumentWindow wnd)
+        {
+            CustomTaskPane pane = CustomTaskPanes.Add(control, title, wnd);
+            if (wpfMapping != null)
+            {
+                wpfMapping.Add(pane, wpfControl);
+                ColorThemeChanged += wpfControl.UpdateColors;
+            }
+            return pane;
+        }
+
+        private bool RemoveTaskPane(CustomTaskPane pane)
+        {
+            System.Windows.Controls.Control wpfControl = wpfMapping[pane];
+            if (wpfControl != null)
+            {
+                ColorThemeChanged -= wpfControl.UpdateColors;
+                wpfMapping.Remove(pane);
+            }
+            return CustomTaskPanes.Remove(pane);
         }
 
         private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName,

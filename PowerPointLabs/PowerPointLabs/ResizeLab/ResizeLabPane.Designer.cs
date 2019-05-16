@@ -1,6 +1,9 @@
-﻿namespace PowerPointLabs.ResizeLab
+﻿using System.Windows.Controls;
+using PowerPointLabs.Utils;
+
+namespace PowerPointLabs.ResizeLab
 {
-    partial class ResizeLabPane
+    partial class ResizeLabPane: IWPFContainer
     {
         /// <summary> 
         /// Required designer variable.
@@ -54,7 +57,10 @@
 
         }
         public ResizeLabPaneWPF resizePaneWPF { get; private set; }
+
         private System.Windows.Forms.Integration.ElementHost WPF;
         #endregion
+
+        public Control WpfControl => resizePaneWPF;
     }
 }

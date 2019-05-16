@@ -5,6 +5,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.CropLab.Views;
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.Extensions;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -42,7 +43,9 @@ namespace PowerPointLabs.ActionFramework.CropLab
             {
                 CustomAspectRatioDialogBox dialog = new CustomAspectRatioDialogBox(shapeRange[1]);
                 dialog.DialogConfirmedHandler += ExecuteCropToAspectRatio;
+                Globals.ThisAddIn.ColorThemeChanged += dialog.UpdateColors;
                 dialog.ShowDialog();
+                Globals.ThisAddIn.ColorThemeChanged -= dialog.UpdateColors;
             }
             else if (ribbonId.Contains(CommonText.DynamicMenuOptionId))
             {
