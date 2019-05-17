@@ -148,7 +148,7 @@ namespace PowerPointLabs.ColorsLab
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer(); //new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer();
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
