@@ -25,14 +25,9 @@ namespace PowerPointLabs.ShapesLab.Views
             InitializeComponent();
         }
         
-        public ShapesLabSettingsDialogBox(string savePath)
-            : this()
+        public ShapesLabSettingsDialogBox(string savePath) : this()
         {
-            savePathBrowserIconImage.Source = Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Load_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            savePathBrowserIconImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Load_icon);
             
             savePathInput.IsReadOnly = true;
             savePathInput.Text = savePath;
