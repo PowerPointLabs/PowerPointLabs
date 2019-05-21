@@ -45,6 +45,7 @@ namespace PowerPointLabs
     public partial class ThisAddIn
     {
 #pragma warning disable 0618
+        public readonly int MaxCustomTaskPanes = 2;
         public readonly string OfficeVersion2013 = "15.0";
         public readonly string OfficeVersion2010 = "14.0";
 
@@ -400,6 +401,15 @@ namespace PowerPointLabs
             }
 
             _documentPaneMapper[wnd].Add(taskPane);
+
+            if (_documentPaneMapper[wnd].Count > MaxCustomTaskPanes)
+            {
+                // remove the oldest task pane
+                Type oldestPaneType = _documentPaneMapper[wnd].First().Control.GetType();
+                RemoveTaskPane(wnd, oldestPaneType);
+                Trace.TraceInformation(
+                    $"Removed pane {oldestPaneType.ToString()} over limit: {MaxCustomTaskPanes.ToString()}");
+            }
 
             Trace.TraceInformation(
                 "After Pane Width Change: " +
