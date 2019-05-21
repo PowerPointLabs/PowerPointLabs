@@ -656,7 +656,7 @@ namespace PowerPointLabs.ColorsLab
         private void Timer1_Tick(object sender, EventArgs e)
         {
             timer1Ticks++;
-            
+
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
 
