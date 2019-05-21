@@ -19,6 +19,7 @@ using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ELearningLab.Views
@@ -57,16 +58,8 @@ namespace PowerPointLabs.ELearningLab.Views
         public ELearningLabMainPanel()
         {
             InitializeComponent();
-            syncImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.SyncExplanationIcon.GetHbitmap(),
-               IntPtr.Zero,
-               Int32Rect.Empty,
-               BitmapSizeOptions.FromEmptyOptions());
-            createImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-               Properties.Resources.AddExplanationIcon.GetHbitmap(),
-               IntPtr.Zero,
-               Int32Rect.Empty,
-               BitmapSizeOptions.FromEmptyOptions());
+            syncImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncExplanationIcon);
+            createImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddExplanationIcon);
             isSynced = true;          
             InitializeBackgroundWorker();
             slide = this.GetCurrentSlide();
