@@ -58,6 +58,26 @@ namespace Test.Util
             throw new NotImplementedException();
         }
 
+        public void MaximizeWindow(int windowNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NewWindow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetNumWindows()
+        {
+            throw new NotImplementedException();
+        }
+
+        public HashSet<Type> GetOpenPaneTypes()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
         {
             Presentation presentation = App.Presentations.Open(pathToPresentation, WithWindow: MsoTriState.msoFalse);

@@ -437,40 +437,6 @@ namespace PowerPointLabs
             return Ribbon;
         }
 
-        private void SetupLogger()
-        {
-            // Check if folder exists and if not, create it
-            if (!Directory.Exists(AppDataFolder))
-            {
-                Directory.CreateDirectory(AppDataFolder);
-            }
-
-            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + AppLogName;
-            string logPath = Path.Combine(AppDataFolder, fileName);
-
-            Trace.AutoFlush = true;
-            Trace.Listeners.Add(new TextWriterTraceListener(logPath));
-        }
-
-        private void ShutDownRecorderPane()
-        {
-            RecorderTaskPane recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
-
-            if (recorder?.HasEvent() ?? false)
-            {
-                recorder.ForceStopEvent();
-            }
-        }
-
-        private void ShutDownPictureSlidesLab()
-        {
-            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Ribbon.PictureSlidesLabWindow;
-            if (pictureSlidesLabWindow?.IsOpen ?? false)
-            {
-                pictureSlidesLabWindow.Close();
-            }
-        }
-
         private void RemoveTaskPanes(PowerPoint.DocumentWindow activeWindow)
         {
             if (!_documentPaneMapper.ContainsKey(activeWindow))
@@ -505,6 +471,40 @@ namespace PowerPointLabs
 
                 CustomTaskPanes.Remove(pane);
                 activePanes.RemoveAt(i);
+            }
+        }
+
+        private void SetupLogger()
+        {
+            // Check if folder exists and if not, create it
+            if (!Directory.Exists(AppDataFolder))
+            {
+                Directory.CreateDirectory(AppDataFolder);
+            }
+
+            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + AppLogName;
+            string logPath = Path.Combine(AppDataFolder, fileName);
+
+            Trace.AutoFlush = true;
+            Trace.Listeners.Add(new TextWriterTraceListener(logPath));
+        }
+
+        private void ShutDownRecorderPane()
+        {
+            RecorderTaskPane recorder = GetActiveControl(typeof(RecorderTaskPane)) as RecorderTaskPane;
+
+            if (recorder?.HasEvent() ?? false)
+            {
+                recorder.ForceStopEvent();
+            }
+        }
+
+        private void ShutDownPictureSlidesLab()
+        {
+            PictureSlidesLab.Views.PictureSlidesLabWindow pictureSlidesLabWindow = Ribbon.PictureSlidesLabWindow;
+            if (pictureSlidesLabWindow?.IsOpen ?? false)
+            {
+                pictureSlidesLabWindow.Close();
             }
         }
 

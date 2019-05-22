@@ -40,6 +40,33 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return PowerPointLabsFT.IsFunctionalTestOn;
         }
 
+        public void MaximizeWindow(int windowNumber)
+        {
+            FunctionalTestExtensions.GetApplication().Windows[windowNumber].Activate();
+            FunctionalTestExtensions.GetApplication().Windows[windowNumber].WindowState = PpWindowState.ppWindowMaximized;
+        }
+
+        public void NewWindow()
+        {
+            Presentation presentation = FunctionalTestExtensions.GetPresentations().Add();
+        }
+
+        public int GetNumWindows()
+        {
+            return FunctionalTestExtensions.GetApplication().Windows.Count;
+        }
+
+        public HashSet<Type> GetOpenPaneTypes()
+        {
+            DocumentWindow w = FunctionalTestExtensions.GetApplication().Windows[1];
+            HashSet<Type> result = new HashSet<Type>();
+            foreach (Microsoft.Office.Tools.CustomTaskPane p in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            {
+                if ((DocumentWindow)p.Window == w) { result.Add(p.Control.GetType()); }
+            }
+            return result;
+        }
+
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
         {
             Presentation presentation = FunctionalTestExtensions.GetPresentations().Open(pathToPresentation,

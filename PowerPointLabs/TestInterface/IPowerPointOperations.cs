@@ -14,6 +14,10 @@ namespace TestInterface
         void EnterFunctionalTest();
         void ExitFunctionalTest();
         bool IsInFunctionalTest();
+        void MaximizeWindow(int windowNumber);
+        void NewWindow();
+        int GetNumWindows();
+        HashSet<Type> GetOpenPaneTypes();
         List<ISlideData> FetchPresentationData(string pathToPresentation);
         List<ISlideData> FetchCurrentPresentationData();
         void SavePresentationAs(string presName);
