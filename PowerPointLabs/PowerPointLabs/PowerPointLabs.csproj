@@ -921,13 +921,14 @@
     </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
-    <Compile Include="Utils\Extension.cs" />
+    <Compile Include="ColorTheme\ThemeExtensions.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
-    <Compile Include="Utils\ColorTheme.cs" />
+    <Compile Include="ColorTheme\ColorTheme.cs" />
     <Compile Include="Utils\IWPFContainer.cs" />
     <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
+    <Compile Include="ColorTheme\ThemeManager.cs" />
     <Compile Include="Utils\TitledWindow.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>

@@ -1,6 +1,6 @@
 ﻿using PowerPointLabs.AnimationLab.Views;
 
-using PowerPointLabs.Extensions;
+using PowerPointLabs.ColorThemes.Extensions;
 
 namespace PowerPointLabs.AnimationLab
 {
@@ -13,9 +13,7 @@ namespace PowerPointLabs.AnimationLab
         {
             AnimationLabSettingsDialogBox dialog = new AnimationLabSettingsDialogBox(AnimationDuration, IsUseFrameAnimation);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
-            Globals.ThisAddIn.ColorThemeChanged += dialog.UpdateColors;
-            dialog.ShowDialog();
-            Globals.ThisAddIn.ColorThemeChanged -= dialog.UpdateColors;
+            dialog.ShowThematicDialog();
         }
 
         private static void OnSettingsDialogConfirmed(float newDuration, bool newFrameChecked)

@@ -12,17 +12,16 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Windows.Media;
-using System.Windows.Threading;
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
+using PowerPointLabs.ColorThemes;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Views;
-using PowerPointLabs.Extensions;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using PowerPointLabs.Models;
@@ -49,42 +48,18 @@ namespace PowerPointLabs
 #pragma warning disable 0618
         public readonly string OfficeVersion2013 = "15.0";
         public readonly string OfficeVersion2010 = "14.0";
-        public readonly string themeRegistryKey = "UI Theme";
-
-        public string ThemeRegistryPath
-        {
-            get
-            {
-                return String.Format(@"SOFTWARE\\Microsoft\\Office\\{0}\\Common", Application.Version);
-            }
-        }
 
         public static string AppDataFolder =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PowerPointLabs");
 
         public Ribbon1 Ribbon;
 
-        // For adaptive color theme changing, from winform to wpf
-        private RegistryWatcher<int> themeWatcher;
-        private Dictionary<CustomTaskPane, System.Windows.Controls.Control> wpfMapping = new Dictionary<CustomTaskPane, System.Windows.Controls.Control>();
-        event EventHandler<ColorTheme> _ColorThemeChanged;
-        public event EventHandler<ColorTheme> ColorThemeChanged
-        {
-            add
-            {
-                value(this, colorTheme);
-                _ColorThemeChanged += value;
-            }
-            remove
-            {
-                _ColorThemeChanged -= value;
-            }
-        }
-        public ColorTheme colorTheme;
-
         internal ShapesLabConfigSaveFile ShapesLabConfig;
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
+
+        // For adaptive color theme changing, from winform to wpf
+        private Dictionary<CustomTaskPane, System.Windows.Controls.Control> wpfMapping = new Dictionary<CustomTaskPane, System.Windows.Controls.Control>();
 
         private delegate void SyncElearningItemsDelegate();
 
@@ -410,7 +385,7 @@ namespace PowerPointLabs
     EventHandler dockPositionChangeEventHandler = null)
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox();
-            loadingDialog.UpdateColors(this, colorTheme);
+            loadingDialog.UpdateColors(this, ThemeManager.Instance.ColorTheme);
             loadingDialog.Show();
 
             // note down the control's width
@@ -532,11 +507,8 @@ namespace PowerPointLabs
         private CustomTaskPane AddTaskPane(UserControl control, System.Windows.Controls.Control wpfControl, string title, PowerPoint.DocumentWindow wnd)
         {
             CustomTaskPane pane = CustomTaskPanes.Add(control, title, wnd);
-            if (wpfMapping != null)
-            {
-                wpfMapping.Add(pane, wpfControl);
-                ColorThemeChanged += wpfControl.UpdateColors;
-            }
+            wpfMapping.Add(pane, wpfControl);
+            ThemeManager.Instance.ColorThemeChanged += wpfControl.UpdateColors;
             return pane;
         }
 
@@ -545,7 +517,7 @@ namespace PowerPointLabs
             System.Windows.Controls.Control wpfControl = wpfMapping[pane];
             if (wpfControl != null)
             {
-                ColorThemeChanged -= wpfControl.UpdateColors;
+                ThemeManager.Instance.ColorThemeChanged -= wpfControl.UpdateColors;
                 wpfMapping.Remove(pane);
             }
             return CustomTaskPanes.Remove(pane);
@@ -917,50 +889,6 @@ namespace PowerPointLabs
 
             // Priority Low: Slide Actions
             Application.SlideSelectionChanged += ThisAddInSlideSelectionChanged;
-
-            // theme watcher
-            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, themeRegistryKey);
-            themeWatcher.ValueChanged += ThemeChangedHandler;
-            themeWatcher.Fire();
-            themeWatcher.Start();
-        }
-
-        private void ThemeChangedHandler(object sender, int newValue)
-        {
-            UpdateColorTheme(newValue);
-            _ColorThemeChanged(this, colorTheme);
-        }
-
-        private void UpdateColorTheme(int newValue)
-        {
-            switch (newValue)
-            {
-                case ColorTheme.COLORFUL:
-                case ColorTheme.WHITE: // the same as colorful
-                    colorTheme.title = Color.FromRgb(181, 71, 42);
-                    colorTheme.background = Color.FromRgb(230, 230, 230);
-                    colorTheme.foreground = Color.FromRgb(37, 37, 37);
-                    colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
-                    colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
-                    break;
-                case ColorTheme.DARK_GREY:
-                    colorTheme.title = Color.FromRgb(181, 71, 42);
-                    colorTheme.background = Color.FromRgb(102, 102, 102);
-                    colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
-                    colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
-                    break;
-                case ColorTheme.BLACK:
-                    colorTheme.title = Color.FromRgb(239, 239, 239);
-                    colorTheme.background = Color.FromRgb(37, 37, 37);
-                    colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
-                    colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
-                    break;
-                default:
-                    Logger.Log("Unknown UI Theme!");
-                    break;
-            }
         }
 
         private void ThisAddInApplicationOnWindowDeactivate(PowerPoint.Presentation pres, PowerPoint.DocumentWindow wn)
@@ -1255,7 +1183,7 @@ namespace PowerPointLabs
             PPKeyboard.StopHook();
             PPCopy.StopHook();
             PositionsPaneWpf.ClearAllEventHandlers();
-            themeWatcher.Stop();
+            ThemeManager.TearDown();
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();

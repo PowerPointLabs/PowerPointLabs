@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Microsoft.Win32;
 
 namespace PowerPointLabs.Utils
@@ -43,6 +38,12 @@ namespace PowerPointLabs.Utils
         public void Stop()
         {
             watcher.Stop();
+        }
+
+        public void SetValue(object o)
+        {
+            WindowsIdentity currentUser = WindowsIdentity.GetCurrent();
+            Registry.SetValue(String.Format("{0}\\{1}", currentUser.User.Value, path), key, o);
         }
 
         private void RegisterKeyChanged()

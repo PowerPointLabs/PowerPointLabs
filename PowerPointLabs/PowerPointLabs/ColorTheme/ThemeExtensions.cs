@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using PowerPointLabs.Utils;
 
-namespace PowerPointLabs.Extensions
+namespace PowerPointLabs.ColorThemes.Extensions
 {
-    public static class Extension
+    public static class ThemeExtensions
     {
+
+        public static void ShowThematicDialog(this Window w)
+        {
+            ThemeManager.Instance.ColorThemeChanged += w.UpdateColors;
+            w.ShowDialog();
+            ThemeManager.Instance.ColorThemeChanged -= w.UpdateColors;
+        }
 
         public static void UpdateColors(this Control element, object sender, ColorTheme e)
         {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.EffectsLab.Views;
-using PowerPointLabs.Extensions;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.EffectsLab
@@ -56,18 +56,14 @@ namespace PowerPointLabs.EffectsLab
 
             BlurSettingsDialogBox dialog = new BlurSettingsDialogBox(feature, isTint, customPercentage);
             dialog.DialogConfirmedHandler += OnBlurSettingsDialogConfirmed;
-            Globals.ThisAddIn.ColorThemeChanged += dialog.UpdateColors;
-            dialog.ShowDialog();
-            Globals.ThisAddIn.ColorThemeChanged -= dialog.UpdateColors;
+            dialog.ShowThematicDialog();
         }
 
         public static void ShowSpotlightSettingsDialog()
         {
             SpotlightSettingsDialogBox dialog = new SpotlightSettingsDialogBox(SpotlightTransparency, SpotlightSoftEdges, SpotlightColor);
             dialog.DialogConfirmedHandler += OnSpotlightSettingsDialogConfirmed;
-            Globals.ThisAddIn.ColorThemeChanged += dialog.UpdateColors;
-            dialog.ShowDialog();
-            Globals.ThisAddIn.ColorThemeChanged -= dialog.UpdateColors;
+            dialog.ShowThematicDialog();
         }
 
         private static void OnBlurSettingsDialogConfirmed(string feature, bool isTint, int customPercentage)
