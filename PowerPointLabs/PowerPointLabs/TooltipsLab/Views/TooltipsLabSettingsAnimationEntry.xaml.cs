@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.TooltipsLab.Views

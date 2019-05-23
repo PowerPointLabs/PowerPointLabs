@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Windows.Forms;
+
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Service.StorageService;

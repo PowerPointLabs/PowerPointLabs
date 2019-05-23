@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

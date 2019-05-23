@@ -1,12 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
+﻿using Microsoft.Office.Core;
+
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
-using PowerPointLabs.Views;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 

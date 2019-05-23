@@ -7,7 +7,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;

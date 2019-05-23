@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 
 namespace PowerPointLabs.ELearningLab.Converters

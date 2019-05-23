@@ -2,14 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
-using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
-using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 

@@ -161,6 +161,24 @@ namespace PowerPointLabs.Utils
 
         #endregion
 
+        #region bitmap
+        /// <summary>
+        /// Used to create a <seealso cref="BitmapSource"/> using a <seealso cref="Bitmap"/>,
+        /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
+        /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
+        /// As such, the palette pointer is IntPtr.Zero.
+        /// </summary>
+        public static BitmapSource CreateBitmapSource(Bitmap image)
+        {
+            return Imaging.CreateBitmapSourceFromHBitmap(
+                image.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+        }
+
+        #endregion
+
         #region Helper Function
         private static int NextDefaultNumber(List<string> nameList, string name)
         {
@@ -202,20 +220,5 @@ namespace PowerPointLabs.Utils
             return x.ToString();
         }
         #endregion
-
-        /// <summary>
-        /// Used to create a <seealso cref="BitmapSource"/> using a <seealso cref="Bitmap"/>,
-        /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
-        /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
-        /// As such, the palette pointer is IntPtr.Zero.
-        /// </summary>
-        public static BitmapSource CreateBitmapSource(Bitmap image)
-        {
-            return Imaging.CreateBitmapSourceFromHBitmap(
-                image.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-        }
     }
 }
