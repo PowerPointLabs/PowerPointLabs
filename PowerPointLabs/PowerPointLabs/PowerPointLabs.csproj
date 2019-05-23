@@ -270,6 +270,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Common\Extension\PowerpointExtension.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
