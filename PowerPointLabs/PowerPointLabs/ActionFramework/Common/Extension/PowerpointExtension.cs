@@ -50,9 +50,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             newShape.Line.BackColor = shape.Line.BackColor;
             newShape.Line.Style = shape.Line.Style;
 
-
-            newShape.Line.Pattern = shape.Line.Pattern;
-
             if (shape.TextFrame.HasText == Microsoft.Office.Core.MsoTriState.msoTrue)
             {
                 Font newShapeFont = newShape.TextFrame.TextRange.Font;
