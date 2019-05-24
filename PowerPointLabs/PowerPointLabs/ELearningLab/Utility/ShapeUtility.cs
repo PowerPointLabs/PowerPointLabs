@@ -98,8 +98,7 @@ namespace PowerPointLabs.ELearningLab.Utility
             {               
                 copiedShape = ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    templatedShape.Copy();
-                    return slide.Shapes.Paste()[1];
+                    return slide.Shapes.SafeCopyPlaceholder(templatedShape);
                 }, pres, slide);
             }
             catch

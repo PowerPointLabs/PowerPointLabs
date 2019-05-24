@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
@@ -1052,8 +1052,7 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateBeamOnSlide(PowerPointSlide slide, Shape refBeamShape)
         {
             RemoveBeamAgendaFromSlide(slide);
-            refBeamShape.Copy();
-            Microsoft.Office.Interop.PowerPoint.ShapeRange beamShape = slide.Shapes.Paste();
+            Microsoft.Office.Interop.PowerPoint.Shape beamShape = slide.Shapes.SafeCopyPlaceholder(refBeamShape);
             AgendaSection section = GetSlideSection(slide);
 
             beamShape.GroupItems.Cast<Shape>()

@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Microsoft.Office.Tools;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
@@ -1202,8 +1202,7 @@ namespace PowerPointLabs
                         catch
                         {
                             //handling corrupted shapes
-                            shape.Copy();
-                            PowerPoint.Shape fixedShape = _previousSlideForCopyEvent.Shapes.Paste()[1];
+                            PowerPoint.Shape fixedShape = _previousSlideForCopyEvent.Shapes.SafeCopyPlaceholder(shape);
                             fixedShape.Left = shape.Left;
                             fixedShape.Top = shape.Top;
                             while (fixedShape.ZOrderPosition > shape.ZOrderPosition)

@@ -267,8 +267,10 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
+                    PPLClipboard.Instance.LockClipboard();
                     this.GetAddIn().ShapePresentation.CopyShape(shape.Text);
                     currentSlide.Shapes.Paste().Select();
+                    PPLClipboard.Instance.ReleaseClipboard();
                     return ClipboardUtil.ClipboardRestoreSuccess;
                 }, this.GetCurrentPresentation(), currentSlide);
             }

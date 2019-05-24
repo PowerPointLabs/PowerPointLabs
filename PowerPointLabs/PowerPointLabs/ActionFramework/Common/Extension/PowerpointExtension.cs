@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
 {
@@ -23,36 +25,117 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
-        // copies placeholder textboxes safely
-        public static Shape SafeCopy(this Shapes shapes, Shape shape)
+=        public static ShapeRange SafeCopyPlaceholders(this Shapes shapes, ShapeRange shapeRange)
         {
-            if (shape.IsEmptyPlaceholder())
+            foreach (Shape s in shapeRange)
             {
-                Shape newShape = shapes.AddTextbox(shape.TextFrame.Orientation, shape.Left, shape.Top, shape.Width, shape.Height);
-                newShape.Fill.CopyPropertiesAndFieldsFrom(shape.Fill);
-                newShape.Line.CopyPropertiesAndFieldsFrom(shape.Line);
-                newShape.TextFrame.TextRange.Font.CopyPropertiesAndFieldsFrom(shape.TextFrame.TextRange.Font);
-                return newShape;
+                shapes.SafeCopyPlaceholder(s);
             }
-            shape.Copy();
-            return shapes.Paste()[1];
         }
 
-        // Referred to code in ColorsLabPaneWPFxaml, done manually
-        public static void CopyColorFrom(this Shape targetShape, Shape sourceShape)
+        // copies placeholder textboxes safely
+        public static Shape SafeCopyPlaceholder(this Shapes shapes, Shape shape)
         {
-            targetShape.Fill.ForeColor = sourceShape.Fill.ForeColor;
-            targetShape.Fill.BackColor = sourceShape.Fill.BackColor;
-
-            targetShape.Line.ForeColor = sourceShape.Line.ForeColor;
-            targetShape.Line.BackColor = sourceShape.Line.BackColor;
-            targetShape.Line.Visible = sourceShape.Line.Visible;
-
-            if (sourceShape.TextFrame.HasText == Microsoft.Office.Core.MsoTriState.msoTrue)
+            if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
             {
-                Font newShapeFont = targetShape.TextFrame.TextRange.Font;
-                Font shapeFont = sourceShape.TextFrame.TextRange.Font;
-                newShapeFont.CopyFontFrom(shapeFont);
+                PowerPointLabs.SyncLab.ObjectFormats.Format[] formats = ShapeUtil.GetCopyableFormats(shape);
+                Shape newShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, shapes);
+                if (newShape == null)
+                {
+                    throw new MsoPlaceholderException(shape.PlaceholderFormat.Type);
+                }
+                return newShape;
+            }
+            return shapes.SafeCopy(shape);
+        }
+
+        public static Shape SafeCopy(this Shapes shapes, Shape shape)
+        {
+            try
+            {
+                PPLClipboard.Instance.LockClipboard();
+                shape.Copy();
+                return shapes.Paste()[1];
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                PPLClipboard.Instance.ReleaseClipboard();
+            }
+        }
+
+        public static Shape SafeCopySlide(this Shapes shapes, PowerPointSlide slide)
+        {
+            try
+            {
+                PPLClipboard.Instance.LockClipboard();
+                slide.Copy();
+                return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                PPLClipboard.Instance.ReleaseClipboard();
+            }
+        }
+
+        public static Shape SafeCut(this Shapes shapes, Shape shape)
+        {
+            try
+            {
+                PPLClipboard.Instance.LockClipboard();
+                shape.Cut();
+                return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                PPLClipboard.Instance.ReleaseClipboard();
+            }
+        }
+
+        public static Shape SafeCut(this Shapes shapes, ShapeRange selection)
+        {
+            try
+            {
+                PPLClipboard.Instance.LockClipboard();
+                selection.Cut();
+                return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                PPLClipboard.Instance.ReleaseClipboard();
+            }
+        }
+
+        public static Shape SafeCopyPNG(this Shapes shapes, Shape shape)
+        {
+            try
+            {
+                PPLClipboard.Instance.LockClipboard();
+                shape.Copy();
+                return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                PPLClipboard.Instance.ReleaseClipboard();
             }
         }
 
@@ -123,29 +206,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             {
                 // do nothing
             }
-        }
-
-        // a brute force copy
-        private static void CopyFontFrom(this Font font, Font other)
-        {
-            font.AutoRotateNumbers = other.AutoRotateNumbers;
-            font.BaselineOffset = other.BaselineOffset;
-            font.Bold = other.Bold;
-            font.Emboss = other.Emboss;
-            font.Italic = other.Italic;
-            font.Shadow = other.Shadow;
-            font.Subscript = other.Subscript;
-            font.Superscript = other.Superscript;
-            font.Underline = other.Underline;
-            font.Color.CopyColorFrom(other.Color);
-        }
-
-        private static void CopyColorFrom(this ColorFormat color, ColorFormat other)
-        {
-            color.Brightness = other.Brightness;
-            color.RGB = other.RGB;
-            color.SchemeColor = other.SchemeColor;
-            color.TintAndShade = other.TintAndShade;
         }
     }
 }
