@@ -1159,6 +1159,7 @@ namespace PowerPointLabs
             PPCopy.StopHook();
             PositionsPaneWpf.ClearAllEventHandlers();
             UIThreadExecutor.TearDown();
+            PPLClipboard.Instance.Teardown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
             if (_ftChannel != null)

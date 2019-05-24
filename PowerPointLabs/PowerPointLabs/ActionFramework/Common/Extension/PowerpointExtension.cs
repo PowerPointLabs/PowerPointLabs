@@ -57,7 +57,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                 shape.Copy();
                 return shapes.Paste()[1];
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }

@@ -6,15 +6,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 {
     public class PPLClipboard
     {
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern IntPtr GetOpenClipboardWindow();
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
-        private static extern bool OpenClipboard(IntPtr hWndNewOwner);
-
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
-        private static extern bool CloseClipboard();
-
         public static PPLClipboard Instance
         {
             get
@@ -32,16 +23,17 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         private Dictionary<string, object> lBackup = new Dictionary<string, object>();
         private IDataObject lDataObject;
         private string[] lFormats;
+        private IntPtr _parentWindow => new IntPtr(Globals.ThisAddIn.Application.HWND);
 
         public void LockClipboard()
         {
             if (isLocked) { return; }
             // wait to lock the clipboard
-            while (GetOpenClipboardWindow() != IntPtr.Zero)
+            while (!IsClipboardFree())
             {
                 MessageBox.Show("Another application is currently using the clipboard. Please come back later and try again", "Retry", MessageBoxButton.OK);
             }
-            OpenClipboard(new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.HWND));
+            OpenClipboard(_parentWindow);
             SaveClipboard();
             isLocked = true;
         }
@@ -52,6 +44,18 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             RestoreClipboard();
             CloseClipboard();
             isLocked = false;
+        }
+
+        public void Teardown()
+        {
+            ReleaseClipboard();
+            _instance = null;
+        }
+
+        private bool IsClipboardFree()
+        {
+            IntPtr hwnd = GetOpenClipboardWindow();
+            return hwnd == IntPtr.Zero || hwnd == _parentWindow;
         }
 
         private void SaveClipboard()
@@ -79,10 +83,14 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             lFormats = null;
         }
 
-        public void Teardown()
-        {
-            ReleaseClipboard();
-            _instance = null;
-        }
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr GetOpenClipboardWindow();
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        private static extern bool OpenClipboard(IntPtr hWndNewOwner);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        private static extern bool CloseClipboard();
+
     }
 }
