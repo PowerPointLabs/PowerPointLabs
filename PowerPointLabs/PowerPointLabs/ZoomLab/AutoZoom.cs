@@ -267,7 +267,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 if (!nextSlide.HasEntryAnimation(sh) && !ShapeUtil.IsHidden(sh))
                 {
-                    PowerPoint.Shape shapeCopy = nextSlide.Shapes.SafeCopy(sh);
+                    PowerPoint.Shape shapeCopy = currentSlide.Shapes.SafeCopy(sh);
                     LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
                     copiedShapes.Add(shapeCopy);
                 }
