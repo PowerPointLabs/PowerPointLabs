@@ -25,7 +25,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
-=        public static ShapeRange SafeCopyPlaceholders(this Shapes shapes, ShapeRange shapeRange)
+        public static void SafeCopyPlaceholders(this Shapes shapes, ShapeRange shapeRange)
         {
             foreach (Shape s in shapeRange)
             {
