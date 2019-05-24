@@ -22,18 +22,16 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         private bool isLocked = false;
         private Dictionary<string, object> lBackup = new Dictionary<string, object>();
         private IDataObject lDataObject;
-        private string[] lFormats;
         private IntPtr _parentWindow => new IntPtr(Globals.ThisAddIn.Application.HWND);
 
         public void LockClipboard()
         {
             if (isLocked) { return; }
             // wait to lock the clipboard
-            while (!IsClipboardFree())
+            while (!IsClipboardFree() && !OpenClipboard(_parentWindow))
             {
                 MessageBox.Show("Another application is currently using the clipboard. Please come back later and try again", "Retry", MessageBoxButton.OK);
             }
-            OpenClipboard(_parentWindow);
             SaveClipboard();
             isLocked = true;
         }
@@ -61,26 +59,33 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         private void SaveClipboard()
         {
             lDataObject = Clipboard.GetDataObject();
-            lFormats = lDataObject.GetFormats(false);
-            foreach (var lFormat in lFormats)
+            string[] lFormats = lDataObject.GetFormats(false);
+            lBackup.Clear();
+            /*
+            foreach (string lFormat in lFormats)
             {
-                lBackup.Add(lFormat, lDataObject.GetData(lFormat, false));
+                if (lDataObject.GetDataPresent(lFormat))
+                {
+                    lBackup.Add(lFormat, lDataObject.GetData(lFormat, false));
+                }
             }
-            Clipboard.Clear(); // to prevent any weird data from showing up
+            */
+            //Clipboard.Clear(); // to prevent any weird data from showing up
         }
 
         // referred to https://stackoverflow.com/questions/6262454/c-sharp-backing-up-and-restoring-clipboard
         private void RestoreClipboard()
         {
-            foreach (var lFormat in lFormats)
+            /*
+            foreach (KeyValuePair<string, object> pair in lBackup)
             {
-                lDataObject.SetData(lBackup[lFormat]);
+                lDataObject.SetData(pair.Key, pair.Value, false);
             }
+            */
             Clipboard.SetDataObject(lDataObject);
             Clipboard.Flush();
             lBackup.Clear();
             lDataObject = null;
-            lFormats = null;
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]
