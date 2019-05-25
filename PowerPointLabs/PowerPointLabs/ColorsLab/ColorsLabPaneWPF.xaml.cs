@@ -151,7 +151,7 @@ namespace PowerPointLabs.ColorsLab
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Forms.Timer eyeDropperTimer = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer();
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
@@ -656,7 +656,7 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 selectedColorRectangle.Opacity = 1;
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.SelectedColor = _currentEyedroppedColor;
                 }
@@ -665,7 +665,7 @@ namespace PowerPointLabs.ColorsLab
             // Update recent colors if color has been used
             if (_eyedropperMode == MODE.FILL || _eyedropperMode == MODE.FONT || _eyedropperMode == MODE.LINE)
             {
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.AddColorToRecentColors(_currentSelectedColor);
                 }
