@@ -2,7 +2,7 @@
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -59,10 +59,12 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(8);
             ShapeRange pastingShapes = PpOperations.SelectShapes(new List<string> {"Notched Right Arrow", "Group"});
+            PPLClipboard.Instance.LockClipboard();
             pastingShapes.Copy();
 
             Slide targetSlide = PpOperations.SelectSlide(9);
             targetSlide.Shapes.Paste();
+            PPLClipboard.Instance.ReleaseClipboard();
 
             Assert.IsNotNull(PpOperations.SelectShape("Notched Right Arrow"), 
                 "Copy-Paste failed, this task is flaky so please re-run.");
