@@ -16,6 +16,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using NAudio.Wave;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ActionFramework.NarrationsLab;
 using PowerPointLabs.AudioMisc;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
@@ -1792,7 +1793,7 @@ namespace PowerPointLabs.ELearningLab.Views
         # endregion
 
         # region Constructor
-        public RecorderTaskPane(string tempFullPath)
+        public RecorderTaskPane()
         {
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
@@ -1800,7 +1801,7 @@ namespace PowerPointLabs.ELearningLab.Views
             
             _slideRelativeMapper = new Dictionary<int, int>();
 
-            _tempFullPath = tempFullPath;
+            _tempFullPath = TempStorage.TempPath;
             _tempWaveFileNameFormat = String.Format("{0}temp{{0}}.{1}", _tempFullPath, Audio.RecordedFormatExtension);
             _tempShapAudioXmlFormat = _tempFullPath + "slide{0}.xml";
 

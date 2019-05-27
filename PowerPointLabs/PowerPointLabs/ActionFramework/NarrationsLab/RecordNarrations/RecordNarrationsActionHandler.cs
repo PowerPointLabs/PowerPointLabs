@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
@@ -23,10 +24,10 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
 
             // prepare media files
-            string tempPath = this.GetAddIn().PrepareTempFolder(currentPresentation);
-            this.GetAddIn().PrepareMediaFiles(currentPresentation, tempPath);
+            TempStorage.Setup(currentPresentation);
 
-            this.GetAddIn().RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
+            this.RegisterTaskPane(typeof(RecorderTaskPane), NarrationsLabText.RecManagementPanelTitle,
+                TaskPaneVisibleValueChangedEventHandler, null);
 
             CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
@@ -39,6 +40,27 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
 
                 // reload the pane
                 recorder.RecorderPaneReload();
+            }
+        }
+
+        private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
+        {
+            CustomTaskPane recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+
+            if (recorderPane == null)
+            {
+                return;
+            }
+
+            RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
+
+            // trigger close form event when closing hide the pane
+            if (!recorder?.Visible ?? false)
+            {
+                recorder.RecorderPaneClosing();
+                // remove recorder pane and force it to reload when next time open
+                // TODO: Callback to remove task pane from thisaddin, register event.
+                //Globals.ThisAddIn.RemoveTaskPane(Globals.ThisAddIn.Application.ActiveWindow, typeof(RecorderTaskPane));
             }
         }
     }
