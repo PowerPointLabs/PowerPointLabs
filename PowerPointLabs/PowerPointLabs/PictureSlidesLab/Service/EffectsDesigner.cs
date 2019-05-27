@@ -97,7 +97,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             try
             {
                 // copy shapes from content slide to preview slide
-                _slide.Shapes.SafeCopyPlaceholders(contentSlide.Shapes.Range());
+                _slide.Shapes.SafeCopy(contentSlide.Shapes.Range());
             }
             catch
             {

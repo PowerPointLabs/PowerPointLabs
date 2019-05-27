@@ -23,6 +23,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         private Dictionary<string, object> lBackup = new Dictionary<string, object>();
         private IDataObject lDataObject;
         private IntPtr _parentWindow => new IntPtr(Globals.ThisAddIn.Application.HWND);
+        public bool AutoDismiss = false;
 
         public void LockClipboard()
         {
@@ -30,16 +31,20 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             // wait to lock the clipboard
             while (!IsClipboardFree() && !OpenClipboard(_parentWindow))
             {
-                MessageBox.Show("Another application is currently using the clipboard. Please come back later and try again", "Retry", MessageBoxButton.OK);
+                if (!AutoDismiss)
+                {
+                    MessageBox.Show("Another application is currently using the clipboard. Please come back later and try again", "Retry", MessageBoxButton.OK);
+                }
             }
-            SaveClipboard();
+            // PowerPointShapeGalleryPresentation has a strong reliance on the clipboard
+            //SaveClipboard();
             isLocked = true;
         }
 
         public void ReleaseClipboard()
         {
             if (!isLocked) { return; }
-            RestoreClipboard();
+            //RestoreClipboard();
             CloseClipboard();
             isLocked = false;
         }
@@ -82,7 +87,10 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                 lDataObject.SetData(pair.Key, pair.Value, false);
             }
             */
-            Clipboard.SetDataObject(lDataObject);
+            if (lDataObject != null)
+            {
+                Clipboard.SetDataObject(lDataObject);
+            }
             Clipboard.Flush();
             lBackup.Clear();
             lDataObject = null;

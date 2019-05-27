@@ -74,6 +74,24 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
+        public static ShapeRange SafeCopy(this Shapes shapes, ShapeRange shapeRange)
+        {
+            try
+            {
+                PPLClipboard.Instance.LockClipboard();
+                shapeRange.Copy();
+                return shapes.Paste();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                PPLClipboard.Instance.ReleaseClipboard();
+            }
+        }
+
         public static Shape SafeCopySlide(this Shapes shapes, PowerPointSlide slide)
         {
             try

@@ -225,7 +225,7 @@ namespace PowerPointLabs.Models
 
                 PPLClipboard.Instance.LockClipboard();
                 copyShapeRange.Cut();
-                oriShapeRange = refSlide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG);
+                oriShapeRange = refSlide.Shapes.Paste();
                 PPLClipboard.Instance.ReleaseClipboard();
 
                 oriShapeRange.Fill.ForeColor.RGB = 0xaaaaaa;

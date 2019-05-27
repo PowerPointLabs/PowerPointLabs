@@ -139,6 +139,7 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation);
+            PPLClipboard.Instance.AutoDismiss = true;
         }
 
         private void OpenSlideForTest(String slideName)
