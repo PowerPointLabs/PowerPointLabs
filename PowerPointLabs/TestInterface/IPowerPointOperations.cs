@@ -17,6 +17,7 @@ namespace TestInterface
         void MaximizeWindow(int windowNumber);
         void NewWindow();
         int GetNumWindows();
+        void SetTagToAssociatedWindow();
         HashSet<Type> GetOpenPaneTypes();
         List<ISlideData> FetchPresentationData(string pathToPresentation);
         List<ISlideData> FetchCurrentPresentationData();

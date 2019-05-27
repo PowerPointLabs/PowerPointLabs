@@ -73,6 +73,11 @@ namespace Test.Util
             throw new NotImplementedException();
         }
 
+        public void SetTagToAssociatedWindow()
+        {
+            throw new NotImplementedException();
+        }
+
         public HashSet<Type> GetOpenPaneTypes()
         {
             throw new NotImplementedException();

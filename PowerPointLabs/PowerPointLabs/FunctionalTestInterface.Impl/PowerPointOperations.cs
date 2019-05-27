@@ -56,13 +56,22 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return FunctionalTestExtensions.GetApplication().Windows.Count;
         }
 
+        public void SetTagToAssociatedWindow()
+        {
+            DocumentWindow docWindow = FunctionalTestExtensions.GetCurrentWindow();
+            foreach (Microsoft.Office.Tools.CustomTaskPane pane in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            {
+                if (pane.Control.Tag == null) { pane.Control.Tag = docWindow.HWND; }
+            }
+        }
+
         public HashSet<Type> GetOpenPaneTypes()
         {
-            DocumentWindow w = FunctionalTestExtensions.GetApplication().Windows[1];
+            DocumentWindow docWindow = FunctionalTestExtensions.GetCurrentWindow(); //.GetApplication().Windows[1];
             HashSet<Type> result = new HashSet<Type>();
-            foreach (Microsoft.Office.Tools.CustomTaskPane p in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            foreach (Microsoft.Office.Tools.CustomTaskPane pane in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
             {
-                if ((DocumentWindow)p.Window == w) { result.Add(p.Control.GetType()); }
+                if (pane.Control.Tag is int && (int)pane.Control.Tag == docWindow.HWND) { result.Add(pane.Control.GetType()); }
             }
             return result;
         }

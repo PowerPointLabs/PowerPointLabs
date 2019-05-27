@@ -20,6 +20,17 @@ namespace Test.FunctionalTest
     [TestClass]
     public class LimitOpenPanesTest : BaseFunctionalTest
     {
+        private enum Pane
+        {
+            ColorsLabPane,
+            SyncPane,
+            PositionsPane,
+            ELearningLabTaskpane,
+            CustomShapePane
+        }
+
+        private List<Type>[] windowPanes;
+        private int activeWindow;
 
         protected override bool IsUseNewPpInstance()
         {
@@ -34,55 +45,126 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
-        public void FT_AATest()
+        public void FT_LimitOpenPanesTest()
         {
             // start clean
-            int windows = PpOperations.GetNumWindows();
-            PpOperations.NewWindow();
-            Assert.AreEqual(PpOperations.GetNumWindows(), windows + 1);
-            PpOperations.MaximizeWindow(1);
-            // should work as per normal
-            HashSet<Type> window1Panes = new HashSet<Type>();
-            HashSet<Type> window2Panes = new HashSet<Type>();
-            PplFeatures.ColorsLab.OpenPane();
-            window1Panes.Add(typeof(ColorsLabPane));
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window1Panes));
-            PplFeatures.SyncLab.OpenPane();
-            window1Panes.Add(typeof(SyncPane));
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window1Panes));
+            StartWithNumWindows(2);
 
-            PpOperations.MaximizeWindow(2);
-            // this is required to activate the window for the correct openpanetypes to show up
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window2Panes));
+            // opening <= 2 panes should work as per normal
+            Open(Pane.ColorsLabPane);
+            Open(Pane.SyncPane);
+            SwitchToWindow(2);
 
             // Check if old pane is removed
-            // TODO: Get API to close the panes
-            PpOperations.MaximizeWindow(1);
-            PplFeatures.PositionsLab.OpenPane();
-            window1Panes.Add(typeof(PositionsPane));
-            window1Panes.Remove(typeof(ColorsLabPane));
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window1Panes));
+            SwitchToWindow(1);
+            Open(Pane.PositionsPane);
+            SwitchToWindow(2);
 
-            PpOperations.MaximizeWindow(2);
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window2Panes));
+            // Test panes across windows
+            Open(Pane.ELearningLabTaskpane);
+            Open(Pane.CustomShapePane);
+            Open(Pane.PositionsPane);
+            SwitchToWindow(1);
+        }
 
-            // TODO: Touch the other window
-            // Somehow the number of panes associated with the second window is zero
-            /*
-            PplFeatures.ELearningLab.OpenPane();
-            window2Panes.Add(typeof(ELearningLabTaskpane));
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window2Panes));
-            PplFeatures.ShapesLab.OpenPane();
-            window2Panes.Add(typeof(CustomShapePane));
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window2Panes));
-            PplFeatures.PositionsLab.OpenPane();
-            window2Panes.Add(typeof(PositionsPane));
-            window2Panes.Remove(typeof(ELearningLabTaskpane));
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window2Panes));
+        private void Open(Pane PaneType)
+        {
+            Type paneType = OpenPaneType(PaneType);
+            UpdateActivePanes(paneType);
+            CheckOpenPanes();
+        }
 
-            PpOperations.MaximizeWindow(1);
-            Assert.IsTrue(PpOperations.GetOpenPaneTypes().SetEquals(window1Panes));
-            */
+        private void CheckOpenPanes()
+        {
+            List<Type> expectedWindowPanes = windowPanes[activeWindow];
+            HashSet<Type> actualWindowPanes = PpOperations.GetOpenPaneTypes();
+            Assert.IsTrue(actualWindowPanes.SetEquals(expectedWindowPanes),
+                $"Expected {expectedWindowPanes.Count}, got {actualWindowPanes.Count}.");
+        }
+
+        private void UpdateActivePanes(Type paneType)
+        {
+            List<Type> currentWindowPanes = windowPanes[activeWindow];
+            if (currentWindowPanes.Contains(paneType))
+            {
+                currentWindowPanes.Remove(paneType);
+                return;
+            }
+            currentWindowPanes.Add(paneType);
+            PpOperations.SetTagToAssociatedWindow();
+            if (currentWindowPanes.Count > 2)
+            {
+                currentWindowPanes.RemoveAt(0);
+            }
+        }
+
+        private static Type OpenPaneType(Pane PaneType)
+        {
+            Type paneType;
+            switch (PaneType)
+            {
+                case Pane.ColorsLabPane:
+                    PplFeatures.ColorsLab.OpenPane();
+                    paneType = typeof(ColorsLabPane);
+                    break;
+                case Pane.PositionsPane:
+                    PplFeatures.PositionsLab.OpenPane();
+                    paneType = typeof(PositionsPane);
+                    break;
+                case Pane.SyncPane:
+                    PplFeatures.SyncLab.OpenPane();
+                    paneType = typeof(SyncPane);
+                    break;
+                case Pane.ELearningLabTaskpane:
+                    PplFeatures.ELearningLab.OpenPane();
+                    paneType = typeof(ELearningLabTaskpane);
+                    break;
+                case Pane.CustomShapePane:
+                    PplFeatures.ShapesLab.OpenPane();
+                    paneType = typeof(CustomShapePane);
+                    break;
+                default:
+                    throw new System.NotImplementedException("Test support for pane not specified!");
+            }
+
+            return paneType;
+        }
+
+        private void SwitchToWindow(int window)
+        {
+            if (window < 0 || window >= windowPanes.Length)
+            {
+                return;
+            }
+            PpOperations.MaximizeWindow(window);
+            activeWindow = window;
+            CheckOpenPanes();
+        }
+
+        private void StartWithNumWindows(int numWindows)
+        {
+            // close all but 1 presentation
+            while (PpOperations.GetNumWindows() > 1)
+            {
+                PpOperations.ClosePresentation();
+            }
+
+            // create the new windows required
+            numWindows = Math.Max(1, numWindows);
+            for (int i = 1; i < numWindows; i++)
+            {
+                PpOperations.NewWindow();
+                Assert.AreEqual(PpOperations.GetNumWindows(), numWindows);
+            }
+
+            windowPanes = new List<Type>[numWindows + 1];
+            for (int i = 1; i <= numWindows; i++)
+            {
+                windowPanes[i] = new List<Type>();
+            }
+
+            // set active window
+            SwitchToWindow(1);
         }
     }
 }
