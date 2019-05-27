@@ -14,6 +14,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using Color = System.Drawing.Color;
@@ -151,7 +152,7 @@ namespace PowerPointLabs.ColorsLab
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Forms.Timer eyeDropperTimer = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer();
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
@@ -195,65 +196,25 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void SetupImageSources()
         {
-            textColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.TextColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            textColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.TextColor_icon);
 
-            lineColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.LineColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            lineColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.LineColor_icon);
 
-            fillColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.FillColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            fillColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.FillColor_icon);
 
-            eyeDropperIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.EyeDropper_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            eyeDropperIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.EyeDropper_icon);
 
-            brightnessIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Brightness_icon_25x25.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            brightnessIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Brightness_icon_25x25);
 
-            saturationIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Saturation_icon_18x18.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            saturationIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Saturation_icon_18x18);
 
-            saveColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Save_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            saveColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Save_icon);
 
-            loadColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Load_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            loadColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Load_icon);
 
-            reloadColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Reload_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            reloadColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Reload_icon);
 
-            clearColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Clear_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            clearColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Clear_icon);
         }
 
         /// <summary>
@@ -696,7 +657,7 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 selectedColorRectangle.Opacity = 1;
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.SelectedColor = _currentEyedroppedColor;
                 }
@@ -705,7 +666,7 @@ namespace PowerPointLabs.ColorsLab
             // Update recent colors if color has been used
             if (_eyedropperMode == MODE.FILL || _eyedropperMode == MODE.FONT || _eyedropperMode == MODE.LINE)
             {
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.AddColorToRecentColors(_currentSelectedColor);
                 }

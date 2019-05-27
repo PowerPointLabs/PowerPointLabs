@@ -1,9 +1,10 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+using System.Collections.Generic;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.SyncLab.Views;
-using System;
-using System.Collections.Generic;
 
 namespace Test.UnitTest.SyncLab
 {

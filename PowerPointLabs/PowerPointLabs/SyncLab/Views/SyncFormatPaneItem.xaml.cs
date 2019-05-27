@@ -12,6 +12,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -38,21 +39,9 @@ namespace PowerPointLabs.SyncLab.Views
             this.shapeKey = shapeKey;
             this.shapeStorage = shapeStorage;
             this.formats = formats;
-            editImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabEditButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            pasteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabPasteButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()); 
-            deleteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabDeleteButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+            editImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncLabEditButton);
+            pasteImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncLabPasteButton);
+            deleteImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncLabDeleteButton);
 
             UpdateToolTipBody();
         }
@@ -113,11 +102,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             else
             {
-                BitmapSource source = Imaging.CreateBitmapSourceFromHBitmap(
-                                        image.GetHbitmap(),
-                                        IntPtr.Zero,
-                                        Int32Rect.Empty,
-                                        BitmapSizeOptions.FromEmptyOptions());
+                BitmapSource source = CommonUtil.CreateBitmapSource(image);
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 col1.Width = new GridLength(60);

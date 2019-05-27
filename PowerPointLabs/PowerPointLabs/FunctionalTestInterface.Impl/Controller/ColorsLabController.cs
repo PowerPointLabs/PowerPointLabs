@@ -4,13 +4,13 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorsLab;
 using PowerPointLabs.TextCollection;
 
 using TestInterface;
 
-using Button = System.Windows.Controls.Button;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 

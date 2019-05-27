@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading;
-using System.Windows;
 
-using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
 

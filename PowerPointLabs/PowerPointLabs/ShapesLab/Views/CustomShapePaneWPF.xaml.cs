@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -18,6 +19,7 @@ using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
@@ -71,11 +73,7 @@ namespace PowerPointLabs.ShapesLab.Views
             InitializeComponent();
             DataContext = this;
 
-            addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.AddToCustomShapes.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            addShapeImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddToCustomShapes);
 
             singleShapeDownloadLink.NavigateUri = new Uri(CommonText.SingleShapeDownloadUrl);
         }
@@ -630,21 +628,13 @@ namespace PowerPointLabs.ShapesLab.Views
         private void DisableAddShapesButton()
         {
             addShapeButton.IsEnabled = false;
-            addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.AddToCustomShapesDisabled.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            addShapeImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddToCustomShapesDisabled);
         }
 
         private void EnableAddShapesButton()
         {
             addShapeButton.IsEnabled = true;
-            addShapeImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.AddToCustomShapes.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            addShapeImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddToCustomShapes);
         }
 
 

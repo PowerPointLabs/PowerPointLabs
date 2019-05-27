@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
+using PowerPointLabs.Utils;
+
 namespace PowerPointLabs.SyncLab.Views
 {
     /// <summary>
@@ -58,11 +60,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             else
             {
-                BitmapSource source = Imaging.CreateBitmapSourceFromHBitmap(
-                                        image.GetHbitmap(),
-                                        IntPtr.Zero,
-                                        Int32Rect.Empty,
-                                        BitmapSizeOptions.FromEmptyOptions());
+                BitmapSource source = CommonUtil.CreateBitmapSource(image);
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 label.Margin = new Thickness(65, label.Margin.Top,

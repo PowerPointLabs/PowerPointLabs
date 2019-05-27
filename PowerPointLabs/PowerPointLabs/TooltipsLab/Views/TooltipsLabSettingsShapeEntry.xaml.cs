@@ -1,15 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Windows;
+﻿using System.Drawing;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
+
 using Microsoft.Office.Core;
-using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.TextCollection;
+
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.TooltipsLab.Views
 {
@@ -26,11 +20,7 @@ namespace PowerPointLabs.TooltipsLab.Views
         {
             InitializeComponent();
             Type = type;
-            imageBox.Source = Imaging.CreateBitmapSourceFromHBitmap(
-                image.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+            imageBox.Source = CommonUtil.CreateBitmapSource(image);
         }
 
         #endregion

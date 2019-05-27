@@ -1,4 +1,5 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.TooltipsLab.Views;
 
 using MsoAutoShapeType = Microsoft.Office.Core.MsoAutoShapeType;
