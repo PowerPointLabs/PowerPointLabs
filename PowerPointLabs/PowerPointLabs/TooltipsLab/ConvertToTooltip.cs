@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 

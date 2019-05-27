@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using System.Windows;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 

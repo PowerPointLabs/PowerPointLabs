@@ -2,15 +2,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
-using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
-using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -78,31 +75,11 @@ namespace PowerPointLabs.ELearningLab.Views
         public ExplanationItemView()
         {
             InitializeComponent();
-            upImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.Up.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            deleteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabDeleteButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            downImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.Down.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            audioImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-              Properties.Resources.SpeakTextContext.GetHbitmap(),
-              IntPtr.Zero,
-              Int32Rect.Empty,
-              BitmapSizeOptions.FromEmptyOptions());
-            cancelCalloutImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-              Properties.Resources.CancelCalloutButton.GetHbitmap(),
-              IntPtr.Zero,
-              Int32Rect.Empty,
-              BitmapSizeOptions.FromEmptyOptions());
+            upImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Up);
+            deleteImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncLabDeleteButton);
+            downImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Down);
+            audioImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SpeakTextContext);
+            cancelCalloutImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.CancelCalloutButton);
         }
 
         #region XAML-Binded Action Handler

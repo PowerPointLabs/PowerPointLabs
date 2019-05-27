@@ -12,7 +12,7 @@ using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Ipc;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Windows.Threading;
+
 using Microsoft.Office.Tools;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;

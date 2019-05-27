@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,8 +10,6 @@ using Test.Util;
 using TestInterface;
 
 using Point = System.Windows.Point;
-using Button = System.Windows.Controls.Button;
-using System.Threading;
 
 namespace Test.FunctionalTest
 {

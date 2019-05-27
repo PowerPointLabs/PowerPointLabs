@@ -2,7 +2,9 @@
 using System.IO;
 using System.Threading;
 using System.Windows;
+
 using NAudio.Wave;
+
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
