@@ -294,7 +294,9 @@ namespace PowerPointLabs.AgendaLab
             {
                 try
                 {
-                    candidate.Shapes.SafeCopyPlaceholder(shape);
+                    shape.Copy();
+                    candidate.Shapes.Paste();
+                    //candidate.Shapes.SafeCopyPlaceholder(shape);
                 }
                 catch (COMException)
                 {

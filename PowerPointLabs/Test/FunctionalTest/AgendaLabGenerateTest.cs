@@ -24,7 +24,6 @@ namespace Test.FunctionalTest
             NoAgendaRemoveUnsuccessful();
 
             TestGenerateTextAgenda();
-            /*
             TestGenerateBeamAgenda();
             TestGenerateVisualAgenda();
             
@@ -32,7 +31,6 @@ namespace Test.FunctionalTest
             LongSectionNameUnsuccessful(false);
             OneSectionUnsuccessful(false);
             NoSectionUnsuccessful(false);
-            */
         }
 
         [TestMethod]

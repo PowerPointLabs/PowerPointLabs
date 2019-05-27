@@ -270,6 +270,7 @@ namespace PowerPointLabs.ZoomLab
                 }
             }
 
+            Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
             SelectAllShape(copiedShapes);
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
             PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup();

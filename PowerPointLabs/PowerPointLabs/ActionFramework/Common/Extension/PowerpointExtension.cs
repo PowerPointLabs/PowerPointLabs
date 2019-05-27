@@ -25,6 +25,13 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
+        public static void SafeSelect(this Shape shape)
+        {
+            // TODO
+            //Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
+            throw new System.NotImplementedException();
+        }
+
         public static void SafeCopyPlaceholders(this Shapes shapes, ShapeRange shapeRange)
         {
             foreach (Shape s in shapeRange)
