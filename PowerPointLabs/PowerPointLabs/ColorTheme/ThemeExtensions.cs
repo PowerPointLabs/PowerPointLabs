@@ -8,11 +8,12 @@ namespace PowerPointLabs.ColorThemes.Extensions
     public static class ThemeExtensions
     {
 
-        public static void ShowThematicDialog(this Window w)
+        public static bool? ShowThematicDialog(this Window w)
         {
             ThemeManager.Instance.ColorThemeChanged += w.UpdateColors;
-            w.ShowDialog();
+            bool? result = w.ShowDialog();
             ThemeManager.Instance.ColorThemeChanged -= w.UpdateColors;
+            return result;
         }
 
         public static void UpdateColors(this Control element, object sender, ColorTheme e)
@@ -43,16 +44,37 @@ namespace PowerPointLabs.ColorThemes.Extensions
             {
                 textBlock.Foreground = new SolidColorBrush(e.foreground);
             }
-            foreach (ListBox listView in element.GetElementType<ListBox>())
+            foreach (ListBox listBox in element.GetElementType<ListBox>())
+            {
+                listBox.Background = new SolidColorBrush(e.background);
+                listBox.Foreground = new SolidColorBrush(e.foreground);
+            }
+            foreach (ListView listView in element.GetElementType<ListView>())
             {
                 listView.Background = new SolidColorBrush(e.background);
                 listView.Foreground = new SolidColorBrush(e.foreground);
+            }
+            foreach (DockPanel dockPanel in element.GetElementType<DockPanel>())
+            {
+                dockPanel.Background = new SolidColorBrush(e.boxBackground);
+            }
+            foreach (TextBlock textBlock in element.GetElementType<TextBlock>())
+            {
+                textBlock.Foreground = new SolidColorBrush(e.foreground);
             }
             foreach (Label label in element.GetElementType<Label>())
             {
                 label.Foreground = new SolidColorBrush(e.foreground);
             }
-            // ListView support required
+            foreach (StackPanel stackPanel in element.GetElementType<StackPanel>())
+            {
+                stackPanel.Background = new SolidColorBrush(e.background);
+            }
+            foreach (Button button in element.GetElementType<Button>())
+            {
+                button.Background = new SolidColorBrush(e.background);
+                button.Foreground = new SolidColorBrush(e.foreground);
+            }
         }
 
         /// <summary>

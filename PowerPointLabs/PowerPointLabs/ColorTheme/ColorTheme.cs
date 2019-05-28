@@ -12,6 +12,7 @@ namespace PowerPointLabs.ColorThemes
         public Color title;
         public Color background;
         public Color foreground;
+        public Color boxBackground;
         public Color headingBackground;
         public Color headingForeground;
     }

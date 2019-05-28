@@ -8,6 +8,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -260,7 +261,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             Dialog = new SyncFormatDialog(shape);
             Dialog.ObjectName = shape.Name;
-            bool? result = Dialog.ShowDialog();
+            bool? result = Dialog.ShowThematicDialog();
             if (!result.HasValue || !(bool)result)
             {
                 return;
