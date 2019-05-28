@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
@@ -21,33 +22,47 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string fileSuffix = ".pptx";
         private const string tempZipName = "tempZip.zip";
-        private static string _tempPath;
 
-        public static string TempPath
+        private Presentation _currentPresentation;
+        private string _tempPath;
+
+        public string TempPath
         {
             get
             {
+                CheckPresentationChanged();
                 if (_tempPath == null) { throw new NullReferenceException("TempStorage has not been initialized! Call Setup before using."); }
                 return _tempPath;
             }
         }
 
-        public static bool Setup(Presentation pres) // put some stuff in
+        private void CheckPresentationChanged()
         {
-
+            Presentation pres = Globals.ThisAddIn.Application.ActivePresentation;
+            if (pres == _currentPresentation)
+            {
+                return;
+            }
+            _currentPresentation = pres;
             string tempPath = GetPresentationTempFolder(pres.Name);
-
+            if (tempPath == null)
+            {
+                Logger.Log("TempStorage failed to initialize");
+                return;
+            }
             // if temp folder doesn't exist, create
             RecreateDirectory(tempPath);
             PrepareMediaFiles(pres, tempPath);
 
             _tempPath = tempPath;
-            return true;
         }
 
-        public static void Teardown()
+        private static string GetPresentationTempFolder(string presName)
         {
-            _tempPath = null;
+            string tempName = presName.GetHashCode().ToString(CultureInfo.InvariantCulture);
+            string tempPath = Path.GetTempPath() + tempFolderNamePrefix + tempName + @"\";
+
+            return tempPath;
         }
 
         private static void PrepareMediaFiles(Presentation pres, string tempPath)
@@ -161,14 +176,6 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             {
                 ErrorDialogBox.ShowDialog(CommonText.ErrorExtract, "Archived files cannot be retrieved.", e);
             }
-        }
-
-        private static string GetPresentationTempFolder(string presName)
-        {
-            string tempName = presName.GetHashCode().ToString(CultureInfo.InvariantCulture);
-            string tempPath = Path.GetTempPath() + tempFolderNamePrefix + tempName + @"\";
-
-            return tempPath;
         }
 
         private static bool IsEmptyFile(string filePath)

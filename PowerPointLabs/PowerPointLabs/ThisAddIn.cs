@@ -361,6 +361,28 @@ namespace PowerPointLabs
             return taskPane;
         }
 
+        // TODO: Change back to private, RecordNarrationsHandler requires it.
+        public void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
+        {
+            if (!_documentPaneMapper.ContainsKey(window))
+            {
+                return;
+            }
+
+            List<CustomTaskPane> activePanes = _documentPaneMapper[window];
+            for (int i = activePanes.Count - 1; i >= 0; i--)
+            {
+                CustomTaskPane pane = activePanes[i];
+                if (pane.Control.GetType() != paneType)
+                {
+                    continue;
+                }
+
+                RemoveTaskPane(pane);
+                activePanes.RemoveAt(i);
+            }
+        }
+
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             Ribbon = new Ribbon1();
@@ -417,27 +439,6 @@ namespace PowerPointLabs
             _documentPaneMapper.Remove(activeWindow);
         }
 
-        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
-        {
-            if (!_documentPaneMapper.ContainsKey(window))
-            {
-                return;
-            }
-
-            List<CustomTaskPane> activePanes = _documentPaneMapper[window];
-            for (int i = activePanes.Count - 1; i >= 0; i--)
-            {
-                CustomTaskPane pane = activePanes[i];
-                if (pane.Control.GetType() != paneType)
-                {
-                    continue;
-                }
-
-                RemoveTaskPane(pane);
-                activePanes.RemoveAt(i);
-            }
-        }
-
         private CustomTaskPane AddTaskPane(UserControl control, System.Windows.Controls.Control wpfControl, string title, PowerPoint.DocumentWindow wnd)
         {
             CustomTaskPane pane = CustomTaskPanes.Add(control, title, wnd);
@@ -452,8 +453,8 @@ namespace PowerPointLabs
 
         private bool RemoveTaskPane(CustomTaskPane pane)
         {
-            System.Windows.Controls.Control wpfControl = wpfMapping[pane];
-            if (wpfControl == null)
+            System.Windows.Controls.Control wpfControl;
+            if (!wpfMapping.ContainsKey(pane) || (wpfControl = wpfMapping[pane]) == null)
             {
                 return false;
             }

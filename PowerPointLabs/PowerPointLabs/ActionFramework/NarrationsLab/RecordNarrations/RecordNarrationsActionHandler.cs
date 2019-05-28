@@ -15,19 +15,14 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
-            //TODO: This needs to improved to stop using global variables
             Presentation currentPresentation = this.GetCurrentPresentation().Presentation;
-
             if (!this.GetRibbonUi().IsValidPresentation(currentPresentation))
             {
                 return;
             }
 
-            // prepare media files
-            TempStorage.Setup(currentPresentation);
-
             this.RegisterTaskPane(typeof(RecorderTaskPane), NarrationsLabText.RecManagementPanelTitle,
-                TaskPaneVisibleValueChangedEventHandler, null);
+                null, null);
 
             CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
@@ -60,7 +55,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 recorder.RecorderPaneClosing();
                 // remove recorder pane and force it to reload when next time open
                 // TODO: Callback to remove task pane from thisaddin, register event.
-                //Globals.ThisAddIn.RemoveTaskPane(Globals.ThisAddIn.Application.ActiveWindow, typeof(RecorderTaskPane));
+                Globals.ThisAddIn.RemoveTaskPane(Globals.ThisAddIn.Application.ActiveWindow, typeof(RecorderTaskPane));
             }
         }
     }
