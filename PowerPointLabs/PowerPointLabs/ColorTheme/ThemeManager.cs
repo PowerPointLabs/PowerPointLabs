@@ -78,7 +78,6 @@ namespace PowerPointLabs.ColorThemes
             switch (newValue)
             {
                 case ColorTheme.COLORFUL:
-                case ColorTheme.WHITE: // the same as colorful
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(230, 230, 230);
                     _colorTheme.foreground = Color.FromRgb(37, 37, 37);
@@ -86,11 +85,19 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
+                case ColorTheme.WHITE:
+                    _colorTheme.title = Color.FromRgb(181, 71, 42);
+                    _colorTheme.background = Color.FromRgb(255, 255, 255);
+                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
+                    _colorTheme.boxBackground = Color.FromRgb(230, 230, 230);
+                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
+                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    break;
                 case ColorTheme.DARK_GREY:
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(102, 102, 102);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
+                    _colorTheme.boxBackground = Color.FromRgb(128, 128, 128);
                     _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
@@ -98,7 +105,7 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.title = Color.FromRgb(239, 239, 239);
                     _colorTheme.background = Color.FromRgb(37, 37, 37);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
+                    _colorTheme.boxBackground = Color.FromRgb(128, 128, 128);
                     _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;

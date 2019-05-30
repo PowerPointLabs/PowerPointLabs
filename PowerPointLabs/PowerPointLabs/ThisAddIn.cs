@@ -217,32 +217,6 @@ namespace PowerPointLabs
             }
         }
 
-        [Obsolete]
-        public void RegisterResizePane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(ResizeLabPane)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new ResizeLabPane(), ResizeLabText.TaskPaneTitle, activeWindow,
-                null, ResizeTaskPaneVisibleValueChangedEventHandler, null);
-        }
-
-        [Obsolete]
-        public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)
-        {
-            if (GetActivePane(typeof(RecorderTaskPane)) != null)
-            {
-                return;
-            }
-
-            //RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
-            //    null, TaskPaneVisibleValueChangedEventHandler, null);
-        }
-
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)

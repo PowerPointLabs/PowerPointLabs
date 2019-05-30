@@ -211,6 +211,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.1.0\lib\net4-client\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -711,6 +712,7 @@
     <Compile Include="ColorsLab\ColorInformationDialog.xaml.cs">
       <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ColorTheme\ActionCommand.cs" />
     <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftByAngle.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftSaturationByFactor.cs" />
