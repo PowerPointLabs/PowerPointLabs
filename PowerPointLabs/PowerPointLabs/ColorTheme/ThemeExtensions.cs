@@ -146,25 +146,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
             listBox.CommandBindings.Add(commandBinding);
         }
 
-        [Obsolete]
-        private static void ResubscribeColorEvent(object sender, ColorTheme e, ListBox listBox)
-        {
-            NotifyCollectionChangedEventHandler updateListBox = (_sender, _e) =>
-            {
-                listBox.UpdateColors(sender, e);
-            };
-            INotifyCollectionChanged items = listBox.Items;
-            ActionCommand command = new ActionCommand(() => items.CollectionChanged -= updateListBox);
-            CommandBinding commandBinding = new CommandBinding() { Command = command };
-            foreach (CommandBinding binding in listBox.CommandBindings)
-            {
-                binding.Command.Execute(null);
-            }
-            listBox.CommandBindings.Clear();
-            items.CollectionChanged += updateListBox;
-            listBox.CommandBindings.Add(commandBinding);
-        }
-
         private static IEnumerable<T> GetChildCollection<T>(DependencyObject parent) where T : DependencyObject
         {
             foreach (object child in LogicalTreeHelper.GetChildren(parent))
