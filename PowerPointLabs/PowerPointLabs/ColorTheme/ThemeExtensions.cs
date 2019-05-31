@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using PowerPointLabs.ColorThemes;
-using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
-using PowerPointLabs.ELearningLab.Views;
 
 namespace PowerPointLabs.ColorThemes.Extensions
 {
@@ -26,96 +21,18 @@ namespace PowerPointLabs.ColorThemes.Extensions
             return result;
         }
 
-        //public static void UpdateColors(this Control element, object sender, ColorTheme e)
-        //{
-        //    // SolidColorBrush needs to be created on the same thread which the Control is created on.
-        //    if (!element.Dispatcher.CheckAccess())
-        //    {
-        //        element.Dispatcher.Invoke(() => element.UpdateColors(sender, e));
-        //        return;
-        //    }
-        //    element.ApplyTheme(e);
-        //    element.Background = new SolidColorBrush(e.background);
-        //    element.Foreground = new SolidColorBrush(e.foreground);
-
-        //    foreach (Button button in element.GetElementType<Button>())
-        //    {
-        //        button.Background = new SolidColorBrush(e.background);
-        //        button.Foreground = new SolidColorBrush(e.foreground);
-        //    }
-        //    foreach (CheckBox checkbox in element.GetElementType<CheckBox>())
-        //    {
-        //        checkbox.Foreground = new SolidColorBrush(e.foreground);
-        //        checkbox.Background = new SolidColorBrush(e.background);
-        //    }
-        //    foreach (RadioButton radioButton in element.GetElementType<RadioButton>())
-        //    {
-        //        radioButton.Foreground = new SolidColorBrush(e.foreground);
-        //    }
-        //    foreach (ListBox listBox in element.GetElementType<ListBox>()) // same as ListView
-        //    {
-        //        listBox.Background = new SolidColorBrush(e.background);
-        //        listBox.Foreground = new SolidColorBrush(e.foreground);
-        //        ResubscribeAlt(sender, e, listBox);
-        //    }
-        //    foreach (DockPanel dockPanel in element.GetElementType<DockPanel>())
-        //    {
-        //        dockPanel.Background = new SolidColorBrush(e.boxBackground);
-        //    }
-        //    foreach (TextBlock textBlock in element.GetElementType<TextBlock>())
-        //    {
-        //        textBlock.Foreground = new SolidColorBrush(e.foreground);
-        //    }
-        //    foreach (TextBox textBox in element.GetElementType<TextBox>())
-        //    {
-        //        textBox.Background = new SolidColorBrush(e.background);
-        //        textBox.Foreground = new SolidColorBrush(e.foreground);
-        //    }
-        //    foreach (Label label in element.GetElementType<Label>())
-        //    {
-        //        label.Foreground = new SolidColorBrush(e.foreground);
-        //    }
-        //    foreach (StackPanel stackPanel in element.GetElementType<StackPanel>())
-        //    {
-        //        stackPanel.Background = new SolidColorBrush(e.background);
-        //    }
-        //    foreach (Separator separator in element.GetElementType<Separator>())
-        //    {
-        //        separator.Background = new SolidColorBrush(e.foreground);
-        //    }
-        //    /*
-        //    foreach (ComboBox comboBox in element.GetElementType<ComboBox>())
-        //    {
-        //        Style style = new Style();
-        //        comboBox.Background = new SolidColorBrush(e.background);
-        //        comboBox.Foreground = new SolidColorBrush(e.foreground);
-        //    }
-        //    */
-        //}
-
         public static void UpdateColorsControl(this Control element, object sender, ColorTheme theme)
         {
             if (!element.Dispatcher.CheckAccess())
             {
-                element.Dispatcher.Invoke(() => element.UpdateColors(sender, theme));
+                element.Dispatcher.Invoke(() => element.UpdateColorsControl(sender, theme));
                 return;
             }
             element.Background = new SolidColorBrush(theme.background);
             element.Foreground = new SolidColorBrush(theme.foreground);
-            element.UpdateColors(sender, theme);
-        }
-
-        // private
-        public static void UpdateColors(this DependencyObject element, object sender, ColorTheme theme)
-        {
-            if (!element.Dispatcher.CheckAccess())
+            foreach (DependencyObject o in GetVisualChildCollection<DependencyObject>(element))
             {
-                element.Dispatcher.Invoke(() => element.UpdateColors(sender, theme));
-                return;
-            }
-            foreach (DependencyObject o in GetLogicalChildCollection<DependencyObject>(element))
-            {
-                ApplyTheme(o, sender, theme);
+                o.ApplyTheme(sender, theme);
             }
         }
 
@@ -123,11 +40,11 @@ namespace PowerPointLabs.ColorThemes.Extensions
         {
             switch (element)
             {
-                case ComboBox c:
-                    break;
-                case ToggleButton b:
-                    b.Foreground = new SolidColorBrush(theme.foreground);
-                    break;
+                //case ComboBox c:
+                //    break;
+                //case ToggleButton b:
+                //    b.Foreground = new SolidColorBrush(theme.foreground);
+                //    break;
                 case ListBox l:
                     l.Background = new SolidColorBrush(theme.background);
                     l.Foreground = new SolidColorBrush(theme.foreground);
@@ -145,6 +62,9 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     break;
                 case Label l:
                     l.Foreground = new SolidColorBrush(theme.foreground);
+                    break;
+                case ContentControl c:
+                    c.UpdateColorsContentControl(sender, theme);
                     break;
                 case Control c:
                     c.UpdateColorsControl(sender, theme);
@@ -168,21 +88,49 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
         }
 
+        private static void UpdateColors(this DependencyObject element, object sender, ColorTheme theme)
+        {
+            if (!element.Dispatcher.CheckAccess())
+            {
+                element.Dispatcher.Invoke(() => element.UpdateColors(sender, theme));
+                return;
+            }
+            foreach (DependencyObject o in GetLogicalChildCollection<DependencyObject>(element))
+            {
+                o.ApplyTheme(sender, theme);
+            }
+        }
+
+        private static void UpdateColorsContentControl(this ContentControl element, object sender, ColorTheme theme)
+        {
+            if (!element.Dispatcher.CheckAccess())
+            {
+                element.Dispatcher.Invoke(() => element.UpdateColorsContentControl(sender, theme));
+                return;
+            }
+            element.Background = new SolidColorBrush(theme.background);
+            element.Foreground = new SolidColorBrush(theme.foreground);
+            foreach (DependencyObject o in GetVisualChildCollection<DependencyObject>(element))
+            {
+                o.ApplyTheme(sender, theme);
+            }
+        }
+
         // Exploits the CommandBindings on Control to store actions to unsubscribe events
-        private static void ResubscribeAlt(object sender, ColorTheme e, ListBox listBox)
+        private static void ResubscribeAlt(object sender, ColorTheme theme, ListBox listBox)
         {
             EventHandler h = new EventHandler((_o, _e) =>
             {
                 if (listBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 {
-                    listBox.UpdateColors(sender, e);
+                    listBox.UpdateColors(sender, theme);
                     for (int i = 0; i < listBox.Items.Count; i++)
                     {
                         DependencyObject o = listBox.ItemContainerGenerator.ContainerFromIndex(i);
                         if (o == null) { break; }
-                        foreach (Control control in GetVisualChildCollection<Control>(o))
-                        { // combobox seems receptive to getvisualchildcollection
-                            control.UpdateColors(sender, e);
+                        foreach (DependencyObject element in GetVisualChildCollection<DependencyObject>(o))
+                        {
+                            element.UpdateColors(sender, theme);
                         }
                     }
                 }
@@ -194,11 +142,12 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 binding.Command.Execute(null);
             }
             listBox.CommandBindings.Clear();
+            h(sender, null);
             listBox.ItemContainerGenerator.StatusChanged += h;
             listBox.CommandBindings.Add(commandBinding);
         }
 
-        // Exploits the CommandBindings on Control to store actions to unsubscribe events
+        [Obsolete]
         private static void ResubscribeColorEvent(object sender, ColorTheme e, ListBox listBox)
         {
             NotifyCollectionChangedEventHandler updateListBox = (_sender, _e) =>
