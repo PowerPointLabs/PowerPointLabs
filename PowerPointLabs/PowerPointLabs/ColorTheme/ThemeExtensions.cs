@@ -20,81 +20,138 @@ namespace PowerPointLabs.ColorThemes.Extensions
 
         public static bool? ShowThematicDialog(this Window w)
         {
-            ThemeManager.Instance.ColorThemeChanged += w.UpdateColors;
+            ThemeManager.Instance.ColorThemeChanged += w.UpdateColorsControl;
             bool? result = w.ShowDialog();
-            ThemeManager.Instance.ColorThemeChanged -= w.UpdateColors;
+            ThemeManager.Instance.ColorThemeChanged -= w.UpdateColorsControl;
             return result;
         }
 
-        public static void UpdateColors(this Control element, object sender, ColorTheme e)
+        //public static void UpdateColors(this Control element, object sender, ColorTheme e)
+        //{
+        //    // SolidColorBrush needs to be created on the same thread which the Control is created on.
+        //    if (!element.Dispatcher.CheckAccess())
+        //    {
+        //        element.Dispatcher.Invoke(() => element.UpdateColors(sender, e));
+        //        return;
+        //    }
+        //    element.ApplyTheme(e);
+        //    element.Background = new SolidColorBrush(e.background);
+        //    element.Foreground = new SolidColorBrush(e.foreground);
+
+        //    foreach (Button button in element.GetElementType<Button>())
+        //    {
+        //        button.Background = new SolidColorBrush(e.background);
+        //        button.Foreground = new SolidColorBrush(e.foreground);
+        //    }
+        //    foreach (CheckBox checkbox in element.GetElementType<CheckBox>())
+        //    {
+        //        checkbox.Foreground = new SolidColorBrush(e.foreground);
+        //        checkbox.Background = new SolidColorBrush(e.background);
+        //    }
+        //    foreach (RadioButton radioButton in element.GetElementType<RadioButton>())
+        //    {
+        //        radioButton.Foreground = new SolidColorBrush(e.foreground);
+        //    }
+        //    foreach (ListBox listBox in element.GetElementType<ListBox>()) // same as ListView
+        //    {
+        //        listBox.Background = new SolidColorBrush(e.background);
+        //        listBox.Foreground = new SolidColorBrush(e.foreground);
+        //        ResubscribeAlt(sender, e, listBox);
+        //    }
+        //    foreach (DockPanel dockPanel in element.GetElementType<DockPanel>())
+        //    {
+        //        dockPanel.Background = new SolidColorBrush(e.boxBackground);
+        //    }
+        //    foreach (TextBlock textBlock in element.GetElementType<TextBlock>())
+        //    {
+        //        textBlock.Foreground = new SolidColorBrush(e.foreground);
+        //    }
+        //    foreach (TextBox textBox in element.GetElementType<TextBox>())
+        //    {
+        //        textBox.Background = new SolidColorBrush(e.background);
+        //        textBox.Foreground = new SolidColorBrush(e.foreground);
+        //    }
+        //    foreach (Label label in element.GetElementType<Label>())
+        //    {
+        //        label.Foreground = new SolidColorBrush(e.foreground);
+        //    }
+        //    foreach (StackPanel stackPanel in element.GetElementType<StackPanel>())
+        //    {
+        //        stackPanel.Background = new SolidColorBrush(e.background);
+        //    }
+        //    foreach (Separator separator in element.GetElementType<Separator>())
+        //    {
+        //        separator.Background = new SolidColorBrush(e.foreground);
+        //    }
+        //    /*
+        //    foreach (ComboBox comboBox in element.GetElementType<ComboBox>())
+        //    {
+        //        Style style = new Style();
+        //        comboBox.Background = new SolidColorBrush(e.background);
+        //        comboBox.Foreground = new SolidColorBrush(e.foreground);
+        //    }
+        //    */
+        //}
+
+        public static void UpdateColorsControl(this Control element, object sender, ColorTheme theme)
         {
-            // SolidColorBrush needs to be created on the same thread which the Control is created on.
             if (!element.Dispatcher.CheckAccess())
             {
-                element.Dispatcher.Invoke(() => element.UpdateColors(sender, e));
+                element.Dispatcher.Invoke(() => element.UpdateColors(sender, theme));
                 return;
             }
-            element.Background = new SolidColorBrush(e.background);
-            element.Foreground = new SolidColorBrush(e.foreground);
+            element.Background = new SolidColorBrush(theme.background);
+            element.Foreground = new SolidColorBrush(theme.foreground);
+            element.UpdateColors(sender, theme);
+        }
 
-            foreach (Button button in element.GetElementType<Button>())
+        // private
+        public static void UpdateColors(this DependencyObject element, object sender, ColorTheme theme)
+        {
+            if (!element.Dispatcher.CheckAccess())
             {
-                button.Background = new SolidColorBrush(e.boxBackground);
-                button.Foreground = new SolidColorBrush(e.foreground);
+                element.Dispatcher.Invoke(() => element.UpdateColors(sender, theme));
+                return;
             }
-            foreach (CheckBox checkbox in element.GetElementType<CheckBox>())
+            foreach (DependencyObject o in GetLogicalChildCollection<DependencyObject>(element))
             {
-                checkbox.Foreground = new SolidColorBrush(e.foreground);
-                checkbox.Background = new SolidColorBrush(e.background);
+                ApplyTheme(o, sender, theme);
             }
-            foreach (RadioButton radioButton in element.GetElementType<RadioButton>())
+        }
+
+        public static void ApplyTheme(this DependencyObject element, object sender, ColorTheme theme)
+        {
+            switch (element)
             {
-                radioButton.Foreground = new SolidColorBrush(e.foreground);
+                case ComboBox c:
+                    break;
+                case ToggleButton b:
+                    b.Foreground = new SolidColorBrush(theme.foreground);
+                    break;
+                case ListBox l:
+                    l.Background = new SolidColorBrush(theme.background);
+                    l.Foreground = new SolidColorBrush(theme.foreground);
+                    ResubscribeAlt(sender, theme, l);
+                    break;
+                case Panel p:
+                    p.Background = new SolidColorBrush(theme.boxBackground);
+                    p.UpdateColors(sender, theme);
+                    break;
+                case Border b:
+                    b.Background = new SolidColorBrush(theme.boxBackground);
+                    break;
+                case TextBlock t:
+                    t.Foreground = new SolidColorBrush(theme.foreground);
+                    break;
+                case Label l:
+                    l.Foreground = new SolidColorBrush(theme.foreground);
+                    break;
+                case Control c:
+                    c.UpdateColorsControl(sender, theme);
+                    break;
+                default:
+                    break;
             }
-            foreach (ListBox listBox in element.GetElementType<ListBox>()) // same as ListView
-            {
-                listBox.Background = new SolidColorBrush(e.background);
-                listBox.Foreground = new SolidColorBrush(e.foreground);
-                ResubscribeAlt(sender, e, listBox);
-            }
-            foreach (DockPanel dockPanel in element.GetElementType<DockPanel>())
-            {
-                dockPanel.Background = new SolidColorBrush(e.boxBackground);
-            }
-            foreach (TextBlock textBlock in element.GetElementType<TextBlock>())
-            {
-                textBlock.Foreground = new SolidColorBrush(e.foreground);
-            }
-            foreach (TextBox textBox in element.GetElementType<TextBox>())
-            {
-                textBox.Background = new SolidColorBrush(e.background);
-                textBox.Foreground = new SolidColorBrush(e.foreground);
-            }
-            foreach (Label label in element.GetElementType<Label>())
-            {
-                label.Foreground = new SolidColorBrush(e.foreground);
-            }
-            foreach (StackPanel stackPanel in element.GetElementType<StackPanel>())
-            {
-                stackPanel.Background = new SolidColorBrush(e.background);
-            }
-            foreach (Button button in element.GetElementType<Button>())
-            {
-                button.Background = new SolidColorBrush(e.background);
-                button.Foreground = new SolidColorBrush(e.foreground);
-            }
-            foreach (Separator separator in element.GetElementType<Separator>())
-            {
-                separator.Background = new SolidColorBrush(e.foreground);
-            }
-            /*
-            foreach (ComboBox comboBox in element.GetElementType<ComboBox>())
-            {
-                Style style = new Style();
-                comboBox.Background = new SolidColorBrush(e.background);
-                comboBox.Foreground = new SolidColorBrush(e.foreground);
-            }
-            */
         }
 
         /// <summary>
@@ -118,12 +175,13 @@ namespace PowerPointLabs.ColorThemes.Extensions
             {
                 if (listBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 {
+                    listBox.UpdateColors(sender, e);
                     for (int i = 0; i < listBox.Items.Count; i++)
                     {
                         DependencyObject o = listBox.ItemContainerGenerator.ContainerFromIndex(i);
                         if (o == null) { break; }
-                        foreach (Control control in GetVisualChildCollection<ExplanationItemView>(o))
-                        {
+                        foreach (Control control in GetVisualChildCollection<Control>(o))
+                        { // combobox seems receptive to getvisualchildcollection
                             control.UpdateColors(sender, e);
                         }
                     }

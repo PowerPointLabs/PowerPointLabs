@@ -97,7 +97,7 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(102, 102, 102);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    _colorTheme.boxBackground = Color.FromRgb(128, 128, 128);
+                    _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
                     _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
@@ -105,7 +105,7 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.title = Color.FromRgb(239, 239, 239);
                     _colorTheme.background = Color.FromRgb(37, 37, 37);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    _colorTheme.boxBackground = Color.FromRgb(128, 128, 128);
+                    _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
                     _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
