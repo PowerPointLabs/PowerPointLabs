@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
 
 namespace PowerPointLabs.ColorThemes.Extensions
 {
@@ -40,11 +41,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
         {
             switch (element)
             {
-                //case ComboBox c:
-                //    break;
-                //case ToggleButton b:
-                //    b.Foreground = new SolidColorBrush(theme.foreground);
-                //    break;
                 case ListBox l:
                     l.Background = new SolidColorBrush(theme.background);
                     l.Foreground = new SolidColorBrush(theme.foreground);
@@ -62,6 +58,9 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     break;
                 case Label l:
                     l.Foreground = new SolidColorBrush(theme.foreground);
+                    break;
+                case Path p:
+                    p.Stroke = new SolidColorBrush(theme.foreground);
                     break;
                 case ContentControl c:
                     c.UpdateColorsContentControl(sender, theme);
