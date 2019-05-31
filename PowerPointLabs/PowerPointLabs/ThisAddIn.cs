@@ -293,7 +293,7 @@ namespace PowerPointLabs
     EventHandler dockPositionChangeEventHandler = null)
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox();
-            loadingDialog.UpdateColorsControl(this, ThemeManager.Instance.ColorTheme);
+            loadingDialog.ApplyTheme(this, ThemeManager.Instance.ColorTheme);
             loadingDialog.Show();
 
             // note down the control's width
@@ -421,7 +421,7 @@ namespace PowerPointLabs
                 return pane;
             }
             wpfMapping.Add(pane, wpfControl);
-            ThemeManager.Instance.ColorThemeChanged += wpfControl.UpdateColorsControl;
+            ThemeManager.Instance.ColorThemeChanged += wpfControl.ApplyTheme;
             return pane;
         }
 
@@ -432,7 +432,7 @@ namespace PowerPointLabs
             {
                 return false;
             }
-            ThemeManager.Instance.ColorThemeChanged -= wpfControl.UpdateColorsControl;
+            ThemeManager.Instance.ColorThemeChanged -= wpfControl.ApplyTheme;
             wpfMapping.Remove(pane);
             return CustomTaskPanes.Remove(pane);
         }
