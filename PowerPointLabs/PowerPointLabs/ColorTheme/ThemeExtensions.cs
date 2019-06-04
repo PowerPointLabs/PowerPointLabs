@@ -61,7 +61,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     l.Foreground = new SolidColorBrush(theme.foreground);
                     l.Background = Brushes.Transparent;
                     l.BorderBrush = Brushes.Transparent;
-                    l.ApplyTemplate();
                     break;
                 case ListBox l:
                     l.Background = new SolidColorBrush(theme.background);
@@ -83,10 +82,9 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     p.UpdateColors(sender, theme); // the window is being update but doesn't show correctly
                     break;
                 case Page p:
-                    // didn't activate
-                    //p.Foreground = new SolidColorBrush(theme.foreground);
-                    //p.Background = new SolidColorBrush(theme.background);
-                    //p.UpdateColors(sender, theme);
+                    p.Foreground = new SolidColorBrush(theme.foreground);
+                    p.Background = new SolidColorBrush(theme.background);
+                    p.UpdateColorsVisual(sender, theme);
                     break;
                 case Control c:
                     c.Background = new SolidColorBrush(theme.background);
@@ -123,12 +121,25 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     return
                         l.Background.IsBrushColor(theme.background) &&
                         l.Foreground.IsBrushColor(theme.foreground);
+                case Frame f:
+                    return
+                        f.Background.IsBrushColor(theme.background) &&
+                        f.Foreground.IsBrushColor(theme.foreground);
+                case Window w:
+                    return
+                        w.Background.IsBrushColor(theme.background) &&
+                        w.Foreground.IsBrushColor(theme.foreground);
+                case Panel p:
+                    return p.Background.IsBrushColor(theme.boxBackground);
+                case Page p:
+                    return
+                        p.Foreground.IsBrushColor(theme.foreground) &&
+                        p.Background.IsBrushColor(theme.background);
                 case Control c:
                     return
                         c.Background.IsBrushColor(theme.background) &&
-                        c.Foreground.IsBrushColor(theme.foreground);
-                case Panel p:
-                    return p.Background.IsBrushColor(theme.boxBackground);
+                        c.Foreground.IsBrushColor(theme.foreground) &&
+                        c.BorderBrush.IsBrushColor(theme.foreground);
                 case Border b:
                     return b.Background.IsBrushColor(theme.boxBackground);
                 case Path p:
