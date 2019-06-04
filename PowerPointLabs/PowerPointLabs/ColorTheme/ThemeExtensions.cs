@@ -55,14 +55,23 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 // textbox placeholder vanishes
                 case TextBlock t:
                     t.Foreground = new SolidColorBrush(theme.foreground);
+                    t.Background = Brushes.Transparent;
                     break;
                 case Label l:
                     l.Foreground = new SolidColorBrush(theme.foreground);
+                    l.Background = Brushes.Transparent;
+                    l.BorderBrush = Brushes.Transparent;
+                    l.ApplyTemplate();
                     break;
                 case ListBox l:
                     l.Background = new SolidColorBrush(theme.background);
                     l.Foreground = new SolidColorBrush(theme.foreground);
                     l.ResubscribeColorChangedHandler(sender, theme);
+                    break;
+                case Frame f:
+                    f.Background = new SolidColorBrush(theme.background);
+                    f.Foreground = new SolidColorBrush(theme.foreground);
+                    f.ResubscribeColorChangedHandler(sender, theme);
                     break;
                 case Window w:
                     w.Background = new SolidColorBrush(theme.background);
@@ -71,11 +80,18 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     break;
                 case Panel p:
                     p.Background = new SolidColorBrush(theme.boxBackground);
-                    p.UpdateColors(sender, theme);
+                    p.UpdateColors(sender, theme); // the window is being update but doesn't show correctly
+                    break;
+                case Page p:
+                    // didn't activate
+                    //p.Foreground = new SolidColorBrush(theme.foreground);
+                    //p.Background = new SolidColorBrush(theme.background);
+                    //p.UpdateColors(sender, theme);
                     break;
                 case Control c:
                     c.Background = new SolidColorBrush(theme.background);
                     c.Foreground = new SolidColorBrush(theme.foreground);
+                    c.BorderBrush = new SolidColorBrush(theme.foreground);
                     c.UpdateColorsVisual(sender, theme);
                     break;
                 case Border b:
@@ -128,7 +144,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
         }
 
         // Uses VisualChildren, as some elements are ommitted if logical chlidren are used
-        private static void UpdateColorsVisual(this Control element, object sender, ColorTheme theme)
+        private static void UpdateColorsVisual(this FrameworkElement element, object sender, ColorTheme theme)
         {
             foreach (Visual visual in GetVisualChildCollection<Visual>(element))
             {
@@ -146,6 +162,40 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
         }
 
+        private static void ResubscribeColorChangedHandler(this Frame frame, object sender, ColorTheme theme)
+        {
+            EventHandler StatusChangedHandler = new EventHandler((_o, _e) =>
+            {
+                if (frame.Content != null)
+                {
+                    frame.UpdateColorsChildren(sender, theme);
+                }
+            });
+            ActionCommand command = new ActionCommand(() =>
+            {
+                frame.ContentRendered -= StatusChangedHandler;
+            });
+            CommandBinding commandBinding = new CommandBinding() { Command = command };
+            foreach (CommandBinding binding in frame.CommandBindings)
+            {
+                binding.Command.Execute(null);
+            }
+            frame.CommandBindings.Clear();
+            frame.ContentRendered += StatusChangedHandler;
+            frame.CommandBindings.Add(commandBinding);
+        }
+
+        private static void UpdateColorsChildren(this Frame frame, object sender, ColorTheme theme)
+        {
+            Visual visual = frame.Content as Visual;
+            if (visual == null) { return; }
+            foreach (Visual element in GetVisualChildCollection<Visual>(visual))
+            {
+                element.UpdateColors(sender, theme);
+            }
+            visual.UpdateColors(sender, theme);
+        }
+
         // Exploits the CommandBindings on Control to store actions to unsubscribe events
         private static void ResubscribeColorChangedHandler(this ListBox listBox, object sender, ColorTheme theme)
         {
@@ -153,7 +203,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             {
                 if (listBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 {
-                    listBox.UpdateColorsForChildren(sender, theme);
+                    listBox.UpdateColorsChildren(sender, theme);
                 }
             });
             ActionCommand command = new ActionCommand(() =>
@@ -166,12 +216,12 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 binding.Command.Execute(null);
             }
             listBox.CommandBindings.Clear();
-            listBox.UpdateColorsForChildren(sender, theme);
+            listBox.UpdateColorsChildren(sender, theme);
             listBox.ItemContainerGenerator.StatusChanged += StatusChangedHandler;
             listBox.CommandBindings.Add(commandBinding);
         }
 
-        private static void UpdateColorsForChildren(this ListBox listBox, object sender, ColorTheme theme)
+        private static void UpdateColorsChildren(this ListBox listBox, object sender, ColorTheme theme)
         {
             listBox.UpdateColors(sender, theme);
             for (int i = 0; i < listBox.Items.Count; i++)
