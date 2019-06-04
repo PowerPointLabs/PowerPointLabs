@@ -294,7 +294,7 @@ namespace PowerPointLabs
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox();
             loadingDialog.ApplyTheme(this, ThemeManager.Instance.ColorTheme);
-            loadingDialog.Show();
+            loadingDialog.ShowThematicDialog(false);
 
             // note down the control's width
             int width = control.Width;

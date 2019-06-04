@@ -813,7 +813,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox(ShapesLabText.MigratingDialogTitle,
                                                     ShapesLabText.MigratingDialogContent);
-            loadingDialog.Show();
+            loadingDialog.ShowThematicDialog(false);
 
             // close the opening presentation
             if (this.GetAddIn().ShapePresentation.Opened)

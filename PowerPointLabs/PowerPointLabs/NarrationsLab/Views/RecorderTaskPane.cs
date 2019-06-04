@@ -18,6 +18,7 @@ using NAudio.Wave;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.ActionFramework.NarrationsLab;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -1623,7 +1624,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
             // init the in-show control
             _inShowControlBox = new InShowRecordingControl(this);
-            _inShowControlBox.Show();
+            _inShowControlBox.ShowThematicDialog(false);
 
             // activate the show
             slideShowWindow.Activate();

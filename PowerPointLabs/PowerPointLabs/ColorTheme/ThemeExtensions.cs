@@ -13,15 +13,35 @@ namespace PowerPointLabs.ColorThemes.Extensions
 {
     public static class ThemeExtensions
     {
-
-        public static bool? ShowThematicDialog(this Window w)
+        /// <summary>
+        /// Shows a thematic dialog and waits for the window to close.
+        /// </summary>
+        /// <param name="window">Window to display</param>
+        /// <param name="wait">Whether to wait for dialog to close</param>
+        /// <returns></returns>
+        public static bool? ShowThematicDialog(this Window window, bool wait = true)
         {
-            ThemeManager.Instance.ColorThemeChanged += w.ApplyTheme;
-            bool? result = w.ShowDialog();
-            ThemeManager.Instance.ColorThemeChanged -= w.ApplyTheme;
-            return result;
+            if (wait)
+            {
+                ThemeManager.Instance.ColorThemeChanged += window.ApplyTheme;
+                bool? result = window.ShowDialog();
+                ThemeManager.Instance.ColorThemeChanged -= window.ApplyTheme;
+                return result;
+            }
+            else
+            {
+                window.ApplyTheme(null, ThemeManager.Instance.ColorTheme);
+                window.Show();
+                return null;
+            }
         }
 
+        /// <summary>
+        /// Applies a theme to the element recursively.
+        /// </summary>
+        /// <param name="element">WPF element to apply theme to.</param>
+        /// <param name="sender">Object that triggered the event</param>
+        /// <param name="theme">Color theme to update with.</param>
         public static void ApplyTheme(this DependencyObject element, object sender, ColorTheme theme)
         {
             if (!element.Dispatcher.CheckAccess())
@@ -64,6 +84,12 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
         }
 
+        /// <summary>
+        /// Checks if an element has been updated with the current theme.
+        /// </summary>
+        /// <param name="element">WPF element to be updated</param>
+        /// <param name="theme">Color theme</param>
+        /// <returns></returns>
         public static bool IsUpdated(this DependencyObject element, ColorTheme theme)
         {
             switch (element)
