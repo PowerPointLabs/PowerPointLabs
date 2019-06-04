@@ -213,6 +213,7 @@
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\SlideUtil.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
+    <Compile Include="Util\WPFUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PowerPointLabs\PowerPointLabs.csproj">

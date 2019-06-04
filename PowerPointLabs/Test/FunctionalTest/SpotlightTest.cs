@@ -28,6 +28,11 @@ namespace Test.FunctionalTest
 
         }
 
+        public void FT_OpenWindow()
+        {
+            //PplFeatures.
+        }
+
         private void SettingsAndSingleShapeSuccessfully()
         {
             PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
