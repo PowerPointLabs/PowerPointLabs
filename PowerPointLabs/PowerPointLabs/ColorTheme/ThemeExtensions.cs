@@ -64,14 +64,19 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     l.Foreground = new SolidColorBrush(theme.foreground);
                     l.ResubscribeColorChangedHandler(sender, theme);
                     break;
-                case Control c:
-                    c.Background = new SolidColorBrush(theme.background);
-                    c.Foreground = new SolidColorBrush(theme.foreground);
-                    c.UpdateColorsVisual(sender, theme);
+                case Window w:
+                    w.Background = new SolidColorBrush(theme.background);
+                    w.Foreground = new SolidColorBrush(theme.foreground);
+                    w.UpdateColors(sender, theme);
                     break;
                 case Panel p:
                     p.Background = new SolidColorBrush(theme.boxBackground);
                     p.UpdateColors(sender, theme);
+                    break;
+                case Control c:
+                    c.Background = new SolidColorBrush(theme.background);
+                    c.Foreground = new SolidColorBrush(theme.foreground);
+                    c.UpdateColorsVisual(sender, theme);
                     break;
                 case Border b:
                     b.Background = new SolidColorBrush(theme.boxBackground);
