@@ -32,5 +32,9 @@ namespace Test.Util
             return window;
             */
         }
+
+        // using MessageBoxUtil as an example, things to do:
+        // 1. Write an async wrapper, ... showDialog
+        // 2. look at their wait function for the task
     }
 }
