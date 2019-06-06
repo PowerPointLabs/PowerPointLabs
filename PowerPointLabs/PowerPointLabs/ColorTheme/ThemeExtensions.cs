@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -8,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using PowerPointLabs.ELearningLab.Views;
 
 namespace PowerPointLabs.ColorThemes.Extensions
 {
@@ -21,6 +23,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
         /// <returns></returns>
         public static bool? ShowThematicDialog(this Window window, bool wait = true)
         {
+            window.Loaded -= window.RefreshVisual;
+            window.Loaded += window.RefreshVisual;
             if (wait)
             {
                 ThemeManager.Instance.ColorThemeChanged += window.ApplyTheme;
@@ -30,10 +34,19 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             else
             {
-                window.ApplyTheme(null, ThemeManager.Instance.ColorTheme);
+                ThemeManager.Instance.ColorThemeChanged += window.ApplyTheme;
+                ThemeManager.Instance.ColorThemeChanged -= window.ApplyTheme;
                 window.Show();
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Invalidates the visual of the FrameworkElement.
+        /// </summary>
+        public static void RefreshVisual(this FrameworkElement element, object sender, RoutedEventArgs e)
+        {
+            element.InvalidateVisual();
         }
 
         /// <summary>
@@ -50,6 +63,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 return;
             }
             if (element.IsUpdated(theme)) { return; }
+            RemoveConflictingTheme(element);
+
             switch (element)
             {
                 // textbox placeholder vanishes
@@ -73,6 +88,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     f.ResubscribeColorChangedHandler(sender, theme);
                     break;
                 case Window w:
+                    //Uri uriID = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml", System.UriKind.Relative); // Relative
+                    //w.Resources.MergedDictionaries.Remove((ResourceDictionary)Application.LoadComponent(uriID));
                     w.Background = new SolidColorBrush(theme.background);
                     w.Foreground = new SolidColorBrush(theme.foreground);
                     w.UpdateColors(sender, theme);
@@ -100,6 +117,19 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     break;
                 default:
                     break;
+            }
+        }
+
+        // hotfix for combobox for AudioSettingsDialogWindow
+        private static void RemoveConflictingTheme(DependencyObject element)
+        {
+            if (element is AudioSettingsDialogWindow)
+            {
+                AudioSettingsDialogWindow window = (AudioSettingsDialogWindow)element;
+                Page p = window.MainPage;
+                ResourceDictionary r = p.Resources.MergedDictionaries.FirstOrDefault(
+                    (d) => d.Source.AbsoluteUri == "pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml");
+                p.Resources.MergedDictionaries.Remove(r);
             }
         }
 

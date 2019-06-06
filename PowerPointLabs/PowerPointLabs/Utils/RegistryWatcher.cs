@@ -8,19 +8,26 @@ namespace PowerPointLabs.Utils
     /// <summary>
     /// A class that allows watching of Registry Key values.
     /// </summary>
-    class RegistryWatcher<T>
+    class RegistryWatcher<T> where T : IEquatable<T>
     {
         private readonly string path;
         private readonly string key;
+        private readonly T defaultKey;
         private ManagementEventWatcher watcher;
+
+        // returns true if the key started as defaultKey and is not modified, else false
+        public bool IsDefaultKey { get; private set; }
 
         public event EventHandler<T> ValueChanged;
 
-        public RegistryWatcher(string path, string key)
+        public RegistryWatcher(string path, string key, T defaultKey)
         {
             this.path = path;
             this.key = key;
+            this.defaultKey = defaultKey;
+            this.IsDefaultKey = true;
             RegisterKeyChanged();
+            GetKeyAndUpdateKeyStatus();
         }
  
         /// <summary>
@@ -57,7 +64,7 @@ namespace PowerPointLabs.Utils
             watcher.EventArrived += (object sender, EventArrivedEventArgs e) => { Notify(); };
         }
 
-        private T GetKey()
+        private T GetKeyAndUpdateKeyStatus()
         {
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(path))
             {
@@ -66,7 +73,9 @@ namespace PowerPointLabs.Utils
                 {
                     throw new Exceptions.AssumptionFailedException("Key is null");
                 }
-                return (T)objectValue;
+                T result = (T)objectValue;
+                IsDefaultKey &= defaultKey == null || defaultKey.Equals(result);
+                return result;
             }
         }
 
@@ -74,11 +83,12 @@ namespace PowerPointLabs.Utils
         {
             try
             {
-                T key = GetKey();
-                if (ValueChanged != null)
+                T key = GetKeyAndUpdateKeyStatus();
+                if (IsDefaultKey)
                 {
-                    ValueChanged(this, key);
+                    return;
                 }
+                ValueChanged?.Invoke(this, key);
             }
             catch (Exception)
             {

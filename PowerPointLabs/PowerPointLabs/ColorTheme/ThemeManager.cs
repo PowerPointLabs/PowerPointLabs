@@ -45,7 +45,10 @@ namespace PowerPointLabs.ColorThemes
         {
             add
             {
-                value(this, _colorTheme);
+                if (!themeWatcher.IsDefaultKey)
+                {
+                    value(this, _colorTheme);
+                }
                 _ColorThemeChanged += value;
             }
             remove
@@ -61,7 +64,7 @@ namespace PowerPointLabs.ColorThemes
 
         private ThemeManager()
         {
-            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey);
+            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, ColorTheme.COLORFUL);
             themeWatcher.ValueChanged += ThemeChangedHandler;
             themeWatcher.Fire();
             themeWatcher.Start();
