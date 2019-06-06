@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -34,13 +35,14 @@ namespace Test.FunctionalTest
         public void FT_OpenWindow()
         {
             PplFeatures.OpenWindow();
-            /*
-            Window w = WPFUtil.GetFrontWindow();
-            if (w == null)
+            Thread.Sleep(4000);
+            foreach (KeyValuePair<IntPtr, string> window in OpenWindowGetter.GetOpenWindows(PplFeatures.GetCurrentWindow()))
             {
-                Assert.Fail();
+                IntPtr handle = window.Key;
+                string title = window.Value;
+
+                System.Windows.MessageBox.Show(string.Format("{0}: {1}", handle, title));
             }
-            */
         }
 
         private void SettingsAndSingleShapeSuccessfully()

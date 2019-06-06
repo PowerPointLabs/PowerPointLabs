@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace TestInterface
 {
     public interface IPowerPointLabsFeatures
     {
+        IntPtr GetCurrentWindow();
         void OpenWindow();
         void AutoCrop();
         void CropOutPadding();
