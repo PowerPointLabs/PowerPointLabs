@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Forms;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,9 +29,18 @@ namespace Test.FunctionalTest
 
         }
 
+        [TestMethod]
+        [TestCategory("FT")]
         public void FT_OpenWindow()
         {
-            //PplFeatures.
+            PplFeatures.OpenWindow();
+            /*
+            Window w = WPFUtil.GetFrontWindow();
+            if (w == null)
+            {
+                Assert.Fail();
+            }
+            */
         }
 
         private void SettingsAndSingleShapeSuccessfully()

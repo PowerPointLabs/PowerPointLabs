@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
-
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
@@ -47,6 +49,15 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         private Ribbon1 Ribbon
         {
             get { return FunctionalTestExtensions.GetRibbonUi(); }
+        }
+
+        public void OpenWindow()
+        {
+            Task task = 
+                new Task(() => UIThreadExecutor.Execute(() => Ribbon.OnAction(new RibbonControl(AnimationLabText.SettingsTag))));
+            task.Start();
+            Thread.Sleep(10000);
+            MessageBox.Show(Globals.ThisAddIn.GetActiveWindowTempName());
         }
 
         public void AutoCrop()
