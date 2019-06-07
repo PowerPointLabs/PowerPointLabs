@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Windows;
 using Microsoft.Office.Interop.PowerPoint;
 
 namespace TestInterface
@@ -19,6 +19,9 @@ namespace TestInterface
         void SavePresentationAs(string presName);
         void ClosePresentation();
         void ActivatePresentation();
+        IntPtr GetCurrentWindow();
+        bool IsWindowType<T>(IntPtr handle);
+        MarshalWindow GetWindowUsingHandle(IntPtr handle);
         int PointsToScreenPixelsX(float x);
         int PointsToScreenPixelsY(float y);
         Boolean IsOffice2010();

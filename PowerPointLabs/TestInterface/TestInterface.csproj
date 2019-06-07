@@ -44,6 +44,8 @@
     <Compile Include="IPowerPointOperations.cs" />
     <Compile Include="IShapesLabController.cs" />
     <Compile Include="ISlideData.cs" />
+    <Compile Include="IWindowController.cs" />
+    <Compile Include="MarshalWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +62,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Windows\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

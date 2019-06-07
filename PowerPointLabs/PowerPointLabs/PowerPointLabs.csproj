@@ -248,6 +248,8 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
@@ -929,6 +931,9 @@
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TestUtilWindows\WindowOpenTrigger.cs" />
+    <Compile Include="TestUtilWindows\WindowStackManager.cs" />
+    <Compile Include="TestUtilWindows\WindowUtil.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />

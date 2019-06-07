@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Forms;
-
+using System.Windows.Interop;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -12,6 +14,7 @@ using PowerPointLabs.Utils;
 
 using TestInterface;
 
+using MessageBox = System.Windows.Forms.MessageBox;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -78,6 +81,28 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             MessageBox.Show(new Form() { TopMost = true },
                 "###__DO_NOT_OPEN_OTHER_WINDOW__###\n" +
                 "###___DURING_FUNCTIONAL_TEST___###", "PowerPointLabs FT");
+        }
+
+        public IntPtr GetCurrentWindow()
+        {
+            return new IntPtr(FunctionalTestExtensions.GetCurrentWindow().HWND);
+        }
+
+        public bool IsWindowType<T>(IntPtr handle)
+        {
+            MarshalWindow obj = GetWindowUsingHandle(handle);
+            return obj.Window != null && obj.Window is T;
+        }
+
+        public MarshalWindow GetWindowUsingHandle(IntPtr handle)
+        {
+            HwndSource hwndSource = HwndSource.FromHwnd(handle);
+            if (hwndSource == null) { return new MarshalWindow(null); }
+            if (hwndSource.RootVisual != null)
+            {
+                MessageBox.Show(hwndSource.Handle.ToString());
+            }
+            return new MarshalWindow(hwndSource.RootVisual as Window);
         }
 
         public int PointsToScreenPixelsX(float x)

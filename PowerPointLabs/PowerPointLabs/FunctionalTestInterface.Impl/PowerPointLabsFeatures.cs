@@ -56,13 +56,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             Task task = 
                 new Task(() => UIThreadExecutor.Execute(() => Ribbon.OnAction(new RibbonControl(AnimationLabText.SettingsTag))));
             task.Start();
-            //Thread.Sleep(10000);
-            //MessageBox.Show(Globals.ThisAddIn.GetActiveWindowTempName());
-        }
-
-        public IntPtr GetCurrentWindow()
-        {
-            return new IntPtr(FunctionalTestExtensions.GetCurrentWindow().HWND);
         }
 
         public void AutoCrop()

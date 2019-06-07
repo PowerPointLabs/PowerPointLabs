@@ -6,10 +6,13 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
-
+using System.Windows.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.AnimationLab.Views;
+using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using Test.Util;
+using Test.Util.Windows;
+using TestInterface;
 
 namespace Test.FunctionalTest
 {
@@ -36,12 +39,31 @@ namespace Test.FunctionalTest
         {
             PplFeatures.OpenWindow();
             Thread.Sleep(4000);
-            foreach (KeyValuePair<IntPtr, string> window in OpenWindowGetter.GetOpenWindows(PplFeatures.GetCurrentWindow()))
+            Test();
+        }
+
+        private static void Test()
+        {
+            foreach (KeyValuePair<IntPtr, string> window in WindowUtil.GetOpenWindows(PpOperations.GetCurrentWindow()))
             {
                 IntPtr handle = window.Key;
                 string title = window.Value;
 
-                System.Windows.MessageBox.Show(string.Format("{0}: {1}", handle, title));
+                //HwndSource hwndSource = HwndSource.FromHwnd(handle);
+                //if (hwndSource == null) { continue; }
+                //if (hwndSource.RootVisual != null)
+                //{
+                //    System.Windows.MessageBox.Show(hwndSource.Handle.ToString());
+                //}
+
+                MarshalWindow w = PpOperations.GetWindowUsingHandle(handle);
+                System.Windows.MessageBox.Show(string.Format("{2} {0}: {1}", handle, title, PpOperations.IsWindowType<AnimationLabSettingsDialogBox>(handle)));
+                
+                if (w.Window is AnimationLabSettingsDialogBox)
+                {
+                    w.Window.Close(); // apparently unable to call close directly, suspect have to be in the methods
+                    //((AnimationLabSettingsDialogBox)w.Window).Close();
+                }
             }
         }
 
