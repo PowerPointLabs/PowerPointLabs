@@ -5,13 +5,14 @@ using System.Windows.Automation;
 using System.Windows.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util.Windows;
+using TestInterface;
 using TestInterface.Windows;
 
 namespace Test.Util
 {
     static class WPFWindowUtil
     {
-        public static IMarshalWPF WaitAndPush<T>(this IWindowStackManager windowStack,
+        public static IMarshalWPF WaitAndPush<T>(this IPowerPointOperations PpOperations,
             Action action, uint processId, string name = null, int timeout = 5000)
             where T : DispatcherObject
         {
@@ -45,7 +46,7 @@ namespace Test.Util
                 Assert.Fail("Found null window handle");
                 return null;
             }
-            IMarshalWPF result = windowStack.Push<T>(trigger.resultingWindow, trigger.name);
+            IMarshalWPF result = PpOperations.Push(new IntPtr(trigger.resultingWindow));
             return result;
         }
 

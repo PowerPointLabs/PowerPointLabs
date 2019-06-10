@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -26,12 +27,9 @@ namespace Test.Util
             }
         }
 
-        public IMarshalWPF Push<T>(int handle, string title) where T : DispatcherObject
+        public IMarshalWPF Push<T>(Window window) where T : DispatcherObject
         {
-            Window window = GetWindow(new IntPtr(handle));
-            IMarshalWPF result = new MarshalWPF<T>(window, title);
-            windowStack.Push(result);
-            return result;
+            return BlockUntilSTAThread<IMarshalWPF>(window, () => PushSTAThread<T>(window));
         }
 
         public IMarshalWPF Peek()
@@ -48,18 +46,37 @@ namespace Test.Util
             }
         }
 
-        public IMarshalWPF GetMarshalWPF<T>(IntPtr handle) where T : DispatcherObject
+        private IMarshalWPF PushSTAThread<T>(Window window) where T : DispatcherObject
         {
-            Window window = GetWindow(handle);
-            return new MarshalWPF<T>(window, "placeholder");
+            IMarshalWPF result = new MarshalWPF<T>(window, window.Title);
+            windowStack.Push(result);
+            return result;
         }
 
-        private Window GetWindow(IntPtr handle)
+        private void BlockUntilSTAThread(Window window, Action action)
         {
-            HwndSource hwndSource = HwndSource.FromHwnd(handle);
-            if (hwndSource == null) { return null; }
-            return hwndSource.RootVisual as Window;
+            BlockUntilSTAThread<object>(window, () =>
+            {
+                action();
+                return null;
+            });
         }
 
+        private T BlockUntilSTAThread<T>(Window window, Func<T> action)
+        {
+            if (!window.Dispatcher.CheckAccess())
+            {
+                T result = default(T);
+                ManualResetEventSlim canExecute = new ManualResetEventSlim(false);
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    result = action();
+                    canExecute.Set();
+                }));
+                canExecute.Wait();
+                return result;
+            }
+            return action();
+        }
     }
 }

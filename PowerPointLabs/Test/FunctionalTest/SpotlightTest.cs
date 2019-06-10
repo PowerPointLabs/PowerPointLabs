@@ -48,8 +48,11 @@ namespace Test.FunctionalTest
                 IntPtr handle = window.Key;
                 string title = window.Value;
 
-                IMarshalWPF w = PpOperations.WindowStackManager.GetMarshalWPF<SpotlightSettingsDialogBox>(handle);
-                w?.Close(); // didn't work, gonna try doing it back in ppoperations, even with marshalwindow
+                MarshalWindow w = PpOperations.GetMarshalWindow(handle);
+                if (w.IsType<SpotlightSettingsDialogBox>())
+                {
+                    w.Close(); // didn't work, gonna try doing it back in ppoperations, even with marshalwindow
+                }
             }
         }
 
@@ -101,7 +104,7 @@ namespace Test.FunctionalTest
         private void VerifySpotlightSettingsDialogBoxWPF()
         {
             string spotlightSettingsWindowTitle = "Spotlight Settings";
-            IMarshalWPF wpf = PpOperations.WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
+            IMarshalWPF wpf = PpOperations.WaitAndPush<SpotlightSettingsDialogBox>(
                 PplFeatures.OpenSpotlightDialog,
                 PpOperations.ProcessId,
                 spotlightSettingsWindowTitle);

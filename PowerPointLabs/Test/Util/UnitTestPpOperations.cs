@@ -270,5 +270,15 @@ namespace Test.Util
                 s.HeadersFooters.SlideNumber.Visible = MsoTriState.msoTrue;
             }
         }
+
+        public MarshalWindow GetMarshalWindow(IntPtr handle)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMarshalWPF Push(IntPtr handle)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.EffectsLab.Views;
 using PowerPointLabs.Utils;
 using Test.Util;
 using Test.Util.Windows;
@@ -285,6 +286,26 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             {
                 s.HeadersFooters.SlideNumber.Visible = MsoTriState.msoTrue;
             }
+        }
+
+        // old, for debugging
+        public MarshalWindow GetMarshalWindow(IntPtr handle)
+        {
+            Window window = GetWindow(handle);
+            return new MarshalWindow(window);
+        }
+
+        public IMarshalWPF Push(IntPtr handle)
+        {
+            Window w = GetWindow(handle);
+            return WindowStackManager.Push<SpotlightSettingsDialogBox>(w);
+        }
+
+        private Window GetWindow(IntPtr handle)
+        {
+            HwndSource hwndSource = HwndSource.FromHwnd(handle);
+            if (hwndSource == null) { return null; }
+            return hwndSource.RootVisual as Window;
         }
     }
 }

@@ -13,6 +13,9 @@ namespace TestInterface
         uint ProcessId { get; }
         IWindowStackManager WindowStackManager { get; }
 
+        MarshalWindow GetMarshalWindow(IntPtr handle);
+        IMarshalWPF Push(IntPtr handle);
+
         void MaximizeWindow();
         void EnterFunctionalTest();
         void ExitFunctionalTest();
