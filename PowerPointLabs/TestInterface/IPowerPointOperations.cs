@@ -20,7 +20,6 @@ namespace TestInterface
         void ClosePresentation();
         void ActivatePresentation();
         IntPtr GetCurrentWindow();
-        bool IsWindowType<T>(IntPtr handle);
         MarshalWindow GetWindowUsingHandle(IntPtr handle);
         int PointsToScreenPixelsX(float x);
         int PointsToScreenPixelsY(float y);

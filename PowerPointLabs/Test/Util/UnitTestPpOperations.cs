@@ -276,10 +276,5 @@ namespace Test.Util
         {
             throw new NotImplementedException();
         }
-
-        public bool IsWindowType<T>(IntPtr handle)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

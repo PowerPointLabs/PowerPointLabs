@@ -88,20 +88,10 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return new IntPtr(FunctionalTestExtensions.GetCurrentWindow().HWND);
         }
 
-        public bool IsWindowType<T>(IntPtr handle)
-        {
-            MarshalWindow obj = GetWindowUsingHandle(handle);
-            return false; //obj.Window != null && obj.Window is T;
-        }
-
         public MarshalWindow GetWindowUsingHandle(IntPtr handle)
         {
             HwndSource hwndSource = HwndSource.FromHwnd(handle);
             if (hwndSource == null) { return new MarshalWindow(null); }
-            if (hwndSource.RootVisual != null)
-            {
-                MessageBox.Show(hwndSource.Handle.ToString());
-            }
             return new MarshalWindow(hwndSource.RootVisual as Window);
         }
 

@@ -48,20 +48,11 @@ namespace Test.FunctionalTest
                 IntPtr handle = window.Key;
                 string title = window.Value;
 
-                //HwndSource hwndSource = HwndSource.FromHwnd(handle);
-                //if (hwndSource == null) { continue; }
-                //if (hwndSource.RootVisual != null)
-                //{
-                //    System.Windows.MessageBox.Show(hwndSource.Handle.ToString());
-                //}
-
                 MarshalWindow w = PpOperations.GetWindowUsingHandle(handle);
-                //System.Windows.MessageBox.Show(string.Format("{2} {0}: {1}", handle, title, w.IsType<AnimationLabSettingsDialogBox>()));
                 
                 if (w.IsType<AnimationLabSettingsDialogBox>())
                 {
-                    w.Close(); // apparently unable to call close directly, suspect have to be in the methods
-                    //((AnimationLabSettingsDialogBox)w.Window).Close();
+                    w.Close();
                 }
             }
         }
