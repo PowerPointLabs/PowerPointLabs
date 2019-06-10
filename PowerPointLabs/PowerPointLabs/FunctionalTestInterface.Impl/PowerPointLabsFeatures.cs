@@ -51,13 +51,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             get { return FunctionalTestExtensions.GetRibbonUi(); }
         }
 
-        public void OpenWindow()
-        {
-            Task task = 
-                new Task(() => UIThreadExecutor.Execute(() => Ribbon.OnAction(new RibbonControl(AnimationLabText.SettingsTag))));
-            task.Start();
-        }
-
         public void AutoCrop()
         {
             UIThreadExecutor.Execute((Action)(() =>

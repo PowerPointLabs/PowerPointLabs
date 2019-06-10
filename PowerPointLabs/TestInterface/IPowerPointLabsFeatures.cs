@@ -5,7 +5,6 @@ namespace TestInterface
 {
     public interface IPowerPointLabsFeatures
     {
-        void OpenWindow(); // to be replaced
         void AutoCrop();
         void CropOutPadding();
         void CropToAspectRatioW1H10();

@@ -37,7 +37,6 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_OpenWindow()
         {
-            PplFeatures.OpenWindow();
             Thread.Sleep(4000);
             Test();
         }
@@ -57,11 +56,11 @@ namespace Test.FunctionalTest
                 //}
 
                 MarshalWindow w = PpOperations.GetWindowUsingHandle(handle);
-                System.Windows.MessageBox.Show(string.Format("{2} {0}: {1}", handle, title, PpOperations.IsWindowType<AnimationLabSettingsDialogBox>(handle)));
+                //System.Windows.MessageBox.Show(string.Format("{2} {0}: {1}", handle, title, w.IsType<AnimationLabSettingsDialogBox>()));
                 
-                if (w.Window is AnimationLabSettingsDialogBox)
+                if (w.IsType<AnimationLabSettingsDialogBox>())
                 {
-                    w.Window.Close(); // apparently unable to call close directly, suspect have to be in the methods
+                    w.Close(); // apparently unable to call close directly, suspect have to be in the methods
                     //((AnimationLabSettingsDialogBox)w.Window).Close();
                 }
             }

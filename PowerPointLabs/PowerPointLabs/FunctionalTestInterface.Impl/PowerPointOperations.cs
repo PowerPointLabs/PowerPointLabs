@@ -91,7 +91,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public bool IsWindowType<T>(IntPtr handle)
         {
             MarshalWindow obj = GetWindowUsingHandle(handle);
-            return obj.Window != null && obj.Window is T;
+            return false; //obj.Window != null && obj.Window is T;
         }
 
         public MarshalWindow GetWindowUsingHandle(IntPtr handle)
