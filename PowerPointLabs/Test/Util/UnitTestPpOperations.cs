@@ -10,7 +10,7 @@ using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Utils;
 
 using TestInterface;
-
+using TestInterface.Windows;
 using Application = Microsoft.Office.Interop.PowerPoint.Application;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
@@ -30,6 +30,10 @@ namespace Test.Util
             get { return _currentSlide ?? SelectSlide(1); }
             set { _currentSlide = value; }
         }
+
+        public uint ProcessId => throw new NotImplementedException();
+
+        public IWindowStackManager WindowStackManager => throw new NotImplementedException();
 
         private ShapeRange _currentShape;
 
@@ -265,16 +269,6 @@ namespace Test.Util
             {
                 s.HeadersFooters.SlideNumber.Visible = MsoTriState.msoTrue;
             }
-        }
-
-        public IntPtr GetCurrentWindow()
-        {
-            throw new NotImplementedException();
-        }
-
-        public MarshalWindow GetWindowUsingHandle(IntPtr handle)
-        {
-            throw new NotImplementedException();
         }
     }
 }

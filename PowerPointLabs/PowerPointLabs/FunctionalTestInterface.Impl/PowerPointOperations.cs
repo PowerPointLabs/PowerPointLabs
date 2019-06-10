@@ -11,9 +11,10 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
-
+using Test.Util;
+using Test.Util.Windows;
 using TestInterface;
-
+using TestInterface.Windows;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
@@ -23,6 +24,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointOperations : MarshalByRefObject, IPowerPointOperations
     {
+        public uint ProcessId => WindowUtil.GetProcessId(FunctionalTestExtensions.GetCurrentWindow().HWND);
+        public IWindowStackManager WindowStackManager { get; private set; }
+
+        public PowerPointOperations()
+        {
+            WindowStackManager = new WindowStackManager();
+        }
+
         public void MaximizeWindow()
         {
             FunctionalTestExtensions.GetCurrentWindow().WindowState = PpWindowState.ppWindowMaximized;
@@ -81,18 +90,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             MessageBox.Show(new Form() { TopMost = true },
                 "###__DO_NOT_OPEN_OTHER_WINDOW__###\n" +
                 "###___DURING_FUNCTIONAL_TEST___###", "PowerPointLabs FT");
-        }
-
-        public IntPtr GetCurrentWindow()
-        {
-            return new IntPtr(FunctionalTestExtensions.GetCurrentWindow().HWND);
-        }
-
-        public MarshalWindow GetWindowUsingHandle(IntPtr handle)
-        {
-            HwndSource hwndSource = HwndSource.FromHwnd(handle);
-            if (hwndSource == null) { return new MarshalWindow(null); }
-            return new MarshalWindow(hwndSource.RootVisual as Window);
         }
 
         public int PointsToScreenPixelsX(float x)

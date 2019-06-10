@@ -2,16 +2,22 @@
 using System.Threading;
 using System.Windows;
 
-namespace TestInterface
+namespace TestInterface.Windows
 {
     public class MarshalWindow : MarshalByRefObject
     {
-        private readonly Window Window;
+        private readonly IWindow Window;
         private ManualResetEventSlim canExecute;
 
         public string Title => Window.Title;
 
-        public MarshalWindow(Window w) // add some actions for constructor to support custom actions
+        public MarshalWindow(Window w)
+        {
+            Window = new WindowExt(w);
+            canExecute = new ManualResetEventSlim(false);
+        }
+
+        public MarshalWindow(IWindow w)
         {
             Window = w;
             canExecute = new ManualResetEventSlim(false);

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Microsoft.Office.Interop.PowerPoint;
+using TestInterface.Windows;
 
 namespace TestInterface
 {
     public interface IPowerPointOperations
     {
         # region PowerPoint Application API
+        uint ProcessId { get; }
+        IWindowStackManager WindowStackManager { get; }
 
         void MaximizeWindow();
         void EnterFunctionalTest();
@@ -19,8 +22,6 @@ namespace TestInterface
         void SavePresentationAs(string presName);
         void ClosePresentation();
         void ActivatePresentation();
-        IntPtr GetCurrentWindow();
-        MarshalWindow GetWindowUsingHandle(IntPtr handle);
         int PointsToScreenPixelsX(float x);
         int PointsToScreenPixelsY(float y);
         Boolean IsOffice2010();

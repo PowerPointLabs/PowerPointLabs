@@ -1,78 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation;
+using System.Windows.Interop;
+using System.Windows.Threading;
 using Test.Util.Windows;
+using TestInterface.Windows;
 
 namespace Test.Util
 {
-    public class WindowStackManager
+    [Serializable]
+    public class WindowStackManager : IWindowStackManager
     {
-        private static Stack<Window> windowStack;
+        private Stack<IMarshalWPF> windowStack = new Stack<IMarshalWPF>();
 
-        public static void Setup()
+        public void Setup()
         {
-            windowStack = new Stack<Window>();
+
         }
 
-        public static void Teardown()
+        public void Teardown()
         {
-            Automation.RemoveAllEventHandlers();
             while (Peek() != null)
             {
                 Pop();
             }
         }
 
-        /// <summary>
-        /// Opens a new window asynchronously and waits for the get the window handle.
-        /// </summary>
-        public static Window Push(Action action, uint processId, string name = null, int timeout = 5000)
+        public IMarshalWPF Push<T>(int handle, string title) where T : DispatcherObject
         {
-            WindowOpenTrigger trigger = new WindowOpenTrigger(false);
-            Automation.AddAutomationEventHandler(
-            WindowPattern.WindowOpenedEvent,
-            AutomationElement.RootElement,
-            TreeScope.Children, GetOpenWindowHandler<Window>(processId, name, trigger));
-            Task task = new Task(action);
-            task.Start();
-            trigger.Wait(timeout);
-            if (!trigger.IsSet)
-            {
-                return null; //can throw exception when receive null
-            }
-            windowStack.Push(trigger.resultingWindow);
-            return trigger.resultingWindow;
+            Window window = GetWindow(new IntPtr(handle));
+            IMarshalWPF result = new MarshalWPF<T>(window, title);
+            windowStack.Push(result);
+            return result;
         }
 
-        public static Window Peek()
+        public IMarshalWPF Peek()
         {
-            return windowStack.Peek();
+            return (windowStack.Count == 0) ? null : windowStack.Peek();
         }
 
-        public static void Pop(bool close = true)
+        public void Pop(bool close = true)
         {
-            Window w = windowStack.Pop();
+            IMarshalWPF w = windowStack.Pop();
             if (close)
             {
-                w.Close();
+                w?.Close();
             }
         }
 
-        private static AutomationEventHandler GetOpenWindowHandler<T>(uint processId, string name, WindowOpenTrigger trigger) where T : Window
+        public IMarshalWPF GetMarshalWPF<T>(IntPtr handle) where T : DispatcherObject
         {
-            return (sender, e) =>
-            {
-                AutomationElement element = sender as AutomationElement;
-                if ((uint)element.Current.ProcessId == processId
-                         && (name == null || WindowUtil.GetWindowTitle(element.Current.NativeWindowHandle) == name))
-                {
-                    return;
-                }
-                trigger.resultingWindow = null;
-                trigger.Set();
-            };
+            Window window = GetWindow(handle);
+            return new MarshalWPF<T>(window, "placeholder");
         }
+
+        private Window GetWindow(IntPtr handle)
+        {
+            HwndSource hwndSource = HwndSource.FromHwnd(handle);
+            if (hwndSource == null) { return null; }
+            return hwndSource.RootVisual as Window;
+        }
+
     }
 }

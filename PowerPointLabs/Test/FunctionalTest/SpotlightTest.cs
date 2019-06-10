@@ -4,15 +4,18 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.AnimationLab.Views;
+using PowerPointLabs.EffectsLab.Views;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
 using Test.Util;
 using Test.Util.Windows;
 using TestInterface;
+using TestInterface.Windows;
 
 namespace Test.FunctionalTest
 {
@@ -37,23 +40,16 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_OpenWindow()
         {
+            Task t = new Task(PplFeatures.OpenSpotlightDialog);
+            t.Start();
             Thread.Sleep(4000);
-            Test();
-        }
-
-        private static void Test()
-        {
-            foreach (KeyValuePair<IntPtr, string> window in WindowUtil.GetOpenWindows(PpOperations.GetCurrentWindow()))
+            foreach (KeyValuePair<IntPtr, string> window in WindowUtil.GetOpenWindows(PpOperations.ProcessId))
             {
                 IntPtr handle = window.Key;
                 string title = window.Value;
 
-                MarshalWindow w = PpOperations.GetWindowUsingHandle(handle);
-                
-                if (w.IsType<AnimationLabSettingsDialogBox>())
-                {
-                    w.Close();
-                }
+                IMarshalWPF w = PpOperations.WindowStackManager.GetMarshalWPF<SpotlightSettingsDialogBox>(handle);
+                w?.Close(); // didn't work, gonna try doing it back in ppoperations, even with marshalwindow
             }
         }
 
@@ -61,8 +57,7 @@ namespace Test.FunctionalTest
         {
             PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
 
-            // This method is commented out since it currently does not work for WPF controls.
-            // VerifySpotlightSettingsDialogBox();
+            VerifySpotlightSettingsDialogBoxWPF();
 
             PpOperations.SelectSlide(4);
             PpOperations.SelectShape("Spotlight Me");
@@ -103,6 +98,23 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide2, actualSlide2);
         }
 
+        private void VerifySpotlightSettingsDialogBoxWPF()
+        {
+            string spotlightSettingsWindowTitle = "Spotlight Settings";
+            IMarshalWPF wpf = PpOperations.WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
+                PplFeatures.OpenSpotlightDialog,
+                PpOperations.ProcessId,
+                spotlightSettingsWindowTitle);
+            // refactor into single method
+            Assert.IsNotNull(wpf);
+            Assert.AreEqual(typeof(SpotlightSettingsDialogBox), wpf.Type);
+            Assert.AreEqual(spotlightSettingsWindowTitle, wpf.Title);
+            Assert.IsTrue(wpf.Focus("spotlightTransparencyInput"));
+            //wpf.RaiseEvent("spotlightTransparencyInput", null);
+            //Thread.Sleep(10000);
+        }
+
+        [Obsolete]
         private void VerifySpotlightSettingsDialogBox()
         {
             string spotlightSettingsWindowTitle = "Spotlight Settings";

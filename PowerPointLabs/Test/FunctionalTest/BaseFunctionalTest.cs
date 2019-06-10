@@ -48,11 +48,13 @@ namespace Test.FunctionalTest
             OpenSlideForTest(GetTestingSlideName());
 
             ConnectPpl();
+            PpOperations.WindowStackManager.Setup();
         }
 
         [TestCleanup]
         public void TearDown()
         {
+            PpOperations.WindowStackManager.Teardown();
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
                 if (!Directory.Exists(PathUtil.GetTestFailurePath()))
