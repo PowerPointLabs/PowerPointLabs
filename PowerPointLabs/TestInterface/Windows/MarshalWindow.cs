@@ -1,27 +1,47 @@
 ﻿using System;
-using System.Threading;
+using System.Reflection;
 using System.Windows;
 
 namespace TestInterface.Windows
 {
+    // TODO: Move into PowerpointLabs
     public class MarshalWindow : MarshalByRefObject
     {
         private readonly Window Window;
-        private ManualResetEventSlim canExecute;
 
-        public string Title => Window.Title;
+        public string Title => BlockUntilSTAThread(() => Window.Title);
 
-        public MarshalWindow(Window w)
+        private MarshalWindow(Window w)
         {
             Window = w;
-            canExecute = new ManualResetEventSlim(false);
         }
 
-        //public MarshalWindow(IWindow w)
-        //{
-        //    Window = w;
-        //    canExecute = new ManualResetEventSlim(false);
-        //}
+        public static MarshalWindow CreateInstance(Window w)
+        {
+            if (w == null) { return null; }
+            return new MarshalWindow(w);
+        }
+
+        public void RaiseEvent<T>(string name, RoutedEventArgs args)
+        {
+            BlockUntilSTAThread(() =>
+            {
+                UIElement element = typeof(T).GetField(name, BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Window) as UIElement;
+                element.RaiseEvent(args);
+            });
+        }
+
+        public bool Focus<T>(string name)
+        {
+            return BlockUntilSTAThread(() =>
+            {
+                UIElement element = typeof(T).GetField(name, BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Window) as UIElement;
+                element.Focusable = true;
+                return element.Focus();
+            });
+        }
+
+        public bool IsType<T>() => BlockUntilSTAThread(() => Window is T);
 
         private void BlockUntilSTAThread(Action action)
         {
@@ -34,23 +54,16 @@ namespace TestInterface.Windows
 
         private T BlockUntilSTAThread<T>(Func<T> action)
         {
+            if (Window == null) { return default(T); }
             if (!Window.Dispatcher.CheckAccess())
             {
                 T result = default(T);
-                canExecute.Reset();
                 Window.Dispatcher.Invoke((Action)(() => {
                     result = action();
-                    canExecute.Set();
                 }));
-                canExecute.Wait();
                 return result;
             }
             return action();
-        }
-
-        public bool IsType<T>()
-        {
-            return Window is T;
         }
 
         public void Show()

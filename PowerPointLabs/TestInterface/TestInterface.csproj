@@ -45,12 +45,9 @@
     <Compile Include="IShapesLabController.cs" />
     <Compile Include="ISlideData.cs" />
     <Compile Include="IWindowController.cs" />
-    <Compile Include="Windows\IMarshalWPF.cs" />
-    <Compile Include="Windows\IWindow.cs" />
     <Compile Include="Windows\IWindowStackManager.cs" />
     <Compile Include="Windows\MarshalWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Windows\WindowExt.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">

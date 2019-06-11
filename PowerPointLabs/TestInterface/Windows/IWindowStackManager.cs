@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace TestInterface.Windows
 {
@@ -8,8 +6,9 @@ namespace TestInterface.Windows
     {
         void Setup();
         void Teardown();
-        IMarshalWPF Push<T>(Window window) where T : DispatcherObject;
-        IMarshalWPF Peek();
+        MarshalWindow Push(IntPtr handle);
+        void Push(MarshalWindow marshalWindow);
+        MarshalWindow Peek();
         void Pop(bool close = true);
     }
 }

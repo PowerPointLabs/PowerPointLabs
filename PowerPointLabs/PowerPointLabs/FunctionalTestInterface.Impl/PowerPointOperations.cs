@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
@@ -288,24 +289,37 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }
         }
 
-        // old, for debugging
-        public MarshalWindow GetMarshalWindow(IntPtr handle)
-        {
-            Window window = GetWindow(handle);
-            return new MarshalWindow(window);
-        }
-
-        public IMarshalWPF Push(IntPtr handle)
-        {
-            Window w = GetWindow(handle);
-            return WindowStackManager.Push<SpotlightSettingsDialogBox>(w);
-        }
-
         private Window GetWindow(IntPtr handle)
         {
             HwndSource hwndSource = HwndSource.FromHwnd(handle);
             if (hwndSource == null) { return null; }
             return hwndSource.RootVisual as Window;
+        }
+
+        private void BlockUntilSTAThread(Window window, Action action)
+        {
+            BlockUntilSTAThread<object>(window, () =>
+            {
+                action();
+                return null;
+            });
+        }
+
+        private T BlockUntilSTAThread<T>(Window window, Func<T> action)
+        {
+            if (!window.Dispatcher.CheckAccess())
+            {
+                T result = default(T);
+                ManualResetEventSlim canExecute = new ManualResetEventSlim(false);
+                window.Dispatcher.Invoke((Action)(() =>
+                {
+                    result = action();
+                    canExecute.Set();
+                }));
+                canExecute.Wait();
+                return result;
+            }
+            return action();
         }
     }
 }

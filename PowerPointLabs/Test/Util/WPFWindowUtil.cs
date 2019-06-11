@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Test.Util.Windows;
-using TestInterface;
 using TestInterface.Windows;
 
 namespace Test.Util
 {
     static class WPFWindowUtil
     {
-        public static IMarshalWPF WaitAndPush<T>(this IPowerPointOperations PpOperations,
+        public static MarshalWindow WaitAndPush<T>(this IWindowStackManager windowStackManager,
             Action action, uint processId, string name = null, int timeout = 5000)
             where T : DispatcherObject
         {
@@ -34,31 +32,22 @@ namespace Test.Util
                 AutomationElement.RootElement,
                 handler);
 
-            if (!trigger.IsSet)
-            {
-                trigger.Dispose();
-                Assert.Fail($"Timeout of {timeout}ms has been reached.");
-                return null;
-            }
+            Assert.IsTrue(trigger.IsSet, $"Timeout of {timeout}ms has been reached.");
+            Assert.AreNotEqual(trigger.resultingWindow, IntPtr.Zero, "Found null window handle");
+            MarshalWindow window = windowStackManager.Push(trigger.resultingWindow);
+            Assert.IsNotNull(window);
+            Assert.IsTrue(window.IsType<T>());
+            Assert.IsTrue(name == null || name == window.Title);
             trigger.Dispose();
-            if (new IntPtr(trigger.resultingWindow) == IntPtr.Zero)
-            {
-                Assert.Fail("Found null window handle");
-                return null;
-            }
-            IMarshalWPF result = PpOperations.Push(new IntPtr(trigger.resultingWindow));
-            return result;
+            return window;
         }
-
-        // do a wait and pop later
-        // can also do negatives
 
         private static AutomationEventHandler GetOpenWindowHandler(uint processId, string name, WindowOpenTrigger trigger)
         {
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
-                int handle = element.Current.NativeWindowHandle;
+                IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
                 if ((uint)element.Current.ProcessId == processId
                          && (name == null || windowName == name))

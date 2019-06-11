@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Threading;
-using Test.Util.Windows;
 using TestInterface.Windows;
 
 namespace Test.Util
 {
     [Serializable]
-    public class WindowStackManager : IWindowStackManager
+    public class WindowStackManager : MarshalByRefObject, IWindowStackManager
     {
-        private Stack<IMarshalWPF> windowStack = new Stack<IMarshalWPF>();
+        private Stack<MarshalWindow> windowStack = new Stack<MarshalWindow>();
 
         public void Setup()
         {
@@ -27,56 +24,39 @@ namespace Test.Util
             }
         }
 
-        public IMarshalWPF Push<T>(Window window) where T : DispatcherObject
+        public MarshalWindow Push(IntPtr handle)
         {
-            return BlockUntilSTAThread<IMarshalWPF>(window, () => PushSTAThread<T>(window));
+            Window window = GetWindow(handle);
+            MarshalWindow marshalWindow = MarshalWindow.CreateInstance(window);
+            Push(marshalWindow);
+            return marshalWindow;
         }
 
-        public IMarshalWPF Peek()
+        public void Push(MarshalWindow marshalWindow)
+        {
+            windowStack.Push(marshalWindow);
+        }
+
+        public MarshalWindow Peek()
         {
             return (windowStack.Count == 0) ? null : windowStack.Peek();
         }
 
         public void Pop(bool close = true)
         {
-            IMarshalWPF w = windowStack.Pop();
+            MarshalWindow w = windowStack.Pop();
             if (close)
             {
                 w?.Close();
             }
         }
 
-        private IMarshalWPF PushSTAThread<T>(Window window) where T : DispatcherObject
+        private Window GetWindow(IntPtr handle)
         {
-            IMarshalWPF result = new MarshalWPF<T>(window, window.Title);
-            windowStack.Push(result);
-            return result;
+            HwndSource hwndSource = HwndSource.FromHwnd(handle);
+            if (hwndSource == null) { return null; }
+            return hwndSource.RootVisual as Window;
         }
 
-        private void BlockUntilSTAThread(Window window, Action action)
-        {
-            BlockUntilSTAThread<object>(window, () =>
-            {
-                action();
-                return null;
-            });
-        }
-
-        private T BlockUntilSTAThread<T>(Window window, Func<T> action)
-        {
-            if (!window.Dispatcher.CheckAccess())
-            {
-                T result = default(T);
-                ManualResetEventSlim canExecute = new ManualResetEventSlim(false);
-                window.Dispatcher.Invoke((Action)(() =>
-                {
-                    result = action();
-                    canExecute.Set();
-                }));
-                canExecute.Wait();
-                return result;
-            }
-            return action();
-        }
     }
 }

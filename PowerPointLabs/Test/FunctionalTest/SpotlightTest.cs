@@ -38,6 +38,7 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
+        // POC test, will be removed when things are stable
         public void FT_OpenWindow()
         {
             Task t = new Task(PplFeatures.OpenSpotlightDialog);
@@ -48,10 +49,10 @@ namespace Test.FunctionalTest
                 IntPtr handle = window.Key;
                 string title = window.Value;
 
-                MarshalWindow w = PpOperations.GetMarshalWindow(handle);
-                if (w.IsType<SpotlightSettingsDialogBox>())
+                MarshalWindow w = PpOperations.WindowStackManager.Push(handle);
+                if (w != null && w.IsType<SpotlightSettingsDialogBox>())
                 {
-                    w.Close(); // didn't work, gonna try doing it back in ppoperations, even with marshalwindow
+                    Assert.IsTrue(w.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
                 }
             }
         }
@@ -104,17 +105,15 @@ namespace Test.FunctionalTest
         private void VerifySpotlightSettingsDialogBoxWPF()
         {
             string spotlightSettingsWindowTitle = "Spotlight Settings";
-            IMarshalWPF wpf = PpOperations.WaitAndPush<SpotlightSettingsDialogBox>(
+            MarshalWindow window = PpOperations.WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
                 PplFeatures.OpenSpotlightDialog,
                 PpOperations.ProcessId,
                 spotlightSettingsWindowTitle);
-            // refactor into single method
-            Assert.IsNotNull(wpf);
-            Assert.AreEqual(typeof(SpotlightSettingsDialogBox), wpf.Type);
-            Assert.AreEqual(spotlightSettingsWindowTitle, wpf.Title);
-            Assert.IsTrue(wpf.Focus("spotlightTransparencyInput"));
-            //wpf.RaiseEvent("spotlightTransparencyInput", null);
-            //Thread.Sleep(10000);
+
+            Assert.IsTrue(window.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
+            // TODO: Complete remaining actions
+            // Set text using event
+            // Set fade combo box stuff
         }
 
         [Obsolete]

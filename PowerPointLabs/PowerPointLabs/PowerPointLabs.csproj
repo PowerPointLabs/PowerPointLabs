@@ -800,7 +800,6 @@
     <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="TestUtilWindows\Constants.cs" />
-    <Compile Include="TestUtilWindows\MarshalWPF.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
