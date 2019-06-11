@@ -4,8 +4,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using MahApps.Metro.Controls;
 using TestInterface.Windows;
 
 namespace PowerPointLabs.FunctionalTestInterface.Windows
@@ -55,6 +53,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
             });
         }
 
+        [Obsolete]
         public void LeftClick<T>(string name)
         {
             BlockUntilSTAThread(() =>
@@ -74,6 +73,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
             });
         }
 
+        // Assumes a vertical list with element dimensions same as its parent
         public Point GetListElementPosition<T>(string name, int index)
         {
             return BlockUntilSTAThread(() =>
@@ -83,33 +83,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
                 int factor = 3 + 2 * index;
                 return element.PointToScreen(new Point(element.ActualWidth / 2, element.ActualHeight * factor / 2));
             });
-            //return BlockUntilSTAThread(() =>
-            //{
-            //    ItemsControl element = GetElement<T>(name) as ItemsControl;
-            //    if (element == null) { return new Point(0, 0); }
-            //    DependencyObject child = element.ItemContainerGenerator.ContainerFromIndex(index);
-            //    Visual visual = FindVisualChild<Visual>(child);
-            //    return visual.PointToScreen(new Point(10, 10)); // not working
-            //});
-        }
-
-        public static T FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj != null)
-            {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T)
-                    {
-                        return (T)child;
-                    }
-
-                    T childItem = FindVisualChild<T>(child);
-                    if (childItem != null) { return childItem; }
-                }
-            }
-            return null;
         }
 
         public Point GetPosition<T>(string name)
@@ -157,6 +130,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
                     });
             });
         }
+
+        public bool? IsChecked<T>(string name) => BlockUntilSTAThread(() => (GetElement<T>(name) as CheckBox).IsChecked);
 
         public bool IsType<T>() => BlockUntilSTAThread(() => window is T);
 

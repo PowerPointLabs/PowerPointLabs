@@ -13,6 +13,7 @@ namespace TestInterface.Windows
         void TypeUsingKeyboard<T>(string name, string s);
         bool IsType<T>();
 
+        bool? IsChecked<T>(string name);
         void Show();
         bool? ShowDialog();
         void Close();

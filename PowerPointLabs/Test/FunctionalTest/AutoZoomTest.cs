@@ -14,6 +14,15 @@ namespace Test.FunctionalTest
 
         [TestMethod]
         [TestCategory("FT")]
+        // POC test. Will be removed after tests stabilize.
+        public void FT_ZoomWindowTest()
+        {
+            PplFeatures.SetZoomProperties(PpOperations, true, false);
+            ThreadUtil.WaitFor(4000);
+        }
+
+        [TestMethod]
+        [TestCategory("FT")]
         public void FT_AutoZoomTest()
         {
             // Do tests in reverse order because added slides change slide numbers lower down.
@@ -27,7 +36,7 @@ namespace Test.FunctionalTest
 
         private void TestDrillDown()
         {
-            PplFeatures.SetZoomProperties(true, true);
+            PplFeatures.SetZoomProperties(PpOperations, true, true);
 
             PpOperations.SelectSlide(4);
             PpOperations.SelectShape("Drill Down This Shape");
@@ -40,7 +49,7 @@ namespace Test.FunctionalTest
 
         private void TestDrillDownBackground()
         {
-            PplFeatures.SetZoomProperties(false, true);
+            PplFeatures.SetZoomProperties(PpOperations, false, true);
 
             PpOperations.SelectSlide(10);
             PpOperations.SelectShape("Drill Down This Shape");
@@ -53,7 +62,7 @@ namespace Test.FunctionalTest
 
         private void TestStepBack()
         {
-            PplFeatures.SetZoomProperties(true, true);
+            PplFeatures.SetZoomProperties(PpOperations, true, true);
 
             PpOperations.SelectSlide(17);
             PpOperations.SelectShape("Step Back This Shape");
@@ -66,7 +75,7 @@ namespace Test.FunctionalTest
 
         private void TestStepBackBackground()
         {
-            PplFeatures.SetZoomProperties(false, true);
+            PplFeatures.SetZoomProperties(PpOperations, false, true);
 
             PpOperations.SelectSlide(24);
             PpOperations.SelectShape("Step Back This Shape");

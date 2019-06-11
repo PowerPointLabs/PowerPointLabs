@@ -20,6 +20,7 @@ namespace TestInterface
         void DrillDown();
         void StepBack();
         void AddZoomToArea();
+        void OpenZoomLabSettings();
         void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked);
         void HighlightPoints();
         void HighlightBackground();

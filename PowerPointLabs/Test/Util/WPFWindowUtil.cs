@@ -5,6 +5,8 @@ using System.Windows.Automation;
 using System.Windows.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.FunctionalTestInterface.Windows;
+using PowerPointLabs.ZoomLab.Views;
+using TestInterface;
 using TestInterface.Windows;
 
 namespace Test.Util
@@ -53,11 +55,29 @@ namespace Test.Util
         {
             Point p = window.GetListElementPosition<T>(name, index);
             MouseUtil.SendMouseLeftClick((int)p.X, (int)p.Y);
-            //MouseUtil.SendMouseDown((int)p.X, (int)p.Y);
-            //ThreadUtil.WaitFor(100);
-            //MouseUtil.SendMouseUp((int)p.X, (int)p.Y);
         }
 
+        public static void SetZoomProperties(this IPowerPointLabsFeatures PplFeatures, IPowerPointOperations PpOperations,
+            bool backgroundChecked, bool multiSlideChecked)
+        {
+            string zoomLabSettingsWindowTitle = "Zoom Lab Settings";
+            IMarshalWindow window = PpOperations.WindowStackManager.WaitAndPush<ZoomLabSettingsDialogBox>(
+                PplFeatures.OpenZoomLabSettings,
+                PpOperations.ProcessId,
+                zoomLabSettingsWindowTitle);
+            window.SetCheckBox<ZoomLabSettingsDialogBox>("slideBackgroundCheckbox", backgroundChecked);
+            window.SetCheckBox<ZoomLabSettingsDialogBox>("separateSlidesCheckbox", multiSlideChecked);
+            window.NativeClick<ZoomLabSettingsDialogBox>("okButton");
+        }
+
+        public static void SetCheckBox<T>(this IMarshalWindow window, string name, bool isChecked)
+        {
+            if (window.IsChecked<T>(name) == isChecked)
+            {
+                return;
+            }
+            window.NativeClick<ZoomLabSettingsDialogBox>(name);
+        }
 
         private static AutomationEventHandler GetOpenWindowHandler(uint processId, string name, WindowOpenTrigger trigger)
         {

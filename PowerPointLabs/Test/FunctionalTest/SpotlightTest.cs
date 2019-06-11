@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.EffectsLab.Views;
 using PowerPointLabs.FunctionalTestInterface.Windows;
@@ -55,6 +54,7 @@ namespace Test.FunctionalTest
 
         private void SettingsAndSingleShapeSuccessfully()
         {
+            // old code partially replaced
             //PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
             PplFeatures.SetSpotlightProperties(1.0f, 10f, Color.FromArgb(0x00FF00));
             VerifySpotlightSettingsDialogBoxWPF();
@@ -106,35 +106,20 @@ namespace Test.FunctionalTest
                 PpOperations.ProcessId,
                 spotlightSettingsWindowTitle);
 
-            //Assert.IsTrue(window.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
             window.LeftClick<SpotlightSettingsDialogBox>("spotlightTransparencyInput");
             window.SelectAll<SpotlightSettingsDialogBox>("spotlightTransparencyInput");
             window.TypeUsingKeyboard<SpotlightSettingsDialogBox>("spotlightTransparencyInput", "1");
 
             // scrolling down doesn't work for a dropdown, it's not a combobox!
-            // use selection changed event instead?
-            // Looks like they use MouseUp for this one
-            //window.Focus<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
             window.NativeClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
             ThreadUtil.WaitFor(1000);
             window.NativeClickList<SpotlightSettingsDialogBox>("softEdgesSelectionInput", 7);
-            //Assert.IsTrue(window.Focus<SpotlightSettingsDialogBox>("softEdgesSelectionInput"));
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
-            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            // The WPF element listens for mouse down/up events so this is required.
             window.LeftClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
             ThreadUtil.WaitFor(1000);
             window.NativeClick<SpotlightSettingsDialogBox>("okButton");
-            //window.LeftClick<SpotlightSettingsDialogBox>("okButton");
-            //Thread.Sleep(4000);
 
-            // MouseLeftButtonDownEvent
-            //window.LeftClick<SpotlightSettingsDialogBox>("spotlightColorRect");
-            //spotlightColorRect
+            // spotlightColorRect is not supported as it uses WinForms
         }
 
         [Obsolete]

@@ -133,7 +133,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("SpotlightSettings"));
+                Ribbon.OnAction(new RibbonControl(EffectsLabText.SpotlightSettingsTag));
             });
         }
 
@@ -166,6 +166,14 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             UIThreadExecutor.Execute((Action)(() =>
             {
                 Ribbon.OnAction(new RibbonControl(ZoomLabText.ZoomToAreaTag));
+            }));
+        }
+
+        public void OpenZoomLabSettings()
+        {
+            UIThreadExecutor.Execute((Action)(() =>
+            {
+                Ribbon.OnAction(new RibbonControl(ZoomLabText.SettingsTag));
             }));
         }
 
