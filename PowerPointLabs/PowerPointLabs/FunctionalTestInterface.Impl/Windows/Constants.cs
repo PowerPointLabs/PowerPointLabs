@@ -1,4 +1,4 @@
-﻿namespace PowerPointLabs.TestUtilWindows
+﻿namespace PowerPointLabs.FunctionalTestInterface.Windows
 {
     // You can't do this! Let's use classes and try again.
     //namespace AnimationLab

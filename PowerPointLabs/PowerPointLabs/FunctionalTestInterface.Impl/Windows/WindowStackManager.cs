@@ -4,12 +4,12 @@ using System.Windows;
 using System.Windows.Interop;
 using TestInterface.Windows;
 
-namespace Test.Util
+namespace PowerPointLabs.FunctionalTestInterface.Windows
 {
     [Serializable]
     public class WindowStackManager : MarshalByRefObject, IWindowStackManager
     {
-        private Stack<MarshalWindow> windowStack = new Stack<MarshalWindow>();
+        private Stack<IMarshalWindow> windowStack = new Stack<IMarshalWindow>();
 
         public void Setup()
         {
@@ -24,27 +24,27 @@ namespace Test.Util
             }
         }
 
-        public MarshalWindow Push(IntPtr handle)
+        public IMarshalWindow Push(IntPtr handle)
         {
             Window window = GetWindow(handle);
-            MarshalWindow marshalWindow = MarshalWindow.CreateInstance(window);
+            IMarshalWindow marshalWindow = MarshalWindow.CreateInstance(window);
             Push(marshalWindow);
             return marshalWindow;
         }
 
-        public void Push(MarshalWindow marshalWindow)
+        public void Push(IMarshalWindow marshalWindow)
         {
             windowStack.Push(marshalWindow);
         }
 
-        public MarshalWindow Peek()
+        public IMarshalWindow Peek()
         {
             return (windowStack.Count == 0) ? null : windowStack.Peek();
         }
 
         public void Pop(bool close = true)
         {
-            MarshalWindow w = windowStack.Pop();
+            IMarshalWindow w = windowStack.Pop();
             if (close)
             {
                 w?.Close();

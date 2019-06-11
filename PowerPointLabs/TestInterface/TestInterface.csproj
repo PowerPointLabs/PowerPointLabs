@@ -45,8 +45,8 @@
     <Compile Include="IShapesLabController.cs" />
     <Compile Include="ISlideData.cs" />
     <Compile Include="IWindowController.cs" />
+    <Compile Include="Windows\IMarshalWindow.cs" />
     <Compile Include="Windows\IWindowStackManager.cs" />
-    <Compile Include="Windows\MarshalWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
+
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.EffectsLab.Views;
+using PowerPointLabs.FunctionalTestInterface.Windows;
 using PowerPointLabs.Utils;
-using Test.Util;
-using Test.Util.Windows;
+
 using TestInterface;
 using TestInterface.Windows;
+
 using MessageBox = System.Windows.Forms.MessageBox;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;

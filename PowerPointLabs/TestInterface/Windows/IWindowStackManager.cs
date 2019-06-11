@@ -6,9 +6,9 @@ namespace TestInterface.Windows
     {
         void Setup();
         void Teardown();
-        MarshalWindow Push(IntPtr handle);
-        void Push(MarshalWindow marshalWindow);
-        MarshalWindow Peek();
+        IMarshalWindow Push(IntPtr handle);
+        void Push(IMarshalWindow marshalWindow);
+        IMarshalWindow Peek();
         void Pop(bool close = true);
     }
 }

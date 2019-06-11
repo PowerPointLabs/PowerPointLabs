@@ -5,16 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Interop;
+using System.Windows.Input;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.AnimationLab.Views;
 using PowerPointLabs.EffectsLab.Views;
-using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
+using PowerPointLabs.FunctionalTestInterface.Windows;
 using Test.Util;
-using Test.Util.Windows;
-using TestInterface;
 using TestInterface.Windows;
 
 namespace Test.FunctionalTest
@@ -49,7 +45,7 @@ namespace Test.FunctionalTest
                 IntPtr handle = window.Key;
                 string title = window.Value;
 
-                MarshalWindow w = PpOperations.WindowStackManager.Push(handle);
+                IMarshalWindow w = PpOperations.WindowStackManager.Push(handle);
                 if (w != null && w.IsType<SpotlightSettingsDialogBox>())
                 {
                     Assert.IsTrue(w.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
@@ -59,8 +55,8 @@ namespace Test.FunctionalTest
 
         private void SettingsAndSingleShapeSuccessfully()
         {
-            PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
-
+            //PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
+            PplFeatures.SetSpotlightProperties(1.0f, 10f, Color.FromArgb(0x00FF00));
             VerifySpotlightSettingsDialogBoxWPF();
 
             PpOperations.SelectSlide(4);
@@ -105,15 +101,40 @@ namespace Test.FunctionalTest
         private void VerifySpotlightSettingsDialogBoxWPF()
         {
             string spotlightSettingsWindowTitle = "Spotlight Settings";
-            MarshalWindow window = PpOperations.WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
+            IMarshalWindow window = PpOperations.WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
                 PplFeatures.OpenSpotlightDialog,
                 PpOperations.ProcessId,
                 spotlightSettingsWindowTitle);
 
-            Assert.IsTrue(window.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
-            // TODO: Complete remaining actions
-            // Set text using event
-            // Set fade combo box stuff
+            //Assert.IsTrue(window.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
+            window.LeftClick<SpotlightSettingsDialogBox>("spotlightTransparencyInput");
+            window.SelectAll<SpotlightSettingsDialogBox>("spotlightTransparencyInput");
+            window.TypeUsingKeyboard<SpotlightSettingsDialogBox>("spotlightTransparencyInput", "1");
+
+            // scrolling down doesn't work for a dropdown, it's not a combobox!
+            // use selection changed event instead?
+            // Looks like they use MouseUp for this one
+            //window.Focus<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
+            window.NativeClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
+            ThreadUtil.WaitFor(1000);
+            window.NativeClickList<SpotlightSettingsDialogBox>("softEdgesSelectionInput", 7);
+            //Assert.IsTrue(window.Focus<SpotlightSettingsDialogBox>("softEdgesSelectionInput"));
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            //window.PressKey<SpotlightSettingsDialogBox>("softEdgesSelectionInput", Key.Down);
+            window.LeftClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
+            ThreadUtil.WaitFor(1000);
+            window.NativeClick<SpotlightSettingsDialogBox>("okButton");
+            //window.LeftClick<SpotlightSettingsDialogBox>("okButton");
+            //Thread.Sleep(4000);
+
+            // MouseLeftButtonDownEvent
+            //window.LeftClick<SpotlightSettingsDialogBox>("spotlightColorRect");
+            //spotlightColorRect
         }
 
         [Obsolete]

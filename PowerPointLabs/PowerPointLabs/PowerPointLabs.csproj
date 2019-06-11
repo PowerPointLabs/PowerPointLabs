@@ -799,7 +799,8 @@
     <Compile Include="ShapesLab\ShapesLabUtils.cs" />
     <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
-    <Compile Include="TestUtilWindows\Constants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -930,9 +931,8 @@
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TestUtilWindows\WindowOpenTrigger.cs" />
-    <Compile Include="TestUtilWindows\WindowStackManager.cs" />
-    <Compile Include="TestUtilWindows\WindowUtil.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowStackManager.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowUtil.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />

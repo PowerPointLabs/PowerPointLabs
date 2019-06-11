@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Threading;
 using HWND = System.IntPtr;
 
-namespace Test.Util.Windows
+namespace PowerPointLabs.FunctionalTestInterface.Windows
 {
-
-    /// <summary>Contains functionality to get window handles.</summary>
+    /// <summary>
+    /// An utility class for retrieving windows and handles;
+    /// </summary>
     public static class WindowUtil
     {
         public static uint GetProcessId(int window)

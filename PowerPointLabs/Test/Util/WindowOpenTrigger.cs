@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
 
-namespace Test.Util.Windows
+namespace Test.Util
 {
     class WindowOpenTrigger : ManualResetEventSlim
     {
         public IntPtr resultingWindow;
-        public string name;
         public WindowOpenTrigger(bool initialState) : base(initialState)
         {
 
