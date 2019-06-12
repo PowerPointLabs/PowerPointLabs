@@ -79,6 +79,7 @@ namespace Test.Util
             window.NativeClick<ZoomLabSettingsDialogBox>(name);
         }
 
+        // A handler that gets the window handle of the first window with a matching Title and processId
         private static AutomationEventHandler GetOpenWindowHandler(uint processId, string name, WindowOpenTrigger trigger)
         {
             return (sender, e) =>
@@ -87,7 +88,8 @@ namespace Test.Util
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
                 if ((uint)element.Current.ProcessId == processId
-                         && (name == null || windowName == name))
+                         && (name == null || windowName == name)
+                         && !trigger.IsSet)
                 {
                     trigger.resultingWindow = handle;
                     trigger.Set();

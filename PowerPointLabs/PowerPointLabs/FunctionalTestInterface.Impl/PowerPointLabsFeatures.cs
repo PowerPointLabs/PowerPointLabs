@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
@@ -16,6 +13,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointLabsFeatures : MarshalByRefObject, IPowerPointLabsFeatures
     {
+        // TODO: Check the instances for any hard references
         public IColorsLabController ColorsLab
         {
             get { return ColorsLabController.Instance; }
@@ -119,6 +117,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        // Trying to deprecate
         public void SetSpotlightProperties(float newTransparency, float newSoftEdge, Color newColor)
         {
             UIThreadExecutor.Execute(() =>
@@ -177,6 +176,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
+        [Obsolete]
         public void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked)
         {
             UIThreadExecutor.Execute(() =>
