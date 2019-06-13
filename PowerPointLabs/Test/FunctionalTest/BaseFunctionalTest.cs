@@ -6,10 +6,13 @@ using System.Runtime.Remoting;
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using PowerPointLabs.FunctionalTestInterface.Windows;
+
 using Test.Base;
 using Test.Util;
 
 using TestInterface;
+using TestInterface.Windows;
 
 namespace Test.FunctionalTest
 {
@@ -23,6 +26,7 @@ namespace Test.FunctionalTest
         // ppl - PowerPointLabs
         protected static IPowerPointLabsFeatures PplFeatures;
         protected static IPowerPointOperations PpOperations;
+        protected static IWindowStackManager WindowStackManager;
 
         // To be implemented by downstream testing classes,
         // specify the name for the testing slide.
@@ -45,18 +49,15 @@ namespace Test.FunctionalTest
                 CloseActivePpInstance();
             }
 
-            OpenSlideForTest(GetTestingSlideName());
-
+            Process pptProcess = OpenSlideForTest(GetTestingSlideName());
+            SetupProcessAndWindowWatching(pptProcess.Id);
             ConnectPpl();
-            PpOperations.WindowStackManager.Setup();
-            WindowWatcher.Setup(PpOperations.ProcessId);
         }
 
         [TestCleanup]
         public void TearDown()
         {
-            WindowWatcher.Teardown();
-            PpOperations.WindowStackManager.Teardown();
+            TeardownWindowWatching();
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
                 if (!Directory.Exists(PathUtil.GetTestFailurePath()))
@@ -102,6 +103,13 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
+        private void SetupProcessAndWindowWatching(int processId)
+        {
+            WindowStackManager = new WindowStackManager();
+            WindowStackManager.Setup();
+            WindowWatcher.Setup(processId);
+        }
+
         private void ConnectPpl()
         {
             const int waitTime = 3000;
@@ -116,7 +124,7 @@ namespace Test.FunctionalTest
                 // otherwise keep trying to connect for some times
                 try
                 {
-                    IPowerPointLabsFT ftInstance = (IPowerPointLabsFT) Activator.GetObject(typeof (IPowerPointLabsFT),
+                    IPowerPointLabsFT ftInstance = (IPowerPointLabsFT)Activator.GetObject(typeof(IPowerPointLabsFT),
                         "ipc://PowerPointLabsFT/PowerPointLabsFT");
                     PplFeatures = ftInstance.GetFeatures();
                     PpOperations = ftInstance.GetOperations();
@@ -136,13 +144,20 @@ namespace Test.FunctionalTest
             PpOperations.EnterFunctionalTest();
 
             // activate the thread of presentation window
-            ThreadUtil.WaitFor(1500);
+            // Sometimes it takes very long for messag box to pop up
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
-                PpOperations.ActivatePresentation);
+                PpOperations.ActivatePresentation, null, 5, 10000);
         }
 
-        private void OpenSlideForTest(String slideName)
+        private void TeardownWindowWatching()
+        {
+            WindowWatcher.Teardown();
+            WindowStackManager.Teardown();
+            WindowStackManager = null;
+        }
+
+        private Process OpenSlideForTest(string slideName)
         {
             Process pptProcess = new Process
             {
@@ -153,6 +168,8 @@ namespace Test.FunctionalTest
                 }
             };
             pptProcess.Start();
+            pptProcess.WaitForInputIdle();
+            return pptProcess;
         }
 
         private void CloseActivePpInstance()

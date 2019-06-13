@@ -10,6 +10,7 @@ using PowerPointLabs.TextCollection;
 using Test.Util;
 
 using TestInterface;
+using TestInterface.Windows;
 
 namespace Test.FunctionalTest
 {
@@ -224,16 +225,12 @@ namespace Test.FunctionalTest
 
         private void CopyStyle(ISyncLabController syncLab, int[,] dialogItems)
         {
-            new Task(() =>
+            WindowWatcher.Push(syncLab.Dialog.Title, syncLab.Copy);
+            for (int i = 0; i < dialogItems.GetLength(0); i++)
             {
-                ThreadUtil.WaitFor(1000);
-                for (int i = 0; i < dialogItems.GetLength(0); i++)
-                {
-                    syncLab.DialogSelectItem(dialogItems[i, CategoryIndexPosition], dialogItems[i, FormatItemIndexPosition]);
-                }
-                syncLab.DialogClickOk();
-            }).Start();
-            syncLab.Copy();
+                syncLab.DialogSelectItem(dialogItems[i, CategoryIndexPosition], dialogItems[i, FormatItemIndexPosition]);
+            }
+            syncLab.DialogClickOk();
         }
 
         private void ExpectCopyButtonEnabled(ISyncLabController syncLab)

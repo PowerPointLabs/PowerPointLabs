@@ -27,7 +27,7 @@ namespace Test.FunctionalTest
 
         private void TestMultipleZoomConfig4()
         {
-            PplFeatures.SetZoomProperties(PpOperations, false, false);
+            PplFeatures.SetZoomProperties(WindowStackManager, false, false);
 
             PpOperations.SelectSlide(42);
             PpOperations.SelectShapes(new[] { "First ZoomShape", "Second ZoomShape", "Third ZoomShape", "Fourth ZoomShape" });
@@ -38,7 +38,7 @@ namespace Test.FunctionalTest
 
         private void TestMultipleZoomConfig3()
         {
-            PplFeatures.SetZoomProperties(PpOperations, false, true);
+            PplFeatures.SetZoomProperties(WindowStackManager, false, true);
 
             PpOperations.SelectSlide(30);
             PpOperations.SelectShapes(new[] { "First ZoomShape", "Second ZoomShape", "Third ZoomShape", "Fourth ZoomShape" });
@@ -49,7 +49,7 @@ namespace Test.FunctionalTest
 
         private void TestMultipleZoomConfig2()
         {
-            PplFeatures.SetZoomProperties(PpOperations, true, false);
+            PplFeatures.SetZoomProperties(WindowStackManager, true, false);
 
             PpOperations.SelectSlide(26);
             PpOperations.SelectShapes(new[] { "First ZoomShape", "Second ZoomShape", "Third ZoomShape", "Fourth ZoomShape" });
@@ -60,7 +60,7 @@ namespace Test.FunctionalTest
 
         private void TestMultipleZoomConfig1()
         {
-            PplFeatures.SetZoomProperties(PpOperations, true, true);
+            PplFeatures.SetZoomProperties(WindowStackManager, true, true);
 
             PpOperations.SelectSlide(14);
             PpOperations.SelectShapes(new[] { "First ZoomShape", "Second ZoomShape", "Third ZoomShape", "Fourth ZoomShape" });
@@ -71,7 +71,7 @@ namespace Test.FunctionalTest
 
         private void TestSingleZoomConfig2()
         {
-            PplFeatures.SetZoomProperties(PpOperations, false, false);
+            PplFeatures.SetZoomProperties(WindowStackManager, false, false);
 
             PpOperations.SelectSlide(10);
             PpOperations.SelectShape("First ZoomShape");
@@ -82,7 +82,7 @@ namespace Test.FunctionalTest
 
         private void TestSingleZoomConfig1()
         {
-            PplFeatures.SetZoomProperties(PpOperations, true, true);
+            PplFeatures.SetZoomProperties(WindowStackManager, true, true);
 
             PpOperations.SelectSlide(4);
             PpOperations.SelectShape("First ZoomShape");

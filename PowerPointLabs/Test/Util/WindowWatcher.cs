@@ -13,7 +13,7 @@ namespace Test.Util
         private static Dictionary<string, WindowOpenTrigger> windowTriggers;
         private static AutomationEventHandler handler;
 
-        public static void Setup(uint processId)
+        public static void Setup(int processId)
         {
             windowTriggers = new Dictionary<string, WindowOpenTrigger>();
             handler = GetOpenWindowHandler(processId);
@@ -47,12 +47,12 @@ namespace Test.Util
             return trigger.resultingWindow;
         }
 
-        private static AutomationEventHandler GetOpenWindowHandler(uint processId)
+        private static AutomationEventHandler GetOpenWindowHandler(int processId)
         {
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
-                if ((uint)element.Current.ProcessId != processId) { return; }
+                if (element.Current.ProcessId != processId) { return; }
 
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);

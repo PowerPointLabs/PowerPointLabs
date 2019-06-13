@@ -19,7 +19,7 @@ namespace Test.FunctionalTest
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
 
             PplFeatures.AutoNarrate();
-
+            ThreadUtil.WaitFor(5000);
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }

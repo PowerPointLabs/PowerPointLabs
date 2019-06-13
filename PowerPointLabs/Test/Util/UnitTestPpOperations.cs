@@ -31,10 +31,6 @@ namespace Test.Util
             set { _currentSlide = value; }
         }
 
-        public uint ProcessId => throw new NotImplementedException();
-
-        public IWindowStackManager WindowStackManager => throw new NotImplementedException();
-
         private ShapeRange _currentShape;
 
         public UnitTestPpOperations(Presentation pres, Application app)

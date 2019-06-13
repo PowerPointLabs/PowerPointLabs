@@ -26,14 +26,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointOperations : MarshalByRefObject, IPowerPointOperations
     {
-        public uint ProcessId => WindowUtil.GetProcessId(FunctionalTestExtensions.GetCurrentWindow().HWND);
-        public IWindowStackManager WindowStackManager { get; private set; }
-
-        public PowerPointOperations()
-        {
-            WindowStackManager = new WindowStackManager();
-        }
-
         public void MaximizeWindow()
         {
             FunctionalTestExtensions.GetCurrentWindow().WindowState = PpWindowState.ppWindowMaximized;

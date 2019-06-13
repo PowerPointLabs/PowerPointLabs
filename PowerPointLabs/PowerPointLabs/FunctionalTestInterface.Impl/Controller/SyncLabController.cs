@@ -4,10 +4,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.FunctionalTestInterface.Windows;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 
 using TestInterface;
+using TestInterface.Windows;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
@@ -21,6 +23,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
         private SyncPane _pane;
 
         private SyncLabController() { }
+
+        public IMarshalWindow Dialog => MarshalWindow.CreateInstance(_pane.SyncPaneWPF1.Dialog);
 
         public void OpenPane()
         {

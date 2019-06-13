@@ -10,9 +10,6 @@ namespace TestInterface
     public interface IPowerPointOperations
     {
         # region PowerPoint Application API
-        uint ProcessId { get; }
-        IWindowStackManager WindowStackManager { get; }
-
         void MaximizeWindow();
         void EnterFunctionalTest();
         void ExitFunctionalTest();

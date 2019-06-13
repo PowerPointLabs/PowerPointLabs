@@ -31,30 +31,6 @@ namespace Test.FunctionalTest
 
         }
 
-        [TestMethod]
-        [TestCategory("FT")]
-        // POC test, will be removed when things are stable
-        public void FT_OpenWindow()
-        {
-            Task t = new Task(PplFeatures.OpenSpotlightDialog);
-            t.Start();
-            Thread.Sleep(4000);
-            foreach (KeyValuePair<IntPtr, string> window in WindowUtil.GetOpenWindows(PpOperations.ProcessId))
-            {
-                IntPtr handle = window.Key;
-                string title = window.Value;
-
-                IMarshalWindow w = PpOperations.WindowStackManager.Push(handle);
-                if (w != null && w.IsType<SpotlightSettingsDialogBox>())
-                {
-                    Assert.IsTrue(w.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
-                } else
-                {
-                    PpOperations.WindowStackManager.Pop(false);
-                }
-            }
-        }
-
         private void SettingsAndSingleShapeSuccessfully()
         {
             // old code partially replaced
@@ -104,9 +80,8 @@ namespace Test.FunctionalTest
         private void VerifySpotlightSettingsDialogBoxWPF()
         {
             string spotlightSettingsWindowTitle = "Spotlight Settings";
-            IMarshalWindow window = PpOperations.WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
+            IMarshalWindow window = WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
                 PplFeatures.OpenSpotlightDialog,
-                PpOperations.ProcessId,
                 spotlightSettingsWindowTitle);
 
             window.LeftClick<SpotlightSettingsDialogBox>("spotlightTransparencyInput");

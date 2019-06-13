@@ -13,7 +13,7 @@ namespace Test.Util
     static class WPFWindowUtil
     {
         public static IMarshalWindow WaitAndPush<T>(this IWindowStackManager windowStackManager,
-            Action action, uint processId, string name, int timeout = 5000)
+            Action action, string name, int timeout = 5000)
             where T : DispatcherObject
         {
             IntPtr handle = WindowWatcher.Push(name, action, timeout);
@@ -36,13 +36,12 @@ namespace Test.Util
             MouseUtil.SendMouseLeftClick((int)p.X, (int)p.Y);
         }
 
-        public static void SetZoomProperties(this IPowerPointLabsFeatures PplFeatures, IPowerPointOperations PpOperations,
+        public static void SetZoomProperties(this IPowerPointLabsFeatures PplFeatures, IWindowStackManager windowStackManager,
             bool backgroundChecked, bool multiSlideChecked)
         {
             string zoomLabSettingsWindowTitle = "Zoom Lab Settings";
-            IMarshalWindow window = PpOperations.WindowStackManager.WaitAndPush<ZoomLabSettingsDialogBox>(
+            IMarshalWindow window = windowStackManager.WaitAndPush<ZoomLabSettingsDialogBox>(
                 PplFeatures.OpenZoomLabSettings,
-                PpOperations.ProcessId,
                 zoomLabSettingsWindowTitle);
             window.SetCheckBox<ZoomLabSettingsDialogBox>("slideBackgroundCheckbox", backgroundChecked);
             window.SetCheckBox<ZoomLabSettingsDialogBox>("separateSlidesCheckbox", multiSlideChecked);
@@ -57,26 +56,5 @@ namespace Test.Util
             }
             window.NativeClick<ZoomLabSettingsDialogBox>(name);
         }
-
-        // A handler that gets the window handle of the first window with a matching Title and processId
-        private static AutomationEventHandler GetOpenWindowHandler(uint processId, string name, WindowOpenTrigger trigger)
-        {
-            return (sender, e) =>
-            {
-                AutomationElement element = sender as AutomationElement;
-                if ((uint)element.Current.ProcessId != processId) { return; }
-
-                IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
-                string windowName = WindowUtil.GetWindowTitle(handle);
-
-                if ((name == null || windowName == name)
-                         && !trigger.IsSet)
-                {
-                    trigger.resultingWindow = handle;
-                    trigger.Set();
-                }
-            };
-        }
-
     }
 }
