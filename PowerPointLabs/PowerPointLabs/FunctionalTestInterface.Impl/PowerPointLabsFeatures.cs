@@ -13,7 +13,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointLabsFeatures : MarshalByRefObject, IPowerPointLabsFeatures
     {
-        // TODO: Check the instances for any hard references
         public IColorsLabController ColorsLab
         {
             get { return ColorsLabController.Instance; }

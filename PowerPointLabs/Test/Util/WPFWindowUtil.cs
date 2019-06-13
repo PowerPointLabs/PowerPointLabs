@@ -85,14 +85,19 @@ namespace Test.Util
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
+                if ((uint)element.Current.ProcessId != processId) { return; }
+
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
-                if ((uint)element.Current.ProcessId == processId
-                         && (name == null || windowName == name)
+
+                if ((name == null || windowName == name)
                          && !trigger.IsSet)
                 {
                     trigger.resultingWindow = handle;
                     trigger.Set();
+                } else
+                {
+
                 }
             };
         }
