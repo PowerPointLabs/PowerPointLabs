@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Threading;
@@ -14,34 +13,14 @@ namespace Test.Util
     static class WPFWindowUtil
     {
         public static IMarshalWindow WaitAndPush<T>(this IWindowStackManager windowStackManager,
-            Action action, uint processId, string name = null, int timeout = 5000)
+            Action action, uint processId, string name, int timeout = 5000)
             where T : DispatcherObject
         {
-            WindowOpenTrigger trigger = new WindowOpenTrigger(false);
-            AutomationEventHandler handler = GetOpenWindowHandler(processId, name, trigger);
-
-            Automation.AddAutomationEventHandler(
-                WindowPattern.WindowOpenedEvent,
-                AutomationElement.RootElement,
-                TreeScope.Children,
-                handler);
-
-            Task task = new Task(action);
-            task.Start();
-            trigger.Wait(timeout);
-
-            Automation.RemoveAutomationEventHandler(
-                WindowPattern.WindowOpenedEvent,
-                AutomationElement.RootElement,
-                handler);
-
-            Assert.IsTrue(trigger.IsSet, $"Timeout of {timeout}ms has been reached.");
-            Assert.AreNotEqual(trigger.resultingWindow, IntPtr.Zero, "Found null window handle");
-            IMarshalWindow window = windowStackManager.Push(trigger.resultingWindow);
+            IntPtr handle = WindowWatcher.Push(name, action, timeout);
+            IMarshalWindow window = windowStackManager.Push(handle);
             Assert.IsNotNull(window);
             Assert.IsTrue(window.IsType<T>());
             Assert.IsTrue(name == null || name == window.Title);
-            trigger.Dispose();
             return window;
         }
 
@@ -95,9 +74,6 @@ namespace Test.Util
                 {
                     trigger.resultingWindow = handle;
                     trigger.Set();
-                } else
-                {
-
                 }
             };
         }

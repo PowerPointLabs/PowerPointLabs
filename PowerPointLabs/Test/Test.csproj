@@ -216,6 +216,7 @@
     <Compile Include="Util\SlideUtil.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
     <Compile Include="Util\WindowOpenTrigger.cs" />
+    <Compile Include="Util\WindowWatcher.cs" />
     <Compile Include="Util\WPFWindowUtil.cs" />
   </ItemGroup>
   <ItemGroup>

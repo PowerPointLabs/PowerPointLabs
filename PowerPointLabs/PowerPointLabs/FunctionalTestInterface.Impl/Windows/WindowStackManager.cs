@@ -51,6 +51,12 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
             }
         }
 
+        public void CloseWindow(IntPtr handle)
+        {
+            Window window = GetWindow(handle);
+            window.Close();
+        }
+
         private Window GetWindow(IntPtr handle)
         {
             HwndSource hwndSource = HwndSource.FromHwnd(handle);

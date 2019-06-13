@@ -48,6 +48,9 @@ namespace Test.FunctionalTest
                 if (w != null && w.IsType<SpotlightSettingsDialogBox>())
                 {
                     Assert.IsTrue(w.Focus<SpotlightSettingsDialogBox>("spotlightTransparencyInput"));
+                } else
+                {
+                    PpOperations.WindowStackManager.Pop(false);
                 }
             }
         }

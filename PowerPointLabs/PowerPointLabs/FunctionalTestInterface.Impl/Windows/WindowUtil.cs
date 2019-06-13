@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using HWND = System.IntPtr;
@@ -10,6 +11,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
     /// </summary>
     public static class WindowUtil
     {
+        private const uint WM_CLOSE = 0x0010;
+
+        public static void CloseWindow(HWND hwnd)
+        {
+            SendMessage(hwnd, WM_CLOSE, HWND.Zero, HWND.Zero);
+        }
+
         public static uint GetProcessId(int window)
         {
             return GetProcessId(new HWND(window));
@@ -93,5 +101,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
 
         [DllImport("USER32.DLL")]
         private static extern HWND GetShellWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern HWND SendMessage(HWND hWnd, uint msg, HWND wParam, HWND lParam);
     }
 }

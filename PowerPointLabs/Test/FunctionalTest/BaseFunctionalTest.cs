@@ -49,11 +49,13 @@ namespace Test.FunctionalTest
 
             ConnectPpl();
             PpOperations.WindowStackManager.Setup();
+            WindowWatcher.Setup(PpOperations.ProcessId);
         }
 
         [TestCleanup]
         public void TearDown()
         {
+            WindowWatcher.Teardown();
             PpOperations.WindowStackManager.Teardown();
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
