@@ -49,7 +49,7 @@ namespace Test.Util
                 // this API is a bit iffy, not sure why unable to find sometimes
                 dlgHandle = NativeUtil.GetDlgItem(msgBoxHandle, 0xFFFF);
                 if (dlgHandle != IntPtr.Zero) { break; }
-                ThreadUtil.WaitFor(100);
+                ThreadUtil.WaitFor(1000);
             }
             Assert.AreNotEqual(IntPtr.Zero, dlgHandle, "Failed to find label in the messagebox.");
 

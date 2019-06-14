@@ -5,7 +5,7 @@ using System.Runtime.Remoting;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs;
 using PowerPointLabs.FunctionalTestInterface.Windows;
 
 using Test.Base;
@@ -49,8 +49,9 @@ namespace Test.FunctionalTest
                 CloseActivePpInstance();
             }
 
-            Process pptProcess = OpenSlideForTest(GetTestingSlideName());
-            SetupProcessAndWindowWatching(pptProcess.Id);
+            Process pptProcess = GetChildProcess(GetTestingSlideName());
+            Process mainProcess = GetMainProcess(pptProcess);
+            SetupProcessAndWindowWatching(mainProcess, pptProcess);
             ConnectPpl();
         }
 
@@ -58,18 +59,18 @@ namespace Test.FunctionalTest
         public void TearDown()
         {
             TeardownWindowWatching();
-            if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
-            {
-                if (!Directory.Exists(PathUtil.GetTestFailurePath()))
-                {
-                    Directory.CreateDirectory(PathUtil.GetTestFailurePath());
-                }
                 PpOperations.SavePresentationAs(
                     PathUtil.GetTestFailurePresentationPath(
                         TestContext.TestName + "_" +
                         GetTestingSlideName()));
-            }
-            PpOperations.ClosePresentation();
+                if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
+                {
+                    if (!Directory.Exists(PathUtil.GetTestFailurePath()))
+                    {
+                        Directory.CreateDirectory(PathUtil.GetTestFailurePath());
+                    }
+                }
+                PpOperations.ClosePresentation();
         }
 
         protected static void CheckIfClipboardIsRestored(Action action, int actualSlideNum, string shapeNameToBeCopied, int expSlideNum, string expShapeNameToDelete, string expCopiedShapeName)
@@ -103,11 +104,12 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
-        private void SetupProcessAndWindowWatching(int processId)
+        private void SetupProcessAndWindowWatching(Process process, Process childProcess)
         {
             WindowStackManager = new WindowStackManager();
             WindowStackManager.Setup();
-            WindowWatcher.Setup(processId);
+            WindowWatcher.Setup(process, childProcess, GetTestingSlideName().After("\\") + " - PowerPoint");
+            WindowWatcher.AddToWhitelist("PowerPointLabs FT");
         }
 
         private void ConnectPpl()
@@ -148,6 +150,7 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation, null, 5, 10000);
+            //ThreadUtil.WaitFor(1000);
         }
 
         private void TeardownWindowWatching()
@@ -157,7 +160,19 @@ namespace Test.FunctionalTest
             WindowStackManager = null;
         }
 
-        private Process OpenSlideForTest(string slideName)
+        private Process GetMainProcess(Process process)
+        {
+            Process[] p = Process.GetProcessesByName("POWERPNT");
+            if (p.Length == 0) { return process; }
+            for (int i = 1; i < p.Length; i++)
+            {
+                p[i].CloseMainWindow();
+                p[i].WaitForExit();
+            }
+            return p[0]; // assume this is the main process
+        }
+
+        private Process GetChildProcess(string slideName)
         {
             Process pptProcess = new Process
             {
@@ -167,8 +182,6 @@ namespace Test.FunctionalTest
                     WorkingDirectory = PathUtil.GetDocTestPath()
                 }
             };
-            pptProcess.Start();
-            pptProcess.WaitForInputIdle();
             return pptProcess;
         }
 

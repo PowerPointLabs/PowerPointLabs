@@ -24,8 +24,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         private SyncLabController() { }
 
-        public IMarshalWindow Dialog => MarshalWindow.CreateInstance(_pane.SyncPaneWPF1.Dialog);
-
         public void OpenPane()
         {
             UIThreadExecutor.Execute((Action)(() =>

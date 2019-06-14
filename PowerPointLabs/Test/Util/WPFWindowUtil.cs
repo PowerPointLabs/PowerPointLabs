@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Threading;
@@ -12,6 +13,12 @@ namespace Test.Util
 {
     static class WPFWindowUtil
     {
+        public static string After(this string original, string searchTerm)
+        {
+            int index;
+            return (index = original.LastIndexOf(searchTerm)) != -1 ? original.Substring(index + searchTerm.Length) : "";
+        }
+
         public static IMarshalWindow WaitAndPush<T>(this IWindowStackManager windowStackManager,
             Action action, string name, int timeout = 5000)
             where T : DispatcherObject
@@ -55,6 +62,26 @@ namespace Test.Util
                 return;
             }
             window.NativeClick<ZoomLabSettingsDialogBox>(name);
+        }
+
+        public static bool IsRunning(this Process process)
+        {
+            if (process == null)
+                throw new ArgumentNullException("process");
+
+            try
+            {
+                Process.GetProcessById(process.Id);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

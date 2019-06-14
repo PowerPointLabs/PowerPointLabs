@@ -4,8 +4,6 @@ namespace TestInterface
 {
     public interface ISyncLabController
     {
-        IMarshalWindow Dialog { get; }
-
         void OpenPane();
 
         void Copy();
