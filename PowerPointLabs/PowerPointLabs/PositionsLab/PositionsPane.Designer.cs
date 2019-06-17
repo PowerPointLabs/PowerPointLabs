@@ -4,7 +4,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs
 {
-    partial class PositionsPane: IWPFContainer
+    partial class PositionsPane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.

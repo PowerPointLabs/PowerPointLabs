@@ -4,7 +4,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
 {
-    partial class ELearningLabTaskpane: IWPFContainer
+    partial class ELearningLabTaskpane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.

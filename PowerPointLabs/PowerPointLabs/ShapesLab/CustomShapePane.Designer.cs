@@ -7,7 +7,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ShapesLab
 {
-    partial class CustomShapePane: IWPFContainer
+    partial class CustomShapePane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.

@@ -4,7 +4,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.Views
 {
-    partial class SyncPane: IWPFContainer
+    partial class SyncPane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.

@@ -30,13 +30,15 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         {
             get
             {
-                CheckPresentationChanged();
-                if (_tempPath == null) { throw new NullReferenceException("TempStorage has not been initialized! Call Setup before using."); }
+                InitStorageIfPresentationChanged();
+                if (_tempPath == null) {
+                    throw new NullReferenceException("TempStorage has not been initialized! Call Setup before using.");
+                }
                 return _tempPath;
             }
         }
 
-        private void CheckPresentationChanged()
+        private void InitStorageIfPresentationChanged()
         {
             Presentation pres = Globals.ThisAddIn.Application.ActivePresentation;
             if (pres == _currentPresentation)
@@ -73,13 +75,13 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
 
             // in case of embedded slides, we need to regulate the file name and full name
             RegulatePresentationName(pres, tempPath, ref presName, ref presFullName);
+            if (IsEmptyFile(presFullName))
+            {
+                return;
+            }
 
             try
             {
-                if (IsEmptyFile(presFullName))
-                {
-                    return;
-                }
                 // before we do everything, check if there's an undelete old zip file
                 // due to some error
                 OverwriteFileUsing(presFullName, zipFullPath);
@@ -132,15 +134,16 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             // to regulate these fields properly.
 
             presName = presName.AppendIfAbsent(fileSuffix);
-
-            if (tempPath != null)
+            if (tempPath == null)
             {
-                // every time when recorder pane is open,
-                // save this presentation's copy, which will be used
-                // to load audio files later
-                pres.SaveCopyAs(tempPath + presName);
-                presFullName = tempPath + presName;
+                return;
             }
+
+            // every time when recorder pane is open,
+            // save this presentation's copy, which will be used
+            // to load audio files later
+            pres.SaveCopyAs(tempPath + presName);
+            presFullName = tempPath + presName;
         }
 
         private static void ExtractMediaFiles(string zipFullPath, string tempPath)
@@ -156,12 +159,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
                 {
                     string name = Path.GetFileName(entry.FilenameInZip);
 
-                    if (name == null)
-                    {
-                        continue;
-                    }
-
-                    if (name.Contains(".wav") ||
+                    if (name?.Contains(".wav") ?? false ||
                         regex.IsMatch(name))
                     {
                         zip.ExtractFile(entry, tempPath + name);

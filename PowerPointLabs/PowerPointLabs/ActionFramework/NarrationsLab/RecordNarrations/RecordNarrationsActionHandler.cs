@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 
@@ -15,6 +16,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
     {
         protected override void ExecuteAction(string ribbonId)
         {
+            //TODO: This needs to improved to stop using global variables
             Presentation currentPresentation = this.GetCurrentPresentation().Presentation;
             if (!this.GetRibbonUi().IsValidPresentation(currentPresentation))
             {
@@ -22,13 +24,13 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
 
             this.RegisterTaskPane(typeof(RecorderTaskPane), NarrationsLabText.RecManagementPanelTitle,
-                null, null);
+                TaskPaneVisibleValueChangedEventHandler, null);
 
             CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
 
             // if currently the pane is hidden, show the pane
-            if (recorder != null && !recorderPane.Visible)
+            if (recorder?.Visible ?? false)
             {
                 // fire the pane visble change event
                 recorderPane.Visible = true;
@@ -41,12 +43,6 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
         {
             CustomTaskPane recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null)
-            {
-                return;
-            }
-
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
 
             // trigger close form event when closing hide the pane
@@ -54,8 +50,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             {
                 recorder.RecorderPaneClosing();
                 // remove recorder pane and force it to reload when next time open
-                // TODO: Callback to remove task pane from thisaddin, register event.
-                Globals.ThisAddIn.RemoveTaskPane(Globals.ThisAddIn.Application.ActiveWindow, typeof(RecorderTaskPane));
+                Globals.ThisAddIn.RemoveRecorderTaskPane();
             }
         }
     }

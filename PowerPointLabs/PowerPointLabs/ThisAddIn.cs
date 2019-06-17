@@ -334,8 +334,12 @@ namespace PowerPointLabs
             return taskPane;
         }
 
-        // TODO: Change back to private, RecordNarrationsHandler requires it.
-        public void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
+        public void RemoveRecorderTaskPane()
+        {
+            RemoveTaskPane(Application.ActiveWindow, typeof(RecorderTaskPane));
+        }
+
+        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
         {
             if (!_documentPaneMapper.ContainsKey(window))
             {

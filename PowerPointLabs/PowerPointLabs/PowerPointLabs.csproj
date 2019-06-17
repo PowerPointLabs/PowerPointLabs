@@ -935,7 +935,6 @@
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="ColorTheme\ThemeManager.cs" />
-    <Compile Include="Utils\TitledWindow.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>

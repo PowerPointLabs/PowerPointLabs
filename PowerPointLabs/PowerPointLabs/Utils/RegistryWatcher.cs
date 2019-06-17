@@ -2,6 +2,7 @@
 using System.Management;
 using System.Security.Principal;
 using Microsoft.Win32;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.Utils
 {
@@ -90,9 +91,9 @@ namespace PowerPointLabs.Utils
                 }
                 ValueChanged?.Invoke(this, key);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Logger.LogException(e, nameof(Notify));
             }
         }
     }

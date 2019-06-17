@@ -3,7 +3,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.TimerLab
 {
-    partial class TimerPane: IWPFContainer
+    partial class TimerPane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.

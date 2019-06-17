@@ -3,7 +3,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ColorsLab
 {
-    partial class ColorsLabPane: IWPFContainer
+    partial class ColorsLabPane: IWpfContainer
     {
         /// <summary>
         /// Required designer variable.

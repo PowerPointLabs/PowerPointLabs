@@ -3,7 +3,7 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ResizeLab
 {
-    partial class ResizeLabPane: IWPFContainer
+    partial class ResizeLabPane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.

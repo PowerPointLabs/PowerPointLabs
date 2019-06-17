@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using Application = Microsoft.Office.Interop.PowerPoint.Application;
@@ -106,7 +106,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                 DocumentWindow activeWindow = Globals.ThisAddIn.Application.ActiveWindow;
 
                 return Globals.ThisAddIn.RegisterTaskPane(taskPaneControl, taskPaneTitle, activeWindow,
-                    (control is IWPFContainer) ? ((IWPFContainer)control).WpfControl : null,
+                    control.GetIWpfControl(),
                     visibleChangeEventHandler, dockPositionChangeEventHandler);
             }
             catch (Exception e)

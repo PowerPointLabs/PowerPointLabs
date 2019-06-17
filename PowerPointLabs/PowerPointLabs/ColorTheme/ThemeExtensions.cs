@@ -4,12 +4,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+
 using PowerPointLabs.ELearningLab.Views;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ColorThemes.Extensions
 {
@@ -88,8 +89,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     f.ResubscribeColorChangedHandler(sender, theme);
                     break;
                 case Window w:
-                    //Uri uriID = new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml", System.UriKind.Relative); // Relative
-                    //w.Resources.MergedDictionaries.Remove((ResourceDictionary)Application.LoadComponent(uriID));
                     w.Background = new SolidColorBrush(theme.background);
                     w.Foreground = new SolidColorBrush(theme.foreground);
                     w.UpdateColors(sender, theme);
@@ -118,6 +117,11 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 default:
                     break;
             }
+        }
+
+        public static Control GetIWpfControl(this object control)
+        {
+            return (control as IWpfContainer)?.WpfControl;
         }
 
         // hotfix for combobox for AudioSettingsDialogWindow

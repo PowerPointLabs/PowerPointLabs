@@ -10,7 +10,7 @@ namespace PowerPointLabs.Utils
     /// <summary>
     /// Adapter interface for adaptive theme colors.
     /// </summary>
-    public interface IWPFContainer
+    public interface IWpfContainer
     {
         Control WpfControl { get; }
     }
