@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using static PPExtraEventHelper.Native;
 using HWND = System.IntPtr;
 
 namespace PowerPointLabs.FunctionalTestInterface.Windows
@@ -83,31 +80,6 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
             GetWindowText(hWnd, builder, length + 1);
             return builder.ToString();
         }
-
-        internal static HWND SubscribeActiveWindowChanged(WinEventDelegate callback)
-        {
-            HWND windowEventHook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND,
-                EVENT_SYSTEM_FOREGROUND, HWND.Zero,
-                callback, 0, 0,
-                WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS);
-            if (windowEventHook == HWND.Zero)
-            {
-                throw new Win32Exception(Marshal.GetLastWin32Error());
-            }
-            return windowEventHook;
-        }
-
-        internal static void UnsubscribeActiveWindowChanged(HWND hwnd)
-        {
-            UnhookWinEvent(hwnd);
-        }
-
-        private const int WINEVENT_INCONTEXT = 4;
-        private const int WINEVENT_OUTOFCONTEXT = 0;
-        private const int WINEVENT_SKIPOWNPROCESS = 2;
-        private const int WINEVENT_SKIPOWNTHREAD = 1;
-
-        private const int EVENT_SYSTEM_FOREGROUND = 3;
 
         private delegate bool EnumWindowsProc(HWND hWnd, int lParam);
 

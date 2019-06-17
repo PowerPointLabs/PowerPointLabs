@@ -89,6 +89,7 @@ namespace Test.FunctionalTest
             window.TypeUsingKeyboard<SpotlightSettingsDialogBox>("spotlightTransparencyInput", "1");
 
             // scrolling down doesn't work for a dropdown, it's not a combobox!
+            ThreadUtil.WaitFor(1000);
             window.NativeClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
             ThreadUtil.WaitFor(1000);
             window.NativeClickList<SpotlightSettingsDialogBox>("softEdgesSelectionInput", 7);

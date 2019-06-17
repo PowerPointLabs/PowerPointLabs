@@ -5,7 +5,6 @@ using System.Runtime.Remoting;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.FunctionalTestInterface.Windows;
 
 using Test.Base;
 using Test.Util;
@@ -105,8 +104,6 @@ namespace Test.FunctionalTest
 
         private void SetupProcessAndWindowWatching(Process process, Process childProcess)
         {
-            WindowStackManager = new WindowStackManager();
-            WindowStackManager.Setup();
             string startWindowName = GetTestingSlideName().After("\\") + " - PowerPoint";
             WindowWatcher.Setup(process, childProcess, startWindowName);
             WindowWatcher.AddToWhitelist("PowerPointLabs FT");
@@ -120,7 +117,7 @@ namespace Test.FunctionalTest
             while (retryCount > 0)
             {
                 // if already connected, break
-                if (PplFeatures != null && PpOperations != null)
+                if (PplFeatures != null && PpOperations != null && WindowStackManager != null)
                 {
                     break;
                 }
@@ -131,6 +128,8 @@ namespace Test.FunctionalTest
                         "ipc://PowerPointLabsFT/PowerPointLabsFT");
                     PplFeatures = ftInstance.GetFeatures();
                     PpOperations = ftInstance.GetOperations();
+                    WindowStackManager = ftInstance.GetWindowStackManager();
+                    WindowStackManager.Setup();
                     break;
                 }
                 catch (RemotingException)
@@ -157,7 +156,6 @@ namespace Test.FunctionalTest
         {
             WindowWatcher.Teardown();
             WindowStackManager.Teardown();
-            WindowStackManager = null;
         }
 
         private Process GetMainProcess(Process process)
