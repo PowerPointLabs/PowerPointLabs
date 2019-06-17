@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.FunctionalTestInterface.Windows;
+using static PowerPointLabs.FunctionalTestInterface.Windows.WindowUtil;
+using static PPExtraEventHelper.Native;
 
 namespace Test.Util
 {
@@ -30,16 +32,19 @@ namespace Test.Util
         {
             if (process.IsRunning())
             {
-                WaitForPresentation(process.Id, childProcess, startWindowName, timeout);
+                //WaitForPresentation(process, childProcess, startWindowName, timeout);
             }
             else
             {
-                WaitForStartup(process, startWindowName, timeout);
+                //WaitForStartup(process, startWindowName, timeout);
             }
-
             windowTriggers = new Dictionary<string, WindowOpenTrigger>();
             whitelist = new HashSet<string>();
             whitelistInstances = new SortedDictionary<string, WindowOpenTrigger>();
+            AddToWhitelist(startWindowName);
+            childProcess.Start();
+            childProcess.WaitForInputIdle();
+
             handler = GetOpenWindowHandler(process.Id);
             Automation.AddAutomationEventHandler(
                 WindowPattern.WindowOpenedEvent,
@@ -79,21 +84,61 @@ namespace Test.Util
             return trigger.resultingWindow;
         }
 
-        private static void WaitForPresentation(int processId, Process childProcess, string startWindowName, int timeout)
+        private static void WaitForPresentation(Process process, Process childProcess, string startWindowName, int timeout)
         {
             WindowOpenTrigger trigger = new WindowOpenTrigger(false);
-            AutomationPropertyChangedEventHandler handler = GetPresentationOpenHandler(processId, startWindowName, trigger);
+            AutomationElement element = AutomationElement.FromHandle(process.MainWindowHandle);
+            Assert.IsFalse(process.MainWindowTitle == startWindowName, "Please close PPT and restart the test");
+            AutomationPropertyChangedEventHandler handler = GetWindowNameChangedHandler(startWindowName, trigger);
             Automation.AddAutomationPropertyChangedEventHandler(
-                AutomationElement.RootElement,
-                TreeScope.Descendants,
+                element,
+                TreeScope.Element,
                 handler,
                 AutomationElement.NameProperty);
-            childProcess.Start(); // somehow there is no window title being changed
+            childProcess.Start();
             trigger.Wait(timeout);
             Automation.RemoveAutomationPropertyChangedEventHandler(
-                AutomationElement.RootElement,
+                element,
                 handler);
-            Assert.IsTrue(trigger.IsSet, $"Failed to load presentation in {timeout}ms.");
+            MessageBox.Show(process.MainWindowTitle);
+            Assert.IsTrue(trigger.IsSet, $"Failed to find starting window {timeout}ms.");
+            //WindowOpenTrigger openTrigger = new WindowOpenTrigger(false);
+
+            //IntPtr handle = WindowUtil.SubscribeActiveWindowChanged(GetWindowChangedHandler(startWindowName, openTrigger));
+            //childProcess.Start();
+            //openTrigger.Wait(timeout);
+            //WindowUtil.UnsubscribeActiveWindowChanged(handle);
+            //Assert.IsTrue(openTrigger.IsSet, $"Failed to find starting window {timeout}ms.");
+        }
+
+        private static AutomationPropertyChangedEventHandler GetWindowNameChangedHandler(string startWindowName, WindowOpenTrigger trigger)
+        {
+            return (sender, e) =>
+            {
+                AutomationElement element = sender as AutomationElement;
+
+                IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
+                string windowName = WindowUtil.GetWindowTitle(handle);
+                MessageBox.Show(windowName);
+
+                if (windowName == startWindowName)
+                {
+                    trigger.runtimeId = element.GetRuntimeId();
+                    trigger.Set();
+                }
+            };
+        }
+
+        private static WinEventDelegate GetWindowChangedHandler(string windowTitle, WindowOpenTrigger trigger)
+        {
+            return (IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime) =>
+            {
+                if (WindowUtil.GetWindowTitle(hwnd) == windowTitle)
+                {
+                    trigger.resultingWindow = hwnd;
+                    trigger.Set();
+                }
+            };
         }
 
         private static void WaitForStartup(Process process, string startWindowName, int timeout)
@@ -116,47 +161,11 @@ namespace Test.Util
             Assert.IsTrue(openTrigger.IsSet, $"Failed to find starting window {timeout}ms.");
         }
 
-        private static void WaitForStartupOld(Process process, string loaderName, int timeout)
-        {
-            if (process.IsRunning()) return;
-
-            WindowOpenTrigger openTrigger = new WindowOpenTrigger(false);
-            AutomationEventHandler openHandler = GetLoadWindowOpenHandler(process, loaderName, openTrigger);
-            Automation.AddAutomationEventHandler(
-                WindowPattern.WindowOpenedEvent,
-                AutomationElement.RootElement,
-                TreeScope.Descendants,
-                openHandler);
-
-            process.Start();
-
-            openTrigger.Wait(timeout);
-            Automation.RemoveAutomationEventHandler(
-                WindowPattern.WindowOpenedEvent,
-                AutomationElement.RootElement,
-                openHandler);
-            Assert.IsTrue(openTrigger.IsSet, $"Failed to find loader in {timeout}ms. {lastOpenWindowName}");
-            openTrigger.Reset();
-            AutomationEventHandler closedHandler = GetLoadWindowClosedHandler(openTrigger);
-            Automation.AddAutomationEventHandler(
-                WindowPattern.WindowClosedEvent,
-                AutomationElement.RootElement,
-                TreeScope.Subtree,
-                closedHandler);
-            openTrigger.Wait(timeout);
-            Automation.RemoveAutomationEventHandler(
-                WindowPattern.WindowClosedEvent,
-                AutomationElement.RootElement,
-                closedHandler);
-            Assert.IsTrue(openTrigger.IsSet, $"Loader failed to close in {timeout}ms.");
-        }
-
         private static AutomationPropertyChangedEventHandler GetPresentationOpenHandler(int processId, string startWindowName, WindowOpenTrigger trigger)
         {
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
-                //if (element.Current.ProcessId != processId) { return; }
 
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
@@ -189,45 +198,6 @@ namespace Test.Util
             };
         }
 
-        private static AutomationEventHandler GetLoadWindowOpenHandler(Process process, string loaderName, WindowOpenTrigger trigger)
-        {
-            return (sender, e) =>
-            {
-                AutomationElement element = sender as AutomationElement;
-                try
-                {
-                    if (element.Current.ProcessId != process.Id) { return; }
-                }
-                catch (Exception)
-                {
-                    // for now dont do anything
-                    return;
-                }
-                IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
-                string windowName = WindowUtil.GetWindowTitle(handle);
-                //MessageBox.Show(windowName);
-                lastOpenWindowName = windowName;
-
-                if (windowName == loaderName)
-                {
-                    trigger.runtimeId = element.GetRuntimeId();
-                    trigger.Set();
-                }
-            };
-        }
-
-        private static AutomationEventHandler GetLoadWindowClosedHandler(WindowOpenTrigger trigger)
-        {
-            return (sender, e) =>
-            {
-                WindowClosedEventArgs windowEventArgs = (WindowClosedEventArgs)e;
-                if (Automation.Compare(trigger.runtimeId, windowEventArgs.GetRuntimeId()))
-                {
-                    trigger.Set();
-                }
-            };
-        }
-
         private static AutomationEventHandler GetOpenWindowHandler(int processId)
         {
             return (sender, e) =>
@@ -238,12 +208,16 @@ namespace Test.Util
 
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
+                if (windowName == "")
+                {
+                    return;
+                }
                 lastOpenWindowName = windowName;
 
                 WindowOpenTrigger resultTrigger = GetWindowTrigger(windowName);
                 if (resultTrigger == null)
                 {
-                    WindowUtil.CloseWindow(handle);
+                    //WindowUtil.CloseWindow(handle);
                     return;
                 }
                 resultTrigger.resultingWindow = handle;

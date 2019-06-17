@@ -5,7 +5,6 @@ using System.Runtime.Remoting;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs;
 using PowerPointLabs.FunctionalTestInterface.Windows;
 
 using Test.Base;
@@ -108,8 +107,10 @@ namespace Test.FunctionalTest
         {
             WindowStackManager = new WindowStackManager();
             WindowStackManager.Setup();
-            WindowWatcher.Setup(process, childProcess, GetTestingSlideName().After("\\") + " - PowerPoint");
+            string startWindowName = GetTestingSlideName().After("\\") + " - PowerPoint";
+            WindowWatcher.Setup(process, childProcess, startWindowName);
             WindowWatcher.AddToWhitelist("PowerPointLabs FT");
+            WindowWatcher.AddToWhitelist("Loading...");
         }
 
         private void ConnectPpl()
@@ -150,7 +151,6 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation, null, 5, 10000);
-            //ThreadUtil.WaitFor(1000);
         }
 
         private void TeardownWindowWatching()

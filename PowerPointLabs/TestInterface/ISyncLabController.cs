@@ -1,6 +1,4 @@
-﻿using TestInterface.Windows;
-
-namespace TestInterface
+﻿namespace TestInterface
 {
     public interface ISyncLabController
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -18,11 +17,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
     class ActionFrameworkExtensions
     {
 #pragma warning disable 0618
-        public static void WaitForAtLeastOnePresentation()
-        {
-            //Globals.ThisAddIn.
-        }
-
         public static Application GetApplication()
         {
             return Globals.ThisAddIn.Application;

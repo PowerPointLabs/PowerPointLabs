@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.FunctionalTestInterface.Windows;
 using PowerPointLabs.ZoomLab.Views;
 using TestInterface;
 using TestInterface.Windows;

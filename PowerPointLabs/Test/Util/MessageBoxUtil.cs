@@ -14,9 +14,6 @@ namespace Test.Util
         public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action messageBoxTrigger,
             string buttonNameToClick = null, int retryCount = 5, int waitTime = 5000)
         {
-            //Task expect = ExpectMessageBoxWillPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
-            //messageBoxTrigger.Invoke();
-            //VerifyExpectation(expect, retryCount, waitTime);
             IntPtr msgBoxHandle = WindowWatcher.Push(title, messageBoxTrigger, waitTime);
             AssertMessageboxContent(msgBoxHandle, retryCount, expContent);
             CloseMessageBox(msgBoxHandle, buttonNameToClick);
@@ -25,9 +22,6 @@ namespace Test.Util
         public static void ExpectMessageBoxWillNotPopUp(string title, string expContent, Action messageBoxTrigger,
             string buttonNameToClick = null, int retryCount = 5, int waitTime = 5000)
         {
-            //Task expect = ExpectMessageBoxWillNotPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
-            //messageBoxTrigger.Invoke();
-            //VerifyExpectation(expect, retryCount, waitTime);
             try
             {
                 IntPtr msgBoxHandle = WindowWatcher.Push(title, messageBoxTrigger, waitTime);
@@ -35,7 +29,7 @@ namespace Test.Util
             }
             catch (AssertFailedException)
             {
-                // discard error
+                // discard error since it is reversed
                 return;
             }
             Assert.Fail("Message box should not open.");
