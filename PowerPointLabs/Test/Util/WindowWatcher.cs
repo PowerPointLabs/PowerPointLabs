@@ -88,7 +88,7 @@ namespace Test.Util
                 TreeScope.Descendants,
                 handler,
                 AutomationElement.NameProperty);
-            childProcess.Start();
+            childProcess.Start(); // somehow there is no window title being changed
             trigger.Wait(timeout);
             Automation.RemoveAutomationPropertyChangedEventHandler(
                 AutomationElement.RootElement,
@@ -156,10 +156,11 @@ namespace Test.Util
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
-                if (element.Current.ProcessId != processId) { return; }
+                //if (element.Current.ProcessId != processId) { return; }
 
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
+                MessageBox.Show(windowName);
 
                 if (windowName == startWindowName)
                 {
