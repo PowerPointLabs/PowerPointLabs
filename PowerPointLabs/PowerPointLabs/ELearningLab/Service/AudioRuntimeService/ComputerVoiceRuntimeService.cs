@@ -16,6 +16,7 @@ using PowerPointLabs.AudioMisc;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -89,7 +90,7 @@ namespace PowerPointLabs.ELearningLab.Service
             if (AudioSettingService.selectedVoiceType == AudioGenerator.VoiceType.AzureVoice
                 && AzureAccount.GetInstance().IsEmpty())
             {
-                MessageBox.Show("Invalid user account. Please log in again.");
+                WPFMessageBox.Show("Invalid user account. Please log in again.");
                 throw new Exception("Invalid user account.");
             }
 
@@ -296,7 +297,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
         private static void ErrorParsingText()
         {
-            MessageBox.Show(TextCollection.NarrationsLabText.RecorderErrorCannotParseText,
+            WPFMessageBox.Show(TextCollection.NarrationsLabText.RecorderErrorCannotParseText,
                             TextCollection.NarrationsLabText.RecorderErrorCannotParseTextTitle,
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);

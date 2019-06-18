@@ -21,7 +21,7 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using MenuItem = System.Windows.Controls.MenuItem;
-using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBox = PowerPointLabs.Utils.WPFMessageBox;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.ShapesLab.Views
@@ -106,7 +106,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (customShapePane == null)
             {
-                MessageBox.Show(ShapesLabText.ErrorShapePaneNotOpened);
+                WPFMessageBox.Show(ShapesLabText.ErrorShapePaneNotOpened);
                 return;
             }
 
@@ -147,15 +147,14 @@ namespace PowerPointLabs.ShapesLab.Views
             // first of all we check if the shape gallery has been opened correctly
             if (!addIn.ShapePresentation.Opened)
             {
-                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                WPFMessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
 
             // Check this so that it is the same requirements as ConvertToPicture which is used when adding shapes
             if (!ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                MessageBox.Show(new Form() { TopMost = true },
-                    ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
+                WPFMessageBox.Show(ShapesLabText.ErrorAddSelectionInvalid, ShapesLabText.ErrorDialogTitle);
                 return;
             }
 
@@ -251,13 +250,13 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             if (shapeList.SelectedItems.Count == 0)
             {
-                MessageBox.Show(ShapesLabText.ErrorNoPanelSelected, ShapesLabText.ErrorDialogTitle);
+                WPFMessageBox.Show(ShapesLabText.ErrorNoPanelSelected, ShapesLabText.ErrorDialogTitle);
                 return;
             }
             PowerPointSlide currentSlide = this.GetCurrentSlide();
             if (currentSlide == null)
             {
-                MessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
+                WPFMessageBox.Show(ShapesLabText.ErrorViewTypeNotSupported);
                 return;
             }
             this.StartNewUndoEntry();
@@ -290,7 +289,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 // moving
                 if (File.Exists(destPath))
                 {
-                    MessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination,
+                    WPFMessageBox.Show(string.Format(TextCollection.ShapesLabText.ErrorSameShapeNameInDestination,
                                     shapeName,
                                     newCategoryName));
                     return;
@@ -428,7 +427,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             ImportShapes(fileDialog.FileName, true);
 
-            MessageBox.Show(ShapesLabText.SuccessImport);
+            WPFMessageBox.Show(ShapesLabText.SuccessImport);
         }
 
         private void ContextMenuStripImportShapesClicked(object sender, RoutedEventArgs e)
@@ -454,7 +453,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 return;
             }
 
-            MessageBox.Show(ShapesLabText.SuccessImport);
+            WPFMessageBox.Show(ShapesLabText.SuccessImport);
         }
 
         private void ContextMenuStripRemoveCategoryClicked(object sender, RoutedEventArgs e)
@@ -462,7 +461,7 @@ namespace PowerPointLabs.ShapesLab.Views
             // remove the last category will not be entertained
             if (_categoryBinding.Count == 1)
             {
-                MessageBox.Show(ShapesLabText.ErrorRemoveLastCategory);
+                WPFMessageBox.Show(ShapesLabText.ErrorRemoveLastCategory);
                 return;
             }
 
@@ -474,7 +473,7 @@ namespace PowerPointLabs.ShapesLab.Views
             if (isDefaultCategory)
             {
                 DialogResult result =
-                    MessageBox.Show(ShapesLabText.RemoveDefaultCategoryMessage,
+                    WPFMessageBox.Show(ShapesLabText.RemoveDefaultCategoryMessage,
                                     ShapesLabText.RemoveDefaultCategoryCaption,
                                     MessageBoxButtons.OKCancel);
 
@@ -548,7 +547,7 @@ namespace PowerPointLabs.ShapesLab.Views
         private void ContextMenuStripSetAsDefaultCategoryClicked(object sender, RoutedEventArgs e)
         {
             this.GetAddIn().ShapesLabConfig.DefaultCategory = CurrentCategory;
-            MessageBox.Show(string.Format(ShapesLabText.SuccessSetAsDefaultCategory, CurrentCategory));
+            WPFMessageBox.Show(string.Format(ShapesLabText.SuccessSetAsDefaultCategory, CurrentCategory));
             for (int index = 0; index < _categoryBinding.Count; index++)
             {
                 CustomComboBoxItem category = _categoryBinding[index] as CustomComboBoxItem;
@@ -578,7 +577,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 ShapesLabSettings.SaveFolderPath = newSavePath;
 
-                MessageBox.Show(
+                WPFMessageBox.Show(
                     string.Format(ShapesLabText.SuccessSaveLocationChanged, newSavePath),
                     ShapesLabText.SuccessSaveLocationChangedTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -715,11 +714,11 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 if (!importShapeGallery.Open(withWindow: false, focus: false))
                 {
-                    MessageBox.Show(ShapesLabText.ErrorImportFile);
+                    WPFMessageBox.Show(ShapesLabText.ErrorImportFile);
                 }
                 else if (importShapeGallery.Slides.Count == 0)
                 {
-                    MessageBox.Show(ShapesLabText.ErrorImportNoSlide);
+                    WPFMessageBox.Show(ShapesLabText.ErrorImportNoSlide);
                 }
                 else
                 {
@@ -727,7 +726,7 @@ namespace PowerPointLabs.ShapesLab.Views
                     // stop processing and warn the user
                     if (!fromLibrary && importShapeGallery.Categories.Count > 1)
                     {
-                        MessageBox.Show(
+                        WPFMessageBox.Show(
                             string.Format(ShapesLabText.ErrorImportSingleCategory,
                                           importShapeGallery.Name));
                         return false;
@@ -825,7 +824,7 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 loadingDialog.Close();
 
-                MessageBox.Show(ShapesLabText.ErrorMigration);
+                WPFMessageBox.Show(ShapesLabText.ErrorMigration);
 
                 return false;
             }
@@ -834,7 +833,7 @@ namespace PowerPointLabs.ShapesLab.Views
             // because some of the using files, such as some opening shapes, and the evil thumb.db
             if (!FileDir.DeleteFolder(oldPath))
             {
-                MessageBox.Show(ShapesLabText.ErrorOriginalFolderDeletion);
+                WPFMessageBox.Show(ShapesLabText.ErrorOriginalFolderDeletion);
             }
 
             ShapeRootFolderPath = newPath;
@@ -892,7 +891,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 if (shapeName == null)
                 {
-                    MessageBox.Show(ShapesLabText.ErrorFileNameInvalid);
+                    WPFMessageBox.Show(ShapesLabText.ErrorFileNameInvalid);
                     continue;
                 }
 

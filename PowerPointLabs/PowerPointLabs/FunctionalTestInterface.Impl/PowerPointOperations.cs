@@ -111,9 +111,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
 
         public void ActivatePresentation()
         {
-            MessageBox.Show(new Form() { TopMost = true },
-                "###__DO_NOT_OPEN_OTHER_WINDOW__###\n" +
-                "###___DURING_FUNCTIONAL_TEST___###", "PowerPointLabs FT");
+            WPFMessageBox.Show("###__DO_NOT_OPEN_OTHER_WINDOW__###\n" + "###___DURING_FUNCTIONAL_TEST___###", "PowerPointLabs FT");
         }
 
         public int PointsToScreenPixelsX(float x)

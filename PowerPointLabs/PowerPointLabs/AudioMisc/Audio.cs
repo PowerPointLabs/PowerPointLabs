@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.AudioMisc
 {
@@ -148,7 +149,7 @@ namespace PowerPointLabs.AudioMisc
             }
             else
             {
-                MessageBox.Show(TextCollection.CommonText.ErrorSlideSelectionTitle);
+                WPFMessageBox.Show(TextCollection.CommonText.ErrorSlideSelectionTitle);
             }
         }
     }

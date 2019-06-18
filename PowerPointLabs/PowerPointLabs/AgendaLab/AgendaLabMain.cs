@@ -107,7 +107,7 @@ namespace PowerPointLabs.AgendaLab
 
                 if (AgendaPresent())
                 {
-                    DialogResult confirm = MessageBox.Show(AgendaLabText.ErrorAgendaExist,
+                    DialogResult confirm = WPFMessageBox.Show(AgendaLabText.ErrorAgendaExist,
                                                   AgendaLabText.ErrorAgendaExistTitle,
                                                   MessageBoxButtons.OKCancel);
                     if (confirm != DialogResult.OK)
@@ -303,8 +303,7 @@ namespace PowerPointLabs.AgendaLab
             else if (targetSlides.Count == 1)
             {
                 // If only one slide selected, ask whether the user wants to generate on all slides.
-                DialogResult confirmResult = MessageBox.Show(new Form { TopMost = true },
-                                                    AgendaLabText.BeamGenerateSingleSlideDialogContent,
+                DialogResult confirmResult = WPFMessageBox.Show(AgendaLabText.BeamGenerateSingleSlideDialogContent,
                                                     AgendaLabText.BeamGenerateSingleSlideDialogTitle,
                                                     MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
@@ -868,8 +867,7 @@ namespace PowerPointLabs.AgendaLab
             }
 
 
-            DialogResult confirmResult = MessageBox.Show(new Form() { TopMost = true },
-                                                AgendaLabText.ReorganiseSidebarContent,
+            DialogResult confirmResult = WPFMessageBox.Show(AgendaLabText.ReorganiseSidebarContent,
                                                 AgendaLabText.ReorganiseSidebarTitle,
                                                 MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
@@ -1273,7 +1271,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static void ShowErrorMessage(string message)
         {
-            MessageBox.Show(message, AgendaLabText.ErrorDialogTitle);
+            WPFMessageBox.Show(message, AgendaLabText.ErrorDialogTitle);
         }
 
         private static string CreateInDocHyperLink(PowerPointSlide slide)

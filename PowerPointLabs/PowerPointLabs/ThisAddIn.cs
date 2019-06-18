@@ -36,7 +36,6 @@ using PowerPointLabs.Views;
 
 using PPExtraEventHelper;
 
-using MessageBox = System.Windows.Forms.MessageBox;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -182,7 +181,7 @@ namespace PowerPointLabs
             {
                 // if the presentation gets some error during opening, and the error could not
                 // be resolved by consistency check, prompt the user about the error
-                MessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                WPFMessageBox.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
 
@@ -1468,7 +1467,7 @@ namespace PowerPointLabs
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
             {
-                MessageBox.Show(CommonText.ErrorTabActivate, CommonText.ErrorTabActivateTitle);
+                WPFMessageBox.Show(CommonText.ErrorTabActivate, CommonText.ErrorTabActivateTitle);
             }
         }
 

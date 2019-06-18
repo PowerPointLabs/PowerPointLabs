@@ -5,6 +5,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.TooltipsLab
 {
@@ -19,7 +20,7 @@ namespace PowerPointLabs.TooltipsLab
         {
             if (selectedShapes.Count < 2)
             {
-                MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
+                WPFMessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
                     TooltipsLabText.ErrorTooltipsDialogTitle);
 
                 return false;

@@ -219,7 +219,7 @@ namespace PowerPointLabs.Utils
 
                 // Alert the user that the slides have been saved in a folder
                 string messageBoxText = "The selected slides have been saved as a separate file in the folder " + folderName + ".";
-                MessageBox.Show(messageBoxText);
+                WPFMessageBox.Show(messageBoxText);
             }
             catch (Exception)
             {
@@ -232,7 +232,7 @@ namespace PowerPointLabs.Utils
 
                 // Alert the user that the slides have been saved as a separate file in the specified folder.
                 string messageBoxText = "The selected slides have been saved as a separate file in the specified folder.";
-                MessageBox.Show(messageBoxText);
+                WPFMessageBox.Show(messageBoxText);
             }
         }
 

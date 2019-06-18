@@ -235,7 +235,7 @@ namespace PowerPointLabs
         {
             if (!Globals.ThisAddIn.VerifyVersion(pres))
             {
-                MessageBox.Show(CommonText.ErrorVersionNotCompatible);
+                WPFMessageBox.Show(CommonText.ErrorVersionNotCompatible);
                 return false;
             }
 

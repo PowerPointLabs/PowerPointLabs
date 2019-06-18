@@ -6,6 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.SaveLab
 {
@@ -25,7 +26,7 @@ namespace PowerPointLabs.ActionFramework.SaveLab
             else
             {
                 // If no slides return error message or do nothing
-                MessageBox.Show(SaveLabText.ErrorZeroSlidesSelected, CommonText.ErrorSlideSelectionTitle);
+                WPFMessageBox.Show(SaveLabText.ErrorZeroSlidesSelected, CommonText.ErrorSlideSelectionTitle);
             }
         }
     }
