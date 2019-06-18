@@ -50,7 +50,7 @@ namespace PowerPointLabs.SaveLab.Views
             while (true)
             {
                 // this launcher will scroll the view to selected path
-                DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+                System.Windows.Forms.DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
 
                 if (folderDialogResult == Forms.DialogResult.OK)
                 {

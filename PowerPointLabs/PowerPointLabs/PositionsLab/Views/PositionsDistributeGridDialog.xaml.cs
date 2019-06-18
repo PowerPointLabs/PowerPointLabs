@@ -2,6 +2,7 @@
 using System.Windows;
 
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.PositionsLab.Views
@@ -26,14 +27,14 @@ namespace PowerPointLabs.PositionsLab.Views
 
             if (exception == null)
             {
-                MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
+                WPFMessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
                 return;
             }
 
             string errorMessage = GetErrorMessage(exception.Message);
             if (!string.Equals(errorMessage, PositionsLabText.ErrorUndefined, StringComparison.Ordinal))
             {
-                MessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
+                WPFMessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
             }
             else
             {

@@ -420,7 +420,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
             //flowlayoutContextMenuStrip.Hide();
 
-            if (fileDialog.ShowDialog() == DialogResult.Cancel)
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
             {
                 return;
             }
@@ -439,7 +439,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 Title = ShapesLabText.ImportShapeFileDialogTitle
             };
 
-            if (fileDialog.ShowDialog() == DialogResult.Cancel)
+            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
             {
                 return;
             }
@@ -472,12 +472,12 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (isDefaultCategory)
             {
-                DialogResult result =
+                PowerPointLabs.Utils.DialogResult result =
                     WPFMessageBox.Show(ShapesLabText.RemoveDefaultCategoryMessage,
                                     ShapesLabText.RemoveDefaultCategoryCaption,
-                                    MessageBoxButtons.OKCancel);
+                                    PowerPointLabs.Utils.MessageBoxButtons.OKCancel);
 
-                if (result == DialogResult.Cancel)
+                if (result == PowerPointLabs.Utils.DialogResult.Cancel)
                 {
                     return;
                 }
@@ -579,8 +579,8 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 WPFMessageBox.Show(
                     string.Format(ShapesLabText.SuccessSaveLocationChanged, newSavePath),
-                    ShapesLabText.SuccessSaveLocationChangedTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    ShapesLabText.SuccessSaveLocationChangedTitle, PowerPointLabs.Utils.MessageBoxButtons.OK,
+                    PowerPointLabs.Utils.MessageBoxIcon.Information);
             };
             settingsDialog.ShowDialog();
         }

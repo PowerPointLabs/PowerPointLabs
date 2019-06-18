@@ -26,6 +26,10 @@ using PowerPointLabs.XMLMisc;
 
 using PPExtraEventHelper;
 
+using DialogResult = PowerPointLabs.Utils.DialogResult;
+using MessageBoxButtons = PowerPointLabs.Utils.MessageBoxButtons;
+using MessageBoxIcon = PowerPointLabs.Utils.MessageBoxIcon;
+
 namespace PowerPointLabs.ELearningLab.Views
 {
     [SuppressMessage("Microsoft.StyleCop.CSharp.OrderingRules", "SA1202:ElementsMustBeOrderedByAccess", Justification = "To refactor to partials")]
@@ -1091,7 +1095,7 @@ namespace PowerPointLabs.ELearningLab.Views
             if (!NInputDeviceExists())
             {
                 WPFMessageBox.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderErrorNoInputDeviceTitle,
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                PowerPointLabs.Utils.MessageBoxButtons.OK, PowerPointLabs.Utils.MessageBoxIcon.Error);
 
                 return;
             }

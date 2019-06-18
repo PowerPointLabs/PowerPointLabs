@@ -10,10 +10,10 @@
                       BorderThickness="1"
                       BorderBrush="#0070c0"
                       ResizeMode="NoResize"
-                      Title="About PowerPointLabs"
+                      Title="WPFMessageBox"
                       WindowStartupLocation="CenterScreen"
                       WindowTransitionsEnabled="False">
-    <controls:MetroWindow.Resources>
+        <controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
@@ -63,16 +63,15 @@
                     <LineBreak></LineBreak>
                     Developed at School of Computing, National University of Singapore.
                     <LineBreak></LineBreak>
-                    For more information, visit our website at
-                    <Hyperlink x:Name="websiteHyperlink" 
-                               NavigateUri="http://website.com" 
-                               RequestNavigate="Hyperlink_RequestNavigate">
-                        <Run x:Name="websiteHyperlinkRunText">http://website.com</Run>
-                    </Hyperlink> .
+                    For more information, visit our website at http://website.com .
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
 
+        <Grid>
+            <Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
+        </Grid>
         <Button x:Name="okButton" 
                 Content="OK" 
                 HorizontalAlignment="Right" 

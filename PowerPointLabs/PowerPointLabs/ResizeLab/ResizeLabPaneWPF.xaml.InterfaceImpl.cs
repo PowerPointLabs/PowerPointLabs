@@ -2,6 +2,7 @@
 using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ResizeLab
             }
             else
             {
-                MessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
+                WPFMessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
             }
         }
 

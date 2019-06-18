@@ -144,10 +144,10 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             if (!IsInSync())
             {
-                System.Windows.Forms.DialogResult result = WPFMessageBox.Show(
+                DialogResult result = WPFMessageBox.Show(
                        ELearningLabText.PromptToSyncMessage,
-                       ELearningLabText.ELearningTaskPaneLabel, System.Windows.Forms.MessageBoxButtons.YesNo);
-                if (result == System.Windows.Forms.DialogResult.Yes)
+                       ELearningLabText.ELearningTaskPaneLabel, MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
                 {
                     SyncClickItems();
                 }

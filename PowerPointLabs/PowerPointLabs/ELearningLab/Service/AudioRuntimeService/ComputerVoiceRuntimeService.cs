@@ -7,8 +7,6 @@ using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -19,6 +17,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Service
@@ -181,9 +180,9 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 Filter = "Audio files (*.wav, *.mp3, *.wma)|*.wav;*.mp3;*.wma"
             };
-            DialogResult result = audioPicker.ShowDialog();
+            System.Windows.Forms.DialogResult result = audioPicker.ShowDialog();
 
-            if (result == DialogResult.OK)
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
                 string selectedFile = audioPicker.FileName;
 

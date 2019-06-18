@@ -75,7 +75,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 Color = GetColor(panel.Background as SolidColorBrush),
                 FullOpen = true
             };
-            if (colorDialog.ShowDialog() != DialogResult.OK)
+            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
             {
                 return;
             }

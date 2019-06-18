@@ -2,6 +2,7 @@
 using System.Windows;
 
 using PowerPointLabs.CustomControls;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.CropLab
@@ -16,7 +17,7 @@ namespace PowerPointLabs.CropLab
             }
             else
             {
-                MessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
+                WPFMessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
             }
         }
     }
