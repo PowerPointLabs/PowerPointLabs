@@ -46,6 +46,42 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             return PowerPointLabsFT.IsFunctionalTestOn;
         }
 
+        public void MaximizeWindow(int windowNumber)
+        {
+            FunctionalTestExtensions.GetApplication().Windows[windowNumber].Activate();
+            FunctionalTestExtensions.GetApplication().Windows[windowNumber].WindowState = PpWindowState.ppWindowMaximized;
+        }
+
+        public void NewWindow()
+        {
+            Presentation presentation = FunctionalTestExtensions.GetPresentations().Add();
+        }
+
+        public int GetNumWindows()
+        {
+            return FunctionalTestExtensions.GetApplication().Windows.Count;
+        }
+
+        public void SetTagToAssociatedWindow()
+        {
+            DocumentWindow docWindow = FunctionalTestExtensions.GetCurrentWindow();
+            foreach (Microsoft.Office.Tools.CustomTaskPane pane in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            {
+                if (pane.Control.Tag == null) { pane.Control.Tag = docWindow.HWND; }
+            }
+        }
+
+        public HashSet<Type> GetOpenPaneTypes()
+        {
+            DocumentWindow docWindow = FunctionalTestExtensions.GetCurrentWindow(); //.GetApplication().Windows[1];
+            HashSet<Type> result = new HashSet<Type>();
+            foreach (Microsoft.Office.Tools.CustomTaskPane pane in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            {
+                if (pane.Control.Tag is int && (int)pane.Control.Tag == docWindow.HWND) { result.Add(pane.Control.GetType()); }
+            }
+            return result;
+        }
+
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
         {
             Presentation presentation = FunctionalTestExtensions.GetPresentations().Open(pathToPresentation,

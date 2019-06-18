@@ -57,18 +57,21 @@ namespace Test.FunctionalTest
         public void TearDown()
         {
             TeardownWindowWatching();
+            if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
+            {
+                if (!Directory.Exists(PathUtil.GetTestFailurePath()))
+                {
+                    Directory.CreateDirectory(PathUtil.GetTestFailurePath());
+                }
                 PpOperations.SavePresentationAs(
                     PathUtil.GetTestFailurePresentationPath(
                         TestContext.TestName + "_" +
                         GetTestingSlideName()));
-                if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
-                {
-                    if (!Directory.Exists(PathUtil.GetTestFailurePath()))
-                    {
-                        Directory.CreateDirectory(PathUtil.GetTestFailurePath());
-                    }
-                }
+            }
+            while (PpOperations.GetNumWindows() > 0)
+            {
                 PpOperations.ClosePresentation();
+            }
         }
 
         protected static void CheckIfClipboardIsRestored(Action action, int actualSlideNum, string shapeNameToBeCopied, int expSlideNum, string expShapeNameToDelete, string expCopiedShapeName)

@@ -21,6 +21,7 @@ namespace Test.FunctionalTest
             PplFeatures.AutoNarrate();
             ThreadUtil.WaitFor(5000);
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
+            ThreadUtil.WaitFor(1000); // need to wait for loading
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
         }
     }
