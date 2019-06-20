@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
@@ -26,7 +25,7 @@ namespace PowerPointLabs.AnimationLab
                 PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    MessageBox.Show(AnimationLabText.ErrorAutoAnimateWrongSlide,
+                    MessageBoxUtil.Show(AnimationLabText.ErrorAutoAnimateWrongSlide,
                                     AnimationLabText.ErrorAutoAnimateDialogTitle);
                     return;
                 }
@@ -34,7 +33,7 @@ namespace PowerPointLabs.AnimationLab
                 PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
                 if (!GetMatchingShapeDetails(currentSlide, nextSlide))
                 {
-                    MessageBox.Show(AnimationLabText.ErrorAutoAnimateNoMatchingShapes,
+                    MessageBoxUtil.Show(AnimationLabText.ErrorAutoAnimateNoMatchingShapes,
                                     AnimationLabText.ErrorAutoAnimateDialogTitle);
                     return;
                 }

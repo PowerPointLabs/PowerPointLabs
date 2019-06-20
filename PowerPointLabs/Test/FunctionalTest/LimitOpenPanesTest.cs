@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Office.Tools;
-using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs;
-using Test.Util;
-using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.FunctionalTestInterface.Impl;
-using System.Threading;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.ColorsLab;
-using System.Windows.Forms;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ShapesLab;
 

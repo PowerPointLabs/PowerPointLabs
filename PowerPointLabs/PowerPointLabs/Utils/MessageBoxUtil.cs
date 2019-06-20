@@ -1,6 +1,5 @@
-﻿using System;
-using System.Windows.Media;
-using MessageBox = PowerPointLabs.Views.WPFMessageBox;
+﻿using PowerPointLabs.WPF;
+using MessageBox = PowerPointLabs.WPF.MessageBoxVM;
 
 namespace PowerPointLabs.Utils
 {
@@ -46,13 +45,12 @@ namespace PowerPointLabs.Utils
         {
             MessageBox messageBox = new MessageBox();
             messageBox.Title = caption;
-            messageBox.Message.Text = text;
-            messageBox.SetButton(MessageBox.ButtonPos.Left, LeftButtonResult(buttons));
-            messageBox.SetButton(MessageBox.ButtonPos.Middle, MiddleButtonResult(buttons));
-            messageBox.SetButton(MessageBox.ButtonPos.Right, RightButtonResult(buttons));
-            // Set the image source!
-            //messageBox.Icon = GetImageSource(icon);
-            return messageBox.CustomShowDialog();
+            messageBox.Message = text;
+            //messageBox.SetButton(MessageBox.ButtonPos.Left, LeftButtonResult(buttons));
+            //messageBox.SetButton(MessageBox.ButtonPos.Middle, MiddleButtonResult(buttons));
+            //messageBox.SetButton(MessageBox.ButtonPos.Right, RightButtonResult(buttons));
+            messageBox.SetIcon(icon);
+            return messageBox.ShowDialog();
         }
 
         //private static ImageSource GetImageSource(MessageBoxIcon icon)

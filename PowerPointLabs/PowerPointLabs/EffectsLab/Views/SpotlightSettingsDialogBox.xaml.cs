@@ -2,15 +2,13 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Views;
 using Drawing = System.Drawing;
-using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.EffectsLab.Views
 {
@@ -62,10 +60,10 @@ namespace PowerPointLabs.EffectsLab.Views
         private void SpotlightColorRect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Color currentColor = (spotlightColorRect.Fill as SolidColorBrush).Color;
-            ColorDialog colorDialog = new ColorDialog();
+            WPFColorDialog colorDialog = new WPFColorDialog();
             colorDialog.Color = GraphicsUtil.DrawingColorFromMediaColor(currentColor);
             colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != Forms.DialogResult.Cancel)
+            if (colorDialog.ShowDialog() != Utils.DialogResult.Cancel)
             {
                 spotlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(colorDialog.Color);
             }

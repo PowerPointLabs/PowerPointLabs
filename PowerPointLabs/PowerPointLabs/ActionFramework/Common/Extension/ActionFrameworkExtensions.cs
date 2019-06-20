@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
@@ -7,6 +6,7 @@ using Microsoft.Office.Tools;
 using PowerPointLabs.Models;
 
 using Application = Microsoft.Office.Interop.PowerPoint.Application;
+using UserControl = System.Windows.Forms.UserControl;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
 {

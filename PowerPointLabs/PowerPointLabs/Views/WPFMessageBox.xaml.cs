@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using PowerPointLabs.Utils;
 using PowerPointLabs.WPF;
 
@@ -25,9 +24,9 @@ namespace PowerPointLabs.Views
             InitializeComponent();
         }
 
-        public DialogResult CustomShowDialog()
+        public new DialogResult ShowDialog()
         {
-            ShowDialog();
+            base.ShowDialog();
             return result;
         }
 

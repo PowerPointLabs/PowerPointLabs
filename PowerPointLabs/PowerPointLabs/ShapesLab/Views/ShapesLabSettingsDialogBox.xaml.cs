@@ -1,8 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
+﻿using System.Windows;
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -41,7 +37,7 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void SavePathBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog
+            Forms.FolderBrowserDialog folderDialog = new Forms.FolderBrowserDialog
             {
                 ShowNewFolderButton = true,
                 SelectedPath = savePathInput.Text,
@@ -52,9 +48,9 @@ namespace PowerPointLabs.ShapesLab.Views
             while (true)
             {
                 // this launcher will scroll the view to selected path
-                System.Windows.Forms.DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+                DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
 
-                if (folderDialogResult == Forms.DialogResult.OK)
+                if (folderDialogResult == Utils.DialogResult.OK)
                 {
                     string newPath = folderDialog.SelectedPath;
 

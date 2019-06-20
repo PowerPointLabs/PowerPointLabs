@@ -923,9 +923,12 @@
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
-    <Compile Include="Utils\WPFMessageBox.cs" />
+    <Compile Include="Utils\MessageBoxUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WPFColorDialog.xaml.cs">
+      <DependentUpon>WPFColorDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WPFMessageBox.xaml.cs">
       <DependentUpon>WPFMessageBox.xaml</DependentUpon>
@@ -933,8 +936,17 @@
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WPF\MessageBoxData.cs" />
+    <Compile Include="Views\WPFSaveFileDialog.xaml.cs">
+      <DependentUpon>WPFSaveFileDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPF\BaseNotificationClass.cs" />
+    <Compile Include="WPF\ColorDialogVM.cs" />
+    <Compile Include="WPF\Converter\BaseConverter.cs" />
+    <Compile Include="WPF\Converter\DialogResultToStringConverter.cs" />
+    <Compile Include="WPF\MessageBoxVM.cs" />
     <Compile Include="WPF\MessageButton.cs" />
+    <Compile Include="WPF\SaveFileDialogVM.cs" />
+    <Compile Include="WPF\IWPFWindow.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />
@@ -965,12 +977,6 @@
     <Compile Include="Converters\ColorPane\SelectedColorToSaturationValue.cs" />
     <Compile Include="CropLab\CropLabErrorHandler.cs" />
     <Compile Include="CustomBinding.cs" />
-    <Compile Include="CustomControls\BufferedFlowLayoutPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControls\BufferedPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="CustomControls\MessageService.cs" />
     <Compile Include="DataSources\ColorDataSource.cs" />
     <Compile Include="ColorsLab\ColorHelper.cs" />
@@ -1501,7 +1507,7 @@
     <None Include="Resources\Bullets.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Help.png" />
+    <Resource Include="Resources\Help.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Logo.png" />
@@ -1722,11 +1728,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\WPFColorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\WPFMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessingStatusForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WPFSaveFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -2090,7 +2104,7 @@
     <None Include="Resources\TimerLab.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\About.png" />
+    <Resource Include="Resources\About.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AddAnimation.png" />

@@ -5,7 +5,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:WPF="clr-namespace:PowerPointLabs.WPF"
-                      d:DataContext="{d:DesignInstance WPF:MessageBoxData}"
+                      d:DataContext="{d:DesignInstance WPF:MessageBoxVM}"
                       mc:Ignorable="d"
                       MinHeight="205"
                       SizeToContent="Height"
@@ -13,11 +13,14 @@
                       BorderThickness="1"
                       BorderBrush="#0070c0"
                       ResizeMode="NoResize"
-                      Title="WPF Message Box"
+                      Title="{Binding Title}"
                       WindowStartupLocation="CenterScreen"
-                      WindowTransitionsEnabled="False">
+                      WindowTransitionsEnabled="False"
+                      Visibility="{Binding Visible, Converter=BooleanToVisibilityConverter}">
     <controls:MetroWindow.Resources>
-        <ResourceDictionary>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+        
+        <ResourceDictionary x:Key="Style">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -32,14 +35,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Grid Row="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40">
+        <Grid Row="0"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40">
             <!--Message + Icon-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image x:Name="CustomIcon" Grid.Column="0" Height="50" Width="50" Source="{Binding IconSource}"></Image>
-            <TextBlock x:Name="Message" Grid.Column="1" Text="Insert Message Here" TextWrapping="Wrap" MinWidth="200"/>
+            <Image x:Name="CustomIcon" Grid.Column="0" Height="50" Width="50" Source="{Binding Icon}"></Image>
+            <TextBlock x:Name="Message" Grid.Column="1" Text="{Binding Message}" TextWrapping="WrapWithOverflow"/>
         </Grid>
         <Grid Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -47,9 +50,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <WPF:MessageButton Grid.Column="0" x:Name="LeftButton" Content="Left Button" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
-            <WPF:MessageButton Grid.Column="1" x:Name="MiddleButton" Content="Middle Button" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
-            <WPF:MessageButton Grid.Column="2" x:Name="RightButton" Content="Right Button" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="0" x:Name="LeftButton" Content="{Binding LeftButton}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="1" x:Name="MiddleButton" Content="{Binding MiddleButton}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="2" x:Name="RightButton" Content="{Binding RightButton}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
         </Grid>
         <!--Row Of Buttons, hug the right-->
     </Grid>

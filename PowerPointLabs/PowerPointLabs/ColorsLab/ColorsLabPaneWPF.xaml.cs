@@ -376,14 +376,14 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             rect.MouseUp -= SelectedColorRectangle_MouseUp;
 
-            System.Windows.Forms.ColorDialog colorPickerDialog = new System.Windows.Forms.ColorDialog();
+            WPFColorDialog colorPickerDialog = new WPFColorDialog();
             colorPickerDialog.FullOpen = true;
 
             // Sets the initial color select to the current selected color.
             colorPickerDialog.Color = dataSource.SelectedColor;
 
             // Update the selected color if the user clicks OK
-            if (colorPickerDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (colorPickerDialog.ShowDialog() == DialogResult.OK)
             {
                 dataSource.SelectedColor = colorPickerDialog.Color;
             }
@@ -704,14 +704,14 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void SaveColorButton_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            WPFSaveFileDialog saveFileDialog = new WPFSaveFileDialog();
             saveFileDialog.DefaultExt = "thm";
             saveFileDialog.Filter = "PPTLabsFavorites|*.thm";
             saveFileDialog.Title = "Save Favorite";
             
-            System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
+            DialogResult result = saveFileDialog.ShowDialog();
 
-            if (result == System.Windows.Forms.DialogResult.OK &&
+            if (result == DialogResult.OK &&
                 dataSource.SaveFavoriteColorsInFile(saveFileDialog.FileName))
             {
                 SaveDefaultColorPaneFavoriteColors();
