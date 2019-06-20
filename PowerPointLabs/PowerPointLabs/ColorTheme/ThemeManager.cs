@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 
 using PowerPointLabs.ActionFramework.Common.Log;
@@ -64,10 +66,22 @@ namespace PowerPointLabs.ColorThemes
 
         private ThemeManager()
         {
-            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, ColorTheme.COLORFUL);
+            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, GetDefaultKeys());
             themeWatcher.ValueChanged += ThemeChangedHandler;
             themeWatcher.Fire();
             themeWatcher.Start();
+        }
+
+        private List<int> GetDefaultKeys()
+        {
+            if (!Globals.ThisAddIn.IsApplicationVersion2013())
+            {
+                return new List<int> (ColorTheme.COLORFUL);
+            }
+            List<int> result = new List<int>(ColorTheme.WHITE);
+            result.Add(ColorTheme.LIGHT_GREY);
+            result.Add(ColorTheme.DARK_GREY);
+            return result;
         }
 
         private void ThemeChangedHandler(object sender, int newValue)
@@ -89,6 +103,8 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
                 case ColorTheme.WHITE:
+                case ColorTheme.LIGHT_GREY:
+                case ColorTheme.DARK_GREY_ALT:
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(255, 255, 255);
                     _colorTheme.foreground = Color.FromRgb(37, 37, 37);
@@ -114,6 +130,12 @@ namespace PowerPointLabs.ColorThemes
                     break;
                 default:
                     Logger.Log("Unknown UI Theme!");
+                    _colorTheme.title = Color.FromRgb(181, 71, 42);
+                    _colorTheme.background = Color.FromRgb(230, 230, 230);
+                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
+                    _colorTheme.boxBackground = Color.FromRgb(255, 255, 255);
+                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
+                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
             }
         }

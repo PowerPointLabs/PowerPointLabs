@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Management;
 using System.Security.Principal;
 using Microsoft.Win32;
@@ -13,7 +14,7 @@ namespace PowerPointLabs.Utils
     {
         private readonly string path;
         private readonly string key;
-        private readonly T defaultKey;
+        private readonly List<T> defaultKey;
         private ManagementEventWatcher watcher;
 
         // returns true if the key started as defaultKey and is not modified, else false
@@ -21,7 +22,7 @@ namespace PowerPointLabs.Utils
 
         public event EventHandler<T> ValueChanged;
 
-        public RegistryWatcher(string path, string key, T defaultKey)
+        public RegistryWatcher(string path, string key, List<T> defaultKey)
         {
             this.path = path;
             this.key = key;
@@ -75,7 +76,7 @@ namespace PowerPointLabs.Utils
                     throw new Exceptions.AssumptionFailedException("Key is null");
                 }
                 T result = (T)objectValue;
-                IsDefaultKey &= defaultKey == null || defaultKey.Equals(result);
+                IsDefaultKey &= defaultKey == null || defaultKey.Contains(result);
                 return result;
             }
         }
